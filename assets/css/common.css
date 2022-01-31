@@ -5392,6 +5392,10 @@ h2.h2.education__time {
   min-height: calc(100vh - 87px - 284px);
 }
 
+.title-flex .filter__item {
+  margin-bottom: 30px;
+}
+
 .grey-form {
   padding: 40px;
   margin-bottom: 40px;
@@ -6116,7 +6120,7 @@ h2.h2.education__time {
 }
 
 .admin-editor__edit-profile {
-  padding: 20px 40px;
+  padding: 0 40px;
   background-color: #F2F0ED;
   margin-bottom: 40px;
 }
@@ -6124,11 +6128,15 @@ h2.h2.education__time {
 .admin-editor__edit-profile .profile-edit {
   margin-top: 0px;
   border: none;
-  padding-top: 0px;
+  padding: 20px 0;
 }
 
 .admin-editor__events {
   padding: 0 40px 40px;
+}
+
+.admin .acount__table-accardeon {
+  padding-bottom: 0px;
 }
 
 .text-radios {
@@ -6237,6 +6245,8 @@ h2.h2.education__time {
 
 .admin-edit__user-btn {
   margin-right: 20px;
+  margin-bottom: 10px;
+  white-space: wrap;
 }
 
 .admin-edit__user-btn:last-child {
@@ -6263,12 +6273,16 @@ h2.h2.education__time {
 }
 
 .history-item,
-.healing-item {
+.healing-item,
+.changes-item,
+.admin-events-item {
   display: flex;
 }
 
 .history-item p,
-.healing-item p {
+.healing-item p,
+.changes-item p,
+.admin-events-item p {
   display: none;
 }
 
@@ -10688,17 +10702,28 @@ h2.h2.education__time {
   }
 
   .history-item,
-  .healing-item {
+  .healing-item,
+  .changes-item,
+  .admin-events-item {
     width: 100% !important;
     padding-right: 20px;
   }
 
   .history-item p,
-  .healing-item p {
+  .healing-item p,
+  .changes-item p,
+  .admin-events-item p {
     display: block;
     margin-right: 20px;
     width: 40%;
     padding-right: 20px;
+  }
+
+  .history-item span,
+  .healing-item span,
+  .changes-item span,
+  .admin-events-item span {
+    width: 60%;
   }
 
   .acount__table-main:after {
@@ -10759,6 +10784,10 @@ h2.h2.education__time {
 
   .account-events .lk-title {
     line-height: 47px;
+  }
+
+  .admin-photo {
+    width: calc(50% - 30px);
   }
 }
 
@@ -10874,6 +10903,30 @@ h2.h2.education__time {
 
   .inner-experts__item {
     width: calc(50% - 30px);
+  }
+
+  .photos-title {
+    flex-wrap: wrap;
+  }
+
+  .photos-title .filter__item {
+    width: 100%;
+    padding-top: 10px;
+  }
+
+  .admin-editor__top {
+    display: block;
+  }
+
+  .admin-editor__top-date {
+    text-align: left;
+    padding-top: 15px;
+  }
+
+  .admin__editor-textarea {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 40px;
   }
 
   .analysis__description {
@@ -11197,6 +11250,29 @@ h2.h2.education__time {
 
   .inner-experts__item {
     width: calc(100% - 30px);
+  }
+
+  .admin-edit__user-btn {
+    width: 100%;
+    white-space: unset;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    justify-content: center;
+    text-align: center;
+    height: auto;
+  }
+
+  .admin-photo {
+    width: calc(100% - 30px);
+  }
+
+  .user__notconfirm {
+    display: block;
+  }
+
+  .user__notconfirm a {
+    display: block;
+    padding-left: 7px;
   }
 }
 
