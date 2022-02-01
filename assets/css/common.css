@@ -3455,6 +3455,8 @@ input:focus + .input__placeholder,
 textarea:focus + .input__placeholder {
   transform: translateY(-23px) scale(0.9);
   z-index: 20;
+  background-color: #F6F4F3;
+  color: #363838;
 }
 
 .fast-form__item {
