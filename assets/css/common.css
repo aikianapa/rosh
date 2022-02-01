@@ -2977,6 +2977,10 @@ h5 {
   background-color: transparent;
 }
 
+.btn-link:hover {
+  text-decoration: underline;
+}
+
 /*
 Основной контейнер
 */
@@ -3044,6 +3048,7 @@ h5 {
 
 .header__logo {
   margin-right: 40px;
+  z-index: 30;
 }
 
 .header--transparent {
@@ -3197,7 +3202,7 @@ h5 {
   width: 100%;
   max-width: 435px;
   background-color: #fff;
-  z-index: 90;
+  z-index: 99;
   transition: .6s ease-out;
   transform: translateY(-100%);
 }
@@ -3228,10 +3233,15 @@ h5 {
   line-height: 140%;
   font-weight: bold;
   margin-bottom: 20px;
+  transition: .4s;
 }
 
 .nav__link:last-child {
   margin-bottom: 0px;
+}
+
+.nav__link:hover {
+  opacity: 0.6;
 }
 
 .nav__group {
@@ -3272,6 +3282,10 @@ h5 {
   font-weight: bold;
   max-width: 289px;
   border-top: 1px solid #E7E7E7;
+}
+
+.en-version:hover {
+  text-decoration: underline;
 }
 
 .en-version .svgsprite._web {
@@ -3441,7 +3455,6 @@ input:focus + .input__placeholder,
 textarea:focus + .input__placeholder {
   transform: translateY(-23px) scale(0.9);
   z-index: 20;
-  background-color: #F6F4F3;
 }
 
 .fast-form__item {
@@ -4196,6 +4209,10 @@ input:checked ~ .checbox__link {
   font-size: 20px;
 }
 
+.popup.--download .popup__panel {
+  max-width: 596px;
+}
+
 .main-slider {
   margin-bottom: 80px;
 }
@@ -4666,6 +4683,10 @@ input:checked ~ .checbox__link {
 .expert__text {
   max-width: 630px;
   color: #838686;
+}
+
+.expert__info {
+  display: block;
 }
 
 .expert__information {
