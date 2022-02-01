@@ -2948,6 +2948,7 @@ h5 {
   align-items: center;
   justify-content: center;
   height: 47px;
+  padding-bottom: 2px;
   padding-left: 26px;
   padding-right: 26px;
   border-radius: 25px;
