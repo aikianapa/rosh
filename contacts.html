@@ -1253,6 +1253,67 @@
         </div>
         <div class="input"> 
           <input class="search__input" type="text" placeholder="Поиск по услугам">
+          <div class="search__drop"> 
+            <label class="search__drop-item"> 
+              <div class="search__drop-name">Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения).</div>
+              <div class="search__drop-right"> 
+                <div class="search__drop-tags">
+                  <div class="search__drop-tag --yellow">Л</div>
+                  <div class="search__drop-tag --green">Т</div>
+                </div>
+                <div class="search__drop-summ">7 000 ₽</div>
+                <div class="search__drop-check">
+                  <div class="checkbox">
+                    <input type="checkbox"><span> </span>
+                  </div>
+                </div>
+              </div>
+            </label>
+            <label class="search__drop-item"> 
+              <div class="search__drop-name">Дерматологический пилинг Cosmedix Purity ретиноевый</div>
+              <div class="search__drop-right"> 
+                <div class="search__drop-tags">
+                  <div class="search__drop-tag --yellow">Л</div>
+                </div>
+                <div class="search__drop-summ">7 000 ₽</div>
+                <div class="search__drop-check">
+                  <div class="checkbox">
+                    <input type="checkbox"><span> </span>
+                  </div>
+                </div>
+              </div>
+            </label>
+            <label class="search__drop-item"> 
+              <div class="search__drop-name">Дерматологический пилинг Enerpeel Jessners салициловый-резорциновый </div>
+              <div class="search__drop-right"> 
+                <div class="search__drop-tags">
+                  <div class="search__drop-tag --yellow">Л</div>
+                  <div class="search__drop-tag --green">Т</div>
+                </div>
+                <div class="search__drop-summ">7 000 ₽</div>
+                <div class="search__drop-check">
+                  <div class="checkbox">
+                    <input type="checkbox"><span> </span>
+                  </div>
+                </div>
+              </div>
+            </label>
+            <label class="search__drop-item"> 
+              <div class="search__drop-name">Дерматологический пилинг для кожи с гиперпигментацией "SC Pigment Balancing Peel" </div>
+              <div class="search__drop-right"> 
+                <div class="search__drop-tags">
+                  <div class="search__drop-tag --yellow">Л</div>
+                  <div class="search__drop-tag --green">Т</div>
+                </div>
+                <div class="search__drop-summ">7 000 ₽</div>
+                <div class="search__drop-check">
+                  <div class="checkbox">
+                    <input type="checkbox"><span> </span>
+                  </div>
+                </div>
+              </div>
+            </label>
+          </div>
           <button class="search__btn" type="button">
                 <svg class="svgsprite _search">
                   <use xlink:href="assets/img/sprites/svgsprites.svg#search"></use>
@@ -1299,13 +1360,37 @@
         </label>
         <div class="select-form"> 
           <div class="select">
-            <div class="select__main">Хачатурян Любовь Андреева</div>
+            <div class="select__main"> 
+              <label class="checkbox checkbox--record">
+                <input type="checkbox" checked><span> </span>
+                <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+              </label>
+            </div>
             <div class="select__list">
-              <div class="select__item active">Хачатурян Любовь Андреева</div>
-              <div class="select__item">Хачатурян Любовь Андреева</div>
-              <div class="select__item">Хачатурян Любовь Андреева</div>
-              <div class="select__item">Хачатурян Любовь Андреева</div>
-              <div class="select__item">Хачатурян Любовь Андреева</div>
+              <div class="select__item">  
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                </label>
+              </div>
+              <div class="select__item"> 
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                </label>
+              </div>
+              <div class="select__item">  
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                </label>
+              </div>
+              <div class="select__item"> 
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -1332,6 +1417,53 @@
           <p>7 000 ₽ </p>
         </div>
         <button class="btn btn--black form__submit"> Записаться</button>
+      </div>
+      <div class="popup__panel --succed">
+        <button class="popup__close"> 
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Запись на прием</div>
+        <h3 class="h3">Успешно !</h3>
+        <p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+      </div>
+    </div>
+    <div class="popup --analize-type">
+      <div class="popup__panel">
+        <button class="popup__close"> 
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Расшифровка анализов</div>
+        <div class="text-bold">Тип события</div>
+        <div class="popups__text-chexboxs"> 
+          <label class="text-radio">
+            <input type="radio" name="status"><span>В клинике</span>
+          </label>
+          <label class="text-radio switch-blocks">
+            <input type="radio" name="status"><span>Онлайн</span>
+          </label>
+        </div>
+        <p class="text-grey mb-30">Нажмите на способ получения анализа</p>
+        <button class="btn btn--black">Далее</button>
+      </div>
+    </div>
+    <div class="popup --pay">
+      <div class="popup__panel"> 
+        <div class="popup__name text-bold">Расшифровка анализов</div>
+        <h3 class="h3">В ближайшее время с вами свяжутся для определения удобной даты</h3>
+        <div class="text-grey text-small mb-10">Стоимость услуги</div>
+        <div class="popup-summ">
+          <div class="popup-summ__big">5 000 ₽</div>
+          <div class="popup-summ__small">Предоплата - 1 000 ₽ </div>
+        </div>
+        <div class="popup__description">Для подтверждения записи необходимо произвести оплату в размере 20% от стоимости услуги</div>
+        <div class="form-bottom --flex">
+          <button class="btn btn--white form__submit --switchpopup" type="button">Назад</button>
+          <button class="btn btn--black form__submit --switchpopup" type="button">Внести предоплату</button>
+        </div>
       </div>
       <div class="popup__panel --succed">
         <button class="popup__close"> 

@@ -4139,6 +4139,11 @@ input:checked ~ .checbox__link {
   font-weight: 400;
 }
 
+.popup.--record .search__drop {
+  margin-top: 10px;
+  border: 1px solid #DADBDB;
+}
+
 .popups__text-chexboxs {
   display: flex;
   justify-content: space-between;
@@ -4172,6 +4177,23 @@ input:checked ~ .checbox__link {
 
 .service-checkboxs .search__drop-name {
   max-width: 600px;
+}
+
+.select .checkbox {
+  margin-bottom: 0px;
+}
+
+.popup-summ {
+  display: flex;
+}
+
+.popup-summ__big {
+  font-size: 32px;
+  margin-right: 12px;
+}
+
+.popup-summ__small {
+  font-size: 20px;
 }
 
 .main-slider {
@@ -10832,6 +10854,24 @@ h2.h2.education__time {
     display: block;
   }
 
+  .popup-summ {
+    display: block;
+  }
+
+  .popup-summ__big {
+    margin-bottom: 10px;
+  }
+
+  .popups__text-chexboxs {
+    flex-wrap: wrap;
+  }
+
+  .popups__text-chexboxs .text-radio {
+    width: calc(33% - 20px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+
   .expert__img {
     margin-bottom: 20px;
   }
@@ -11224,6 +11264,22 @@ h2.h2.education__time {
   .popup__close {
     right: 10px;
     top: 10px;
+  }
+
+  .popups__text-chexboxs {
+    margin-right: -20px;
+  }
+
+  .popups__text-chexboxs .text-radio {
+    width: calc(50% - 20px);
+  }
+
+  .popups__text-chexboxs .text-radio span {
+    height: 40px;
+  }
+
+  .popups__text-chexboxs .text-radio:last-child {
+    margin-right: 20px;
   }
 
   .main-slider .swiper-pagination-bullet.swiper-pagination-bullet-active {
