@@ -2978,8 +2978,12 @@ h5 {
   background-color: transparent;
 }
 
+.btn-link {
+  color: #080E0D;
+}
+
 .btn-link:hover {
-  text-decoration: underline;
+  color: #424242;
 }
 
 /*
@@ -5114,6 +5118,7 @@ h2.h2.education__time {
 
 .search__block {
   margin-bottom: 20px;
+  position: relative;
 }
 
 .search__block .input {
@@ -5121,15 +5126,6 @@ h2.h2.education__time {
   max-width: 530px;
   margin-right: 30px;
   margin-bottom: 0px;
-}
-
-.search__block .input input {
-  border-color: #DADBDB;
-  color: #DADBDB;
-}
-
-.search__block {
-  position: relative;
 }
 
 .search__drop {
@@ -5914,6 +5910,11 @@ h2.h2.education__time {
   background-color: #F6F4F3;
   padding: 72px 0px;
   margin-bottom: 40px;
+}
+
+.search.search--service {
+  padding: 0;
+  background-color: transparent;
 }
 
 .search input {
