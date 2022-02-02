@@ -3436,16 +3436,6 @@ h5 {
   border-color: #363838;
 }
 
-.input--grey input,
-.input--grey textarea {
-  border-color: #DADBDB;
-}
-
-.input--grey input:focus,
-.input--grey textarea:focus {
-  border-color: #363838;
-}
-
 .input__placeholder {
   position: absolute;
   left: 16px;
