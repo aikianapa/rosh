@@ -1932,6 +1932,11 @@ h5 {
   height: 17px;
 }
 
+.svgsprite._drop {
+  width: 12px;
+  height: 6px;
+}
+
 .svgsprite._edit {
   width: 17px;
   height: 18px;
@@ -1995,6 +2000,11 @@ h5 {
 .svgsprite._web {
   width: 14px;
   height: 14px;
+}
+
+.svgsprite._xl {
+  width: 16px;
+  height: 17px;
 }
 
 @font-face {
@@ -3105,6 +3115,17 @@ h5 {
 
 .enter {
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.enter.active svg {
+  transform: rotateZ(180deg);
+}
+
+.enter svg {
+  margin-left: 8px;
+  transition: .4s;
 }
 
 .enter__panel {
@@ -5420,6 +5441,10 @@ h2.h2.education__time {
   margin-right: 0px;
 }
 
+.search__input {
+  color: #080E0D;
+}
+
 .account {
   min-height: calc(100vh - 87px - 284px);
 }
@@ -5907,10 +5932,6 @@ h2.h2.education__time {
   background-color: transparent;
 }
 
-.search input {
-  color: #B5B7B6;
-}
-
 .user__panel {
   margin-right: 100px;
 }
@@ -6334,6 +6355,16 @@ h2.h2.education__time {
 
 .after-healing__item {
   margin-bottom: 42px;
+}
+
+.loaddata:hover svg {
+  fill: #FBF9F7;
+}
+
+.loaddata svg {
+  margin-right: 10px;
+  fill: #080E0D;
+  transition: .4s;
 }
 
 .mb-80 {

@@ -34,17 +34,25 @@
   <body class="body" data-barba="wrapper">
     <div class="scroll-container" data-scroll-container>
       <main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
-        <header class="header header--transparent --unfilter"> 
+        <header class="header header--transparent"> 
           <div class="container --flex --jcsb --aicn"><a class="header__logo" href="index.html"> <img src="./assets/img/logo.svg" alt=""></a>
             <div class="header__left --flex --aicn">
-              <div class="header__contacts"> <a class="header__contact" href="tel:+74951320169"> 8 (495) <b>132-01-69</b></a>
+              <div class="header__contacts"> <a class="header__contact" href="tel:+74951320169">8 (495) <b>132-01-69</b></a>
                 <div class="header__contact header__contact--small">Пн-Сб, с <b>10:00</b> до <b>21:00</b> </div>
               </div>
               <button class="btn btn--white --openfilter --mobile-fade">Подобрать услугу</button>
             </div>
             <div class="header__right --flex --aicn">
-              <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
-              <button class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
+              <button class="btn btn-link enter">
+                 Профиль
+                    <svg class="svgsprite _drop">
+                      <use xlink:href="assets/img/sprites/svgsprites.svg#drop"></use>
+                    </svg>
+                <div class="enter__panel">
+                  <div class="enter__btn text-small">Редактировать</div>
+                  <div class="enter__btn text-small">Выйти</div>
+                </div>
+              </button>
               <button class="burger"></button>
             </div>
           </div>
