@@ -104,7 +104,7 @@
                 <div class="crumbs"><a class="crumbs__arrow" href="#"> 
                         <svg class="svgsprite _crumbs-back">
                           <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                        </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Оборудование</a>
+                        </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Личный кабинет</a>
                 </div>
             <div class="title-flex --flex --jcsb">
               <div class="title">
@@ -1428,6 +1428,7 @@
             <use xlink:href="assets/img/sprites/svgsprites.svg#phone"></use>
           </svg></a>
     <div class="popup --fast">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1437,15 +1438,15 @@
         <div class="popup__name text-bold">Быстрая запись</div>
         <form class="popup__form">
           <div class="input input--grey">
-            <input type="text">
+            <input class="input__control" type="text" placeholder="ФИО">
             <div class="input__placeholder">ФИО</div>
           </div>
           <div class="input input--grey">
-            <input class="tel" type="text">
+            <input class="tel input__control" type="tel" placeholder="Номер телефона">
             <div class="input__placeholder">Номер телефона</div>
           </div>
           <div class="input input--grey">
-            <textarea type="text"></textarea>
+            <textarea class="input__control" type="text" placeholder="Причина обращения"></textarea>
             <div class="input__placeholder">Причина обращения</div>
           </div>
           <div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании <a href="policy.html">Политики конфиденциальности</a></div>
@@ -1465,6 +1466,7 @@
       </div>
     </div>
     <div class="popup --fast-make">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1474,11 +1476,11 @@
         <div class="popup__name text-bold">Быстрая запись</div>
         <form class="popup__form">
           <div class="input input--grey">
-            <input type="text">
+            <input class="input__control" type="text" placeholder="ФИО">
             <div class="input__placeholder">ФИО</div>
           </div>
           <div class="input input--grey">
-            <input class="tel" type="text">
+            <input class="tel input__control" type="tel" placeholder="Номер телефона">
             <div class="input__placeholder">Номер телефона</div>
           </div>
           <div class="select-form"> 
@@ -1518,6 +1520,7 @@
       </div>
     </div>
     <div class="popup --enter-number">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1527,7 +1530,7 @@
         <div class="popup__name text-bold">Войдите или зарегистрируйтесь </div>
         <form class="popup__form">
           <div class="input input--grey">
-            <input class="tel" type="text">
+            <input class="tel input__control" type="tel" placeholder="Номер телефона">
             <div class="input__placeholder">Номер телефона</div>
           </div><a class="form__link --switchpopup" href="#" data-popup="--email-enter"> Войти по почте</a>
         </form>
@@ -1537,6 +1540,7 @@
       </div>
     </div>
     <div class="popup --code">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1549,17 +1553,18 @@
           <div class="form-title__description form-title__description--small">
              Мы отправили код подтверждения на номер <br>+7 939 319 33 38 <a class="link" href="#">Изменить </a></div>
           <div class="code"> 
-            <input class="code__input" type="text">
-            <input class="code__input" type="text">
-            <input class="code__input" type="text">
-            <input class="code__input" type="text">
-            <input class="code__input" type="text">
-            <input class="code__input" type="text">
+            <input class="code__input" type="number" min="0" max="9">
+            <input class="code__input" type="number" min="0" max="9">
+            <input class="code__input" type="number" min="0" max="9">
+            <input class="code__input" type="number" min="0" max="9">
+            <input class="code__input" type="number" min="0" max="9">
+            <input class="code__input" type="number" min="0" max="9">
           </div><a class="form__link" href="#"> Отправить код повторно</a>
         </form>
       </div>
     </div>
     <div class="popup --email-enter">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1569,12 +1574,12 @@
         <div class="popup__name text-bold">Войдите или зарегистрируйтесь</div>
         <form class="popup__form">
           <div class="input input--grey">
-            <input type="text">
+            <input class="input__control" type="email" placeholder="Ваш е-мейл">
             <div class="input__placeholder">Ваш е-мейл</div>
           </div>
           <div class="text-right mb-10"><a class="form__link --switchpopup" data-popup="--email-recover">Забыли пароль?</a></div>
           <div class="input input--grey">
-            <input type="password">
+            <input class="input__control" type="password" placeholder="Пароль">
             <div class="input__placeholder">Пароль</div>
           </div><a class="form__link --switchpopup" type="button" data-popup="--enter-number"> Войти по номеру телефона</a>
           <div class="form-bottom --flex">
@@ -1585,6 +1590,7 @@
       </div>
     </div>
     <div class="popup --email-recover">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1595,7 +1601,7 @@
         <div class="form-title__description form-title__description--small">Для восстановления пароля введите email, который Вы указывали при регистрации</div>
         <form class="popup__form">
           <div class="input input--grey">
-            <input type="text">
+            <input class="input__control" type="email" placeholder="Ваш е-мейл">
             <div class="input__placeholder">Ваш е-мейл</div>
           </div><a class="form__link --switchpopup" type="button" data-popup="--enter-number"> Войти по номеру телефона</a>
           <div class="form-bottom --flex">
@@ -1615,6 +1621,7 @@
       </div>
     </div>
     <div class="popup --reg">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1625,7 +1632,7 @@
         <div class="form-title__description">Для регистрации личного кабинета введите свой email адрес, пароль будет выслан на указанную почту</div>
         <form class="popup__form">
           <div class="input input--grey">
-            <input type="text">
+            <input class="input__control" type="email" placeholder="Ваш е-мейл">
             <div class="input__placeholder">Ваш е-мейл</div>
           </div>
           <div class="form__alert text-small">
@@ -1653,6 +1660,7 @@
       </div>
     </div>
     <div class="popup --service">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1671,6 +1679,7 @@
       </div>
     </div>
     <div class="popup --problems">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1698,6 +1707,7 @@
       </div>
     </div>
     <div class="popup --eq">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1756,6 +1766,7 @@
       </div>
     </div>
     <div class="popup --record">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1960,6 +1971,7 @@
       </div>
     </div>
     <div class="popup --analize-type">
+      <div class="popup__overlay"></div>
       <div class="popup__panel">
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -1981,6 +1993,7 @@
       </div>
     </div>
     <div class="popup --pay">
+      <div class="popup__overlay"></div>
       <div class="popup__panel"> 
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -2012,6 +2025,7 @@
       </div>
     </div>
     <div class="popup --download"> 
+      <div class="popup__overlay"></div>
       <div class="popup__panel"> 
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -2032,6 +2046,7 @@
       </div>
     </div>
     <div class="popup --download"> 
+      <div class="popup__overlay"></div>
       <div class="popup__panel"> 
         <button class="popup__close"> 
               <svg class="svgsprite _close">
@@ -2083,7 +2098,7 @@
           <div class="checbox__name">Выгрузить только список номеров</div>
         </label>
         <div class="input">
-          <input type="text">
+          <input class="input__control" type="text" placeholder="Номер телефона">
           <div class="input__placeholder">Номер телефона</div>
         </div>
         <label class="checkbox checkbox--record">
@@ -2091,9 +2106,303 @@
           <div class="checbox__name">Введите только список е-мейлов</div>
         </label>
         <div class="input">
-          <input type="text">
+          <input class="input__control" type="text" placeholder="Введите е-мейл">
           <div class="input__placeholder">Введите е-мейл</div>
         </div><a class="btn btn--black" href="#" download> Скачать</a>
+      </div>
+    </div>
+    <div class="popup --filter">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel"> 
+        <button class="popup__close"> 
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Расшифровка анализов</div>
+        <form class="popup__form">
+          <div class="radios --flex">
+            <label class="text-radio">
+              <input type="radio" name="status2"><span>Заявка</span>
+            </label>
+            <label class="text-radio">
+              <input type="radio" name="status2"><span>Событие</span>
+            </label>
+          </div>
+          <div class="input"> 
+            <input class="input__control" type="text" placeholder="ФИО">
+            <div class="input__placeholder">ФИО</div>
+          </div>
+          <div class="select-form">
+            <div class="select">
+              <div class="select__main">Все услуги</div>
+              <div class="select__list">
+                <div class="select__item">Все услуги</div>
+                <div class="select__item">Все услуги</div>
+                <div class="select__item">Все услуги</div>
+                <div class="select__item">Все услуги</div>
+              </div>
+            </div>
+          </div>
+          <div class="input"> 
+            <input class="input__control" type="tel" placeholder="Телефон">
+            <div class="input__placeholder">Телефон</div>
+          </div>
+          <div class="select-form">
+            <div class="select">
+              <div class="select__main">Все услуги</div>
+              <div class="select__list">
+                <div class="select__item">Все специалисты</div>
+                <div class="select__item">Все специалисты</div>
+                <div class="select__item">Все специалисты</div>
+                <div class="select__item">Все специалисты</div>
+              </div>
+            </div>
+          </div>
+          <div class="select-form">
+            <div class="select">
+              <div class="select__main">Статус</div>
+              <div class="select__list">
+                <div class="select__item">Статус</div>
+                <div class="select__item">Статус</div>
+                <div class="select__item">Статус</div>
+                <div class="select__item">Статус</div>
+              </div>
+            </div>
+          </div>
+          <div class="popup__block">  
+            <p class="text-bold mb-10">Тип события</p>
+          </div>
+          <div class="radios --flex">
+            <label class="text-radio">
+              <input type="radio" name="status22"><span>В клинике</span>
+            </label>
+            <label class="text-radio">
+              <input type="radio" name="status22"><span>Онлайн</span>
+            </label>
+          </div>
+          <div class="calendar input mb-30"> 
+            <input class="input__control" type="text" placeholder="За весь период">
+            <div class="input__placeholder">За весь период</div>
+          </div>
+          <button class="btn btn--black">Найти</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup --photo">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel"> 
+        <button class="popup__close"> 
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Добавить фото</div>
+        <form class="popup__form">
+          <div class="search-form input">
+            <input class="search__input input__control" type="text" placeholder="Выбрать пациента">
+            <div class="input__placeholder">Выбрать пациента</div>
+          </div>
+          <div class="input calendar mb-20">
+            <input class="input__control" type="text" placeholder="Выбрать дату посещения">
+            <div class="input__placeholder">Выбрать дату посещения</div>
+          </div>
+          <div class="popup-title__checkbox"> 
+            <p class="mb-10">Выбрать статус</p>
+            <label class="checkbox mb-10">
+              <input type="checkbox"><span> </span>
+              <div class="checbox__name">Продолжительное лечение</div>
+            </label>
+          </div>
+          <div class="radios --flex">
+            <label class="text-radio">
+              <input type="radio" name="status233"><span>В клинике</span>
+            </label>
+            <label class="text-radio">
+              <input type="radio" name="status233"><span>Онлайн</span>
+            </label>
+          </div>
+          <label class="file-photo">
+            <input type="file">
+            <div class="file-photo__ico">
+                  <svg class="svgsprite _file">
+                    <use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
+                  </svg>
+            </div>
+            <div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно превышать 10 мб</div>
+          </label>
+          <button class="btn btn--white">Сохранить</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup --photo-edit">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel"> 
+        <button class="popup__close"> 
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Редактор фото</div>
+        <form class="popup__form">
+          <div class="edit-photo"> 
+            <div class="--flex --aicn">
+              <div class="edit-photo__pic"> <img src="./assets/img/popup/photo.png" alt=""></div>
+              <div class="edit-photo__info"> 
+                <div class="edit-photo__name">Мартынова Александра Михайловна</div>
+                <div class="edit-photo__date">22.10.2021</div>
+              </div>
+            </div>
+            <div class="edit-photo__delete"> 
+                  <svg class="svgsprite _delete">
+                    <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+                  </svg>
+            </div>
+          </div>
+          <div class="search-form input">
+            <input class="search__input input__control" type="text" placeholder="Выбрать пациента">
+            <div class="input__placeholder">Выбрать пациента</div>
+          </div>
+          <div class="input calendar mb-20">
+            <input class="input__control" type="text" placeholder="Выбрать дату посещения">
+            <div class="input__placeholder">Выбрать дату посещения</div>
+          </div>
+          <div class="popup-title__checkbox"> 
+            <p class="mb-10">Выбрать статус</p>
+            <label class="checkbox mb-10">
+              <input type="checkbox"><span> </span>
+              <div class="checbox__name">Продолжительное лечение</div>
+            </label>
+          </div>
+          <div class="radios --flex">
+            <label class="text-radio">
+              <input type="radio" name="status233"><span>В клинике</span>
+            </label>
+            <label class="text-radio">
+              <input type="radio" name="status233"><span>Онлайн</span>
+            </label>
+          </div>
+          <label class="file-photo">
+            <input type="file">
+            <div class="file-photo__ico">
+                  <svg class="svgsprite _file">
+                    <use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
+                  </svg>
+            </div>
+            <div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно превышать 10 мб</div>
+          </label>
+          <button class="btn btn--white">Сохранить</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup --create">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel"> 
+        <button class="popup__close"> 
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Создать карточку пациента</div>
+        <form class="popup__form">
+          <div class="input"> 
+            <input class="input__control" type="text" placeholder="ФИО">
+            <div class="input__placeholder">ФИО</div>
+          </div>
+          <div class="calendar input"> 
+            <input class="input__control" type="text" placeholder="Дата рождения">
+            <div class="input__placeholder">Дата рождения</div>
+          </div>
+          <div class="input mb-30"> 
+            <input class="input__control" type="tel" placeholder="Номер телефона">
+            <div class="input__placeholder">Номер телефона</div>
+          </div>
+          <button class="btn btn--black form__submit --switchpopup" data-popup="--code">Создать</button>
+          <div class="form-bottom">После отправки заявки для пациента создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
+        </form>
+      </div>
+    </div>
+    <div class="popup --create-recover">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel"> 
+        <button class="popup__close"> 
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Создать карточку пациента</div>
+        <form class="popup__form">
+          <div class="input"> 
+            <input class="input__control" type="text" placeholder="ФИО">
+            <div class="input__placeholder">ФИО</div>
+          </div>
+          <div class="calendar input"> 
+            <input class="input__control" type="text" placeholder="Дата рождения">
+            <div class="input__placeholder">Дата рождения</div>
+          </div><a class="--flex --jcfe mb-10" href="#"> Забыли пароль?</a>
+          <div class="input mb-30"> 
+            <input class="input__control" type="tel" placeholder="Номер телефона">
+            <div class="input__placeholder">Номер телефона</div>
+            <div class="phone-alert"> 
+              <p>Данный номер уже используется </p>
+                  <svg class="svgsprite _alert-grey">
+                    <use xlink:href="assets/img/sprites/svgsprites.svg#alert-grey"></use>
+                  </svg>
+            </div>
+          </div>
+          <button class="btn btn--black form__submit --switchpopup" data-popup="--code">Создать</button>
+          <div class="form-bottom">После отправки заявки для пациента создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
+        </form>
+      </div>
+    </div>
+    <div class="popup --create-appoint">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel"> 
+        <button class="popup__close"> 
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Записать пациента на прием</div>
+        <form class="popup__form">
+          <p class="text-bold text-big mb-20">Мартынова Александра Михайловна</p>
+          <div class="select-form">
+            <div class="select">
+              <div class="select__main">Услуга</div>
+              <div class="select__list">
+                <div class="select__item">Консультация врача</div>
+                <div class="select__item">Консультация врача</div>
+                <div class="select__item">Консультация врача</div>
+                <div class="select__item">Консультация врача</div>
+              </div>
+            </div>
+          </div>
+          <p class="mb-10">Тип события </p>
+          <div class="radios --flex">
+            <label class="text-radio">
+              <input type="radio" name="status233"><span>В клинике</span>
+            </label>
+            <label class="text-radio">
+              <input type="radio" name="status233"><span>Онлайн</span>
+            </label>
+          </div>
+          <div class="select-form">
+            <div class="select">
+              <div class="select__main">Выбрать специалиста</div>
+              <div class="select__list">
+                <div class="select__item">Выбрать специалиста</div>
+                <div class="select__item">Выбрать специалиста</div>
+                <div class="select__item">Выбрать специалиста</div>
+                <div class="select__item">Выбрать специалиста</div>
+              </div>
+            </div>
+          </div>
+          <div class="calendar input mb-30">
+            <input class="input__control" type="text" placeholder="Выбрать время и дату">
+            <div class="input__placeholder">Выбрать время и дату</div>
+          </div>
+          <button class="btn btn--black">Продолжить</button>
+        </form>
       </div>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>
