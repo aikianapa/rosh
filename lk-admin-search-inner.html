@@ -126,7 +126,13 @@
               <div class="account__panel">
                 <div class="account__info">
                   <div class="user">
-                    <div class="user__name">Хамидова Лия Олеговна</div>
+                    <div class="user__name">Хамидова Лия Олеговна
+                      <button class="user__edit"> 
+                            <svg class="svgsprite _edit">
+                              <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+                            </svg>
+                      </button>
+                    </div>
                     <div class="user__item">Дата рождения:  <span>17.05.1969</span></div>
                     <div class="user__item">Тел:   <span>+7 927 441 77 88</span></div>
                     <div class="user__item">Почта: <span>info@icloud.com</span></div>
@@ -137,7 +143,35 @@
                     </div>
                     <div class="admin-edit__user-btns"><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--create-appoint">Записать пациента на прием</a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a></div>
                   </div>
-                </div><a class="account__detail" href="#"> Редактировать профиль</a>
+                </div>
+                <form class="profile-edit"> 
+                  <div class="profile-edit__block">
+                    <div class="lk-title">Редактировать профиль</div>
+                    <div class="row profile-edit__wrap">
+                      <div class="col-md-3">
+                        <div class="input input--grey">
+                          <input class="input__control" type="date" placeholder="Дата рождения">
+                          <div class="input__placeholder">Дата рождения</div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="input input--grey">
+                          <input class="input__control" type="tel" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'">
+                          <div class="input__placeholder">Телефон</div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="input input--grey">
+                          <input class="input__control" type="email" placeholder="E-mail">
+                          <div class="input__placeholder">E-mail</div>
+                        </div>
+                      </div>
+                      <div class="col-md-2"> 
+                        <button class="btn btn--white profile-edit__submit">Сохранить</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -445,7 +479,7 @@
               <div class="row footer__bottom">
                 <div class="footer__item col-lg-2"><a class="text-small" href="index.html"> © ROSH, 2021</a></div>
                 <div class="footer__item col-lg-3"><a class="text-small policy" href="policy.html"> Политика конфиденциальности</a></div>
-                <div class="footer__item col-lg-7 --flex --jcsb"><a class="text-small map-site" href="#">Карта сайта</a>
+                <div class="footer__item col-lg-7 --flex --jcsb"><a class="text-small map-site" href="site-map.html">Карта сайта</a>
                   <p class="text-small">Лицензия №ЛО-77-01-002172 от 12.01.2010</p><a class="develop" href="http://idees.ru/"> 
                         <svg class="svgsprite _develop">
                           <use xlink:href="assets/img/sprites/svgsprites.svg#develop"></use>
@@ -1767,9 +1801,20 @@
           </button>
         </div>
         <label class="checkbox checkbox--record">
-          <input type="checkbox"><span></span>
+          <input class="checkbox-visible-next-form" type="checkbox"><span></span>
           <div class="checbox__name">Консультация врача</div>
         </label>
+        <div class="select-form" style="display: none;">
+          <div class="text-bold mb-20">Тип события</div>
+          <div class="popups__text-chexboxs">
+            <label class="text-radio">
+              <input type="radio" name="status-service"><span>В клинике</span>
+            </label>
+            <label class="text-radio switch-blocks">
+              <input type="radio" name="status-service"><span>Онлайн</span>
+            </label>
+          </div>
+        </div>
         <label class="checkbox checkbox--record">
           <input class="checkbox-hidden-next-form" type="checkbox"><span></span>
           <div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
@@ -1857,15 +1902,6 @@
               <div class="search__drop-summ">7 000 ₽</div>
             </label>
           </div>
-        </div>
-        <div class="text-bold mb-20">Тип события</div>
-        <div class="popups__text-chexboxs">
-          <label class="text-radio">
-            <input type="radio" name="status-service"><span>В клинике</span>
-          </label>
-          <label class="text-radio switch-blocks">
-            <input type="radio" name="status-service"><span>Онлайн</span>
-          </label>
         </div>
         <div class="admin-editor__summ">
           <p>Всего</p>
@@ -2089,7 +2125,7 @@
             <div class="input__placeholder">Выбрать пациента</div>
           </div>
           <div class="input calendar mb-20">
-            <input class="input__control" type="text" placeholder="Выбрать дату посещения">
+            <input class="input__control" type="date" placeholder="Выбрать дату посещения">
             <div class="input__placeholder">Выбрать дату посещения</div>
           </div>
           <div class="popup-title__checkbox">
@@ -2149,7 +2185,7 @@
             <div class="input__placeholder">Выбрать пациента</div>
           </div>
           <div class="input calendar mb-20">
-            <input class="input__control" type="text" placeholder="Выбрать дату посещения">
+            <input class="input__control" type="date" placeholder="Выбрать дату посещения">
             <div class="input__placeholder">Выбрать дату посещения</div>
           </div>
           <div class="popup-title__checkbox">
@@ -2283,7 +2319,7 @@
             </div>
           </div>
           <div class="calendar input mb-30">
-            <input class="input__control" type="text" placeholder="Выбрать время и дату">
+            <input class="input__control" type="datetime-local" placeholder="Выбрать дату и время">
             <div class="input__placeholder">Выбрать время и дату</div>
           </div>
           <button class="btn btn--black">Продолжить</button>

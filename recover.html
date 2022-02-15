@@ -103,23 +103,25 @@
             <div class="undertitle text-grey">Для восстановления доступа к Кабинету пациента задайте новый пароль</div>
             <form class="recover-form">
               <h2 class="h2">Смена пароля</h2>
-              <div class="recover__group --flex"></div>
-              <div class="inputs">
-                <div class="row"></div>
-                <div class="col-md-6">
-                  <div class="input input--grey"> 
-                    <input class="input__control" type="password" placeholder="Новый пароль">
-                    <div class="input__placeholder">Новый пароль</div>
+              <div class="recover__group --flex">
+                <div class="row">
+                  <div class="col">
+                    <div class="input input--grey input--recover"> 
+                      <input class="input__control" type="password" placeholder="Новый пароль">
+                      <div class="input__placeholder">Новый пароль</div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="input input--grey"> 
-                    <input class="input__control" type="password" placeholder="Повторите новый пароль">
-                    <div class="input__placeholder">Повторите новый пароль</div>
+                  <div class="col">
+                    <div class="input input--grey input--recover"> 
+                      <input class="input__control" type="password" placeholder="Повторите новый пароль">
+                      <div class="input__placeholder">Повторите новый пароль</div>
+                    </div>
+                  </div>
+                  <div class="col"> 
+                    <button class="forb__submit btn btn--white">Сохранить изменения</button>
                   </div>
                 </div>
               </div>
-              <button class="forb__submit btn btn--white">Сохранить изменения</button>
             </form>
           </div>
         </div>
@@ -145,7 +147,7 @@
               <div class="row footer__bottom">
                 <div class="footer__item col-lg-2"><a class="text-small" href="index.html"> © ROSH, 2021</a></div>
                 <div class="footer__item col-lg-3"><a class="text-small policy" href="policy.html"> Политика конфиденциальности</a></div>
-                <div class="footer__item col-lg-7 --flex --jcsb"><a class="text-small map-site" href="#">Карта сайта</a>
+                <div class="footer__item col-lg-7 --flex --jcsb"><a class="text-small map-site" href="site-map.html">Карта сайта</a>
                   <p class="text-small">Лицензия №ЛО-77-01-002172 от 12.01.2010</p><a class="develop" href="http://idees.ru/"> 
                         <svg class="svgsprite _develop">
                           <use xlink:href="assets/img/sprites/svgsprites.svg#develop"></use>
@@ -1467,9 +1469,20 @@
           </button>
         </div>
         <label class="checkbox checkbox--record">
-          <input type="checkbox"><span></span>
+          <input class="checkbox-visible-next-form" type="checkbox"><span></span>
           <div class="checbox__name">Консультация врача</div>
         </label>
+        <div class="select-form" style="display: none;">
+          <div class="text-bold mb-20">Тип события</div>
+          <div class="popups__text-chexboxs">
+            <label class="text-radio">
+              <input type="radio" name="status-service"><span>В клинике</span>
+            </label>
+            <label class="text-radio switch-blocks">
+              <input type="radio" name="status-service"><span>Онлайн</span>
+            </label>
+          </div>
+        </div>
         <label class="checkbox checkbox--record">
           <input class="checkbox-hidden-next-form" type="checkbox"><span></span>
           <div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
@@ -1557,15 +1570,6 @@
               <div class="search__drop-summ">7 000 ₽</div>
             </label>
           </div>
-        </div>
-        <div class="text-bold mb-20">Тип события</div>
-        <div class="popups__text-chexboxs">
-          <label class="text-radio">
-            <input type="radio" name="status-service"><span>В клинике</span>
-          </label>
-          <label class="text-radio switch-blocks">
-            <input type="radio" name="status-service"><span>Онлайн</span>
-          </label>
         </div>
         <div class="admin-editor__summ">
           <p>Всего</p>
@@ -1789,7 +1793,7 @@
             <div class="input__placeholder">Выбрать пациента</div>
           </div>
           <div class="input calendar mb-20">
-            <input class="input__control" type="text" placeholder="Выбрать дату посещения">
+            <input class="input__control" type="date" placeholder="Выбрать дату посещения">
             <div class="input__placeholder">Выбрать дату посещения</div>
           </div>
           <div class="popup-title__checkbox">
@@ -1849,7 +1853,7 @@
             <div class="input__placeholder">Выбрать пациента</div>
           </div>
           <div class="input calendar mb-20">
-            <input class="input__control" type="text" placeholder="Выбрать дату посещения">
+            <input class="input__control" type="date" placeholder="Выбрать дату посещения">
             <div class="input__placeholder">Выбрать дату посещения</div>
           </div>
           <div class="popup-title__checkbox">
@@ -1983,7 +1987,7 @@
             </div>
           </div>
           <div class="calendar input mb-30">
-            <input class="input__control" type="text" placeholder="Выбрать время и дату">
+            <input class="input__control" type="datetime-local" placeholder="Выбрать дату и время">
             <div class="input__placeholder">Выбрать время и дату</div>
           </div>
           <button class="btn btn--black">Продолжить</button>
