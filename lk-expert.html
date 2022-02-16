@@ -174,10 +174,12 @@
                     <div class="col-md-6">
                       <div class="profile-licenses__inputs">
                         <div class="profile-licenses__input input input--grey"> 
-                          <input type="text">
+                          <input class="input__control" type="text" placeholder="Добавьте лицензию" value="165335789">
+                          <div class="input__placeholder">Добавьте лицензию</div>
                         </div>
                         <div class="profile-licenses__input input input--grey"> 
-                          <input type="text">
+                          <input class="input__control" type="text" placeholder="Добавьте лицензию">
+                          <div class="input__placeholder">Добавьте лицензию</div>
                           <div class="profile-licenses__delete">
                                 <svg class="svgsprite _delete-black">
                                   <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
@@ -185,7 +187,8 @@
                           </div>
                         </div>
                         <div class="profile-licenses__input input input--grey"> 
-                          <input type="text">
+                          <input class="input__control" type="text" placeholder="Добавьте лицензию">
+                          <div class="input__placeholder">Добавьте лицензию</div>
                           <div class="profile-licenses__delete">
                                 <svg class="svgsprite _delete-black">
                                   <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
@@ -203,7 +206,7 @@
                     <div class="profile-education__inner row"> 
                       <div class="col-md-6"> 
                         <div class="input input--grey"> 
-                          <input class="input__control" type="text" placeholder="Название учебного учреждения">
+                          <input class="input__control" type="text" placeholder="Название учебного учреждения" value="Институт усовершенствования врачей">
                           <div class="input__placeholder">Название учебного учреждения</div>
                         </div>
                       </div>
@@ -211,19 +214,17 @@
                         <div class="profile-education__inputs">
                           <div class="profile-education__input">
                             <div class="input input-lk-calendar input--grey">
-                              <input class="input__control" type="date" placeholder="Начало обучения">
+                              <input class="input__control" type="date" placeholder="Начало обучения" value="2007-06-22">
                               <div class="input__placeholder">Начало обучения</div>
                             </div>
                           </div>
                           <div class="profile-education__input">
                             <div class="input input-lk-calendar input--grey">
-                              <input class="input__control" type="date" placeholder="Окончание обучения">
+                              <input class="input__control" type="date" placeholder="Окончание обучения" value="2012-06-12">
                               <div class="input__placeholder">Окончание обучения</div>
                             </div>
-                          </div><a class="education__delete" href="#"> 
-                                <svg class="svgsprite _delete-black">
-                                  <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
-                                </svg></a>
+                          </div>
+                          <div class="education__delete"> </div>
                         </div>
                       </div>
                     </div>
@@ -458,92 +459,55 @@
                 </div>
               </div>
             </div>
+            <div class="lk-title">История посещения приемов</div>
             <div class="account__history">
-              <div class="account__tab-items"> 
-                <div class="account__tab-item active">История посещений</div>
-                <div class="account__tab-item">Продолжительное лечение</div>
-              </div>
-              <div class="account__tab active">
-                <div class="account__table">
-                  <div class="account__table-head">
-                    <div class="history-item">Дата</div>
-                    <div class="history-item">Время</div>
-                    <div class="history-item">Специалисты</div>
-                    <div class="history-item">Услуги</div>
-                    <div class="history-item">Анализы</div>
-                  </div>
-                  <div class="account__table-body">
-                    <div class="acount__table-accardeon accardeon">
-                      <div class="acount__table-main accardeon__main">
-                        <div class="history-item">16.10.2021</div>
-                        <div class="history-item">08:45-09:45</div>
-                        <div class="history-item">Цветкова Инна Сергеевна</div>
-                        <div class="history-item">Удаление образований</div>
-                        <div class="history-item">Нет анализов</div>
-                      </div>
-                      <div class="acount__table-list accardeon__list">
-                        <div class="account-edit__title"> 
-                          <p>Рекомендация врача</p><a class="user__edit" href="#"> 
-                                <svg class="svgsprite _edit">
-                                  <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-                                </svg></a>
-                        </div>
-                        <textarea class="account-edit__textarea"></textarea>
-                        <button class="btn btn--white">Сохранить</button>
-                      </div>
+              <div class="account__table">
+                <div class="account__table-head">
+                  <div class="history-item">Дата</div>
+                  <div class="history-item">Время</div>
+                  <div class="history-item">Специалисты</div>
+                  <div class="history-item">Услуги</div>
+                  <div class="history-item">Анализы</div>
+                </div>
+                <div class="account__table-body">
+                  <div class="acount__table-accardeon accardeon">
+                    <div class="acount__table-main accardeon__main">
+                      <div class="history-item">16.10.2021</div>
+                      <div class="history-item">08:45-09:45</div>
+                      <div class="history-item">Цветкова Инна Сергеевна</div>
+                      <div class="history-item">Удаление образований</div>
+                      <div class="history-item">Нет анализов</div>
                     </div>
-                  </div>
-                  <div class="account__table-body">
-                    <div class="acount__table-accardeon accardeon">
-                      <div class="acount__table-main accardeon__main">
-                        <div class="history-item">18.10.2021</div>
-                        <div class="history-item">08:45-09:45</div>
-                        <div class="history-item">Цветкова Инна Сергеевна</div>
-                        <div class="history-item">Удаление образований</div>
-                        <div class="history-item">Нет анализов</div>
+                    <div class="acount__table-list accardeon__list">
+                      <div class="account-edit__title"> 
+                        <p>Рекомендация врача</p><a class="user__edit" href="#"> 
+                              <svg class="svgsprite _edit">
+                                <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+                              </svg></a>
                       </div>
-                      <div class="acount__table-list accardeon__list">
-                        <div class="account-edit__title"> 
-                          <p>Рекомендация врача</p><a class="user__edit" href="#"> 
-                                <svg class="svgsprite _edit">
-                                  <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-                                </svg></a>
-                        </div>
-                        <textarea class="account-edit__textarea"></textarea>
-                        <button class="btn btn--white">Сохранить</button>
-                      </div>
+                      <textarea class="account-edit__textarea"></textarea>
+                      <button class="btn btn--white">Сохранить</button>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="account__tab">
-                <div class="account__table">
-                  <div class="account__table-head">
-                    <div class="history-item">Дата</div>
-                    <div class="history-item">Время</div>
-                    <div class="history-item">Специалисты</div>
-                    <div class="history-item">Услуги</div>
-                    <div class="history-item">Анализы</div>
-                  </div>
-                  <div class="account__table-body">
-                    <div class="acount__table-accardeon accardeon">
-                      <div class="acount__table-main accardeon__main">
-                        <div class="history-item">20.10.2021</div>
-                        <div class="history-item">08:45-09:45</div>
-                        <div class="history-item">Цветкова Инна Сергеевна</div>
-                        <div class="history-item">Удаление образований</div>
-                        <div class="history-item">Нет анализов</div>
+                <div class="account__table-body">
+                  <div class="acount__table-accardeon accardeon">
+                    <div class="acount__table-main accardeon__main">
+                      <div class="history-item">18.10.2021</div>
+                      <div class="history-item">08:45-09:45</div>
+                      <div class="history-item">Цветкова Инна Сергеевна</div>
+                      <div class="history-item">Удаление образований</div>
+                      <div class="history-item">Нет анализов</div>
+                    </div>
+                    <div class="acount__table-list accardeon__list">
+                      <div class="account-edit__title"> 
+                        <p>Рекомендация врача</p><a class="user__edit" href="#"> 
+                              <svg class="svgsprite _edit">
+                                <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+                              </svg></a>
                       </div>
-                      <div class="acount__table-list accardeon__list">
-                        <div class="account-edit__title"> 
-                          <p>Рекомендация врача</p><a class="user__edit" href="#"> 
-                                <svg class="svgsprite _edit">
-                                  <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-                                </svg></a>
-                        </div>
-                        <textarea class="account-edit__textarea"></textarea>
-                        <button class="btn btn--white">Сохранить</button>
-                      </div>
+                      <textarea class="account-edit__textarea"></textarea>
+                      <button class="btn btn--white">Сохранить</button>
                     </div>
                   </div>
                 </div>

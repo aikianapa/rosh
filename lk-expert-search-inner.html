@@ -33,26 +33,17 @@
   </head>
   <body class="body" data-barba="wrapper">
     <div class="scroll-container" data-scroll-container>
-      <main class="page page--admin" data-barba="container" data-barba-namespace="lk-admin-search-inner">
-        <header class="header header--transparent header--admin"> 
-          <div class="container --flex --jcsb --aicn"> 
-            <div class="header__admin --flex --aicn">
-              <button class="btn btn--white loaddata --openpopup" data-popup="--download-data">
-                    <svg class="svgsprite _xl">
-                      <use xlink:href="assets/img/sprites/svgsprites.svg#xl"></use>
-                    </svg>Выгрузить данные
-              </button><a class="btn btn-link" href="/lk-admin-changes.html">Журнал изменений</a><a class="btn btn-link" href="/lk-admin-photos.html">Медиатека</a>
+      <main class="page page--expert" data-barba="container" data-barba-namespace="lk-cabinet">
+        <header class="header header--transparent --unfilter"> 
+          <div class="container --flex --jcsb --aicn"><a class="header__logo" href="index.html"> <img src="./assets/img/logo.svg" alt=""></a>
+            <div class="header__left --flex --aicn">
+              <div class="header__contacts"> <a class="header__contact" href="tel:+74951320169"> 8 (495) <b>132-01-69</b></a>
+                <div class="header__contact header__contact--small">Пн-Сб, с <b>10:00</b> до <b>21:00</b> </div>
+              </div>
             </div>
             <div class="header__right --flex --aicn">
-              <button class="btn btn-link enter">
-                 Профиль
-                    <svg class="svgsprite _drop">
-                      <use xlink:href="assets/img/sprites/svgsprites.svg#drop"></use>
-                    </svg>
-                <div class="enter__panel"><a class="enter__btn text-small" href="/lk-admin-edit.html">Редактировать</a>
-                  <div class="enter__btn text-small">Выйти</div>
-                </div>
-              </button>
+              <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
+              <button class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
               <button class="burger"></button>
             </div>
           </div>
@@ -105,18 +96,14 @@
                   <div class="crumbs"><a class="crumbs__arrow" href="#"> 
                           <svg class="svgsprite _crumbs-back">
                             <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                          </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Кабинет администратора</a>
+                          </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Кабинет специалиста</a>
                   </div>
-              <div class="title-flex --flex --jcsb">
-                <div class="title">
-                  <h1 class="h1 mb-10">Кабинет администратора </h1>
-                </div><a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
-              </div>
+              <h1 class="h1 mb-40">Кабинет специалиста</h1>
               <div class="search__block --flex --aicn">
                 <div class="input">
                   <input class="search__input" type="text" placeholder="Поиск">
                 </div>
-                <button class="btn btn--white">Найти</button>
+                <button class="btn btn--black">Найти</button>
               </div>
             </div>
           </form>
@@ -126,320 +113,100 @@
               <div class="account__panel">
                 <div class="account__info">
                   <div class="user">
-                    <div class="user__name">Хамидова Лия Олеговна
-                      <button class="user__edit"> 
-                            <svg class="svgsprite _edit">
-                              <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-                            </svg>
-                      </button>
-                    </div>
-                    <div class="user__item">Дата рождения:  <span>17.05.1969</span></div>
-                    <div class="user__item">Тел:   <span>+7 927 441 77 88</span></div>
-                    <div class="user__item">Почта: <span>info@icloud.com</span></div>
-                    <div class="user__confirm"> 
-                          <svg class="svgsprite _confirm">
-                            <use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
-                          </svg>Подтвержденный аккаунт
-                    </div>
-                    <div class="admin-edit__user-btns"><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--create-appoint">Записать пациента на прием</a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a></div>
-                  </div>
-                </div>
-                <form class="profile-edit"> 
-                  <div class="profile-edit__block">
-                    <div class="lk-title">Редактировать профиль</div>
-                    <div class="row profile-edit__wrap">
-                      <div class="col-md-3">
-                        <div class="input input--grey">
-                          <input class="input__control" type="date" placeholder="Дата рождения">
-                          <div class="input__placeholder">Дата рождения</div>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="input input--grey">
-                          <input class="input__control" type="tel" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'">
-                          <div class="input__placeholder">Телефон</div>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="input input--grey">
-                          <input class="input__control" type="email" placeholder="E-mail">
-                          <div class="input__placeholder">E-mail</div>
-                        </div>
-                      </div>
-                      <div class="col-md-2"> 
-                        <button class="btn btn--white profile-edit__submit">Сохранить</button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="lk-title">Предстоящие события</div>
-            <div class="account-events"> 
-              <div class="account-events__block --flex --jcsb">
-                <div class="account-events__block-wrap">
-                  <div class="account-events__item --flex">
-                    <div class="account-event-wrap">
-                      <div class="account-events__name">Услуги: </div>
-                      <div class="account-event">
-                        <p>Консультация врача </p>
-                        <p>Расшифровка анализов</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="account-events__item">
-                    <div class="account-event-wrap">
-                      <div class="account-events__name">Дата приема: </div>
-                      <div class="account-event">
-                        <p>28.10.2021</p>
-                      </div>
-                    </div>
-                    <div class="account-event-wrap">
-                      <div class="account-events__name">Время приема: </div>
-                      <div class="account-event">
-                        <p>08:30 – 9:00</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="account-events__item">
-                    <div class="account-event-wrap">
-                      <div class="account-events__name">Специалист: </div>
-                      <div class="account-event">
-                        <p>Молотилова Ольга Юрьевна</p>
-                        <p>Айрапетян Амалия Суреновна</p>
-                      </div>
-                    </div>
-                  </div>
-                </div><a class="account__detail --openpopup" href="#" data-popup="--create-appoint">Редактировать</a>
-              </div>
-              <div class="account-events__block --flex --jcsb">
-                <div class="account-events__block-wrap"> 
-                  <div class="account-events__item">
-                    <div class="account-event-wrap">
-                      <div class="account-events__name">Услуги: </div>
-                      <div class="account-event">
-                        <p>Консультация врача</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="account-events__item">
-                    <div class="account-event-wrap">
-                      <div class="account-events__name">Дата приема: </div>
-                      <div class="account-event">
-                        <p>28.10.2021</p>
-                      </div>
-                    </div>
-                    <div class="account-event-wrap">
-                      <div class="account-events__name">Время приема: </div>
-                      <div class="account-event">
-                        <p>08:30 – 9:00</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="account-events__item">
-                    <div class="account-event-wrap">
-                      <div class="account-events__name">Специалист: </div>
-                      <div class="account-event">
-                        <p>Айрапетян Амалия Суреновна</p>
-                      </div>
-                    </div>
-                  </div>
-                </div><a class="account__detail --openpopup" href="#" data-popup="--create-appoint">Редактировать</a>
-              </div>
-            </div>
-            <div class="account__history">
-              <div class="account__tab-items"> 
-                <div class="account__tab-item active">История посещений</div>
-                <div class="account__tab-item">Продолжительное лечение</div>
-              </div>
-              <div class="account__tab active">
-                <div class="account__table">
-                  <div class="account__table-head">
-                    <div class="history-item">Дата</div>
-                    <div class="history-item">Время</div>
-                    <div class="history-item">Специалисты</div>
-                    <div class="history-item">Услуги</div>
-                    <div class="history-item">Анализы</div>
-                  </div>
-                  <div class="account__table-body">
-                    <div class="acount__table-accardeon accardeon">
-                      <div class="acount__table-main accardeon__main">
-                        <div class="history-item">
-                          <p> Дата</p>16.10.2021
-                        </div>
-                        <div class="history-item">
-                          <p> Время</p>08:45-09:45
-                        </div>
-                        <div class="history-item">
-                          <p> Специалисты</p>Цветкова Инна Сергеевна
-                        </div>
-                        <div class="history-item">
-                          <p> Услуги</p>Удаление образований
-                        </div>
-                        <div class="history-item">
-                          <p> Анализы</p>Нет анализов
-                        </div>
-                      </div>
-                      <div class="acount__table-list accardeon__list">
-                        <div class="analysis mb-40">
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="analysis__top --aicn --flex mb-20">
-                                <div class="analysis__title">Анализы</div>
-                                <button class="btn btn--white">Скачать анализы</button>
-                              </div>
-                              <div class="analysis__description">
-                                <p class="text-bold mb-20">Выполнялись процедуры</p>
-                                <p class="text-grey">А также предприниматели в сети интернет неоднозначны и будут смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.</p>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <button class="btn btn--black mb-20 --openpopup" data-popup="--analize-type">Получить расшифровку анализов</button>
-                              <div class="analysis__description">
-                                <p class="text-bold mb-20">Рекомендация врача</p>
-                                <div class="text"> 
-                                  <ul>
-                                    <li>План обследования:</li>
-                                    <li>1)Общий клинический анализ крови</li>
-                                    <li>2)Биохимический анализ крови</li>
-                                    <li>3)Витамин  ”Д”</li>
-                                    <li>Требуется  прохождение обследования</li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="experts__worked">
-                          <div class="experts__worked-title">С вами работали</div>
-                          <div class="row"> 
-                            <div class="col-md-6">
-                              <div class="expert__worked">
-                                <div class="expert__worked-pic"><img src="./assets/img/experts/1.jpg" alt=""></div>
-                                <div class="expert__worked-name">Хачатурян Любовь Андреева</div>
-                                <div class="expert__worked-work">Главный врач медицинского центра РОШ.</div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="expert__worked">
-                                <div class="expert__worked-pic"><img src="./assets/img/experts/1.jpg" alt=""></div>
-                                <div class="expert__worked-name">Чачанидзе Елена Элгуджаевна</div>
-                                <div class="expert__worked-work">Врач дерматовенеролог, кандидат медицинских наук. Стаж работы 19 лет</div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="acount__photos">
-                          <div class="row acount__photos-wrap">
-                            <div class="col-md-6"> 
-                              <div class="acount__photo">
-                                <p>Фото до начала лечения</p>
-                                <div class="acount__photo-img"><img src="./assets/img/experts/1.jpg" alt=""><a class="acount__photo-edit --openpopup" href="#" data-popup="--photo-edit">
-                                        <svg class="svgsprite _edit">
-                                          <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-                                        </svg></a></div>
-                              </div>
-                            </div>
-                            <div class="col-md-6"> 
-                              <div class="acount__photo">
-                                <p>Фото в процессе лечения</p>
-                                <div class="acount__photo-img"><img src="./assets/img/experts/1.jpg" alt=""><a class="acount__photo-edit --openpopup" href="#" data-popup="--photo-edit">
-                                        <svg class="svgsprite _edit">
-                                          <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-                                        </svg></a></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="user__name">Хамидова Лия Олеговна</div>
+                    <div class="user__group"> 
+                      <div class="user__birthday">Дата рождения:  <span>17.05.1969</span></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="account__tab">
-                <div class="account__table">
-                  <div class="account__table-head">
-                    <div class="healing-item">Дата</div>
-                    <div class="healing-item">Услуги</div>
-                  </div>
-                  <div class="account__table-body">
-                    <div class="acount__table-accardeon accardeon">
-                      <div class="acount__table-main accardeon__main">
-                        <div class="healing-item">16.10.2020-20.10.2021</div>
-                        <div class="healing-item">Лечение акне</div>
+              <div class="lk-title">История посещений</div>
+              <div class="account__table">
+                <div class="account__table-head">
+                  <div class="history-item">Дата</div>
+                  <div class="history-item">Время</div>
+                  <div class="history-item">Специалисты</div>
+                  <div class="history-item">Услуги</div>
+                  <div class="history-item">Анализы</div>
+                </div>
+                <div class="account__table-body">
+                  <div class="acount__table-accardeon accardeon">
+                    <div class="acount__table-main accardeon__main">
+                      <div class="history-item">
+                        <p> Дата</p>16.10.2021
                       </div>
-                      <div class="acount__table-list accardeon__list"><a class="btn btn--black add__photo mb-40 --openpopup" href="#" data-popup="--photo">Добавить фото</a>
+                      <div class="history-item">
+                        <p> Время</p>08:45-09:45
+                      </div>
+                      <div class="history-item">
+                        <p> Специалисты</p>Цветкова Инна Сергеевна
+                      </div>
+                      <div class="history-item">
+                        <p> Услуги</p>Удаление образований
+                      </div>
+                      <div class="history-item">
+                        <p> Анализы</p>Нет анализов
+                      </div>
+                    </div>
+                    <div class="acount__table-list accardeon__list">
+                      <div class="analysis mb-40">
                         <div class="row">
-                          <div class="col-md-4">
-                            <div class="text-bold text-big mb-20">Фото до начала лечения</div>
-                            <div class="before-healing">
-                              <h2 class="h2 healing__date-title">16.10.2021</h2>
-                              <div class="before-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                              <div class="healing__date">01.10.2021</div>
-                              <div class="healing__description">Пациент жаловался на проблемную кожу</div>
+                          <div class="col-md-6">
+                            <div class="analysis__top --aicn --flex mb-20">
+                              <div class="analysis__title">Анализы</div>
+                              <button class="btn btn--white">Скачать анализы</button>
+                            </div>
+                            <div class="analysis__description">
+                              <p class="text-bold mb-20">Выполнялись процедуры</p>
+                              <p class="text-grey">А также предприниматели в сети интернет неоднозначны и будут смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.</p>
                             </div>
                           </div>
-                          <div class="col-md-8">
-                            <div class="text-bold text-big mb-20">Фото после начала лечения</div>
-                            <div class="after-healing">
-                              <h2 class="h2 healing__date-title">Октябрь 2021</h2>
-                              <div class="row"> 
-                                <div class="col-md-6">
-                                  <div class="after-healing__item"> 
-                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                                    <div class="healing__date">20.10.2021</div>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="after-healing__item"> 
-                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                                    <div class="healing__date">20.10.2021</div>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="after-healing__item"> 
-                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                                    <div class="healing__date">20.10.2021</div>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="after-healing__item"> 
-                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                                    <div class="healing__date">20.10.2021</div>
-                                  </div>
-                                </div>
+                          <div class="col-md-6">
+                            <button class="btn btn--black mb-20 --openpopup" data-popup="--analize-type">Получить расшифровку анализов</button>
+                            <div class="analysis__description">
+                              <p class="text-bold mb-20">Рекомендация врача</p>
+                              <div class="text"> 
+                                <ul>
+                                  <li>План обследования:</li>
+                                  <li>1)Общий клинический анализ крови</li>
+                                  <li>2)Биохимический анализ крови</li>
+                                  <li>3)Витамин  ”Д”</li>
+                                  <li>Требуется  прохождение обследования</li>
+                                </ul>
                               </div>
                             </div>
-                            <div class="after-healing">
-                              <h2 class="h2 healing__date-title">Август 2021</h2>
-                              <div class="row"> 
-                                <div class="col-md-6">
-                                  <div class="after-healing__item"> 
-                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                                    <div class="healing__date">20.10.2021</div>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="after-healing__item"> 
-                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                                    <div class="healing__date">20.10.2021</div>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="after-healing__item"> 
-                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                                    <div class="healing__date">20.10.2021</div>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="after-healing__item"> 
-                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)"></div>
-                                    <div class="healing__date">20.10.2021</div>
-                                  </div>
-                                </div>
-                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="experts__worked">
+                        <div class="experts__worked-title">С вами работали</div>
+                        <div class="row"> 
+                          <div class="col-md-6">
+                            <div class="expert__worked">
+                              <div class="expert__worked-pic"><img src="./assets/img/experts/1.jpg" alt=""></div>
+                              <div class="expert__worked-name">Хачатурян Любовь Андреева</div>
+                              <div class="expert__worked-work">Главный врач медицинского центра РОШ.</div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="expert__worked">
+                              <div class="expert__worked-pic"><img src="./assets/img/experts/1.jpg" alt=""></div>
+                              <div class="expert__worked-name">Чачанидзе Елена Элгуджаевна</div>
+                              <div class="expert__worked-work">Врач дерматовенеролог, кандидат медицинских наук. Стаж работы 19 лет</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="acount__photos">
+                        <div class="row acount__photos-wrap">
+                          <div class="col-md-6"> 
+                            <div class="acount__photo">
+                              <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                            </div>
+                          </div>
+                          <div class="col-md-6"> 
+                            <div class="acount__photo">
+                              <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
                             </div>
                           </div>
                         </div>

@@ -258,10 +258,39 @@
                                   <div class="select">
                                     <div class="select__main">Услуга</div>
                                     <div class="select__list">
-                                      <div class="select__item active">Измениить статус</div>
-                                      <div class="select__item">Измениить статус</div>
-                                      <div class="select__item">Измениить статус</div>
-                                      <div class="select__item">Измениить статус</div>
+                                      <div class="select__item select__item--checkbox">
+                                        <label class="checkbox checkbox--record">
+                                          <input type="checkbox" checked><span> </span>
+                                          <div class="checbox__name"> 
+                                            <div>Внутривенное введение лекарственных препаратов - капельница (Антиоксидантная)</div>
+                                            <div>6 000 ₽</div>
+                                          </div>
+                                        </label>
+                                      </div>
+                                      <div class="select__item select__item--checkbox">  
+                                        <label class="checkbox checkbox--record">
+                                          <input type="checkbox"><span> </span>
+                                          <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                        </label>
+                                      </div>
+                                      <div class="select__item select__item--checkbox"> 
+                                        <label class="checkbox checkbox--record">
+                                          <input type="checkbox"><span> </span>
+                                          <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                        </label>
+                                      </div>
+                                      <div class="select__item select__item--checkbox">  
+                                        <label class="checkbox checkbox--record">
+                                          <input type="checkbox"><span> </span>
+                                          <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                        </label>
+                                      </div>
+                                      <div class="select__item select__item--checkbox"> 
+                                        <label class="checkbox checkbox--record">
+                                          <input type="checkbox"><span> </span>
+                                          <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                        </label>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -280,32 +309,37 @@
                                   <div class="col-md-6"> 
                                     <div class="select-form">
                                       <div class="select">
-                                        <div class="select__main"> 
-                                          <label class="checkbox checkbox--record">
-                                            <input type="checkbox" checked><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-                                          </label>
-                                        </div>
+                                        <div class="select__main">Выберите специалиста</div>
                                         <div class="select__list">
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                          <div class="select__item select__item--checkbox">
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox" checked><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                            </label>
+                                          </div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                            </label>
                                           </div>
                                         </div>
                                       </div>
@@ -313,7 +347,7 @@
                                   </div>
                                   <div class="col-md-6"> 
                                     <div class="input input-lk-calendar input--grey">
-                                      <input class="input__control" type="datetime-local" placeholder="Выбрать дату и время">
+                                      <input class="input__control datepick" type="text" placeholder="Выбрать дату и время">
                                       <div class="input__placeholder">Выбрать дату и время</div>
                                     </div>
                                   </div>
@@ -351,7 +385,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="acount__table-accardeon accardeon --red">
+                    <div class="acount__table-accardeon accardeon --red acount__table-accardeon--pmin">
                       <div class="acount__table-main accardeon__main acount__table-auto">
                         <div class="admin-events-item"> 
                           <p>Дата</p>
@@ -491,32 +525,37 @@
                                   <div class="col-md-6"> 
                                     <div class="select-form">
                                       <div class="select">
-                                        <div class="select__main"> 
-                                          <label class="checkbox checkbox--record">
-                                            <input type="checkbox" checked><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-                                          </label>
-                                        </div>
+                                        <div class="select__main">Выберите специалиста</div>
                                         <div class="select__list">
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                          <div class="select__item select__item--checkbox">
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox" checked><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                            </label>
+                                          </div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                            </label>
                                           </div>
                                         </div>
                                       </div>
@@ -562,7 +601,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="acount__table-accardeon accardeon --purple">
+                    <div class="acount__table-accardeon accardeon --purple acount__table-accardeon--pmin">
                       <div class="acount__table-main accardeon__main acount__table-auto">
                         <div class="admin-events-item"> 
                           <p>Дата</p>
@@ -702,32 +741,37 @@
                                   <div class="col-md-6"> 
                                     <div class="select-form">
                                       <div class="select">
-                                        <div class="select__main"> 
-                                          <label class="checkbox checkbox--record">
-                                            <input type="checkbox" checked><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-                                          </label>
-                                        </div>
+                                        <div class="select__main">Выберите специалиста</div>
                                         <div class="select__list">
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                          <div class="select__item select__item--checkbox">
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox" checked><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                            </label>
+                                          </div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                            </label>
                                           </div>
                                         </div>
                                       </div>
@@ -773,7 +817,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="acount__table-accardeon accardeon">
+                    <div class="acount__table-accardeon accardeon acount__table-accardeon--pmin">
                       <div class="acount__table-main accardeon__main acount__table-auto">
                         <div class="admin-events-item"> 
                           <p>Дата</p>
@@ -913,32 +957,37 @@
                                   <div class="col-md-6"> 
                                     <div class="select-form">
                                       <div class="select">
-                                        <div class="select__main"> 
-                                          <label class="checkbox checkbox--record">
-                                            <input type="checkbox" checked><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-                                          </label>
-                                        </div>
+                                        <div class="select__main">Выберите специалиста</div>
                                         <div class="select__list">
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                          <div class="select__item select__item--checkbox">
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox" checked><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                            </label>
+                                          </div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                            </label>
                                           </div>
                                         </div>
                                       </div>
@@ -1143,32 +1192,37 @@
                                   <div class="col-md-6"> 
                                     <div class="select-form">
                                       <div class="select">
-                                        <div class="select__main"> 
-                                          <label class="checkbox checkbox--record">
-                                            <input type="checkbox" checked><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-                                          </label>
-                                        </div>
+                                        <div class="select__main">Выберите специалиста</div>
                                         <div class="select__list">
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                          <div class="select__item select__item--checkbox">
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox" checked><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                            </label>
+                                          </div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                            </label>
                                           </div>
                                         </div>
                                       </div>
@@ -1204,6 +1258,23 @@
                                 <p>Всего</p>
                                 <p>7 000 ₽ </p>
                               </div>
+                              <div class="admin-editor__patient mb-40">
+                                <div class="row acount__photos-wrap mb-20">
+                                  <div class="col-md-6"> 
+                                    <div class="acount__photo">
+                                      <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6"> 
+                                    <div class="acount__photo">
+                                      <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row acount__photos-wrap"> 
+                                  <div class="col-md-2"> <a class="btn btn--white --openpopup" href="#" data-popup="--photo">Добавить фото</a></div>
+                                </div>
+                              </div>
                               <button class="btn btn--white">Сохранить</button>
                             </div>
                             <div class="col-md-1"></div>
@@ -1214,7 +1285,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="acount__table-accardeon accardeon --red">
+                    <div class="acount__table-accardeon accardeon --red acount__table-accardeon--pmin">
                       <div class="acount__table-main accardeon__main acount__table-auto">
                         <div class="admin-events-item"> 
                           <p>Дата</p>
@@ -1354,32 +1425,37 @@
                                   <div class="col-md-6"> 
                                     <div class="select-form">
                                       <div class="select">
-                                        <div class="select__main"> 
-                                          <label class="checkbox checkbox--record">
-                                            <input type="checkbox" checked><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-                                          </label>
-                                        </div>
+                                        <div class="select__main">Выберите специалиста</div>
                                         <div class="select__list">
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                          <div class="select__item select__item--checkbox">
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox" checked><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                            </label>
+                                          </div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                            </label>
                                           </div>
                                         </div>
                                       </div>
@@ -1415,6 +1491,23 @@
                                 <p>Всего</p>
                                 <p>7 000 ₽ </p>
                               </div>
+                              <div class="admin-editor__patient mb-40">
+                                <div class="row acount__photos-wrap mb-20">
+                                  <div class="col-md-6"> 
+                                    <div class="acount__photo">
+                                      <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6"> 
+                                    <div class="acount__photo">
+                                      <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row acount__photos-wrap"> 
+                                  <div class="col-md-2"> <a class="btn btn--white --openpopup" href="#" data-popup="--photo">Добавить фото</a></div>
+                                </div>
+                              </div>
                               <button class="btn btn--white">Сохранить</button>
                             </div>
                             <div class="col-md-1"></div>
@@ -1425,7 +1518,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="acount__table-accardeon accardeon --purple">
+                    <div class="acount__table-accardeon accardeon --purple acount__table-accardeon--pmin">
                       <div class="acount__table-main accardeon__main acount__table-auto">
                         <div class="admin-events-item"> 
                           <p>Дата</p>
@@ -1565,32 +1658,37 @@
                                   <div class="col-md-6"> 
                                     <div class="select-form">
                                       <div class="select">
-                                        <div class="select__main"> 
-                                          <label class="checkbox checkbox--record">
-                                            <input type="checkbox" checked><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-                                          </label>
-                                        </div>
+                                        <div class="select__main">Выберите специалиста</div>
                                         <div class="select__list">
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                          <div class="select__item select__item--checkbox">
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox" checked><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                            </label>
+                                          </div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                            </label>
                                           </div>
                                         </div>
                                       </div>
@@ -1626,6 +1724,23 @@
                                 <p>Всего</p>
                                 <p>7 000 ₽ </p>
                               </div>
+                              <div class="admin-editor__patient mb-40">
+                                <div class="row acount__photos-wrap mb-20">
+                                  <div class="col-md-6"> 
+                                    <div class="acount__photo">
+                                      <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6"> 
+                                    <div class="acount__photo">
+                                      <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row acount__photos-wrap"> 
+                                  <div class="col-md-2"> <a class="btn btn--white --openpopup" href="#" data-popup="--photo">Добавить фото</a></div>
+                                </div>
+                              </div>
                               <button class="btn btn--white">Сохранить</button>
                             </div>
                             <div class="col-md-1"></div>
@@ -1636,7 +1751,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="acount__table-accardeon accardeon">
+                    <div class="acount__table-accardeon accardeon acount__table-accardeon--pmin">
                       <div class="acount__table-main accardeon__main acount__table-auto">
                         <div class="admin-events-item"> 
                           <p>Дата</p>
@@ -1776,32 +1891,37 @@
                                   <div class="col-md-6"> 
                                     <div class="select-form">
                                       <div class="select">
-                                        <div class="select__main"> 
-                                          <label class="checkbox checkbox--record">
-                                            <input type="checkbox" checked><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-                                          </label>
-                                        </div>
+                                        <div class="select__main">Выберите специалиста</div>
                                         <div class="select__list">
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                          <div class="select__item select__item--checkbox">
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox" checked><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item">  
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                                            </label>
                                           </div>
-                                          <div class="select__item"> 
-                                            <label class="checkbox checkbox--record"></label>
-                                            <input type="checkbox"><span> </span>
-                                            <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                                          <div class="select__item select__item--checkbox">  
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                                            </label>
+                                          </div>
+                                          <div class="select__item select__item--checkbox"> 
+                                            <label class="checkbox checkbox--record">
+                                              <input type="checkbox"><span> </span>
+                                              <div class="checbox__name">Хачатурян Любовь Андреева 5</div>
+                                            </label>
                                           </div>
                                         </div>
                                       </div>
@@ -1836,6 +1956,23 @@
                               <div class="admin-editor__summ">
                                 <p>Всего</p>
                                 <p>7 000 ₽ </p>
+                              </div>
+                              <div class="admin-editor__patient mb-40">
+                                <div class="row acount__photos-wrap mb-20">
+                                  <div class="col-md-6"> 
+                                    <div class="acount__photo">
+                                      <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6"> 
+                                    <div class="acount__photo">
+                                      <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row acount__photos-wrap"> 
+                                  <div class="col-md-2"> <a class="btn btn--white --openpopup" href="#" data-popup="--photo">Добавить фото</a></div>
+                                </div>
                               </div>
                               <button class="btn btn--white">Сохранить</button>
                             </div>
