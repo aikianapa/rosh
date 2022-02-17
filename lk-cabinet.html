@@ -204,8 +204,7 @@
                   </div>
                 </div>
                 <div class="account-events__download"> 
-                  <div class="lk-title">Анализы</div>
-                  <button class="btn btn--white">Скачать анализы</button>
+                  <div class="lk-title">Анализы</div><a class="btn btn--white" href="#" download>Скачать анализы</a>
                 </div>
               </div>
             </div>
@@ -325,7 +324,7 @@
                 <div class="account-events__btns">
                   <div class="account-event-wrap --aicn">
                     <div class="account-events__btn"> 
-                      <button class="btn btn--black --openpopup" data-popup="--pay">Внести предоплату</button>
+                      <button class="btn btn--black --openpopup" data-popup="--pay-one">Предоплата</button>
                     </div>
                     <p>Услуга требует внесения предоплаты</p>
                   </div>
@@ -370,16 +369,14 @@
                           <div class="row">
                             <div class="col-md-6">
                               <div class="analysis__top --aicn --flex mb-20">
-                                <div class="analysis__title">Анализы</div>
-                                <button class="btn btn--white">Скачать анализы</button>
+                                <div class="analysis__title">Анализы</div><a class="btn btn--white" href="#" download>Скачать анализы</a>
                               </div>
                               <div class="analysis__description">
                                 <p class="text-bold mb-20">Выполнялись процедуры</p>
                                 <p class="text-grey">А также предприниматели в сети интернет неоднозначны и будут смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.</p>
                               </div>
                             </div>
-                            <div class="col-md-6">
-                              <button class="btn btn--black mb-20 --openpopup" data-popup="--analize-type">Получить расшифровку анализов</button>
+                            <div class="col-md-6"><a class="btn btn--black mb-20 --openpopup" href="#" data-popup="--analize-type">Получить расшифровку анализов</a>
                               <div class="analysis__description">
                                 <p class="text-bold mb-20">Рекомендация врача</p>
                                 <div class="text"> 
@@ -2060,7 +2057,7 @@
           </label>
         </div>
         <p class="text-grey mb-30">Нажмите на способ получения анализа</p>
-        <button class="btn btn--black">Далее</button>
+        <button class="btn btn--black popup__change --openpopup" data-popup="--pay-one">Далее</button>
       </div>
     </div>
     <div class="popup --pay">
@@ -2093,6 +2090,35 @@
         <div class="popup__name text-bold">Запись на прием</div>
         <h3 class="h3">Успешно !</h3>
         <p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+      </div>
+    </div>
+    <div class="popup --pay-one">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel">
+        <button class="popup__close">
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Внести предоплату</div>
+        <h3 class="h3">В ближайшее время с вами свяжутся для определения удобной даты</h3>
+        <div class="text-grey text-small mb-10">Стоимость услуги</div>
+        <div class="popup-summ --aifs mb-20">
+          <div class="popup-summ__big">5 000 ₽</div>
+          <div class="popup-summ__small">Предоплата - 1 000 ₽</div>
+        </div>
+        <div class="popup__description text-grey mb-30">Для подтверждения записи необходимо произвести оплату в размере 20% от стоимости услуги</div>
+        <button class="btn btn--black form__submit --switchpopup" type="button">Внести предоплату</button>
+      </div>
+      <div class="popup__panel --succed">
+        <button class="popup__close">
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Внести предоплату</div>
+        <h3 class="h3">Успешно !</h3>
+        <p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете</p>
       </div>
     </div>
     <div class="popup --download">
