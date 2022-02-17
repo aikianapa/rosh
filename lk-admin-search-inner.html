@@ -139,9 +139,14 @@
                     <div class="user__confirm"> 
                           <svg class="svgsprite _confirm">
                             <use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
-                          </svg>Подтвержденный аккаунт
+                          </svg>Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
                     </div>
-                    <div class="admin-edit__user-btns"><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--create-appoint">Записать пациента на прием</a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a></div>
+                    <div class="admin-edit__user-btns"><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--create-appoint">Записать пациента на прием</a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение  </a>
+                      <div class="admin-edit__uploads">
+                        <input class="admin-edit__upload" type="file" id="upload-file">
+                        <label class="admin-edit__upload-btn btn btn--white" for="upload-file">Добавить анализы</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <form class="profile-edit"> 
@@ -265,7 +270,7 @@
                   </div>
                   <div class="account__table-body">
                     <div class="acount__table-accardeon accardeon">
-                      <div class="acount__table-main accardeon__main">
+                      <div class="acount__table-main accardeon__main accardeon__click">
                         <div class="history-item">
                           <p> Дата</p>16.10.2021
                         </div>
@@ -366,7 +371,7 @@
                   </div>
                   <div class="account__table-body">
                     <div class="acount__table-accardeon accardeon">
-                      <div class="acount__table-main accardeon__main">
+                      <div class="acount__table-main accardeon__main accardeon__click">
                         <div class="healing-item">16.10.2020-20.10.2021</div>
                         <div class="healing-item">Лечение акне</div>
                       </div>
@@ -1335,7 +1340,7 @@
                       <input class="input__control" type="email" placeholder="Ваш е-мейл">
                       <div class="input__placeholder">Ваш е-мейл</div>
                     </div>
-                    <div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных  на основании <a href="policy.html">Политики конфиденциальности</a></div>
+                    <div class="form__description">Нажимая на кнопку "Записаться", Вы даете согласие на обработку своих персональных данных  на основании <a href="policy.html">Политики конфиденциальности</a></div>
                     <button class="form__submit btn btn--black">Записаться</button>
                   </div>
                   <div class="mainfilter__form-bottom">После отправки заявки для Вас будет создан Личный кабинет, в который можно попасть через кнопку "Войти" в верхнем меню сайта</div>
