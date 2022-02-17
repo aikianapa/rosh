@@ -1235,7 +1235,7 @@
         <div class="popup__name text-bold">Вход</div>
         <form class="popup__form">
           <h3 class="h3">Введите код</h3>
-          <div class="form-title__description form-title__description--small">Мы отправили код подтверждения на номер <br>+7 939 319 33 38<a class="link" href="#">Изменить</a></div>
+          <div class="form-title__description form-title__description--small">Мы отправили код подтверждения на номер <br>+7 939 319 33 38 <a class="link" href="#"> Изменить</a></div>
           <div class="code">
             <input class="code__input" type="number">
             <input class="code__input" type="number">
@@ -1336,9 +1336,9 @@
                   <use xlink:href="assets/img/sprites/svgsprites.svg#alert"></use>
                 </svg>
           </div>
-          <div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании <a href="policy.html">Политики конфиденциальности</a></div>
+          <div class="form__description">Нажимая на кнопку "Зарегистрироваться", Вы даете согласие на обработку своих персональных данных на основании <a href="policy.html">Политики конфиденциальности</a></div>
           <div class="form-bottom --flex">
-            <button class="btn btn--black form__submit --switchpopup" type="submit">Зарегистририроваться</button>
+            <button class="btn btn--black form__submit --switchpopup" type="submit">Зарегистрироваться</button>
             <button class="btn btn--white form__submit --switchpopup" type="button" data-popup="--enter-number">Войти</button>
           </div>
         </form>
@@ -1577,13 +1577,46 @@
         </label>
         <div class="select-form">
           <div class="select">
-            <div class="select__main">Выбрать услугу</div>
+            <div class="select__main"> 
+              <div class="select__placeholder">Услуга</div>
+            </div>
             <div class="select__list">
-              <div class="select__item">Консультация врача</div>
-              <div class="select__item">Коррекция витаминно-минерального обмена (капельницы)</div>
-              <div class="select__item">Лазерный пилинг</div>
-              <div class="select__item">Липолитики</div>
-              <div class="select__item">Массаж лица</div>
+              <div class="select__item select__item--checkbox">
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name --flex --aic --jcsb"> 
+                    <div class="select__name">Внутривенное введение лекарственных препаратов - капельница (Антиоксидантная)</div>
+                    <div>6 000 ₽</div>
+                  </div>
+                </label>
+              </div>
+              <div class="select__item select__item--checkbox">  
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name --flex --aic --jcsb"> 
+                    <div class="select__name">Дерматологический пилинг Cosmedix Purity ретиноевый</div>
+                    <div>7 000 ₽</div>
+                  </div>
+                </label>
+              </div>
+              <div class="select__item select__item--checkbox"> 
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name --flex --aic --jcsb"> 
+                    <div class="select__name">Дерматологический пилинг Enerpeel Jessners салициловый-резорциновый</div>
+                    <div>7 000 ₽</div>
+                  </div>
+                </label>
+              </div>
+              <div class="select__item select__item--checkbox">  
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name --flex --aic --jcsb"> 
+                    <div class="select__name">Дерматологический пилинг для кожи с гиперпигментацией "SC Pigment Balancing Peel"</div>
+                    <div>7 000 ₽</div>
+                  </div>
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -1607,35 +1640,48 @@
         </label>
         <div class="select-form">
           <div class="select">
-            <div class="select__main">
-              <label class="checkbox checkbox--record">
-                <input type="checkbox" checked><span></span>
-                <div class="checbox__name">Хачатурян Любовь Андреева 1</div>
-              </label>
+            <div class="select__main"> 
+              <div class="select__placeholder">Выберите специалиста</div>
             </div>
             <div class="select__list">
-              <div class="select__item">
+              <div class="select__item select__item--checkbox">
                 <label class="checkbox checkbox--record">
-                  <input type="checkbox"><span></span>
-                  <div class="checbox__name">Хачатурян Любовь Андреева 2</div>
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name"> 
+                    <div class="select__name">Хачатурян Любовь Андреева 1</div>
+                  </div>
                 </label>
               </div>
-              <div class="select__item">
+              <div class="select__item select__item--checkbox">  
                 <label class="checkbox checkbox--record">
-                  <input type="checkbox"><span></span>
-                  <div class="checbox__name">Хачатурян Любовь Андреева 3</div>
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name"> 
+                    <div class="select__name">Хачатурян Любовь Андреева 2</div>
+                  </div>
                 </label>
               </div>
-              <div class="select__item">
+              <div class="select__item select__item--checkbox"> 
                 <label class="checkbox checkbox--record">
-                  <input type="checkbox"><span></span>
-                  <div class="checbox__name">Хачатурян Любовь Андреева 4</div>
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name"> 
+                    <div class="select__name">Хачатурян Любовь Андреева 3</div>
+                  </div>
                 </label>
               </div>
-              <div class="select__item">
+              <div class="select__item select__item--checkbox">  
                 <label class="checkbox checkbox--record">
-                  <input type="checkbox"><span></span>
-                  <div class="checbox__name">Хачатурян Любовь Андреева</div>
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name"> 
+                    <div class="select__name">Хачатурян Любовь Андреева 4</div>
+                  </div>
+                </label>
+              </div>
+              <div class="select__item select__item--checkbox"> 
+                <label class="checkbox checkbox--record">
+                  <input type="checkbox"><span> </span>
+                  <div class="checbox__name"> 
+                    <div class="select__name">Хачатурян Любовь Андреева 5</div>
+                  </div>
                 </label>
               </div>
             </div>
@@ -1764,10 +1810,11 @@
           </div>
         </div>
         <div class="input"> 
-          <input class="datepicker-here form-control" type="text" data-date-format="dd/mm/yyyy" data-language="en" placeholder="Select Range">
+          <input class="input__control daterangepickr" type="text" placeholder="За весь период">
+          <div class="input__placeholder">За весь период</div>
         </div>
         <div class="input">
-          <input class="input__control" type="date" placeholder="Дата рождения">
+          <input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения">
           <div class="input__placeholder">Дата рождения</div>
         </div>
         <label class="checkbox checkbox--record">
@@ -1859,7 +1906,7 @@
             </label>
           </div>
           <div class="calendar input mb-30">
-            <input class="input__control" type="text" placeholder="За весь период">
+            <input class="input__control daterangepickr" type="text" placeholder="За весь период">
             <div class="input__placeholder">За весь период</div>
           </div>
           <button class="btn btn--black">Найти</button>
@@ -1881,7 +1928,7 @@
             <div class="input__placeholder">Выбрать пациента</div>
           </div>
           <div class="input calendar mb-20">
-            <input class="input__control" type="date" placeholder="Выбрать дату посещения">
+            <input class="input__control datepickr" type="text" placeholder="Выбрать дату посещения">
             <div class="input__placeholder">Выбрать дату посещения</div>
           </div>
           <div class="popup-title__checkbox">
@@ -1941,7 +1988,7 @@
             <div class="input__placeholder">Выбрать пациента</div>
           </div>
           <div class="input calendar mb-20">
-            <input class="input__control" type="date" placeholder="Выбрать дату посещения">
+            <input class="input__control datepickr" type="text" placeholder="Выбрать дату посещения">
             <div class="input__placeholder">Выбрать дату посещения</div>
           </div>
           <div class="popup-title__checkbox">
@@ -1987,7 +2034,7 @@
             <div class="input__placeholder">ФИО</div>
           </div>
           <div class="input">
-            <input class="input__control" type="date" placeholder="Дата рождения">
+            <input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения">
             <div class="input__placeholder">Дата рождения</div>
           </div>
           <div class="input mb-30">
@@ -2014,7 +2061,7 @@
             <div class="input__placeholder">ФИО</div>
           </div>
           <div class="input">
-            <input class="input__control" type="date" placeholder="Дата рождения">
+            <input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения">
             <div class="input__placeholder">Дата рождения</div>
           </div><a class="--flex --jcfe mb-10" href="#"> Забыли пароль?</a>
           <div class="input mb-30">
@@ -2045,12 +2092,46 @@
           <p class="text-bold text-big mb-20">Мартынова Александра Михайловна</p>
           <div class="select-form">
             <div class="select">
-              <div class="select__main">Услуга</div>
+              <div class="select__main"> 
+                <div class="select__placeholder">Услуга</div>
+              </div>
               <div class="select__list">
-                <div class="select__item">Консультация врача</div>
-                <div class="select__item">Консультация врача</div>
-                <div class="select__item">Консультация врача</div>
-                <div class="select__item">Консультация врача</div>
+                <div class="select__item select__item--checkbox">
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name --flex --aic --jcsb"> 
+                      <div class="select__name">Внутривенное введение лекарственных препаратов - капельница (Антиоксидантная)</div>
+                      <div>6 000 ₽</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="select__item select__item--checkbox">  
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name --flex --aic --jcsb"> 
+                      <div class="select__name">Дерматологический пилинг Cosmedix Purity ретиноевый</div>
+                      <div>7 000 ₽</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="select__item select__item--checkbox"> 
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name --flex --aic --jcsb"> 
+                      <div class="select__name">Дерматологический пилинг Enerpeel Jessners салициловый-резорциновый</div>
+                      <div>7 000 ₽</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="select__item select__item--checkbox">  
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name --flex --aic --jcsb"> 
+                      <div class="select__name">Дерматологический пилинг для кожи с гиперпигментацией "SC Pigment Balancing Peel"</div>
+                      <div>7 000 ₽</div>
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -2065,17 +2146,55 @@
           </div>
           <div class="select-form">
             <div class="select">
-              <div class="select__main">Выбрать специалиста</div>
+              <div class="select__main"> 
+                <div class="select__placeholder">Выберите специалиста</div>
+              </div>
               <div class="select__list">
-                <div class="select__item">Выбрать специалиста</div>
-                <div class="select__item">Выбрать специалиста</div>
-                <div class="select__item">Выбрать специалиста</div>
-                <div class="select__item">Выбрать специалиста</div>
+                <div class="select__item select__item--checkbox">
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name"> 
+                      <div class="select__name">Хачатурян Любовь Андреева 1</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="select__item select__item--checkbox">  
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name"> 
+                      <div class="select__name">Хачатурян Любовь Андреева 2</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="select__item select__item--checkbox"> 
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name"> 
+                      <div class="select__name">Хачатурян Любовь Андреева 3</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="select__item select__item--checkbox">  
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name"> 
+                      <div class="select__name">Хачатурян Любовь Андреева 4</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="select__item select__item--checkbox"> 
+                  <label class="checkbox checkbox--record">
+                    <input type="checkbox"><span> </span>
+                    <div class="checbox__name"> 
+                      <div class="select__name">Хачатурян Любовь Андреева 5</div>
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
           <div class="calendar input mb-30">
-            <input class="input__control" type="datetime-local" placeholder="Выбрать дату и время">
+            <input class="input__control datetimepickr" type="text" placeholder="Выбрать дату и время">
             <div class="input__placeholder">Выбрать время и дату</div>
           </div>
           <button class="btn btn--black">Продолжить</button>
@@ -2124,7 +2243,7 @@
             </div>
           </div>
           <div class="calendar input">
-            <input class="input__control" type="text" placeholder="За весь период">
+            <input class="input__control daterangepickr" type="text" placeholder="За весь период">
             <div class="input__placeholder">За весь период</div>
           </div>
           <div class="select-form">
