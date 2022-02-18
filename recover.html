@@ -101,7 +101,7 @@
             <div class="recover"></div>
             <h1 class="h1">Восстановление пароля</h1>
             <div class="undertitle text-grey">Для восстановления доступа к Кабинету пациента задайте новый пароль</div>
-            <form class="recover-form">
+            <form class="recover-form no-validation">
               <h2 class="h2">Смена пароля</h2>
               <div class="recover__group --flex">
                 <div class="row">
@@ -118,7 +118,7 @@
                     </div>
                   </div>
                   <div class="col"> 
-                    <button class="forb__submit btn btn--white">Сохранить изменения</button>
+                    <button class="forb__submit btn btn--white --openpopup" data-popup="--recover-password">Сохранить изменения</button>
                   </div>
                 </div>
               </div>
@@ -1060,6 +1060,31 @@
         <div class="popup__name text-bold">Быстрая запись</div>
         <h3 class="h3">Успешно !</h3>
         <p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+      </div>
+    </div>
+    <div class="popup --form-send">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel">
+        <button class="popup__close">
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Перезвонить мне</div>
+        <h3 class="h3">Успешно !</h3>
+        <p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+      </div>
+    </div>
+    <div class="popup --recover-password">
+      <div class="popup__overlay"></div>
+      <div class="popup__panel">
+        <button class="popup__close">
+              <svg class="svgsprite _close">
+                <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
+              </svg>
+        </button>
+        <div class="popup__name text-bold">Восстановление пароля</div>
+        <h3 class="h3">Пароль успешно обновлен</h3>
       </div>
     </div>
     <div class="popup --fast-make">
