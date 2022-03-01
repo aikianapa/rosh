@@ -20,7 +20,7 @@
             $files = array();
             if ($src = scandir($this->_path.static::FN_SRC)) {
                 foreach ($src as $src_i) {
-                    if (in_array($src_i, array('.', '..')) || is_dir($this->_path.$src_i)) continue;
+                    if (in_array($src_i, array('.', '..', 'chunks')) || is_dir($this->_path.$src_i)) continue;
                     $files[] = $src_i;
                 }
             }
@@ -72,4 +72,4 @@
     }
 
     $compiler = new Compiler();
-    $compiler->execute(array('403.html'));
+    $compiler->execute();
