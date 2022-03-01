@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru"><head>
+    {{head &title=`FE pack :: LK reg page`}}
+</head><body class="body" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+    <main class="page" data-barba="container" data-barba-namespace="lk-reg">
+        {{header}}
+        {{menu}}
+        <div class="container">
+            <form class="account">
+                <div class="crumbs"><a class="crumbs__arrow" href="#">
+                        <svg class="svgsprite _crumbs-back">
+                            <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                        </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Заполнение личных данных</a>
+                </div>
+                <div class="title-flex --flex --jcsb">
+                    <div class="title">
+                        <h1 class="h1 mb-10">Заполнение личных данных</h1>
+                        <div class="title__description text-grey">Для использования Личного кабинета необходимо заполнить все поля ниже</div>
+                    </div>
+                    <button class="btn btn--black">Сохранить изменения</button>
+                </div>
+                <div class="grey-form">
+                    <h2 class="h2 mb-30">Личные данные</h2>
+                    <div class="grey-form__wrap">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input">
+                                    <input class="input__control" type="text" placeholder="ФИО">
+                                    <div class="input__placeholder">ФИО</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input">
+                                    <input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения">
+                                    <div class="input__placeholder">Дата рождения</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-right"><a class="grey-form__link" href="#"> </a></div>
+                                <div class="input">
+                                    <input class="input__control" type="email" placeholder="E-mail">
+                                    <div class="input__placeholder">E-mail</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input">
+                                    <input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
+                                    <div class="input__placeholder">Номер телефона</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grey-form">
+                    <div class="title-flex --flex mb-30">
+                        <h2 class="h2 mb-0 mr-15">Смена пароля</h2>
+                        <p class="text-grey text-bold pt-1">Необязательно</p>
+                    </div>
+                    <div class="grey-form__wrap">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="input">
+                                    <input class="input__control" type="password" placeholder="Текущий пароль">
+                                    <div class="input__placeholder">Текущий пароль</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input">
+                                    <input class="input__control" type="password" placeholder="Новый пароль">
+                                    <div class="input__placeholder">Новый пароль</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input">
+                                    <input class="input__control" type="password" placeholder="Повторите новый пароль">
+                                    <div class="input__placeholder">Повторите новый пароль</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {{footer}}
+        {{content/mainfilter}}
+    </main>
+</div>{{popup}}
+{{js}}
+</body></html>

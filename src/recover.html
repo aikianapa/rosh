@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru"><head>
+    {{head &title=`FE pack :: Recover page`}}
+</head><body class="body" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+    <main class="page" data-barba="container" data-barba-namespace="recover">
+        {{header}}
+        {{menu}}
+        <div class="main-wrapper">
+            <div class="container">
+                <div class="crumbs"><a class="crumbs__arrow" href="#">
+                        <svg class="svgsprite _crumbs-back">
+                            <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                        </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Восстановление пароля</a>
+                </div>
+                <div class="recover"></div>
+                <h1 class="h1">Восстановление пароля</h1>
+                <div class="undertitle text-grey">Для восстановления доступа к Кабинету пациента задайте новый пароль</div>
+                <form class="recover-form no-validation">
+                    <h2 class="h2">Смена пароля</h2>
+                    <div class="recover__group --flex">
+                        <div class="row">
+                            <div class="col">
+                                <div class="input input--grey input--recover">
+                                    <input class="input__control" type="password" placeholder="Новый пароль">
+                                    <div class="input__placeholder">Новый пароль</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input input--grey input--recover">
+                                    <input class="input__control" type="password" placeholder="Повторите новый пароль">
+                                    <div class="input__placeholder">Повторите новый пароль</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <button class="forb__submit btn btn--white --openpopup" data-popup="--recover-password">Сохранить изменения</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {{footer}}
+        {{content/mainfilter}}
+    </main>
+</div>{{popup}}
+{{js}}
+</body></html>

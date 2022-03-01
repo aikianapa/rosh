@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru"><head>
+    {{head &title=`FE pack :: LK admin search page`}}
+</head><body class="body" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+    <main class="page" data-barba="container" data-barba-namespace="lk-admin-search">
+        {{header}}
+        {{menu}}
+        <div class="account">
+            <form class="search">
+                <div class="container">
+                    <div class="crumbs"><a class="crumbs__arrow" href="#">
+                            <svg class="svgsprite _crumbs-back">
+                                <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                            </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Кабинет администратора</a>
+                    </div>
+                    <div class="title-flex --flex --jcsb">
+                        <div class="title">
+                            <h1 class="h1 mb-10">Кабинет администратора </h1>
+                        </div><a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
+                    </div>
+                    <div class="search__block --flex --aicn">
+                        <div class="input">
+                            <input class="search__input" type="text" placeholder="Поиск">
+                        </div>
+                        <button class="btn btn--white">Найти</button>
+                    </div>
+                </div>
+            </form>
+            <div class="search-result">
+                <div class="container">
+                    <div class="lk-title">Результаты поиска</div>
+                    <div class="account__panel">
+                        <div class="account__info">
+                            <div class="user">
+                                <div class="user__name">Хамидова Лия Олеговна</div>
+                                <div class="user__item">Дата рождения:  <span>17.05.1969</span></div>
+                                <div class="user__item">Тел:   <span>+7 927 441 77 88</span></div>
+                                <div class="user__item">Почта: <span>info@icloud.com</span></div>
+                                <div class="user__confirm">
+                                    <svg class="svgsprite _confirm">
+                                        <use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
+                                    </svg>Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
+                                </div>
+                                <div class="admin-edit__user-btns"><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--create-appoint">Записать пациента на прием</a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a>
+                                    <div class="admin-edit__uploads">
+                                        <input class="admin-edit__upload" type="file" id="upload-file">
+                                        <label class="admin-edit__upload-btn btn btn--white" for="upload-file">Добавить анализы</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><a class="account__detail" href="lk-admin-search-inner.html"> Подробнее</a>
+                    </div>
+                    <div class="account__panel">
+                        <div class="account__info">
+                            <div class="user">
+                                <div class="user__name">Хамидова Лия Олеговна</div>
+                                <div class="user__item">Дата рождения:  <span>17.05.1969</span></div>
+                                <div class="user__item">Тел:   <span>+7 927 441 77 88</span></div>
+                                <div class="user__item">Почта: <span>info@icloud.com</span></div>
+                                <div class="user__notconfirm">
+                                    <svg class="svgsprite _notconfirm">
+                                        <use xlink:href="assets/img/sprites/svgsprites.svg#notconfirm"></use>
+                                    </svg>Неподтвержденный адрес электронной почты <a href="#">Отправить повторно</a><a class="--openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
+                                </div>
+                                <div class="admin-edit__user-btns"><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--create-appoint">Записать пациента на прием</a><a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a>
+                                    <div class="admin-edit__uploads">
+                                        <input class="admin-edit__upload" type="file" id="upload-file">
+                                        <label class="admin-edit__upload-btn btn btn--white" for="upload-file">Добавить анализы</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><a class="account__detail" href="lk-admin-search-inner.html"> Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{footer}}
+        {{content/mainfilter}}
+    </main>
+</div>{{popup}}
+{{js}}
+</body></html>

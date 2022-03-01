@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru"><head>
+    {{head &title=`FE pack :: LK search page`}}
+</head><body class="body" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+    <main class="page" data-barba="container" data-barba-namespace="lk-search">
+        {{header}}
+        {{menu}}
+        <div class="account">
+            <form class="search">
+                <div class="container">
+                    <div class="crumbs"><a class="crumbs__arrow" href="#">
+                            <svg class="svgsprite _crumbs-back">
+                                <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                            </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Кабинет специалиста</a>
+                    </div>
+                    <h1 class="h1 mb-40">Кабинет специалиста</h1>
+                    <div class="search__block --flex --aicn">
+                        <div class="input">
+                            <input class="search__input" type="text" placeholder="Поиск">
+                        </div>
+                        <button class="btn btn--black">Найти</button>
+                    </div>
+                </div>
+            </form>
+            <div class="search-result">
+                <div class="container">
+                    <div class="lk-title">Результаты поиска</div>
+                    <div class="account__panel">
+                        <div class="account__info">
+                            <div class="user">
+                                <div class="user__name">Хамидова Лия Олеговна</div>
+                                <div class="user__group">
+                                    <div class="user__birthday">Дата рождения:  <span>17.05.1969</span></div>
+                                </div>
+                            </div>
+                        </div><a class="account__detail" href="lk-expert-search-inner.html"> Подробнее</a>
+                    </div>
+                    <div class="account__panel">
+                        <div class="account__info">
+                            <div class="user">
+                                <div class="user__name">Хамидова Лия Олеговна</div>
+                                <div class="user__group">
+                                    <div class="user__birthday">Дата рождения:  <span>17.05.1969</span></div>
+                                </div>
+                            </div>
+                        </div><a class="account__detail" href="lk-expert-search-inner.html"> Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{footer}}
+        {{content/mainfilter}}
+    </main>
+</div>{{popup}}
+{{js}}
+</body></html>

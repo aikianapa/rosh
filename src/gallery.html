@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru"><head>
+    {{head &title=`FE pack :: Gallery page`}}
+</head><body class="body" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+    <main class="page" data-barba="container" data-barba-namespace="gallery">
+        {{header}}
+        {{menu}}
+        <div class="container">
+            <div class="crumbs"><a class="crumbs__arrow" href="#">
+                    <svg class="svgsprite _crumbs-back">
+                        <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                    </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">О клинике</a><a class="crumbs__link" href="#">Галерея</a>
+            </div>
+            <h1 class="h1">Галерея</h1>
+        </div>
+        <div class="gallery">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <div class="gallery__slider">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <div class="gallery__pic" style="background-image: url(./assets/img/gallery/1.jpg)"></div>
+                                    <div class="gallery__description text-small">Отделение дерматологии и косметологии</div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="gallery__pic" style="background-image: url(./assets/img/gallery/1.jpg)"></div>
+                                    <div class="gallery__description text-small">Отделение дерматологии и косметологии</div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="gallery__pic" style="background-image: url(./assets/img/gallery/1.jpg)"></div>
+                                    <div class="gallery__description text-small">Отделение дерматологии и косметологии</div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="gallery__pic" style="background-image: url(./assets/img/gallery/1.jpg)"></div>
+                                    <div class="gallery__description text-small">Отделение дерматологии и косметологии</div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="gallery__pic" style="background-image: url(./assets/img/gallery/1.jpg)"></div>
+                                    <div class="gallery__description text-small">Отделение дерматологии и косметологии</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
+                </div>
+            </div>
+            <div class="gallery__nav">
+                <div class="container">
+                    <div class="prev">
+                        <svg class="svgsprite _prev">
+                            <use xlink:href="assets/img/sprites/svgsprites.svg#prev"></use>
+                        </svg>
+                    </div>
+                    <div class="next">
+                        <svg class="svgsprite _next">
+                            <use xlink:href="assets/img/sprites/svgsprites.svg#next"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="fast-form no-validation">
+            <div class="container">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="fast-form__info">
+                                <h2 class="h2 fast-form__title">Быстрая запись на прием</h2>
+                                <p class="fast-form__undertitle text-grey">После отправки заявки для Вас будет создан Личный кабинет, в который можно попасть через кнопку "Войти" в верхнем меню сайта</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="fast-form__item">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="input">
+                                            <input class="input__control" type="text" placeholder="ФИО">
+                                            <div class="input__placeholder">ФИО</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input">
+                                            <input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
+                                            <div class="input__placeholder">Номер телефона</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fast-form__item">
+                                <div class="input">
+                                    <textarea class="input__control" placeholder="Причина обращения"></textarea>
+                                    <div class="input__placeholder">Причина обращения</div>
+                                </div>
+                            </div>
+                            <div class="fast-form__item --flex --aicn">
+                                <button class="btn btn--black fast-form__submit --openpopup" data-popup="--form-send">Перезвонить мне</button>
+                                <div class="fast-form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на <a href="">обработку своих персональных данных</a>  на основании <a href="policy.html">Политики конфиденциальности</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {{footer}}
+        {{content/mainfilter}}
+    </main>
+</div>{{popup}}
+{{js}}
+</body></html>

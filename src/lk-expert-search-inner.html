@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru"><head>
+    {{head &title=`FE pack :: LK search inner page`}}
+</head><body class="body" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+    <main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
+        {{header}}
+        {{menu}}
+        <div class="account">
+            <form class="search">
+                <div class="container">
+                    <div class="crumbs"><a class="crumbs__arrow" href="#">
+                            <svg class="svgsprite _crumbs-back">
+                                <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                            </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Кабинет специалиста</a>
+                    </div>
+                    <h1 class="h1 mb-40">Кабинет специалиста</h1>
+                    <div class="search__block --flex --aicn">
+                        <div class="input">
+                            <input class="search__input" type="text" placeholder="Поиск">
+                        </div>
+                        <button class="btn btn--black">Найти</button>
+                    </div>
+                </div>
+            </form>
+            <div class="search-result">
+                <div class="container">
+                    <div class="lk-title">Карточка пациента</div>
+                    <div class="account__panel">
+                        <div class="account__info">
+                            <div class="user">
+                                <div class="user__name">Хамидова Лия Олеговна</div>
+                                <div class="user__group">
+                                    <div class="user__birthday">Дата рождения:  <span>17.05.1969</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lk-title">История посещений</div>
+                    <div class="account__table">
+                        <div class="account__table-head">
+                            <div class="history-item">Дата</div>
+                            <div class="history-item">Время</div>
+                            <div class="history-item">Специалисты</div>
+                            <div class="history-item">Услуги</div>
+                            <div class="history-item">Анализы</div>
+                        </div>
+                        <div class="account__table-body">
+                            <div class="acount__table-accardeon accardeon">
+                                <div class="acount__table-main accardeon__main accardeon__click">
+                                    <div class="history-item">
+                                        <p> Дата</p>16.10.2021
+                                    </div>
+                                    <div class="history-item">
+                                        <p> Время</p>08:45-09:45
+                                    </div>
+                                    <div class="history-item">
+                                        <p> Специалисты</p>Цветкова Инна Сергеевна
+                                    </div>
+                                    <div class="history-item">
+                                        <p> Услуги</p>Удаление образований
+                                    </div>
+                                    <div class="history-item">
+                                        <p> Анализы</p>Нет анализов
+                                    </div>
+                                </div>
+                                <div class="acount__table-list accardeon__list">
+                                    <div class="account-edit__title">
+                                        <p>Рекомендация врача</p><a class="user__edit" href="#">
+                                            <svg class="svgsprite _edit">
+                                                <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+                                            </svg></a>
+                                    </div>
+                                    <textarea class="account-edit__textarea"></textarea>
+                                    <button class="btn btn--white">Сохранить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{footer}}
+        {{content/mainfilter}}
+    </main>
+</div>{{popup}}
+{{js}}
+</body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru"><head>
+    {{head &title=`FE pack :: LK admin changes page`}}
+</head><body class="body" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+    <main class="page" data-barba="container" data-barba-namespace="lk-admin-changes">
+        {{header}}
+        {{menu}}
+        <div class="account">
+            <form class="search">
+                <div class="container">
+                    <div class="crumbs"><a class="crumbs__arrow" href="#">
+                            <svg class="svgsprite _crumbs-back">
+                                <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                            </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Кабинет администратора</a><a class="crumbs__link" href="#">Журнал изменений</a>
+                    </div>
+                    <div class="title-flex --flex --jcsb">
+                        <div class="title">
+                            <h1 class="h1 mb-10">Кабинет администратора </h1>
+                        </div><a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
+                    </div>
+                    <div class="search__block --flex --aicn">
+                        <div class="input">
+                            <input class="search__input" type="text" placeholder="Поиск">
+                        </div>
+                        <button class="btn btn--white">Найти</button>
+                    </div>
+                </div>
+            </form>
+            <div class="container">
+                <div class="lk-title">Журнал изменений</div>
+                <div class="accoutn-scroll">
+                    <div class="account__table">
+                        <div class="account__table-head">
+                            <div class="changes-item">Дата / время изменения</div>
+                            <div class="changes-item">ФИО</div>
+                            <div class="changes-item">Специалист</div>
+                            <div class="changes-item">Услуга</div>
+                            <div class="changes-item">Рекомендация</div>
+                            <div class="changes-item">Новая Рекомендация</div>
+                        </div>
+                        <div class="account__table-body">
+                            <div class="acount__table-accardeon accardeon">
+                                <div class="acount__table-main accardeon__main acount__table-auto">
+                                    <div class="changes-item">
+                                        <p>Дата / время изменения</p><span>16.10.2021</span>
+                                    </div>
+                                    <div class="changes-item">
+                                        <p>ФИО</p><span>Кириллова Ирина Аркадьевна</span>
+                                    </div>
+                                    <div class="changes-item">
+                                        <p>Специалист</p><span>Хачатурян Любовь Андреева</span>
+                                    </div>
+                                    <div class="changes-item">
+                                        <p>Услуга </p><span>Уходы и маски</span>
+                                    </div>
+                                    <div class="changes-item">
+                                        <p>Рекомендация</p><span>А также предприниматели в сети интернет неоднозначны и будут смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.</span>
+                                    </div>
+                                    <div class="changes-item">
+                                        <p>Новая Рекомендация </p><span>Требуется  прохождение обследования <br>1. Общий клинический анализ крови <br>2. Биохимический анализ крови <br>3. Витамин ”Д”</span>
+                                    </div>
+                                </div>
+                                <div class="acount__table-list accardeon__list"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{footer}}
+        {{content/mainfilter}}
+    </main>
+</div>{{popup}}
+{{js}}
+</body></html>

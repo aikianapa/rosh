@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru"><head>
+    {{head &title=`FE pack :: LK admin photos page`}}
+</head><body class="body" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+    <main class="page" data-barba="container" data-barba-namespace="lk-admin-photos">
+        {{header}}
+        {{menu}}
+        <div class="account">
+            <form class="search">
+                <div class="container">
+                    <div class="crumbs"><a class="crumbs__arrow" href="#">
+                            <svg class="svgsprite _crumbs-back">
+                                <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                            </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Кабинет администратора</a><a class="crumbs__link" href="#">Медиатека</a>
+                    </div>
+                    <div class="title-flex --flex --jcsb">
+                        <div class="title">
+                            <h1 class="h1 mb-10">Кабинет администратора </h1>
+                        </div><a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
+                    </div>
+                    <div class="search__block --flex --aicn">
+                        <div class="input">
+                            <input class="search__input" type="text" placeholder="Поиск">
+                        </div>
+                        <button class="btn btn--white">Найти</button>
+                    </div>
+                </div>
+            </form>
+            <div class="container">
+                <div class="title-flex --flex --jcsb photos-title">
+                    <div class="add-photo">
+                        <div class="lk-title mb-0 mr-20">Библиотека фотографий</div><a class="btn btn--black --openpopup" href="#" data-popup="--photo">Добавить фото</a>
+                    </div>
+                    <div class="filter__item"><a class="filter__name text-bold" href="#">Удалить фильтры</a>
+                        <div class="filter__select">
+                            <div class="filter-select select">
+                                <div class="filter-select__main select__main">Фильтр</div>
+                                <div class="filter-select__list select__list">
+                                    <div class="filter-select__item select__item active">Пункт 1</div>
+                                    <div class="filter-select__item select__item">Пункт 2</div>
+                                    <div class="filter-select__item select__item">Пункт 3</div>
+                                    <div class="filter-select__item select__item">Пункт 4</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-photos"> <a class="admin-photo" style="background-image: url(./assets/img/admin/1.jpg)">
+                        <div class="admin-photo__date">29.10.2021</div>
+                        <div class="admin-photo__info">
+                            <p class="text-bold mb-10 admin-photo__name">Мартынова Александра Михайловна</p>
+                            <div class="admin-photo__description">Продолжительное лечение</div>
+                        </div></a><a class="admin-photo" style="background-image: url(./assets/img/admin/1.jpg)">
+                        <div class="admin-photo__date">29.10.2021</div>
+                        <div class="admin-photo__info">
+                            <p class="text-bold mb-10 admin-photo__name">Мартынова Александра Михайловна</p>
+                            <div class="admin-photo__description">Продолжительное лечение</div>
+                        </div></a><a class="admin-photo" style="background-image: url(./assets/img/admin/1.jpg)">
+                        <div class="admin-photo__date">29.10.2021</div>
+                        <div class="admin-photo__info">
+                            <p class="text-bold mb-10 admin-photo__name">Мартынова Александра Михайловна</p>
+                            <div class="admin-photo__description">Продолжительное лечение</div>
+                        </div></a><a class="admin-photo" style="background-image: url(./assets/img/admin/1.jpg)">
+                        <div class="admin-photo__date">29.10.2021</div>
+                        <div class="admin-photo__info">
+                            <p class="text-bold mb-10 admin-photo__name">Мартынова Александра Михайловна</p>
+                            <div class="admin-photo__description">Продолжительное лечение</div>
+                        </div></a><a class="admin-photo" style="background-image: url(./assets/img/admin/1.jpg)">
+                        <div class="admin-photo__date">29.10.2021</div>
+                        <div class="admin-photo__info">
+                            <p class="text-bold mb-10 admin-photo__name">Мартынова Александра Михайловна</p>
+                            <div class="admin-photo__description">Продолжительное лечение</div>
+                        </div></a><a class="admin-photo" style="background-image: url(./assets/img/admin/1.jpg)">
+                        <div class="admin-photo__date">29.10.2021</div>
+                        <div class="admin-photo__info">
+                            <p class="text-bold mb-10 admin-photo__name">Мартынова Александра Михайловна</p>
+                            <div class="admin-photo__description">Продолжительное лечение</div>
+                        </div></a><a class="admin-photo" style="background-image: url(./assets/img/admin/1.jpg)">
+                        <div class="admin-photo__date">29.10.2021</div>
+                        <div class="admin-photo__info">
+                            <p class="text-bold mb-10 admin-photo__name">Мартынова Александра Михайловна</p>
+                            <div class="admin-photo__description">Продолжительное лечение</div>
+                        </div></a><a class="admin-photo" style="background-image: url(./assets/img/admin/1.jpg)">
+                        <div class="admin-photo__date">29.10.2021</div>
+                        <div class="admin-photo__info">
+                            <p class="text-bold mb-10 admin-photo__name">Мартынова Александра Михайловна</p>
+                            <div class="admin-photo__description">Продолжительное лечение</div>
+                        </div></a></div>
+            </div>
+        </div>
+        {{footer}}
+        {{content/mainfilter}}
+    </main>
+</div>{{popup}}
+{{js}}
+</body></html>
