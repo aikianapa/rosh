@@ -6,7 +6,7 @@
     class Compiler {
         const FN_SRC    = 'src';
         const FN_CHUNKS = 'chunks';
-        const REX_CHUNK = "#\{\{([\w\-\/]+)(((:?\s*)\&([\w\-]+)\=`([^`]*)`)*)\}\}#si";
+        const REX_CHUNK = "#\{\{([\w\-\/]+)(((:?\s*)\&([\w\-]+)\=`([^`]*)`)*)(\s*)\}\}#si";
         const REX_VAR   = "#\[\+([\w\-]+)\+\]#si";
 
         protected $_path = null;
