@@ -6,7 +6,7 @@
     class Compiler {
         const FN_SRC    = 'src';
         const FN_CHUNKS = 'chunks';
-        const REX_CHUNK = "#\{\{([\w\-\/]+)(((:?\s*)\&([\w\-]+)\=`([^`]*)`)*)\}\}#si";
+        const REX_CHUNK = "#\{\{([\w\-\/]+)(((:?\s*)\&([\w\-]+)\=`([^`]*)`)*)(\s*)\}\}#si";
         const REX_VAR   = "#\[\+([\w\-]+)\+\]#si";
 
         protected $_path = null;
@@ -46,6 +46,7 @@
             if (is_array($data)) foreach ($data as $k => $v) {
                 $chunk = str_replace('[+'.$k.'+]', $v, $chunk);
             }
+            $chunk = preg_replace(static::REX_VAR, '', $chunk);
             return $this->parse($chunk);
         }
 
