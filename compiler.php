@@ -46,6 +46,7 @@
             if (is_array($data)) foreach ($data as $k => $v) {
                 $chunk = str_replace('[+'.$k.'+]', $v, $chunk);
             }
+            $chunk = preg_replace(static::REX_VAR, '', $chunk);
             return $this->parse($chunk);
         }
 
