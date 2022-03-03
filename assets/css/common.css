@@ -1,5 +1,13 @@
 @import "all.css";
 
-header {
-    position: fixed;
+header { position: fixed; }
+
+div.popup.--service div.text { margin: 0; }
+
+@media (max-width: 550px) {
+    .header--transparent .header__left { padding-left: 80px; }
+}
+
+@media (max-width: 350px) {
+    .header--transparent .header__left { padding-left: 60px; }
 }
