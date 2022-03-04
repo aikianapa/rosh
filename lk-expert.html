@@ -48,7 +48,7 @@
 </header>
 
 
-        <div class="menu">
+        <div class="menu" id="mainmenu">
                 <nav class="nav">
                 <div class="nav__link"><a href="all-services.html">Услуги</a></div>
                 <div class="nav__link"><a href="all-problems.html">Проблемы</a></div>
@@ -535,7 +535,7 @@
             </div>
         </div>
 
-                <div class="mainfilter">
+                <div class="mainfilter" id="mainfilter">
             <div class="mainfilter__close --closefilter">
                 <svg class="svgsprite _close">
                     <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
@@ -545,12 +545,12 @@
                 <div class="col-lg-9 col-md-8">
                     <div class="mainfilter__left">
                         <div class="mainfilter__tab-list">
-                            <div class="mainfilter__tab-item active">Услуги</div>
-                            <div class="mainfilter__tab-item">Проблемы</div>
-                            <div class="mainfilter__tab-item">Симптомы</div>
+                            <div class="mainfilter__tab-item data-tab-link active" data-tab="services" data-tabs="mainfilter">Услуги</div>
+                            <div class="mainfilter__tab-item data-tab-link" data-tab="problems" data-tabs="mainfilter">Проблемы</div>
+                            <div class="mainfilter__tab-item data-tab-link" data-tab="sympthoms" data-tabs="mainfilter">Симптомы</div>
                         </div>
-                        <div class="mainfilter__tabs">
-                            <div class="mainfilter__tab active">
+                        <div class="mainfilter__tabs data-tab-wrapper" data-tabs="mainfilter">
+                            <div class="mainfilter__tab data-tab-item active" data-tab="services">
                                 <div class="accardeon">
     <div class="accardeon__main accardeon__click">
         <div class="accardeon__name --yellow">Лицо</div>
@@ -932,7 +932,7 @@
 </div>
 
                             </div>
-                            <div class="mainfilter__tab">
+                            <div class="mainfilter__tab data-tab-item" data-tab="problems">
                                 <div class="accardeon-group">
                                     <div class="accrdeon__title">Дерматовенерология</div>
                                     <div class="accardeon">
@@ -1467,7 +1467,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mainfilter__tab">
+                            <div class="mainfilter__tab data-tab-item" data-tab="sympthoms">
                                 <div class="accrdeon__title">Симптомы</div>
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -1551,7 +1551,7 @@
             <svg class="svgsprite _delete">
                 <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
             </svg>
-        </div> <a class="mainfilter-tag__link" href="#">Аллергия на коже</a>
+        </div> <a class="mainfilter-tag__link" href="/landing.html">Аллергия на коже</a>
     </div>
     <div class="mainfilter-tag__group --yellow">Л</div>
 </div>
@@ -1562,7 +1562,7 @@
             <svg class="svgsprite _delete">
                 <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
             </svg>
-        </div> <a class="mainfilter-tag__link" href="#">Аллергия на коже</a>
+        </div> <a class="mainfilter-tag__link" href="/landing.html">Аллергия на коже</a>
     </div>
     <div class="mainfilter-tag__group --green">Л</div>
 </div>
@@ -1573,7 +1573,7 @@
             <svg class="svgsprite _delete">
                 <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
             </svg>
-        </div> <a class="mainfilter-tag__link" href="#">Аллергия на коже</a>
+        </div> <a class="mainfilter-tag__link" href="/landing.html">Аллергия на коже</a>
     </div>
     <div class="mainfilter-tag__group --red">Л</div>
 </div>
@@ -1584,7 +1584,7 @@
             <svg class="svgsprite _delete">
                 <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
             </svg>
-        </div> <a class="mainfilter-tag__link" href="#">Аллергия на коже</a>
+        </div> <a class="mainfilter-tag__link" href="/landing.html">Аллергия на коже</a>
     </div>
     <div class="mainfilter-tag__group --blue">Л</div>
 </div>
@@ -1595,7 +1595,7 @@
             <svg class="svgsprite _delete">
                 <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
             </svg>
-        </div> <a class="mainfilter-tag__link" href="#">Аллергия на коже</a>
+        </div> <a class="mainfilter-tag__link" href="/landing.html">Аллергия на коже</a>
     </div>
     <div class="mainfilter-tag__group --purple">Л</div>
 </div>
@@ -2796,7 +2796,11 @@
     </div>
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>
-<script src="assets/js/vendors~main.bundle.js"></script>
-<script src="assets/js/main.bundle.js?v=1.2.3"></script>
+<!-- script src="assets/js/vendors~main.bundle.js"></script -->
+<script src="assets/js/jquery-1.12.4.min.js"></script>
+<script src="assets/js/air-datepicker.js"></script>
+<script src="assets/js/jquery.inputmask.min.js"></script>
+<script src="assets/js/swiper-bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
 
 </body></html>
