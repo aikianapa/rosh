@@ -1,4 +1,4 @@
-        <div class="mainfilter">
+        <div class="mainfilter" id="mainfilter">
             <div class="mainfilter__close --closefilter">
                 <svg class="svgsprite _close">
                     <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
@@ -8,19 +8,19 @@
                 <div class="col-lg-9 col-md-8">
                     <div class="mainfilter__left">
                         <div class="mainfilter__tab-list">
-                            <div class="mainfilter__tab-item active">Услуги</div>
-                            <div class="mainfilter__tab-item">Проблемы</div>
-                            <div class="mainfilter__tab-item">Симптомы</div>
+                            <div class="mainfilter__tab-item active" data-tab="services">Услуги</div>
+                            <div class="mainfilter__tab-item" data-tab="problems">Проблемы</div>
+                            <div class="mainfilter__tab-item" data-tab="sympthoms">Симптомы</div>
                         </div>
                         <div class="mainfilter__tabs">
-                            <div class="mainfilter__tab active">
+                            <div class="mainfilter__tab active" data-tab="services">
                                 {{mainfilter/alist-l &title=`Лицо` &color=`--yellow`}}
                                 {{mainfilter/alist-l &title=`Тело` &color=`--green`}}
                                 {{mainfilter/alist-l &title=`Волосы` &color=`--red`}}
                                 {{mainfilter/alist-l &title=`Гинекология` &color=`--blue`}}
                                 {{mainfilter/alist-l &title=`Лаборатория` &color=`--purple`}}
                             </div>
-                            <div class="mainfilter__tab">
+                            <div class="mainfilter__tab" data-tab="problems">
                                 <div class="accardeon-group">
                                     <div class="accrdeon__title">Дерматовенерология</div>
                                     {{mainfilter/alist-l &title=`Лицо` &color=`--yellow`}}
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mainfilter__tab">
+                            <div class="mainfilter__tab" data-tab="sympthoms">
                                 <div class="accrdeon__title">Симптомы</div>
                                 <div class="row">
                                     <div class="col-lg-4">

@@ -12,6 +12,7 @@ div.popup.--service div.text { margin: 0; }
 .no-border { border: none !important; }
 
 a.header__logo { background: black; border-radius: 0 0 .5em .5em; }
+div.--closefilter { display: block; }
 
 div.account__tab-item { display: inline-block; }
 div.account__tab-items { display: block; }
