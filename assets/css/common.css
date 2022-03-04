@@ -1,13 +1,61 @@
 @import "all.css";
 
-header { position: fixed; }
+header { position: fixed !important; }
 
 div.popup.--service div.text { margin: 0; }
 
+.popup.--service-l .popup__panel {
+    max-width: 830px; top: 60px;
+    -webkit-transform: translateY(0) translateX(-50%); transform: translateY(0) translateX(-50%);
+}
+
+.no-border { border: none !important; }
+
+a.header__logo {
+    background: black;
+    border-radius: 0 0 .5em .5em;
+}
+
+div.account__tab-item {
+    display: inline-block;
+}
+
+div.account__tab-items {
+    display: block;
+}
+
+div.account__tab-items div.buttons {
+    float: right;
+}
+
+div.account__tab-items div.buttons > label {
+    position: absolute; right: 2em; top: 3px;
+}
+
+div.admin-events-heap {
+    display: none; margin: 0 0 1em 4px; padding: 0 0 1em 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+}
+
+@media (max-width: 980px) {
+    div.admin-events-heap { display: block; }
+    div.admin-events-heap div.flag-date > label { top: 2px; }
+    div.admin-events-item div.flag-date > button,
+    div.admin-events-item div.flag-date > label { display: none; }
+}
+
 @media (max-width: 550px) {
-    .header--transparent .header__left { padding-left: 80px; }
+    .header--transparent .header__left { padding-left: 100px; }
+    .header--transparent .header__left button {
+        height: 2.4em;
+        font-size: .9em; line-height: 2.4em;
+    }
+
+    a.header__logo {
+        padding-top: .3em;
+    }
 }
 
 @media (max-width: 350px) {
-    .header--transparent .header__left { padding-left: 60px; }
+    .header--transparent .header__left { padding-left: 70px; }
 }
