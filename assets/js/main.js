@@ -39,13 +39,31 @@ $(function(){
         }
         return false;
     }).on('click', '.select .select__item', function() {
-        var value = $(this).html();
-        $(this).addClass('active').siblings('.select__item').removeClass('active');
-        $(this).closest('.select').removeClass('active').find('.select__main:first').html(value);
+        if ($(this).hasClass('select__item--checkbox')) {
+        } else {
+            var value = $(this).html();
+            $(this).addClass('active').siblings('.select__item').removeClass('active');
+            $(this).closest('.select').removeClass('active').find('.select__main:first').html(value);
+        }
         return false;
-    }).on('click', 'button.user__edit', function(){
+    }).on('click', '.select .select__item label', function() {
+        console.log('LABLE');
+    }).on('click', '.admin-editor button.user__edit', function(){
         $(this).closest('.admin-editor').find('form.profile-edit:first').addClass('active');
         return false;
+    }).on('click', '.account button.user__edit', function(){
+        $(this).closest('.account').find('form.profile-edit:first').addClass('active');
+        return false;
+    }).on('click', '.popup__overlay', function(){
+        $(this).closest('.popup').hide();
+    }).on('click', '.profile-menu', function(){
+        $(this).addClass('active');
+    }).on('click', 'button.flag-date__ico', function(){
+        $(this).toggleClass('checked');
+    });
+
+    $('html').on('click', 'body', function() {
+        $('.select').removeClass('active');
     });
 
     new Swiper('.main-slider', {
@@ -78,7 +96,27 @@ $(function(){
     $('.datetimepickr').each(function(){
         new AirDatepicker(this, {
             timepicker: true,
+            autoClose : true,
+            minutesStep: 10
+        });
+    });
+
+    $('.datebirthdaypickr').each(function(){
+        new AirDatepicker(this, {
             autoClose : true
+        });
+    });
+
+    $('.datepickr').each(function(){
+        new AirDatepicker(this, {
+            autoClose : true
+        });
+    });
+
+    $('.daterangepickr').each(function(){
+        new AirDatepicker(this, {
+            autoClose : true,
+            range: true
         });
     });
 
