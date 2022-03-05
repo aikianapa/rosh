@@ -3,9 +3,9 @@
     {{head &title=`FE pack :: English version page`}}
 </head><body class="body" data-barba="wrapper">
 <div class="scroll-container" data-scroll-container>
-    <main class="page" data-barba="container" data-barba-namespace="en-version">
-        {{header}}
-        {{menu}}
+    {{header-en}}
+    {{menu}}
+    <div class="main" data-barba="container" data-barba-namespace="index">
         <div class="main-slider mb-80">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" style="background-image: url(./assets/img/en/2.jpg)"></div>
@@ -158,9 +158,10 @@
             </div>
             <div class="map" id="map"></div>
         </div>
-        {{footer}}
-        {{content/mainfilter}}
-    </main>
-</div>{{popup}}
-{{js}}
+    </div>
+    {{footer}}
+    {{content/mainfilter}}
+</div>
+{{popup}}
+{{sliders/main}}
 </body></html>

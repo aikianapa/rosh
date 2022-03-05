@@ -222,6 +222,14 @@
         {{footer}}
         {{content/mainfilter}}
     </main>
-</div>{{popup}}
-{{js}}
+</div>
+{{popup}}
+<script type="text/javascript">
+    $(function(){
+        new Swiper('.slider-content__wrap', {
+            loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
+            navigation: {nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev'}
+        });
+    });
+</script>
 </body></html>

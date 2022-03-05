@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ru"><head>
     {{head &title=`FE pack :: LK cabinet page`}}
-</head><body class="body" data-barba="wrapper">
+</head><body class="body lk-cabinet" data-barba="wrapper">
 <div class="scroll-container" data-scroll-container>
     <main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
         {{header-user}}
@@ -214,12 +214,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="account__history">
+                <div class="account__history data-tab-wrapper" data-tabs="hislech">
                     <div class="account__tab-items">
-                        <div class="account__tab-item active">История посещений</div>
-                        <div class="account__tab-item">Продолжительное лечение</div>
+                        <div class="account__tab-item data-tab-link active" data-tabs="hislech" data-tab="his">История посещений</div>
+                        <div class="account__tab-item data-tab-link" data-tabs="hislech" data-tab="lech">Продолжительное лечение</div>
                     </div>
-                    <div class="account__tab active">
+                    <div class="account__tab data-tab-item active" data-tab="his">
                         <div class="account__table">
                             <div class="account__table-head">
                                 <div class="history-item">Дата</div>
@@ -313,7 +313,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account__tab">
+                    <div class="account__tab data-tab-item" data-tab="lech">
                         <div class="account__table">
                             <div class="account__table-head">
                                 <div class="healing-item">Дата</div>
@@ -413,6 +413,6 @@
         {{footer}}
         {{content/mainfilter}}
     </main>
-</div>{{popup}}
-{{js}}
+</div>
+{{popup}}
 </body></html>

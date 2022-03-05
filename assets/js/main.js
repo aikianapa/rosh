@@ -15,14 +15,26 @@ $(function(){
         var P = $(this).attr('data-popup');
         $('body').find('div.' + P + ':first').show();
         return false;
+    }).on('click', '.--switchpopup', function() {
+        var P = $(this).attr('data-popup');
+        $(this).closest('.popup').hide();
+        $('body').find('div.' + P + ':first').show();
+        return false;
     }).on('click', '.popup__close', function(){
         $(this).closest('.popup').hide();
         return false;
-    }).on('click', 'button.burger', function(){
+    }).on('click', 'button.burger', function(e){
+        e.stopPropagation();
         $(this).toggleClass('active');
         $('#mainmenu').toggleClass('active', $(this).hasClass('active'));
+    }).on('click', '#mainmenu', function(e){
+        e.stopPropagation();
     }).on('click', '.accardeon .accardeon__click', function(){
-        $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
+        if ($(this).closest('.accardeon').hasClass('active')) {
+            $(this).closest('.accardeon').removeClass('active');
+        } else {
+            $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
+        }
         return false;
     }).on('click', '.select .select__main', function() {
         if ($(this).parent().hasClass('active')) {
@@ -64,22 +76,24 @@ $(function(){
         return false;
     }).on('click', '.popup__overlay', function(){
         $(this).closest('.popup').hide();
-    }).on('click', '.profile-menu', function(){
+    }).on('click', '.profile-menu', function(e){
+        e.stopPropagation();
         $(this).addClass('active');
     }).on('click', 'button.flag-date__ico', function(){
         $(this).toggleClass('checked');
-    }).on('click', '.hider-checkbox', function(){
-        var I = $(this).attr('data-hide-input');
-        $('[data-hide="' + I + '"]').toggle($(this).find('input[type=checkbox]:first').is(':checked'));
+    }).on('change', '.hider-checkbox input[type=checkbox]', function(e){
+        $('[data-hide="' + $(this).parent().attr('data-hide-input') + '"]').toggle(!(this.checked));
+    }).on('change', '.show-checkbox input[type=checkbox]', function(e){
+        $('[data-show="' + $(this).parent().attr('data-show-input') + '"]').toggle(this.checked);
     });
 
     $('html').on('click', 'body', function() {
         $('.select').removeClass('active');
-    });
-
-    new Swiper('.main-slider', {
-        loop: true, slidesPerView: 1, speed: 1000,
-        pagination: {el: '.swiper-pagination', clickable: true}
+        $('button.burger').removeClass('active');
+        $('#mainmenu').removeClass('active');
+        $('.profile-menu').removeClass('active');
+    }).on('click', 'header', function(){
+        $('#mainfilter').hide();
     });
 
     new Swiper('.gallery__slider', {
@@ -87,51 +101,31 @@ $(function(){
         navigation: {nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev'},
     });
 
-    new Swiper('.slider-content__wrap', {
-        loop: false, slidesPerView: 1, speed: 1000, spaceBetween: 30
-    });
-
-    new Swiper('.problems__slider', {
-        loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
-        navigation: {nextEl: '.problems .next', prevEl: '.problems .prev'},
-        breakpoints: {
-            768: {slidesPerView: 2}
-        }
-    });
-
-    new Swiper('.reports-slider', {
-        loop: false, slidesPerView: 1, speed: 1000, spaceBetween: 30,
-        navigation: {nextEl: '.report__next', prevEl: '.report__prev'}
-    });
-
+    $('.datebirthdaypickr').each(function(){ new AirDatepicker(this, {autoClose : true}); });
+    $('.daterangepickr').each(function(){ new AirDatepicker(this, {autoClose : true, range: true}); });
+    $('.datepickr').each(function(){ new AirDatepicker(this, {autoClose : true}); });
     $('.datetimepickr').each(function(){
-        new AirDatepicker(this, {
-            timepicker: true,
-            autoClose : true,
-            minutesStep: 10
-        });
+        new AirDatepicker(this, {timepicker: true, autoClose : true, minutesStep: 10});
     });
 
-    $('.datebirthdaypickr').each(function(){
-        new AirDatepicker(this, {
-            autoClose : true
-        });
-    });
-
-    $('.datepickr').each(function(){
-        new AirDatepicker(this, {
-            autoClose : true
-        });
-    });
-
-    $('.daterangepickr').each(function(){
-        new AirDatepicker(this, {
-            autoClose : true,
-            range: true
-        });
-    });
+    $('.dtp-test').each(function(){ new AirDatepicker(this, {autoClose : true, inline: true}); });
 
     $('input[data-inputmask]').each(function() {
         $(this).inputmask();
     });
+
+    $('input.autocomplete').each(function(){
+        $(this).autocomplete({
+            noCache: true,
+            minChars: 3,
+        });
+    });
+
+    var map = document.querySelector('#map');
+    if (map) {
+        new google.maps.Map(map, {
+            center: { lat: 55.742403, lng: 37.575313 },
+            zoom: 12,
+        });
+    }
 });

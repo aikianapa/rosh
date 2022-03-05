@@ -29,27 +29,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/common.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/jquery.autocomplete.min.js"></script>
+    <script src="assets/js/air-datepicker.js"></script>
+    <script src="assets/js/jquery.inputmask.min.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
 
 </head><body class="body" data-barba="wrapper">
 <div class="scroll-container" data-scroll-container>
-    <main class="page" data-barba="container" data-barba-namespace="en-version">
-        <header class="header header--transparent header--fixed --unfilter">
+    <header class="header header--transparent header--fixed --unfilter">
     <div class="container --flex --jcsb --aicn"><a class="header__logo" href="index.html"> <img src="./assets/img/logo.svg" alt=""></a>
         <div class="header__left --flex --aicn">
             <div class="header__contacts"> <a class="header__contact" href="tel:+74951320169"> 8 (495) <b>132-01-69</b></a>
-                <div class="header__contact header__contact--small">Пн-Сб, с <b>10:00</b> до <b>21:00</b> </div>
+                <div class="header__contact header__contact--small">Mon-Sat, с <b>10am</b> до <b>9pm</b> </div>
             </div>
-            <a class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
         </div>
         <div class="header__right --flex --aicn">
-            <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
-            <button class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
             <button class="burger"></button>
         </div>
     </div>
 </header>
 
-        <div class="menu" id="mainmenu">
+    <div class="menu" id="mainmenu">
                 <nav class="nav">
                 <div class="nav__link"><a href="all-services.html">Услуги</a></div>
                 <div class="nav__link"><a href="all-problems.html">Проблемы</a></div>
@@ -91,6 +94,7 @@
             </svg></a>
 
 </div>
+    <div class="main" data-barba="container" data-barba-namespace="index">
         <div class="main-slider mb-80">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" style="background-image: url(./assets/img/en/2.jpg)"></div>
@@ -243,7 +247,8 @@
             </div>
             <div class="map" id="map"></div>
         </div>
-                <div class="footer">
+    </div>
+            <div class="footer">
             <div class="container">
                 <div class="container-fluid">
                     <div class="row footer__top">
@@ -273,7 +278,7 @@
             </div>
         </div>
 
-                <div class="mainfilter" id="mainfilter">
+            <div class="mainfilter" id="mainfilter">
             <div class="mainfilter__close --closefilter">
                 <svg class="svgsprite _close">
                     <use xlink:href="assets/img/sprites/svgsprites.svg#close"></use>
@@ -1367,8 +1372,8 @@
             </div>
         </div>
 
-    </main>
-</div><a class="phone --openpopup" href="#" data-popup="--fast"><svg class="svgsprite _phone">
+</div>
+<a class="phone --openpopup" href="#" data-popup="--fast"><svg class="svgsprite _phone">
     <use xlink:href="assets/img/sprites/svgsprites.svg#phone"></use>
 </svg></a>
 <div class="popup --fast">
@@ -1805,7 +1810,7 @@
             </label>
         </div>
         <div class="input">
-            <input class="search__input" type="text" placeholder="Поиск по услугам">
+            <input class="search__input" type="text" placeholder="Поиск по услугам" id="popup-services-list">
             <div class="search__drop">
                 <label class="search__drop-item">
                     <div class="search__drop-name">Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения).</div>
@@ -1873,11 +1878,11 @@
                 </svg>
             </button>
         </div>
-        <label class="checkbox checkbox--record">
+        <label class="checkbox checkbox--record show-checkbox" data-show-input="service">
             <input class="checkbox-visible-next-form" type="checkbox"><span></span>
             <div class="checbox__name">Консультация врача</div>
         </label>
-        <div class="select-form" style="display: none;">
+        <div class="select-form" style="display: none;" data-show="service">
             <div class="text-bold mb-20">Тип события</div>
             <div class="popups__text-chexboxs">
                 <label class="text-radio">
@@ -2041,6 +2046,92 @@
         <p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
     </div>
 </div>
+<script type="text/javascript">
+    var servicesList = [
+        {
+            "value" : 'Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения)',
+            "data"  : {
+                "tags" : [
+                    {"color": "yellow", "tag": "Л"},
+                    {"color": "green", "tag": "Т"}
+                ],
+                "price" : 7000
+            }
+        },
+        {
+            "value" : 'Дерматологический пилинг Cosmedix Purity ретиноевый',
+            "data"  : {
+                "tags" : [
+                    {"color": "yellow", "tag": "Л"},
+                ],
+                "price" : 7000
+            }
+        },
+        {
+            "value" : 'Дерматологический пилинг Enerpeel Jessners салициловый-резорциновый',
+            "data"  : {
+                "tags" : [
+                    {"color": "yellow", "tag": "Л"},
+                    {"color": "green", "tag": "Т"}
+                ],
+                "price" : 7000
+            }
+        },
+        {
+            "value" : 'Дерматологический пилинг для кожи с гиперпигментацией "SC Pigment Balancing Peel"',
+            "data"  : {
+                "tags" : [
+                    {"color": "yellow", "tag": "Л"},
+                    {"color": "green", "tag": "Т"}
+                ],
+                "price" : 7000
+            }
+        }
+    ];
+
+    $(function(){
+        $('#popup-services-list').autocomplete({
+            noCache      : true,
+            minChars     : 1,
+//            delimiter    : ',',
+            lookup       : servicesList,
+            beforeRender : function(container, suggestions) {
+                var CNT = $(container);
+                $(container).addClass('search__drop').html('');
+                $(suggestions).each(function(index){
+                    var PRICE = new Intl.NumberFormat('ru-RU').format(this.data.price);
+                    var TAGS  = $('<div></div>').addClass('search__drop-tags');
+                    $(this.data.tags).each(function(){
+                        TAGS.append(
+                            $('<div></div>').addClass('search__drop-tag --' + this.color).text(this.tag)
+                        );
+                    });
+                    CNT.append(
+                        $('<label></label>').addClass('search__drop-item autocomplete-suggestion').attr({"data-index" : index}).append(
+                            $('<div></div>').addClass('search__drop-name').text(this.value)
+                        ).append(
+                            $('<div></div>').addClass('search__drop-right').append(TAGS).append(
+                                $('<div></div>').addClass('search__drop-summ').text(PRICE + ' ₽')
+                            )
+                                /*.append(
+                                $('<div></div>').addClass('search__drop-check').append(
+                                    $('<div></div>').addClass('checkbox').append(
+                                        $('<input type="checkbox">')
+                                    ).append(
+                                        $('<span></span>')
+                                    )
+                                )
+                            ) */
+                        )
+                    )
+                });
+            },
+            onSelect : function(suggestion) {
+                console.log(suggestion.value);
+            }
+        });
+    });
+</script>
 <div class="popup --analize-type">
     <div class="popup__overlay"></div>
     <div class="popup__panel">
@@ -2625,12 +2716,12 @@
         </form>
     </div>
 </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>
-<!-- script src="assets/js/vendors~main.bundle.js"></script -->
-<script src="assets/js/jquery-1.12.4.min.js"></script>
-<script src="assets/js/air-datepicker.js"></script>
-<script src="assets/js/jquery.inputmask.min.js"></script>
-<script src="assets/js/swiper-bundle.min.js"></script>
-<script src="assets/js/main.js"></script>
-
+<script type="text/javascript">
+    $(function(){
+        new Swiper('.main-slider', {
+            loop: true, slidesPerView: 1, speed: 1000,
+            pagination: {el: '.swiper-pagination', clickable: true}
+        });
+    });
+</script>
 </body></html>
