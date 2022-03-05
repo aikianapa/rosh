@@ -19,11 +19,6 @@ div.account__tab-items { display: block; }
 div.account__tab-items div.buttons { float: right; display: none; }
 div.account__tab-items div.buttons > label { position: absolute; right: 2em; top: 3px; }
 
-div.admin-events-heap {
-    display: none; margin: 0 0 1em 4px; padding: 0 0 1em 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .2);
-}
-
 div.accardeon.active > div.accardeon__list { display: block; }
 div.select.active > div.select__list { display: block; }
 div.swiper-horizontal { overflow: hidden; }
@@ -68,15 +63,23 @@ button.flag-date__ico.checked { color: red; }
     cursor: pointer;
 }
 
+div.admin-events-item.heap span.dt > .title { display: none; margin-right: .5em; }
+
 @media (max-width: 980px) {
     div.account__tab-items div.buttons { display: block; }
-    div.admin-events-heap { display: block; }
-    div.admin-events-heap div.flag-date { display: block; }
-    div.admin-events-heap div.flag-date > label { top: 2px; display: inline-block; height: 1em; }
-    div.admin-events-heap div.flag-date > label > span { top: -1px; }
-    div.admin-events-item div.flag-date > button,
-    div.admin-events-item div.flag-date > label { display: none; }
-    div.admin-events-heap span.dt { margin-left: 2em; float: right; }
+    div.admin-events-item.heap {
+        display: block;
+        margin: 0 0 1em 4px; padding: 0 0 1em 0;
+        border-bottom: 1px solid rgba(0, 0, 0, .2);
+    }
+
+    div.admin-events-item.heap div.flag-date { display: block; }
+    div.admin-events-item.heap div.flag-date > label { top: 2px; display: inline-block; height: 1em; }
+    div.admin-events-item.heap div.flag-date > label > span { top: -1px; }
+    div.admin-events-item.heap span.dt { margin-left: 2em; float: right; }
+    div.admin-events-item.heap span.dt > .title { display: inline-block; }
+    div.admin-events-item span.dt > i,
+    div.admin-events-item span.dt > br { display: none; }
 }
 
 @media (max-width: 767px) {
@@ -84,6 +87,10 @@ button.flag-date__ico.checked { color: red; }
 
     div.header__admin > span.lower-deck { width: 350px; position: absolute; left: 0; top: 60px; }
     div.header__admin > a.btn { padding-left: 0; padding-bottom: 0; }
+
+    form.profile-edit p.text-bold.delivery-address {
+        margin-top: 2em;
+    }
 }
 
 @media (max-width: 550px) {
