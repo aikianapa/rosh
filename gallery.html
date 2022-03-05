@@ -1401,11 +1401,11 @@
                 <input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
                 <div class="input__placeholder">Номер телефона</div>
             </div>
-            <div class="select-form">
-                <label class="checkbox mainfilter__checkbox">
-                    <input class="checkbox-hidden-next-form" type="checkbox"><span></span>
-                    <div class="checbox__name text-grey">Я не знаю, кого выбрать</div>
-                </label>
+            <label class="checkbox mainfilter__checkbox hider-checkbox" data-hide-input="expert">
+                <input class="checkbox-hidden-next-form" type="checkbox"><span></span>
+                <div class="checbox__name text-grey">Я не знаю, кого выбрать</div>
+            </label>
+            <div class="select-form" data-hide="expert">
                 <div class="select">
                     <div class="select__main">Хачатурян Любовь Андреева</div>
                     <div class="select__list">
@@ -1834,11 +1834,11 @@
                 </label>
             </div>
         </div>
-        <label class="checkbox checkbox--record">
+        <label class="checkbox checkbox--record hider-checkbox" data-hide-input="service">
             <input class="checkbox-hidden-next-form" type="checkbox"><span></span>
             <div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
         </label>
-        <div class="select-form">
+        <div class="select-form" data-hide="service">
             <div class="select">
                 <div class="select__main">
                     <div class="select__placeholder">Услуга</div>
@@ -1898,11 +1898,11 @@
                 </div>
             </label>
         </div>
-        <label class="checkbox checkbox--record">
+        <label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
             <input class="checkbox-hidden-next-form" type="checkbox"><span></span>
             <div class="checbox__name">Я не знаю, кого выбрать</div>
         </label>
-        <div class="select-form">
+        <div class="select-form" data-hide="expert">
             <div class="select">
                 <div class="select__main">
                     <div class="select__placeholder">Выберите специалиста</div>

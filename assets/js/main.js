@@ -60,6 +60,13 @@ $(function(){
         $(this).addClass('active');
     }).on('click', 'button.flag-date__ico', function(){
         $(this).toggleClass('checked');
+    }).on('click', '.hider-checkbox', function(){
+        var I = $(this).attr('data-hide-input');
+        if ($(this).find('input[type=checkbox]:first').is(':checked')) {
+            $('[data-hide="' + I + '"]').hide();
+        } else {
+            $('[data-hide="' + I + '"]').show();
+        }
     });
 
     $('html').on('click', 'body', function() {
