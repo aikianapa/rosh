@@ -48,10 +48,20 @@ button.flag-date__ico.checked { color: red; }
     display: none;
 }
 
+.air-datepicker-cell.-current- {
+    color: #080e0d !important;
+}
+
 .air-datepicker-cell.-selected-,
 .air-datepicker-cell.-selected-.-current-,
 .air-datepicker-cell.-selected-.-focus- {
-    background: black;
+    background: #fbf3e1 !important;
+    color: #080e0d !important;
+}
+
+.air-datepicker-nav--action,
+.air-datepicker-body--day-name {
+    color: #debc70 !important;
 }
 
 .--closefilter {

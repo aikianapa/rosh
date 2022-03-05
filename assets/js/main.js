@@ -79,6 +79,8 @@ $(function(){
         $(this).toggleClass('checked');
     }).on('change', '.hider-checkbox input[type=checkbox]', function(e){
         $('[data-hide="' + $(this).parent().attr('data-hide-input') + '"]').toggle(!(this.checked));
+    }).on('change', '.show-checkbox input[type=checkbox]', function(e){
+        $('[data-show="' + $(this).parent().attr('data-show-input') + '"]').toggle(this.checked);
     });
 
     $('html').on('click', 'body', function() {
@@ -102,6 +104,7 @@ $(function(){
         new AirDatepicker(this, {timepicker: true, autoClose : true, minutesStep: 10});
     });
 
+    $('.dtp-test').each(function(){ new AirDatepicker(this, {autoClose : true, inline: true}); });
 
     $('input[data-inputmask]').each(function() {
         $(this).inputmask();
