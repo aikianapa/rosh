@@ -19,44 +19,7 @@
             <div class="search search--service">
                 <div class="search__block --flex --aicn">
                     <div class="input">
-                        <input class="search__input" type="text" placeholder="Поиск">
-                        <div class="search__drop">
-                            <label class="search__drop-item">
-                                <div class="search__drop-name">Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения).</div>
-                                <div class="search__drop-right">
-                                    <div class="search__drop-tags">
-                                        <div class="search__drop-tag --yellow">Л</div>
-                                        <div class="search__drop-tag --green">Т</div>
-                                    </div>
-                                </div>
-                            </label>
-                            <label class="search__drop-item">
-                                <div class="search__drop-name">Дерматологический пилинг Cosmedix Purity ретиноевый</div>
-                                <div class="search__drop-right">
-                                    <div class="search__drop-tags">
-                                        <div class="search__drop-tag --yellow">Л</div>
-                                    </div>
-                                </div>
-                            </label>
-                            <label class="search__drop-item">
-                                <div class="search__drop-name">Дерматологический пилинг Enerpeel Jessners салициловый-резорциновый </div>
-                                <div class="search__drop-right">
-                                    <div class="search__drop-tags">
-                                        <div class="search__drop-tag --yellow">Л</div>
-                                        <div class="search__drop-tag --green">Т</div>
-                                    </div>
-                                </div>
-                            </label>
-                            <label class="search__drop-item">
-                                <div class="search__drop-name">Дерматологический пилинг для кожи с гиперпигментацией "SC Pigment Balancing Peel" </div>
-                                <div class="search__drop-right">
-                                    <div class="search__drop-tags">
-                                        <div class="search__drop-tag --yellow">Л</div>
-                                        <div class="search__drop-tag --green">Т</div>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
+                        <input class="search__input" type="text" placeholder="Поиск" id="services-list">
                     </div>
                     <button class="btn btn--white">Найти</button>
                 </div>
@@ -157,4 +120,76 @@
     </main>
 </div>{{popup}}
 {{js}}
+<script type="text/javascript">
+    var servicesList = [
+        {
+            "value" : 'Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения)',
+            "data"  : {
+                "tags" : [
+                    {"color": "yellow", "tag": "Л"},
+                    {"color": "green", "tag": "Т"}
+                ]
+            }
+        },
+        {
+            "value" : 'Дерматологический пилинг Cosmedix Purity ретиноевый',
+            "data"  : {
+                "tags" : [
+                    {"color": "yellow", "tag": "Л"},
+                ]
+            }
+        },
+        {
+            "value" : 'Дерматологический пилинг Enerpeel Jessners салициловый-резорциновый',
+            "data"  : {
+                "tags" : [
+                    {"color": "yellow", "tag": "Л"},
+                    {"color": "green", "tag": "Т"}
+                ]
+            }
+        },
+        {
+            "value" : 'Дерматологический пилинг для кожи с гиперпигментацией "SC Pigment Balancing Peel"',
+            "data"  : {
+                "tags" : [
+                    {"color": "yellow", "tag": "Л"},
+                    {"color": "green", "tag": "Т"}
+                ]
+            }
+        }
+    ];
+
+    $(function(){
+        $('#services-list').autocomplete({
+            noCache      : true,
+            minChars     : 1,
+            lookup       : servicesList,
+            beforeRender : function(container, suggestions) {
+                var CNT = $(container);
+                $(container).addClass('search__drop').html('');
+                $(suggestions).each(function(index){
+                    var TAGS = $('<div></div>').addClass('search__drop-tags');
+                    $(this.data.tags).each(function(){
+                        TAGS.append(
+                            $('<div></div>').addClass('search__drop-tag --' + this.color).text(this.tag)
+                        );
+                    });
+                    CNT.append(
+                        $('<label></label>')
+                            .addClass('search__drop-item autocomplete-suggestion')
+                            .attr({"data-index" : index})
+                            .append(
+                                $('<div></div>').addClass('search__drop-name').text(this.value)
+                            ).append(
+                            $('<div></div>').addClass('search__drop-right').append(TAGS)
+                        )
+                    )
+                });
+            },
+            onSelect : function(suggestion) {
+                console.log(suggestion.value);
+            }
+        });
+    });
+</script>
 </body></html>

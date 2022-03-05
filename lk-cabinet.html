@@ -48,9 +48,7 @@
     <svg class="svgsprite _drop">
         <use xlink:href="assets/img/sprites/svgsprites.svg#drop"></use>
     </svg>
-    <div class="enter__panel"><a class="enter__btn text-small" href="/lk-admin-edit.html">Редактировать</a>
-        <div class="enter__btn text-small">Выйти</div>
-    </div>
+    <div class="enter__panel"><div class="enter__btn text-small">Выйти</div></div>
 </button>
 
             <button class="burger"></button>
@@ -393,12 +391,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="account__history">
+                <div class="account__history data-tab-wrapper" data-tabs="hislech">
                     <div class="account__tab-items">
-                        <div class="account__tab-item active">История посещений</div>
-                        <div class="account__tab-item">Продолжительное лечение</div>
+                        <div class="account__tab-item data-tab-link active" data-tabs="hislech" data-tab="his">История посещений</div>
+                        <div class="account__tab-item data-tab-link" data-tabs="hislech" data-tab="lech">Продолжительное лечение</div>
                     </div>
-                    <div class="account__tab active">
+                    <div class="account__tab data-tab-item active" data-tab="his">
                         <div class="account__table">
                             <div class="account__table-head">
                                 <div class="history-item">Дата</div>
@@ -492,7 +490,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account__tab">
+                    <div class="account__tab data-tab-item" data-tab="lech">
                         <div class="account__table">
                             <div class="account__table-head">
                                 <div class="healing-item">Дата</div>
@@ -2974,6 +2972,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>
 <!-- script src="assets/js/vendors~main.bundle.js"></script -->
 <script src="assets/js/jquery-1.12.4.min.js"></script>
+<script src="assets/js/jquery.autocomplete.min.js"></script>
 <script src="assets/js/air-datepicker.js"></script>
 <script src="assets/js/jquery.inputmask.min.js"></script>
 <script src="assets/js/swiper-bundle.min.js"></script>

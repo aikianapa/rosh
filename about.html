@@ -2689,9 +2689,18 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>
 <!-- script src="assets/js/vendors~main.bundle.js"></script -->
 <script src="assets/js/jquery-1.12.4.min.js"></script>
+<script src="assets/js/jquery.autocomplete.min.js"></script>
 <script src="assets/js/air-datepicker.js"></script>
 <script src="assets/js/jquery.inputmask.min.js"></script>
 <script src="assets/js/swiper-bundle.min.js"></script>
 <script src="assets/js/main.js"></script>
 
+<script type="text/javascript">
+    $(function(){
+        new Swiper('.slider-content__wrap', {
+            loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
+            navigation: {nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev'}
+        });
+    });
+</script>
 </body></html>

@@ -2989,9 +2989,26 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>
 <!-- script src="assets/js/vendors~main.bundle.js"></script -->
 <script src="assets/js/jquery-1.12.4.min.js"></script>
+<script src="assets/js/jquery.autocomplete.min.js"></script>
 <script src="assets/js/air-datepicker.js"></script>
 <script src="assets/js/jquery.inputmask.min.js"></script>
 <script src="assets/js/swiper-bundle.min.js"></script>
 <script src="assets/js/main.js"></script>
 
+<script type="text/javascript">
+    $(function(){
+        new Swiper('.problems__slider', {
+            loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
+            navigation: {nextEl: '.problems .next', prevEl: '.problems .prev'},
+            breakpoints: {
+                768: {slidesPerView: 2}
+            }
+        });
+
+        new Swiper('.reports-slider', {
+            loop: false, slidesPerView: 1, speed: 1000, spaceBetween: 30,
+            navigation: {nextEl: '.report__next', prevEl: '.report__prev'}
+        });
+    });
+</script>
 </body></html>

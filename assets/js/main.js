@@ -15,6 +15,11 @@ $(function(){
         var P = $(this).attr('data-popup');
         $('body').find('div.' + P + ':first').show();
         return false;
+    }).on('click', '.--switchpopup', function() {
+        var P = $(this).attr('data-popup');
+        $(this).closest('.popup').hide();
+        $('body').find('div.' + P + ':first').show();
+        return false;
     }).on('click', '.popup__close', function(){
         $(this).closest('.popup').hide();
         return false;
@@ -67,19 +72,20 @@ $(function(){
         return false;
     }).on('click', '.popup__overlay', function(){
         $(this).closest('.popup').hide();
-    }).on('click', '.profile-menu', function(){
+    }).on('click', '.profile-menu', function(e){
+        e.stopPropagation();
         $(this).addClass('active');
     }).on('click', 'button.flag-date__ico', function(){
         $(this).toggleClass('checked');
-    }).on('click', '.hider-checkbox', function(){
-        var I = $(this).attr('data-hide-input');
-        $('[data-hide="' + I + '"]').toggle($(this).find('input[type=checkbox]:first').is(':checked'));
+    }).on('change', '.hider-checkbox input[type=checkbox]', function(e){
+        $('[data-hide="' + $(this).parent().attr('data-hide-input') + '"]').toggle(!(this.checked));
     });
 
     $('html').on('click', 'body', function() {
         $('.select').removeClass('active');
         $('button.burger').removeClass('active');
         $('#mainmenu').removeClass('active');
+        $('.profile-menu').removeClass('active');
     }).on('click', 'header', function(){
         $('#mainfilter').hide();
     });
@@ -89,23 +95,30 @@ $(function(){
         navigation: {nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev'},
     });
 
+    $('.datebirthdaypickr').each(function(){ new AirDatepicker(this, {autoClose : true}); });
+    $('.daterangepickr').each(function(){ new AirDatepicker(this, {autoClose : true, range: true}); });
+    $('.datepickr').each(function(){ new AirDatepicker(this, {autoClose : true}); });
     $('.datetimepickr').each(function(){
         new AirDatepicker(this, {timepicker: true, autoClose : true, minutesStep: 10});
     });
 
-    $('.datebirthdaypickr').each(function(){
-        new AirDatepicker(this, {autoClose : true});
-    });
-
-    $('.datepickr').each(function(){
-        new AirDatepicker(this, {autoClose : true});
-    });
-
-    $('.daterangepickr').each(function(){
-        new AirDatepicker(this, {autoClose : true, range: true});
-    });
 
     $('input[data-inputmask]').each(function() {
         $(this).inputmask();
     });
+
+    $('input.autocomplete').each(function(){
+        $(this).autocomplete({
+            noCache: true,
+            minChars: 3,
+        });
+    });
+
+    var map = document.querySelector('#map');
+    if (map) {
+        new google.maps.Map(map, {
+            center: { lat: 55.742403, lng: 37.575313 },
+            zoom: 12,
+        });
+    }
 });
