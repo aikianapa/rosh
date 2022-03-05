@@ -30,7 +30,11 @@ $(function(){
     }).on('click', '#mainmenu', function(e){
         e.stopPropagation();
     }).on('click', '.accardeon .accardeon__click', function(){
-        $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
+        if ($(this).closest('.accardeon').hasClass('active')) {
+            $(this).closest('.accardeon').removeClass('active');
+        } else {
+            $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
+        }
         return false;
     }).on('click', '.select .select__main', function() {
         if ($(this).parent().hasClass('active')) {

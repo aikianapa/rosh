@@ -65,6 +65,8 @@ button.flag-date__ico.checked { color: red; }
 
 div.admin-events-item.heap span.dt > .title { display: none; margin-right: .5em; }
 
+.acount__table-main::after { top: 2em; }
+
 @media (max-width: 980px) {
     div.account__tab-items div.buttons { display: block; }
     div.admin-events-item.heap {
@@ -103,6 +105,14 @@ div.admin-events-item.heap span.dt > .title { display: none; margin-right: .5em;
     div.header__admin > a.btn { padding-right: 0; }
 
     a.header__logo { padding-top: .3em; }
+
+    div.admin-editor__type-event label.text-radio > span {
+        min-width: 100px;
+    }
+
+    div.profile-education__input {
+        width: 100%;
+    }
 }
 
 @media (max-width: 350px) {
