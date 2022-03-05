@@ -48,6 +48,16 @@ button.flag-date__ico.checked { color: red; }
     display: none;
 }
 
+.air-datepicker-cell.-selected-,
+.air-datepicker-cell.-selected-.-current-,
+.air-datepicker-cell.-selected-.-focus- {
+    background: black;
+}
+
+.--closefilter {
+    cursor: pointer;
+}
+
 @media (max-width: 980px) {
     div.account__tab-items div.buttons { display: block; }
     div.admin-events-heap { display: block; }

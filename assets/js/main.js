@@ -18,9 +18,12 @@ $(function(){
     }).on('click', '.popup__close', function(){
         $(this).closest('.popup').hide();
         return false;
-    }).on('click', 'button.burger', function(){
+    }).on('click', 'button.burger', function(e){
+        e.stopPropagation();
         $(this).toggleClass('active');
         $('#mainmenu').toggleClass('active', $(this).hasClass('active'));
+    }).on('click', '#mainmenu', function(e){
+        e.stopPropagation();
     }).on('click', '.accardeon .accardeon__click', function(){
         $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
         return false;
@@ -75,11 +78,10 @@ $(function(){
 
     $('html').on('click', 'body', function() {
         $('.select').removeClass('active');
-    });
-
-    new Swiper('.main-slider', {
-        loop: true, slidesPerView: 1, speed: 1000,
-        pagination: {el: '.swiper-pagination', clickable: true}
+        $('button.burger').removeClass('active');
+        $('#mainmenu').removeClass('active');
+    }).on('click', 'header', function(){
+        $('#mainfilter').hide();
     });
 
     new Swiper('.gallery__slider', {
@@ -87,48 +89,20 @@ $(function(){
         navigation: {nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev'},
     });
 
-    new Swiper('.slider-content__wrap', {
-        loop: false, slidesPerView: 1, speed: 1000, spaceBetween: 30
-    });
-
-    new Swiper('.problems__slider', {
-        loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
-        navigation: {nextEl: '.problems .next', prevEl: '.problems .prev'},
-        breakpoints: {
-            768: {slidesPerView: 2}
-        }
-    });
-
-    new Swiper('.reports-slider', {
-        loop: false, slidesPerView: 1, speed: 1000, spaceBetween: 30,
-        navigation: {nextEl: '.report__next', prevEl: '.report__prev'}
-    });
-
     $('.datetimepickr').each(function(){
-        new AirDatepicker(this, {
-            timepicker: true,
-            autoClose : true,
-            minutesStep: 10
-        });
+        new AirDatepicker(this, {timepicker: true, autoClose : true, minutesStep: 10});
     });
 
     $('.datebirthdaypickr').each(function(){
-        new AirDatepicker(this, {
-            autoClose : true
-        });
+        new AirDatepicker(this, {autoClose : true});
     });
 
     $('.datepickr').each(function(){
-        new AirDatepicker(this, {
-            autoClose : true
-        });
+        new AirDatepicker(this, {autoClose : true});
     });
 
     $('.daterangepickr').each(function(){
-        new AirDatepicker(this, {
-            autoClose : true,
-            range: true
-        });
+        new AirDatepicker(this, {autoClose : true, range: true});
     });
 
     $('input[data-inputmask]').each(function() {
