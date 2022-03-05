@@ -113,6 +113,14 @@ div.admin-events-item.heap span.dt > .title { display: none; margin-right: .5em;
     div.profile-education__input {
         width: 100%;
     }
+
+    header.header-user div.header__right > button.btn-link {
+        display: none;
+    }
+
+    header a.btn[href="#mainfilter"] {
+        padding: 0 20px; height: 2.4em; line-height: 2.4em;
+    }
 }
 
 @media (max-width: 350px) {

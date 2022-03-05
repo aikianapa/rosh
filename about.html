@@ -2157,6 +2157,7 @@
         $('#popup-services-list').autocomplete({
             noCache      : true,
             minChars     : 1,
+//            delimiter    : ',',
             lookup       : servicesList,
             beforeRender : function(container, suggestions) {
                 var CNT = $(container);
@@ -2175,7 +2176,8 @@
                         ).append(
                             $('<div></div>').addClass('search__drop-right').append(TAGS).append(
                                 $('<div></div>').addClass('search__drop-summ').text(PRICE + ' ₽')
-                            ).append(
+                            )
+                                /*.append(
                                 $('<div></div>').addClass('search__drop-check').append(
                                     $('<div></div>').addClass('checkbox').append(
                                         $('<input type="checkbox">')
@@ -2183,7 +2185,7 @@
                                         $('<span></span>')
                                     )
                                 )
-                            )
+                            ) */
                         )
                     )
                 });

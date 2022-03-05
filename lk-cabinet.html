@@ -37,10 +37,10 @@
     <script src="assets/js/swiper-bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
 
-</head><body class="body" data-barba="wrapper">
+</head><body class="body lk-cabinet" data-barba="wrapper">
 <div class="scroll-container" data-scroll-container>
     <main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
-        <header class="header header--transparent header--fixed --unfilter">
+        <header class="header header--transparent header--fixed --unfilter header-user">
     <div class="container --flex --jcsb --aicn"><a class="header__logo" href="index.html"> <img src="./assets/img/logo.svg" alt=""></a>
         <div class="header__left --flex --aicn">
             <div class="header__contacts"> <a class="header__contact" href="tel:+74951320169"> 8 (495) <b>132-01-69</b></a>
@@ -2440,6 +2440,7 @@
         $('#popup-services-list').autocomplete({
             noCache      : true,
             minChars     : 1,
+//            delimiter    : ',',
             lookup       : servicesList,
             beforeRender : function(container, suggestions) {
                 var CNT = $(container);
@@ -2458,7 +2459,8 @@
                         ).append(
                             $('<div></div>').addClass('search__drop-right').append(TAGS).append(
                                 $('<div></div>').addClass('search__drop-summ').text(PRICE + ' ₽')
-                            ).append(
+                            )
+                                /*.append(
                                 $('<div></div>').addClass('search__drop-check').append(
                                     $('<div></div>').addClass('checkbox').append(
                                         $('<input type="checkbox">')
@@ -2466,7 +2468,7 @@
                                         $('<span></span>')
                                     )
                                 )
-                            )
+                            ) */
                         )
                     )
                 });
