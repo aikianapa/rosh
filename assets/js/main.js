@@ -20,11 +20,7 @@ $(function(){
         return false;
     }).on('click', 'button.burger', function(){
         $(this).toggleClass('active');
-        if ($(this).hasClass('active')) {
-            $('#mainmenu').addClass('active');
-        } else {
-            $('#mainmenu').removeClass('active');
-        }
+        $('#mainmenu').toggleClass('active', $(this).hasClass('active'));
     }).on('click', '.accardeon .accardeon__click', function(){
         $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
         return false;
@@ -38,16 +34,28 @@ $(function(){
             $(this).parent().addClass('active');
         }
         return false;
-    }).on('click', '.select .select__item', function() {
+    }).on('click', '.select .select__item', function(e) {
+        e.stopPropagation();
+        var value = false;
         if ($(this).hasClass('select__item--checkbox')) {
+            var ne = false;
+            value = [];
+            $(this).closest('.select__list').find('.select__item--checkbox').each(function(){
+                if ($(this).find('input[type=checkbox]:checked').length) {
+                    value.push($(this).find('.select__name:first').text());
+                    ne = true;
+                }
+            });
+            value = value.join(', ');
+            $(this).closest('.select').toggleClass('has-values', ne).find('.select__values:first').html(value);
         } else {
-            var value = $(this).html();
+            value = $(this).html();
             $(this).addClass('active').siblings('.select__item').removeClass('active');
             $(this).closest('.select').removeClass('active').find('.select__main:first').html(value);
+            $(this).closest('.select').find('input[type=hidden]').each(function(){
+                $(this).val(value);
+            });
         }
-        return false;
-    }).on('click', '.select .select__item label', function() {
-        console.log('LABLE');
     }).on('click', '.admin-editor button.user__edit', function(){
         $(this).closest('.admin-editor').find('form.profile-edit:first').addClass('active');
         return false;
@@ -62,11 +70,7 @@ $(function(){
         $(this).toggleClass('checked');
     }).on('click', '.hider-checkbox', function(){
         var I = $(this).attr('data-hide-input');
-        if ($(this).find('input[type=checkbox]:first').is(':checked')) {
-            $('[data-hide="' + I + '"]').hide();
-        } else {
-            $('[data-hide="' + I + '"]').show();
-        }
+        $('[data-hide="' + I + '"]').toggle($(this).find('input[type=checkbox]:first').is(':checked'));
     });
 
     $('html').on('click', 'body', function() {

@@ -44,6 +44,10 @@ button.flag-date__ico.checked { color: red; }
 
 .air-datepicker-global-container { z-index: 10000; }
 
+.select.has-values .select__placeholder {
+    display: none;
+}
+
 @media (max-width: 980px) {
     div.account__tab-items div.buttons { display: block; }
     div.admin-events-heap { display: block; }
