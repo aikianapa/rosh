@@ -16,11 +16,11 @@
                 <input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
                 <div class="input__placeholder">Номер телефона</div>
             </div>
-            <div class="select-form">
-                <label class="checkbox mainfilter__checkbox">
-                    <input class="checkbox-hidden-next-form" type="checkbox"><span></span>
-                    <div class="checbox__name text-grey">Я не знаю, кого выбрать</div>
-                </label>
+            <label class="checkbox mainfilter__checkbox hider-checkbox" data-hide-input="expert">
+                <input class="checkbox-hidden-next-form" type="checkbox"><span></span>
+                <div class="checbox__name text-grey">Я не знаю, кого выбрать</div>
+            </label>
+            <div class="select-form" data-hide="expert">
                 <div class="select">
                     <div class="select__main">Хачатурян Любовь Андреева</div>
                     <div class="select__list">
