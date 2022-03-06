@@ -79,35 +79,48 @@
                             <div class="lk-title">Лицензия</div>
                             <div class="profile-licenses row">
                                 <div class="col-md-6">
-                                    <div class="profile-licenses__inputs">
+                                    <div class="profile-licenses__inputs repeater-container" data-repeater="license">
                                         <div class="profile-licenses__input input input--grey">
                                             <input class="input__control" type="text" placeholder="Добавьте лицензию" value="165335789">
                                             <div class="input__placeholder">Добавьте лицензию</div>
                                         </div>
-                                        <div class="profile-licenses__input input input--grey">
-                                            <input class="input__control" type="text" placeholder="Добавьте лицензию">
-                                            <div class="input__placeholder">Добавьте лицензию</div><a class="profile-licenses__delete" href="#">
-                                                <svg class="svgsprite _delete-black">
-                                                    <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
-                                                </svg></a>
-                                        </div>
-                                        <div class="profile-licenses__input input input--grey">
+                                        <div class="profile-licenses__input input input--grey repeater-item">
                                             <input class="input__control" type="text" placeholder="Добавьте лицензию">
                                             <div class="input__placeholder">Добавьте лицензию</div>
-                                            <div class="profile-licenses__delete">
+                                            <a class="profile-licenses__delete repeater-delete" href="#">
                                                 <svg class="svgsprite _delete-black">
                                                     <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
                                                 </svg>
-                                            </div>
+                                            </a>
+                                        </div>
+                                        <div class="profile-licenses__input input input--grey repeater-item">
+                                            <input class="input__control" type="text" placeholder="Добавьте лицензию">
+                                            <div class="input__placeholder">Добавьте лицензию</div>
+                                            <a class="profile-licenses__delete repeater-delete" href="#">
+                                                <svg class="svgsprite _delete-black">
+                                                    <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
+                                                </svg>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 --flex"><a class="btn btn--black add-license" href="#">Добавить лицензию </a></div>
+                                <div class="col-md-6 --flex">
+                                    <a class="btn btn--black add-license repeater-add" href="#" data-repeater="license">Добавить лицензию</a>
+                                    <div class="profile-licenses__input input input--grey repeater-sample" data-repeater="license">
+                                        <input class="input__control" type="text" placeholder="Добавьте лицензию">
+                                        <div class="input__placeholder">Добавьте лицензию</div>
+                                        <a class="profile-licenses__delete repeater-delete" href="#">
+                                            <svg class="svgsprite _delete-black">
+                                                <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="profile-edit__block profile-education">
                             <div class="lk-title">Образование</div>
-                            <div class="profile-education__wrap">
+                            <div class="profile-education__wrap repeater-container" data-repeater="study">
                                 <div class="profile-education__inner row">
                                     <div class="col-md-6">
                                         <div class="input input--grey">
@@ -132,12 +145,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="profile-education__inner row">
+                                <div class="profile-education__inner row repeater-item">
                                     <div class="col-md-6">
                                         <div class="input input--grey">
                                             <input class="input__control" type="text" placeholder="Название учебного заведения">
                                             <div class="input__placeholder">Название учебного учреждения</div>
-                                            <div class="education__delete">
+                                            <div class="education__delete repeater-delete">
                                                 <svg class="svgsprite _delete-black">
                                                     <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
                                                 </svg>
@@ -163,7 +176,38 @@
                                 </div>
                             </div>
                             <div class="profile-education__inner row">
-                                <div class="col-md-6 --flex"><a class="btn btn--black add-education" href="#">Добавить обучение </a></div>
+                                <div class="col-md-6 --flex">
+                                    <a class="btn btn--black add-education repeater-add" href="#" data-repeater="study">Добавить обучение</a>
+                                    <div class="profile-education__inner row repeater-sample" data-repeater="study">
+                                        <div class="col-md-6">
+                                            <div class="input input--grey">
+                                                <input class="input__control" type="text" placeholder="Название учебного заведения">
+                                                <div class="input__placeholder">Название учебного учреждения</div>
+                                                <div class="education__delete repeater-delete">
+                                                    <svg class="svgsprite _delete-black">
+                                                        <use xlink:href="assets/img/sprites/svgsprites.svg#delete-black"></use>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="profile-education__inputs">
+                                                <div class="profile-education__input">
+                                                    <div class="input input-lk-calendar input--grey">
+                                                        <input class="input__control datepickr" type="text" placeholder="Начало обучения">
+                                                        <div class="input__placeholder">Начало обучения</div>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-education__input">
+                                                    <div class="input input-lk-calendar input--grey">
+                                                        <input class="input__control datepickr" type="text" placeholder="Окончание обучения">
+                                                        <div class="input__placeholder">Окончание обучения</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <button class="btn btn--white">Сохранить</button>

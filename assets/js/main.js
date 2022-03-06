@@ -85,6 +85,23 @@ $(function(){
         $('[data-hide="' + $(this).parent().attr('data-hide-input') + '"]').toggle(!(this.checked));
     }).on('change', '.show-checkbox input[type=checkbox]', function(e){
         $('[data-show="' + $(this).parent().attr('data-show-input') + '"]').toggle(this.checked);
+    }).on('click', '.repeater-delete', function(){
+        $(this).closest('.repeater-item').remove();
+        return false;
+    }).on('click', '.repeater-add', function(){
+        var R = $(this).attr('data-repeater');
+        var S = $('.repeater-sample[data-repeater="' + R + '"]:first');
+        var C = $('.repeater-container[data-repeater="' + R + '"]:first');
+        if (S) if (C) {
+            S = S.clone();
+            S.removeClass('repeater-sample').addClass('repeater-item').appendTo(C);
+            S.trigger('repeaterAdd');
+        }
+        return false;
+    }).on('repeaterAdd', '[data-repeater="study"]', function(){
+        $(this).find('input.datepickr').each(function(){
+            new AirDatepicker(this, {autoClose : true});
+        });
     });
 
     $('html').on('click', 'body', function() {

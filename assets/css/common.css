@@ -67,6 +67,14 @@ div.admin-events-item.heap span.dt > .title { display: none; margin-right: .5em;
 
 .acount__table-main::after { top: 2em; }
 
+label.text-radio > span { text-align: center; }
+
+.admin-events-item:nth-child(6) {
+    width: 7%;
+}
+
+.repeater-sample { display: none !important; }
+
 @media (max-width: 980px) {
     div.account__tab-items div.buttons { display: block; }
     div.admin-events-item.heap {
@@ -78,7 +86,7 @@ div.admin-events-item.heap span.dt > .title { display: none; margin-right: .5em;
     div.admin-events-item.heap div.flag-date { display: block; }
     div.admin-events-item.heap div.flag-date > label { top: 2px; display: inline-block; height: 1em; }
     div.admin-events-item.heap div.flag-date > label > span { top: -1px; }
-    div.admin-events-item.heap span.dt { margin-left: 2em; float: right; }
+    div.admin-events-item.heap span.dt { margin-left: 2em; float: right; text-align: right; }
     div.admin-events-item.heap span.dt > .title { display: inline-block; }
     div.admin-events-item span.dt > i,
     div.admin-events-item span.dt > br { display: none; }

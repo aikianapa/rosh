@@ -562,8 +562,7 @@
                                         </svg>
                                     </div>
                                     <div class="report__pagination">
-                                        <div class="report__pagination-active">01</div>
-                                        <div class="report__pagination-all"></div>
+                                        <div class="report__pagination-active">01</div>/<div class="report__pagination-all">02</div>
                                     </div>
                                     <div class="report__next">
                                         <svg class="svgsprite _next">
@@ -3082,7 +3081,7 @@
 </div>
 <script type="text/javascript">
     $(function(){
-        new Swiper('.problems__slider', {
+        var PS = new Swiper('.problems__slider', {
             loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
             navigation: {nextEl: '.problems .next', prevEl: '.problems .prev'},
             breakpoints: {
@@ -3090,9 +3089,23 @@
             }
         });
 
-        new Swiper('.reports-slider', {
+        var RS = new Swiper('.reports-slider', {
             loop: false, slidesPerView: 1, speed: 1000, spaceBetween: 30,
             navigation: {nextEl: '.report__next', prevEl: '.report__prev'}
+        });
+
+        RS.on('init', function(){
+            var n = RS.activeIndex + 1;
+            var t = RS.slides.length;
+            $('.report__pagination-active').text(String("0" + n).slice(-2));
+            $('.report__pagination-all').text(String("0" + t).slice(-2));
+        });
+
+        RS.on('slideChange', function(){
+            var n = RS.activeIndex + 1;
+            var t = RS.slides.length;
+            $('.report__pagination-active').text(String("0" + n).slice(-2));
+            $('.report__pagination-all').text(String("0" + t).slice(-2));
         });
     });
 </script>
