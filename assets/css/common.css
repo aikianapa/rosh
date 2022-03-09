@@ -1,8 +1,13 @@
 @import "all.css";
 
-header { position: fixed !important; }
-
 div.popup.--service div.text { margin: 0; }
+
+div.ddl + div.ddm { display: none; padding-left: 1.5em; }
+div.ddl.active + div.ddm { display: block; }
+div.ddl > a + svg.svgsprite._drop {
+    margin-left: .8em; width: 20px; height: 10px;
+    vertical-align: middle; margin-top: -8px;
+}
 
 .popup.--service-l .popup__panel {
     max-width: 830px; top: 60px;
