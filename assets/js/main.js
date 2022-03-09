@@ -102,6 +102,12 @@ $(function(){
         $(this).find('input.datepickr').each(function(){
             new AirDatepicker(this, {autoClose : true});
         });
+    }).on('click', '.ddl', function(){
+        $(this).toggleClass('active');
+        return false;
+    }).on('click', '.ddl a', function(){
+        $(this).parent().toggleClass('active');
+        return false;
     });
 
     $('html').on('click', 'body', function() {
