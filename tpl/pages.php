@@ -9,7 +9,7 @@
             <div>
                 <wb-module wb="module=yonger&mode=render&view=header"></wb-module>
             </div>
-        <main class="" data-barba="container" data-barba-namespace="{{_route.name}}">
+        <main class="page" data-barba="container" data-barba-namespace="{{_route.name}}">
             <div>
                 <wb-module wb="module=yonger&mode=render" />
             </div>

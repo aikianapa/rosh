@@ -1,7 +1,7 @@
 <view>
 <div class="scroll-container" data-scroll-container>
     <header class="header header--transparent header--fixed --unfilter">
-    <div class="container --flex --jcsb --aicn"><a class="header__logo" href="index.html"> <img src="./assets/img/logo.svg" alt=""></a>
+    <div class="container --flex --jcsb --aicn"><a class="header__logo" href="/"> <img src="/assets/img/logo.svg" alt=""></a>
         <div class="header__left --flex --aicn">
             <div class="header__contacts"> <a class="header__contact" href="tel:+74951320169"> 8 (495) <b>132-01-69</b></a>
                 <div class="header__contact header__contact--small">Пн-Сб, с <b>10:00</b> до <b>21:00</b> </div>
