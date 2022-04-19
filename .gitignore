@@ -2,3 +2,7 @@
 .idea
 .project
 .backup
+engine
+
+database/_cache
+uploads/_cache
