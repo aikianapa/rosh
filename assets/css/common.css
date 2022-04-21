@@ -9,6 +9,10 @@ div.ddl > a + svg.svgsprite._drop {
     vertical-align: middle; margin-top: -8px;
 }
 
+.radius-20 {
+    border-radius: 20px;
+}
+
 .popup.--service-l .popup__panel {
     max-width: 830px; top: 60px;
     -webkit-transform: translateY(0) translateX(-50%); transform: translateY(0) translateX(-50%);
