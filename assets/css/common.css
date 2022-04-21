@@ -13,6 +13,11 @@ div.ddl > a + svg.svgsprite._drop {
     border-radius: 20px;
 }
 
+.w-100p {
+    width: 100%;
+}
+
+
 .popup.--service-l .popup__panel {
     max-width: 830px; top: 60px;
     -webkit-transform: translateY(0) translateX(-50%); transform: translateY(0) translateX(-50%);

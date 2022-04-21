@@ -29,21 +29,23 @@
             </div>
             <div class="blog-inner-content">
                 <div class="container">
-                    <div class="row">
-                        <wb-module wb="module=yonger&mode=render" />
-                        <wb-jq wb-html=".blog-inner-content .row:eq(0) .col-md-4:eq(0)">
-                            <div class="blog-inner__aside">
-                                <p class="blog-inner__message">Чтобы попасть на процедуру или консультацию к нашим специалистам, позвоните по телефону <a href="tel:{{text2tel({{_var.consultPhone}})}}">{{_var.consultPhone}}</a></p>
-                                <p class="blog-inner__date">{{dateform({{date}})}}</p>
-                                <div class="recomendation"><a class="recomendation" href="#">
-                                        <div class="recomendation__title">Рекомендованная новость</div>
-                                        <div class="recomendation__pic"> <img src="{{cover.0.img}}" alt=""></div>
-                                        <h4 class="h4 recomendation__title">Mini FX</h4>
-                                        <p class="recomendation__text text-small text-grey">Безоперационное удаление локальных жировых отложений на лице, подбородке, шее, на спине (холка), внутренней поверхности плеча и бёдрах⠀</p>
-                                    </a></div>
+                    <div class="render">
+                        <wb-module wb="module=yonger&mode=render"></wb-module>
+                        <wb-jq wb-html=".blog-inner-content .render .row:eq(0) .col-md-4:eq(0)">
+                        <div class="blog-inner__aside">
+                            <p class="blog-inner__message">Чтобы попасть на процедуру или консультацию к нашим специалистам, позвоните по телефону <a href="tel:{{text2tel({{_var.consultPhone}})}}">{{_var.consultPhone}}</a></p>
+                            <p class="blog-inner__date">{{dateform({{date}})}}</p>
+                            <div class="recomendation">
+                                <a class="recomendation" href="#">
+                                    <div class="recomendation__title">Рекомендованная новость</div>
+                                    <div class="recomendation__pic"> <img src="{{cover.0.img}}" alt=""></div>
+                                    <h4 class="h4 recomendation__title">Mini FX</h4>
+                                    <p class="recomendation__text text-small text-grey">Безоперационное удаление локальных жировых отложений на лице, подбородке, шее, на спине (холка), внутренней поверхности плеча и бёдрах⠀</p>
+                                </a>
                             </div>
+                        </div>
                         </wb-jq>
-                        <wb-jq wb-prepend=".blog-inner-content .row:eq(0) .col-md-8:eq(0) .text:eq(0)">
+                        <wb-jq wb-prepend=".blog-inner-content .render .row:eq(0) .col-md-8:eq(0) .text:eq(0)">
                             <h2 class="h2">{{header}}</h2>
                         </wb-jq>
                     </div>
@@ -64,7 +66,8 @@
                                         </svg></a><a class="socials__link" href="{{_var.youtube}}" wb-if="'{{_var.youtube}}'>''">
                                         <svg class="svgsprite _socials-3">
                                             <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-3"></use>
-                                        </svg></a></div>
+                                        </svg></a>
+                                </div>
                                 <div class="arrow__link" href="#">
                                     <svg class="svgsprite _arrow-link">
                                         <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
@@ -96,5 +99,6 @@
         </main>
     </div>
 </body>
+<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');" />
 
 </html>

@@ -9,13 +9,13 @@
                     'filter':{
                         'active':'on'
                     }
-                }">
+                }" wb-tpl="false">
                     <wb-var width="33" />
                     <wb-var width="50" wb-if="'{{_ndx}}'>'3'" />
                     <wb-var width="100" wb-if="'{{_ndx}}'>'5'" />
                     <wb-var width="50" wb-if="'{{_ndx}}'=='7'" />
                     <wb-var width="33" wb-if="'{{_ndx}}'=='8'" />
-                    <a class="blog-panel blog-panel--{{_var.width}}" href="blog-inner.html" style="background-image: url({{cover.0.img}})">
+                    <a class="blog-panel blog-panel--{{_var.width}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
                         <div class="blog-panel__tags">
                             <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
                             <div class="blog-panel__tag" wb-if="'{{done}}'=='on'">Завершенная</div>
@@ -26,8 +26,8 @@
                                 <div class="blog-panel__title">{{header}}</div>
                             </div>
                             <div class="blog-panel__bottom">
-                                <div class="blog-panel__text">Только в нашем медицинском центре проводит
-                                    консультации всемирно известный пластический хирург из Швейцарии Мишаль Брюггер.
+                                <div class="blog-panel__text">
+                                {{wbGetWords({{blocks.blog_content.text}},15)}}
                                 </div>
                                 <div class="blog-panel__link">Читать далее</div>
                             </div>

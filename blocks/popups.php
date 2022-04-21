@@ -691,7 +691,7 @@
             <p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
         </div>
     </div>
-    <script type="text/javascript">
+    <script type="wbapp">
         var servicesList = [{
             "value": 'Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения)',
             "data": {

@@ -22,5 +22,6 @@
         </main>
     </div>
 </body>
-
+<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
+<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 </html>

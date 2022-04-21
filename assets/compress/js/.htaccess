@@ -1,4 +1,0 @@
-Options All -Indexes
-AddType text/css cssgz
-AddType text/javascript jsgz
-AddEncoding x-gzip .cssgz .jsgz

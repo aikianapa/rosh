@@ -47,7 +47,7 @@ $(function(){
         }
         return false;
     }).on('click', '.select .select__item', function(e) {
-        e.stopPropagation();
+        //e.stopPropagation(); - не работает фильр блога
         var value = false;
         if ($(this).hasClass('select__item--checkbox')) {
             var ne = false;
