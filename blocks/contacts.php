@@ -1,11 +1,5 @@
 <view>
     <div class="container">
-        <div class="crumbs"><a class="crumbs__arrow" href="#">
-                <svg class="svgsprite _crumbs-back">
-                    <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                </svg></a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="{{_route.uri}}">Контакты</a>
-        </div>
-        <h1 class="h1">{{_parent.header}}</h1>
         <div class="contacts">
             <div class="row">
                 <div class="col-lg-4 contacts__left">

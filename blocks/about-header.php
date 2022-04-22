@@ -1,13 +1,5 @@
 <view>
     <div class="container">
-        <div class="crumbs"><a class="crumbs__arrow" href="#">
-                <svg class="svgsprite _crumbs-back">
-                    <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                </svg></a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="/about">{{_parent.header}}</a>
-        </div>
-        <h1 class="h1">{{_parent.header}}</h1>
-    </div>
-    <div class="container">
         <div class="tags">
             <wb-foreach wb-tpl="false" wb="{
                     'ajax':'/api/v2/list/pages/',
