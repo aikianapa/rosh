@@ -1,10 +1,15 @@
 <view>
+<wb-var cityPrefix="8 (495) " />
 <div class="scroll-container" data-scroll-container>
     <header class="header header--transparent header--fixed --unfilter">
     <div class="container --flex --jcsb --aicn"><a class="header__logo" href="/"> <img src="/assets/img/logo.svg" alt=""></a>
         <div class="header__left --flex --aicn">
-            <div class="header__contacts"> <a class="header__contact" href="tel:+74951320169"> 8 (495) <b>132-01-69</b></a>
-                <div class="header__contact header__contact--small">Пн-Сб, с <b>10:00</b> до <b>21:00</b> </div>
+            <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
+            <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
+            <div class="header__contacts"> <a class="header__contact" 
+                href="tel:+{{text2tel({{_var.tel}})}}">
+                {{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
+                <div class="header__contact header__contact--small">{{_var.worktime}}</div>
             </div>
             <a class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
         </div>

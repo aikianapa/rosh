@@ -143,7 +143,7 @@ $(function(){
             minChars: 3,
         });
     });
-
+/*
     var map = document.querySelector('#map');
     if (map) {
         new google.maps.Map(map, {
@@ -151,4 +151,5 @@ $(function(){
             zoom: 12,
         });
     }
+*/
 });
