@@ -155,10 +155,14 @@ $(function(){
         $('#mainfilter').hide();
     });
 
-    new Swiper('.gallery__slider', {
-        loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
-        navigation: {nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev'},
-    });
+
+    $(document).find('.gallery__slider').each(function(){
+        new Swiper(this, {
+            loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
+            navigation: {nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev'},
+        });
+    
+    })
 
     $('.datebirthdaypickr').each(function(){ new AirDatepicker(this, {autoClose : true}); });
     $('.daterangepickr').each(function(){ new AirDatepicker(this, {autoClose : true, range: true}); });

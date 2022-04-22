@@ -4,11 +4,12 @@
                 <div class="row">
                     <div class="col-lg-2"></div>
                     <div class="col-lg-8">
-                        <div class="gallery__slider">
+                        <div id="{{wbNewId()}}" class="gallery__slider">
                             <div class="swiper-wrapper">
                                 <wb-foreach wb="from=image&tpl=false">
                                 <div class="swiper-slide">
                                     <div class="gallery__pic" style="background-image: url({{img}})" alt="{{alt}}"></div>
+                                    <div class="gallery__description text-small" wb-if="'{{title}}'>''">{{title}}</div>
                                 </div>
                                 </wb-foreach>
                             </div>
