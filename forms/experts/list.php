@@ -36,7 +36,7 @@
                         <span class="d-block tx-11 text-muted" wb-tree="dict=divisions&branch={{division}}">{{name}}</span>
 
                     </div>
-                    <div class="mg-l-auto">
+                    <div class="mg-l-auto wd-150">
                         <form method="post" class="text-right m-0 cursor-pointer" data-item="{{id}}" data-form="{{_form}}">
                             <wb-var wb-if='"{{active}}" == ""' stroke="FC5A5A" else="82C43C" />
                             <input type="checkbox" name="active" class="d-none">

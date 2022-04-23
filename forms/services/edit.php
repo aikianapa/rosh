@@ -15,8 +15,6 @@
                 <div class="row">
                     <div class="col-5">
                         <form id="{{_form}}EditForm">
-                            <input type="checkbox" class="custom-control-input" name="active" id="{{_form}}SwitchItemActive">
-                            <div>
                                 <div class="form-group">
                                     <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/services/" name="cover">
                                     </wb-module>

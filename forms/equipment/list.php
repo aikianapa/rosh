@@ -1,7 +1,7 @@
 <html>
 <div class="m-3" id="yongerSpace">
     <nav class="nav navbar navbar-expand-md col">
-        <h3 class="tx-bold tx-spacing--2 order-1">Проблемы</h3>
+        <h3 class="tx-bold tx-spacing--2 order-1">Оборудование</h3>
         <div class="ml-auto order-2 float-right" wb-disallow="content">
             <a href="#" data-ajax="{'url':'/cms/ajax/form/{{_form}}/edit/_new','html':'modals'}" class="btn btn-primary">
                 <img src="/module/myicons/24/FFFFFF/item-select-plus-add.svg" width="24" height="24" /> Добавить
@@ -14,7 +14,7 @@
             <div class="header py-2">
                 <span clsss="row">
                     <div class="col-6">
-                        <input type="search" class="form-control" placeholder="Поиск" data-ajax="{'target':'#{{_form}}List','filter_add':{'$or':[{ 'fullname': {'$like' : '$value'} } ]} }">
+                        <input type="search" class="form-control" placeholder="Поиск" data-ajax="{'target':'#{{_form}}List','filter_add':{'$or':[{ 'header': {'$like' : '$value'} } ]} }">
                     </div>
                 </span>
             </div>
@@ -30,11 +30,9 @@
                             'filter': {'_site' : {'$in': [null,'{{_sett.site}}']}}
             }">
                 <li class="list-group-item d-flex align-items-center">
-                    <img src="/thumb/30x30/src{{image.0.img}}" class="wd-30 rounded-circle mg-r-15" alt="">
+                    <img src="/thumbc/30x30/src{{cover.0.img}}" class="wd-30 rounded-circle mg-r-15" alt="">
                     <div class="flex-grow-1">
                         <h6 class="tx-13 tx-inverse tx-semibold mg-b-0">{{header}}</h6>
-                        <span class="d-block tx-11 text-muted" wb-tree="dict=problems&branch={{category}}">{{name}}</span>
-
                     </div>
                     <div class="mg-l-auto wd-150">
                         <form method="post" class="text-right m-0 cursor-pointer" data-item="{{id}}" data-form="{{_form}}">

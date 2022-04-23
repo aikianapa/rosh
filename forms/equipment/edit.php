@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header row">
                 <div class="col-5">
-                    <h5>Редактирование</h5>
+                    <h5>Редактирование оборудования</h5>
                 </div>
                 <div class="col-7">
                     <h3 class="header"></h3>
@@ -15,32 +15,23 @@
                 <div class="row">
                     <div class="col-5">
                         <form id="{{_form}}EditForm">
-                            <div class="form-group">
-                                <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/problems/" name="cover">
-                                </wb-module>
-                            </div>
+                                <div class="form-group">
+                                    <wb-module wb="module=filepicker&mode=single&width=300&&height=300" wb-path="/uploads/equipment" name="cover">
+                                    </wb-module>
+                                </div>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text p-1">
-                                            <input name="active" wb-module="swico">
-                                        </span>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text p-1">
+                                                <input name="active" wb-module="swico">
+                                            </span>
+                                        </div>
+                                        <textarea name="header" class="form-control" placeholder="Наименование оборудования" required></textarea>
                                     </div>
-                                    <textarea name="header" class="form-control" placeholder="Наименование проблемы" required></textarea>
                                 </div>
-                            </div>
 
-                            <div class="form-group row">
-                                <label class="col-form-label col-auto">Категория</label>
-                                <div class="col">
-                                    <select class="form-control" wb-tree="dict=problems&children=false" name="category" required>
-                                        <option value="{{id}}">{{name}}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <wb-module wb="module=yonger&mode=structure" />
+                                <wb-module wb="module=yonger&mode=structure&preset=equipment" />
                         </form>
                     </div>
 

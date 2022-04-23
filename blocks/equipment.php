@@ -1,57 +1,45 @@
 <view>
     <div class="container">
-        <div class="crumbs">
-            <a class="crumbs__arrow" href="#">
-                <svg class="svgsprite _crumbs-back">
-                    <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                </svg>
-            </a>
-            <a class="crumbs__link" href="/">Главная</a>
-            <a class="crumbs__link" href="{{_parent.path}}">О клинике</a>
-            <a class="crumbs__link" href="{{_route.url}}">Оборудование</a>
-        </div>
-        <h1 class="h1">Оборудование</h1>
         <div class="equipments">
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
+        <wb-foreach wb="{'table':'equipment',
+                            'render':'server',
+                            'bind':'cms.list.equipment',
+                            'sort':'date:d',
+                            'size':'{{_sett.page_size}}',
+                            'filter': {'active':'on','_site' : {'$in': [null,'{{_sett.site}}']}}
+            }">
+            <div class="equipment --openpopup" data-popup="--eq" data-id="{{id}}">
+                <div class="equipment__pic" style="background-image: url({{cover.0.img}})"></div>
+                <div class="equipment__name text-bold">{{header}}</div>
             </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
-            <div class="equipment --openpopup" data-popup="--eq">
-                <div class="equipment__pic" style="background-image: url(/assets/img/equipment/1.jpg)"></div>
-                <div class="equipment__name text-bold">Мультиплатформа Joule SCITON</div>
-            </div>
+        </wb-foreach>
+        </div>
+    </div>
+
+    <script>
+        $(document).delegate('.equipment.--openpopup',wbapp.evClick,function(){
+            let header = $(this).find('.equipment__name').text();
+            let id = $(this).data('id');
+            $('.popup.--eq .popup__body').html("");
+            $('.popup.--eq .popup__name').text(header);
+            fetch('/form/equipment/popup/'+id).then(function(response){
+                return response.text();
+            }).then(function(html){
+                $('.popup.--eq .popup__body').html(html);
+            })
+        })
+    </script>
+
+    <div class="popup --eq">
+        <div class="popup__overlay"></div>
+        <div class="popup__panel">
+            <button class="popup__close">
+                <svg class="svgsprite _close">
+                    <use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+                </svg>
+            </button>
+            <div class="popup__name text-bold"></div>
+            <div class="popup__body"></div>
         </div>
     </div>
 </view>

@@ -50,7 +50,7 @@ $(function(){
     }).on('click', '.--openpopup', function() {
         var P = $(this).attr('data-popup');
         $('body').find('div.' + P + ':first').show();
-        return false;
+        //return false;
     }).on('click', '.--switchpopup', function() {
         var P = $(this).attr('data-popup');
         $(this).closest('.popup').hide();
