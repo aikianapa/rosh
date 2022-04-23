@@ -74,8 +74,6 @@
     </div>
 </div>
 <script wb-app>
-    wbapp.loadStyles(['/engine/lib/js/nestable/nestable.css']);
-    wbapp.loadScripts(['/engine/lib/js/nestable/nestable.min.js'], '', function() {
 
         $(document).undelegate('#{{_form}}List .dd-remove', wbapp.evClick);
             $(document).delegate('#{{_form}}List .dd-remove', wbapp.evClick, function(e) {
@@ -129,7 +127,7 @@
                 'update': 'cms.list.{{_form}}'
             });
         });
-    })
+    
 </script>
 
 </html>

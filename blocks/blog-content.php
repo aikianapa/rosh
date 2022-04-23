@@ -25,13 +25,17 @@
     <div>
         <wb-module wb="module=yonger&mode=edit&block=common.inc" />
     </div>
-    <div class="form-group">
-        <label>Заголовок сверху</label>
-        <input name="title" class="form-control tx-bold">
+    <div class="form-group row">
+        <label class="col-form-label col-sm-4">Заголовок сверху</label>
+        <div class="col-sm-8">
+            <input name="title" class="form-control tx-bold">
+        </div>
     </div>
-    <div class="form-group">
-        <label>Заголовок слева</label>
-        <input name="aside" class="form-control">
+    <div class="form-group row">
+        <label class="col-form-label col-sm-4">Заголовок слева</label>
+        <div class="col-sm-8">
+            <input name="aside" class="form-control">
+        </div>
     </div>
     <div class="form-group">
         <label>Текст справа</label>

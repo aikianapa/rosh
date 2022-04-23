@@ -13,6 +13,7 @@
     </wb-scripts>
     <script type="wbapp">
         $(function () {
+            wbapp.init()
             new Swiper('.main-slider', {
                 loop: true,
                 slidesPerView: 1,
