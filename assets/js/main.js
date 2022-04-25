@@ -147,6 +147,23 @@ $(function(){
             minChars: 3,
         });
     });
+
+    $(document).on('wb-verify-false', function (e, el, err) {
+        if (err !== undefined) {
+            alert(err)
+            //wbapp.toast(wbapp._settings.sysmsg.error, err, { target: '.content-toasts', 'bgcolor': 'warning', 'txcolor': 'white' });
+        }
+    });
+
+
+    $(document).on('wb-save-error', function (e, res) {
+        if (res.data.error == true) {
+            alert(res.data.msg)
+            //wbapp.toast(wbapp._settings.sysmsg.error, err, { target: '.content-toasts', 'bgcolor': 'warning', 'txcolor': 'white' });
+        }
+    });
+
+
 /*
     var map = document.querySelector('#map');
     if (map) {
