@@ -16,7 +16,7 @@
                 </div>
                 <div class="header__right --flex --aicn">
                     <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
-                    <button class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number" wb-if="'{{_sess.user.role}}'==''">Войти</button>
+                    <button class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
                     <button class="burger"></button>
                 </div>
             </div>

@@ -15,14 +15,14 @@
                                         </svg></a></div>
                             </div>
                             <div class="footer__item col-lg-3"><a class="footer__contact text-small text-grey"
-                                    href="mailto:info@medcenterrosh.ru">info@medcenterrosh.ru</a></div>
+                                    href="mailto:{{_var.contactEmail}}">{{_var.contactEmail}}</a></div>
                             <div class="footer__item col-lg-7"><a class="footer__contact text-small text-grey"
                                     href="contacts.html"> г. Москва, Ростовская набережная д. 5, пом. 9</a></div>
                         </div>
                         <div class="row footer__bottom">
-                            <div class="footer__item col-lg-2"><a class="text-small" href="index.html"> © ROSH, 2021</a>
+                            <div class="footer__item col-lg-2"><a class="text-small" href="/"> © ROSH, 2021</a>
                             </div>
-                            <div class="footer__item col-lg-3"><a class="text-small policy" href="policy.html"> Политика
+                            <div class="footer__item col-lg-3"><a class="text-small policy" href="/policy"> Политика
                                     конфиденциальности</a></div>
                             <div class="footer__item col-lg-7 --flex --jcsb"><a class="text-small map-site"
                                     href="site-map.html">Карта сайта</a>

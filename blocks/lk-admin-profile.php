@@ -73,6 +73,11 @@
             </form>
         </div>
     </div>
+    <script wbapp remove>
+        $(document).on('wb-save-done', function (e, res) {
+            document.location.href = '/lk/admin'
+        })
+    </script>
 </view>
 <edit header="ЛК Админа - профиль">
     <div>

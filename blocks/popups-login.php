@@ -142,7 +142,7 @@
                                 <use xlink:href="/assets/img/sprites/svgsprites.svg#alert"></use>
                             </svg>
                         </div>
-                        <div class="form__description">Нажимая на кнопку "Зарегистрироваться", Вы даете согласие на обработку своих персональных данных на основании <a href="policy.html">Политики конфиденциальности</a></div>
+                        <div class="form__description">Нажимая на кнопку "Зарегистрироваться", Вы даете согласие на обработку своих персональных данных на основании <a href="/policy">Политики конфиденциальности</a></div>
                         <div class="form-bottom --flex">
                             <button class="btn btn--black form__submit --switchpopup" type="submit">Зарегистрироваться</button>
                             <button class="btn btn--white form__submit --switchpopup" type="button" data-popup="--enter-number">Войти</button>

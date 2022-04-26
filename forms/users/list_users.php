@@ -43,7 +43,7 @@
                                 <img data-src="/thumbc/50x50/src{{avatar.0.img}}" class="rounded">
                             </div>
                         </td>
-                        <td>{{first_name}} {{last_name}}</td>
+                        <td>{{fullname}}</td>
                         <td class="tx-11">{{wbPhoneFormat({{phone}})}}<br>{{email}}</td>
                         <td>{{role}}</td>
                         <td>{{_created}}</td>
