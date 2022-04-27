@@ -118,7 +118,7 @@
                     <div class="select pay">
                         <div class="select__main">Статус оплаты</div>
                         <div class="select__list">
-                        <input type="hidden" name="status" value="{{ payment }}">
+                        <input type="hidden" name="payment" value="{{ payment }}">
                         {{#each catalog.quotePay}}
                             <div class="select__item" data-id="{{ id }}" 
                                 onclick="$(this).parent('.select__list').children('input').val($(this).attr('data-id'))">
@@ -172,8 +172,8 @@
                             </div>
                             <div class="account__table-body">
                                 {{#each result}}
-                                    <div class="acount__table-accardeon accardeon --yellow acount__table-accardeon--pmin">
-                                        <div class="acount__table-main accardeon__main acount__table-auto">
+                                    <div class="acount__table-accardeon accardeon --yellow acount__table-accardeon--pmin" data-id="{{id}}">
+                                    <div class="acount__table-main accardeon__main acount__table-auto">
                                             <div class="admin-events-item heap">
                                                 <div class="accardeon__click" data-id="{{id}}" on-click="editQuote"></div>
                                                 <div class="flag-date">
@@ -226,11 +226,10 @@
                                                 {{/each}}
                                             </div>
                                             <div class="admin-events-item">
-                                                <p>commentентарии</p>{{comment}}
+                                                <p>Комментарии</p>{{comment}}
                                             </div>
                                         </div>
                                         <div class="acount__table-list accardeon__list admin-editor">
-                                            
                                             <div class="admin-editor__top">
                                                 <div class="admin-editor__top-info">
                                                     <div class="lk-title">Редактировать профиль</div>
@@ -249,7 +248,6 @@
                                                 <div class="admin-editor__top-status">
                                                     <div class="admin-editor__top-date">Заявка сформирована {{date}} / {{time}}</div>
                                                     <div class="admin-editor__top-select">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -417,7 +415,7 @@
                                                     </div>
                                                     <div class="col-md-1"></div>
                                                     <div class="col-md-4 --jcfe --flex">
-                                                        <textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{comment}}</textarea>
+                                                    <textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{comment}}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -464,9 +462,13 @@
                             saveQuote(ev) {
                                 let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id')
                                 let item = $(ev.node).data('id')
-                                let form = $(ev.node).parents('.admin-editor').find('.admin-editor__edit-profile')
-                                $(ev.node).parents('.admin-editor').find('.admin-editor__edit-profile').html('')
-                                
+                                let form = $(ev.node).parents('.admin-editor')
+                                $(form).find('.admin-editor__edit-profile').html('')
+                                let copy = $('<form></form>');
+                                $(copy).html($(form).clone());
+                                let post = $(copy).serializeJson();
+                                delete copy;
+                                console.log(post);
                             },
                             editProfile(ev) {
                                 let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id')
@@ -479,8 +481,8 @@
                                     on: {
                                         save(ev) {
                                             let post = $($(ev.node).parents('form')).serializeJson();
-                                            wbapp.post('/form/users/setClient/' + item, post, function(res) {
-                                                tabLeads.set('result.' + lead + '.clientData', res)
+                                            wbapp.post('/form/users/setClient/'+item, post, function(res) {
+                                                tabLeads.set('result.'+lead+'.clientData',res)
                                                 $(form).html('');
                                             })
                                         }
@@ -512,7 +514,7 @@
                             }
                         }
                     });
-                    fetch('/api/v2/list/quotes?status=new&@size=999999999', {
+                    fetch('/api/v2/list/quotes?status=new&@size=20', {
                         method: 'GET'
                     }).then((response) => {
                         return response.json();
@@ -1701,35 +1703,8 @@
                                             </div>
                                         </div>
                                         <div class="admin-editor__top-status">
-                                            <div class="admin-editor__top-date">Заявка сформирована 16.10.2021 / 08:45</div>
+                                            <div class="admin-editor__top-date">Заявка сформирована {{date}} / {{time}}</div>
                                             <div class="admin-editor__top-select">
-                                                <div class="select-form">
-                                                    <div class="select">
-                                                        <div class="select__main">Статус оплаты</div>
-                                                        <div class="select__list">
-                                                            <div class="select__item">Есть предоплата</div>
-                                                            <div class="select__item">Не оплачено</div>
-                                                            <div class="select__item">Не требует оплаты</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="select-form">
-                                                    <div class="select">
-                                                        <div class="select__main">Изменить статус</div>
-                                                        <div class="select__list">
-                                                            <div class="select__item select__item--acc-yellow">Необработанная заявка</div>
-                                                            <div class="select__item select__item--acc-red">Не дозвонился</div>
-                                                            <div class="select__item select__item--acc-purple">Отложенный звонок</div>
-                                                            <div class="select__delimiter"></div>
-                                                            <div class="select__item select__item--acc-yellow">Предстоящее событие</div>
-                                                            <div class="select__item select__item--acc-green">Состоявшееся событие</div>
-                                                            <div class="select__item select__item--acc-blue">Отмена визита (дорого)</div>
-                                                            <div class="select__item select__item--acc-light-blue">Отмена визита (подумаем)</div>
-                                                            <div class="select__item select__item--acc-ocean">Отмена визита (без причины)</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
                                             </div>
                                         </div>
