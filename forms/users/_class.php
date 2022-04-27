@@ -60,6 +60,7 @@ class usersClass extends cmsFormsClass
     }
 
     function getClient() {
+        if (!wbApiKey()) return;
         $item = wbItemRead('users',$this->app->route->item);
         $this->beforeItemShow($item);
         if ($item['active'] == 'on' && $item['role'] == 'client') {
@@ -70,6 +71,7 @@ class usersClass extends cmsFormsClass
     }
 
     function setClient() {
+        if (!wbApiKey()) return;
         if ($this->app->vars('_route.item') > '') {
             $post = $this->app->vars('_post');
             $post['id'] = $this->app->vars('_route.item');

@@ -113,6 +113,41 @@
                     </div>
                 </form>
             </template>
+            <template id="editStatus">
+                <div class="select-form">
+                    <div class="select pay">
+                        <div class="select__main">Статус оплаты</div>
+                        <div class="select__list">
+                        <input type="hidden" name="status" value="{{ payment }}">
+                        {{#each catalog.quotePay}}
+                            <div class="select__item" data-id="{{ id }}" 
+                                onclick="$(this).parent('.select__list').children('input').val($(this).attr('data-id'))">
+                                {{name}}
+                            </div>
+                        {{/each}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select-form">
+                    <div class="select status">
+                        <div class="select__main">Изменить статус</div>
+                        <div class="select__list">
+                            <input type="hidden" name="status" value="{{ status }}">
+                            {{#each catalog.quoteStatus}}
+                                {{#if id == 'delimiter'}}
+                                    <div class="select__delimiter" disabled></div>
+                                {{else}}
+                                    <div class="select__item select__item--acc-{{color}}" data-id="{{ id }}"
+                                        onclick="$(this).parent('.select__list').children('input').val($(this).attr('data-id'))">
+                                        {{name}}
+                                    </div>
+                                {{/if}}
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </template>
             <div class="account__tab data-tab-item active" data-tab="leads">
                 <template id="leadsList">
                     <div class="account-scroll">
@@ -137,10 +172,10 @@
                             </div>
                             <div class="account__table-body">
                                 {{#each result}}
-                                    <div class="acount__table-accardeon accardeon --yellow acount__table-accardeon--pmin" data-id="{{id}}">
+                                    <div class="acount__table-accardeon accardeon --yellow acount__table-accardeon--pmin">
                                         <div class="acount__table-main accardeon__main acount__table-auto">
                                             <div class="admin-events-item heap">
-                                                <div class="accardeon__click"></div>
+                                                <div class="accardeon__click" data-id="{{id}}" on-click="editQuote"></div>
                                                 <div class="flag-date">
                                                     <label class="checkbox">
                                                         <input type="checkbox"><span> </span>
@@ -167,7 +202,10 @@
                                                 <p>Специалист</p>{{expert}}
                                             </div>
                                             <div class="admin-events-item">
-                                                <p>Тип</p>{{type}}
+                                                <p>Тип</p>
+                                                {{#each catalog.quoteType as item}}
+                                                    {{#if item.id == type }}{{item.name}}{{/if}}
+                                                {{/each}}
                                             </div>
                                             <div class="admin-events-item">
                                                 <p>Услуга</p>
@@ -176,16 +214,23 @@
                                                 {{/each}}
                                             </div>
                                             <div class="admin-events-item">
-                                                <p>Оплата</p>{{pay_status}}
+                                                <p>Оплата</p>
+                                                {{#each catalog.quotePay as item}}
+                                                    {{#if item.id == pay_status }}{{item.name}}{{/if}}
+                                                {{/each}}
                                             </div>
                                             <div class="admin-events-item">
-                                                <p>Статус</p>{{status}}
+                                                <p>Статус</p>
+                                                {{#each catalog.quoteStatus as item}}
+                                                    {{#if item.id == status }}{{item.name}}{{/if}}
+                                                {{/each}}
                                             </div>
                                             <div class="admin-events-item">
-                                                <p>Комментарии</p>{{reason}}
+                                                <p>commentентарии</p>{{comment}}
                                             </div>
                                         </div>
                                         <div class="acount__table-list accardeon__list admin-editor">
+                                            
                                             <div class="admin-editor__top">
                                                 <div class="admin-editor__top-info">
                                                     <div class="lk-title">Редактировать профиль</div>
@@ -204,33 +249,6 @@
                                                 <div class="admin-editor__top-status">
                                                     <div class="admin-editor__top-date">Заявка сформирована {{date}} / {{time}}</div>
                                                     <div class="admin-editor__top-select">
-                                                        <div class="select-form">
-                                                            <div class="select">
-                                                                <div class="select__main">Статус оплаты</div>
-                                                                <div class="select__list">
-                                                                    <div class="select__item">Есть предоплата</div>
-                                                                    <div class="select__item">Не оплачено</div>
-                                                                    <div class="select__item">Не требует оплаты</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="select-form">
-                                                            <div class="select">
-                                                                <div class="select__main">Изменить статус</div>
-                                                                <div class="select__list">
-                                                                    <div class="select__item select__item--acc-yellow">Необработанная заявка</div>
-                                                                    <div class="select__item select__item--acc-red">Не дозвонился</div>
-                                                                    <div class="select__item select__item--acc-purple">Отложенный звонок</div>
-                                                                    <div class="select__delimiter"></div>
-                                                                    <div class="select__item select__item--acc-yellow">Предстоящее событие</div>
-                                                                    <div class="select__item select__item--acc-green">Состоявшееся событие</div>
-                                                                    <div class="select__item select__item--acc-blue">Отмена визита (дорого)</div>
-                                                                    <div class="select__item select__item--acc-light-blue">Отмена визита (подумаем)</div>
-                                                                    <div class="select__item select__item--acc-ocean">Отмена визита (без причины)</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -301,12 +319,15 @@
                                                         <div class="admin-editor__type-event">
                                                             <p class="mb-10">Тип события</p>
                                                             <div class="text-radios">
-                                                                <label class="text-radio">
-                                                                    <input type="radio" name="status" checked><span>В клинике</span>
-                                                                </label>
-                                                                <label class="text-radio">
-                                                                    <input type="radio" name="status"><span>Онлайн</span>
-                                                                </label>
+                                                            {{#each catalog.quoteType as item}}
+                                                            <label class="text-radio">
+                                                                {{#if item.id == type }}
+                                                                <input type="radio" name="type" value="{{ item.id }}" checked><span>{{item.name}}</span>
+                                                                {{else}}
+                                                                <input type="radio" name="type" value="{{ item.id }}"><span>{{item.name}}</span>
+                                                                {{/if}}
+                                                            </label>
+                                                            {{/each}}
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-6">
@@ -392,11 +413,11 @@
                                                             <p>Всего</p>
                                                             <p>7 000 ₽ </p>
                                                         </div>
-                                                        <button class="btn btn--white">Сохранить</button>
+                                                        <button class="btn btn--white" on-click="saveQuote">Сохранить</button>
                                                     </div>
                                                     <div class="col-md-1"></div>
                                                     <div class="col-md-4 --jcfe --flex">
-                                                        <textarea class="admin__editor-textarea" placeholder="Добавить комментарий"></textarea>
+                                                        <textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{comment}}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -409,14 +430,44 @@
                 </template>
             </div>
             <script wbapp>
+                var catalog = {}
+                fetch('/api/v2/func/catalogs/getQuoteStatus', {
+                    method: 'GET'
+                }).then((response) => {
+                    return response.json();
+                }).then(function(data) {
+                    catalog.quoteStatus = data
+                });
+                fetch('/api/v2/func/catalogs/getQuotePay', {
+                    method: 'GET'
+                }).then((response) => {
+                    return response.json();
+                }).then(function(data) {
+                    catalog.quotePay = data
+                });
+                fetch('/api/v2/func/catalogs/getQuoteType', {
+                    method: 'GET'
+                }).then((response) => {
+                    return response.json();
+                }).then(function(data) {
+                    catalog.quoteType = data
+                });
                 setTimeout(function() {
                     let editProfile = wbapp.tpl('#editProfile').html
+                    let editStatus = wbapp.tpl('#editStatus').html
                     let tpl = wbapp.tpl('#leadsList').html
                     let tabLeads = new Ractive({
                         el: '.data-tab-item[data-tab="leads"]',
                         template: tpl,
                         data: {},
                         on: {
+                            saveQuote(ev) {
+                                let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id')
+                                let item = $(ev.node).data('id')
+                                let form = $(ev.node).parents('.admin-editor').find('.admin-editor__edit-profile')
+                                $(ev.node).parents('.admin-editor').find('.admin-editor__edit-profile').html('')
+                                
+                            },
                             editProfile(ev) {
                                 let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id')
                                 let item = $(ev.node).data('id')
@@ -428,8 +479,8 @@
                                     on: {
                                         save(ev) {
                                             let post = $($(ev.node).parents('form')).serializeJson();
-                                            wbapp.post('/form/users/setClient/'+item, post, function(res) {
-                                                tabLeads.set('result.'+lead+'.clientData',res)
+                                            wbapp.post('/form/users/setClient/' + item, post, function(res) {
+                                                tabLeads.set('result.' + lead + '.clientData', res)
                                                 $(form).html('');
                                             })
                                         }
@@ -443,14 +494,30 @@
                                     editor.set(data)
                                     initPlugins()
                                 });
+                            },
+                            editQuote(ev) {
+                                let lead = $(ev.node).data('id')
+                                let quote = tabLeads.get('result.' + lead)
+                                let status = new Ractive({
+                                    el: $(ev.node).parents('.accardeon').find('.admin-editor__top-select'),
+                                    template: editStatus,
+                                    data: {catalog: catalog},
+                                    on: {
+                                        complete() {
+                                            $(status.find(`.select.status [data-id="${quote.status}"]`)).trigger('click')
+                                            $(status.find(`.select.pay [data-id="${quote.payment}"]`)).trigger('click')
+                                        }
+                                    }
+                                })
                             }
                         }
                     });
-                    fetch('/api/v2/list/quotes?status=new&@size=20', {
+                    fetch('/api/v2/list/quotes?status=new&@size=999999999', {
                         method: 'GET'
                     }).then((response) => {
                         return response.json();
                     }).then(function(data) {
+                        data.catalog = catalog
                         tabLeads.set(data)
                     });
                 }, 50)

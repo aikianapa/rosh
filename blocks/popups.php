@@ -29,7 +29,7 @@
                         <div class="input__placeholder">Номер телефона</div>
                     </div>
                     <div class="input input--grey">
-                        <textarea class="input__control" name="reason" placeholder="Причина обращения" required></textarea>
+                        <textarea class="input__control" name="comment" placeholder="Причина обращения" required></textarea>
                         <div class="input__placeholder">Причина обращения</div>
                     </div>
                     <div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании <a href="/policy">Политики конфиденциальности</a></div>

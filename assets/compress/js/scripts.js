@@ -35,6 +35,35 @@ if (!document.loadedScripts) document.loadedScripts =[];document.loadedScripts.p
 //# sourceMappingURL=swiper-bundle.min.js.map;
 
 $(function () {
+    $(document).delegate('.select .select__main', 'click' , function () {
+        $(this).parent().toggleClass('active')
+        return false;
+    }).delegate('.select .select__item', 'click' , function (e) {
+        //e.stopPropagation(); - не работает фильр блога
+        var value = false;
+        if ($(this).hasClass('select__item--checkbox')) {
+            var ne = false;
+            value = [];
+            $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
+                if ($(this).find('input[type=checkbox]:checked').length) {
+                    value.push($(this).find('.select__name:first').text());
+                    ne = true;
+                }
+            });
+            value = value.join(', ');
+            $(this).closest('.select').toggleClass('has-values', ne).find('.select__values:first').html(value);
+        } else {
+            value = $(this).html();
+            $(this).addClass('active').siblings('.select__item').removeClass('active');
+            $(this).closest('.select').removeClass('active').find('.select__main:first').html(value);
+            if ($(this).data('id') !== undefined) value=$(this).data('id');
+            $(this).closest('.select').find('input[type=hidden]').each(function () {
+                $(this).val(value);
+            });
+        }
+    })
+
+
     $('body').on('click', 'a.--openfilter', function () {
         $($(this).attr('href')).show();
         return false;
@@ -72,7 +101,7 @@ $(function () {
             $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
         }
         return false;
-    }).on('click', '.select .select__main', function () {
+    }).on('___click', '.select .select__main', function () { // ###############
         if ($(this).parent().hasClass('active')) {
             $(this).parent().removeClass('active');
         } else {
@@ -82,7 +111,7 @@ $(function () {
             $(this).parent().addClass('active');
         }
         return false;
-    }).on('click', '.select .select__item', function (e) {
+    }).on('___click', '.select .select__item', function (e) { // ###############
         //e.stopPropagation(); - не работает фильр блога
         var value = false;
         if ($(this).hasClass('select__item--checkbox')) {
