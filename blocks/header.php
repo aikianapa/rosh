@@ -3,7 +3,8 @@
     <div class="scroll-container" data-scroll-container>
 
         <header class="header header--transparent header--fixed --unfilter">
-            <div class="container --flex --jcsb --aicn"  wb-if="'{{_sess.user.role}}'==''">
+            <!---div class="container --flex --jcsb --aicn"  wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='admin' OR '{{_sess.user.role}}'=='client'"-->
+            <div class="container --flex --jcsb --aicn"  wb-if="in_array('{{_sess.user.role}}',['','admin','client'])">
                 <a class="header__logo" href="/"> <img src="/assets/img/logo.svg" alt=""></a>
                 <div class="header__left --flex --aicn">
                     <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />

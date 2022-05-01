@@ -32,9 +32,18 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-form-label col-auto">Категория</label>
+                                    <label class="col-form-label col-sm-4">Категория</label>
                                     <div class="col">
-                                        <select class="form-control" wb-tree="dict=srvcat&children=false" name="category" required>
+                                        <select class="form-control" wb-tree="dict=srvcat&children=false" placeholder="" name="category" >
+                                            <option value="{{id}}">{{name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-4">Направление</label>
+                                    <div class="col">
+                                        <select class="form-control" wb-tree="dict=srvtype&children=false" placeholder="" name="type" >
                                             <option value="{{id}}">{{name}}</option>
                                         </select>
                                     </div>
@@ -82,7 +91,6 @@
 </div>
 
 <script wb-app>
-    let timeout = 50;
     yonger.pageEditor = function() {
         let $form = $('#{{_form}}EditForm');
         $form.delegate('[name=path]', 'change', function() {

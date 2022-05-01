@@ -81,7 +81,6 @@
 </div>
 
 <script wb-app>
-    let timeout = 50;
     yonger.pageEditor = function() {
         let $form = $('#{{_form}}EditForm');
         $form.delegate('[name=path]', 'change', function() {

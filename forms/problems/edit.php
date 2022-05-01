@@ -34,9 +34,26 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-auto">Категория</label>
                                 <div class="col">
-                                    <select class="form-control" wb-tree="dict=problems&children=false" name="category" required>
+                                    <select class="form-control" wb-tree="dict=srvtype&children=false" name="srvtype" required>
                                         <option value="{{id}}">{{name}}</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2">Разделы</label>
+                                <div class="col-sm-10">
+                                    <wb-data wb="table=catalogs&item=srvcat&field=tree">
+                                        <select name="category" class="form-control" wb-select2 multiple>
+                                            <wb-foreach wb-from="data">
+                                                <option value="{{_id}}" selected
+                                                    wb-if="'{{in_array({{_id}},{{_parent._parent.tags}})}}'=='1'">
+                                                    {{name}}</option>
+                                                <option value="{{_id}}"
+                                                    wb-if="'{{in_array({{_id}},{{_parent._parent.tags}})}}'!='1'">
+                                                    {{name}}</option>
+                                            </wb-foreach>
+                                        </select>
+                                    </wb-data>
                                 </div>
                             </div>
 
@@ -82,7 +99,6 @@
 </div>
 
 <script wb-app>
-    let timeout = 50;
     yonger.pageEditor = function() {
         let $form = $('#{{_form}}EditForm');
         $form.delegate('[name=path]', 'change', function() {
