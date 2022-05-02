@@ -52,8 +52,31 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-auto">Направление</label>
                                 <div class="col">
-                                    <select class="form-control" wb-tree="dict=srvtype&children=false" placeholder="" name="srvtype" required>
+                                    <select class="form-control" wb-tree="dict=srvtype&children=false" placeholder="" 
+                                    data-ajax="{'target':'#{{_form}}SelectCategory','filter_remove':'type','filter_add':{'type': {'$in':['$value','']} }"
+                                    name="srvtype" >
                                         <option value="{{id}}">{{name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-auto">Связанные услуги</label>
+                                <div class="col">
+                                    <select name="services" id="{{_form}}SelectCategory" class="form-control" wb-select2 multiple>
+                                        <wb-foreach wb="{
+                                                'table':'services',
+                                                'render':'server',
+                                                'size':'999999',
+                                                'filter': {'active' : 'on', 'type': {'$in':['{{srvtype}}','']} }
+                                            }">
+                                            <option value="{{_id}}" selected wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
+                                                {{header}}
+                                            </option>
+                                            <option value="{{_id}}" wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'!='1'">
+                                                {{header}}
+                                            </option>
+                                        </wb-foreach>
                                     </select>
                                 </div>
                             </div>

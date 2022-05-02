@@ -50,9 +50,9 @@
                                                         </div>
                                                         <div class="accardeon__list">
                                                             <div class="row">
-                                                                {{#each ~/srvlist}}
+                                                                {{#each ~/prblist}}
                                                                     <div class="col-lg-4">
-                                                                        <label class="checkbox mainfilter__checkbox">
+                                                                        <label class="checkbox mainfilter__checkbox" data-category="{{category}}" data-problem="{{id}}" data-services="{{#each services}}{{this}}{{#if @last !== @index}},{{/if}}{{/each}}" on-click="toggleChoise">
                                                                             <input type="checkbox"><span> </span>
                                                                             <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
                                                                         </label>
@@ -162,51 +162,63 @@
                     this.fire('checkSevices')
                 },
                 getProblems(ev) {
-                    mainFilter.set('srvlist', {});
+                    mainFilter.set('prblist', {});
                     let srvtype = $(ev.node).parents('.accardeon-group').find('.accrdeon__title').data('type')
                     let category = $(ev.node).data('category')
-                    let problems = `srvtypes.${srvtype}.categories.${category}.problems`;
-                    wbapp.post("/api/v2/list/problems", {
-                            filter: {
-                                active: 'on',
-                                srvtype: srvtype,
-                                category: {
-                                    '$like': category
-                                }
-                            }
-                        },
-                        function(data) {
-                            mainFilter.set('srvlist', data);
-                        })
+                    let data = []
+                    $.each(mainFilter.get('problems'), function(i, obj) {
+                        let item = Object.assign({}, obj);
+                        if (in_array(category, item.category) && srvtype == item.srvtype) {
+                            item.category = category
+                            data.push(item)
+                        }
+                    })
+                    mainFilter.set('prblist', data);
                 },
                 toggleChoise(ev) {
                     let data = $(ev.node).data();
                     let services = mainFilter.get('services');
                     let choice = mainFilter.get('choice');
-                    if (data.service !== undefined) {
-                        let sid = data.service
-                        let cid = $(ev.node).parents('.accardeon').data('category')
+                    let toggleItem = function(obj,sid,cid) {
+                        let item = Object.assign({}, obj);
+                        let cartid = cid + '_' + sid
                         let liter = mainFilter.get(`categories.${cid}`).name.substring(0, 1)
                         let color = mainFilter.get(`categories.${cid}`).data.color
-                        let cartid = data.id
-                        $.each(services, function(i, srv) {
-                            let item = Object.assign({}, srv);
-                            if (item.id == sid && (item.category == "" || item.category == cid)) {
-                                if (choice[cartid] == undefined) {
-                                    item.category = cid
-                                    item.cartid = cartid
-                                    item.liter = liter.toUpperCase()
-                                    item.color = color
-                                    choice[cartid] = item
-                                    $(ev.node).find('input').prop('checked', true)
-                                } else {
-                                    delete choice[cartid]
-                                    $(ev.node).find('input').prop('checked', false)
-                                }
+                        if (item.id == sid && (item.category == "" || item.category == cid)) {
+                            if (choice[cartid] == undefined) {
+                                item.category = cid
+                                item.cartid = cartid
+                                item.liter = liter.toUpperCase()
+                                item.color = color
+                                choice[cartid] = item
+                                $(ev.node).find('input').prop('checked', true)
+                            } else {
+                                delete choice[cartid]
+                                $(ev.node).find('input').prop('checked', false)
                             }
+                            wbapp.data('choice', choice)
+                            mainFilter.set('choice', choice)
+                        }
+                    }
+                    if (data.service !== undefined) {
+                        // клик в табе сервисов
+                        let sid = data.service
+                        let cid = $(ev.node).parents('.accardeon').data('category')
+                        let cartid = data.id
+                        $.each(services, function(i, obj) {
+                            toggleItem(obj,sid,cid)
                         })
-                        wbapp.data('choice', choice)
-                        mainFilter.set('choice', choice)
+                    } else if (data.problem !== undefined) {
+                        console.log(data);
+                        let srvs = data.services.split(',')
+                        let cid = data.category
+                        $.each(srvs,function(i,sid){
+                            $.each(mainFilter.get('services'),function(i,obj){
+                                let item = Object.assign({}, obj);
+                                if (item.id == sid && item.category == cid) toggleItem(item,sid,cid)
+                            })
+//                            toggleItem(obj,sid,cid)
+                        })
                     }
                     return false
                 },
@@ -225,7 +237,6 @@
         wbapp.get('/api/v2/list/catalogs/srvtype', function(data) {
             mainFilter.set('srvtypes', data.tree.data);
         })
-
         wbapp.post("/api/v2/list/services", {
                 filter: {
                     active: 'on'
@@ -237,14 +248,20 @@
 
         wbapp.post("/api/v2/list/problems", {
                 filter: {
-                    active: 'on',
-                    category: {
-                        '$like': 'gyn'
-                    }
+                    active: 'on'
                 }
             },
             function(data) {
-                mainFilter.set('gynecology', data);
+                mainFilter.set('problems', data);
+                let gynecology = [];
+                $.each(data, function(i, obj) {
+                    let item = Object.assign({}, obj);
+                    if (in_array('gyn', item.category)) {
+                        gynecology.push(item)
+                    }
+                })
+
+                mainFilter.set('gynecology', gynecology);
             })
         wbapp.post("/api/v2/list/symptoms", {
                 filter: {

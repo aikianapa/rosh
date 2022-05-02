@@ -15,44 +15,44 @@
                 <div class="row">
                     <div class="col-5">
                         <form id="{{_form}}EditForm">
-                                <div class="form-group">
-                                    <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/services/" name="cover">
-                                    </wb-module>
-                                </div>
+                            <div class="form-group">
+                                <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/services/" name="cover">
+                                </wb-module>
+                            </div>
 
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text p-1">
-                                                <input name="active" wb-module="swico">
-                                            </span>
-                                        </div>
-                                        <textarea name="header" class="form-control" placeholder="Наименование симптома" required></textarea>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text p-1">
+                                            <input name="active" wb-module="swico">
+                                        </span>
                                     </div>
+                                    <textarea name="header" class="form-control" placeholder="Наименование симптома" required></textarea>
                                 </div>
+                            </div>
 
-                                <div class="form-group row">
+                            <div class="form-group row">
                                 <label class="col-auto">Связанные услуги</label>
                                 <div class="col">
-                                        <select name="category" class="form-control" wb-select2 multiple>
-                                            <wb-foreach wb="{
+                                    <select name="category" class="form-control" wb-select2 multiple>
+                                        <wb-foreach wb="{
                                                 'table':'services',
                                                 'render':'server',
                                                 'size':'999999',
                                                 'filter': {'active' : 'on'}
                                             }">
-                                                <option value="{{_id}}" selected
-                                                    wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
-                                                    {{header}}</option>
-                                                <option value="{{_id}}"
-                                                    wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'!='1'">
-                                                    {{header}}</option>
-                                            </wb-foreach>
-                                        </select>
+                                            <option value="{{_id}}" selected wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
+                                                {{header}}
+                                            </option>
+                                            <option value="{{_id}}" wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'!='1'">
+                                                {{header}}
+                                            </option>
+                                        </wb-foreach>
+                                    </select>
                                 </div>
-                                </div>
+                            </div>
 
-                                <wb-module wb="module=yonger&mode=structure" />
+                            <wb-module wb="module=yonger&mode=structure" />
                         </form>
                     </div>
 
