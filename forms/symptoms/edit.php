@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header row">
                 <div class="col-5">
-                    <h5>Редактирование</h5>
+                    <h5>Редактирование симптома</h5>
                 </div>
                 <div class="col-7">
                     <h3 class="header"></h3>
@@ -15,50 +15,44 @@
                 <div class="row">
                     <div class="col-5">
                         <form id="{{_form}}EditForm">
-                            <div class="form-group">
-                                <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/problems/" name="cover">
-                                </wb-module>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text p-1">
-                                            <input name="active" wb-module="swico">
-                                        </span>
-                                    </div>
-                                    <textarea name="header" class="form-control" placeholder="Наименование проблемы" required></textarea>
+                                <div class="form-group">
+                                    <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/services/" name="cover">
+                                    </wb-module>
                                 </div>
-                            </div>
 
-                            <div class="form-group row">
-                                <label class="col-sm-2">Категории</label>
-                                <div class="col-sm-10">
-                                    <wb-data wb="table=catalogs&item=srvcat&field=tree">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text p-1">
+                                                <input name="active" wb-module="swico">
+                                            </span>
+                                        </div>
+                                        <textarea name="header" class="form-control" placeholder="Наименование симптома" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                <label class="col-auto">Связанные услуги</label>
+                                <div class="col">
                                         <select name="category" class="form-control" wb-select2 multiple>
-                                            <wb-foreach wb-from="data">
+                                            <wb-foreach wb="{
+                                                'table':'services',
+                                                'render':'server',
+                                                'size':'999999',
+                                                'filter': {'active' : 'on'}
+                                            }">
                                                 <option value="{{_id}}" selected
                                                     wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
-                                                    {{name}}</option>
+                                                    {{header}}</option>
                                                 <option value="{{_id}}"
                                                     wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'!='1'">
-                                                    {{name}}</option>
+                                                    {{header}}</option>
                                             </wb-foreach>
                                         </select>
-                                    </wb-data>
                                 </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-form-label col-auto">Направление</label>
-                                <div class="col">
-                                    <select class="form-control" wb-tree="dict=srvtype&children=false" placeholder="" name="srvtype" required>
-                                        <option value="{{id}}">{{name}}</option>
-                                    </select>
                                 </div>
-                            </div>
 
-                            <wb-module wb="module=yonger&mode=structure" />
+                                <wb-module wb="module=yonger&mode=structure" />
                         </form>
                     </div>
 
