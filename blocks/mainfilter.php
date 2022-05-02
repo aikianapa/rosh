@@ -25,7 +25,7 @@
                                             <div class="row">
                                                 {{#each services}}
                                                     <div class="col-lg-4">
-                                                        <label class="checkbox mainfilter__checkbox" data-service="{{id}}" on-click="toggleChoise">
+                                                        <label class="checkbox mainfilter__checkbox" data-id="{{../../id}}_{{id}}" data-service="{{id}}" on-click="toggleChoise">
                                                             <input type="checkbox"><span> </span>
                                                             <div class="checbox__name">{{header}}</div>
                                                             <a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
@@ -143,7 +143,9 @@
         </template>
     </div>
     <script>
-        let mainFilter = new Ractive({
+        if (wbapp.data('choice') == undefined) wbapp.data('choice', {})
+        var choice = wbapp.data('choice')
+        var mainFilter = new Ractive({
             el: '#mainfilter',
             template: $('#mainfilter template').html(),
             on: {
@@ -157,6 +159,7 @@
                             }
                         })
                     }
+                    this.fire('checkSevices')
                 },
                 getProblems(ev) {
                     mainFilter.set('srvlist', {});
@@ -179,30 +182,42 @@
                 toggleChoise(ev) {
                     let data = $(ev.node).data();
                     let services = mainFilter.get('services');
-                    let choice =  mainFilter.get('choice');
+                    let choice = mainFilter.get('choice');
                     if (data.service !== undefined) {
-                        let sid = $(ev.node).parents('.accardeon').data('category')
-                        console.log(sid);
-                        let liter = mainFilter.get(`categories.${sid}`).name.substring(0,1)
-                        let color = mainFilter.get(`categories.${sid}`).data.color
-                        $.each(services, function(i, item) {
-                            item.liter = liter.toUpperCase()
-                            item.color = color
-                            if (item.id == data.service) {
-                                if (choice[data.service] !== undefined) {
-                                    delete choice[data.service]
+                        let sid = data.service
+                        let cid = $(ev.node).parents('.accardeon').data('category')
+                        let liter = mainFilter.get(`categories.${cid}`).name.substring(0, 1)
+                        let color = mainFilter.get(`categories.${cid}`).data.color
+                        let cartid = data.id
+                        $.each(services, function(i, srv) {
+                            let item = Object.assign({}, srv);
+                            if (item.id == sid && (item.category == "" || item.category == cid)) {
+                                if (choice[cartid] == undefined) {
+                                    item.category = cid
+                                    item.cartid = cartid
+                                    item.liter = liter.toUpperCase()
+                                    item.color = color
+                                    choice[cartid] = item
+                                    $(ev.node).find('input').prop('checked', true)
                                 } else {
-                                    choice[data.service] = services[i]
+                                    delete choice[cartid]
+                                    $(ev.node).find('input').prop('checked', false)
                                 }
                             }
                         })
-                        mainFilter.set('choice',choice);
+                        wbapp.data('choice', choice)
+                        mainFilter.set('choice', choice)
                     }
                     return false
+                },
+                checkSevices() {
+                    $.each(choice, function(i, item) {
+                        $(`.mainfilter__checkbox[data-id=${item.cartid}] > input`).prop('checked', true);
+                    })
                 }
             }
         })
-        mainFilter.set('choice', {});
+        mainFilter.set('choice', choice)
         wbapp.get('/api/v2/list/catalogs/srvcat', function(data) {
             mainFilter.set('categories', data.tree.data);
             mainFilter.set('srvtypes.categories', data.tree.data);
