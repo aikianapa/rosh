@@ -52,7 +52,7 @@
                                                             <div class="row">
                                                                 {{#each ~/prblist}}
                                                                     <div class="col-lg-4">
-                                                                        <label class="checkbox mainfilter__checkbox" data-category="{{category}}" data-problem="{{id}}" data-services="{{#each services}}{{this}}{{#if @last !== @index}},{{/if}}{{/each}}" on-click="toggleChoise">
+                                                                        <label class="checkbox mainfilter__checkbox" data-category="{{category}}" data-problem="{{id}}" data-services="{{#each services}}{{../../category}}_{{this}}{{#if @last !== @index}},{{/if}}{{/each}}" on-click="toggleChoise">
                                                                             <input type="checkbox"><span> </span>
                                                                             <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
                                                                         </label>
@@ -159,7 +159,9 @@
                             }
                         })
                     }
-                    this.fire('checkSevices')
+                    $.each(choice, function(i, item) {
+                        $(`[data-tab="services"] .mainfilter__checkbox[data-id=${item.cartid}] > input`).prop('checked', true);
+                    })
                 },
                 getProblems(ev) {
                     mainFilter.set('prblist', {});
@@ -174,6 +176,14 @@
                         }
                     })
                     mainFilter.set('prblist', data);
+                    $(`[data-tab="problems"] .mainfilter__checkbox[data-services]`).each(function(){
+                        let srvs = $(this).data('services').split(',')
+                        $.each(srvs,function(i,srv){
+                            if (choice[srv] !== undefined) {
+                                $(`[data-tab="problems"] .mainfilter__checkbox[data-services*='${srv}'] > input`).prop('checked', true);
+                            }   
+                        })
+                    });
                 },
                 toggleChoise(ev) {
                     let data = $(ev.node).data();
@@ -217,14 +227,19 @@
                                 let item = Object.assign({}, obj);
                                 if (item.id == sid && item.category == cid) toggleItem(item,sid,cid)
                             })
-//                            toggleItem(obj,sid,cid)
                         })
                     }
                     return false
                 },
                 checkSevices() {
                     $.each(choice, function(i, item) {
-                        $(`.mainfilter__checkbox[data-id=${item.cartid}] > input`).prop('checked', true);
+                        $(`[data-tab="services"] .mainfilter__checkbox[data-id=${item.cartid}] > input`).prop('checked', true);
+                        $(`[data-tab="problems"] .mainfilter__checkbox[data-services]`).each(function(){
+                            let srvs = $(this).data('services').split(',')
+                            console.log(this);
+                            if (in_array(item.cartid,srvs)) $(this).children('input').prop('checked', true);
+
+                        })
                     })
                 }
             }
