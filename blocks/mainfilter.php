@@ -221,8 +221,10 @@
                     } else if (data.problem !== undefined) {
                         console.log(data);
                         let srvs = data.services.split(',')
-                        let cid = data.category
-                        $.each(srvs,function(i,sid){
+                        $.each(srvs,function(i,srv){
+                            let idx = srv.split('_');
+                            let cid = idx[0]
+                            let sid = idx[1]
                             $.each(mainFilter.get('services'),function(i,obj){
                                 let item = Object.assign({}, obj);
                                 if (item.id == sid && item.category == cid) toggleItem(item,sid,cid)
