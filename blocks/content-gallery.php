@@ -23,21 +23,6 @@
                 </svg>
             </div>
         </div>
-        <script>
-            $(document).find('#{{_var.sliderid}}').each(function() {
-                new Swiper(this, {
-                    loop: true,
-                    slidesPerView: 1,
-                    speed: 1000,
-                    spaceBetween: 30,
-                    navigation: {
-                        nextEl: '.gallery__nav .next',
-                        prevEl: '.gallery__nav .prev'
-                    },
-                });
-
-            })
-        </script>
     </div>
 </view>
 

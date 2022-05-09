@@ -22,4 +22,7 @@
     <div>
         <wb-module wb="module=yonger&mode=edit&block=common.inc" />
     </div>
+    <div class="alert alert-info">
+        Данный блок не требует редактирования
+    </div>
 </edit>
