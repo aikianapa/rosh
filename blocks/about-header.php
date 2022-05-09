@@ -24,3 +24,9 @@
         Данный блок генерируется автоматически.
     </div>
 </edit>
+
+<preview>
+<div class="container page">
+    <div class="tags"> <a class="tag" href="equipment.html">Оборудование </a><a class="tag" href="gallery.html">Галерея </a><a class="tag" href="experts.html">Специалисты </a></div>
+</div>
+</preview>

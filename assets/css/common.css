@@ -17,6 +17,9 @@ div.ddl > a + svg.svgsprite._drop {
     width: 100%;
 }
 
+.text-break {
+    white-space:pre-wrap;
+}
 
 .popup.--service-l .popup__panel {
     max-width: 830px; top: 60px;

@@ -186,6 +186,7 @@
                 </svg>
             </button>
             <div class="popup__name text-bold">Лицо</div>
+            <div class="popup__content">
             <h2 class="h2 mb-20">Консультация врача</h2>
             <div class="popup__img"><img src="/assets/img/popup/1.jpg" alt=""></div>
             <p class="text-bold text-big mb-10">На консультации в медицинском центре РОШ врач-дерматолог:</p>
@@ -195,6 +196,7 @@
                 <p class="mb-10">Назначит дополнительное обследование, лечение, а также даст рекомендации по образу жизни.
                 </p>
             </div><a class="btn btn--black" href="/landing.html">Читать подробнее</a>
+            </div>
         </div>
     </div>
 
