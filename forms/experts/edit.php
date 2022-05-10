@@ -38,7 +38,12 @@
                                         <option value="{{id}}">{{name}}</option>
                                     </select>
                                 </div>
-
+                                <div class="form-group row">
+        <label class="col-form-label col-sm-3">Опыт работы</label>
+        <div class="col-sm-9">
+            <input name="experience" class="form-control">
+        </div>
+    </div>
                                 <wb-module wb="module=yonger&mode=structure" />
                         </form>
                     </div>
