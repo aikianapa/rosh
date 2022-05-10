@@ -36,22 +36,14 @@
         <div class="container">
             <div class="problems__slider">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide"> <a class="problem__link" href="#" style="background-image: url(/assets/img/landing/1.jpg)">
-                            <div class="blog-panel__tag">Проблемы</div>
-                            <div class="problem__name">Акне и постакне</div>
-                        </a></div>
-                    <div class="swiper-slide"> <a class="problem__link" href="#" style="background-image: url(/assets/img/landing/1.jpg)">
-                            <div class="blog-panel__tag">Проблемы</div>
-                            <div class="problem__name">Акне и постакне</div>
-                        </a></div>
-                    <div class="swiper-slide"> <a class="problem__link" href="#" style="background-image: url(/assets/img/landing/1.jpg)">
-                            <div class="blog-panel__tag">Проблемы</div>
-                            <div class="problem__name">Акне и постакне</div>
-                        </a></div>
-                    <div class="swiper-slide"> <a class="problem__link" href="#" style="background-image: url(/assets/img/landing/1.jpg)">
-                            <div class="blog-panel__tag">Проблемы</div>
-                            <div class="problem__name">Акне и постакне</div>
-                        </a></div>
+                    <wb-foreach wb="from=swiper">
+                        <div class="swiper-slide">
+                            <a class="problem__link" href="#" style="background-image: url(/thumbc/730x570/src{{image.0.img}})">
+                                <div class="blog-panel__tag" wb-if="'{{tag}}'>''">{{tag}}</div>
+                                <div class="problem__name">{{title}}</div>
+                            </a>
+                        </div>
+                    </wb-foreach>
                 </div>
             </div>
             <div class="gallery__nav">
