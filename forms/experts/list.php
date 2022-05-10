@@ -14,7 +14,7 @@
             <div class="header py-2">
                 <span clsss="row">
                     <div class="col-6">
-                        <input type="search" class="form-control" placeholder="Поиск" data-ajax="{'target':'#{{_form}}List','filter_add':{'$or':[{ 'fullname': {'$like' : '$value'} } ]} }">
+                        <input type="search" class="form-control" placeholder="Поиск" data-ajax="{'target':'#{{_form}}List','filter_add':{'$or':[{ 'name': {'$like' : '$value'} } ]} }">
                     </div>
                 </span>
             </div>
@@ -32,7 +32,7 @@
                 <li class="list-group-item d-flex align-items-center">
                     <img src="/thumbc/30x30/src{{image.0.img}}" class="wd-30 rounded-circle mg-r-15" alt="">
                     <div class="flex-grow-1">
-                        <h6 class="tx-13 tx-inverse tx-semibold mg-b-0">{{fullname}}</h6>
+                        <h6 class="tx-13 tx-inverse tx-semibold mg-b-0">{{name}}</h6>
                         <span class="d-block tx-11 text-muted" wb-tree="dict=divisions&branch={{division}}">{{name}}</span>
 
                     </div>

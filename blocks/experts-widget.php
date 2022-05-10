@@ -9,11 +9,11 @@
         <div class="container">
             <h3 class="h3 mb-40">Специалисты</h3>
             <div class="inner-experts__list">
-                <wb-foreach wb="table=experts&limit=5">
+                <wb-foreach wb="table=experts&limit=5" wb-filter="active=on">
                 <div class="inner-experts__item">
                     <div class="inner-experts__pic" style="background-image: url(/thumbc/350x194/src{{image.0.img}})"></div>
                     <div class="inner-experts__info">
-                        <div class="inner-experts__name"><a href="/experts/{{wbFurlGenerate({{fullname}})}}">{{fullname}}</a></div>
+                        <div class="inner-experts__name"><a href="/about/experts/{{wbFurlGenerate({{fullname}})}}">{{fullname}}</a></div>
                         <div class="inner-experts__experience">Опыт работы {{experience}}</div><a class="inner-experts__link" href="/expert.html">Читать подробнее</a>
                     </div>
                 </div>

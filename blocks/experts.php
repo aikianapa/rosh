@@ -13,149 +13,28 @@
         <div class="experts">
             <h1 class="h1">Специалисты</h1>
             <div class="container-fluid">
-                <div class="expert row">
+                <div class="expert row" wb-tree="item=divisions&children=false&active=on">
                     <div class="col-lg-3">
-                        <h5 class="h5 expert__category">Руководство клиники</h5>
+                        <h5 class="h5 expert__category">{{name}}</h5>
                     </div>
                     <div class="col-lg-9">
-                        <a class="expert__info" href="expert.html">
+                        <wb-foreach wb="table=experts&tpl=false" wb-filter="division={{id}}&active=on">
+                        <a class="expert__info" href="/about/experts/{{wbFurlGenerate({{fullname}})}}">
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="expert__img">
-                                        <img src="/assets/img/experts/1.jpg" alt="">
+                                        <img src="/thumbc/315x175/src{{image.0.img}}" alt="{{fullname}} - {{spec}}">
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    <p class="expert__name">Хачатурян Любовь Андреева</p>
+                                    <p class="expert__name">{{fullname}}</p>
                                     <div class="expert__description">
-                                        <p>Главный врач медицинского центра РОШ.</p>
+                                        <p>{{spec}}</p>
                                     </div>
                                 </div>
                             </div>
                         </a>
-                    </div>
-                </div>
-                <div class="expert row">
-                    <div class="col-lg-3">
-                        <h5 class="h5 expert__category">Отделение дерматологии и косметологии</h5>
-                    </div>
-                    <div class="col-lg-9">
-                        <a class="expert__info" href="expert.html">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="expert__img">
-                                        <img src="/assets/img/experts/1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <p class="expert__name">Хачатурян Любовь Андреева</p>
-                                    <div class="expert__description">
-                                        <p>Врач дерматовенеролог, </p>
-                                        <p>косметолог, лазеротерапевт.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="expert__info" href="expert.html">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="expert__img">
-                                        <img src="/assets/img/experts/1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <p class="expert__name">Хачатурян Любовь Андреева</p>
-                                    <div class="expert__description">
-                                        <p>Главный врач медицинского центра РОШ.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="expert__info" href="expert.html">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="expert__img">
-                                        <img src="/assets/img/experts/1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <p class="expert__name">Хачатурян Любовь Андреева</p>
-                                    <div class="expert__description">
-                                        <p>Главный врач медицинского центра РОШ.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="expert__info" href="expert.html">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="expert__img">
-                                        <img src="/assets/img/experts/1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <p class="expert__name">Хачатурян Любовь Андреева</p>
-                                    <div class="expert__description">
-                                        <p>Главный врач медицинского центра РОШ.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="expert__info" href="expert.html">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="expert__img">
-                                        <img src="/assets/img/experts/1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <p class="expert__name">Хачатурян Любовь Андреева</p>
-                                    <div class="expert__description">
-                                        <p>Главный врач медицинского центра РОШ.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="expert__info" href="expert.html">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="expert__img">
-                                        <img src="/assets/img/experts/1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <p class="expert__name">Хачатурян Любовь Андреева</p>
-                                    <div class="expert__description">
-                                        <p>Главный врач медицинского центра РОШ.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="expert row">
-                    <div class="col-lg-3">
-                        <h5 class="h5 expert__category">Отделение общей медицины</h5>
-                    </div>
-                    <div class="col-lg-9">
-                        <a class="expert__info" href="expert.html">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="expert__img">
-                                        <img src="/assets/img/experts/1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <p class="expert__name">Хачатурян Любовь Андреева</p>
-                                    <div class="expert__description">
-                                        <p>Врач акушер-гинеколог. Кандидат медицинских наук. Высшая квалификационная категория
-                                            по специальности "Акушерство и гинекология"</p>
-                                        <p>Врач акушер-гинеколог. Кандидат медицинских наук. </p>
-                                    </div>
-                                    <div class="expert__link"> Смотреть подробнее</div>
-                                </div>
-                            </div>
-                        </a>
+                        </wb-foreach>
                     </div>
                 </div>
             </div>

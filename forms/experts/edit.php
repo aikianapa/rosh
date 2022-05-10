@@ -13,42 +13,46 @@
             </div>
             <div class="modal-body pd-20">
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-5  col-lg-4 scroll-y">
                         <form id="{{_form}}EditForm">
                             <input type="checkbox" class="custom-control-input" name="active" id="{{_form}}SwitchItemActive">
-                            <div>
-                                <div class="form-group">
-                                        <wb-module wb="module=filepicker&mode=single&width=250&&height=250" wb-path="/uploads/experts/" name="image">
-                                        </wb-module>
-                                </div>
+                            <div class="form-group">
+                                <wb-module wb="module=filepicker&mode=single&width=250&&height=250" wb-path="/uploads/experts/" name="image">
+                                </wb-module>
+                            </div>
 
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text p-1">
-                                                <input name="active" wb-module="swico">
-                                            </span>
-                                        </div>
-                                        <input type="text" name="fullname" class="form-control" placeholder="Ф.И.О." required>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text p-1">
+                                            <input name="active" wb-module="swico">
+                                        </span>
                                     </div>
+                                    <input type="text" name="name" class="form-control" placeholder="Ф.И.О." required>
                                 </div>
+                            </div>
 
-                                <div class="form-group">
-                                    <select class="form-control" wb-tree="dict=divisions&children=false" name="division" required>
-                                        <option value="{{id}}">{{name}}</option>
-                                    </select>
+                            <div class="form-group">
+                                <select class="form-control" wb-tree="dict=divisions&children=false" name="division" required>
+                                    <option value="{{id}}">{{name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">Специализация</label>
+                                <div class="col-sm-9">
+                                    <input name="spec" class="form-control">
                                 </div>
-                                <div class="form-group row">
-        <label class="col-form-label col-sm-3">Опыт работы</label>
-        <div class="col-sm-9">
-            <input name="experience" class="form-control">
-        </div>
-    </div>
-                                <wb-module wb="module=yonger&mode=structure" />
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">Опыт работы</label>
+                                <div class="col-sm-9">
+                                    <input name="experience" class="form-control">
+                                </div>
+                            </div>
+                            <wb-module wb="module=yonger&mode=structure&preset=expert" />
                         </form>
                     </div>
-
-                    <div class="col-7">
+                    <div class="col-7 col-lg-8">
                         <div id="yongerBlocksForm">
                             <form method="post">
 
