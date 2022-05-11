@@ -82,8 +82,9 @@
             <div class="container">
                 <div class="all-services">
                     <wb-foreach wb="table=problems&size=999999" wb-filter="active=on&srvtype={{id}}">
+                        <wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
                         <a class="all-services__item" href="/{{_table}}/{{wbFurlGenerate({{header}})}}" data-category='{{implode(" ",category)}}'>
-                            <div class="all-services__pic" style="background-image: url(/thumbc/255x157/src{{cover.0.img}})"></div>
+                            <div class="all-services__pic" style="background-image: url(/thumbc/255x157/src{{_var.image}})"></div>
                             <div class="all-services__name">{{header}}</div>
                         </a>
                     </wb-foreach>

@@ -2,8 +2,8 @@
 
         <div class="menu" id="mainmenu">
             <nav class="nav">
-                <div class="nav__link"><a href="/all-services">Услуги</a></div>
-                <div class="nav__link"><a href="/all-problems">Проблемы</a></div>
+                <div class="nav__link"><a href="/services">Услуги</a></div>
+                <div class="nav__link"><a href="/problems">Проблемы</a></div>
                 <div class="nav__link"><a href="shop.html">Магазин</a></div>
                 <div class="nav__link"><a href="/blog">Блог</a></div>
                 <div class="nav__link"><a href="l-n-d.html">Libi & Daughters</a></div>
