@@ -1,9 +1,9 @@
 <view>
     <div class="container">
         <div class="crumbs">
-            <a class="crumbs__arrow" href="#">
+            <a class="crumbs__arrow" href="javascript:window.history.back();">
                 <svg class="svgsprite _crumbs-back">
-                    <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+                    <use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
                 </svg>
             </a>
             <a class="crumbs__link" href="/">Главная</a>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-lg-9">
                         <wb-foreach wb="table=experts&tpl=false" wb-filter="division={{id}}&active=on">
-                        <a class="expert__info" href="/about/experts/{{wbFurlGenerate({{fullname}})}}">
+                        <a class="expert__info" href="/about/experts/{{wbFurlGenerate({{name}})}}">
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="expert__img">
@@ -27,7 +27,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    <p class="expert__name">{{fullname}}</p>
+                                    <p class="expert__name">{{name}}</p>
                                     <div class="expert__description">
                                         <p>{{spec}}</p>
                                     </div>

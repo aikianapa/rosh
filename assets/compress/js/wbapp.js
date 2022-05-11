@@ -1256,7 +1256,6 @@ wbapp.updateView = function(params = {}, data = {}) {
             if (prms._params !== undefined && prms._params.update !== undefined) prms.update = prms._params.update;
             if (prms.route !== undefined && prms.route._post !== undefined) post = prms.route._post;
             if (prms.url == undefined && prms.route.url !== undefined) prms.url = prms.route.url;
-
             if (params.update == prms.update) {
                 let target = prms.target;
                 if (post && prms.url !== undefined) {
@@ -1264,7 +1263,7 @@ wbapp.updateView = function(params = {}, data = {}) {
                         method: 'POST',
                         body: post
                     })
-                    .then((resp)=>resp.json())
+                    .then((resp)=>resp.text())
                     .then(function(res){
                         let html = $(res).find(target).html();
                         $(document).find(target).html(html);

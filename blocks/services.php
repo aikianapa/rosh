@@ -27,7 +27,8 @@
             </div>
             <div class="all-tabs data-tab-wrapper" data-tabs="services">
                 <div class="all-tab data-tab-item active" data-tab="all">
-                    <div class="all-services"> <a class="all-services__item" href="landing.html">
+                    <div class="all-services">
+                            <a class="all-services__item" href="landing.html">
                             <div class="all-services__pic" style="background-image: url(./assets/img/all/1.jpg)"></div>
                             <div class="all-services__name">Консультация врача</div></a><a class="all-services__item" href="landing.html">
                             <div class="all-services__pic" style="background-image: url(./assets/img/all/1.jpg)"></div>

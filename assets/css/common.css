@@ -1,5 +1,9 @@
 @import "all.css";
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 div.popup.--service div.text { margin: 0; }
 
 div.ddl + div.ddm { display: none; padding-left: 1.5em; }
