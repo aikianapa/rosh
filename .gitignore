@@ -4,6 +4,8 @@
 .backup
 engine
 
+database
 database/_cache
 uploads/_cache
 *.jsgz
+*.cssgz
