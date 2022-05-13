@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header row">
                 <div class="col-5">
-                    <h5>Редактирование</h5>
+                    <h5>Редактирование проблемы</h5>
                 </div>
                 <div class="col-7">
                     <h3 class="header"></h3>
@@ -15,6 +15,7 @@
                 <div class="row">
                     <div class="col-5">
                         <form id="{{_form}}EditForm">
+                            <meta name="id" value="{{id}}">
                             <div class="form-group">
                                 <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/problems/" name="cover">
                                 </wb-module>
