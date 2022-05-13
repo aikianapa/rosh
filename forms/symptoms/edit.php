@@ -16,7 +16,7 @@
                     <div class="col-5">
                         <form id="{{_form}}EditForm">
                             <div class="form-group">
-                                <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/services/" name="cover">
+                                <wb-module wb="module=filepicker&mode=single&width=800&height=300" wb-path="/uploads/services/" name="cover">
                                 </wb-module>
                             </div>
 
@@ -37,7 +37,8 @@
                                     <select name="problems" class="form-control" wb-select2 multiple>
                                         <wb-foreach wb="{
                                                 'table':'problems',
-                                                'render':'client',
+                                                'render':'server',
+                                                'tpl':'false',
                                                 'size':'999999',
                                                 'filter': {'active' : 'on'}
                                             }">

@@ -66,7 +66,8 @@
                                     <select name="symptoms" id="{{_form}}SelectCategory" class="form-control" wb-select2 multiple>
                                         <wb-foreach wb="{
                                                 'table':'symptoms',
-                                                'render':'client',
+                                                'render':'server',
+                                                'tpl':'false',
                                                 'size':'999999',
                                                 'filter': {'active' : 'on'}
                                             }">
