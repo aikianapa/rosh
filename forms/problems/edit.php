@@ -61,14 +61,14 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-auto">Связанные услуги</label>
+                                <label class="col-auto">Связанные симптомы</label>
                                 <div class="col">
-                                    <select name="services" id="{{_form}}SelectCategory" class="form-control" wb-select2 multiple>
+                                    <select name="symptoms" id="{{_form}}SelectCategory" class="form-control" wb-select2 multiple>
                                         <wb-foreach wb="{
-                                                'table':'services',
-                                                'render':'server',
+                                                'table':'symptoms',
+                                                'render':'client',
                                                 'size':'999999',
-                                                'filter': {'active' : 'on', 'type': {'$in':['{{srvtype}}','']} }
+                                                'filter': {'active' : 'on'}
                                             }">
                                             <option value="{{_id}}" selected wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
                                                 {{header}}
@@ -80,6 +80,8 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <input type="hidden" name="services" value="">
 
                             <wb-module wb="module=yonger&mode=structure&preset=landing" />
                         </form>

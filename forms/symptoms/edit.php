@@ -32,25 +32,24 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-auto">Связанные услуги</label>
+                                <label class="col-auto">Связанные проблемы</label>
                                 <div class="col">
-                                    <select name="category" class="form-control" wb-select2 multiple>
+                                    <select name="problems" class="form-control" wb-select2 multiple>
                                         <wb-foreach wb="{
-                                                'table':'services',
-                                                'render':'server',
+                                                'table':'problems',
+                                                'render':'client',
                                                 'size':'999999',
                                                 'filter': {'active' : 'on'}
                                             }">
-                                            <option value="{{_id}}" selected wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
-                                                {{header}}
-                                            </option>
-                                            <option value="{{_id}}" wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'!='1'">
+                                            <option value="{{_id}}">
                                                 {{header}}
                                             </option>
                                         </wb-foreach>
                                     </select>
                                 </div>
                             </div>
+
+                            <input type="hidden" name="category" value="">
 
                             <wb-module wb="module=yonger&mode=structure&preset=landing" />
                         </form>
