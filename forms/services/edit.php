@@ -34,8 +34,10 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-sm-4">Категория</label>
                                     <div class="col">
-                                        <select class="form-control" wb-tree="dict=srvcat&children=false" placeholder="" name="category" >
+                                        <select class="form-control"  wb-select2 multiple placeholder="" name="category" >
+                                        <wb-foreach wb="table=catalogs&item=srvcat&from=tree.data" wb-filter="active=on">
                                             <option value="{{id}}">{{name}}</option>
+                                        </wb-foreach>
                                         </select>
                                     </div>
                                 </div>
