@@ -61,8 +61,8 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-auto">Связанные симптомы</label>
-                                <div class="col">
+                                <label class="col-12">Связанные симптомы</label>
+                                <div class="col-12">
                                     <select name="symptoms" id="{{_form}}SelectCategory" class="form-control" wb-select2 multiple>
                                         <wb-foreach wb="{
                                                 'table':'symptoms',
