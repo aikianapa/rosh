@@ -79,7 +79,7 @@
         })
     </script>
 </view>
-<edit header="ЛК Админа - профиль">
+<edit header="ЛК Специалиста - профиль">
     <div>
         <wb-module wb="module=yonger&mode=edit&block=common.inc" />
     </div>

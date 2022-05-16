@@ -23,6 +23,18 @@ class usersClass extends cmsFormsClass
     {
         isset($item['phone']) ? null : $item['phone'] = '';
         $item['phone'] = preg_replace('/[^0-9]/', '', $item['phone']);
+        $item['fullname'] = trim($item['first_name'].' '.$item['middle_name'].' '.$item['last_name']);
+        if ($item['role'] == 'expert') {
+            $list = wbItemList('experts',["filter"=>[
+                "active"=>"on",
+                "login"=>$item['id']
+            ]]);
+            if ($list['count'] > 0) {
+                $item['expert'] = array_pop($list['list']);
+            }
+        }
+
+
         return $item;
     }
 

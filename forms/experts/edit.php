@@ -49,6 +49,17 @@
                                     <input name="experience" class="form-control">
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-form-label  col-sm-3">Учётная запись</label>
+                                <div class="col-sm-9">
+                                <select class="form-control" name="login">
+                                    <option></option>
+                                    <wb-foreach wb="table=users&sort=fullname&size=999" wb-filter="active=on&role=expert" >
+                                        <option value="{{id}}">{{fullname}} {{email}}</option>
+                                    </wb-foreach>
+                                </select>
+                                </div>
+                            </div>
                             <wb-module wb="module=yonger&mode=structure&preset=expert" />
                         </form>
                     </div>

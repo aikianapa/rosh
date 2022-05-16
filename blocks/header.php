@@ -4,7 +4,7 @@
 
         <header class="header header--transparent header--fixed --unfilter">
             <!---div class="container --flex --jcsb --aicn"  wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='admin' OR '{{_sess.user.role}}'=='client'"-->
-            <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','admin','client'])">
+            <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','admin','client','expert'])">
                 <a class="header__logo" href="/"> <img src="/assets/img/logo.svg" alt=""></a>
                 <div class="header__left --flex --aicn">
                     <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
@@ -18,22 +18,25 @@
                     </div>
                     <a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
                 </div>
-                <div class="header__right --flex --aicn">
+                <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'==''">
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
                     <button class="burger"></button>
                 </div>
-            </div>
-
-            <div class="crumbs__en" wb-if="'{{_route.uri}}' =='/english'">
-                <div class="container">
-                    <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
-                            <svg class="svgsprite _crumbs-back-white">
-                                <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back-white"></use>
-                            </svg></a><a class="crumbs__link" href="/">Home page</a><a class="crumbs__link" href="{{_route.uri}}">Contacts</a></div>
+                <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'>''">
+                    <button class="btn btn-link enter profile-menu">
+                        Профиль
+                        <svg class="svgsprite _drop">
+                            <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
+                        </svg>
+                        <div class="enter__panel">
+                            <a class="enter__btn text-small" href="/lk/{{_sess.user.role}}/profile">Редактировать</a>
+                            <a class="enter__btn text-small" href="/signout">Выйти</a>
+                        </div>
+                    </button>
+                    <button class="burger"></button>
                 </div>
             </div>
-
 
             <div class="container --flex --jcsb --aicn" wb-if="'{{_sess.user.role}}'=='main'">
                 <div class="header__admin --flex --aicn">
@@ -55,6 +58,14 @@
                         </div>
                     </button>
                     <button class="burger"></button>
+                </div>
+            </div>
+            <div class="crumbs__en" wb-if="'{{_route.uri}}' =='/english'">
+                <div class="container">
+                    <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
+                            <svg class="svgsprite _crumbs-back-white">
+                                <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back-white"></use>
+                            </svg></a><a class="crumbs__link" href="/">Home page</a><a class="crumbs__link" href="{{_route.uri}}">Contacts</a></div>
                 </div>
             </div>
         </header>
