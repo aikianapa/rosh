@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body pd-20">
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-5 scroll-y modal-h">
                         <form id="{{_form}}EditForm">
                             <div>
                                 <div class="form-group row align-items-center">
@@ -67,7 +67,7 @@
                         </form>
                     </div>
 
-                    <div class="col-7">
+                    <div class="col-7 scroll-y modal-h">
                         <div id="yongerBlocksForm">
                             <form method="post">
 

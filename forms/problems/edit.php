@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body pd-20">
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-5 scroll-y modal-h">
                         <form id="{{_form}}EditForm">
                             <meta name="id" value="{{id}}">
                             <div class="form-group">
@@ -89,7 +89,7 @@
                         </form>
                     </div>
 
-                    <div class="col-7">
+                    <div class="col-7 scroll-y modal-h">
                         <div id="yongerBlocksForm">
                             <form method="post">
 

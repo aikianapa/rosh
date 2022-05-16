@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body pd-20">
                 <div class="row">
-                    <div class="col-5  col-lg-4 scroll-y">
+                    <div class="col-5 col-lg-4 scroll-y modal-h">
                         <form id="{{_form}}EditForm">
                             <input type="checkbox" class="custom-control-input" name="active" id="{{_form}}SwitchItemActive">
                             <div class="form-group">
@@ -52,7 +52,7 @@
                             <wb-module wb="module=yonger&mode=structure&preset=expert" />
                         </form>
                     </div>
-                    <div class="col-7 col-lg-8">
+                    <div class="col-7 col-lg-8 scroll-y modal-h">
                         <div id="yongerBlocksForm">
                             <form method="post">
 

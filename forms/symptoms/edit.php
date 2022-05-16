@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body pd-20">
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-5 scroll-y modal-h">
                         <form id="{{_form}}EditForm">
                             <div class="form-group">
                                 <wb-module wb="module=filepicker&mode=single&width=800&height=300" wb-path="/uploads/services/" name="cover">
@@ -56,7 +56,7 @@
                         </form>
                     </div>
 
-                    <div class="col-7">
+                    <div class="col-7 scroll-y modal-h">
                         <div id="yongerBlocksForm">
                             <form method="post">
 
