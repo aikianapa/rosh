@@ -1,6 +1,6 @@
 <view>
     <div class="container blog-head">
-        <div class="crumbs"><a class="crumbs__arrow" href="#">
+        <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
                 <svg class="svgsprite _crumbs-back">
                     <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
                 </svg></a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="/blog">{{_parent.header}}</a>
@@ -14,9 +14,7 @@
                         <div class="filter-select select">
                             <div class="filter-select__main select__main" data-id="">Все</div>
                             <div class="filter-select__list select__list" wb-tree="dict=blog&children=false">
-                                <div class="filter-select__item select__item filter-category" 
-                                data-ajax="{'target':'#blogList','filter_remove': 'category','filter_add':{'category':'{{id}}'}}"
-                                data-id="{{id}}">{{name}}</div>
+                                <div class="filter-select__item select__item filter-category" data-ajax="{'target':'#blogList','filter_remove': 'category','filter_add':{'category':'{{id}}'}}" data-id="{{id}}">{{name}}</div>
                             </div>
                         </div>
                     </div>
@@ -28,7 +26,7 @@
                             <div class="filter-select__main select__main">Месяц</div>
                             <div class="filter-select__list select__list">
                                 <wb-foreach wb-tpl="false" wb-count="12">
-                                <div class="filter-select__item select__item active">{{_ndx}}</div>
+                                    <div class="filter-select__item select__item active">{{_ndx}}</div>
                                 </wb-foreach>
                             </div>
                         </div>
@@ -51,7 +49,7 @@
     <div class="blogs">
         <div class="container">
             <div class="blogs__list" id="blogList">
-            <wb-foreach wb="{
+                <wb-foreach wb="{
                     'ajax':'/api/v2/list/blog/',
                     'size':'8',
                     'sort': 'date:d',
@@ -59,13 +57,13 @@
                     'filter':{
                         'active':'on'
                     }
-                }">    
-                <wb-var width="33" />
+                }">
+                    <wb-var width="33" />
                     <wb-var width="50" wb-if="'{{_ndx}}'>'3'" />
                     <wb-var width="100" wb-if="'{{_ndx}}'>'5'" />
                     <wb-var width="66" wb-if="'{{_ndx}}'=='7'" />
                     <wb-var width="33" wb-if="'{{_ndx}}'=='8'" />
-                <a class="blog-panel blog-panel--{{_var.width}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
+                    <a class="blog-panel blog-panel--{{_var.width}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
                         <div class="blog-panel__tags">
                             <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
                             <div class="blog-panel__tag" wb-if="'{{done}}'=='on'">Завершенная</div>
@@ -77,18 +75,18 @@
                             </div>
                             <div class="blog-panel__bottom">
                                 <div class="blog-panel__text">
-                                {{wbGetWords({{blocks.blog_content.text}},15)}}
+                                    {{wbGetWords({{blocks.blog_content.text}},15)}}
                                 </div>
                                 <div class="blog-panel__link">Читать далее</div>
                             </div>
                         </div>
                     </a>
-            </wb-foreach>
+                </wb-foreach>
             </div>
         </div>
     </div>
     <script wb-app remove>
-        
+
     </script>
 </view>
 

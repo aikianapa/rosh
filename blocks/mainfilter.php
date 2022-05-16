@@ -26,8 +26,8 @@
                                                 {{#each services}}
                                                     <div class="col-lg-4">
                                                         <label class="checkbox mainfilter__checkbox" data-id="{{../../id}}_{{id}}" data-service="{{id}}">
-                                                            <input type="checkbox"><span> </span>
-                                                            <div class="checbox__name" on-click="toggleChoise">{{header}}</div>
+                                                            <input type="checkbox" on-change="toggleService"><span> </span>
+                                                            <div class="checbox__name">{{header}}</div>
                                                             <a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewService">Подробнее</a>
                                                         </label>
                                                     </div>
@@ -52,9 +52,9 @@
                                                             <div class="row">
                                                                 {{#each ~/prblist}}
                                                                     <div class="col-lg-4">
-                                                                        <label class="checkbox mainfilter__checkbox" data-category="{{category}}" data-problem="{{id}}" data-services="{{#each services}}{{../../category}}_{{this}}{{#if @last !== @index}},{{/if}}{{/each}}">
-                                                                            <input type="checkbox"><span> </span>
-                                                                            <div class="checbox__name" on-click="toggleChoise">{{header}}</div>
+                                                                        <label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-category="{{category}}" data-problem="{{id}}">
+                                                                            <input type="checkbox" on-change="toggleProblem"><span> </span>
+                                                                            <div class="checbox__name">{{header}}</div>
                                                                             <a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
                                                                         </label>
                                                                     </div>
@@ -72,8 +72,8 @@
                                     <div class="row">
                                         {{#each gynecology}}
                                             <div class="col-lg-4">
-                                                <label class="checkbox mainfilter__checkbox">
-                                                    <input type="checkbox"><span> </span>
+                                                <label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-category="{{category}}" data-problem="{{id}}">
+                                                    <input type="checkbox" on-change="toggleProblem"><span> </span>
                                                     <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
                                                 </label>
                                             </div>
@@ -86,8 +86,8 @@
                                 <div class="row">
                                     {{#each symptoms}}
                                         <div class="col-lg-4">
-                                            <label class="checkbox mainfilter__checkbox">
-                                                <input type="checkbox"><span> </span>
+                                            <label class="checkbox mainfilter__checkbox" data-id="{{id}}">
+                                                <input type="checkbox" on-change="toggleSymptom"><span> </span>
                                                 <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service" href="#">Подробнее </a>
                                             </label>
                                         </div>
@@ -101,7 +101,31 @@
                     <div class="mainfilter__choice">
                         <h5 class="h5">Ваш выбор</h5>
                         <div class="mainfilter__tags">
-                            {{#each choice}}
+                            {{#each choice.services}}
+                                <div class="mainfilter-tag">
+                                    <div class="mainfilter-tag__name">
+                                        <div class="mainfilter-tag__delete">
+                                            <svg class="svgsprite _delete">
+                                                <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+                                            </svg>
+                                        </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                    </div>
+                                    <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
+                                </div>
+                            {{/each}}
+                            {{#each choice.problems}}
+                                <div class="mainfilter-tag">
+                                    <div class="mainfilter-tag__name">
+                                        <div class="mainfilter-tag__delete">
+                                            <svg class="svgsprite _delete">
+                                                <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+                                            </svg>
+                                        </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                    </div>
+                                    <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
+                                </div>
+                            {{/each}}
+                            {{#each choice.symptoms}}
                                 <div class="mainfilter-tag">
                                     <div class="mainfilter-tag__name">
                                         <div class="mainfilter-tag__delete">
@@ -150,6 +174,10 @@
             el: '#mainfilter',
             template: $('#mainfilter template').html(),
             on: {
+                complete() {
+                    this.set('choice', choice)
+                    this.fire('checkChoose')
+                },
                 getServices(ev) {
                     let category = $(ev.node).parents('.accardeon').data('category')
                     let services = `categories.${category}.services`;
@@ -177,67 +205,90 @@
                     mainFilter.set('prblist', data);
                     this.fire('checkChoose')
                 },
-                toggleChoise(ev) {
-                    let label = $(ev.node).parent('.mainfilter__checkbox');
-                    let data = $(label).data();
-                    let services = mainFilter.get('services');
-                    let choice = mainFilter.get('choice');
-                    let toggleItem = function(obj,sid,cid) {
-                        let item = Object.assign({}, obj);
-                        let cartid = cid + '_' + sid
-                        let liter = mainFilter.get(`categories.${cid}`).name.substring(0, 1)
+                toggleService(ev) {
+                    let input = $(ev.node)
+                    let label = $(input).parent('.mainfilter__checkbox')
+                    let data = $(label).data()
+                    let cid = $(label).parents('[data-category]').data('category')
+                    let choice = mainFilter.get('choice.services')
+                    if (choice == undefined) choice = {}
+                    if ($(input).is(':checked')) {
+                        let header = $(label).find('.checbox__name').text().trim()
+                        let liter = mainFilter.get(`categories.${cid}`).name.substring(0, 1).toUpperCase()
                         let color = mainFilter.get(`categories.${cid}`).data.color
-                        if (item.id == sid && (item.category == "" || item.category == cid)) {
-                            if (choice[cartid] == undefined) {
-                                item.category = cid
-                                item.cartid = cartid
-                                item.liter = liter.toUpperCase()
-                                item.color = color
-                                choice[cartid] = item
-                                $(label).find('input').prop('checked', true)
-                            } else {
-                                delete choice[cartid]
-                                $(label).find('input').prop('checked', false)
-                            }
-                            wbapp.data('choice', choice)
-                            mainFilter.set('choice', choice)
+                        let item = {
+                            id: data.id,
+                            header: header,
+                            liter: liter,
+                            color: color
                         }
+                        choice[data.id] = item
+                    } else {
+                        delete choice[data.id]
                     }
-                    if (data.service !== undefined) {
-                        // клик в табе сервисов
-                        let sid = data.service
-                        let cid = $(label).parents('.accardeon').data('category')
-                        let cartid = data.id
-                        $.each(services, function(i, obj) {
-                            toggleItem(obj,sid,cid)
-                        })
-                    } else if (data.problem !== undefined) {
-                        console.log(data);
-                        let srvs = data.services.split(',')
-                        $.each(srvs,function(i,srv){
-                            let idx = srv.split('_');
-                            let cid = idx[0]
-                            let sid = idx[1]
-                            $.each(mainFilter.get('services'),function(i,obj){
-                                let item = Object.assign({}, obj);
-                                if (item.id == sid && item.category == cid) toggleItem(item,sid,cid)
-                            })
-                        })
+                    mainFilter.set('choice.services', choice)
+                    wbapp.data('choice',this.get('choice'))
+                    return false
+                },
+                toggleProblem(ev) {
+                    let input = $(ev.node)
+                    let label = $(input).parent('.mainfilter__checkbox')
+                    let data = $(label).data()
+                    let cid = data.category
+                    let choice = mainFilter.get('choice.problems')
+                    if (choice == undefined) choice = {}
+                    if ($(input).is(':checked')) {
+                        let header = $(label).find('.checbox__name').text().trim()
+                        let liter = mainFilter.get(`categories.${cid}`).name.substring(0, 1).toUpperCase()
+                        let color = mainFilter.get(`categories.${cid}`).data.color
+                        let item = {
+                            id: data.id,
+                            header: header,
+                            liter: liter,
+                            color: color
+                        }
+                        choice[data.id] = item
+                    } else {
+                        delete choice[data.id]
                     }
+                    mainFilter.set('choice.problems', choice)
+                    wbapp.data('choice',this.get('choice'))
+                    return false
+                },
+                toggleSymptom(ev) {
+                    let input = $(ev.node)
+                    let label = $(input).parent('.mainfilter__checkbox')
+                    let data = $(label).data()
+                    let choice = mainFilter.get('choice.symptoms')
+                    if (choice == undefined) choice = {}
+                    if ($(input).is(':checked')) {
+                        let header = $(label).find('.checbox__name').text().trim()
+                        let liter = 'С'
+                        let color = 'yellow'
+                        let item = {
+                            id: data.id,
+                            header: header,
+                            liter: liter,
+                            color: color
+                        }
+                        choice[data.id] = item
+                    } else {
+                        delete choice[data.id]
+                    }
+                    mainFilter.set('choice.symptoms', choice)
+                    wbapp.data('choice',this.get('choice'))
                     return false
                 },
                 checkChoose() {
-                    $.each(choice, function(i, item) {
-                        $(`[data-tab="services"] .mainfilter__checkbox[data-id=${item.cartid}] > input`).prop('checked', true);
+                    $.each(mainFilter.get('choice.services'), function(i, item) {
+                        $(`[data-tab="services"] label[data-id=${item.id}] > input`).prop('checked', true);
                     })
-                    $(`[data-tab="problems"] .mainfilter__checkbox[data-services]`).each(function(){
-                        let srvs = $(this).data('services').split(',')
-                        $.each(srvs,function(i,srv){
-                            if (choice[srv] !== undefined) {
-                                $(`[data-tab="problems"] .mainfilter__checkbox[data-services*='${srv}'] > input`).prop('checked', true);
-                            }   
-                        })
-                    });
+                    $.each(mainFilter.get('choice.problems'), function(i, item) {
+                        $(`[data-tab="problems"] label[data-id=${item.id}] > input`).prop('checked', true);
+                    })
+                    $.each(mainFilter.get('choice.symptoms'), function(i, item) {
+                        $(`[data-tab="sympthoms"] label[data-id=${item.id}] > input`).prop('checked', true);
+                    })
                 },
                 viewService(ev) {
                     let data = $(ev.node).parent('label').data()
@@ -248,14 +299,13 @@
                     let form = $('body').find('div.' + popup + ':first')
                     $(form).find('.popup__name').text(title)
                     $(form).find('.popup__content').html("")
-                    wbapp.get('/services/popup/'+sid,function(res){
+                    wbapp.get('/services/popup/' + sid, function(res) {
                         $(form).find('.popup__content').html(res)
                         $(form).show()
                     })
                 }
             }
         })
-        mainFilter.set('choice', choice)
         wbapp.get('/api/v2/list/catalogs/srvcat', function(data) {
             mainFilter.set('categories', data.tree.data);
             mainFilter.set('srvtypes.categories', data.tree.data);

@@ -12,10 +12,10 @@
         <main class="page" data-barba="container" data-barba-namespace="{{_route.name}}">
         <div class="main-wrapper">
             <div class="container">
-                <div class="crumbs"><a class="crumbs__arrow" href="#">
+                <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
                         <svg class="svgsprite _crumbs-back">
                             <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                        </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Страница не найдена</a>
+                        </svg></a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="#">Страница не найдена</a>
                 </div>
                 <h1 class="h1">Страница не найдена</h1>
                 <div class="search search--service">

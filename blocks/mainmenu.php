@@ -12,14 +12,14 @@
                 <div class="nav__link ddl" wb-if="_var.child == 1">
                     <a href="{{url}}">{{_var.option}}</a>
                     <svg class="svgsprite _drop">
-                    <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
+                        <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
                     </svg>
                 </div>
                 <div class="nav__group ddm" wb-if="_var.child == 1">
                     <div class="nav__link-inner"><a href="{{url}}">{{_var.option}}</a></div>
                     <wb-foreach wb="table=pages&sort=_sort" wb-filter="active=on&menu=on&path={{url}}">
-                    <wb-var option="{{menu_title}}" wb-if="'{{menu_title}}'>''" else="{{header}}" />
-                    <div class="nav__link-inner"><a href="{{url}}">{{_var.option}}</a></div>
+                        <wb-var option="{{menu_title}}" wb-if="'{{menu_title}}'>''" else="{{header}}" />
+                        <div class="nav__link-inner"><a href="{{url}}">{{_var.option}}</a></div>
                     </wb-foreach>
                 </div>
             </wb-foreach>
@@ -32,19 +32,28 @@
             </div>
         </div>
 
-        <div class="socials socials-menu"><a class="socials__link" href="#"><svg class="svgsprite _socials-1">
-                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-1"></use>
-                </svg></a><a class="socials__link" href="#"><svg class="svgsprite _socials-2">
-                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-2"></use>
-                </svg></a><a class="socials__link" href="#"><svg class="svgsprite _socials-3">
-                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-3"></use>
-                </svg></a><a class="socials__link" href="#"><svg class="svgsprite _socials-4">
-                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-4"></use>
-                </svg></a></div>
+        <div class="socials socials-menu">
+            <a class="socials__link" href="{{_var.facebook}}" wb-if="'{{_var.facebook}}'>''">
+                <svg class="svgsprite _socials-1">
+                    <use xlink:href="assets/img/sprites/svgsprites.svg#socials-1"></use>
+                </svg></a>
+            <a class="socials__link" href="{{_var.instagram}}" wb-if="'{{_var.instagram}}'>''">
+                <svg class="svgsprite _socials-2">
+                    <use xlink:href="assets/img/sprites/svgsprites.svg#socials-2"></use>
+                </svg></a>
+            <a class="socials__link" href="{{_var.vkontakte}}" wb-if="'{{_var.vkontakte}}'>''">
+                <svg class="svgsprite _socials-4">
+                    <use xlink:href="assets/img/sprites/svgsprites.svg#socials-4"></use>
+                </svg></a><a class="socials__link" href="{{_var.youtube}}" wb-if="'{{_var.youtube}}'>''">
+                <svg class="svgsprite _socials-3">
+                    <use xlink:href="assets/img/sprites/svgsprites.svg#socials-3"></use>
+                </svg></a>
+        </div>
 
-        <div class="menu__contacts"> <a class="text-small text-grey" href="contacts.html"> г. Москва, Ростовская
-                набережная д. 5, пом. 9</a><a class="text-small text-grey" href="mailto:info@medcenterrosh.ru">
-                info@medcenterrosh.ru</a></div><a class="en-version" href="en-version.html">
+        <div class="menu__contacts"> <a class="text-small text-grey" href="/contacts">
+            {{_sett.address}}
+        </a><a class="text-small text-grey" href="mailto:{{_sett.contactEmail}}">
+                {{_sett.contactEmail}}</a></div><a class="en-version" href="/english">
             <svg class="svgsprite _web">
                 <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
             </svg>English version
