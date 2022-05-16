@@ -30,7 +30,6 @@
                             'size':'{{_sett.page_size}}'
             }">
                 <li class="list-group-item d-flex align-items-center">
-                    <img src="/thumbc/30x30/src{{cover.0.img}}" class="wd-30 rounded-circle mg-r-15" alt="">
                     <div class="flex-grow-1">
                         <h6 class="tx-13 tx-inverse tx-semibold mg-b-0">{{header}}</h6>
                         <span class="d-block tx-11 text-muted">{{price}} ₽</span>

@@ -15,6 +15,10 @@ function text2tel($str) {
     return preg_replace("/\D/", '', $str);
 }
 
+function fmtPrice($sum) {
+    return number_format($sum, 0, '.', ' ');
+}
+
 function headerByPath($path='/') {
     $app = $_ENV['app'];
     $json = json_decode(file_get_contents($app->route->path_app.'/database/_yonmap.json'),true);

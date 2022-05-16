@@ -31,33 +31,15 @@
                 <div class="col-md-9">
                     <div class="content-price">
                         <div class="content-price__head">
-                            <p>Консультация врача</p>
+                            <p>Прайс-лист</p>
                         </div>
                         <div class="content-price__body">
+                            <wb-foreach wb="from=price&tpl=false">
                             <div class="content-price__item">
-                                <div class="content-price__name">Прием (осмотр, консультация) врача-дерматовенеролога КМН</div>
-                                <div class="content-price__summ">5 000 ₽</div>
+                                <div class="content-price__name">{{header}}</div>
+                                <div class="content-price__summ">{{fmtPrice(price)}}₽</div>
                             </div>
-                            <div class="content-price__item">
-                                <div class="content-price__name">Прием (осмотр, консультация) врача-дерматовенеролога главного врача повторный ( по результатам анализов) </div>
-                                <div class="content-price__summ">2 500 ₽</div>
-                            </div>
-                            <div class="content-price__item">
-                                <div class="content-price__name">Прием (осмотр, диагностика, консультация) врача - косметолога- первичный (включает составление плана лечения)</div>
-                                <div class="content-price__summ">2 500 ₽</div>
-                            </div>
-                            <div class="content-price__item">
-                                <div class="content-price__name">Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения).</div>
-                                <div class="content-price__summ">5 000 ₽</div>
-                            </div>
-                            <div class="content-price__item">
-                                <div class="content-price__name">Прием (осмотр, консультация) врача - косметолога - повторный</div>
-                                <div class="content-price__summ">2 000 ₽</div>
-                            </div>
-                            <div class="content-price__item">
-                                <div class="content-price__name">Прием (осмотр, консультация) врача-дерматовенеролога повторный (включает составление плана лечения по результатам анализов) коррекция лечения</div>
-                                <div class="content-price__summ">3 000 ₽</div>
-                            </div>
+                            </wb-foreach>
                         </div>
                     </div>
                 </div>
