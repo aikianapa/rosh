@@ -30,7 +30,8 @@
                             <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
                         </svg>
                         <div class="enter__panel">
-                            <a class="enter__btn text-small" href="/lk/{{_sess.user.role}}/profile">Редактировать</a>
+                            <a class="enter__btn text-small" href="/lk/{{_sess.user.role}}/profile">Мой профиль</a>
+                            <a class="enter__btn text-small" href="/lk/{{_sess.user.role}}">Мой кабинет</a>
                             <a class="enter__btn text-small" href="/signout">Выйти</a>
                         </div>
                     </button>
