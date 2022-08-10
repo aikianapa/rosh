@@ -283,7 +283,7 @@ $(function () {
             $('.cookies-block').addClass('cookies-block--active')
             $('.cookies-block .cookies-block__accept-button').on('click', function () {
                 setCookie('cookok', true, 300)
-                $('.cookies-block').addClass('cookies-block--active')
+                $('.cookies-block').removeClass('cookies-block--active')
             })
         }
     });
