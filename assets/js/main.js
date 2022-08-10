@@ -1,8 +1,8 @@
 $(function () {
-    $(document).delegate('.select .select__main', 'click' , function () {
+    $(document).delegate('.select .select__main', 'click', function () {
         $(this).parent().toggleClass('active')
         return false;
-    }).delegate('.select .select__item', 'click' , function (e) {
+    }).delegate('.select .select__item', 'click', function (e) {
         //e.stopPropagation(); - не работает фильр блога
         var value = false;
         if ($(this).hasClass('select__item--checkbox')) {
@@ -20,7 +20,7 @@ $(function () {
             value = $(this).html();
             $(this).addClass('active').siblings('.select__item').removeClass('active');
             $(this).closest('.select').removeClass('active').find('.select__main:first').html(value);
-            if ($(this).data('id') !== undefined) value=$(this).data('id');
+            if ($(this).data('id') !== undefined) value = $(this).data('id');
             $(this).closest('.select').find('input[type=hidden]').each(function () {
                 $(this).val(value);
             });
@@ -107,7 +107,7 @@ $(function () {
         $(this).closest('.popup').hide();
     }).on('click', '.profile-menu', function (e) {
         e.stopPropagation();
-        $(this).addClass('active');
+        $(this).toggleClass('active');
     }).on('click', 'button.flag-date__ico', function () {
         $(this).toggleClass('checked');
     }).on('change', '.hider-checkbox input[type=checkbox]', function (e) {
@@ -203,6 +203,17 @@ $(function () {
         }
     });
 
+    function getCookie(name) {
+        var match = document.cookie.match(RegExp('(?:^|;\\s*)' + name + '=([^;]*)'));
+        return match ? match[1] : null;
+    }
+    function setCookie(c_name, value, exdays) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+        var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+        document.cookie = c_name + "=" + c_value;
+    }
+
     /*
         var map = document.querySelector('#map');
         if (map) {
@@ -212,4 +223,69 @@ $(function () {
             });
         }
     */
+
+    $(document).ready(function () {
+
+        /*
+        var header = $('.header'),
+          scrollPrev = 0;
+      
+        $(window).scroll(function() {
+          var scrolled = $(window).scrollTop();
+      
+          if ((scrolled > 10) && (scrolled > scrollPrev)) {
+            header.addClass('out');
+          } else {
+            header.removeClass('out');
+          }
+      
+          scrollPrev = scrolled;
+        });
+      
+         */
+
+        //header flip
+        /*
+        if($('.header__logo').hasClass('header__logo-red')){
+          setTimeout(function(){
+            $('.header__logo-red').addClass('active');
+          }, 2000);
+        }
+      */
+
+        //sliders
+        var swiper = new Swiper('.product-slider', {
+            slidesPerView: 1,
+            watchSlidesVisibility: true,
+            watchOverflow: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+        /*
+        var swiper = new Swiper('.post-slider', {
+          slidesPerView: 1,
+          watchOverflow: true,
+          spaceBetween: 30,
+        });
+      
+         */
+
+        //card
+        $('.card-bottom .btn').on('click', function (e) {
+            e.preventDefault();
+            $(this).parents('.card-bottom').toggleClass('active');
+        });
+        if (getCookie('cookok')) {
+            $('.cookies-block').remove()
+        } else {
+            $('.cookies-block').addClass('cookies-block--active')
+            $('.cookies-block .cookies-block__accept-button').on('click', function () {
+                setCookie('cookok', true, 300)
+                $('.cookies-block').addClass('cookies-block--active')
+            })
+        }
+    });
+
 });

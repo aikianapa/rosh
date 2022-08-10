@@ -256,3 +256,104 @@ label.text-radio > span { text-align: center; }
     .header--transparent .header__left { padding-left: 70px; }
     div.header__right > button.btn-link { padding-left: 20px; padding-right: 20px; }
 }
+
+
+
+.cookies-block {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5000;
+    display: flex;
+    align-items: center;
+    min-height: 110px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white; /* var(--bg-secondary-color); */
+    border-top: 1px solid var(--border-color);
+    transform: translateY(100%);
+    transition: 0.8s;
+ }
+ .cookies-block--active {
+    transform: translateY(0);
+ }
+ .cookies-block__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+ }
+ @media (min-width: 960px) {
+    .cookies-block__container {
+       flex-direction: row;
+    }
+ }
+ .cookies-block__wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+ }
+ @media (min-width: 960px) {
+    .cookies-block__wrapper {
+       margin-bottom: 0;
+    }
+ }
+ .cookies-block__text {
+    font-size: 14px;
+    line-height: 20px;
+ }
+ @media (min-width: 960px) {
+    .cookies-block__text {
+       font-size: 18px;
+       line-height: 24px;
+    }
+ }
+ .cookies-block__icon {
+    display: block;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    stroke: currentColor;
+ }
+ .cookies-block__link {
+    text-decoration: underline;
+ }
+ .cookies-block__link:hover {
+    color: var(--typo-ghost-color);
+ }
+ .cookies-block__accept-button,
+ .page404 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+ .cookies-block__accept-button {
+    flex-shrink: 0;
+    max-width: 200px;
+    height: 48px;
+    padding: 10px 30px;
+    color: white; /* var(--white); */
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-transform: lowercase;
+    background-color: #282d30; /* var(--bg-dark-color); */
+    border: 0;
+    border-radius: 99em;
+    cursor: pointer;
+ }
+ .cookies-block__accept-button:hover {
+    color: white; /* var(--bg-primary-color); */
+    background-color: #d6dee1;  /* var(--light-grey); */
+ }
+
+ .gallery {
+    overflow: hidden;
+ }
+
+ .mainfilter p {
+    font-family: "Playfair Display",serif;
+    margin-bottom: 30px;
+ }

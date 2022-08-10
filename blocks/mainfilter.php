@@ -7,8 +7,15 @@
                 </svg>
             </div>
             <div class="mainfilter__wrap row">
+                {{#filter}}
                 <div class="col-lg-9 col-md-8">
                     <div class="mainfilter__left">
+                        {{#if texts.main.active == 'on'}}
+                        <p>
+                            {{texts.main.data.text}}
+                        </p>
+                        {{/if}}
+
                         <div class="mainfilter__tab-list">
                             <div class="mainfilter__tab-item data-tab-link active" data-tab="services" data-tabs="mainfilter">Услуги</div>
                             <div class="mainfilter__tab-item data-tab-link" data-tab="problems" data-tabs="mainfilter">Проблемы</div>
@@ -16,16 +23,27 @@
                         </div>
                         <div class="mainfilter__tabs data-tab-wrapper" data-tabs="mainfilter">
                             <div class="mainfilter__tab data-tab-item active" data-tab="services">
-                                {{#each categories}}
+
+                            {{#if texts.services.active == 'on'}}
+                        <p>
+                            {{texts.services.data.text}}
+                        </p>
+                        {{/if}}
+
+                                {{#each services}}
                                     <div class="accardeon" data-category="{{id}}">
                                         <div class="accardeon__main accardeon__click" on-click="getServices">
                                             <div class="accardeon__name --{{data.color}}">{{name}}</div>
                                         </div>
                                         <div class="accardeon__list">
                                             <div class="row">
-                                                {{#each services}}
+                                                {{#each items}}
                                                     <div class="col-lg-4">
-                                                        <label class="checkbox mainfilter__checkbox" data-id="{{../../id}}_{{id}}" data-service="{{id}}">
+                                                        <label class="checkbox mainfilter__checkbox" 
+                                                            data-id="{{../../id}}_{{id}}" 
+                                                            data-color="{{../../data.color}}"
+                                                            data-cname="{{../../name}}"
+                                                            data-service="{{id}}">
                                                             <input type="checkbox" on-change="toggleService"><span> </span>
                                                             <div class="checbox__name">{{header}}</div>
                                                             <a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewService">Подробнее</a>
@@ -38,41 +56,59 @@
                                 {{/each}}
                             </div>
                             <div class="mainfilter__tab data-tab-item" data-tab="problems">
-                                {{#each srvtypes}}
-                                    <div class="accardeon-group">
-                                        <div class="accrdeon__title" data-type="{{id}}">{{name}}</div>
-                                        {{#each categories}}
-                                            <div class="accardeon">
-                                                {{#if id != "gyn"  }}
-                                                    {{#if id != "lab"  }}
-                                                        <div class="accardeon__main accardeon__click" data-category="{{id}}" on-click="getProblems">
-                                                            <div class="accardeon__name --{{data.color}}">{{name}}</div>
-                                                        </div>
-                                                        <div class="accardeon__list">
-                                                            <div class="row">
-                                                                {{#each ~/prblist}}
-                                                                    <div class="col-lg-4">
-                                                                        <label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-category="{{category}}" data-problem="{{id}}">
-                                                                            <input type="checkbox" on-change="toggleProblem"><span> </span>
-                                                                            <div class="checbox__name">{{header}}</div>
-                                                                            <a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
-                                                                        </label>
+
+                            {{#if texts.problems.active == 'on'}}
+                        <p>
+                            {{texts.problems.data.text}}
+                        </p>
+                        {{/if}}
+                                {{#each problems}}
+                                    {{#if id != "gyn"  }}
+                                        {{#if id != "lab"  }}
+                                            <div class="accardeon-group">
+                                                <div class="accrdeon__title" data-type="{{id}}">{{name}}</div>
+                                                {{#each cats}}
+                                                    {{#if id != "gyn"  }}
+                                                        {{#if id != "lab"  }}
+                                                            <div class="accardeon">
+                                                                <div class="accardeon__main accardeon__click" data-category="{{id}}" on-click="getProblems">
+                                                                    <div class="accardeon__name --{{data.color}}">{{name}}</div>
+                                                                </div>
+                                                                <div class="accardeon__list">
+                                                                    <div class="row">
+                                                                        {{#each items}}
+                                                                            <div class="col-lg-4">
+                                                                                <label class="checkbox mainfilter__checkbox" 
+                                                                                    data-id="{{category}}_{{id}}" 
+                                                                                    data-color="{{../../data.color}}"
+                                                                                    data-cname="{{../../name}}"
+                                                                                    data-category="{{category}}" 
+                                                                                    data-problem="{{id}}">
+                                                                                    <input type="checkbox" on-change="toggleProblem"><span> </span>
+                                                                                    <div class="checbox__name">{{header}}</div>
+                                                                                    <a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
+                                                                                </label>
+                                                                            </div>
+                                                                        {{/each}}
                                                                     </div>
-                                                                {{/each}}
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        {{/if}}
                                                     {{/if}}
-                                                {{/if}}
+                                                {{/each}}
                                             </div>
-                                        {{/each}}
-                                    </div>
+                                        {{/if}}
+                                    {{/if}}
                                 {{/each}}
                                 <div class="accardeon-group no-border">
                                     <div class="accrdeon__title">Гинекология</div>
                                     <div class="row">
-                                        {{#each gynecology}}
+                                        {{#each problems.gyn.cats.gyn.items}}
                                             <div class="col-lg-4">
-                                                <label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-category="{{category}}" data-problem="{{id}}">
+                                                <label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" 
+                                                    data-category="{{category}}" data-problem="{{id}}"
+                                                    data-color="{{../../data.color}}"
+                                                    data-cname="{{../../name}}">
                                                     <input type="checkbox" on-change="toggleProblem"><span> </span>
                                                     <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
                                                 </label>
@@ -82,11 +118,20 @@
                                 </div>
                             </div>
                             <div class="mainfilter__tab data-tab-item" data-tab="sympthoms">
+                            {{#if texts.sympthoms.active == 'on'}}
+                        <p>
+                            {{texts.sympthoms.data.text}}
+                        </p>
+                        {{/if}}
+
                                 <div class="accrdeon__title">Симптомы</div>
                                 <div class="row">
                                     {{#each symptoms}}
                                         <div class="col-lg-4">
-                                            <label class="checkbox mainfilter__checkbox" data-id="{{id}}">
+                                            <label class="checkbox mainfilter__checkbox" 
+                                                data-id="{{id}}"
+                                                data-color="{{../../data.color}}"
+                                                data-cname="{{../../name}}">
                                                 <input type="checkbox" on-change="toggleSymptom"><span> </span>
                                                 <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service" href="#">Подробнее </a>
                                             </label>
@@ -104,7 +149,7 @@
                             {{#each choice.services}}
                                 <div class="mainfilter-tag">
                                     <div class="mainfilter-tag__name">
-                                        <div class="mainfilter-tag__delete">
+                                        <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
                                             <svg class="svgsprite _delete">
                                                 <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                             </svg>
@@ -116,7 +161,7 @@
                             {{#each choice.problems}}
                                 <div class="mainfilter-tag">
                                     <div class="mainfilter-tag__name">
-                                        <div class="mainfilter-tag__delete">
+                                        <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
                                             <svg class="svgsprite _delete">
                                                 <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                             </svg>
@@ -128,7 +173,7 @@
                             {{#each choice.symptoms}}
                                 <div class="mainfilter-tag">
                                     <div class="mainfilter-tag__name">
-                                        <div class="mainfilter-tag__delete">
+                                        <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
                                             <svg class="svgsprite _delete">
                                                 <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                             </svg>
@@ -142,7 +187,7 @@
                     <div class="mainfilter__bottom">
                         <form class="mainfilter__form">
                             <div class="mainfilter__form-top">
-                                <h5 class="h5">Ваш выбор</h5>
+                                <h5 class="h5">Обратная связь</h5>
                                 <div class="input input--grey">
                                     <input class="input__control" type="text" placeholder="ФИО">
                                     <div class="input__placeholder">ФИО</div>
@@ -164,6 +209,7 @@
                         <div class="mainfilter__succed"></div>
                     </div>
                 </div>
+                {{/filter}}
             </div>
         </template>
     </div>
@@ -173,9 +219,12 @@
         var mainFilter = new Ractive({
             el: '#mainfilter',
             template: $('#mainfilter template').html(),
+            data: {
+                'choice': choice,
+                'filter':{}
+            },
             on: {
                 complete() {
-                    this.set('choice', choice)
                     this.fire('checkChoose')
                 },
                 getServices(ev) {
@@ -191,7 +240,6 @@
                     this.fire('checkChoose')
                 },
                 getProblems(ev) {
-                    mainFilter.set('prblist', {});
                     let srvtype = $(ev.node).parents('.accardeon-group').find('.accrdeon__title').data('type')
                     let category = $(ev.node).data('category')
                     let data = []
@@ -202,8 +250,14 @@
                             data.push(item)
                         }
                     })
-                    mainFilter.set('prblist', data);
+                    mainFilter.update('srvtypes.' + srvtype + '.categories.' + category + '.problems')
+
                     this.fire('checkChoose')
+                },
+                delete(ev) {
+                    did = $(ev.node).data('id')
+                    $(document).find('#mainfilter label[data-id="' + did + '"]').trigger('click')
+                    console.log(did, $(document).find('#mainfilter label[data-id="' + did + '"]'));
                 },
                 toggleService(ev) {
                     let input = $(ev.node)
@@ -214,8 +268,8 @@
                     if (choice == undefined) choice = {}
                     if ($(input).is(':checked')) {
                         let header = $(label).find('.checbox__name').text().trim()
-                        let liter = mainFilter.get(`categories.${cid}`).name.substring(0, 1).toUpperCase()
-                        let color = mainFilter.get(`categories.${cid}`).data.color
+                        let liter = $(label).data('cname').substring(0, 1).toUpperCase()
+                        let color = $(label).data('color')
                         let item = {
                             id: data.id,
                             header: header,
@@ -227,20 +281,20 @@
                         delete choice[data.id]
                     }
                     mainFilter.set('choice.services', choice)
-                    wbapp.data('choice',this.get('choice'))
+                    wbapp.data('choice', this.get('choice'))
                     return false
                 },
                 toggleProblem(ev) {
                     let input = $(ev.node)
                     let label = $(input).parent('.mainfilter__checkbox')
                     let data = $(label).data()
-                    let cid = data.category
+                    let cid = $(label).parents('[data-category]').data('category')
                     let choice = mainFilter.get('choice.problems')
                     if (choice == undefined) choice = {}
                     if ($(input).is(':checked')) {
                         let header = $(label).find('.checbox__name').text().trim()
-                        let liter = mainFilter.get(`categories.${cid}`).name.substring(0, 1).toUpperCase()
-                        let color = mainFilter.get(`categories.${cid}`).data.color
+                        let liter = $(label).data('cname').substring(0, 1).toUpperCase()
+                        let color = $(label).data('color')
                         let item = {
                             id: data.id,
                             header: header,
@@ -252,7 +306,7 @@
                         delete choice[data.id]
                     }
                     mainFilter.set('choice.problems', choice)
-                    wbapp.data('choice',this.get('choice'))
+                    wbapp.data('choice', this.get('choice'))
                     return false
                 },
                 toggleSymptom(ev) {
@@ -276,10 +330,11 @@
                         delete choice[data.id]
                     }
                     mainFilter.set('choice.symptoms', choice)
-                    wbapp.data('choice',this.get('choice'))
+                    wbapp.data('choice', this.get('choice'))
                     return false
                 },
                 checkChoose() {
+                    setTimeout(function(){
                     $.each(mainFilter.get('choice.services'), function(i, item) {
                         $(`[data-tab="services"] label[data-id=${item.id}] > input`).prop('checked', true);
                     })
@@ -289,12 +344,12 @@
                     $.each(mainFilter.get('choice.symptoms'), function(i, item) {
                         $(`[data-tab="sympthoms"] label[data-id=${item.id}] > input`).prop('checked', true);
                     })
+                    },100)
                 },
                 viewService(ev) {
                     let data = $(ev.node).parent('label').data()
                     let sid = data.service
                     let popup = $(ev.node).data('popup')
-                    console.log(popup);
                     let title = $(ev.node).parents('.accardeon').find('.accardeon__name').text();
                     let form = $('body').find('div.' + popup + ':first')
                     $(form).find('.popup__name').text(title)
@@ -306,47 +361,11 @@
                 }
             }
         })
-        wbapp.get('/api/v2/list/catalogs/srvcat', function(data) {
-            mainFilter.set('categories', data.tree.data);
-            mainFilter.set('srvtypes.categories', data.tree.data);
-        })
-        wbapp.get('/api/v2/list/catalogs/srvtype', function(data) {
-            mainFilter.set('srvtypes', data.tree.data);
-        })
-        wbapp.post("/api/v2/list/services", {
-                filter: {
-                    active: 'on'
-                }
-            },
-            function(data) {
-                mainFilter.set('services', data);
-            })
 
-        wbapp.post("/api/v2/list/problems", {
-                filter: {
-                    active: 'on'
-                }
-            },
-            function(data) {
-                mainFilter.set('problems', data);
-                let gynecology = [];
-                $.each(data, function(i, obj) {
-                    let item = Object.assign({}, obj);
-                    if (in_array('gyn', item.category)) {
-                        gynecology.push(item)
-                    }
-                })
+        wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
+            mainFilter.set('filter', data);
+        })
 
-                mainFilter.set('gynecology', gynecology);
-            })
-        wbapp.post("/api/v2/list/symptoms", {
-                filter: {
-                    active: 'on'
-                }
-            },
-            function(data) {
-                mainFilter.set('symptoms', data);
-            })
     </script>
 </view>
 <edit header="Основной фильтр">

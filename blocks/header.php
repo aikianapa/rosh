@@ -5,7 +5,22 @@
         <header class="header header--transparent header--fixed --unfilter">
             <!---div class="container --flex --jcsb --aicn"  wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='admin' OR '{{_sess.user.role}}'=='client'"-->
             <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','admin','client','expert'])">
-                <a class="header__logo" href="/"> <img src="/assets/img/logo.svg" alt=""></a>
+
+                <wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
+
+                <a wb-if="'{{_var.hover_logo}}' == '0'" class="header__logo" href="/">
+                    <img src="/assets/img/logo.svg" alt="">
+                    <img src="/assets/img/logo-red.svg" alt="">
+                </a>
+
+                <a wb-if="'{{_var.hover_logo}}' == '1'" class="header__logo header__logo-red" href="/">
+                    <div class="header__logo-wrap">
+                        <div class="logo"><img src="/assets/img/logo.svg" alt=""></div>
+                        <div class="logo-red"><img src="/assets/img/logo-red.svg" alt=""></div>
+                    </div>
+                </a>
+
+
                 <div class="header__left --flex --aicn">
                     <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
                     <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
@@ -19,12 +34,13 @@
                     <a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
                 </div>
                 <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'==''">
-                    <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
+                    <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
                     <button class="burger"></button>
                 </div>
                 <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'>''">
-                    <button class="btn btn-link enter profile-menu">
+                    <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
+                    <button class="btn btn-link profile-menu">
                         Профиль
                         <svg class="svgsprite _drop">
                             <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>

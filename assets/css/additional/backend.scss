@@ -1,0 +1,101 @@
+.yonger-nested
+{
+	.dd-item
+	{
+
+		justify-content: flex-start;
+
+		>ol
+		{
+			min-width: 100%;
+			padding-left: 50px;
+
+			>.dd-text
+			{
+				padding-left: 10px;
+				flex-grow: 1;
+			}
+		}
+
+		button[data-action]
+		{
+			position: relative;
+			right: auto;
+			top: auto;
+			margin-left: -25px;
+		}
+
+		.dd-handle
+		{
+			position: relative;
+			top: auto;
+			margin: 0 0 0 5px;
+			padding: 0;
+			width: 12px;
+			height: 24px;
+
+			&:before
+			{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		}
+
+		.dd-home
+		{
+			position: relative;
+			margin: 0;
+			padding: 0;
+			width: 30px;
+			height: 24px;
+			transform: translate(-3px, -5px);
+
+			~.dd-text
+			{
+				padding-left: 10px;
+			}
+
+			&:before
+			{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		}
+
+		.dd-text
+		{
+			flex-grow: 1;
+			display: flex;
+			align-items: center;
+
+			button[data-action]
+			{
+				display: block;
+			}
+
+			.dd-path
+			{
+				padding-left: 0;
+				height: auto;
+
+				&:before
+				{
+					display: none;
+				}
+			}
+		}
+
+		.dd-info
+		{
+			display: flex;
+			align-items: center;
+			padding-right: 10px;
+		}
+	}
+}

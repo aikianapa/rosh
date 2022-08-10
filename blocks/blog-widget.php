@@ -1,24 +1,30 @@
 <view>
     <div class="blogs">
         <div class="container">
-            <div class="blogs__list">
+            <div class="blogs__list" id="blogList">
+
+                <wb-var matrix="{{get_blog_matrix()}}"></wb-var>
+
                 <wb-foreach wb="{
                     'ajax':'/api/v2/list/blog/',
-                    'limit':'8',
+                    'size':'6',
                     'sort': 'date:d',
+                    'more': 'true',
+                    'bind': 'site.list.blog',
                     'filter':{
-                        'active':'on'
+                        'active':'on',
+                        'done':''
                     }
-                }" wb-tpl="false">
+                }">
                     <wb-var width="33" />
                     <wb-var width="50" wb-if="'{{_ndx}}'>'3'" />
                     <wb-var width="100" wb-if="'{{_ndx}}'>'5'" />
                     <wb-var width="50" wb-if="'{{_ndx}}'=='7'" />
                     <wb-var width="33" wb-if="'{{_ndx}}'=='8'" />
-                    <a class="blog-panel blog-panel--{{_var.width}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
-                        <div class="blog-panel__tags">
+
+                    <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
+                        <div class="blog-panel__tags" data-cat="{{category}}">
                             <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
-                            <div class="blog-panel__tag" wb-if="'{{done}}'=='on'">Завершенная</div>
                         </div>
                         <div class="blog-panel__info">
                             <div class="blog-panel__top">

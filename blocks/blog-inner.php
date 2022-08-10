@@ -128,7 +128,7 @@
                         <div class="arrow__link" href="#">
                             <svg class="svgsprite _arrow-link">
                                 <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
-                            </svg><a class="--openpopup" href="mailto:info@medcenterrosh.ru" data-popup="--fast"> Напишите нам </a>
+                            </svg><a class="--openpopup" href="javascript:void(0)" data-popup="--fast"> Напишите нам </a>
                         </div>
                         <div class="arrow__link" href="#">
                             <svg class="svgsprite _arrow-link">

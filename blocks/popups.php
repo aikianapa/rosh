@@ -18,7 +18,7 @@
                         <use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
                     </svg>
                 </button>
-                <div class="popup__name text-bold">Быстрая запись</div>
+                <div class="popup__name text-bold">Обратная связь</div>
                 <form class="popup__form" method="post">
                     <div class="input input--grey">
                         <input class="input__control" name="fullname" type="text" placeholder="ФИО" required>

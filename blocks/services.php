@@ -59,8 +59,19 @@
         </div>
         <div class="all-tabs data-tab-wrapper" data-tabs="services">
             <div class="all-tab data-tab-item active" data-tab="all">
-                <div class="all-services">
-                    <wb-foreach wb="table=services">
+                <div class="all-services" id="servicesList">
+                    <wb-foreach wb="{
+                        'table':'services',
+                        'size':'4',
+                        'sort': 'date:d',
+                        'more': 'true',
+                        'bind': 'site.list.services',
+                        'filter':{
+                            'active':'on'
+                        }
+                    }">
+
+
                         <wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
                         <a class="all-services__item" href="/services/{{wbFurlGenerate({{header}})}}" data-category="{{category}}">
                             <div class="all-services__pic" style="background-image: url(/thumbc/255x157/src{{_var.image}})"></div>

@@ -56,7 +56,7 @@
                     <div class="expert__work">
                         <p>{{_parent.spec}}</p>
                         <p>Образование: {{education}}</p>
-                        <p>Сертификат: № {{certificate}}</p>
+                        <p>Сертификат: {{certificate}}</p>
                     </div>
                     <button class="btn btn--black --openpopup" data-popup="--fast" href="#">Записаться на прием</button>
                 </div>

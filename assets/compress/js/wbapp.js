@@ -653,7 +653,7 @@ wbapp.start = async function() {
                 if ($(".modal.show:not(:visible),.modal[data-show=true]:not(:visible)").length) $(".modal.show:not(:visible),.modal[data-show=true]:not(:visible)").modal("show");
                 if ($.fn.tooltip) $('[data-toggle="tooltip"]').tooltip();
             });
-
+            wbapp.trigger("wb-ready");
         });
     }, wbapp.delay);
 
@@ -1228,6 +1228,11 @@ wbapp.save = async function(obj, params, func = null) {
                 params: params,
                 data: data,
             });
+            wbapp.console("Trigger: wb-form-save "+params.form);
+            $(params.form).trigger("wb-form-save", {
+                params: params,
+                data: data,
+            });
 
             if (func !== null) return func(data);
 
@@ -1530,7 +1535,7 @@ wbapp.ajax = async function(params, func = null) {
                     $(target.target)[0].filter = {}
                 }
             }
-            console.log($(target.target)[0].filter);
+            
             target.filter = $(target.target)[0].filter;
             if (target._params == undefined) target._params = {};
             let clearval = null;
@@ -1545,7 +1550,18 @@ wbapp.ajax = async function(params, func = null) {
                 if (key == 'filter_clear') {
                     clearval = val;
                 }
-                if (key == 'filter_remove' && target.filter[val] !== undefined) delete target.filter[val];
+                if (key == 'filter_remove') {
+                    if (typeof val == "string") {
+                        val = val.trim().split(' ');
+                        delete target.filter[val];
+                    } 
+                    if (typeof val == "object") {
+                        $.each(val,function(i,v){
+                            delete target.filter[v];
+                        })
+                    }
+                    
+                }
                 if (key == 'filter_add') {
                     $.each(val, function(k, v) {
                         target.filter[k] = v;
@@ -1805,7 +1821,7 @@ wbapp.tplInit = async function() {
         });
     }
 
-    $(document).find("template").each(async function() {
+    $(document).find("template:not([nowb])").each(async function() {
         if (this.done !== undefined) return
         else this.done = true;
         var tid

@@ -13,8 +13,8 @@
                     <div class="filter__select">
                         <div class="filter-select select">
                             <div class="filter-select__main select__main" data-id="">Все</div>
-                            <div class="filter-select__list select__list" wb-tree="dict=blog&children=false">
-                                <div class="filter-select__item select__item filter-category" data-ajax="{'target':'#blogList','filter_remove': 'category','filter_add':{'category':'{{id}}'}}" data-id="{{id}}">{{name}}</div>
+                            <div class="filter-select__list select__list" id="category" wb-tree="dict=blog&children=false">
+                                <div class="filter-select__item select__item filter-category" data-id="{{id}}">{{name}}</div>
                             </div>
                         </div>
                     </div>
@@ -24,21 +24,16 @@
                     <div class="filter__select">
                         <div class="filter-select select">
                             <div class="filter-select__main select__main">Месяц</div>
-                            <div class="filter-select__list select__list">
-                                <wb-foreach wb-tpl="false" wb-count="12">
-                                    <div class="filter-select__item select__item active">{{_ndx}}</div>
-                                </wb-foreach>
+                            <div class="filter-select__list select__list" id="months">
+                                <div class="filter-select__item select__item active blank all">Все</div>
                             </div>
                         </div>
                     </div>
                     <div class="filter__select">
                         <div class="filter-select select">
                             <div class="filter-select__main select__main">Год</div>
-                            <div class="filter-select__list select__list">
-                                <div class="filter-select__item select__item active">Пункт 1</div>
-                                <div class="filter-select__item select__item">Пункт 2</div>
-                                <div class="filter-select__item select__item">Пункт 3</div>
-                                <div class="filter-select__item select__item">Пункт 4</div>
+                            <div class="filter-select__list select__list" id="years">
+                                <div class="filter-select__item select__item active blank all">Все</div>
                             </div>
                         </div>
                     </div>
@@ -49,9 +44,11 @@
     <div class="blogs">
         <div class="container">
             <div class="blogs__list" id="blogList">
+
+                <wb-var matrix="{{get_blog_matrix()}}"></wb-var>
+
                 <wb-foreach wb="{
                     'ajax':'/api/v2/list/blog/',
-                    'size':'8',
                     'sort': 'date:d',
                     'bind': 'site.list.blog',
                     'filter':{
@@ -63,10 +60,13 @@
                     <wb-var width="100" wb-if="'{{_ndx}}'>'5'" />
                     <wb-var width="66" wb-if="'{{_ndx}}'=='7'" />
                     <wb-var width="33" wb-if="'{{_ndx}}'=='8'" />
-                    <a class="blog-panel blog-panel--{{_var.width}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
+                    <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
                         <div class="blog-panel__tags">
                             <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
-                            <div class="blog-panel__tag" wb-if="'{{done}}'=='on'">Завершенная</div>
+                            <div  wb-if="'{{category}}'=='action'">
+                                <div class="blog-panel__tag" wb-if="'{{done}}'=='on'">Завершенная</div>
+                                <div class="blog-panel__tag" wb-if="'{{done}}'!=='on'">Активная</div>
+                            </div>
                         </div>
                         <div class="blog-panel__info">
                             <div class="blog-panel__top">
