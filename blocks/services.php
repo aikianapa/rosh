@@ -57,7 +57,7 @@
                 cartAdd(ev) {
                     let item = $(ev.node).data()
                     wbapp.storage('priceListLab.cart.'+item.id, item)
-                    priceLab.update('cart',wbapp.storage('priceListLab.cart'))
+                    priceLab.set('cart',wbapp.storage('priceListLab.cart'))
                 }
             }
         }) 
