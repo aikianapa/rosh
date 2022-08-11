@@ -27,7 +27,16 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-form-label col-auto">Цена</label>
+                                    <label class="col-form-label col-sm-4">Категория</label>
+                                    <div class="col">
+                                        <select class="form-control" wb-tree="dict=shop_category&children=false" placeholder="Категория" name="category" >
+                                            <option value="{{id}}">{{name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-4">Цена</label>
                                     <div class="col">
                                         <input name="price" type="number" class="form-control" placeholder="Цена" required>
                                     </div>

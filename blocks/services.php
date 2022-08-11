@@ -45,6 +45,22 @@
                 $(".all-tabs-item.data-tab-link[data-tab=" + category + "]").addClass("active").trigger('click')
             }
         }, 500)
+
+
+        var priceLab = new Ractive({
+            el: '#priceListLab',
+            template: $('#priceListLab').html(),
+            data: {
+                cart: wbapp.storage('priceListLab.cart')
+            },
+            on: {
+                cartAdd(ev) {
+                    let item = $(ev.node).data()
+                    wbapp.storage('priceListLab.cart.'+item.id, item)
+                    priceLab.update('cart',wbapp.storage('priceListLab.cart'))
+                }
+            }
+        }) 
     </script>
 
     <div class="container">
@@ -84,89 +100,32 @@
                     </wb-foreach>
                 </div>
             </div>
-            <div class="all-tab data-tab-item" data-tab="lab">
+            <div class="all-tab data-tab-item" data-tab="lab" id="priceListLab">
                     <div class="row">
                         <div class="col-lg-8">
-                            <div class="service">
+                            <div class="service" wb-tree="dict=shop_category&branch=lab&parent=false">
                                 <div class="service__accardeon accardeon">
-                                    <div class="accardeon__main service__main accardeon__click">Covid-19 (коронавирус)</div>
+                                    <div class="accardeon__main service__main accardeon__click">{{name}}</div>
                                     <div class="accardeon__list service__drop">
+                                        <wb-foreach wb="table=price&tpl=false" wb-filter="active=on&category={{id}}">
                                         <div class="service__item">
-                                            <div class="service__name">Anti-SARS-CoV-2 (COVID-19) IgG, качеств.опр.</div>
+                                            <div class="service__name">{{header}}</div>
                                             <label class="service__right">
-                                                <div class="service__price">5 000 ₽</div>
+                                                <div class="service__price">{{price}} ₽</div>
                                                 <div class="service__checkbox">
                                                     <div class="checkbox">
-                                                        <input type="checkbox"><span> </span>
+                                                        <input type="checkbox" data-id="{{id}}" data-price="{{price}}" data-name="{{header}}" on-click="cartAdd">
+                                                        <span> </span>
                                                     </div>
                                                 </div>
                                             </label>
                                         </div>
-                                        <div class="service__item">
-                                            <div class="service__name">Anti-SARS-CoV-2 (COVID-19) Ig M, качественное определение</div>
-                                            <label class="service__right">
-                                                <div class="service__price">5 000 ₽</div>
-                                                <div class="service__checkbox">
-                                                    <div class="checkbox">
-                                                        <input type="checkbox"><span> </span>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div class="service__item">
-                                            <div class="service__name">Прием (осмотр, консультация) врача-дерматовенеролога главного врача повторный ( по результатам анализов) </div>
-                                            <label class="service__right">
-                                                <div class="service__price">5 000 ₽</div>
-                                                <div class="service__checkbox">
-                                                    <div class="checkbox">
-                                                        <input type="checkbox"><span> </span>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="service__accardeon accardeon">
-                                    <div class="accardeon__main service__main accardeon__click">Аутоантитела</div>
-                                    <div class="accardeon__list service__drop">
-                                        <div class="service__item">
-                                            <div class="service__name">Anti-SARS-CoV-2 (COVID-19) IgG, качеств.опр.</div>
-                                            <label class="service__right">
-                                                <div class="service__price">5 000 ₽</div>
-                                                <div class="service__checkbox">
-                                                    <div class="checkbox">
-                                                        <input type="checkbox"><span> </span>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div class="service__item">
-                                            <div class="service__name">Anti-SARS-CoV-2 (COVID-19) Ig M, качественное определение</div>
-                                            <label class="service__right">
-                                                <div class="service__price">5 000 ₽</div>
-                                                <div class="service__checkbox">
-                                                    <div class="checkbox">
-                                                        <input type="checkbox"><span> </span>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div class="service__item">
-                                            <div class="service__name">Прием (осмотр, консультация) врача-дерматовенеролога главного врача повторный ( по результатам анализов) </div>
-                                            <label class="service__right">
-                                                <div class="service__price">5 000 ₽</div>
-                                                <div class="service__checkbox">
-                                                    <div class="checkbox">
-                                                        <input type="checkbox"><span> </span>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
+                                        </wb-foreach>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" wb-off>
                             <form class="all-form">
                                 <div class="all-form__summ">
                                     <p>Всего </p>
@@ -175,17 +134,19 @@
                                 <p class="all-form__text">Выберите необходимые услуги — и калькулятор автоматически произведет суммарный расчет их стоимости. Для уточнения вашего результата вы можете оставить заявку.</p>
                                 <div class="all-form__services">
                                     <div class="all-form__service-title">Ваш выбор</div>
+                                    {{#each cart}}
                                     <div class="all-form__service">
                                         <div class="all-form__service-name">
-                                            <div class="all-form__service-delete">
+                                            <div class="all-form__service-delete" data-id="{{id}}" on-click="cartRemove">
                                                 <svg class="svgsprite _delete">
                                                     <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                                 </svg>
                                             </div>
-                                            <p>Anti-SARS-CoV-2 (COVID-19) IgG, качеств.опр.</p>
+                                            <p>{{name}}</p>
                                         </div>
-                                        <div class="all-form__service__summ">5 000 ₽  </div>
+                                        <div class="all-form__service__summ">{{price}} ₽  </div>
                                     </div>
+                                    {{/each}}
                                 </div>
                                 <div class="input">
                                     <input class="input__control" type="text" placeholder="ФИО">
