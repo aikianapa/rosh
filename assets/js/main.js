@@ -287,6 +287,28 @@ $(function () {
                 $('.cookies-block').removeClass('cookies-block--active')
             })
         }
+
+        // top button
+        $('.to_top_btn').click(function () {
+            $('html, body').animate({ scrollTop: 0 }, 800);
+        })
+
+        if (window.pageYOffset > 10) {
+            $('.header').addClass('out');
+            $('.to_top_btn').addClass('showed');
+        }
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() <= 10) {
+                $('.header').removeClass('out');
+                $('.to_top_btn').removeClass('showed');
+            }
+            if ($(this).scrollTop() > 10) {
+                $('.header').addClass('out');
+                $('.to_top_btn').addClass('showed');
+            }
+        });
+
     });
 
 });
