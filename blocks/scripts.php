@@ -9,6 +9,7 @@
             "/assets/js/jquery.inputmask.min.js",
             "/assets/js/jquery.maskedinput.min.js",
             "/assets/js/main.js",
+            "/assets/js/new.js",
             "/assets/js/blogFilter.js",
             "/assets/js/auth.js"
         ]
