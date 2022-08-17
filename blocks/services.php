@@ -71,19 +71,7 @@
                                 <p class="all-form__text">Выберите необходимые услуги — и калькулятор автоматически произведет суммарный расчет их стоимости. Для уточнения вашего результата вы можете оставить заявку.</p>
                                 <div class="all-form__services">
                                     <div class="all-form__service-title">Ваш выбор</div>
-                                    {{#each cart}}
-                                    <div class="all-form__service">
-                                        <div class="all-form__service-name">
-                                            <div class="all-form__service-delete" data-id="{{id}}" on-click="cartRemove">
-                                                <svg class="svgsprite _delete">
-                                                    <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
-                                                </svg>
-                                            </div>
-                                            <p>{{name}}</p>
-                                        </div>
-                                        <div class="all-form__service__summ">{{price}} ₽  </div>
-                                    </div>
-                                    {{/each}}
+
                                 </div>
                                 <div class="input">
                                     <input class="input__control" type="text" placeholder="ФИО">
