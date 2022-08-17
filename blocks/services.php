@@ -1,5 +1,52 @@
 <view>
 
+    <script wb-app>
+        $(".crumbs").after(`
+        <div class="title-flex --flex --jcsb">
+        <button class="btn btn--black --openpopup" data-popup="--fast-make" href="#">Записаться на прием </button>
+        </div>
+        `)
+        $(".crumbs + div.title-flex + h1").prependTo($(".crumbs + div.title-flex"))
+
+        $(".all-tabs-item.data-tab-link[data-tab]").on('click', function(ev) {
+            $(".search.search--service .search__input").trigger("keyup")
+            let category = $(this).data('tab')
+            wbapp.storage('services.list.category', category)
+            console.log(category);
+            if (category == undefined || category == '') {
+                $(".all-tabs .data-tab-item[data-tab]").removeClass('active');
+                $(".all-tabs .data-tab-item[data-tab=all]").addClass('active');
+                $(".all-services .all-services__item[data-category]").show()
+            } else {
+                $(".all-tabs .data-tab-item[data-tab]").removeClass('active');
+                $(".all-tabs .data-tab-item[data-tab=all]").addClass('active');
+                $(".all-services .all-services__item").hide()
+                $(".all-services .all-services__item[data-category*='" + category + "']").show()
+            }
+        })
+
+        $(".search.search--service .search__input").on("keyup", function() {
+            let regex = $(this).val();
+            if (regex > ' ') {
+                regex = new RegExp(regex, "gi");
+                $(".all-services .all-services__item").each(function() {
+                    let str = $(this).text()
+                    str.match(regex) ? $(this).show() : $(this).hide();
+                })
+            } else {
+                $(".all-services .all-services__item").show()
+            }
+        })
+
+        setTimeout(() => {
+            let category = wbapp.storage('services.list.category')
+            if (category) {
+                $(".all-tabs-item.data-tab-link[data-tab]").removeClass("active")
+                $(".all-tabs-item.data-tab-link[data-tab=" + category + "]").addClass("active").trigger('click')
+            }
+        }, 500)
+    </script>
+
     <div class="container">
         <div class="search search--service">
             <div class="search__block --flex --aicn">
