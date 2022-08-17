@@ -1138,6 +1138,20 @@ div.swiper-horizontal.post-slider{
     top: 1px;
 }
 
+.service__checkbox .checkbox input:checked~span{
+    border-color: #b5b7b6;
+}
+.service__checkbox .checkbox input:checked~span:after{
+    opacity: 0;
+}
+
+.service__checkbox .checkbox input.act:checked~span{
+    border-color: #363838;
+}
+.service__checkbox .checkbox input.act:checked~span:after{
+    opacity: 1;
+}
+
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{
         min-width: 300px;
