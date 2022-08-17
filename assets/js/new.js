@@ -118,7 +118,7 @@ $(document).ready(function(){
 
 		$('.all-form__summ').find('p').eq(1).text((summ3).toLocaleString('ru') + " ₽");
 
-		$('[data-servNum = "' + $(this).parents('.all-form__service').attr('data-servId') + '"]').removeClass('act').removeAttr('data-servNum').removeAttr("checked");
+		$('[data-servNum = "' + $(this).parents('.all-form__service').attr('data-servId') + '"]').removeClass('act').removeAttr('data-servNum checked');
 		$(this).parents('.all-form__service').remove();
 	});
 
