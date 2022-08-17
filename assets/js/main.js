@@ -273,11 +273,6 @@ $(function () {
       
          */
 
-        //card
-        $('.card-bottom .btn').on('click', function (e) {
-            e.preventDefault();
-            $(this).parents('.card-bottom').toggleClass('active');
-        });
         if (getCookie('cookok')) {
             $('.cookies-block').remove()
         } else {
