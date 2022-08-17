@@ -36,7 +36,8 @@ $(document).ready(function(){
 				if(!$('.' + attr).eq(i).attr('data-sp') > 0){
 					rand =  getRandomInt(30000);
 					$('.' + attr).eq(i).attr('data-sp', rand);
-					$('.mainfilter__symptoms .mainfilter__tags').append("<div class='mainfilter-tag "+att+"' data-fof='" + atts + "'><div class='mainfilter-tag__name'><div class='mainfilter-tag__delete'><svg class='svgsprite _delete'><use xlink:href='assets/img/sprites/svgsprites.svg#delete'></use></svg></div><a class='mainfilter-tag__link' href='/landing.html'>" + tt + "</a></div><div class='mainfilter-tag__group " + cc + " --yellow'>" + ll + "</div></div>");
+					$(this).attr('data-kt2', rand);
+					$('.mainfilter__symptoms .mainfilter__tags').append("<div class='mainfilter-tag "+att+"' data-fof='" + atts + " 'data-kt='" + rand + "'><div class='mainfilter-tag__name'><div class='mainfilter-tag__delete'><svg class='svgsprite _delete'><use xlink:href='assets/img/sprites/svgsprites.svg#delete'></use></svg></div><a class='mainfilter-tag__link' href='/landing.html'>" + tt + "</a></div><div class='mainfilter-tag__group " + cc + " --yellow'>" + ll + "</div></div>");
 				}
 				else{
 					if($('.mainfilter__symptoms .mainfilter__tags').find('.mainfilter-tag').eq(i).attr('data-fof').indexOf(att) > 0){
@@ -68,27 +69,51 @@ $(document).ready(function(){
 
 	});
 
+	$('.mainfilter__choice-main .mainfilter__tags').on('click', 'svg', function(){
+		$('[data-rand = "' + $(this).parents('.mainfilter-tag').attr('id') + '"]').removeClass('act').removeAttr('data-rand').removeAttr("checked");
+		$(this).parents('.mainfilter-tag').remove();
+	});
+
+	$('.mainfilter__symptoms .mainfilter__tags').on('click', 'svg', function(){
+		//console.log('sd');
+		//$('[data-rand = "' + $(this).parents('.mainfilter-tag').attr('id') + '"]').removeClass('act').removeAttr('data-rand').removeAttr("checked");
+		$(this).parents('.mainfilter-tag').remove();
+	});
+
 
 	//service__item
 	$('.service__item input').on('click', function(){
 
+		function getRandomInt(max) {
+		  return Math.floor(Math.random() * max);
+		}
+
 		$(this).toggleClass('act');
 
-		var text  = $(this).parents('.service__item').find('.service__name').text(),
+		var attrNum = getRandomInt(30000),
+				text  = $(this).parents('.service__item').find('.service__name').text(),
 				price = $(this).parents('.service__item').find('.service__price').text(),
-				block = "<div class='all-form__service'><div class='all-form__service-name'><div class='all-form__service-delete'><svg class='svgsprite _delete'><use xlink:href='assets/img/sprites/svgsprites.svg#delete'></use></svg></div><p>" + text + "</p></div><div class='all-form__service__summ'>" + price + "</div></div>",
+				block = "<div class='all-form__service' data-servId='" + attrNum + "'><div class='all-form__service-name'><div class='all-form__service-delete'><svg class='svgsprite _delete'><use xlink:href='assets/img/sprites/svgsprites.svg#delete'></use></svg></div><p>" + text + "</p></div><div class='all-form__service__summ'>" + price + "</div></div>",
 				summBlock  = $(this).parents('.all-tab').find('.all-form__summ p').eq(1),
 				summ  = $(summBlock).text().replace(/[^0-9]/gi, ''),
 				price2 = price.replace(/[^0-9]/gi, '');
 
+
 		if($(this).hasClass('act')){
+			$(this).attr('data-servNum', attrNum);
 			$('.all-form__services').append(block);
 			$(summBlock).text((+summ + +price2).toLocaleString('ru') + " ₽");
 		}
 		else{
+			$(this).removeAttr('data-servNum');
 			$(this).parents('.all-tab').find( ".all-form__service:contains('" + text + "')" ).remove();
 			$(summBlock).text((+summ - +price2).toLocaleString('ru') + " ₽");
 		}
+	});
+
+	$('.all-form__services').on('click', 'svg', function(){
+		$('[data-servNum = "' + $(this).parents('.all-form__service').attr('data-servId') + '"]').removeClass('act').removeAttr('data-servNum').removeAttr("checked");
+		$(this).parents('.all-form__service').remove();
 	});
 
 });
