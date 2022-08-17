@@ -26,12 +26,41 @@
                                     </div>
                                 </div>
 
+
                                 <div class="form-group row">
-                                    <label class="col-form-label col-sm-4">Категория</label>
+                                    <label class="col-form-label col-sm-4">Артикул</label>
                                     <div class="col">
-                                        <select class="form-control" wb-tree="dict=shop_category&branch=lab&children=false" placeholder="Категория" name="category" >
+                                        <input name="articul" type="text" class="form-control" placeholder="Артикул">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-4">Брэнд</label>
+                                    <div class="col">
+                                        <select class="form-control" wb-tree="dict=shop_category&branch=cosm&parent=false" placeholder="Брэнд" name="category" >
                                             <option value="{{id}}">{{name}}</option>
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-4">Короткое описание</label>
+                                    <div class="col">
+                                    <textarea name="short" class="form-control" placeholder="Короткое описание"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-4">Полное описание</label>
+                                    <div class="col">
+                                    <textarea name="text" class="form-control" placeholder="Полное описание"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-4">Применение</label>
+                                    <div class="col">
+                                    <textarea name="apply" class="form-control" placeholder="Применение"></textarea>
                                     </div>
                                 </div>
 
@@ -39,6 +68,16 @@
                                     <label class="col-form-label col-sm-4">Цена</label>
                                     <div class="col">
                                         <input name="price" type="number" class="form-control" placeholder="Цена" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-auto">Самовывоз</label>
+                                    <div class="col col-form-label">
+                                        <input wb="module=switch" name="office">
+                                    </div>
+                                    <label class="col-form-label col-auto">Доставка</label>
+                                    <div class="col col-form-label">
+                                        <input wb="module=switch" name="delivery">
                                     </div>
                                 </div>
                         </form>
