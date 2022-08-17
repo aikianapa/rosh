@@ -1126,6 +1126,18 @@ div.swiper-horizontal.post-slider{
     display: none!important;
 }
 
+.mainfilter__symptoms .h5{
+    font-size: 14px;
+}
+
+.service__checkbox{
+    width: 16px;
+    height: 16px;
+}
+.service__checkbox .checkbox span{
+    top: 1px;
+}
+
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{
         min-width: 300px;

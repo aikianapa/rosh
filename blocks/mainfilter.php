@@ -129,50 +129,56 @@
                     </div>
                     <div class="col-lg-3 col-md-4 mainfilter__right">
                         <div class="mainfilter__choice">
-                            <h5 class="h5">Ваш выбор</h5>
-                            <div class="mainfilter__tags">
-                                {{#each choice.services}}
-                                    <div class="mainfilter-tag">
-                                        <div class="mainfilter-tag__name">
-                                            <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
-                                                <svg class="svgsprite _delete">
-                                                    <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
-                                                </svg>
-                                            </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                            <div class="mainfilter__choice-main">
+                                <h5 class="h5">Ваш выбор</h5>
+                                <div class="mainfilter__tags">
+                                    {{#each choice.services}}
+                                        <div class="mainfilter-tag">
+                                            <div class="mainfilter-tag__name">
+                                                <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
+                                                    <svg class="svgsprite _delete">
+                                                        <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+                                                    </svg>
+                                                </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                            </div>
+                                            <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
-                                        <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
-                                    </div>
-                                {{/each}}
-                                {{#each choice.problems}}
-                                    <div class="mainfilter-tag">
-                                        <div class="mainfilter-tag__name">
-                                            <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
-                                                <svg class="svgsprite _delete">
-                                                    <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
-                                                </svg>
-                                            </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                    {{/each}}
+                                    {{#each choice.problems}}
+                                        <div class="mainfilter-tag">
+                                            <div class="mainfilter-tag__name">
+                                                <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
+                                                    <svg class="svgsprite _delete">
+                                                        <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+                                                    </svg>
+                                                </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                            </div>
+                                            <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
-                                        <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
-                                    </div>
-                                {{/each}}
-                                {{#each choice.symptoms}}
-                                    <div class="mainfilter-tag">
-                                        <div class="mainfilter-tag__name">
-                                            <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
-                                                <svg class="svgsprite _delete">
-                                                    <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
-                                                </svg>
-                                            </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                    {{/each}}
+                                    {{#each choice.symptoms}}
+                                        <div class="mainfilter-tag">
+                                            <div class="mainfilter-tag__name">
+                                                <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
+                                                    <svg class="svgsprite _delete">
+                                                        <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+                                                    </svg>
+                                                </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                            </div>
+                                            <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
-                                        <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
-                                    </div>
-                                {{/each}}
+                                    {{/each}}
+                                </div>
+                            </div>
+                            <div class="mainfilter__symptoms">
+                                <h5 class="h5">По симптомам</h5>
+                                <div class="mainfilter__tags"></div>
                             </div>
                         </div>
                         <div class="mainfilter__bottom">
                             <form class="mainfilter__form">
                                 <div class="mainfilter__form-top">
-                                    <h5 class="h5">Обратная связь</h5>
+                                    <h5 class="h5">Запись на прием</h5>
                                     <div class="input input--grey">
                                         <input class="input__control" type="text" placeholder="ФИО">
                                         <div class="input__placeholder">ФИО</div>
