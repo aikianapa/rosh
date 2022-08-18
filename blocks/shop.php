@@ -5,36 +5,44 @@
 </edit>
 
 <view>
+    <div class="container">
+        <div class="title-flex --flex --jcsb">
+            <div class="title">
+                <h1 class="h1 mb-10">{{_parent.header}}</h1>
+                <h3></h3>
+            </div>
+        </div>
+    </div>
     <div class="card" id="Shop">
         <div class="container">
             <div class="card-row">
                 <wb-foreach wb="table=shop&size=12&sort=header:d" wb-filter="active=on">
-                <div class="card-col">
-                    <div class="card-wrap">
-                        <a href="#" class="card-img"><img src="assets/img/new/img-1-min.jpg" alt=""></a>
-                        <span class="card-name"><a href="#">{{header}}</a></span>
-                        <span class="card-price">{{fmtPrice({{price}})}} ₽</span>
-                        <div class="card-info">
-                            <wb-var stars="{{rand(1,5)}}" />
-                            <i class="hb-ico star-{{_var.stars}}"></i>
-                            <a href="#" class="card-link">{{rand(1,30)}} отзывов</a>
-                        </div>
-                        <p>{{short}}</p>
-                        <div class="card-bottom" data-id="{{id}}" data-price="{{price}}">
-                            <button wb-if="'{{office}}'=='on' OR '{{delivery}}'=='on'" class="btn btn--black cart-add">В корзину</button>
-                            <button wb-if="'{{office}}'=='' && '{{delivery}}'==''" class="btn btn--black" disabled>Нет в наличии</button>
-                            <div class="amount">
-                                <span class="amount-minus cart-dec"></span>
-                                <span class="amount-txt"><span class="amount-qty">1</span> шт</span>
-                                <span class="amount-plus cart-inc"></span>
+                    <div class="card-col">
+                        <div class="card-wrap"  data-id="{{id}}" data-price="{{price}}">
+                            <a href="#" class="card-img"><img src="assets/img/new/img-1-min.jpg" alt=""></a>
+                            <span class="card-name"><a href="#">{{header}}</a></span>
+                            <span class="card-price">{{fmtPrice({{price}})}} ₽</span>
+                            <div class="card-info">
+                                <wb-var stars="{{rand(1,5)}}" />
+                                <i class="hb-ico star-{{_var.stars}}"></i>
+                                <a href="#" class="card-link">{{rand(1,30)}} отзывов</a>
                             </div>
-                            <span class="card-txt" wb-if="'{{office}}'=='on' && '{{delivery}}'=='on'">Доступен к самовывозу и доставке</span>
-                            <span class="card-txt" wb-if="'{{office}}'=='on' && '{{delivery}}'==''">Доступен к самовывозу</span>
-                            <span class="card-txt" wb-if="'{{office}}'=='' && '{{delivery}}'=='on'">Доступен к доставке</span>
-                            <span class="card-txt" wb-if="'{{office}}'=='' && '{{delivery}}'==''">Нет в наличии</span>
+                            <p>{{short}}</p>
+                            <div class="card-bottom">
+                                <button wb-if="'{{office}}'=='on' OR '{{delivery}}'=='on'" class="btn btn--black cart-add">В корзину</button>
+                                <button wb-if="'{{office}}'=='' && '{{delivery}}'==''" class="btn btn--black" disabled>Нет в наличии</button>
+                                <div class="amount">
+                                    <span class="amount-minus cart-dec"></span>
+                                    <span class="amount-txt"><span class="amount-qty">1</span> шт</span>
+                                    <span class="amount-plus cart-inc"></span>
+                                </div>
+                                <span class="card-txt" wb-if="'{{office}}'=='on' && '{{delivery}}'=='on'">Доступен к самовывозу и доставке</span>
+                                <span class="card-txt" wb-if="'{{office}}'=='on' && '{{delivery}}'==''">Доступен к самовывозу</span>
+                                <span class="card-txt" wb-if="'{{office}}'=='' && '{{delivery}}'=='on'">Доступен к доставке</span>
+                                <span class="card-txt" wb-if="'{{office}}'=='' && '{{delivery}}'==''">Нет в наличии</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </wb-foreach>
             </div>
         </div>
@@ -42,45 +50,49 @@
     <script wb-app>
         let cart = wbapp.storage("shop.cart");
         if (cart == undefined) {
-            cart = {'list':{},'total':{}}
-            wbapp.storage("shop.cart",cart)
+            cart = {
+                'list': {},
+                'total': {}
+            }
+            wbapp.storage("shop.cart", cart)
         }
-        $.each(cart.list,function(key, item){
+        $.each(cart.list, function(key, item) {
             $('#Shop').find(`[data-id=${item.id}]`).addClass('active')
         })
-        $('#Shop').delegate('.cart-add',wbapp.evClick,function(e){
+        $('#Shop').delegate('.cart-add', wbapp.evClick, function(e) {
             let cart = wbapp.storage("shop.cart");
             $(this).parents('.card-bottom').toggleClass('active');
             let pid = $(this).parents('[data-id]').data('id')
             let price = $(this).parents('[data-id]').data('price')
+            let name =  $(this).parents('[data-id]').find('.card-name').text()
             cart.list[pid] = {
                 id: pid,
                 price: price,
+                name: name,
                 qty: 1
             }
-            wbapp.storage("shop.cart",cart)
+            wbapp.storage("shop.cart", cart)
         })
 
-        $('#Shop').delegate('.cart-inc',wbapp.evClick,function(e){
+        $('#Shop').delegate('.cart-inc', wbapp.evClick, function(e) {
             let cart = wbapp.storage("shop.cart");
             let pid = $(this).parents('[data-id]').data('id')
             let price = $(this).parents('[data-id]').data('price')
             cart.list[pid].qty++
             cart.list[pid].price = price
             $(this).parents('.amount').find('.amount-qty').text(cart.list[pid].qty)
-            wbapp.storage("shop.cart",cart)
+            wbapp.storage("shop.cart", cart)
         })
 
-        $('#Shop').delegate('.cart-dec',wbapp.evClick,function(e){
+        $('#Shop').delegate('.cart-dec', wbapp.evClick, function(e) {
             let cart = wbapp.storage("shop.cart");
             let pid = $(this).parents('[data-id]').data('id')
             let price = $(this).parents('[data-id]').data('price')
-            if (cart.list[pid].qty > 1) 
-            {
+            if (cart.list[pid].qty > 1) {
                 cart.list[pid].qty--
                 cart.list[pid].price = price
                 $(this).parents('.amount').find('.amount-qty').text(cart.list[pid].qty)
-                wbapp.storage("shop.cart",cart)
+                wbapp.storage("shop.cart", cart)
             } else {
                 delete cart.list[pid]
                 $(this).parents('.card-bottom').toggleClass('active');
