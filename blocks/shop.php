@@ -18,8 +18,8 @@
             <div class="card-row">
                 <wb-foreach wb="table=shop&size=12&sort=header:d" wb-filter="active=on">
                     <div class="card-col">
-                        <div class="card-wrap"  data-id="{{id}}" data-price="{{price}}">
-                            <a href="#" class="card-img"><img src="assets/img/new/img-1-min.jpg" alt=""></a>
+                        <div class="card-wrap"  data-id="{{id}}" data-price="{{price}}" data-img="{{image.0.img}}">
+                            <a href="#" class="card-img"><img src="/thumbc/700x680/src{{image.0.img}}" alt="{{name}}"></a>
                             <span class="card-name"><a href="#">{{header}}</a></span>
                             <span class="card-price">{{fmtPrice({{price}})}} ₽</span>
                             <div class="card-info">
@@ -63,14 +63,10 @@
             let cart = wbapp.storage("shop.cart");
             $(this).parents('.card-bottom').toggleClass('active');
             let pid = $(this).parents('[data-id]').data('id')
-            let price = $(this).parents('[data-id]').data('price')
             let name =  $(this).parents('[data-id]').find('.card-name').text()
-            cart.list[pid] = {
-                id: pid,
-                price: price,
-                name: name,
-                qty: 1
-            }
+            cart.list[pid] = $(this).parents('[data-id]').data()
+            cart.list[pid].qty = 1
+            cart.list[pid].name = name
             wbapp.storage("shop.cart", cart)
         })
 

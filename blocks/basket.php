@@ -29,7 +29,7 @@
                                         <label class="checkbox">
                                             <input type="checkbox"><span></span>
                                         </label>
-                                        <div class="orders-img"><img src="assets/img/new/img-3-min.jpg" alt=""></div>
+                                        <div class="orders-img"><img data-src="/thumbc/352x352/src{{img}}" alt=""></div>
                                         <div class="orders-product-wrap">
                                             <div class="orders-info">
                                                 <span class="orders-name"><a href="#">{{name}}</a></span>
