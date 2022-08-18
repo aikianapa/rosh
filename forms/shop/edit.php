@@ -26,6 +26,12 @@
                                     </div>
                                 </div>
 
+                                <div class="col-12 mt-1">
+                                        <div class="divider-text">Изображение</div>
+                                        <wb-module wb="module=filepicker&mode=single&width=200&&height=200" wb-path="/uploads/shop/" name="image">
+                                        </wb-module>
+                                    </div>
+
 
                                 <div class="form-group row">
                                     <label class="col-form-label col-sm-4">Артикул</label>
