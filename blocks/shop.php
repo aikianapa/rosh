@@ -19,7 +19,7 @@
                 <wb-foreach wb="table=shop&size=12&sort=header:d" wb-filter="active=on">
                     <div class="card-col">
                         <div class="card-wrap"  data-id="{{id}}" data-price="{{price}}" data-img="{{image.0.img}}">
-                            <a href="#" class="card-img"><img src="/thumbc/700x680/src{{image.0.img}}" alt="{{name}}"></a>
+                            <a href="/shop/{{wbFurlGenerate({{header}})}}" class="card-img"><img src="/thumbc/700x680/src{{image.0.img}}" alt="{{header}}"></a>
                             <span class="card-name"><a href="#">{{header}}</a></span>
                             <span class="card-price">{{fmtPrice({{price}})}} ₽</span>
                             <div class="card-info">

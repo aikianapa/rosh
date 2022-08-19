@@ -26,26 +26,30 @@
                                     </div>
                                 </div>
 
-                                <div class="col-12 mt-1">
-                                        <div class="divider-text">Изображение</div>
-                                        <wb-module wb="module=filepicker&mode=single&width=200&&height=200" wb-path="/uploads/shop/" name="image">
-                                        </wb-module>
-                                    </div>
-
-
-                                <div class="form-group row">
-                                    <label class="col-form-label col-sm-4">Артикул</label>
-                                    <div class="col">
-                                        <input name="articul" type="text" class="form-control" placeholder="Артикул">
-                                    </div>
-                                </div>
-
                                 <div class="form-group row">
                                     <label class="col-form-label col-sm-4">Брэнд</label>
                                     <div class="col">
                                         <select class="form-control" wb-tree="dict=shop_category&branch=cosm&parent=false" placeholder="Брэнд" name="category" >
                                             <option value="{{id}}">{{name}}</option>
                                         </select>
+                                    </div>
+                                </div>
+
+
+                                    <div class="divider-text">Характеристики</div>
+                                    <wb-multiinput name="prop">
+                                        <div class="col-4">
+                                            <input name="prop_name" type="text" class="form-control" placeholder="Название">
+                                        </div>
+                                        <div class="col-8">
+                                            <input name="prop_value" type="text" class="form-control" placeholder="Значение">
+                                        </div>
+                                    </wb-multiinput>
+
+                                <div class="form-group row mt-3">
+                                    <label class="col-form-label col-sm-4">Артикул</label>
+                                    <div class="col">
+                                        <input name="articul" type="text" class="form-control" placeholder="Артикул">
                                     </div>
                                 </div>
 
@@ -86,6 +90,12 @@
                                         <input wb="module=switch" name="delivery">
                                     </div>
                                 </div>
+                                <div class="col-12 mt-1">
+                                        <div class="divider-text">Изображения</div>
+                                        <wb-module wb="module=filepicker&mode=multi&width=120&&height=120" wb-path="/uploads/shop/" name="image">
+                                        </wb-module>
+                                    </div>
+
                         </form>
                     </div>
                 </div>
