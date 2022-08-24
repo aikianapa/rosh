@@ -32,6 +32,11 @@
             });
         });
     </script>
+    <script type="text/javascript">
+    var __cs = __cs || [];
+    __cs.push(["setCsAccount", "VZFXRLYeQPw2Bg8xzsSHG1XSqdzBz7Ku"]);
+    </script>
+    <script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>
 
     <link href="/assets/css/new.css" rel="stylesheet">
     <link href="/assets/css/additional/frontend.css" rel="stylesheet">
