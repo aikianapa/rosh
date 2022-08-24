@@ -1087,11 +1087,14 @@ div.swiper-horizontal.post-slider{
 }
 
 .mainfilter__tab p{
+     font-family: "Muller Narrow";
     font-size: 16px;
-    margin-bottom: 13px;
+    margin-bottom: 18px;
 }
-
 .cookies-block__accept-button{
+    font-size: 16px;
+    font-family: "Muller Narrow";
+    text-transform: capitalize;
     border: 1px solid #282d30;
     padding: 9px 29px;
     transition: color .4s,background-color .4s;
@@ -1152,6 +1155,40 @@ div.swiper-horizontal.post-slider{
     opacity: 1;
 }
 
+.header.header-fix{
+    position: fixed;
+    transform: none;
+}
+.mainfilter__tags{
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 141px;
+}
+
+.all-form__succed{
+    display: none;
+}
+.all-form.succed-form .all-form__succed{
+    display: block;
+}
+.all-form.succed-form .all-form__main{
+    display: none;
+}
+.input__control.error-input{
+    border-color: red;
+}
+.service__right,.service__checkbox,.service__checkbox .checkbox{
+    position: static;
+}
+.service__checkbox .checkbox span{
+    top: 50%;
+    margin-top: -8px;
+    left: auto;
+    right: 0;
+}
+.service__checkbox .checkbox input{
+    display: block;
+}
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{
         min-width: 300px;

@@ -111,26 +111,32 @@
                         </div>
                         <div class="col-lg-4" wb-off>
                             <form class="all-form">
-                                <div class="all-form__summ">
-                                    <p>Всего </p>
-                                    <p>0 ₽</p>
+                                <div class="all-form__succed">
+                                    <h3 class="h3">Успешно !</h3>
+                                    <p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
                                 </div>
-                                <p class="all-form__text">Выберите необходимые услуги — и калькулятор автоматически произведет суммарный расчет их стоимости. Для уточнения вашего результата вы можете оставить заявку.</p>
-                                <div class="all-form__services">
-                                    <div class="all-form__service-title">Ваш выбор</div>
+                                <div class="all-form__main">
+                                    <div class="all-form__summ">
+                                        <p>Всего </p>
+                                        <p>0 ₽</p>
+                                    </div>
+                                    <p class="all-form__text">Выберите необходимые услуги — и калькулятор автоматически произведет суммарный расчет их стоимости. Для уточнения вашего результата вы можете оставить заявку.</p>
+                                    <div class="all-form__services">
+                                        <div class="all-form__service-title">Ваш выбор</div>
 
+                                    </div>
+                                    <div class="input">
+                                        <input class="input__control" type="text" placeholder="ФИО">
+                                        <div class="input__placeholder">ФИО</div>
+                                    </div>
+                                    <div class="input">
+                                        <input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
+                                        <div class="input__placeholder">Номер телефона</div>
+                                    </div>
+                                    <button class="all-form__submit btn btn--black mb-20">Записаться</button>
+                                    <div class="form__description">Нажимая на кнопку "Записаться", Вы даете согласие на обработку своих персональных данных  на основании <a href="policy.html">Политики конфиденциальности</a></div>
+                                    <div class="form-bottom">После отправки заявки для Вас будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку «Войти» в&nbsp;верхнем меню сайта</div>
                                 </div>
-                                <div class="input">
-                                    <input class="input__control" type="text" placeholder="ФИО">
-                                    <div class="input__placeholder">ФИО</div>
-                                </div>
-                                <div class="input">
-                                    <input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
-                                    <div class="input__placeholder">Номер телефона</div>
-                                </div>
-                                <button class="all-form__submit btn btn--black mb-20">Записаться</button>
-                                <div class="form__description">Нажимая на кнопку "Записаться", Вы даете согласие на обработку своих персональных данных  на основании <a href="policy.html">Политики конфиденциальности</a></div>
-                                <div class="form-bottom">После отправки заявки для Вас будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку «Войти» в&nbsp;верхнем меню сайта</div>
                             </form>
                         </div>
                     </div>
