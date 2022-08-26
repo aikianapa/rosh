@@ -6,11 +6,11 @@
                     <div class="row footer__top">
                         <div class="footer__item col-lg-2">
                             <div class="socials"><a class="socials__link" href="#"><svg class="svgsprite _socials-1">
-                                        <use xlink:href="assets/img/sprites/svgsprites.svg#socials-1"></use>
+                                        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-1"></use>
                                     </svg></a><a class="socials__link" href="#"><svg class="svgsprite _socials-2">
-                                        <use xlink:href="assets/img/sprites/svgsprites.svg#socials-2"></use>
+                                        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-2"></use>
                                     </svg></a><a class="socials__link" href="#"><svg class="svgsprite _socials-3">
-                                        <use xlink:href="assets/img/sprites/svgsprites.svg#socials-3"></use>
+                                        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-3"></use>
                                     </svg></a></div>
                         </div>
                         <div class="footer__item col-lg-3"><a class="footer__contact text-small text-grey" href="mailto:{{_var.contactEmail}}">{{_var.contactEmail}}</a></div>
