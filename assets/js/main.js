@@ -45,12 +45,14 @@ $(function () {
         }).on('click', '.--openpopup', function () {
             var P = $(this).attr('data-popup');
             $('body').find('div.' + P + ':first').show();
-            $(document).find('.gallery__slider').each(function () {
-                new Swiper(this, {
-                    loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
-                    navigation: { nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev' },
+            setTimeout(function() {
+                $(document).find('.gallery__slider').each(function () {
+                    new Swiper(this, {
+                        loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
+                        navigation: { nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev' },
+                    });
                 });
-            });
+            }, 600);
             //return false;
         }).on('click', '.--switchpopup', function () {
             var P = $(this).attr('data-popup');
