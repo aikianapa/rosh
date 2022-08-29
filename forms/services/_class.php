@@ -10,5 +10,15 @@ class servicesClass extends cmsFormsClass
             exit;
         }
     }
+
+
+    function afterItemSave($item)
+    {
+        if ($this->app->route->mode == 'save') {
+            $this->app->shadow('/cms/ajax/form/pages/list');
+        }
+    }
+
+
 }
 ?>
