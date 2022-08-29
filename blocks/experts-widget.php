@@ -24,7 +24,7 @@
                         <div class="/arrow__link">
                             <svg class="svgsprite _arrow-link">
                                 <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
-                            </svg><a href="/experts">Еще специалисты</a>
+                            </svg><a href="/about/experts">Еще специалисты</a>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                         <div class="/arrow__link">
                             <svg class="svgsprite _arrow-link">
                                 <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
-                            </svg><a href="/experts.html">Еще 12 специалистов</a>
+                            </svg><a href="/experts.html">Все специалисты</a>
                         </div>
                     </div>
                 </div>

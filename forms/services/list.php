@@ -14,7 +14,7 @@
             <div class="header py-2">
                 <span clsss="row">
                     <div class="col-6">
-                        <input type="search" class="form-control" placeholder="Поиск" data-ajax="{'target':'#{{_form}}List','filter_add':{'$or':[{ 'fullname': {'$like' : '$value'} } ]} }">
+                        <input type="search" class="form-control" placeholder="Поиск" data-ajax="{'target':'#{{_form}}List','filter_add':{'$or':[{ 'header': {'$like' : '$value'} } ]} }">
                     </div>
                 </span>
             </div>
