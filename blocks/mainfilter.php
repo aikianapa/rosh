@@ -42,7 +42,9 @@
                                                             <label class="checkbox mainfilter__checkbox" data-id="{{../../id}}_{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-service="{{id}}">
                                                                 <input type="checkbox" on-change="toggleService"><span> </span>
                                                                 <div class="checbox__name">{{header}}</div>
+                                                                {{#if ../../id != "lab"}}
                                                                 <a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewService">Подробнее</a>
+                                                                {{/if}}
                                                             </label>
                                                         </div>
                                                     {{/each}}

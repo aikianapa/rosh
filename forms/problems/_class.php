@@ -19,7 +19,7 @@ class problemsClass extends cmsFormsClass
         $sympt = wbItemList('symptoms',['sort'=>'header','filter'=>['active'=>'on']])['list'];
         $servs = wbItemList('services',['filter'=>['active'=>'on']])['list'];
         $prbms = wbItemList('problems',['filter'=>['active'=>'on']])['list'];
-
+        $srvlab = wbItemList('price', ['sort'=>'header','filter'=>['active'=>'on']])['list'];
 
         foreach ($scats as &$s) {
             $s['items'] = [];
@@ -49,6 +49,8 @@ class problemsClass extends cmsFormsClass
                 }
             }
         }
+        $filter['services']['lab']['items'] = $srvlab;
+
         // Проблемы
         foreach($prbms as $problem) {
             foreach($filter['problems'] as &$prb) {
