@@ -77,7 +77,7 @@
                                                                                     <label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-category="{{category}}" data-problem="{{id}}">
                                                                                         <input type="checkbox" on-change="toggleProblem"><span> </span>
                                                                                         <div class="checbox__name">{{header}}</div>
-                                                                                        <a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
+                                                                                        <a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewProblem">Подробнее</a>
                                                                                     </label>
                                                                                 </div>
                                                                             {{/each}}
@@ -98,7 +98,7 @@
                                                 <div class="col-lg-4">
                                                     <label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-category="{{category}}" data-problem="{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}">
                                                         <input type="checkbox" on-change="toggleProblem"><span> </span>
-                                                        <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service-l" href="#">Подробнее</a>
+                                                        <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewProblem">Подробнее</a>
                                                     </label>
                                                 </div>
                                             {{/each}}
@@ -116,9 +116,9 @@
                                     <div class="row">
                                         {{#each symptoms}}
                                             <div class="col-lg-4">
-                                                <label class="checkbox mainfilter__checkbox" data-id="{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}">
+                                                <label class="checkbox mainfilter__checkbox" data-id="{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-symptom="{{id}}">
                                                     <input type="checkbox" on-change="toggleSymptom"><span> </span>
-                                                    <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service" href="#">Подробнее </a>
+                                                    <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service" href="#" on-click="viewSymptom">Подробнее </a>
                                                 </label>
                                             </div>
                                         {{/each}}
@@ -327,14 +327,16 @@
                 checkChoose() {
                     setTimeout(function() {
                         $.each(mainFilter.get('choice.services'), function(i, item) {
-                            $(`[data-tab="services"] label[data-id=${item.id}] > input`).prop('checked', true);
+                            $(`[data-tab="services"] label[data-id="${item.id}"] > input`).prop('checked', true);
                         })
                         $.each(mainFilter.get('choice.problems'), function(i, item) {
-                            $(`[data-tab="problems"] label[data-id=${item.id}] > input`).prop('checked', true);
+                            $(`[data-tab="problems"] label[data-id="${item.id}"] > input`).prop('checked', true);
                         })
+                        setTimeout(function() {
                         $.each(mainFilter.get('choice.symptoms'), function(i, item) {
-                            $(`[data-tab="sympthoms"] label[data-id=${item.id}] > input`).prop('checked', true);
+                            $(`[data-tab="sympthoms"] label[data-id="${item.id}"] > input`).prop('checked', true);
                         })
+                        }, 100)
                     }, 100)
                 },
                 viewService(ev) {
@@ -349,7 +351,35 @@
                         $(form).find('.popup__content').html(res)
                         $(form).show()
                     })
+                },
+                viewProblem(ev) {
+                    let data = $(ev.node).parent('label').data()
+                    let sid = data.problem
+                    let popup = $(ev.node).data('popup')
+                    let title = $(ev.node).parents('.accardeon').find('.accardeon__name').text();
+                    let form = $('body').find('div.' + popup + ':first')
+                    $(form).find('.popup__name').text(title)
+                    $(form).find('.popup__content').html("")
+                    wbapp.get('/problems/popup/' + sid, function(res) {
+                        $(form).find('.popup__content').html(res)
+                        $(form).show()
+                    })
+                },
+                viewSymptom(ev) {
+                    let data = $(ev.node).parent('label').data()
+                    let sid = data.symptom
+                    let popup = $(ev.node).data('popup')
+                    let title = $(ev.node).parents('.accardeon').find('.accardeon__name').text();
+                    let form = $('body').find('div.' + popup + ':first')
+                    $(form).find('.popup__name').text(title)
+                    $(form).find('.popup__content').html("")
+                    wbapp.get('/symptoms/popup/' + sid, function(res) {
+                        console.log(res);
+                        $(form).find('.popup__content').html(res)
+                        $(form).show()
+                    })
                 }
+
             }
         })
 

@@ -78,6 +78,14 @@ $(function () {
         }).on('click', '.--openpopup', function () {
             var P = $(this).attr('data-popup');
             $('body').find('div.' + P + ':first').show();
+            setTimeout(function() {
+                $(document).find('.gallery__slider').each(function () {
+                    new Swiper(this, {
+                        loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
+                        navigation: { nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev' },
+                    });
+                });
+            }, 600);
             //return false;
         }).on('click', '.--switchpopup', function () {
             var P = $(this).attr('data-popup');
@@ -452,6 +460,8 @@ $(document).ready(function(){
 			$(this).parents('.all-tab').find( ".all-form__service:contains('" + text + "')" ).remove();
 			$(summBlock).text((+summ - +price2).toLocaleString('ru') + " ₽");
 		}
+
+		$('.input-sv').val($('.all-form .all-form__service').text().replace(/₽/gi, '₽\n'));
 	});
 
 	$('.all-form__services').on('click', 'svg', function(){
@@ -463,7 +473,46 @@ $(document).ready(function(){
 
 		$('[data-servNum = "' + $(this).parents('.all-form__service').attr('data-servId') + '"]').removeClass('act').removeAttr('data-servNum checked');
 		$(this).parents('.all-form__service').remove();
+
+		$('.input-sv').val($('.all-form .all-form__service').text().replace(/₽/gi, '₽\n'));
 	});
+
+
+	//form
+	/*
+	var th = $("form.all-form");
+	$.ajax({
+		type: "POST",
+		url: "/mail.php", //Change
+		data: th.serialize()
+	}).done(function() {
+		$('.all-form').addClass('succed-form');
+	});
+	*/
+
+	$(":input").inputmask();
+
+	//header and filter
+	$('.--openfilter').on('click', function(){
+		$('.header').addClass('header-fix');
+	});
+	$('.mainfilter .mainfilter__close').on('click', function(){
+		$('.header').removeClass('header-fix');
+	});
+
+	/*
+	$('.all-form .all-form__submit').on('click', function(e){
+		e.preventDefault();
+
+		var input = $('.all-form .input__control').eq(0);
+		if($('.all-form .input__control').eq(0).val() == ""){
+			input.addClass('error-input');
+			setTimeout(function(){
+	    	$('.input__control').removeClass('error-input');
+    	}, 1000);
+		}
+	});
+	*/
 
 });
 ;

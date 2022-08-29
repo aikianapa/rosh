@@ -1745,6 +1745,7 @@ wbapp.fetch = function(selector = 'body', data = {}, ret) {
 
 
 wbapp.toast = async function(title, text, params = {}) {
+    console.log(text);
     var target = '.content-toasts';
     if (!$(document).find(target).length) {
         $('body').prepend('<div class="content-toasts position-fixed t-0" style="z-index:999999;right:0;"></div>');
@@ -1787,13 +1788,14 @@ wbapp.toast = async function(title, text, params = {}) {
         }
     });
 
-    $(document).find(options.target)
-        .find(".toast:last-child")
-        .toast('show')
+    let last = $(document).find(options.target).find(".toast:last-child")
+    if (last.length && last.toast !== undefined) {
+        last.toast('show')
         .off('hidden.bs.toast')
         .on('hidden.bs.toast', function(e) {
             $(e.currentTarget).remove();
         });
+    }
 }
 
 
