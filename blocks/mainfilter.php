@@ -118,7 +118,7 @@
                                             <div class="col-lg-4">
                                                 <label class="checkbox mainfilter__checkbox" data-id="{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-symptom="{{id}}">
                                                     <input type="checkbox" on-change="toggleSymptom"><span> </span>
-                                                    <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service" href="#" on-click="viewSymptom">Подробнее </a>
+                                                    <div class="checbox__name">{{header}}</div><a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewSymptom">Подробнее </a>
                                                 </label>
                                             </div>
                                         {{/each}}
@@ -371,11 +371,11 @@
                     let popup = $(ev.node).data('popup')
                     let title = $(ev.node).parents('.accardeon').find('.accardeon__name').text();
                     let form = $('body').find('div.' + popup + ':first')
-                    $(form).find('.popup__name').text(title)
+                    $(form).find('.popup__name').text("")
                     $(form).find('.popup__content').html("")
                     wbapp.get('/symptoms/popup/' + sid, function(res) {
-                        console.log(res);
                         $(form).find('.popup__content').html(res)
+                        $(form).find('.popup__name').text($(form).find('.popup__content [data-category]').data('category'))
                         $(form).show()
                     })
                 }

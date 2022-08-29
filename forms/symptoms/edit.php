@@ -32,12 +32,35 @@
                             </div>
 
                             <div class="form-group row">
-                                    <div class="col">
+                                <div class="col">
+                                    <label class="col-form-label">Подзаголовок</label>
+                                    <input type="text" name="subtitle" class="form-control" placeholder="Подзаголовок">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col">
                                     <label class="col-form-label">Описание</label>
                                     <textarea name="text" class="form-control" placeholder="Описание"></textarea>
-                                    </div>
                                 </div>
-                            
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col">
+                                    <label class="col-form-label">Категории</label>
+                                    <wb-data wb="table=catalogs&item=srvcat&field=tree">
+                                        <select name="category" class="form-control" wb-select2 multiple>
+                                            <wb-foreach wb-from="data">
+                                                <option value="{{_id}}" selected wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
+                                                    {{name}}</option>
+                                                <option value="{{_id}}" wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'!='1'">
+                                                    {{name}}</option>
+                                            </wb-foreach>
+                                        </select>
+                                    </wb-data>
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label class="col-12">Связанные проблемы</label>
                                 <div class="col-12">
@@ -56,9 +79,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <input type="hidden" name="category" value="">
-
                         </form>
                     </div>
 
@@ -72,20 +92,8 @@
 </div>
 
 <wb-lang>
-    [ru]
-    main = Основное
-    prop = Вставки кода
-    seo = Оптимизация
-    images = Изображения
-    visible = Отображать
-    header = Заголовок
-    [en]
-    main = Main
-    prop = Code injection
-    seo = SEO
-    images = Images
-    visible = Visible
-    header = Header
+    [ru] main = Основное prop = Вставки кода seo = Оптимизация images = Изображения visible = Отображать header = Заголовок [en]
+    main = Main prop = Code injection seo = SEO images = Images visible = Visible header = Header
 </wb-lang>
 
 </html>
