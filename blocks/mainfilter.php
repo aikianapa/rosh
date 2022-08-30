@@ -32,7 +32,7 @@
 
                                     {{#each services}}
                                         <div class="accardeon" data-category="{{id}}">
-                                            <div class="accardeon__main accardeon__click" on-click="getServices">
+                                            <div class="accardeon__main accardeon__click">
                                                 <div class="accardeon__name --{{data.color}}">{{name}}</div>
                                             </div>
                                             <div class="accardeon__list">
@@ -69,7 +69,7 @@
                                                         {{#if id != "gyn"  }}
                                                             {{#if id != "lab"  }}
                                                                 <div class="accardeon">
-                                                                    <div class="accardeon__main accardeon__click" data-category="{{id}}" on-click="getProblems">
+                                                                    <div class="accardeon__main accardeon__click" data-category="{{id}}">
                                                                         <div class="accardeon__name --{{data.color}}">{{name}}</div>
                                                                     </div>
                                                                     <div class="accardeon__list">
@@ -158,6 +158,7 @@
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
                                     {{/each}}
+                                    <!--
                                     {{#each choice.symptoms}}
                                         <div class="mainfilter-tag">
                                             <div class="mainfilter-tag__name">
@@ -170,6 +171,7 @@
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
                                     {{/each}}
+                                    -->
                                 </div>
                             </div>
                             <div class="mainfilter__symptoms">
@@ -218,33 +220,6 @@
             },
             on: {
                 complete() {
-                    this.fire('checkChoose')
-                },
-                getServices(ev) {
-                    let category = $(ev.node).parents('.accardeon').data('category')
-                    let services = `categories.${category}.services`;
-                    if (!mainFilter.get(services)) {
-                        $(mainFilter.get('services')).each(function(i, item) {
-                            if (item.category == '' || item.category == category) {
-                                mainFilter.push(services, item)
-                            }
-                        })
-                    }
-                    this.fire('checkChoose')
-                },
-                getProblems(ev) {
-                    let srvtype = $(ev.node).parents('.accardeon-group').find('.accrdeon__title').data('type')
-                    let category = $(ev.node).data('category')
-                    let data = []
-                    $.each(mainFilter.get('problems'), function(i, obj) {
-                        let item = Object.assign({}, obj);
-                        if (in_array(category, item.category) && srvtype == item.srvtype) {
-                            item.category = category
-                            data.push(item)
-                        }
-                    })
-                    mainFilter.update('srvtypes.' + srvtype + '.categories.' + category + '.problems')
-
                     this.fire('checkChoose')
                 },
                 delete(ev) {
@@ -307,6 +282,7 @@
                     let label = $(input).parent('.mainfilter__checkbox')
                     let data = $(label).data()
                     let choice = mainFilter.get('choice.symptoms')
+                    let symptom = mainFilter.get('filter.symptoms.'+data.id);
                     if (choice == undefined) choice = {}
                     if ($(input).is(':checked')) {
                         let header = $(label).find('.checbox__name').text().trim()
@@ -319,8 +295,18 @@
                             color: color
                         }
                         choice[data.id] = item
+                        $.each(symptom.problems,function(i,p){
+                            $.each(symptom.category,function(j,c){
+                                $('[data-tab="problems"]').find(`[data-problem=${p}][data-id*=${c}] input[type=checkbox]:not(:checked)`).trigger('click')
+                            });
+                        })
                     } else {
                         delete choice[data.id]
+                        $.each(symptom.problems,function(i,p){
+                            $.each(symptom.category,function(j,c){
+                                $('[data-tab="problems"]').find(`[data-problem=${p}][data-id*=${c}] input[type=checkbox]:checked`).trigger('click')
+                            })
+                        })
                     }
                     mainFilter.set('choice.symptoms', choice)
                     wbapp.data('choice', this.get('choice'))
@@ -338,8 +324,8 @@
                         $.each(mainFilter.get('choice.symptoms'), function(i, item) {
                             $(`[data-tab="sympthoms"] label[data-id="${item.id}"] > input`).prop('checked', true);
                         })
-                        }, 100)
-                    }, 100)
+                        }, 200)
+                    }, 300)
                 },
                 viewService(ev) {
                     let data = $(ev.node).parent('label').data()

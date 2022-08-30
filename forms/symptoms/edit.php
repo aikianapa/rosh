@@ -49,7 +49,7 @@
                                 <div class="col">
                                     <label class="col-form-label">Категории</label>
                                     <wb-data wb="table=catalogs&item=srvcat&field=tree">
-                                        <select name="category" class="form-control" wb-select2 multiple>
+                                        <select name="category" class="form-control" wb-select2 multiple required>
                                             <wb-foreach wb-from="data">
                                                 <option value="{{_id}}" selected wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
                                                     {{name}}</option>
