@@ -243,8 +243,10 @@
                 deleteSymPrb(ev) {
                     let data = $(ev.node).data()
                     let choice = mainFilter.get('choice.symptoms')
-                    delete choice[data.symptom].problems[data.id];
+                    delete choice[data.symptom].problems[data.id]
+                    if (count(choice[data.symptom].problems) == 0) delete choice[data.symptom]
                     mainFilter.set('choice.symptoms',choice)
+                    wbapp.data('choice.symptoms',choice)
                 },
                 toggleService(ev) {
                     let input = $(ev.node)
@@ -315,10 +317,15 @@
                         }
                         choice[data.id] = item
                         let symptom = mainFilter.get('filter.symptoms.'+data.id)
+                        let services = mainFilter.get('filter.services')
                         $.each(symptom.category,function(i,c){
                             $.each(symptom.problems,function(j,p){
                                 let problem = mainFilter.get('filter.prbms.'+p);
                                 if (in_array(c,problem.category) || problem.category == '') {
+                                    let srv = services[c]
+                                    problem.color = srv.data.color
+                                    problem.liter = srv.name.substring(0, 1).toUpperCase()
+
                                     problem.id = c + "_" + problem.id
                                     problem.symptom = data.id
                                     item.problems[problem.id] = problem
