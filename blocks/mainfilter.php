@@ -32,7 +32,7 @@
 
                                     {{#each services}}
                                         <div class="accardeon" data-category="{{id}}">
-                                            <div class="accardeon__main accardeon__click">
+                                            <div class="accardeon__main accardeon__click" on-click="getServices">
                                                 <div class="accardeon__name --{{data.color}}">{{name}}</div>
                                             </div>
                                             <div class="accardeon__list">
@@ -69,7 +69,7 @@
                                                         {{#if id != "gyn"  }}
                                                             {{#if id != "lab"  }}
                                                                 <div class="accardeon">
-                                                                    <div class="accardeon__main accardeon__click" data-category="{{id}}">
+                                                                    <div class="accardeon__main accardeon__click" data-category="{{id}}" on-click="getProblems">
                                                                         <div class="accardeon__name --{{data.color}}">{{name}}</div>
                                                                     </div>
                                                                     <div class="accardeon__list">
@@ -158,7 +158,12 @@
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
                                     {{/each}}
-                                    <!--
+                                </div>
+                            </div>
+                            <div class="mainfilter__symptoms">
+                                <h5 class="h5">По симптомам</h5>
+                                <div class="mainfilter__tags">
+
                                     {{#each choice.symptoms}}
                                         <div class="mainfilter-tag">
                                             <div class="mainfilter-tag__name">
@@ -166,17 +171,25 @@
                                                     <svg class="svgsprite _delete">
                                                         <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                                     </svg>
+                                                </div> <a class="mainfilter-tag__link" href="/landing.html"><strong>{{header}}</strong></a>
+                                            </div>
+                                            <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
+                                        </div>
+                                        {{#each problems}}
+                                        <div class="mainfilter-tag">
+                                            <div class="mainfilter-tag__name">
+                                                <div class="mainfilter-tag__delete" data-id="{{id}}" data-symptom="{{symptom}}" on-click="deleteSymPrb">
+                                                    <svg class="svgsprite _delete">
+                                                        <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+                                                    </svg>
                                                 </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
                                             </div>
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
+                                        {{/each}}
                                     {{/each}}
-                                    -->
+
                                 </div>
-                            </div>
-                            <div class="mainfilter__symptoms">
-                                <h5 class="h5">По симптомам</h5>
-                                <div class="mainfilter__tags"></div>
                             </div>
                         </div>
                         <div class="mainfilter__bottom">
@@ -225,7 +238,13 @@
                 delete(ev) {
                     did = $(ev.node).data('id')
                     $(document).find('#mainfilter label[data-id="' + did + '"]').trigger('click')
-                    console.log(did, $(document).find('#mainfilter label[data-id="' + did + '"]'));
+                    //console.log(did, $(document).find('#mainfilter label[data-id="' + did + '"]'));
+                },
+                deleteSymPrb(ev) {
+                    let data = $(ev.node).data()
+                    let choice = mainFilter.get('choice.symptoms')
+                    delete choice[data.symptom].problems[data.id];
+                    mainFilter.set('choice.symptoms',choice)
                 },
                 toggleService(ev) {
                     let input = $(ev.node)
@@ -282,7 +301,6 @@
                     let label = $(input).parent('.mainfilter__checkbox')
                     let data = $(label).data()
                     let choice = mainFilter.get('choice.symptoms')
-                    let symptom = mainFilter.get('filter.symptoms.'+data.id);
                     if (choice == undefined) choice = {}
                     if ($(input).is(':checked')) {
                         let header = $(label).find('.checbox__name').text().trim()
@@ -292,21 +310,23 @@
                             id: data.id,
                             header: header,
                             liter: liter,
-                            color: color
+                            color: color,
+                            problems: {}
                         }
                         choice[data.id] = item
-                        $.each(symptom.problems,function(i,p){
-                            $.each(symptom.category,function(j,c){
-                                $('[data-tab="problems"]').find(`[data-problem=${p}][data-id*=${c}] input[type=checkbox]:not(:checked)`).trigger('click')
-                            });
+                        let symptom = mainFilter.get('filter.symptoms.'+data.id)
+                        $.each(symptom.category,function(i,c){
+                            $.each(symptom.problems,function(j,p){
+                                let problem = mainFilter.get('filter.prbms.'+p);
+                                if (in_array(c,problem.category) || problem.category == '') {
+                                    problem.id = c + "_" + problem.id
+                                    problem.symptom = data.id
+                                    item.problems[problem.id] = problem
+                                }
+                            })
                         })
                     } else {
                         delete choice[data.id]
-                        $.each(symptom.problems,function(i,p){
-                            $.each(symptom.category,function(j,c){
-                                $('[data-tab="problems"]').find(`[data-problem=${p}][data-id*=${c}] input[type=checkbox]:checked`).trigger('click')
-                            })
-                        })
                     }
                     mainFilter.set('choice.symptoms', choice)
                     wbapp.data('choice', this.get('choice'))
@@ -324,8 +344,8 @@
                         $.each(mainFilter.get('choice.symptoms'), function(i, item) {
                             $(`[data-tab="sympthoms"] label[data-id="${item.id}"] > input`).prop('checked', true);
                         })
-                        }, 200)
-                    }, 300)
+                        }, 100)
+                    }, 100)
                 },
                 viewService(ev) {
                     let data = $(ev.node).parent('label').data()

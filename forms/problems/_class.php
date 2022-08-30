@@ -45,7 +45,8 @@ class problemsClass extends cmsFormsClass
             'services'  =>$scats,
             'problems'  =>$types,
             'symptoms'  =>$sympt,
-            'texts'     =>$texts
+            'texts'     =>$texts,
+            'prbms'     =>$prbms
         ];
 
         foreach ($servs as $srv) {
