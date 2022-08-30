@@ -164,21 +164,10 @@
                                 <h5 class="h5">По симптомам</h5>
                                 <div class="mainfilter__tags">
 
-                                    {{#each choice.symptoms}}
+                                    {{#each choice.symprbms}}
                                         <div class="mainfilter-tag">
                                             <div class="mainfilter-tag__name">
-                                                <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
-                                                    <svg class="svgsprite _delete">
-                                                        <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
-                                                    </svg>
-                                                </div> <a class="mainfilter-tag__link" href="/landing.html"><strong>{{header}}</strong></a>
-                                            </div>
-                                            <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
-                                        </div>
-                                        {{#each problems}}
-                                        <div class="mainfilter-tag">
-                                            <div class="mainfilter-tag__name">
-                                                <div class="mainfilter-tag__delete" data-id="{{id}}" data-symptom="{{symptom}}" on-click="deleteSymPrb">
+                                                <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="deleteSymPrb">
                                                     <svg class="svgsprite _delete">
                                                         <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                                     </svg>
@@ -186,7 +175,6 @@
                                             </div>
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
-                                        {{/each}}
                                     {{/each}}
 
                                 </div>
@@ -242,11 +230,10 @@
                 },
                 deleteSymPrb(ev) {
                     let data = $(ev.node).data()
-                    let choice = mainFilter.get('choice.symptoms')
-                    delete choice[data.symptom].problems[data.id]
-                    if (count(choice[data.symptom].problems) == 0) delete choice[data.symptom]
-                    mainFilter.set('choice.symptoms',choice)
-                    wbapp.data('choice.symptoms',choice)
+                    let choice = mainFilter.get('choice.symprbms')
+                    delete choice[data.id]
+                    mainFilter.set('choice.symprbms',choice)
+                    wbapp.data('choice.symprbms',choice)
                 },
                 toggleService(ev) {
                     let input = $(ev.node)
@@ -303,6 +290,11 @@
                     let label = $(input).parent('.mainfilter__checkbox')
                     let data = $(label).data()
                     let choice = mainFilter.get('choice.symptoms')
+                    let symptom = mainFilter.get('filter.symptoms.'+data.id)
+                    let services = mainFilter.get('filter.services')
+                    let problems = mainFilter.get('filter.prbms');
+                    let symprbms = mainFilter.get('choice.symprbms')
+                    if (symprbms == undefined) symprbms = {}
                     if (choice == undefined) choice = {}
                     if ($(input).is(':checked')) {
                         let header = $(label).find('.checbox__name').text().trim()
@@ -312,30 +304,35 @@
                             id: data.id,
                             header: header,
                             liter: liter,
-                            color: color,
-                            problems: {}
+                            color: color
                         }
                         choice[data.id] = item
-                        let symptom = mainFilter.get('filter.symptoms.'+data.id)
-                        let services = mainFilter.get('filter.services')
-                        $.each(symptom.category,function(i,c){
-                            $.each(symptom.problems,function(j,p){
-                                let problem = mainFilter.get('filter.prbms.'+p);
-                                if (in_array(c,problem.category) || problem.category == '') {
-                                    let srv = services[c]
-                                    problem.color = srv.data.color
-                                    problem.liter = srv.name.substring(0, 1).toUpperCase()
-
-                                    problem.id = c + "_" + problem.id
-                                    problem.symptom = data.id
-                                    item.problems[problem.id] = problem
-                                }
-                            })
+                        $.each(problems,function(j,prb){
+                            if (in_array(data.id, prb.symptoms)) {
+                                $.each(prb.category, function(i,c){
+                                    let pid = c + "_" + prb.id
+                                    symprbms[pid] = {
+                                        id: pid,
+                                        header: prb.header,
+                                        color: services[c].data.color,
+                                        liter: services[c].name.substring(0, 1).toUpperCase()
+                                    }
+                                })
+                            }
                         })
                     } else {
                         delete choice[data.id]
+                        $.each(problems,function(j,prb){
+                            if (in_array(data.id, prb.symptoms)) {
+                                $.each(prb.category, function(i,c){
+                                    let pid = c + "_" + prb.id
+                                    delete symprbms[pid]
+                                })
+                            }
+                        })
                     }
                     mainFilter.set('choice.symptoms', choice)
+                    mainFilter.set('choice.symprbms', symprbms)
                     wbapp.data('choice', this.get('choice'))
                     return false
                 },

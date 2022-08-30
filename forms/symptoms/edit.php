@@ -44,41 +44,6 @@
                                     <textarea name="text" class="form-control" placeholder="Описание"></textarea>
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <div class="col">
-                                    <label class="col-form-label">Категории</label>
-                                    <wb-data wb="table=catalogs&item=srvcat&field=tree">
-                                        <select name="category" class="form-control" wb-select2 multiple required>
-                                            <wb-foreach wb-from="data">
-                                                <option value="{{_id}}" selected wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'=='1'">
-                                                    {{name}}</option>
-                                                <option value="{{_id}}" wb-if="'{{in_array({{_id}},{{_parent._parent.category}})}}'!='1'">
-                                                    {{name}}</option>
-                                            </wb-foreach>
-                                        </select>
-                                    </wb-data>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-12">Связанные проблемы</label>
-                                <div class="col-12">
-                                    <select name="problems" class="form-control" wb-select2 multiple>
-                                        <wb-foreach wb="{
-                                                'table':'problems',
-                                                'render':'server',
-                                                'tpl':'false',
-                                                'size':'999999',
-                                                'filter': {'active' : 'on'}
-                                            }">
-                                            <option value="{{_id}}">
-                                                {{header}}
-                                            </option>
-                                        </wb-foreach>
-                                    </select>
-                                </div>
-                            </div>
                         </form>
                     </div>
 
