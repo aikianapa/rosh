@@ -141,7 +141,7 @@
                                                     <svg class="svgsprite _delete">
                                                         <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                                     </svg>
-                                                </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                                </div> <a class="mainfilter-tag__link" href="#__srv" data-service="{{service}}" data-popup="--service-l" on-click="viewService">{{header}}</a>
                                             </div>
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
@@ -153,7 +153,7 @@
                                                     <svg class="svgsprite _delete">
                                                         <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                                     </svg>
-                                                </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                                </div> <a class="mainfilter-tag__link" href="#__prb" data-problem="{{problem}}" data-popup="--service-l" on-click="viewProblem">{{header}}</a>
                                             </div>
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
@@ -171,7 +171,7 @@
                                                     <svg class="svgsprite _delete">
                                                         <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                                     </svg>
-                                                </div> <a class="mainfilter-tag__link" href="/landing.html">{{header}}</a>
+                                                </div> <a class="mainfilter-tag__link" href="#__sym" data-problem="{{problem}}" data-popup="--service-l" on-click="viewProblem">{{header}}</a>
                                             </div>
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
@@ -250,7 +250,8 @@
                             id: data.id,
                             header: header,
                             liter: liter,
-                            color: color
+                            color: color,
+                            service: data.service
                         }
                         choice[data.id] = item
                     } else {
@@ -275,7 +276,8 @@
                             id: data.id,
                             header: header,
                             liter: liter,
-                            color: color
+                            color: color,
+                            problem: data.problem
                         }
                         choice[data.id] = item
                     } else {
@@ -304,7 +306,8 @@
                             id: data.id,
                             header: header,
                             liter: liter,
-                            color: color
+                            color: color,
+                            symptom: data.symptom
                         }
                         choice[data.id] = item
                         $.each(problems,function(j,prb){
@@ -315,7 +318,8 @@
                                         id: pid,
                                         header: prb.header,
                                         color: services[c].data.color,
-                                        liter: services[c].name.substring(0, 1).toUpperCase()
+                                        liter: services[c].name.substring(0, 1).toUpperCase(),
+                                        problem: prb.id
                                     }
                                 })
                             }
@@ -348,11 +352,12 @@
                         $.each(mainFilter.get('choice.symptoms'), function(i, item) {
                             $(`[data-tab="sympthoms"] label[data-id="${item.id}"] > input`).prop('checked', true);
                         })
-                        }, 100)
-                    }, 100)
+                        }, 300)
+                    }, 300)
                 },
                 viewService(ev) {
-                    let data = $(ev.node).parent('label').data()
+                    let data 
+                    $(ev.node).is('[data-service]') ? data = $(ev.node).data() : data = $(ev.node).parent('label').data()
                     let sid = data.service
                     let popup = $(ev.node).data('popup')
                     let title = $(ev.node).parents('.accardeon').find('.accardeon__name').text();
@@ -365,7 +370,8 @@
                     })
                 },
                 viewProblem(ev) {
-                    let data = $(ev.node).parent('label').data()
+                    let data 
+                    $(ev.node).is('[data-problem]') ? data = $(ev.node).data() : data = $(ev.node).parent('label').data()
                     let sid = data.problem
                     let popup = $(ev.node).data('popup')
                     let title = $(ev.node).parents('.accardeon').find('.accardeon__name').text();
@@ -391,7 +397,6 @@
                         $(form).show()
                     })
                 }
-
             }
         })
 
