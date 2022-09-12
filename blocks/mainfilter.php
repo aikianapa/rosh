@@ -221,9 +221,11 @@
             },
             on: {
                 init() {
+                    setTimeout(function(){
                     wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
                         mainFilter.set('filter', data);
                     })
+                    },3000)
                 },
                 complete() {
                     this.fire('checkChoose')
