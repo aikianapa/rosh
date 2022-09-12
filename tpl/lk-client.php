@@ -85,13 +85,13 @@
                             <div class="row profile-edit__wrap">
                                 <div class="col-md-9">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="input input--grey">
                                                 <input class="input__control" type="text" name="country" value="{{.country}}" placeholder="Страна">
                                                 <div class="input__placeholder input__placeholder--dark">Страна</div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="input input--grey">
                                                 <input class="input__control" type="text" name="city" value="{{.city}}" placeholder="Город">
                                                 <div class="input__placeholder input__placeholder--dark">Город</div>
@@ -99,9 +99,15 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" name="street" value="{{.street}}" placeholder="Улица и дом">
-                                                <div class="input__placeholder input__placeholder--dark">Улица и дом
+                                                <input class="input__control" type="text" name="street" value="{{.street}}" placeholder="Улица">
+                                                <div class="input__placeholder input__placeholder--dark">Улица
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="input input--grey">
+                                                <input class="input__control" type="text" name="build" value="{{.build}}" placeholder="Дом">
+                                                <div class="input__placeholder input__placeholder--dark">Дом</div>
                                             </div>
                                         </div>
                                     </div>
@@ -112,25 +118,25 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Кв./офис">
+                                                <input class="input__control" type="text" name="flat" placeholder="Кв./офис">
                                                 <div class="input__placeholder input__placeholder--dark">Кв./офис</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Домофон">
+                                                <input class="input__control" type="text" name="intercom" placeholder="Домофон">
                                                 <div class="input__placeholder input__placeholder--dark">Домофон</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Подъезд">
+                                                <input class="input__control" type="text" name="entrance" placeholder="Подъезд">
                                                 <div class="input__placeholder input__placeholder--dark">Подъезд</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Этаж">
+                                                <input class="input__control" type="text" name="level" placeholder="Этаж">
                                                 <div class="input__placeholder input__placeholder--dark">Этаж</div>
                                             </div>
                                         </div>
