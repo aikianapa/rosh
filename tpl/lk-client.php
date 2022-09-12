@@ -6,12 +6,12 @@
     <link rel="icon" href="/favicon.svg" type=" image/svg+xml">
 </head>
 
-<body class="body" data-barba="wrapper">
+<body class="body lk-cabinet" data-barba="wrapper">
     <div class="scroll-container" data-scroll-container>
         <div>
             <wb-module wb="module=yonger&mode=render&view=header"></wb-module>
         </div>
-        <main class="page" data-barba="container" data-barba-namespace="{{_route.name}}">
+        <main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
             <div class="container">
                 <div class="account">
                     <div class="crumbs">
