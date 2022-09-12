@@ -44,7 +44,7 @@
                                         <span>26.08.1989</span>
                                     </div>
                                     <div class="user__phone">Тел:
-                                        <span>+7 {{user.phone}}</span>
+                                        <span>+{{user.phone}}</span>
                                     </div>
                                 </div>
                                 <div class="user__confirm">
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="input input--grey">
-                                        <input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'">
+                                        <input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
                                         <div class="input__placeholder input__placeholder--dark">Телефон</div>
                                     </div>
                                 </div>
@@ -565,9 +565,13 @@
                     },
                     profileSave(ev) {
                         let $form = $(ev.node)
-                        if ($form.verify()) {
+                        let uid = cabinet.get('user.id')
+                        if ($form.verify() && uid > '') {
                             let data = $form.serializeJson()
-                            console.log(data);
+                            data.phone = str_replace([' ','+','-','(',')'],'',data.phone)
+                            wbapp.post('/api/v2/update/users/'+uid,data,function(res){
+                                console.log(res);
+                            })
                         }
                         return false
                     }
