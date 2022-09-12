@@ -11,7 +11,7 @@
         <div>
             <wb-module wb="module=yonger&mode=render&view=header"></wb-module>
         </div>
-        <main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
+        <main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
             <div class="container">
                 <div class="account">
                     <div class="crumbs">
@@ -20,7 +20,7 @@
                                 <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
                             </svg>
                         </a>
-                        <a class="crumbs__link" href="#">Главная</a>
+                        <a class="crumbs__link" href="/">Главная</a>
                         <a class="crumbs__link" href="#">Личный кабинет</a>
                     </div>
                     <div class="title-flex --flex --jcsb">
@@ -32,7 +32,7 @@
                     <div class="account__panel">
                         <div class="account__info">
                             <div class="user">
-                                <div class="user__name">Хамидова Лия Олеговна
+                                <div class="user__name">{{user.fullname}}
                                     <button class="user__edit">
                                         <svg class="svgsprite _edit">
                                             <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
@@ -44,7 +44,7 @@
                                         <span>26.08.1989</span>
                                     </div>
                                     <div class="user__phone">Тел:
-                                        <span>+7 939 313 33 33</span>
+                                        <span>+7 {{user.phone}}</span>
                                     </div>
                                 </div>
                                 <div class="user__confirm">
@@ -55,24 +55,25 @@
                             </div>
                         </div>
                         <a href="/signout" class="account__exit">Выйти из аккаунта</a>
-                        <form class="profile-edit">
+                        <form class="profile-edit" on-submit="profileSave">
+                            {{#user}}
                             <p class="text-bold mb-30">Редактировать профиль</p>
                             <div class="row profile-edit__wrap">
                                 <div class="col-md-3">
                                     <div class="input input--grey">
-                                        <input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения">
+                                        <input class="input__control datebirthdaypickr" name="birthdate" value="{{.fullname}}" type="text" placeholder="Дата рождения">
                                         <div class="input__placeholder input__placeholder--dark">Дата рождения</div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="input input--grey">
-                                        <input class="input__control" type="tel" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'">
+                                        <input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'">
                                         <div class="input__placeholder input__placeholder--dark">Телефон</div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="input input--grey">
-                                        <input class="input__control" type="email" placeholder="E-mail">
+                                        <input class="input__control" type="email" name="email" value="{{.email}}" placeholder="E-mail">
                                         <div class="input__placeholder input__placeholder--dark">E-mail</div>
                                     </div>
                                 </div>
@@ -86,19 +87,19 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Страна">
+                                                <input class="input__control" type="text" name="country" value="{{.country}}" placeholder="Страна">
                                                 <div class="input__placeholder input__placeholder--dark">Страна</div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Город">
+                                                <input class="input__control" type="text" name="city" value="{{.city}}" placeholder="Город">
                                                 <div class="input__placeholder input__placeholder--dark">Город</div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Улица и дом">
+                                                <input class="input__control" type="text" name="street" value="{{.street}}" placeholder="Улица и дом">
                                                 <div class="input__placeholder input__placeholder--dark">Улица и дом
                                                 </div>
                                             </div>
@@ -139,6 +140,7 @@
                                     <button class="btn btn--white profile-edit__submit">Сохранить</button>
                                 </div>
                             </div>
+                            {{/user}}
                         </form>
 
 
@@ -545,7 +547,26 @@
         </main>
 
         <script>
-
+            var cabinet = new Ractive({
+                el: 'main.page',
+                template: $('main.page').html(),
+                data: {
+                    user: wbapp._session.user
+                },
+                on: {
+                    init() {
+                        // получаем данные
+                    },
+                    profileSave(ev) {
+                        let $form = $(ev.node)
+                        if ($form.verify()) {
+                            let data = $form.serializeJson()
+                            console.log(data);
+                        }
+                        return false
+                    }
+                }
+            })
         </script>
     </div>
 
