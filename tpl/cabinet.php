@@ -1,0 +1,1 @@
+<wb-include wb-tpl="lk-{{_sess.user.role}}.php"></wb-include>

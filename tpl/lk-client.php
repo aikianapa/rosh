@@ -12,9 +12,6 @@
             <wb-module wb="module=yonger&mode=render&view=header"></wb-module>
         </div>
         <main class="page" data-barba="container" data-barba-namespace="{{_route.name}}">
-            <div>
-                <wb-module wb="module=yonger&mode=render" />
-            </div>
             <div class="container">
                 <div class="account">
                     <div class="crumbs">
