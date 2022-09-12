@@ -209,7 +209,7 @@
             </div>
         </template>
     </div>
-    <script>
+    <script wbapp>
         if (wbapp.data('choice') == undefined) wbapp.data('choice', {})
         var choice = wbapp.data('choice')
         var mainFilter = new Ractive({
@@ -220,6 +220,11 @@
                 'filter': {}
             },
             on: {
+                init() {
+                    wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
+                        mainFilter.set('filter', data);
+                    })
+                },
                 complete() {
                     this.fire('checkChoose')
                 },
@@ -398,10 +403,6 @@
                     })
                 }
             }
-        })
-
-        wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
-            mainFilter.set('filter', data);
         })
     </script>
 </view>
