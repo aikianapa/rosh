@@ -1,9 +1,27 @@
-<html>
+<!DOCTYPE html>
+<html class="no-js" lang="ru">
 
 <head>
-    <title>{{header}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title seo>Личный кабинет</title>
 
-    <link rel="icon" href="/favicon.svg" type=" image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <link rel="stylesheet" href="./assets/css/new.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/jquery.autocomplete.min.js"></script>
+    <script src="assets/js/air-datepicker.js"></script>
+    <script src="assets/js/jquery.inputmask.min.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/new.js"></script>
+
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
@@ -54,7 +72,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="account__exit">Выйти из аккаунта</div>
+                        <a href="/signout" class="account__exit">Выйти из аккаунта</a>
                         <form class="profile-edit">
                             <p class="text-bold mb-30">Редактировать профиль</p>
                             <div class="row profile-edit__wrap">
@@ -542,20 +560,16 @@
                     </div>
                 </div>
             </div>
+        </main>
+
+        <script>
+
+        </script>
+    </div>
+
             <div>
                 <wb-module wb="module=yonger&mode=render&view=footer" />
             </div>
-        </main>
-    </div>
-
-    <div class="to_top_btn">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="29px"
-            viewBox="0 0 20 29" enable-background="new 0 0 20 29" xml:space="preserve">
-            <path fill="#262626" d="M11.011,0.4c-0.534-0.533-1.397-0.533-1.929,0L0.4,9.082c-0.533,0.533-0.533,1.396,0,1.929 c0.532,0.533,1.396,0.533,1.929,0l7.717-7.717l7.717,7.717c0.533,0.533,1.397,0.533,1.93,0c0.533-0.532,0.533-1.396,0-1.929 L11.011,0.4z"
-            />
-            <rect x="8.682" y="1.364" fill="#262626" width="2.729" height="27.284" />
-        </svg>
-    </div>
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');" />
 <wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');" />
