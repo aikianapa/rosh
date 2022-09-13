@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ru">
-
 <head>
     <title seo>Личный кабинет</title>
 </head>
@@ -60,7 +59,7 @@
                             <div class="row profile-edit__wrap">
                                 <div class="col-md-3">
                                     <div class="input input--grey">
-                                        <input class="input__control datebirthdaypickr" name="birthdate" value="{{.fullname}}" type="text" placeholder="Дата рождения">
+                                        <input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
                                         <div class="input__placeholder input__placeholder--dark">Дата рождения</div>
                                     </div>
                                 </div>
@@ -117,25 +116,25 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" name="flat" placeholder="Кв./офис" value="{{.additional.apartment}}" >
+                                                <input class="input__control" type="text" name="flat" placeholder="Кв./офис" value="{{.flat}}" >
                                                 <div class="input__placeholder input__placeholder--dark">Кв./офис</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" name="intercom" placeholder="Домофон" value="{{.additional.intercom}}" >
+                                                <input class="input__control" type="text" name="intercom" placeholder="Домофон" value="{{.intercom}}" >
                                                 <div class="input__placeholder input__placeholder--dark">Домофон</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" name="entrance" placeholder="Подъезд" value="{{.additional.entrance}}">
+                                                <input class="input__control" type="text" name="entrance" placeholder="Подъезд" value="{{.entrance}}">
                                                 <div class="input__placeholder input__placeholder--dark">Подъезд</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" name="level" placeholder="Этаж" value="{{.additional.floor}}">
+                                                <input class="input__control" type="text" name="level" placeholder="Этаж" value="{{.level}}">
                                                 <div class="input__placeholder input__placeholder--dark">Этаж</div>
                                             </div>
                                         </div>
@@ -569,11 +568,13 @@
                 },
                 on: {
                     init() {
-                        // получаем данные
+                        wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function(data) {
+                            cabinet.set('user', data); /* get actually user data */
+                        });
                     },
                     profileSave(ev) {
-                        let $form = $(ev.node)
-                        let uid = cabinet.get('user.id')
+                        let $form = $(ev.node);
+                        let uid = cabinet.get('user.id');
                         if ($form.verify() && uid > '') {
                             let data = $form.serializeJson()
                             data.phone = str_replace([' ','+','-','(',')'],'',data.phone)
@@ -587,10 +588,9 @@
             })
         </script>
     </div>
-
-            <div>
-                <wb-module wb="module=yonger&mode=render&view=footer" />
-            </div>
+    <div>
+        <wb-module wb="module=yonger&mode=render&view=footer" />
+    </div>
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');" />
 <wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');" />

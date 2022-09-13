@@ -2043,8 +2043,8 @@
             </div>
 
         </main>
-          <script>
-            var cabinet = new Ractive({
+        <script>
+             var cabinet = new Ractive({
                 el: 'main.page',
                 template: $('main.page').html(),
                 data: {
@@ -2052,13 +2052,19 @@
                 },
                 on: {
                     init() {
-                        // получаем данные
+                        wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function(data) {
+                            cabinet.set('user', data); /* get actually user data */
+                        });
                     },
                     profileSave(ev) {
-                        let $form = $(ev.node)
-                        if ($form.verify()) {
+                        let $form = $(ev.node);
+                        let uid = cabinet.get('user.id');
+                        if ($form.verify() && uid > '') {
                             let data = $form.serializeJson()
-                            console.log(data);
+                            data.phone = str_replace([' ','+','-','(',')'],'',data.phone)
+                            wbapp.post('/api/v2/update/users/'+uid,data,function(res){
+                                console.log(res);
+                            })
                         }
                         return false
                     }

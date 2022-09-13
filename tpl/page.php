@@ -6,9 +6,9 @@
 
 <body class="body" data-barba="wrapper">
     <div class="scroll-container" data-scroll-container>
-            <div>
-                <wb-module wb="module=yonger&mode=render&view=header"></wb-module>
-            </div>
+        <div>
+            <wb-module wb="module=yonger&mode=render&view=header"></wb-module>
+        </div>
         <main class="" data-barba="container" data-barba-namespace="{{_route.name}}">
             <div>
                 <wb-module wb="module=yonger&mode=render" />

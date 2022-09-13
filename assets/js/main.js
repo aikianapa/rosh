@@ -111,7 +111,7 @@ $(function () {
             $(this).closest('.admin-editor').find('form.profile-edit:first').addClass('active');
             return false;
         }).on('click', '.account button.user__edit', function () {
-            $(this).closest('.account').find('form.profile-edit:first').addClass('active');
+            $(this).closest('.account').find('form.profile-edit:first').toggleClass('active');
             return false;
         }).on('click', '.popup__overlay', function () {
             $(this).closest('.popup').hide();

@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function(){
 
 	//service__header
 	$('.mainfilter__left .mainfilter__checkbox input').on('click', function(){
