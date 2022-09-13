@@ -167,11 +167,12 @@
                                     {{#each choice.symprbms}}
                                         <div class="mainfilter-tag">
                                             <div class="mainfilter-tag__name">
-                                                <div class="mainfilter-tag__delete" data-id="{{id}}" on-click="deleteSymPrb">
+                                                <div class="mainfilter-tag__delete" data-id="{{id}}" data-symptom="{{symptom}}" on-click="deleteSymPrb">
                                                     <svg class="svgsprite _delete">
                                                         <use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
                                                     </svg>
-                                                </div> <a class="mainfilter-tag__link" href="#__sym" data-problem="{{problem}}" data-popup="--service-l" on-click="viewProblem">{{header}}</a>
+                                                </div> 
+                                                <a class="mainfilter-tag__link" href="#__sym" data-problem="{{problem}}" data-popup="--service-l" on-click="viewProblem">{{header}}</a>
                                             </div>
                                             <div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
                                         </div>
@@ -205,18 +206,21 @@
                             <div class="mainfilter__succed"></div>
                         </div>
                     </div>
+                    {{else}}
+                    <div class="col-12 mt-5">
+                        <p class="text-center pt-5">Подождите, выполняется загрузка...</p>
+                    </div>
                 {{/filter}}
             </div>
         </template>
     </div>
     <script wbapp>
         if (wbapp.data('choice') == undefined) wbapp.data('choice', {})
-        var choice = wbapp.data('choice')
         var mainFilter = new Ractive({
             el: '#mainfilter',
             template: $('#mainfilter template').html(),
             data: {
-                'choice': choice,
+                'choice': wbapp.data('choice'),
                 'filter': {}
             },
             on: {
@@ -224,11 +228,9 @@
                     setTimeout(function(){
                     wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
                         mainFilter.set('filter', data);
+                        mainFilter.fire('checkChoose')
                     })
                     },3000)
-                },
-                complete() {
-                    this.fire('checkChoose')
                 },
                 delete(ev) {
                     did = $(ev.node).data('id')
@@ -237,10 +239,20 @@
                 },
                 deleteSymPrb(ev) {
                     let data = $(ev.node).data()
-                    let choice = mainFilter.get('choice.symprbms')
-                    delete choice[data.id]
-                    mainFilter.set('choice.symprbms',choice)
-                    wbapp.data('choice.symprbms',choice)
+                    let choice = mainFilter.get('choice')
+                    let count = 0
+                    delete choice.symprbms[data.id]
+                    $.each(choice.symprbms,function(j,sym){
+                        if (sym.symptom == data.symptom) {
+                            count++
+                        }
+                    })
+                    if (count == 0) {
+                        delete choice.symptoms[data.symptom]
+                        $(mainFilter.find(`[data-tab=sympthoms] label[data-id=${data.symptom}] input`)).prop('checked',false)
+                    }
+                    mainFilter.set('choice',choice)
+                    wbapp.data('choice', choice)
                 },
                 toggleService(ev) {
                     let input = $(ev.node)
@@ -326,7 +338,8 @@
                                         header: prb.header,
                                         color: services[c].data.color,
                                         liter: services[c].name.substring(0, 1).toUpperCase(),
-                                        problem: prb.id
+                                        problem: prb.id,
+                                        symptom: symptom.id
                                     }
                                 })
                             }
@@ -357,7 +370,7 @@
                         })
                         setTimeout(function() {
                         $.each(mainFilter.get('choice.symptoms'), function(i, item) {
-                            $(`[data-tab="sympthoms"] label[data-id="${item.id}"] > input`).prop('checked', true);
+                            $(mainFilter.find(`[data-tab=sympthoms] label[data-id=${item.id}] input`)).prop('checked',true)
                         })
                         }, 300)
                     }, 300)

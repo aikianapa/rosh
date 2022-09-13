@@ -43,7 +43,7 @@
                                         <span>26.08.1989</span>
                                     </div>
                                     <div class="user__phone">Тел:
-                                        <span>+7 {{user.phone}}</span>
+                                        <span>+{{user.phone}}</span>
                                     </div>
                                 </div>
                                 <div class="user__confirm">
@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="input input--grey">
-                                        <input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'">
+                                        <input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
                                         <div class="input__placeholder input__placeholder--dark">Телефон</div>
                                     </div>
                                 </div>
@@ -84,13 +84,13 @@
                             <div class="row profile-edit__wrap">
                                 <div class="col-md-9">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="input input--grey">
                                                 <input class="input__control" type="text" name="country" value="{{.country}}" placeholder="Страна">
                                                 <div class="input__placeholder input__placeholder--dark">Страна</div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="input input--grey">
                                                 <input class="input__control" type="text" name="city" value="{{.city}}" placeholder="Город">
                                                 <div class="input__placeholder input__placeholder--dark">Город</div>
@@ -98,9 +98,15 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" name="street" value="{{.street}}" placeholder="Улица и дом">
-                                                <div class="input__placeholder input__placeholder--dark">Улица и дом
+                                                <input class="input__control" type="text" name="street" value="{{.street}}" placeholder="Улица">
+                                                <div class="input__placeholder input__placeholder--dark">Улица
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="input input--grey">
+                                                <input class="input__control" type="text" name="build" value="{{.build}}" placeholder="Дом">
+                                                <div class="input__placeholder input__placeholder--dark">Дом</div>
                                             </div>
                                         </div>
                                     </div>
@@ -111,25 +117,25 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Кв./офис" value="{{.additional.apartment}}" >
+                                                <input class="input__control" type="text" name="flat" placeholder="Кв./офис" value="{{.additional.apartment}}" >
                                                 <div class="input__placeholder input__placeholder--dark">Кв./офис</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Домофон" value="{{.additional.intercom}}" >
+                                                <input class="input__control" type="text" name="intercom" placeholder="Домофон" value="{{.additional.intercom}}" >
                                                 <div class="input__placeholder input__placeholder--dark">Домофон</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Подъезд" value="{{.additional.entrance}}">
+                                                <input class="input__control" type="text" name="entrance" placeholder="Подъезд" value="{{.additional.entrance}}">
                                                 <div class="input__placeholder input__placeholder--dark">Подъезд</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Этаж" value="{{.additional.floor}}">
+                                                <input class="input__control" type="text" name="level" placeholder="Этаж" value="{{.additional.floor}}">
                                                 <div class="input__placeholder input__placeholder--dark">Этаж</div>
                                             </div>
                                         </div>
@@ -142,7 +148,7 @@
                             {{/user}}
                         </form>
                     </div>
-                    
+
                     <div class="lk-title">Текущее событие</div>
                     <div class="account-events">
                     	<!-- multiple: .account-events__block -->
@@ -233,7 +239,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="account-events__block">
                             <div class="account-events__block-wrap">
                                 <div class="account-events__item">
@@ -276,7 +282,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="account-events__block">
                             <div class="account-events__block-wrap">
                                 <div class="account-events__item">
@@ -567,9 +573,13 @@
                     },
                     profileSave(ev) {
                         let $form = $(ev.node)
-                        if ($form.verify()) {
+                        let uid = cabinet.get('user.id')
+                        if ($form.verify() && uid > '') {
                             let data = $form.serializeJson()
-                            console.log(data);
+                            data.phone = str_replace([' ','+','-','(',')'],'',data.phone)
+                            wbapp.post('/api/v2/update/users/'+uid,data,function(res){
+                                console.log(res);
+                            })
                         }
                         return false
                     }
