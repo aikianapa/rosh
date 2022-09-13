@@ -1123,7 +1123,7 @@ div.swiper-horizontal.post-slider{
 }
 
 .mainfilter__symptoms{
-    padding-top: 20px;
+    margin-top: 20px;
 }
 .del{
     display: none!important;
@@ -1189,6 +1189,58 @@ div.swiper-horizontal.post-slider{
 .service__checkbox .checkbox input{
     display: block;
 }
+.mainfilter__tags .mainfilter-tag{
+    padding-right: 10px;
+}
+.mainfilter__tags::-webkit-scrollbar{
+    width: 6px;
+}
+.mainfilter__tags::-webkit-scrollbar-track{
+    background-color: darkgrey;
+    border-radius: 5px;
+}
+.mainfilter__tags::-webkit-scrollbar-thumb{
+    background-color: #080e0d;
+    border-radius: 5px;
+}
+.mainfilter__choice-main,.mainfilter__symptoms{
+    position: relative;
+}
+.mainfilter__symptoms-link{
+    display: inline-block;
+    font-size: 14px;
+    line-height: 21px;
+    color: #545454;
+    margin-top: 5px;
+}
+.mainfilter__symptoms-link:hover{
+    text-decoration: underline;
+}
+.footer .container-fluid{
+    position: relative;
+}
+.footer__bottom, .footer .footer__bottom .col-lg-7{
+    position: static;
+}
+.text-small-fix{
+    position: absolute;
+    top: 2px;
+    right: 0;
+}
+.problems-filter{
+    background-color: transparent;
+    padding-top: 0;
+    margin-top: -10px;
+}
+.all-tabs-items .all-tabs-item{
+    font-size: 16px;
+}
+.problems-filter .text-bold.problems-filter__title{
+    display: none;
+}
+.problems-filter .problems-filter__item{
+    font-size: 14px;
+}
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{
         min-width: 300px;
@@ -1240,6 +1292,14 @@ div.swiper-horizontal.post-slider{
 }
 
 @media (max-width: 980px) {
+    .footer__bottom, .footer .footer__bottom .col-lg-7{
+        position: relative;
+    }
+    .text-small-fix{
+        position: relative;
+        top: auto;
+        right: auto;
+    }
     .purchases-wrap-row{
         display: block;
     }

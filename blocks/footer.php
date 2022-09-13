@@ -22,7 +22,7 @@
                         <div class="footer__item col-lg-3"><a class="text-small policy" href="/policy"> Политика
                                 конфиденциальности</a></div>
                         <div class="footer__item col-lg-7 --flex --jcsb"><a class="text-small map-site" href="site-map.html">Карта сайта</a>
-                            <p class="text-small">Лицензия №ЛО-77-01-002172 от 12.01.2010</p><a class="develop" href="http://idees.ru/">
+                            <p class="text-small text-small-fix">Лицензия №ЛО-77-01-002172 от 12.01.2010</p><a class="develop" href="http://idees.ru/">
                                 <svg class="svgsprite _develop">
                                     <use xlink:href="assets/img/sprites/svgsprites.svg#develop"></use>
                                 </svg></a>
