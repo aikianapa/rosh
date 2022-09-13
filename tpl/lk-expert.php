@@ -148,7 +148,8 @@
                             </div>
                         </div>
                         <div class="account__exit">Выйти из аккаунта</div>
-                        <form class="profile-edit">
+                        <form class="profile-edit" on-submit="profileSave">
+                            {{#user}}
                             <div class="profile-edit__block">
                                 <div class="lk-title">Редактировать профиль</div>
                                 <div class="row profile-edit__wrap">
@@ -336,6 +337,7 @@
                                 </div>
                             </div>
                             <button class="btn btn--white">Сохранить</button>
+                            {{/user}}
                         </form>
                     </div>
                     <div class="lk-title">Текущее событие</div>
@@ -2041,7 +2043,30 @@
             </div>
 
         </main>
+          <script>
+            var cabinet = new Ractive({
+                el: 'main.page',
+                template: $('main.page').html(),
+                data: {
+                    user: wbapp._session.user
+                },
+                on: {
+                    init() {
+                        // получаем данные
+                    },
+                    profileSave(ev) {
+                        let $form = $(ev.node)
+                        if ($form.verify()) {
+                            let data = $form.serializeJson()
+                            console.log(data);
+                        }
+                        return false
+                    }
+                }
+            })
+        </script>
     </div>
+
     <a class="phone --openpopup" href="#" data-popup="--fast"><svg class="svgsprite _phone">
             <use xlink:href="assets/img/sprites/svgsprites.svg#phone"></use>
         </svg></a>

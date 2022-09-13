@@ -3,7 +3,6 @@
 
 <head>
     <title seo>Личный кабинет</title>
-
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
@@ -112,25 +111,25 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Кв./офис">
+                                                <input class="input__control" type="text" placeholder="Кв./офис" value="{{.additional.apartment}}" >
                                                 <div class="input__placeholder input__placeholder--dark">Кв./офис</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Домофон">
+                                                <input class="input__control" type="text" placeholder="Домофон" value="{{.additional.intercom}}" >
                                                 <div class="input__placeholder input__placeholder--dark">Домофон</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Подъезд">
+                                                <input class="input__control" type="text" placeholder="Подъезд" value="{{.additional.entrance}}">
                                                 <div class="input__placeholder input__placeholder--dark">Подъезд</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" placeholder="Этаж">
+                                                <input class="input__control" type="text" placeholder="Этаж" value="{{.additional.floor}}">
                                                 <div class="input__placeholder input__placeholder--dark">Этаж</div>
                                             </div>
                                         </div>
@@ -142,11 +141,11 @@
                             </div>
                             {{/user}}
                         </form>
-
-
                     </div>
+                    
                     <div class="lk-title">Текущее событие</div>
                     <div class="account-events">
+                    	<!-- multiple: .account-events__block -->
                         <div class="account-events__block">
                             <div class="account-events__block-wrap">
                                 <div class="account-events__item">
@@ -197,6 +196,7 @@
                     </div>
                     <div class="lk-title">Предстоящие события</div>
                     <div class="account-events">
+                    	<!-- multiple: .account-events__block -->
                         <div class="account-events__block">
                             <div class="account-events__block-wrap">
                                 <div class="account-events__item --flex">
@@ -233,6 +233,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="account-events__block">
                             <div class="account-events__block-wrap">
                                 <div class="account-events__item">
@@ -275,6 +276,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="account-events__block">
                             <div class="account-events__block-wrap">
                                 <div class="account-events__item">
@@ -318,6 +320,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- multiple: pagination? -->
                     </div>
                     <div class="account__history data-tab-wrapper" data-tabs="hislech">
                         <div class="account__tab-items">
@@ -428,6 +431,11 @@
                                                             <p>Фото в процессе лечения</p>
                                                             <img src="./assets/img/experts/1.jpg"
                                                                 alt="">
+                                                            <img src="./assets/img/experts/1.jpg"
+                                                                alt="">
+                                                            <img src="./assets/img/experts/1.jpg"
+                                                                alt="">
+                                                            <!-- can be more than one -->
                                                         </div>
                                                     </div>
                                                 </div>
