@@ -1,7 +1,17 @@
 $(document).ready(function(){
 
-	if($(".header__logo-red").length > 0)
+	if($(".header__logo-red").length > 0 && $('main.page').attr('data-barba-namespace') == 'lnd'){
 		setTimeout(function(){$('.header__logo-red').addClass('active');}, 1000);
+	}
+
+	$('.data-tab-link').on('click', function(){
+		if($('main.page').attr('data-barba-namespace') == 'problems'){
+			if($(this).attr('data-tab') == 'gyn')
+				$('.problems-filter').css('display', 'none');
+			else
+				$('.problems-filter').css('display', 'block');
+		}
+	});
 
 
 	//start DELETE ALL

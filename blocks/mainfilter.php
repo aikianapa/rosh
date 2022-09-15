@@ -159,7 +159,10 @@
                                         </div>
                                     {{/each}}
                                 </div>
-                                <a href="#" class="mainfilter__symptoms-link">Очистить все</a>
+                                <a href="#" class="mainfilter__symptoms-link">
+                                    <svg class="svgsprite _delete"><use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use></svg>
+                                    <span>Очистить все</span>
+                                </a>
                             </div>
                             <div class="mainfilter__symptoms">
                                 <h5 class="h5">Вероятная проблематика по симптомам</h5>
@@ -180,7 +183,10 @@
                                     {{/each}}
 
                                 </div>
-                                <a href="#" class="mainfilter__symptoms-link">Очистить все</a>
+                                <a href="#" class="mainfilter__symptoms-link">
+                                    <svg class="svgsprite _delete"><use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use></svg>
+                                    <span>Очистить все</span>
+                                </a>
                             </div>
                         </div>
                         <div class="mainfilter__bottom">

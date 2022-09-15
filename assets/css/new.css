@@ -1207,11 +1207,16 @@ div.swiper-horizontal.post-slider{
     position: relative;
 }
 .mainfilter__symptoms-link{
-    display: inline-block;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
     font-size: 14px;
     line-height: 21px;
     color: #545454;
     margin-top: 5px;
+}
+.mainfilter__symptoms-link svg,.mainfilter__symptoms-link img{
+    margin-right: 12px;
 }
 .mainfilter__symptoms-link:hover{
     text-decoration: underline;
@@ -1240,6 +1245,51 @@ div.swiper-horizontal.post-slider{
 }
 .problems-filter .problems-filter__item{
     font-size: 14px;
+}
+.to_top_btn,.phone{
+    width: 56px;
+    height: 56px;
+}
+.to_top_btn{
+    background-color: rgba(241,241,241, 0.5);
+}
+.to_top_btn svg{
+    width: 15px;
+}
+.phone .svgsprite._phone{
+    width: 19px;
+    height: 19px;
+}
+h2{
+    font-size: 36px;
+    line-height: 120%;
+    font-family: "Playfair Display",serif;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+h3{
+    font-size: 26px;
+    line-height: 120%;
+    letter-spacing: .04em;
+    font-family: "Playfair Display",serif;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+.mainfilter__choice .mainfilter-tag{
+    position: relative;
+    padding-right: 74px;
+}
+.mainfilter__choice .mainfilter-tag__group{
+    position: absolute;
+    top: -1.5px;
+    right: 10px;
+}
+.mainfilter__choice .mainfilter-tag__group:nth-child(3){
+    right: 40px;
+}
+.mainfilter__choice .mainfilter-tag__group:nth-child(4){
+    right: 70px;
 }
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{
@@ -1344,6 +1394,14 @@ div.swiper-horizontal.post-slider{
         font-size: 24px;
         line-height: 1.3;
         margin-right: 25px;
+    }
+}
+@media (max-width: 768px) {
+    h3.h3{
+        font-size: 25px;
+    }
+    h3.h3{
+        font-size: 21px;
     }
 }
 @media (max-width: 700px) {
