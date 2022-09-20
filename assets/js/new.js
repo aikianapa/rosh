@@ -1,5 +1,20 @@
 $(function(){
 
+	if($(".header__logo-red").length > 0 && $('main.page').attr('data-barba-namespace') == 'lnd'){
+		setTimeout(function(){$('.header__logo-red').addClass('active');}, 1000);
+	}
+
+	$('.data-tab-link').on('click', function(){
+		if($('main.page').attr('data-barba-namespace') == 'problems'){
+			if($(this).attr('data-tab') == 'gyn')
+				$('.problems-filter').css('display', 'none');
+			else
+				$('.problems-filter').css('display', 'block');
+		}
+	});
+
+
+	//start DELETE ALL
 	//service__header
 	$('.mainfilter__left .mainfilter__checkbox input').on('click', function(){
 		$(this).toggleClass('act');
@@ -79,6 +94,7 @@ $(function(){
 		//$('[data-rand = "' + $(this).parents('.mainfilter-tag').attr('id') + '"]').removeClass('act').removeAttr('data-rand').removeAttr("checked");
 		$(this).parents('.mainfilter-tag').remove();
 	});
+	//end DELETE ALL
 
 
 	//service__item
@@ -127,40 +143,22 @@ $(function(){
 	});
 
 
-	//form
-	/*
-	var th = $("form.all-form");
-	$.ajax({
-		type: "POST",
-		url: "/mail.php", //Change
-		data: th.serialize()
-	}).done(function() {
-		$('.all-form').addClass('succed-form');
-	});
-	*/
-
 	$(":input").inputmask();
 
 	//header and filter
 	$('.--openfilter').on('click', function(){
-		$('.header').addClass('header-fix');
+		if($('.header').hasClass('header-fix')){
+			$('.header').removeClass('header-fix');
+			setTimeout(function(){$('#mainfilter').css('display', 'none');}, 10);
+		}
+		else{
+			$('.header').addClass('header-fix');
+			$('#mainfilter').css('display', 'block');
+		}
 	});
 	$('.mainfilter .mainfilter__close').on('click', function(){
 		$('.header').removeClass('header-fix');
+		$('#mainfilter').css('display', 'none');
 	});
-
-	/*
-	$('.all-form .all-form__submit').on('click', function(e){
-		e.preventDefault();
-
-		var input = $('.all-form .input__control').eq(0);
-		if($('.all-form .input__control').eq(0).val() == ""){
-			input.addClass('error-input');
-			setTimeout(function(){
-	    	$('.input__control').removeClass('error-input');
-    	}, 1000);
-		}
-	});
-	*/
 
 });

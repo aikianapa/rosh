@@ -132,7 +132,7 @@
                     <div class="col-lg-3 col-md-4 mainfilter__right">
                         <div class="mainfilter__choice">
                             <div class="mainfilter__choice-main">
-                                <h5 class="h5">Ваш выбор</h5>
+                                <h5 class="h5">Выбранные услуги или существующие проблемы</h5>
                                 <div class="mainfilter__tags">
                                     {{#each choice.services}}
                                         <div class="mainfilter-tag">
@@ -159,9 +159,13 @@
                                         </div>
                                     {{/each}}
                                 </div>
+                                <a href="#" class="mainfilter__symptoms-link">
+                                    <svg class="svgsprite _delete"><use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use></svg>
+                                    <span>Очистить все</span>
+                                </a>
                             </div>
                             <div class="mainfilter__symptoms">
-                                <h5 class="h5">По симптомам</h5>
+                                <h5 class="h5">Вероятная проблематика по симптомам</h5>
                                 <div class="mainfilter__tags">
 
                                     {{#each choice.symprbms}}
@@ -179,6 +183,10 @@
                                     {{/each}}
 
                                 </div>
+                                <a href="#" class="mainfilter__symptoms-link">
+                                    <svg class="svgsprite _delete"><use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use></svg>
+                                    <span>Очистить все</span>
+                                </a>
                             </div>
                         </div>
                         <div class="mainfilter__bottom">
