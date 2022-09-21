@@ -161,4 +161,10 @@ $(document).ready(function(){
 		$('#mainfilter').css('display', 'none');
 	});
 
+	$('.mainfilter-mob .basket-ico').on('click', function(e){
+		e.preventDefault();
+
+		$('.mainfilter').animate({scrollTop : $('.mainfilter__form').offset().top},400);
+	});
+
 });
