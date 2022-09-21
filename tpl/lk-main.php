@@ -156,7 +156,7 @@
                             </svg>
                         </a>
                         <a class="crumbs__link" href="/">Главная</a>
-                        <a class="crumbs__link" href="#">Кабинет администратора</a>
+                        <span class="crumbs__link" >Кабинет администратора</span>
                     </div>
                     <div class="title-flex --flex --jcsb">
                         <div class="title">

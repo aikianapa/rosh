@@ -4,7 +4,7 @@
                 <svg class="svgsprite _crumbs-back">
                     <use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
                 </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Блог</a>
-                <a class="crumbs__link" href="#">{{_parent.header}}</a>
+                <span class="crumbs__link" href="#">{{_parent.header}}</span>
         </div>
     </div>
     <div class="blog-inner__top">

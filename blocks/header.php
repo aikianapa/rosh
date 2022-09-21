@@ -84,7 +84,7 @@
                             <svg class="svgsprite _crumbs-back-white">
                                 <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back-white"></use>
                             </svg></a><a class="crumbs__link" href="/">Home page</a>
-                            <a class="crumbs__link" href="{{_route.uri}}">Contacts</a></div>
+                            <span class="crumbs__link">Contacts</span></div>
                 </div>
             </div>
         </header>
