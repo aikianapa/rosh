@@ -12,7 +12,7 @@
             <a class="crumbs__link" href="{{_parent.path}}" wb-if="'{{_var.midcrumb}}'>''">
                 {{_var.midcrumb}}
             </a>
-            <a class="crumbs__link" href="{{_route.url}}">{{_parent.header}}</a>
+            <a class="crumbs__link" href="#">{{_parent.header}}</a>
         </div>
         <h1 class="h1">{{_parent.header}}</h1>
     </div>

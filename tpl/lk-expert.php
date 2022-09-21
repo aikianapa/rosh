@@ -107,7 +107,7 @@
                         <div class="crumbs"><a class="crumbs__arrow" href="#">
                                 <svg class="svgsprite _crumbs-back">
                                     <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                                </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link"
+                                </svg></a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link"
                                 href="#">Кабинет специалиста</a>
                         </div>
                         <h1 class="h1 mb-40">Кабинет специалиста</h1>

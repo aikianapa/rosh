@@ -83,7 +83,8 @@
                     <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
                             <svg class="svgsprite _crumbs-back-white">
                                 <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back-white"></use>
-                            </svg></a><a class="crumbs__link" href="/">Home page</a><a class="crumbs__link" href="{{_route.uri}}">Contacts</a></div>
+                            </svg></a><a class="crumbs__link" href="/">Home page</a>
+                            <a class="crumbs__link" href="{{_route.uri}}">Contacts</a></div>
                 </div>
             </div>
         </header>

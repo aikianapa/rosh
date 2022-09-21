@@ -8,7 +8,7 @@
             </a>
             <a class="crumbs__link" href="/">Главная</a>
             <a class="crumbs__link" href="{{_parent.path}}">О клинике</a>
-            <a class="crumbs__link" href="{{_route.url}}">Специалисты</a>
+            <a class="crumbs__link" href="#">Специалисты</a>
         </div>
         <div class="experts">
             <h1 class="h1">Специалисты</h1>

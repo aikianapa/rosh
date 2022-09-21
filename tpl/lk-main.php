@@ -155,7 +155,7 @@
                                 <use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
                             </svg>
                         </a>
-                        <a class="crumbs__link" href="#">Главная</a>
+                        <a class="crumbs__link" href="/">Главная</a>
                         <a class="crumbs__link" href="#">Кабинет администратора</a>
                     </div>
                     <div class="title-flex --flex --jcsb">

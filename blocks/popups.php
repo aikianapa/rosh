@@ -124,12 +124,11 @@
                 </label>
                 <div class="select-form" data-hide="expert">
                     <div class="select">
-                        <div class="select__main">Хачатурян Любовь Андреева</div>
+                        <div class="select__main">Укажите специалиста</div>
                         <div class="select__list">
-                            <div class="select__item active">Хачатурян Любовь Андреева</div>
-                            <div class="select__item">Хачатурян Любовь Андреева</div>
-                            <div class="select__item">Хачатурян Любовь Андреева</div>
-                            <div class="select__item">Хачатурян Любовь Андреева</div>
+                            <wb-foreach wb="table=experts&limit=5&tpl=false" wb-filter="active=on">
+                            <div class="select__item">{{name}}</div>
+                            </wb-foreach>
                         </div>
                     </div>
                 </div>

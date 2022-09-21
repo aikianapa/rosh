@@ -3,7 +3,8 @@
         <div class="crumbs"><a class="crumbs__arrow" href="#">
                 <svg class="svgsprite _crumbs-back">
                     <use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Блог</a><a class="crumbs__link" href="#">Укрепление иммунитета с BICOM </a>
+                </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Блог</a>
+                <a class="crumbs__link" href="#">{{_parent.header}}</a>
         </div>
     </div>
     <div class="blog-inner__top">

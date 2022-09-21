@@ -42,7 +42,7 @@
             <a class="crumbs__link" href="/">Главная</a>
             <a class="crumbs__link" href="/about">О клинике</a>
             <a class="crumbs__link" href="/about/experts">Специалисты</a>
-            <a class="crumbs__link" href="{{_route.uri}}">{{_parent.name}}</a>
+            <a class="crumbs__link" href="#">{{_parent.name}}</a>
         </div>
         <div class="expert">
             <div class="expert__top row">
