@@ -161,4 +161,10 @@ $(function(){
 		$('#mainfilter').css('display', 'none');
 	});
 
+	$('.mainfilter-mob').on('click', function(e){
+		e.preventDefault();
+
+		$('.mainfilter').animate({scrollTop : $('.mainfilter__choice').offset().top},400);
+	});
+
 });

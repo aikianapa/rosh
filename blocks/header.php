@@ -36,6 +36,7 @@
                 <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'==''">
                     <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
+                    <a href="#" class="hb-ico basket-ico header-basket"><i>0</i></a>
                     <button class="burger"></button>
                 </div>
                 <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'>''">
@@ -82,7 +83,8 @@
                     <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
                             <svg class="svgsprite _crumbs-back-white">
                                 <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back-white"></use>
-                            </svg></a><a class="crumbs__link" href="/">Home page</a><a class="crumbs__link" href="{{_route.uri}}">Contacts</a></div>
+                            </svg></a><a class="crumbs__link" href="/">Home page</a>
+                            <span class="crumbs__link">Contacts</span></div>
                 </div>
             </div>
         </header>

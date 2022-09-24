@@ -15,7 +15,8 @@
                 <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
                         <svg class="svgsprite _crumbs-back">
                             <use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                        </svg></a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="/blog">Блог</a><a class="crumbs__link" href="{{_route.url}}">{{header}}</a>
+                        </svg></a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="/blog">Блог</a>
+                        <span class="crumbs__link">{{header}}</span>
                 </div>
             </div>
             <div class="blog-inner__top">

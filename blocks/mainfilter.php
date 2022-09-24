@@ -1,5 +1,8 @@
 <view>
     <div class="mainfilter" id="mainfilter">
+        <a href="#" class="mainfilter-mob">
+            <span class="hb-ico basket2-ico"></span><i>0</i>
+        </a>
         <template>
             <div class="mainfilter__close --closefilter">
                 <svg class="svgsprite _close">

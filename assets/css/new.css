@@ -1291,6 +1291,60 @@ h3{
 .mainfilter__choice .mainfilter-tag__group:nth-child(4){
     right: 70px;
 }
+.info h6{
+    margin-bottom: 10px;
+}
+.info p{
+    padding-bottom: 16px;
+}
+.info ul, .info ol{
+    padding: 0 0 16px 16px;
+}
+.info ul{
+    list-style-type: disc;
+}
+.info ol{
+    list-style-type: auto;
+}
+.info .report{
+    max-width: 685px;
+    margin-bottom: 24px;
+}
+.basket-ico{
+    display: inline-block;
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.5707 8.5125C21.5003 8.43018 21.4129 8.36408 21.3145 8.31877C21.2161 8.27345 21.109 8.24999 21.0007 8.25H16.5007V5.25C16.5007 4.65326 16.2636 4.08097 15.8417 3.65901C15.4197 3.23705 14.8474 3 14.2507 3H9.75068C9.15394 3 8.58165 3.23705 8.15969 3.65901C7.73773 4.08097 7.50068 4.65326 7.50068 5.25V8.25H3.00068C2.89196 8.24877 2.78428 8.27119 2.68509 8.31571C2.5859 8.36022 2.49757 8.42578 2.42623 8.50782C2.35489 8.58986 2.30224 8.68643 2.27193 8.79084C2.24161 8.89526 2.23437 9.00501 2.25068 9.1125L3.66068 18.225C3.71492 18.5827 3.89661 18.9087 4.17225 19.143C4.4479 19.3773 4.79893 19.5041 5.16068 19.5H18.8557C19.2174 19.5041 19.5685 19.3773 19.8441 19.143C20.1198 18.9087 20.3014 18.5827 20.3557 18.225L21.7507 9.1125C21.7657 9.00543 21.7574 8.89637 21.7263 8.79281C21.6953 8.68925 21.6422 8.59363 21.5707 8.5125ZM9.00068 5.25C9.00068 5.05109 9.0797 4.86032 9.22035 4.71967C9.361 4.57902 9.55177 4.5 9.75068 4.5H14.2507C14.4496 4.5 14.6404 4.57902 14.781 4.71967C14.9217 4.86032 15.0007 5.05109 15.0007 5.25V8.25H9.00068V5.25ZM18.8557 18H5.14568L3.87818 9.75H20.1232L18.8557 18Z' fill='black'/%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: relative;
+    margin-left: 6px;
+    margin-right: 27px;
+}
+.basket-ico i{
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    display: inline-block;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    text-align: center;
+    background: #080E0D;
+    border-radius: 20px;
+    font-size: 12px;
+    line-height: 20px;
+    font-style: normal;
+    color: #fff;
+}
+.mainfilter-mob{
+    display: none;
+}
+.landing h2{
+    margin-top: 24px;
+}
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{
         min-width: 300px;
@@ -1401,6 +1455,50 @@ h3{
     }
 }
 @media (max-width: 768px) {
+    .mainfilter-mob{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        min-width: 112px;
+        height: 54px;
+        background: #080E0D;
+        border-radius: 20px;
+        white-space: nowrap;
+        padding: 14px;
+        z-index: 1000;
+    }
+    .mainfilter-mob .basket2-ico{
+        display: block;
+        min-width: 24px;
+        width: 24px;
+        height: 24px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        margin-right: 10px;
+    }
+    .mainfilter-mob i{
+        display: inline-block;
+        min-width: 26px;
+        height: 26px;
+        padding: 0 2px;
+        text-align: center;
+        background-color: #fff;
+        border-radius: 20px;
+        font-size: 16px;
+        line-height: 26px;
+        font-style: normal;
+        letter-spacing: 0.02em;
+        color: #080E0D;
+    }
+    .basket-ico{
+        margin-left: 0;
+        margin-right: 10px;
+    }
     h3.h3{
         font-size: 25px;
     }
@@ -1535,6 +1633,12 @@ h3{
 
 }
 @media (max-width: 550px) {
+    .header--transparent .header__left{
+        padding-left: 60px;
+    }
+    .basket-ico{
+        margin: 0 0 0 10px;
+    }
     .header.out{
         transform: translateY(-80px);
     }

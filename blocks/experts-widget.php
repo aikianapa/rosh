@@ -13,8 +13,9 @@
                 <div class="inner-experts__item">
                     <div class="inner-experts__pic" style="background-image: url(/thumbc/350x194/src{{image.0.img}})"></div>
                     <div class="inner-experts__info">
-                        <div class="inner-experts__name"><a href="/about/experts/{{wbFurlGenerate({{fullname}})}}">{{fullname}}</a></div>
-                        <div class="inner-experts__experience">Опыт работы {{experience}}</div><a class="inner-experts__link" href="/expert.html">Читать подробнее</a>
+                        <div class="inner-experts__name"><a href="/about/experts/{{wbFurlGenerate({{name}})}}">{{name}}</a></div>
+                        <div class="inner-experts__experience">
+                            Опыт работы {{experience}}</div><a class="inner-experts__link" href="/about/experts/{{wbFurlGenerate({{name}})}}">Читать подробнее</a>
                     </div>
                 </div>
                 </wb-foreach>
