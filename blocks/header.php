@@ -4,7 +4,7 @@
 
         <header class="header header--transparent header--fixed --unfilter">
             <!---div class="container --flex --jcsb --aicn"  wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='admin' OR '{{_sess.user.role}}'=='client'"-->
-            <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','admin','client','expert'])">
+            <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','client','expert'])">
 
                 <wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
 

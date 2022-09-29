@@ -19,47 +19,48 @@
                             </svg>
                         </a>
                         <a class="crumbs__link" href="/">Главная</a>
-                        <a class="crumbs__link" href="#">Личный кабинет</a>
+	                    <a class="crumbs__link" href="#">Личный кабинет</a>
                     </div>
-                    <div class="title-flex --flex --jcsb">
-                        <div class="title">
-                            <h1 class="h1 mb-10">Личный кабинет </h1>
-                        </div>
-                        <button class="btn btn--black --openpopup" data-popup="--record">Записаться на прием</button>
-                    </div>
-                    <div class="account__panel">
-                        <div class="account__info">
-                            <div class="user">
-                                <div class="user__name">{{user.fullname}}
-                                    <button class="user__edit">
-                                        <svg class="svgsprite _edit">
-                                            <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="user__group">
-                                    <div class="user__birthday">Дата рождения:
-                                        <span>26.08.1989</span>
-                                    </div>
-                                    <div class="user__phone">Тел:
-                                        <span>+{{user.phone}}</span>
-                                    </div>
-                                </div>
-                                <div class="user__confirm">
-                                    <svg class="svgsprite _confirm">
-                                        <use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
-                                    </svg>Подтвержденный аккаунт
-                                </div>
-                            </div>
-                        </div>
-                        <a href="/signout" class="account__exit">Выйти из аккаунта</a>
-                        <form class="profile-edit" on-submit="profileSave">
-                            {{#user}}
-                            <p class="text-bold mb-30">Редактировать профиль</p>
-                            <div class="row profile-edit__wrap">
-                                <div class="col-md-3">
-                                    <div class="input input--grey">
-                                        <input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
+	                <div class="title-flex --flex --jcsb">
+		                <div class="title">
+			                <h1 class="h1 mb-10">Личный кабинет </h1>
+		                </div>
+		                <button class="btn btn--black --openpopup" data-popup="--record">Записаться на прием</button>
+	                </div>
+	                <div class="account__panel">
+		                <div class="account__info">
+			                <div class="user">
+				                <div class="user__name">{{user.fullname}}
+					                <button class="user__edit">
+						                <svg class="svgsprite _edit">
+							                <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+						                </svg>
+					                </button>
+				                </div>
+				                <div class="user__group">
+					                <div class="user__birthday">Дата рождения:
+						                <span>{{user.birthdate}}</span>
+					                </div>
+					                <div class="user__phone">Тел:
+						                <span>+{{user.phone}}</span>
+					                </div>
+				                </div>
+				                <div class="user__confirm">
+					                <svg class="svgsprite _confirm">
+						                <use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
+					                </svg>
+					                Подтвержденный аккаунт
+				                </div>
+			                </div>
+		                </div>
+		                <a href="/signout" class="account__exit">Выйти из аккаунта</a>
+		                <form class="profile-edit" on-submit="profileSave">
+			                {{#user}}
+			                <p class="text-bold mb-30">Редактировать профиль</p>
+			                <div class="row profile-edit__wrap">
+				                <div class="col-md-3">
+					                <div class="input input--grey">
+						                <input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
                                         <div class="input__placeholder input__placeholder--dark">Дата рождения</div>
                                     </div>
                                 </div>
@@ -470,13 +471,14 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="text-bold text-big mb-20">Фото до начала лечения</div>
-                                                    <div class="before-healing">
-                                                        <h2 class="h2 healing__date-title">16.10.2021</h2>
+
+	                                                <a class="before-healing" href="/assets/img/account/1.jpg" data-fancybox="images" data-caption="11.09.2022">
+                                                        <h2 class="h2 healing__date-title">11.09.2022</h2>
                                                         <div class="before-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
                                                         </div>
-                                                        <div class="healing__date">01.10.2021</div>
+                                                        <div class="healing__date">11.09.2022</div>
                                                         <div class="healing__description">Пациент жаловался на проблемную кожу</div>
-                                                    </div>
+                                                    </a>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="text-bold text-big mb-20">Фото после начала лечения
@@ -559,40 +561,82 @@
             </div>
         </main>
 
-        <script>
-            var cabinet = new Ractive({
-                el: 'main.page',
-                template: $('main.page').html(),
-                data: {
-                    user: wbapp._session.user
-                },
-                on: {
-                    init() {
-                        wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function(data) {
-                            cabinet.set('user', data); /* get actually user data */
-                        });
-                    },
-                    profileSave(ev) {
-                        let $form = $(ev.node);
-                        let uid = cabinet.get('user.id');
-                        if ($form.verify() && uid > '') {
-                            let data = $form.serializeJson()
-                            data.phone = str_replace([' ','+','-','(',')'],'',data.phone)
-                            wbapp.post('/api/v2/update/users/'+uid,data,function(res){
-                                console.log(res);
-                            })
-                        }
-                        return false
-                    }
-                }
-            })
-        </script>
+	    <script wbapp>
+		    var cabinet = new Ractive({
+			    el: 'main.page',
+			    template: $('main.page').html(),
+			    data: {
+				    user: wbapp._session.user,
+				    events: {
+					    'upcoming': [],
+					    'past': []
+				    },
+				    current_event: {}
+			    },
+			    on: {
+				    init() {
+					    wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
+						    data.birthdate = new Date(data.birthdate).toLocaleDateString();
+						    cabinet.set('user', data); /* get actually user data */
+					    });
+
+					    wbapp.get('/api/v2/list/quotes?status=upcoming&client='+ wbapp._session.user.id+'&@size=10',
+						    function (data) {
+							    console.log('events.upcoming:', data);
+							    cabinet.set('events.upcoming', data); /* get actually user next events */
+						    });
+
+					    wbapp.get('/api/v2/list/quotes?status=past&client' + wbapp._session.user.id +'&@size=10',
+						    function (data) {
+							    console.log('events.past:', data);
+							    cabinet.set('events.past', data); /* get actually user past events */
+						    });
+				    },
+				    profileSave(ev) {
+					    let $form = $(ev.node);
+					    let uid   = cabinet.get('user.id');
+					    if ($form.verify() && uid > '') {
+						    let data       = $form.serializeJson();
+						    data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+						    data.birthdate = new Date(data.birthdate).toLocaleDateString();
+						    wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
+							    console.log(res);
+						    });
+					    }
+					    return false;
+				    }
+			    }
+		    });
+
+			setTimeout(function (){
+				$('.datebirthdaypickr').each(function () { new AirDatepicker(this, {autoClose: true}); });
+				$('.daterangepickr').each(function () { new AirDatepicker(this, {autoClose: true, range: true}); });
+				$('.datepickr').each(function () { new AirDatepicker(this, {autoClose: true}); });
+				$('.datetimepickr').each(function () {
+					new AirDatepicker(this, {timepicker: true, autoClose: true, minutesStep: 10});
+				});
+
+				$('.dtp-test').each(function () { new AirDatepicker(this, {autoClose: true, inline: true}); });
+
+				$('input[data-inputmask]').each(function () {
+					$(this).inputmask();
+				});
+
+				$('input.autocomplete').each(function () {
+					$(this).autocomplete({
+						noCache: true,
+						minChars: 3,
+					});
+				});
+			}, 50);
+	    </script>
     </div>
     <div>
-        <wb-module wb="module=yonger&mode=render&view=footer" />
+	    <wb-module wb="module=yonger&mode=render&view=footer"/>
     </div>
+    <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
 </body>
-<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');" />
-<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');" />
+<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
+<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 
 </html>

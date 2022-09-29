@@ -190,6 +190,7 @@ $(function () {
             });
 
         }
+
         $(document).on('wb-verify-false', function (e, el, err) {
             if (err !== undefined) {
                 alert(err)

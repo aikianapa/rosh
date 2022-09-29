@@ -129,6 +129,7 @@
 <script wb-app>
     yonger.pageEditor = function() {
         let $form = $('#{{_form}}EditForm');
+
         $form.delegate('[name=path]', 'change', function() {
             let path = $(this).val() + '/';
             $form.find('.path').html(path);

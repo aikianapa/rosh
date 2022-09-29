@@ -8,7 +8,6 @@
             </a>
         </div>
     </nav>
-
     <div>
         <span class="bg-light">
             <div class="header py-2">
