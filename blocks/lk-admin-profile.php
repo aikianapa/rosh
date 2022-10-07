@@ -76,7 +76,7 @@
     </div>
     <script wbapp remove>
         $(document).on('wb-save-done', function (e, res) {
-            document.location.href = '/lk/{{_sess.user.role}}'
+            document.location.href = '/cabinet'
         })
     </script>
 </view>

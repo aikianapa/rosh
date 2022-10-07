@@ -1,0 +1,155 @@
+/* utilities */
+.bg-primary {
+	background-color : #0D6EFD !important;
+}
+.bg-secondary {
+	background-color : #6C757D !important;
+}
+.bg-success {
+	background-color : #198754 !important;
+}
+.bg-info {
+	background-color : #0DCAF0 !important;
+}
+.bg-warning {
+	background-color : #FFC107 !important;
+}
+.bg-danger {
+	background-color : #DC3545 !important;
+}
+.bg-light {
+	background-color : #F8F9FA !important;
+}
+.bg-dark {
+	background-color : #212529 !important;
+}
+.bg-body {
+	background-color : #FFF !important;
+}
+.bg-white {
+	background-color : #FFF !important;
+}
+.bg-transparent {
+	background-color : transparent !important;
+}
+.bg-gradient {
+	background-image : var(--bs-gradient) !important;
+}
+.m-auto {
+	margin : auto !important;
+}
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+	cursor : pointer;
+}
+[type=button]:disabled, .disabled, button.disabled, button:disabled {
+	pointer-events : none !important;
+	opacity        : .75;
+}
+.clearfix::after {
+	display : block;
+	clear   : both;
+	content : "";
+}
+.link-primary {
+	color : #0D6EFD;
+}
+.link-primary:hover, .link-primary:focus {
+	color : #0A58CA;
+}
+.link-secondary {
+	color : #6C757D;
+}
+.link-secondary:hover, .link-secondary:focus {
+	color : #565E64;
+}
+
+.link-success {
+	color : #198754;
+}
+.link-success:hover, .link-success:focus {
+	color : #146C43;
+}
+
+.link-info {
+	color : #0DCAF0;
+}
+.link-info:hover, .link-info:focus {
+	color : #3DD5F3;
+}
+
+.link-warning {
+	color : #FFC107;
+}
+.link-warning:hover, .link-warning:focus {
+	color : #FFCD39;
+}
+
+.link-danger {
+	color : #DC3545;
+}
+.link-danger:hover, .link-danger:focus {
+	color : #B02A37;
+}
+
+.link-light {
+	color : #F8F9FA;
+}
+.link-light:hover, .link-light:focus {
+	color : #F9FAFB;
+}
+
+.link-dark {
+	color : #212529;
+}
+.link-dark:hover, .link-dark:focus {
+	color : #1A1E21;
+}
+
+.position-fixed {
+	position : fixed !important;
+}
+.b-0, .bottom-0 {
+	bottom : 0 !important;
+}
+.r-0, .end-0 {
+	right : 0 !important;
+}
+.t-0, .top-0 {
+	top : 0 !important;
+}
+.p-0 {
+	padding : 0 !important;
+}
+.p-1 {
+	padding : 0.25rem !important;
+}
+.p-2 {
+	padding : 0.5rem !important;
+}
+.p-3 {
+	padding : 1rem !important;
+}
+.p-4 {
+	padding : 1.5rem !important;
+}
+.p-5 {
+	padding : 3rem !important;
+}
+/*
+.online-consultation header, .online-consultation footer, .online-consultation .phone.--openpopup {
+	display : none !important;
+}*/
+.online-consultation .row {
+	margin-bottom : 10px;
+}
+.online-consultation video {
+	margin        : 0;
+	width         : 100%;
+	box-sizing    : border-box;
+	border-radius : 2px;
+	padding       : 0;
+	box-shadow    : rgba(156, 172, 172, 0.2) 0 2px 2px, rgba(156, 172, 172, 0.2) 0 4px 4px, rgba(156, 172, 172, 0.2) 0 8px 8px, rgba(156, 172, 172, 0.2) 0 16px 16px, rgba(156, 172, 172, 0.2) 0 32px 32px, rgba(156, 172, 172, 0.2) 0 64px 64px;
+}
+.jq-toast-wrap {
+	width : 320px !important;
+}

@@ -8,17 +8,21 @@
             "/assets/js/jquery.maskedinput.min.js",
             "/assets/js/jquery.autocomplete.min.js",
             "/assets/js/jquery.fancybox.min.js",
+            "/assets/js/jquery.serializejson.min.js",
+            "/assets/js/jquery.diffs.min.js",
             "/assets/js/air-datepicker.js",
+	        "/assets/js/jquery.toast.min.js",
             "/assets/js/main.js",
             "/assets/js/new.js",
             "/assets/js/blogFilter.js",
-            "/assets/js/auth.js"
-        ]
+            "/assets/js/auth.js",
+		    "/assets/js/cabinet.js"
+	    ]
     </wb-scripts>
 
 
     <script type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
-    
+
     <script type="wbapp">
         $(function () {
             wbapp.init()
@@ -41,8 +45,9 @@
     <script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>
     -->
 	<link href="/assets/css/jquery.fancybox.min.css" rel="stylesheet">
+	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/new.css" rel="stylesheet">
-    <link href="/assets/css/utils.css?v=1.2" rel="stylesheet">
+    <link href="/assets/css/utils.css?v=1.4" rel="stylesheet">
     <link href="/assets/css/additional/frontend.css" rel="stylesheet">
 </view>
 

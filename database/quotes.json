@@ -1,1 +1,299 @@
-{"id6267fa8a2297":{"comment":"В частности, высококачественный прототип будущего проекта требует от нас анализа поэтапного и последовательного развития общества.","client":"id6267fa632293","type":"online","_site":null,"_login":null,"login":null,"status":"new","_id":"id6267fa8a2297","id":"id6267fa8a2297","_form":"quotes","_table":"quotes","_created":"2022-04-26 16:42:15","_creator":"id631f0c9c0df7","_lastdate":"2022-09-28 21:01:16","_lastuser":"id631f0c9c0df7","_sort":"999999999","date":"26.04.2022","time":"16:42","clientData":{"phone":"","fullname":"","birthdate":"01.01.1970"},"title":"2222","services":[{"name":"Фотолечение BBL","id":"id62fd63650a2a"}],"priority":"0","marked":"1","pay_status":"unpay","high_priority":"1"},"id6267f90f1f40":{"comment":"Но синтетическое тестирование обеспечивает актуальность инновационных методов управления процессами.","client":"id6267f9741f39","type":"online","_site":null,"_login":null,"login":null,"status":"new","_id":"id6267f90f1f40","id":"id6267f90f1f40","_form":"quotes","_table":"quotes","_created":"2022-04-26 16:42:37","_creator":"id631f0c9c0df7","_lastdate":"2022-09-28 21:01:11","_lastuser":"id631f0c9c0df7","_sort":"999999999","date":"26.04.2022","time":"16:42","clientData":{"phone":"","fullname":"","birthdate":"01.01.1970"},"services":[{"name":"Фотолечение BBL","id":"id62fd63650a2a"}],"marked":"0","priority":"1","pay_status":"unpay","high_priority":"0"}}
+{
+    "id6267fa8a2297": {
+        "comment": "Test comment 1",
+        "client": "id6267fa632293",
+        "_site": null,
+        "_login": null,
+        "login": null,
+        "status": "new",
+        "_id": "id6267fa8a2297",
+        "id": "id6267fa8a2297",
+        "_form": "quotes",
+        "_table": "quotes",
+        "_created": "2022-09-26 16:42:15",
+        "_creator": "id631f0c9c0df7",
+        "_lastdate": "2022-10-03 16:56:14",
+        "_lastuser": "id631f0c9c0df7",
+        "_sort": "999999999",
+        "date": "26.04.2022",
+        "time": "16:42",
+        "clientData": {
+            "phone": "",
+            "fullname": "",
+            "birthdate": "01.01.1970"
+        },
+        "title": "2222",
+        "services": [
+            {
+                "name": "Консультация врача",
+                "id": "id62fd63650a2a"
+            },
+            {
+                "name": "Фотолечение BBL",
+                "id": "id62fd63650a2a"
+            }
+        ],
+        "priority": "0",
+        "marked": "1",
+        "pay_status": "unpay",
+        "high_priority": "1",
+        "_priority": "0"
+    },
+    "id6267f90f1f40": {
+        "comment": "Test comment 23",
+        "client": "id6267f9741f39",
+        "type": "clinic",
+        "_site": null,
+        "_login": null,
+        "login": null,
+        "status": "new",
+        "_id": "id6267f90f1f40",
+        "id": "id6267f90f1f40",
+        "_form": "quotes",
+        "_table": "quotes",
+        "_created": "2022-04-26 16:42:37",
+        "_creator": "id631f0c9c0df7",
+        "_lastdate": "2022-10-03 16:51:17",
+        "_lastuser": "id631f0c9c0df7",
+        "_sort": "999999999",
+        "date": "26.04.2022",
+        "time": "16:42",
+        "clientData": {
+            "phone": "",
+            "fullname": "",
+            "birthdate": "01.01.1970"
+        },
+        "services": [
+            {
+                "name": "Фотолечение BBL",
+                "id": "id62fd63650a2a"
+            }
+        ],
+        "marked": "0",
+        "priority": "1664805077333",
+        "pay_status": "unpay",
+        "high_priority": "0",
+        "_priority": "1664393911962",
+        "payment": "unpay"
+    },
+    "id6267f90f1f22": {
+        "comment": "Test test test.",
+        "client": "id6267f9741f39",
+        "type": "clinic",
+        "_site": null,
+        "_login": null,
+        "login": null,
+        "status": "new",
+        "_id": "id6267f90f1f22",
+        "id": "id6267f90f1f22",
+        "_form": "quotes",
+        "_table": "quotes",
+        "_created": "2022-04-26 16:42:37",
+        "_creator": "id631f0c9c0df7",
+        "_lastdate": "2022-10-03 16:51:13",
+        "_lastuser": "id631f0c9c0df7",
+        "_sort": "999999999",
+        "date": "15.09.2022",
+        "time": "19:00",
+        "event-date": "16.09.2022",
+        "event-time": "10:00",
+        "clientData": {
+            "phone": "",
+            "fullname": "",
+            "birthdate": "01.01.1970"
+        },
+        "services": [
+            {
+                "name": "Фотолечение BBL",
+                "id": "id62fd63650a2a"
+            }
+        ],
+        "marked": "0",
+        "priority": "1664805073108",
+        "pay_status": "prepay",
+        "high_priority": "0",
+        "_priority": "1664393911962",
+        "payment": "prepay"
+    },
+    "id6339bb6c1ed2": {
+        "service_category": "face",
+        "quote_consultation": "1",
+        "typr": "online",
+        "experts": [
+            "id6304998b114d"
+        ],
+        "services": {
+            "id62fd36a224df-0": {
+                "service_id": "id62fd36a224df",
+                "price_id": "0",
+                "name": "Прием (осмотр, консультация) врача-дерматовенеролога КМН",
+                "price": "5000"
+            }
+        },
+        "total_price": "5000",
+        "status": "new",
+        "pay_status": "unpay",
+        "client": "id631f0bdf2137",
+        "comment": "",
+        "recommendation": "",
+        "description": "",
+        "clientData": {
+            "name": "Client  Rosh",
+            "email": "client@rosh.ru",
+            "phone": "33333333323"
+        },
+        "_site": null,
+        "_login": null,
+        "login": null,
+        "_id": "id6339bb6c1ed2",
+        "id": "id6339bb6c1ed2",
+        "_form": "quotes",
+        "_table": "quotes",
+        "_created": "2022-10-02 19:10:39",
+        "_creator": "id631f0bdf2137",
+        "_lastdate": "2022-10-03 16:56:32",
+        "_lastuser": "id631f0c9c0df7",
+        "_sort": "999999999",
+        "priority": "1664805378836",
+        "payment": "unpay",
+        "marked": "1",
+        "event_date": "03.10.2022",
+        "event_time": "08:30-09:30",
+    },
+    "id6339bba607c0": {
+        "service_category": "body",
+        "no_experts": "1",
+        "services": {
+            "id62fbfc0d18bd-1": {
+                "service_id": "id62fbfc0d18bd",
+                "price_id": "1",
+                "name": "Фракционная абляционная шлифовка кожи Single Spot - удаление кератомы\/папилломы (1шт.)",
+                "price": "2000"
+            }
+        },
+        "total_price": "2000",
+        "status": "delay",
+        "pay_status": "unpay",
+        "client": "id631f0bdf2137",
+        "comment": "",
+        "recommendation": "",
+        "description": "",
+        "clientData": {
+            "name": "Client  Rosh",
+            "email": "client@rosh.ru",
+            "phone": "33333333323"
+        },
+        "_site": null,
+        "_login": null,
+        "login": null,
+        "_id": "id6339bba607c0",
+        "id": "id6339bba607c0",
+        "_form": "quotes",
+        "_table": "quotes",
+        "_created": "2022-10-02 19:13:50",
+        "_creator": "id631f0bdf2137",
+        "_lastdate": "2022-10-03 05:48:45",
+        "_lastuser": "id631f0c9c0df7",
+        "_sort": "999999999",
+        "priority": "1664749128760",
+        "payment": "prepay"
+    },
+    "id633ae2b90951": {
+        "service_category": "body",
+        "quote_consultation": "1",
+        "type": "online",
+        "experts": [
+            "id6304998b114d"
+        ],
+        "services": {
+            "id62fbfc0d18bd-0": {
+                "service_id": "id62fbfc0d18bd",
+                "price_id": "0",
+                "name": "Удаление папилломы, контагиозного моллюска  (диатермокоагуляция)  - 1 шт.",
+                "price": "700"
+            },
+            "id62fd570d268f-9": {
+                "service_id": "id62fd570d268f",
+                "price_id": "9",
+                "name": "Проведение эпиляции - подбородка",
+                "price": "22000"
+            }
+        },
+        "total_price": "22700",
+        "status": "uncall",
+        "pay_status": "unpay",
+        "client": "id631f0bdf2137",
+        "comment": "",
+        "priority": "0",
+        "marked": "0",
+        "recommendation": "",
+        "description": "",
+        "clientData": {
+            "name": "Client  Rosh",
+            "email": "client@rosh.ru",
+            "phone": "73333333332"
+        },
+        "_site": null,
+        "_login": null,
+        "login": null,
+        "_id": "id633ae2b90951",
+        "id": "id633ae2b90951",
+        "_form": "quotes",
+        "_table": "quotes",
+        "_created": "2022-10-03 16:15:55",
+        "_creator": "id631f0bdf2137",
+        "_lastdate": "2022-10-03 16:48:44",
+        "_lastuser": "id631f0c9c0df7",
+        "_sort": "999999999",
+        "payment": "unpay"
+    },
+    "id633ae5942056": {
+        "service_category": "face",
+        "quote_consultation": "1",
+        "type": "clinic",
+        "experts": [
+            "id6304998b114d"
+        ],
+        "services": {
+            "id62fd472f01f6-11": {
+                "service_id": "id62fd472f01f6",
+                "price_id": "11",
+                "name": "Игольчатая RF терапия - дополнительная зона (10Х20 см)",
+                "price": "20000"
+            },
+            "id62fd36a224df-2": {
+                "service_id": "id62fd36a224df",
+                "price_id": "2",
+                "name": "Прием (осмотр, диагностика, консультация) врача - косметолога- первичный (включает составление плана лечения)",
+                "price": "2500"
+            }
+        },
+        "total_price": "22500",
+        "status": "uncall",
+        "pay_status": "unpay",
+        "client": "id631f0bdf2137",
+        "comment": "",
+        "priority": "0",
+        "marked": "0",
+        "recommendation": "",
+        "description": "",
+        "clientData": {
+            "name": "Client  Rosh",
+            "email": "client@rosh.ru",
+            "phone": "73333333332"
+        },
+        "_site": null,
+        "_login": null,
+        "login": null,
+        "_id": "id633ae5942056",
+        "id": "id633ae5942056",
+        "_form": "quotes",
+        "_table": "quotes",
+        "_created": "2022-10-03 16:22:44",
+        "_creator": "id631f0bdf2137",
+        "_lastdate": "2022-10-03 16:49:05",
+        "_lastuser": "id631f0c9c0df7",
+        "_sort": "999999999",
+        "payment": "unpay"
+    }
+}

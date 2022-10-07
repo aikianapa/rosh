@@ -1,78 +1,79 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ru">
 <head>
-    <title seo>Личный кабинет</title>
+	<title seo>Личный кабинет</title>
+	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
-    <div class="scroll-container" data-scroll-container>
-        <div>
-            <wb-module wb="module=yonger&mode=render&view=header"></wb-module>
-        </div>
-        <main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
-            <div class="container">
-                <div class="account">
-                    <div class="crumbs">
-                        <a class="crumbs__arrow" href="#">
-                            <svg class="svgsprite _crumbs-back">
-                                <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                            </svg>
-                        </a>
-                        <a class="crumbs__link" href="/">Главная</a>
-	                    <a class="crumbs__link" href="#">Личный кабинет</a>
-                    </div>
-	                <div class="title-flex --flex --jcsb">
-		                <div class="title">
-			                <h1 class="h1 mb-10">Личный кабинет </h1>
-		                </div>
-		                <button class="btn btn--black --openpopup" data-popup="--record">Записаться на прием</button>
-	                </div>
-	                <div class="account__panel">
-		                <div class="account__info">
-			                <div class="user">
-				                <div class="user__name">{{user.fullname}}
-					                <button class="user__edit">
-						                <svg class="svgsprite _edit">
-							                <use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-						                </svg>
-					                </button>
-				                </div>
-				                <div class="user__group">
-					                <div class="user__birthday">Дата рождения:
-						                <span>{{user.birthdate}}</span>
-					                </div>
-					                <div class="user__phone">Тел:
-						                <span>+{{user.phone}}</span>
-					                </div>
-				                </div>
-				                <div class="user__confirm">
-					                <svg class="svgsprite _confirm">
-						                <use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
-					                </svg>
-					                Подтвержденный аккаунт
-				                </div>
-			                </div>
-		                </div>
-		                <a href="/signout" class="account__exit">Выйти из аккаунта</a>
-		                <form class="profile-edit" on-submit="profileSave">
-			                {{#user}}
-			                <p class="text-bold mb-30">Редактировать профиль</p>
-			                <div class="row profile-edit__wrap">
-				                <div class="col-md-3">
-					                <div class="input input--grey">
-						                <input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
-                                        <div class="input__placeholder input__placeholder--dark">Дата рождения</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input input--grey">
-                                        <input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
-                                        <div class="input__placeholder input__placeholder--dark">Телефон</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input input--grey">
-                                        <input class="input__control" type="email" name="email" value="{{.email}}" placeholder="E-mail">
+<div class="scroll-container" data-scroll-container>
+	<div>
+		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
+	</div>
+	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+		<div class="container">
+			<div class="account">
+				<div class="crumbs">
+					<a class="crumbs__arrow" href="#">
+						<svg class="svgsprite _crumbs-back">
+							<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+						</svg>
+					</a>
+					<a class="crumbs__link" href="/">Главная</a>
+					<a class="crumbs__link" href="#">Личный кабинет</a>
+				</div>
+				<div class="title-flex --flex --jcsb">
+					<div class="title">
+						<h1 class="h1 mb-10">Личный кабинет </h1>
+					</div>
+					<button class="btn btn--black --openpopup" data-popup="--record" on-click="popupCreateQuote">Записаться на прием</button>
+				</div>
+				<div class="account__panel">
+					<div class="account__info">
+						<div class="user">
+							<div class="user__name">{{user.fullname}}
+								<button class="user__edit">
+									<svg class="svgsprite _edit">
+										<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+									</svg>
+								</button>
+							</div>
+							<div class="user__group">
+								<div class="user__birthday">Дата рождения:
+									<span>{{user.birthdate}}</span>
+								</div>
+								<div class="user__phone">Тел:
+									<span>{{user.phone}}</span>
+								</div>
+							</div>
+							<div class="user__confirm">
+								<svg class="svgsprite _confirm">
+									<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
+								</svg>
+								Подтвержденный аккаунт
+							</div>
+						</div>
+					</div>
+					<a href="/signout" class="account__exit">Выйти из аккаунта</a>
+					<form class="profile-edit" on-submit="profileSave">
+						{{#user}}
+						<p class="text-bold mb-30">Редактировать профиль</p>
+						<div class="row profile-edit__wrap">
+							<div class="col-md-3">
+								<div class="input input--grey">
+									<input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
+									<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="input input--grey">
+									<input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
+									<div class="input__placeholder input__placeholder--dark">Телефон</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="input input--grey">
+									<input class="input__control" type="email" name="email" value="{{.email}}" placeholder="E-mail">
                                         <div class="input__placeholder input__placeholder--dark">E-mail</div>
                                     </div>
                                 </div>
@@ -123,518 +124,478 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input input--grey">
-                                                <input class="input__control" type="text" name="intercom" placeholder="Домофон" value="{{.intercom}}" >
-                                                <div class="input__placeholder input__placeholder--dark">Домофон</div>
+	                                            <input class="input__control" type="text" name="intercom" placeholder="Домофон" value="{{.intercom}}">
+	                                            <div class="input__placeholder input__placeholder--dark">Домофон</div>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="input input--grey">
-                                                <input class="input__control" type="text" name="entrance" placeholder="Подъезд" value="{{.entrance}}">
-                                                <div class="input__placeholder input__placeholder--dark">Подъезд</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="input input--grey">
-                                                <input class="input__control" type="text" name="level" placeholder="Этаж" value="{{.level}}">
-                                                <div class="input__placeholder input__placeholder--dark">Этаж</div>
-                                            </div>
-                                        </div>
+	                                    <div class="col-md-3">
+		                                    <div class="input input--grey">
+			                                    <input class="input__control" type="text" name="entrance" placeholder="Подъезд" value="{{.entrance}}">
+			                                    <div class="input__placeholder input__placeholder--dark">Подъезд</div>
+		                                    </div>
+	                                    </div>
+	                                    <div class="col-md-3">
+		                                    <div class="input input--grey">
+			                                    <input class="input__control" type="text" name="level" placeholder="Этаж" value="{{.level}}">
+			                                    <div class="input__placeholder input__placeholder--dark">Этаж</div>
+		                                    </div>
+	                                    </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn--white profile-edit__submit">Сохранить</button>
-                                </div>
+	                            <div class="col-md-2">
+		                            <button class="btn btn--white profile-edit__submit">Сохранить</button>
+	                            </div>
                             </div>
-                            {{/user}}
-                        </form>
-                    </div>
+						{{/user}}
+					</form>
+				</div>
+				{{if events.current}}
+				<div class="lk-title">Текущее событие</div>
+				<div class="account-events">
+					<!-- multiple: .account-events__block -->
+					{{#each events.current}}
+					<div class="account-events__block">
+						<div class="account-events__block-wrap mb-20">
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Услуги:</div>
+									<div class="account-event">
+										{{#this.services}}
+										<p>{{this.name}}</p>
+										{{/this.services}}
+									</div>
+								</div>
+							</div>
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Дата приема:</div>
+									<div class="account-event">
+										<p>{{this.event_date}}</p>
+									</div>
+								</div>
+								<div class="account-event-wrap">
+									<div class="account-events__name">Время приема:</div>
+									<div class="account-event">
+										<p>{{this.event_time}}</p>
+									</div>
+								</div>
+							</div>
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Специалист:</div>
+									<div class="account-event">
+										{{#this.experts}}
+										<p>{{catalog.experts[this].head}}</p>
+										{{/this.experts}}
+									</div>
+								</div>
+							</div>
+						</div>
+						{{if this.type == 'online'}}
+						<div class="account-event-wrap --aicn">
+							<div class="account-events__btn">
+								<a class="btn btn--black"
+									onclick="window.open('/cabinet/online#{{this.id}}', '_blank', 'width='+screen.availWidth+',height='+screen.availHeight+
+                                             ',location=yes,height=0,width=0,scrollbars=yes,status=yes');">
+									Начать консультацию
+								</a>
+							</div>
 
-                    <div class="lk-title">Текущее событие</div>
-                    <div class="account-events">
-                    	<!-- multiple: .account-events__block -->
-                        <div class="account-events__block">
-                            <div class="account-events__block-wrap">
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Услуги: </div>
-                                        <div class="account-event">
-                                            <p>Консультация врача</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Дата приема: </div>
-                                        <div class="account-event">
-                                            <p>28.10.2021</p>
-                                        </div>
-                                    </div>
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Время приема: </div>
-                                        <div class="account-event">
-                                            <p>08:30 – 9:00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Специалист: </div>
-                                        <div class="account-event">
-                                            <p>Айрапетян Амалия Суреновна</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="account-events__btns">
-                                <div class="account-event-wrap --aicn">
-                                    <div class="account-events__btn">
-                                        <button class="btn btn--black">Начать консультацию</button>
-                                    </div>
-                                    <p>Вас ожидает специалист, можете подключиться прямо сейчас</p>
-                                </div>
-                            </div>
-                            <div class="account-events__download">
-                                <div class="lk-title">Анализы</div>
-                                <a class="btn btn--white" href="#" download>Скачать анализы
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lk-title">Предстоящие события</div>
-                    <div class="account-events">
-                    	<!-- multiple: .account-events__block -->
-                        <div class="account-events__block">
-                            <div class="account-events__block-wrap">
-                                <div class="account-events__item --flex">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Услуги: </div>
-                                        <div class="account-event">
-                                            <p>Консультация врача </p>
-                                            <p>Расшифровка анализов</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Дата приема: </div>
-                                        <div class="account-event">
-                                            <p>28.10.2021</p>
-                                        </div>
-                                    </div>
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Время приема: </div>
-                                        <div class="account-event">
-                                            <p>08:30 – 9:00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Специалист: </div>
-                                        <div class="account-event">
-                                            <p>Молотилова Ольга Юрьевна</p>
-                                            <p>Айрапетян Амалия Суреновна</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+							<p>Вас ожидает специалист, можете подключиться прямо сейчас</p>
+						</div>
+						{{/if}}
+						{{if this.clientData.analises}}
+						<div class="account-events__download">
+							<div class="lk-title">Анализы</div>
+							<a class="btn btn--white" href="/uploads/analizes/{{this.client}}.pdf" download="Анализы.pdf">Скачать анализы</a>
+						</div>
+						{{/if}}
+					</div>
+					{{/each}}
+				</div>
+				{{/if}}
 
-                        <div class="account-events__block">
-                            <div class="account-events__block-wrap">
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Услуги: </div>
-                                        <div class="account-event">
-                                            <p>Консультация врача</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Дата приема: </div>
-                                        <div class="account-event">
-                                            <p>28.10.2021</p>
-                                        </div>
-                                    </div>
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Время приема: </div>
-                                        <div class="account-event">
-                                            <p>08:30 – 9:00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Специалист: </div>
-                                        <div class="account-event">
-                                            <p>Айрапетян Амалия Суреновна</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="account-events__btns">
-                                <div class="account-event-wrap --aicn">
-                                    <div class="account-events__btn">
-                                        <button class="btn btn--white">Онлайн консультация</button>
-                                    </div>
-                                    <p>Кнопка станет активной за 5 минут до начала приема</p>
-                                </div>
-                            </div>
-                        </div>
+				{{if events.upcoming}}
+				<div class="lk-title">Предстоящие события</div>
+				<div class="account-events">
+					{{#each events.upcoming}}
+					<div class="account-events__block">
+						<div class="account-events__block-wrap mb-20">
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Услуги:</div>
+									<div class="account-event">
+										{{#this.services}}
+										<p>{{this.name}}</p>
+										{{/this.services}}
+									</div>
+								</div>
+							</div>
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Дата приема:</div>
+									<div class="account-event">
+										<p>{{this.event_date}}</p>
+									</div>
+								</div>
+								<div class="account-event-wrap">
+									<div class="account-events__name">Время приема:</div>
+									<div class="account-event">
+										<p>{{this.event_time}}</p>
+									</div>
+								</div>
+							</div>
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Специалист:</div>
+									<div class="account-event">
+										{{#this.experts}}
+										<p>{{catalog.experts[this]}}</p>
+										{{/this.experts}}
+									</div>
+								</div>
+							</div>
+						</div>
 
-                        <div class="account-events__block">
-                            <div class="account-events__block-wrap">
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Услуги: </div>
-                                        <div class="account-event">
-                                            <p>Консультация врача</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Дата приема: </div>
-                                        <div class="account-event">
-                                            <p>28.10.2021</p>
-                                        </div>
-                                    </div>
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Время приема: </div>
-                                        <div class="account-event">
-                                            <p>08:30 – 9:00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="account-events__item">
-                                    <div class="account-event-wrap">
-                                        <div class="account-events__name">Специалист: </div>
-                                        <div class="account-event">
-                                            <p>Айрапетян Амалия Суреновна</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="account-events__btns">
-                                <div class="account-event-wrap --aicn">
-                                    <div class="account-events__btn">
-                                        <button class="btn btn--black --openpopup" data-popup="--pay-one">Внести предоплату
-                                        </button>
-                                    </div>
-                                    <p>Услуга требует внесения предоплаты</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- multiple: pagination? -->
-                    </div>
-                    <div class="account__history data-tab-wrapper" data-tabs="hislech">
-                        <div class="account__tab-items">
-                            <div class="account__tab-item data-tab-link active" data-tabs="hislech" data-tab="his">
-                                История посещений</div>
-                            <div class="account__tab-item data-tab-link" data-tabs="hislech" data-tab="lech">
-                                Продолжительное лечение</div>
-                        </div>
-                        <div class="account__tab data-tab-item active" data-tab="his">
-                            <div class="account__table">
-                                <div class="account__table-head">
-                                    <div class="history-item">Дата</div>
-                                    <div class="history-item">Время</div>
-                                    <div class="history-item">Специалисты</div>
-                                    <div class="history-item">Услуги</div>
-                                    <div class="history-item">Анализы</div>
-                                </div>
-                                <div class="account__table-body">
-                                    <div class="acount__table-accardeon accardeon">
-                                        <div class="acount__table-main accardeon__main accardeon__click">
-                                            <div class="history-item">
-                                                <p>Дата</p>16.10.2021
-                                            </div>
-                                            <div class="history-item">
-                                                <p>Время</p>08:45-09:45
-                                            </div>
-                                            <div class="history-item">
-                                                <p>Специалисты</p>Цветкова Инна Сергеевна
-                                            </div>
-                                            <div class="history-item">
-                                                <p>Услуги</p>Удаление образований
-                                            </div>
-                                            <div class="history-item">
-                                                <p>Анализы</p>Нет анализов
-                                            </div>
-                                        </div>
-                                        <div class="acount__table-list accardeon__list">
-                                            <div class="analysis mb-40">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="analysis__top --aicn --flex mb-20">
-                                                            <div class="analysis__title">Анализы</div>
-                                                            <a class="btn btn--white" href="#" download>Скачать анализы
-                                                            </a>
-                                                        </div>
-                                                        <div class="analysis__description">
-                                                            <p class="text-bold mb-20">Выполнялись процедуры</p>
-                                                            <p class="text-grey">А также предприниматели в сети интернет неоднозначны и будут
-                                                                смешаны с не уникальными данными до степени совершенной неузнаваемости,
-                                                                из-за чего возрастает их статус бесполезности.</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <a class="btn btn--black mb-20 --openpopup" href="#" data-popup="--analize-type">Получить расшифровку анализов
-                                                        </a>
-                                                        <div class="analysis__description">
-                                                            <p class="text-bold mb-20">Рекомендация врача</p>
-                                                            <div class="text">
-                                                                <ul>
-                                                                    <li>План обследования:</li>
-                                                                    <li>1)Общий клинический анализ крови</li>
-                                                                    <li>2)Биохимический анализ крови</li>
-                                                                    <li>3)Витамин  ”Д”</li>
-                                                                    <li>Требуется прохождение обследования</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="experts__worked">
-                                                <div class="experts__worked-title">С вами работали</div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="expert__worked">
-                                                            <div class="expert__worked-pic">
-                                                                <img src="./assets/img/experts/1.jpg" alt="">
-                                                            </div>
-                                                            <div class="expert__worked-name">Хачатурян Любовь Андреева
-                                                            </div>
-                                                            <div class="expert__worked-work">Главный врач медицинского центра РОШ.</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="expert__worked">
-                                                            <div class="expert__worked-pic">
-                                                                <img src="./assets/img/experts/1.jpg" alt="">
-                                                            </div>
-                                                            <div class="expert__worked-name">Чачанидзе Елена Элгуджаевна
-                                                            </div>
-                                                            <div class="expert__worked-work">Врач дерматовенеролог, кандидат медицинских наук. Стаж работы
-                                                                19 лет</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="acount__photos">
-                                                <div class="row acount__photos-wrap">
-                                                    <div class="col-md-6">
-                                                        <div class="acount__photo">
-                                                            <p>Фото до начала лечения</p>
-                                                            <img src="./assets/img/experts/1.jpg"
-                                                                alt="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="acount__photo">
-                                                            <p>Фото в процессе лечения</p>
-                                                            <img src="./assets/img/experts/1.jpg"
-                                                                alt="">
-                                                            <img src="./assets/img/experts/1.jpg"
-                                                                alt="">
-                                                            <img src="./assets/img/experts/1.jpg"
-                                                                alt="">
-                                                            <!-- can be more than one -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="account__tab data-tab-item" data-tab="lech">
-                            <div class="account__table">
-                                <div class="account__table-head">
-                                    <div class="healing-item">Дата</div>
-                                    <div class="healing-item">Услуги</div>
-                                </div>
-                                <div class="account__table-body">
-                                    <div class="acount__table-accardeon accardeon">
-                                        <div class="acount__table-main accardeon__main accardeon__click">
-                                            <div class="healing-item">
-                                                <p>Дата</p>16.10.2020-20.10.2021
-                                            </div>
-                                            <div class="healing-item">
-                                                <p> Услуги</p>Лечение акне
-                                            </div>
-                                        </div>
-                                        <div class="acount__table-list accardeon__list">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="text-bold text-big mb-20">Фото до начала лечения</div>
+						{{if this.type == 'online'}}
+						<div class="account-events__btns">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<button class="btn btn--white disabled" disabled>
+										Онлайн консультация
+									</button>
+								</div>
+								<p>Кнопка станет активной за 5 минут до начала приема</p>
+							</div>
+						</div>
+						{{/if}}
+						{{if this.pay_status == 'unpay'}}
+						<div class="account-events__btns">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<button class="btn btn--black --openpopup" data-popup="--pay-one">Внести предоплату
+									</button>
+								</div>
+								<p>Услуга требует внесения предоплаты</p>
+							</div>
+						</div>
+						{{/if}}
+					</div>
+					{{/each}}
+				</div>
+				{{/if}}
 
-	                                                <a class="before-healing" href="/assets/img/account/1.jpg" data-fancybox="images" data-caption="11.09.2022">
-                                                        <h2 class="h2 healing__date-title">11.09.2022</h2>
-                                                        <div class="before-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                        </div>
-                                                        <div class="healing__date">11.09.2022</div>
-                                                        <div class="healing__description">Пациент жаловался на проблемную кожу</div>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="text-bold text-big mb-20">Фото после начала лечения
-                                                    </div>
-                                                    <div class="after-healing">
-                                                        <h2 class="h2 healing__date-title">Октябрь 2021</h2>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="after-healing__item">
-                                                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                                    </div>
-                                                                    <div class="healing__date">20.10.2021</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="after-healing__item">
-                                                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                                    </div>
-                                                                    <div class="healing__date">20.10.2021</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="after-healing__item">
-                                                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                                    </div>
-                                                                    <div class="healing__date">20.10.2021</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="after-healing__item">
-                                                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                                    </div>
-                                                                    <div class="healing__date">20.10.2021</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="after-healing">
-                                                        <h2 class="h2 healing__date-title">Август 2021</h2>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="after-healing__item">
-                                                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                                    </div>
-                                                                    <div class="healing__date">20.10.2021</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="after-healing__item">
-                                                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                                    </div>
-                                                                    <div class="healing__date">20.10.2021</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="after-healing__item">
-                                                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                                    </div>
-                                                                    <div class="healing__date">20.10.2021</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="after-healing__item">
-                                                                    <div class="after-healing__photo" style="background-image: url(../assets/img/account/1.jpg)">
-                                                                    </div>
-                                                                    <div class="healing__date">20.10.2021</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+				<div class="account__history data-tab-wrapper" data-tabs="history">
+					<div class="account__tab-items">
+						<div class="account__tab-item data-tab-link active" data-tabs="history" data-tab="visits">
+							История посещений
+						</div>
+						<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="longterm">
+							Продолжительное лечение
+						</div>
+					</div>
+					<!-- !!! quote history tab !!! -->
+					<div class="account__tab data-tab-item active" data-tab="visits">
+						<div class="account__table">
+							<div class="account__table-head">
+								<div class="history-item">Дата</div>
+								<div class="history-item">Время</div>
+								<div class="history-item">Специалисты</div>
+								<div class="history-item">Услуги</div>
+								<div class="history-item">Анализы</div>
+							</div>
+							<div class="account__table-body">
+								<!-- !!! quote history item !!! -->
+								{{#each history.visits}}
+								<div class="acount__table-accardeon accardeon">
+									<div class="acount__table-main accardeon__main accardeon__click">
+										<div class="history-item">
+											<p>Дата</p>{{this.event_date}}
+										</div>
+										<div class="history-item">
+											<p>Время</p>08:45-09:45
+										</div>
+										<div class="history-item">
+											<p>Специалисты</p>Иванов Иван Алексеевич
+										</div>
+										<div class="history-item">
+											<p>Услуги</p>Консультация врача
+										</div>
+										<div class="history-item">
+											<p>Анализы</p>Есть анализы
+										</div>
+									</div>
+									<div class="acount__table-list accardeon__list">
+										<div class="analysis mb-40">
+											<div class="row">
+												<div class="col-md-6">
+													<div class="analysis__top --aicn --flex mb-20">
+														<div class="analysis__title">Анализы</div>
+														<a class="btn btn--white" href="/uploads/events/id6334d318img04ba.pdf" download="Анализы(за 03.10.2022).pdf">Скачать анализы</a>
+													</div>
+													<div class="analysis__description">
+														<p class="text-bold mb-20">Выполнялись процедуры</p>
+														<p class="text-grey">test text about procedures done</p>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<a class="btn btn--black mb-20 --openpopup" href="#" data-popup="--analize-type">Получить расшифровку анализов
+													</a>
+													<div class="analysis__description">
+														<p class="text-bold mb-20">Рекомендация врача</p>
+														<div class="text">
 
-	    <script wbapp>
-		    var cabinet = new Ractive({
-			    el: 'main.page',
-			    template: $('main.page').html(),
-			    data: {
-				    user: wbapp._session.user,
-				    events: {
-					    'upcoming': [],
-					    'past': []
-				    },
-				    current_event: {}
-			    },
-			    on: {
-				    init() {
-					    wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
-						    data.birthdate = new Date(data.birthdate).toLocaleDateString();
-						    cabinet.set('user', data); /* get actually user data */
-					    });
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="experts__worked">
+											<div class="experts__worked-title">С вами работали</div>
+											<div class="row">
+												<div class="col-md-6">
+													<a class="expert__worked"
+														target="_blank"
+														href="/about/experts/kovalyov-dmitrii-alekseevich">
+														<div class="expert__worked-pic">
+															<img src="/uploads/events/2.jpg" alt="">
+														</div>
+														<div class="expert__worked-name">Иванов Иван Алексеевич
+														</div>
+														<div class="expert__worked-work">Инженер по электронно-вычислительным средствам, врач-терапевт, специалист по биорезонансной диагностике и терапии</div>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div class="acount__photos d-none">
+											<div class="row acount__photos-wrap">
+												<div class="col-md-6">
+													<div class="acount__photo">
+														<p>Фото до начала лечения</p>
+														<img src="./assets/img/experts/1.jpg"
+															alt="">
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="acount__photo">
+														<p>Фото в процессе лечения</p>
+														<img src="./assets/img/experts/1.jpg"
+															alt="">
+														<img src="./assets/img/experts/1.jpg"
+															alt="">
+														<img src="./assets/img/experts/1.jpg"
+															alt="">
+														<!-- can be more than one -->
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								{{/else}}
+								<div class="acount__table-accardeon accardeon">
+									<div class="acount__table-main accardeon__main">
+										Нет записей о посещении
+									</div>
+								</div>
+								{{/each}}
+								<!-- !!! / quote history item !!! -->
+							</div>
+						</div>
+					</div>
+					<!-- !!! longterm tab !!! -->
+					<div class="account__tab data-tab-item" data-tab="longterm">
+						<div class="account__table">
+							<div class="account__table-head">
+								<div class="healing-item">Дата</div>
+								<div class="healing-item">Услуги</div>
+							</div>
+							<div class="account__table-body">
+								{{#each history.longterms}}
+								<!-- !!! longterm item !!! -->
+								<div class="acount__table-accardeon accardeon">
+									<div class="acount__table-main accardeon__main accardeon__click">
+										<div class="healing-item">
+											<p>Дата</p> {{this.event_date}} - {{this.longterm_date_end}}
+										</div>
+										<div class="healing-item">
+											<p>Услуги</p> {{this.longterm_name}}
+										</div>
+									</div>
+									<div class="acount__table-list accardeon__list">
+										<div class="row">
+											<div class="col-md-4">
+												<div class="text-bold text-big mb-20">Фото до начала лечения</div>
 
-					    wbapp.get('/api/v2/list/quotes?status=upcoming&client='+ wbapp._session.user.id+'&@size=10',
-						    function (data) {
-							    console.log('events.upcoming:', data);
-							    cabinet.set('events.upcoming', data); /* get actually user next events */
-						    });
+												<a class="before-healing" href="{{image_before.image.src}}" data-fancybox="images" data-caption="{{image_before.date}}">
+													<h2 class="h2 healing__date-title">{{image_before.date}}</h2>
+													<div class="before-healing__photo" style="background-image: url('{{image_before.src}}')">
+													</div>
+													<div class="healing__date">{{image_before.date}}</div>
+													<div class="healing__description">
+														{{this.longterm_comment}}
+													</div>
+												</a>
+											</div>
+											<div class="col-md-8">
+												<div class="text-bold text-big mb-20">
+													Фото после начала лечения
+												</div>
+												<div class="after-healing">
+													<h2 class="h2 healing__date-title">Сентябрь 2022</h2>
 
-					    wbapp.get('/api/v2/list/quotes?status=past&client' + wbapp._session.user.id +'&@size=10',
-						    function (data) {
-							    console.log('events.past:', data);
-							    cabinet.set('events.past', data); /* get actually user past events */
-						    });
-				    },
-				    profileSave(ev) {
-					    let $form = $(ev.node);
-					    let uid   = cabinet.get('user.id');
-					    if ($form.verify() && uid > '') {
-						    let data       = $form.serializeJson();
-						    data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-						    data.birthdate = new Date(data.birthdate).toLocaleDateString();
-						    wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
-							    console.log(res);
-						    });
-					    }
-					    return false;
-				    }
-			    }
-		    });
+													<div class="row">
+														{{#each image_after}}
+														<div class="col-md-6">
+															<a class="after-healing__item"
+																data-fancybox="images"
+																href="{{this.image.src}}"
+																data-caption="{{this.date}}">
+																<div class="healing__date">{{this.date}}</div>
+																<div class="after-healing__photo"
+																	style="background-image: url('{{this.image.src}}')">
+																</div>
+															</a>
+														</div>
+														{{/each}}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								{{/else}}
+								<div class="acount__table-accardeon accardeon">
+									<div class="acount__table-main accardeon__main">
+										Нет записей о продолжительном лечении
+									</div>
+								</div>
+								{{/each}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
 
-			setTimeout(function (){
-				$('.datebirthdaypickr').each(function () { new AirDatepicker(this, {autoClose: true}); });
-				$('.daterangepickr').each(function () { new AirDatepicker(this, {autoClose: true, range: true}); });
-				$('.datepickr').each(function () { new AirDatepicker(this, {autoClose: true}); });
-				$('.datetimepickr').each(function () {
-					new AirDatepicker(this, {timepicker: true, autoClose: true, minutesStep: 10});
-				});
-
-				$('.dtp-test').each(function () { new AirDatepicker(this, {autoClose: true, inline: true}); });
-
-				$('input[data-inputmask]').each(function () {
-					$(this).inputmask();
-				});
-
-				$('input.autocomplete').each(function () {
-					$(this).autocomplete({
-						noCache: true,
-						minChars: 3,
+	<script wbapp>
+		var cabinet = new Ractive({
+			el: 'main.page',
+			template: $('main.page').html(),
+			data: {
+				catalog: {},
+				user: wbapp._session.user,
+				events: {
+					'upcoming': [],
+					'current': []
+				},
+				history: {
+					'events': [],
+					'longterms': []
+				}
+			},
+			on: {
+				init() {
+					wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
+						data.birthdate = new Date(data.birthdate).toLocaleDateString();
+						data.phone     = '+' + data.phone;
+						cabinet.set('user', data); /* get actually user data */
 					});
-				});
-			}, 50);
-	    </script>
-    </div>
-    <div>
-	    <wb-module wb="module=yonger&mode=render&view=footer"/>
-    </div>
-    <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
+
+					wbapp.get('/api/v2/list/events?status=upcoming&client=' + wbapp._session.user.id,
+						function (data) {
+							console.log('events.upcoming:', data);
+							cabinet.set('events.upcoming', data); /* get actually user next events */
+						});
+
+					wbapp.get('/api/v2/list/events?status=past&client=' + wbapp._session.user.id,
+						function (data) {
+							console.log('history.events:', data);
+							cabinet.set('history.events', data); /* get actually user next events */
+						});
+
+					wbapp.get('/api/v2/list/events?longterm=1&client=' + wbapp._session.user.id,
+						function (data) {
+							console.log('history.longterms:', data);
+							cabinet.set('history.longterms', data); /* get actually user next events */
+						});
+					setTimeout(function () {
+						cabinet.set('catalog', catalog);
+					});
+				},
+				popupCreateQuote(ev) {
+					var createQuote = new Ractive({
+						el: '.popup.--record',
+						template: wbapp.tpl('#popupNewQuote').html,
+						data: {
+							user: wbapp._session.user,
+							'experts': catalog.experts,
+							'categories': catalog.categories,
+							'services': catalog.services
+						},
+						on: {
+							complete() {
+								console.log('ready!', catalog);
+								initServicesSearchInput($('#popup-services-list'), servicesList);
+							},
+							cancel(ev) {
+
+							},
+							close(ev) {
+
+							},
+							submit(ev) {
+								let $form = $(ev.node);
+								let uid   = createQuote.get('user.id');
+
+								if ($form.verify() && uid > '') {
+									let data            = $form.serializeJSON();
+									data.status         = 'new';
+									data.pay_status     = 'unpay';
+									data.client         = uid;
+									data.comment        = '';
+									data.priority       = 0;
+									data.marked         = 0;
+									data.recommendation = '';
+									data.description    = '';
+									data.clientData     = {
+										'name': wbapp._session.user.fullname,
+										'email': wbapp._session.user.email,
+										'phone': wbapp._session.user.phone
+									};
+									wbapp.post('/api/v2/create/quotes/', data, function (res) {
+										console.log('saved', res);
+										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+										$('.popup.--record .popup__panel.--succed').addClass('d-block');
+									});
+								}
+								return false;
+							}
+						}
+					});
+				},
+				profileSave(ev) {
+					let $form = $(ev.node);
+					let uid   = cabinet.get('user.id');
+					if ($form.verify() && uid > '') {
+						let data       = $form.serializeJSON();
+						data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+						data.birthdate = new Date(data.birthdate).toLocaleDateString();
+						wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
+							console.log(res);
+						});
+					}
+					return false;
+				}
+			}
+		});
+	</script>
+</div>
+
+<div>
+	<wb-module wb="module=yonger&mode=render&view=footer"/>
+</div>
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
 <wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>

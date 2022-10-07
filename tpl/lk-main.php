@@ -10,7 +10,6 @@
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
 	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
-
 		<div class="account admin">
 			<form class="search">
 				<div class="container">
@@ -37,6 +36,7 @@
 					</div>
 				</div>
 			</form>
+
 			<div class="container data-tab-wrapper" data-tabs="lk-leads">
 				<div class="account__tab-items">
 					<div class="account__tab-item data-tab-link active" data-tab="leads" data-tabs="lk-leads">Заявки</div>
@@ -53,6 +53,7 @@
 						</button>
 					</div>
 				</div>
+
 				<template id="editProfile">
 					<form class="profile-editor">
 						<input type="hidden" value="{{ id }}">
@@ -80,6 +81,7 @@
 								<button class="btn btn--white profile-edit__submit" type="button" on-click="save">Сохранить</button>
 							</div>
 						</div>
+
 						<p class="text-bold mb-30 delivery-address">Адрес доставки</p>
 						<div class="row profile-edit__wrap">
 							<div class="col-md-9">
@@ -174,84 +176,21 @@
 							</div>
 						</div>
 					</div>
+
+					<button class="btn btn--white" on-click="save">Сохранить</button>
 				</template>
 				<template id="editQuote">
 					<form class="quote-edit">
 						<div class="row">
 							<div class="col-md-7">
 								<div class="lk-title">Редактировать заявку</div>
-								<input type="hidden" value="{{ quote.id }}">
+								<input type="hidden" value="{{ quote.id }}" name="id">
 
 								<div class="admin-editor__event mb-20">
 									<div class="search__block --flex --aicn">
 										<div class="input">
-											<input class="search__input autocomplete" type="text"
-												placeholder="Поиск по услугам"
-												id="editor-services-list" autocomplete="off">
+											<input class="popup-services-list" type="text" placeholder="Поиск по услугам" autocomplete="off">
 											<div class="search__drop">
-												<label class="search__drop-item">
-													<div class="search__drop-name">Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения).</div>
-													<div class="search__drop-right">
-														<div class="search__drop-tags">
-															<div class="search__drop-tag --yellow">Л</div>
-															<div class="search__drop-tag --green">Т</div>
-														</div>
-														<div class="search__drop-summ">7 000 ₽</div>
-														<div class="search__drop-check">
-															<div class="checkbox">
-																<input type="checkbox">
-																<span></span>
-															</div>
-														</div>
-													</div>
-												</label>
-												<label class="search__drop-item">
-													<div class="search__drop-name">Дерматологический пилинг Cosmedix Purity ретиноевый</div>
-													<div class="search__drop-right">
-														<div class="search__drop-tags">
-															<div class="search__drop-tag --yellow">Л</div>
-														</div>
-														<div class="search__drop-summ">7 000 ₽</div>
-														<div class="search__drop-check">
-															<div class="checkbox">
-																<input type="checkbox">
-																<span></span>
-															</div>
-														</div>
-													</div>
-												</label>
-												<label class="search__drop-item">
-													<div class="search__drop-name">Дерматологический пилинг Enerpeel Jessners салициловый-резорциновый</div>
-													<div class="search__drop-right">
-														<div class="search__drop-tags">
-															<div class="search__drop-tag --yellow">Л</div>
-															<div class="search__drop-tag --green">Т</div>
-														</div>
-														<div class="search__drop-summ">7 000 ₽</div>
-														<div class="search__drop-check">
-															<div class="checkbox">
-																<input type="checkbox">
-																<span></span>
-															</div>
-														</div>
-													</div>
-												</label>
-												<label class="search__drop-item">
-													<div class="search__drop-name">Дерматологический пилинг для кожи с гиперпигментацией "SC Pigment Balancing Peel"</div>
-													<div class="search__drop-right">
-														<div class="search__drop-tags">
-															<div class="search__drop-tag --yellow">Л</div>
-															<div class="search__drop-tag --green">Т</div>
-														</div>
-														<div class="search__drop-summ">7 000 ₽</div>
-														<div class="search__drop-check">
-															<div class="checkbox">
-																<input type="checkbox">
-																<span></span>
-															</div>
-														</div>
-													</div>
-												</label>
 											</div>
 											<button class="search__btn" type="button">
 												<svg class="svgsprite _search">
@@ -260,59 +199,9 @@
 											</button>
 										</div>
 									</div>
-
 								</div>
 								<div class="admin-editor__event mb-20">
-									<div class="select-form">
-										<div class="select">
-											<div class="select__main">
-												<div class="select__placeholder">Услуга</div>
-												<div class="select__values"></div>
-											</div>
-											<div class="select__list">
-												<div class="select__item select__item--checkbox">
-													<label class="checkbox checkbox--record">
-														<input type="checkbox">
-														<span></span>
-														<div class="checbox__name --flex --aic --jcsb">
-															<div class="select__name">Внутривенное введение лекарственных препаратов - капельница (Антиоксидантная)</div>
-															<div>6 000 ₽</div>
-														</div>
-													</label>
-												</div>
-												<div class="select__item select__item--checkbox">
-													<label class="checkbox checkbox--record">
-														<input type="checkbox">
-														<span></span>
-														<div class="checbox__name --flex --aic --jcsb">
-															<div class="select__name">Дерматологический пилинг Cosmedix Purity ретиноевый</div>
-															<div>7 000 ₽</div>
-														</div>
-													</label>
-												</div>
-												<div class="select__item select__item--checkbox">
-													<label class="checkbox checkbox--record">
-														<input type="checkbox">
-														<span></span>
-														<div class="checbox__name --flex --aic --jcsb">
-															<div class="select__name">Дерматологический пилинг Enerpeel Jessners салициловый-резорциновый</div>
-															<div>7 000 ₽</div>
-														</div>
-													</label>
-												</div>
-												<div class="select__item select__item--checkbox">
-													<label class="checkbox checkbox--record">
-														<input type="checkbox">
-														<span></span>
-														<div class="checbox__name --flex --aic --jcsb">
-															<div class="select__name">Дерматологический пилинг для кожи с гиперпигментацией "SC Pigment Balancing Peel"</div>
-															<div>7 000 ₽</div>
-														</div>
-													</label>
-												</div>
-											</div>
-										</div>
-									</div>
+									<!-- services-select.dropdown -->
 								</div>
 								<div class="admin-editor__type-event">
 									<p class="mb-10">Тип события</p>
@@ -320,11 +209,11 @@
 										{{#each catalog.quoteType as item}}
 										<label class="text-radio">
 											{{#if item.id == quote.type }}
-												<input type="radio" name="type" value="{{ item.id }}" checked>
-												<span>{{item.name}}</span>
+											<input type="radio" name="type" value="{{ item.id }}" checked>
+											<span>{{item.name}}</span>
 											{{else}}
-												<input type="radio" name="type" value="{{ item.id }}">
-												<span>{{item.name}}</span>
+											<input type="radio" name="type" value="{{ item.id }}">
+											<span>{{item.name}}</span>
 											{{/if}}
 										</label>
 										{{/each}}
@@ -332,102 +221,82 @@
 									<div class="row">
 										<div class="col-md-6">
 											<div class="select-form select-checkboxes">
-												<div class="select">
+												<div class="select has-values">
 													<div class="select__main">
 														<div class="select__placeholder">Выберите специалиста</div>
-														<div class="select__values"></div>
+														<div class="select__values">Иванов Иван Алексеевич</div>
 													</div>
 													<div class="select__list">
+														{{#each catalog.experts}}
 														<div class="select__item select__item--checkbox">
 															<label class="checkbox checkbox--record">
-																<input type="checkbox" >
+																<input type="checkbox" name="experts[]" value="{{id}}"
+																	{{#if id == 'id6304998b114d'}}checked{{/if}}>
 																<span></span>
 																<div class="checbox__name">
-																	<div class="select__name">Хачатурян Любовь Андреева 1</div>
+																	<div class="select__name">{{name}}</div>
 																</div>
 															</label>
 														</div>
-														<div class="select__item select__item--checkbox">
-															<label class="checkbox checkbox--record">
-																<input type="checkbox" checked="checked">
-																<span></span>
-																<div class="checbox__name">
-																	<div class="select__name">Хачатурян Любовь Андреева 2</div>
-																</div>
-															</label>
-														</div>
-														<div class="select__item select__item--checkbox">
-															<label class="checkbox checkbox--record">
-																<input type="checkbox">
-																<span></span>
-																<div class="checbox__name">
-																	<div class="select__name">Хачатурян Любовь Андреева 3</div>
-																</div>
-															</label>
-														</div>
-														<div class="select__item select__item--checkbox">
-															<label class="checkbox checkbox--record">
-																<input type="checkbox">
-																<span></span>
-																<div class="checbox__name">
-																	<div class="select__name">Хачатурян Любовь Андреева 4</div>
-																</div>
-															</label>
-														</div>
-														<div class="select__item select__item--checkbox">
-															<label class="checkbox checkbox--record">
-																<input type="checkbox">
-																<span></span>
-																<div class="checbox__name">
-																	<div class="select__name">Хачатурян Любовь Андреева 5</div>
-																</div>
-															</label>
-														</div>
+														{{/each}}
 													</div>
 												</div>
 											</div>
-
 										</div>
 										<div class="col-md-6">
 											<div class="input input-lk-calendar input--grey">
-												<input class="input__control datetimepickr" type="text" placeholder="Выбрать дату и время">
+												<input class="input__control datetimepickr"
+													name="event_datetime" value="{{event_datetime}}"
+													type="text" placeholder="Выбрать дату и время">
 												<div class="input__placeholder">Выбрать дату и время</div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="admin-editor__patient">
-									<div class="lk-title">Выбраны услуги</div>
-									<div class="search__drop-item">
+									<div class="text-bold mb-10">Выбраны услуги</div>
+									{{#each quote.services: idx, key}}
+									<div class="search__drop-item" data-index="{{idx}}"
+										data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+										<input type="hidden" name="services[{{key}}][service_id]"
+											value="{{service_id}}">
+										<input type="hidden" name="services[{{key}}][price_id]"
+											value="{{price_id}}">
+										<input type="hidden" name="services[{{key}}][name]"
+											value="{{name}}">
+										<input type="hidden" name="services[{{key}}][price]"
+											value="{{price}}">
 										<div class="search__drop-name">
+											{{name}}
 											<div class="search__drop-delete">
 												<svg class="svgsprite _delete">
 													<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 												</svg>
 											</div>
-											<div class="search__drop-tags">
-												<div class="search__drop-tag --yellow">Л</div>
-											</div>
-											Прием (осмотр, консультация врача-дерматовенеролога главного врача первичный (включает составление плана лечения).
 										</div>
-										<label class="search__drop-right">
-											<div class="search__drop-summ">7 000 ₽</div>
-										</label>
+										<div class="search__drop-right">
+											<div class="search__drop-summ">{{price}} ₽</div>
+										</div>
 									</div>
+									{{/each}}
 								</div>
+
 								<div class="admin-editor__summ">
 									<p>Всего</p>
-									<p>7 000 ₽ </p>
+									<input type="hidden" name="total_price" value="{{quote.total_price}}">
+									<p class="total-price">{{quote.total_price_text}} ₽</p>
 								</div>
+
 								<button class="btn btn--white" on-click="save">Сохранить</button>
 							</div>
 							<div class="col-md-1"></div>
 							<div class="col-md-4 --jcfe --flex">
-								<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{comment}}</textarea>
+								<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{quote.comment}}</textarea>
 							</div>
 						</div>
 					</form>
 				</template>
+
 				<div class="account__tab data-tab-item active" data-tab="leads">
 					<template id="leadsList">
 						<div class="account-scroll">
@@ -458,14 +327,14 @@
 											<div class="admin-events-item heap">
 												<div class="accardeon__click" data-id="{{id}}" on-click="editQuote"></div>
 												<div class="flag-date">
-													{{#if priority == '0'}}
+													{{#if priority * 1}}
 													<label class="checkbox">
-														<input type="checkbox">
+														<input type="checkbox" checked>
 														<span></span>
 													</label>
 													{{else}}
 													<label class="checkbox">
-														<input type="checkbox" checked>
+														<input type="checkbox">
 														<span></span>
 													</label>
 													{{/if}}
@@ -500,7 +369,8 @@
 												<p>Телефон</p>{{clientData.phone}}
 											</div>
 											<div class="admin-events-item">
-												<p>Специалист</p>{{expert}}
+												<p>Специалист</p>
+												Иванов Иван Алексеевич
 											</div>
 											<div class="admin-events-item">
 												<p>Тип</p>
@@ -553,6 +423,7 @@
 												<div class="admin-editor__top-status">
 													<div class="admin-editor__top-date">Заявка сформирована {{date}} / {{time}}</div>
 													<div class="admin-editor__top-select">
+
 													</div>
 												</div>
 											</div>
@@ -707,57 +578,645 @@
 										</div>
 									</div>
 									{{/each}}
+									<div class="acount__table-accardeon accardeon --green acount__table-accardeon--pmin">
+										<div class="acount__table-main accardeon__main acount__table-auto">
+											<div class="admin-events-item heap">
+												<div class="accardeon__click"></div>
+												<div class="flag-date">
+													<label class="checkbox">
+														<input type="checkbox">
+														<span></span>
+													</label>
+													<button class="flag-date__ico checked">
+														<svg class="svgsprite _flag">
+															<use xlink:href="assets/img/sprites/svgsprites.svg#flag"></use>
+														</svg>
+													</button>
+													<span class="dt"><strong class="title">Событие: </strong>13.09.2022
+														<br>14:33
+													</span>
+												</div>
+											</div>
+											<div class="admin-events-item">
+												<p>Приём</p>
+												<span class="dt">16.09.2022 <br>9:00</span>
+											</div>
+											<div class="admin-events-item">
+												<p>ФИО</p><a href="#">Client Rosh</a>
+											</div>
+											<div class="admin-events-item">
+												<p>Телефон</p>+33333333323
+											</div>
+											<div class="admin-events-item">
+												<p>Специалист</p>Иванов Иван Алексеевич
+											</div>
+											<div class="admin-events-item">
+												<p>Тип</p>В клинике
+											</div>
+											<div class="admin-events-item">
+												<p>Услуга</p>Прием (осмотр, диагностика, консультация) врача - первичный (включает составление плана лечения)
+											</div>
+											<div class="admin-events-item">
+												<p>Оплата</p>Есть предоплата
+											</div>
+											<div class="admin-events-item">
+												<p>Статус</p>Состоявшееся событие
+											</div>
+											<div class="admin-events-item">
+												<p>Комментарии</p>Test text comment
+											</div>
+										</div>
+										<div class="acount__table-list accardeon__list admin-editor">
+											<div class="admin-editor__top">
+												<div class="admin-editor__top-info">
+													<div class="lk-title">Редактировать профиль</div>
+													<div class="admin-editor__name user__edit">Client Rosh
+														<button class="user__edit">
+															<svg class="svgsprite _edit">
+																<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+															</svg>
+														</button>
+													</div>
+													<div class="admin-editor__iser-contacts">
+														<p>Дата рождения:
+															<span>22.12.1988</span>
+														</p>
+														<p>Телефон:
+															<span>+33333333323</span>
+														</p>
+													</div>
+												</div>
+												<div class="admin-editor__top-status">
+													<div class="admin-editor__top-date">Заявка сформирована 16.09.2022 / 11:45</div>
+													<div class="admin-editor__top-select">
+														<div class="select-form">
+															<div class="select">
+																<div class="select__main">Есть предоплата</div>
+																<div class="select__list">
+																	<div class="select__item">Есть предоплата</div>
+																	<div class="select__item">Не оплачено</div>
+																	<div class="select__item">Не требует оплаты</div>
+																</div>
+															</div>
+														</div>
+
+														<div class="select-form">
+															<div class="select">
+																<div class="select__main">Состоявшееся событие</div>
+																<div class="select__list">
+																	<div class="select__item select__item--acc-yellow">Необработанная заявка</div>
+																	<div class="select__item select__item--acc-red">Не дозвонился</div>
+																	<div class="select__item select__item--acc-purple">Отложенный звонок</div>
+																	<div class="select__delimiter"></div>
+																	<div class="select__item select__item--acc-yellow">Предстоящее событие</div>
+																	<div class="select__item select__item--acc-green">Состоявшееся событие</div>
+																	<div class="select__item select__item--acc-blue">Отмена визита (дорого)</div>
+																	<div class="select__item select__item--acc-light-blue">Отмена визита (подумаем)</div>
+																	<div class="select__item select__item--acc-ocean">Отмена визита (без причины)</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<div class="admin-editor__edit-profile">
+												<form class="profile-edit">
+													<p class="text-bold mb-30">Редактировать профиль</p>
+													<div class="row profile-edit__wrap">
+														<div class="col-md-3">
+															<div class="input input--grey">
+																<input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения" value="16.05.1975">
+																<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
+															</div>
+														</div>
+														<div class="col-md-3">
+															<div class="input input--grey">
+																<input class="input__control" type="tel" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'" inputmode="text" value="+3 (333) 333-33-33">
+																<div class="input__placeholder input__placeholder--dark">Телефон</div>
+															</div>
+														</div>
+														<div class="col-md-3">
+															<div class="input input--grey">
+																<input class="input__control" type="email" placeholder="E-mail" value="ivanov@rosh.ru">
+																<div class="input__placeholder input__placeholder--dark">E-mail</div>
+															</div>
+														</div>
+														<div class="col-md-2">
+															<button class="btn btn--white profile-edit__submit">Сохранить</button>
+														</div>
+													</div>
+													<p class="text-bold mb-30 delivery-address">Адрес доставки</p>
+													<div class="row profile-edit__wrap">
+														<div class="col-md-9">
+															<div class="row">
+																<div class="col-md-4">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Страна">
+																		<div class="input__placeholder input__placeholder--dark">Страна</div>
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Город">
+																		<div class="input__placeholder input__placeholder--dark">Город</div>
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Улица и дом">
+																		<div class="input__placeholder input__placeholder--dark">Улица и дом</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="row profile-edit__wrap">
+														<div class="col-md-9">
+															<div class="row">
+																<div class="col-md-3">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Кв./офис">
+																		<div class="input__placeholder input__placeholder--dark">Кв./офис</div>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Домофон">
+																		<div class="input__placeholder input__placeholder--dark">Домофон</div>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Подъезд" value="2">
+																		<div class="input__placeholder input__placeholder--dark">Подъезд</div>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Этаж" value="3">
+																		<div class="input__placeholder input__placeholder--dark">Этаж</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-2">
+															<button class="btn btn--white profile-edit__submit">Сохранить</button>
+														</div>
+													</div>
+												</form>
+											</div>
+											<div class="admin-editor__events">
+												<div class="row">
+													<div class="col-md-7">
+														<div class="lk-title">Редактировать событие</div>
+														<div class="admin-editor__event mb-20">
+															<div class="search__block --flex --aicn">
+																<div class="input">
+																	<input class="search__input" type="text" placeholder="Поиск">
+																</div>
+															</div>
+														</div>
+
+														<div class="admin-editor__type-event">
+															<p class="mb-10">Тип события</p>
+															<div class="text-radios">
+																<label class="text-radio">
+																	<input type="radio" name="status" checked>
+																	<span>В клинике</span>
+																</label>
+																<label class="text-radio">
+																	<input type="radio" name="status">
+																	<span>Онлайн</span>
+																</label>
+															</div>
+															<div class="row">
+																<div class="col-md-6">
+																	<div class="select-form select-checkboxes">
+																		<div class="select has-values">
+																			<div class="select__main">
+																				<div class="select__placeholder">Выберите специалиста</div>
+																				<div class="select__values">Иванов Иван Алексеевич</div>
+																			</div>
+																			<div class="select__list">
+																				<div class="select__item select__item--checkbox">
+																					<label class="checkbox checkbox--record">
+																						<input type="checkbox" checked>
+																						<span></span>
+																						<div class="checbox__name">
+																							<div class="select__name">Иванов Иван Алексеевич</div>
+																						</div>
+																					</label>
+																				</div>
+																				<div class="select__item select__item--checkbox">
+																					<label class="checkbox checkbox--record">
+																						<input type="checkbox">
+																						<span></span>
+																						<div class="checbox__name">
+																							<div class="select__name">Хачатурян Любовь Андреева</div>
+																						</div>
+																					</label>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+																<div class="col-md-6">
+																	<div class="input input-lk-calendar input--grey">
+																		<input class="input__control datetimepickr" type="text" placeholder="Выбрать дату и время" value="16.09.2022 08:45">
+																		<div class="input__placeholder">Выбрать дату и время</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="admin-editor__patient">
+															<div class="lk-title">Выбраны услуги</div>
+															<div class="search__drop-item">
+																<div class="search__drop-name">
+																	<div class="search__drop-delete">
+																		<svg class="svgsprite _delete">
+																			<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+																		</svg>
+																	</div>
+																	Прием (осмотр, диагностика, консультация) врача - первичный (включает составление плана лечения)
+																</div>
+																<label class="search__drop-right">
+																	<div class="search__drop-summ">7 000 ₽</div>
+																</label>
+															</div>
+														</div>
+														<div class="admin-editor__summ">
+															<p>Всего</p>
+															<p>7 000 ₽ </p>
+														</div>
+														<div class="admin-editor__patient mb-40">
+															<div class="row acount__photos-wrap mb-20">
+																<div class="col-md-6">
+																	<div class="acount__photo">
+																		<p>Фото до начала лечения</p>
+																		<a class="before-healing" href="/uploads/events/before.jpg" data-fancybox="images" data-caption="Фото  до начала лечения, 16.09.2022">
+																			<img src="/uploads/events/before2.jpg" alt="">
+																		</a>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="acount__photo">
+																		<p>Фото в процессе лечения</p>
+																		<a class="after-healing mb-10 d-block" href="/uploads/events/after2-2.jpg" data-fancybox="images" data-caption="Фото в процессе лечения, 18.09.2022">
+																			<img src="/uploads/events/after2-2.jpg" alt="">
+																		</a>
+																		<a class="after-healing mb-10 d-block" href="/uploads/events/after2-3.jpg" data-fancybox="images" data-caption="Фото в процессе лечения, 20.09.2022">
+																			<img src="/uploads/events/after2-3.jpg" alt="">
+																		</a>
+																		<a class="after-healing mb-10 d-none" href="/uploads/events/1657743909553.jpg"
+																			data-fancybox="images" data-caption="Фото в процессе лечения, 21.09.2022">
+																			<img src="/uploads/events/1657743909553.jpg" alt="">
+																		</a>
+																	</div>
+																</div>
+															</div>
+															<div class="row acount__photos-wrap">
+																<div class="col-md-2">
+																	<a class="btn btn--white --openpopup" href="#" data-popup="--photo-profile">Добавить фото</a>
+																</div>
+															</div>
+														</div>
+														<button class="btn btn--white">Сохранить</button>
+													</div>
+													<div class="col-md-1"></div>
+													<div class="col-md-4 --jcfe --flex">
+														<textarea class="admin__editor-textarea" placeholder="Добавить комментарий"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="acount__table-accardeon accardeon --green acount__table-accardeon--pmin">
+										<div class="acount__table-main accardeon__main acount__table-auto">
+											<div class="admin-events-item heap">
+												<div class="accardeon__click"></div>
+												<div class="flag-date">
+													<label class="checkbox">
+														<input type="checkbox">
+														<span></span>
+													</label>
+													<button class="flag-date__ico checked">
+														<svg class="svgsprite _flag">
+															<use xlink:href="assets/img/sprites/svgsprites.svg#flag"></use>
+														</svg>
+													</button>
+													<span class="dt"><strong class="title">Событие: </strong>13.09.2022
+														<br>14:33
+													</span>
+												</div>
+											</div>
+											<div class="admin-events-item">
+												<p>Приём</p>
+												<span class="dt">16.09.2022 <br>9:00</span>
+											</div>
+											<div class="admin-events-item">
+												<p>ФИО</p><a href="/cabinet/client/id6267fa632293">Client Rosh</a>
+											</div>
+											<div class="admin-events-item">
+												<p>Телефон</p>+7 (333) 333-3332
+											</div>
+											<div class="admin-events-item">
+												<p>Специалист</p>Иванов Иван Алексеевич
+											</div>
+											<div class="admin-events-item">
+												<p>Тип</p>В клинике
+											</div>
+											<div class="admin-events-item">
+												<p>Услуга</p>Фотолечение BBL
+											</div>
+											<div class="admin-events-item">
+												<p>Оплата</p>Есть предоплата
+											</div>
+											<div class="admin-events-item">
+												<p>Статус</p>Состоявшееся событие
+											</div>
+											<div class="admin-events-item">
+												<p>Комментарии</p>Test text comment
+											</div>
+										</div>
+										<div class="acount__table-list accardeon__list admin-editor">
+											<div class="admin-editor__top">
+												<div class="admin-editor__top-info">
+													<div class="lk-title">Редактировать профиль</div>
+													<div class="admin-editor__name user__edit">Client Rosh
+														<button class="user__edit">
+															<svg class="svgsprite _edit">
+																<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+															</svg>
+														</button>
+													</div>
+													<div class="admin-editor__iser-contacts">
+														<p>Дата рождения:
+															<span>22.12.1988</span>
+														</p>
+														<p>Телефон:
+															<span>+7 (333) 333-3332</span>
+														</p>
+													</div>
+												</div>
+												<div class="admin-editor__top-status">
+													<div class="admin-editor__top-date">Заявка сформирована 16.09.2022 / 08:45</div>
+													<div class="admin-editor__top-select">
+														<div class="select-form">
+															<div class="select">
+																<div class="select__main">Есть предоплата</div>
+																<div class="select__list">
+																	<div class="select__item">Есть предоплата</div>
+																	<div class="select__item">Не оплачено</div>
+																	<div class="select__item">Не требует оплаты</div>
+																</div>
+															</div>
+														</div>
+
+														<div class="select-form">
+															<div class="select">
+																<div class="select__main">Состоявшееся событие</div>
+																<div class="select__list">
+																	<div class="select__item select__item--acc-yellow">Необработанная заявка</div>
+																	<div class="select__item select__item--acc-red">Не дозвонился</div>
+																	<div class="select__item select__item--acc-purple">Отложенный звонок</div>
+																	<div class="select__delimiter"></div>
+																	<div class="select__item select__item--acc-yellow">Предстоящее событие</div>
+																	<div class="select__item select__item--acc-green">Состоявшееся событие</div>
+																	<div class="select__item select__item--acc-blue">Отмена визита (дорого)</div>
+																	<div class="select__item select__item--acc-light-blue">Отмена визита (подумаем)</div>
+																	<div class="select__item select__item--acc-ocean">Отмена визита (без причины)</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<div class="admin-editor__edit-profile">
+												<form class="profile-edit">
+													<p class="text-bold mb-30">Редактировать профиль</p>
+													<div class="row profile-edit__wrap">
+														<div class="col-md-3">
+															<div class="input input--grey">
+																<input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения" value="16.05.1975">
+																<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
+															</div>
+														</div>
+														<div class="col-md-3">
+															<div class="input input--grey">
+																<input class="input__control" type="tel" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'" inputmode="text" value="+3 (333) 333-33-33">
+																<div class="input__placeholder input__placeholder--dark">Телефон</div>
+															</div>
+														</div>
+														<div class="col-md-3">
+															<div class="input input--grey">
+																<input class="input__control" type="email" placeholder="E-mail" value="ivanov@rosh.ru">
+																<div class="input__placeholder input__placeholder--dark">E-mail</div>
+															</div>
+														</div>
+														<div class="col-md-2">
+															<button class="btn btn--white profile-edit__submit">Сохранить</button>
+														</div>
+													</div>
+													<p class="text-bold mb-30 delivery-address">Адрес доставки</p>
+													<div class="row profile-edit__wrap">
+														<div class="col-md-9">
+															<div class="row">
+																<div class="col-md-4">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Страна">
+																		<div class="input__placeholder input__placeholder--dark">Страна</div>
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Город">
+																		<div class="input__placeholder input__placeholder--dark">Город</div>
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Улица и дом">
+																		<div class="input__placeholder input__placeholder--dark">Улица и дом</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="row profile-edit__wrap">
+														<div class="col-md-9">
+															<div class="row">
+																<div class="col-md-3">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Кв./офис">
+																		<div class="input__placeholder input__placeholder--dark">Кв./офис</div>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Домофон">
+																		<div class="input__placeholder input__placeholder--dark">Домофон</div>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Подъезд" value="2">
+																		<div class="input__placeholder input__placeholder--dark">Подъезд</div>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="input input--grey">
+																		<input class="input__control" type="text" placeholder="Этаж" value="3">
+																		<div class="input__placeholder input__placeholder--dark">Этаж</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-2">
+															<button class="btn btn--white profile-edit__submit">Сохранить</button>
+														</div>
+													</div>
+												</form>
+											</div>
+											<div class="admin-editor__events">
+												<div class="row">
+													<div class="col-md-7">
+														<div class="lk-title">Редактировать событие</div>
+														<div class="admin-editor__event mb-20">
+															<div class="search__block --flex --aicn">
+																<div class="input">
+																	<input class="search__input" type="text" placeholder="Поиск">
+																</div>
+															</div>
+														</div>
+
+														<div class="admin-editor__type-event">
+															<p class="mb-10">Тип события</p>
+															<div class="text-radios">
+																<label class="text-radio">
+																	<input type="radio" name="status" checked>
+																	<span>В клинике</span>
+																</label>
+																<label class="text-radio">
+																	<input type="radio" name="status">
+																	<span>Онлайн</span>
+																</label>
+															</div>
+															<div class="row">
+																<div class="col-md-6">
+																	<div class="select-form select-checkboxes">
+																		<div class="select has-values">
+																			<div class="select__main">
+																				<div class="select__placeholder">Выберите специалиста</div>
+																				<div class="select__values">Иванов Иван Алексеевич</div>
+																			</div>
+																			<div class="select__list">
+																				<div class="select__item select__item--checkbox">
+																					<label class="checkbox checkbox--record">
+																						<input type="checkbox" checked>
+																						<span></span>
+																						<div class="checbox__name">
+																							<div class="select__name">Иванов Иван Алексеевич</div>
+																						</div>
+																					</label>
+																				</div>
+																				<div class="select__item select__item--checkbox">
+																					<label class="checkbox checkbox--record">
+																						<input type="checkbox">
+																						<span></span>
+																						<div class="checbox__name">
+																							<div class="select__name">Хачатурян Любовь Андреева</div>
+																						</div>
+																					</label>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+																<div class="col-md-6">
+																	<div class="input input-lk-calendar input--grey">
+																		<input class="input__control datetimepickr" type="text" placeholder="Выбрать дату и время" value="16.09.2022 08:45">
+																		<div class="input__placeholder">Выбрать дату и время</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="admin-editor__patient">
+															<div class="lk-title">Выбраны услуги</div>
+															<div class="search__drop-item">
+																<div class="search__drop-name">
+																	<div class="search__drop-delete">
+																		<svg class="svgsprite _delete">
+																			<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+																		</svg>
+																	</div>
+																	Фотолечение BBL
+																</div>
+																<label class="search__drop-right">
+																	<div class="search__drop-summ">3 000 ₽</div>
+																</label>
+															</div>
+														</div>
+														<div class="admin-editor__summ">
+															<p>Всего</p>
+															<p>3 000 ₽ </p>
+														</div>
+														<div class="admin-editor__patient mb-40">
+															<div class="row acount__photos-wrap mb-20">
+																<div class="col-md-6">
+																	<div class="acount__photo">
+																		<p>Фото до начала лечения</p>
+																		<a class="before-healing" href="/uploads/events/before.jpg" data-fancybox="images" data-caption="Фото  до начала лечения, 16.09.2022">
+																			<img src="/uploads/events/before2.jpg" alt="">
+																		</a>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="acount__photo">
+																		<p>Фото в процессе лечения</p>
+																		<a class="after-healing mb-10 d-block" href="/uploads/events/after2-2.jpg" data-fancybox="images" data-caption="Фото в процессе лечения, 18.09.2022">
+																			<img src="/uploads/events/after2-2.jpg" alt="">
+																		</a>
+																		<a class="after-healing mb-10 d-block" href="/uploads/events/after2-3.jpg" data-fancybox="images" data-caption="Фото в процессе лечения, 20.09.2022">
+																			<img src="/uploads/events/after2-3.jpg" alt="">
+																		</a>
+																		<a class="after-healing mb-10 d-none" href="/uploads/events/1657743909553.jpg"
+																			data-fancybox="images" data-caption="Фото в процессе лечения, 21.09.2022">
+																			<img src="/uploads/events/1657743909553.jpg" alt="">
+																		</a>
+																	</div>
+																</div>
+															</div>
+															<div class="row acount__photos-wrap">
+																<div class="col-md-2">
+																	<a class="btn btn--white --openpopup" href="#" data-popup="--photo-profile">Добавить фото</a>
+																</div>
+															</div>
+														</div>
+														<button class="btn btn--white">Сохранить</button>
+													</div>
+													<div class="col-md-1"></div>
+													<div class="col-md-4 --jcfe --flex">
+														<textarea class="admin__editor-textarea" placeholder="Добавить комментарий"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</template>
+
 				</div>
 			</div>
 		</div>
 	</main>
 
 	<script wbapp>
-		var catalog = {};
-		fetch('/api/v2/func/catalogs/getQuoteStatus', {
-			method: 'GET'
-		}).then((response) => {
-			return response.json();
-		}).then(function (data) {
-			catalog.quoteStatus = data;
-		});
-		fetch('/api/v2/func/catalogs/getQuotePay', {
-			method: 'GET'
-		}).then((response) => {
-			return response.json();
-		}).then(function (data) {
-			catalog.quotePay = data;
-		});
-		fetch('/api/v2/func/catalogs/getQuoteType', {
-			method: 'GET'
-		}).then((response) => {
-			return response.json();
-		}).then(function (data) {
-			catalog.quoteType = data;
-		});
-		wbapp.get('/api/v2/list/services', function (res) {
-			console.log('services', res);
-
-			let _services = {};
-			res.forEach(function (service, i) {
-				_services[service.id] = service;
-			});
-			console.log('services:', _services);
-			catalog.services = _services;
-		});
-		wbapp.get('/api/v2/list/experts', function (res) {
-			console.log('experts:', res);
-			let _experts = {};
-			res.forEach(function (expert, i){
-				_experts[expert.id] = expert;
-			});
-			console.log('experts:', _experts);
-			catalog.experts = _experts;
-		});
 		setTimeout(function () {
 			let tpl         = wbapp.tpl('#leadsList').html;
 			let editProfile = wbapp.tpl('#editProfile').html;
@@ -769,20 +1228,6 @@
 				template: tpl,
 				data: {},
 				on: {
-					saveQuote(ev) {
-						let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
-						let item = $(ev.node).data('id');
-						let form = $(ev.node).parents('.admin-editor');
-						$(form).find('.admin-editor__edit-profile').html('');
-						let copy = $('<form></form>');
-						$(copy).html($(form).clone());
-						let post = $(copy).serializeJson();
-						wbapp.post('/api/v2/update/quotes/' + item, post, function (res) {
-							console.log(res);
-						});
-						delete copy;
-						console.log(post);
-					},
 					editProfile(ev) {
 						let lead   = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
 						let item   = $(ev.node).data('id');
@@ -793,10 +1238,11 @@
 							data: {},
 							on: {
 								save(ev) {
-									let post = $($(ev.node).parents('form')).serializeJson();
+									let post = $($(ev.node).parents('form')).serializeJSON();
 									wbapp.post('/form/users/setClient/' + item, post, function (res) {
 										tabLeads.set('result.' + lead + '.clientData', res);
 										$(form).html('');
+										toast('Успешно сохранено')
 									});
 								}
 							}
@@ -811,11 +1257,14 @@
 						});
 					},
 					editQuote(ev) {
-						console.log('--', $(ev.node));
-						const _parent = $(ev.node).parents('.accardeon');
-						let lead  = $(ev.node).data('id');
-						let quote = tabLeads.get('result.' + lead);
-						let statusEdt = new Ractive({
+						const _parent          = $(ev.node).parents('.accardeon');
+						let lead               = $(ev.node).data('id');
+						let quote              = tabLeads.get('result.' + lead);
+						if (!quote.total_price){
+							quote.total_price = 0;
+						}
+						quote.total_price_text = numFormaSpace(quote.total_price);
+						let statusEdt          = new Ractive({
 							el: _parent.find('.admin-editor__top-select'),
 							template: editStatus,
 							data: {
@@ -826,11 +1275,27 @@
 								complete() {
 									$(statusEdt.find(`.select.status [data-id="${quote.status}"]`)).trigger('click');
 									$(statusEdt.find(`.select.pay [data-id="${quote.pay_status}"]`)).trigger('click');
-									console.log('status editor ready!');
+									console.log('status editor ready!', quote);
+								},
+								save(ev){
+									let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
+									let item = $(ev.node).data('id');
+									let form = $(ev.node).parents('.admin-editor');
+									$(form).find('.admin-editor__edit-profile').html('');
+									let copy = $('<form></form>');
+									$(copy).html($(form).clone());
+									let post = $(copy).serializeJSON();
+									wbapp.post('/api/v2/update/quotes/' + lead, post, function (res) {
+										tabLeads.set('results.'+lead, res);
+
+										toast('Успешно сохранено');
+									});
+									delete copy;
+									console.log(post);
 								}
 							}
 						});
-						let quoteEdt = new Ractive({
+						let quoteEdt           = new Ractive({
 							el: _parent.find('.admin-editor__events'),
 							template: editQuote,
 							data: {
@@ -838,13 +1303,16 @@
 								quote: quote
 							},
 							on: {
-								complete() {
-									console.log('quote editor ready!', $(quoteEdt.find('#editor-services-list')));
+								complete(ev) {
+									console.log('quote editor ready!');
+									initServicesSearchInput($('.popup-services-list'), servicesList);
+
 									initPlugins();
 								},
 								save(ev) {
-									let post = $($(ev.node).parents('form')).serializeJson();
+									let post = $($(ev.node).parents('form')).serializeJSON();
 									console.log('event data:', post);
+									toast('Успешно сохранено');
 								}
 							}
 						});
@@ -864,10 +1332,13 @@
 						$(form).find('.admin-editor__edit-profile').html('');
 						let copy = $('<form></form>');
 						$(copy).html($(form).clone());
-						let post = $(copy).serializeJson();
+						let post = $(copy).serializeJSON();
 						delete copy;
 						wbapp.post('/api/v2/update/quotes/' + lead, post, function (res) {
 							console.log(res);
+							tabEvents.set('result.' + lead, res);
+
+							toast('Успешно сохранено');
 						});
 						console.log(post);
 					},
@@ -884,9 +1355,10 @@
 
 								},
 								save(ev) {
-									let post = $($(ev.node).parents('form')).serializeJson();
+									let post = $($(ev.node).parents('form')).serializeJSON();
 									wbapp.post('/form/users/setClient/' + item, post, function (res) {
 										tabEvents.set('result.' + lead + '.clientData', res);
+										toast('Успешно сохранено');
 										$(form).html('');
 									});
 								}
@@ -913,6 +1385,11 @@
 								complete() {
 									$(status.find(`.select.status [data-id="${quote.status}"]`)).trigger('click');
 									$(status.find(`.select.pay [data-id="${quote.pay_status}"]`)).trigger('click');
+								},
+								save(ev) {
+									let post = $($(ev.node).parents('form')).serializeJSON();
+									console.log('event data:', post);
+									return false;
 								}
 							}
 						});
@@ -930,8 +1407,9 @@
 									console.log('editor ready!');
 								},
 								save(ev) {
-									let post = $($(ev.node).parents('form')).serializeJson();
-									console.log('event data:');
+									let post = $($(ev.node).parents('form')).serializeJSON();
+									console.log('event data:', post);
+									return false;
 								}
 							}
 						});
@@ -939,7 +1417,7 @@
 				}
 			});
 
-			['/api/v2/list/quotes?status=new&@size=10&@sort=priority:d',
+			['/api/v2/list/quotes?status=[new,uncall]&@size=10&@sort=priority:d',
 			 '/api/v2/list/quotes?status=!new&@size=10&@sort=priority:d'].forEach(
 				function (api_url, i) {
 					console.log(i, api_url);
