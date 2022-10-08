@@ -1341,7 +1341,7 @@
 								complete(ev) {
 									console.log('quote editor ready!');
 									initServicesSearchInput($('.popup-services-list'), servicesList);
-
+									initAdvAutocomplete();
 									initPlugins();
 								},
 								save(ev) {
