@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
+	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
 		<div class="account">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -511,118 +511,105 @@
 	</main>
 
 	<script wbapp>
-		setTimeout(function () {
-			let editorProfile = wbapp.tpl('#editorProfile').html;
-			var cabinet       = new Ractive({
-					el: 'main.page',
-					template: $('main.page').html(),
-					data: {
-						user: wbapp._session.user,
-						expert: {},
-						catalog: {},
-						events: {
-							'upcoming': [],
-							'current': []
-						},
-						history: []
-					},
-					on: {
-						init() {
-							wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
-								cabinet.set('user', data); /* get actually user data */
-								console.log('user', data);
-							});
-							wbapp.get('/api/v2/list/experts/?login=' + wbapp._session.user.id, function (data) {
-								cabinet.set('expert', data[0]); /* get actually user data */
-								console.log('expert', data[0]);
-							});
-							wbapp.get(
-								'/api/v2/list/records?group=events&status=upcoming&experts~=' + wbapp._session.user.id,
-								function (data) {
-									const curr_timestamp = parseInt(getdate()[0]);
+		let editorProfile = wbapp.tpl('#editorProfile').html;
+		var cabinet       = new Ractive({
+			el: 'main.page',
+			template: $('main.page').html(),
+			data: {
+				user: wbapp._session.user,
+				expert: {},
+				catalog: {},
+				events: {
+					'upcoming': [],
+					'current': []
+				},
+				history: []
+			},
+			on: {
+				init() {
+					wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
+						cabinet.set('user', data); /* get actually user data */
+						console.log('user', data);
+					});
+					wbapp.get('/api/v2/list/experts/?login=' + wbapp._session.user.id, function (data) {
+						cabinet.set('expert', data[0]); /* get actually user data */
+						console.log('expert', data[0]);
+					});
+					wbapp.get(
+						'/api/v2/list/records?group=events&status=upcoming&experts~=' + wbapp._session.user.id,
+						function (data) {
+							const curr_timestamp = parseInt(getdate()[0]);
 
-									data.forEach(function (rec) {
-										const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
+							data.forEach(function (rec) {
+								const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
 
-										if (event_date !== (new Date()).toLocaleDateString()) {
-											cabinet.push('events.upcoming', data); /* get actually user next events */
-										}
+								if (event_date !== (new Date()).toLocaleDateString()) {
+									cabinet.push('events.upcoming', data); /* get actually user next events */
+								}
 
-										if (((curr_timestamp - (15 * 60)) < rec.event_begin_time) &&
-										    (rec.event_end_time > curr_time)) {
-											cabinet.push('events.current', rec);
-										}
-									});
-								});
-
-							wbapp.get('/api/v2/list/records?group=events&status=past&experts~=' + wbapp._session.user.id,
-								function (data) {
-									console.log('history', data);
-									cabinet.set('history', data); /* get actually user next events */
-								});
-
-							setTimeout(function () {
-								cabinet.set('catalog', catalog);
-							});
-						},
-						complete(ev) {
-							let profileEditor = new Ractive({
-								el: 'main.page .profile-edit',
-								template: editorProfile,
-								data: {
-									user: cabinet.get('user')
-								},
-								on: {
-									complete() {
-										console.log('expert editor ready!');
-									},
-									profileSave(ev) {
-										let $form = $(ev.node);
-										let uid   = profileEditor.get('user.id');
-										if ($form.verify() && uid > '') {
-											let data   = $form.serializeJson();
-											data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-											wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
-												console.log(res);
-												cabinet.set('user', res);
-											});
-											$('.user__edit.all').trigger('click');
-										}
-										return false;
-									},
-									saveExpert(ev) {
-										let $form = $(ev.node);
-										let uid   = profileEditor.get('user.expert.id');
-										console.log('saved', uid);
-
-										if ($form.verify() && uid > '') {
-											let data = $form.serializeJSON();
-											wbapp.post('/api/v2/update/experts/' + uid, data, function (res) {
-												cabinet.set('expert', res);
-												cabinet.set('user.expert', res);
-												console.log('saved', res);
-											});
-											$('.user__edit.all').trigger('click');
-										}
-										return false;
-									}
+								if (((curr_timestamp - (15 * 60)) < rec.event_begin_time) &&
+								    (rec.event_end_time > curr_time)) {
+									cabinet.push('events.current', rec);
 								}
 							});
+						});
+
+					wbapp.get('/api/v2/list/records?group=events&status=past&experts~=' + wbapp._session.user.id,
+						function (data) {
+							console.log('history', data);
+							cabinet.set('history', data); /* get actually user next events */
+						});
+
+					setTimeout(function () {
+						cabinet.set('catalog', catalog);
+					});
+				},
+				complete(ev) {
+					let profileEditor = new Ractive({
+						el: 'main.page .profile-edit',
+						template: editorProfile,
+						data: {
+							user: cabinet.get('user')
+						},
+						on: {
+							complete() {
+								console.log('expert editor ready!');
+							},
+							profileSave(ev) {
+								let $form = $(ev.node);
+								let uid   = profileEditor.get('user.id');
+								if ($form.verify() && uid > '') {
+									let data   = $form.serializeJson();
+									data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+									wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
+										console.log(res);
+										cabinet.set('user', res);
+									});
+									$('.user__edit.all').trigger('click');
+								}
+								return false;
+							},
+							saveExpert(ev) {
+								let $form = $(ev.node);
+								let uid   = profileEditor.get('user.expert.id');
+								console.log('saved', uid);
+
+								if ($form.verify() && uid > '') {
+									let data = $form.serializeJSON();
+									wbapp.post('/api/v2/update/experts/' + uid, data, function (res) {
+										cabinet.set('expert', res);
+										cabinet.set('user.expert', res);
+										console.log('saved', res);
+									});
+									$('.user__edit.all').trigger('click');
+								}
+								return false;
+							}
 						}
-					}
-
+					});
 				}
-
-				,
-				50);
-			$(function () {
-				setTimeout(function () {
-
-				}, 50);
-				setTimeout(function () {
-					$('.current_event').slideDown('fast');
-				}, 15000);
-			});
+			}
+		});
 	</script>
 </div>
 <div>

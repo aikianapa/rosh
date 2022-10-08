@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
+	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
 		<div class="container">
 			<div class="account">
 				<div class="crumbs">
@@ -660,7 +660,6 @@
 		});
 	</script>
 </div>
-
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
