@@ -34,6 +34,7 @@ var serviceTags  = {
 		"color": "purple"
 	}
 };
+
 window.cabinetPage = {
 	catalog:{},
 	objects:{
@@ -48,6 +49,7 @@ window.cabinetPage = {
 		},
 	},
 	initData: function(){
+		console.log('window.cabinetPage init... start');
 		fetch('/api/v2/func/catalogs/getQuoteStatus', {method: 'GET'})
 			.then((response) => {
 				return response.json();
@@ -154,12 +156,11 @@ window.cabinetPage = {
 		});
 	},
 	initPopups: function(){
-
 	}
 };
 
-
 $(function () {
+
 	/* common function */
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
 		var changes = {};
@@ -202,12 +203,16 @@ $(function () {
 	};
 
 	window.initServicesSearchInput = function ($selector, service_list) {
+		console.log($selector, service_list);
+
 		var _parent_form = $selector.parents('form');
 		$selector.autocomplete({
 			noCache: true,
 			minChars: 1,
 			lookup: service_list,
 			beforeRender: function (container, suggestions) {
+				console.log(suggestions);
+
 				var CNT = $(container);
 				$(container).addClass('search__drop').html('');
 				var _catSelector = $(this).parents('form').find('[name="service_category"]:checked');
@@ -311,8 +316,8 @@ $(function () {
 				_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 					sum += parseInt($(this).data('price'));
 				});
-				console.log(_parent_form.find('.admin-editor__patient .search__drop-item').length);
-				_parent_form.find('.admin-editor__summ .total-price').text(numFormaSpace(sum) + ' ₽');
+				console.log(sum);
+				_parent_form.find('.admin-editor__summ .price').text(numFormaSpace(sum) + ' ₽');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});

@@ -1,111 +1,5 @@
 <view>
 	<!--!!! for cabinet !!!-->
-	<div class="popup --record">
-		<template id="popupRecord">
-			<div class="popup__overlay"></div>
-			<form class="popup__panel" on-submit="submit">
-				<button class="popup__close" on-click="cancel">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Запись на прием</div>
-				<div class="text-bold mb-10">Разделы услуг</div>
-				<div class="popups__text-chexboxs">
-					{{#each categories}}
-					<label class="text-radio">
-						<input type="radio" name="service_category" value="{{id}}">
-						<span>{{name}}</span>
-					</label>
-					{{/each}}
-				</div>
-				<div class="input" data-hide="service-search">
-					<input class="search__input" type="text"
-						placeholder="Поиск по услугам"
-						id="popup-services-list">
-					<div class="search__drop">
-					</div>
-					<button class="search__btn" type="button">
-						<svg class="svgsprite _search">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-						</svg>
-					</button>
-				</div>
-				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-					<input class="checkbox-hidden-next-form" type="checkbox" name="no_services" value="1">
-					<span></span>
-					<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
-				</label>
-				<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-					<input class="checkbox-visible-next-form" type="checkbox"
-						name="for_consultation" value="1">
-					<span></span>
-					<div class="checbox__name">Консультация врача</div>
-				</label>
-				<div class="select-form" style="display: none;" data-show="service">
-					<div class="text-bold mb-20">Тип события</div>
-					<div class="popups__text-chexboxs">
-						<label class="text-radio">
-							<input type="radio" name="type" value="clinic" checked>
-							<span>В клинике</span>
-						</label>
-						<label class="text-radio switch-blocks">
-							<input type="radio" name="type" value="online">
-							<span>Онлайн</span>
-						</label>
-					</div>
-				</div>
-
-				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
-					<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
-					<span></span>
-					<div class="checbox__name">Я не знаю, кого выбрать</div>
-				</label>
-				<div class="select-form" data-hide="expert">
-					<div class="select">
-						<div class="select__main">
-							<div class="select__placeholder">Выберите специалиста</div>
-							<div class="select__values"></div>
-						</div>
-						<div class="select__list">
-							{{#each experts}}
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox" name="experts[]" value="{{id}}">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">{{name}}</div>
-									</div>
-								</label>
-							</div>
-							{{/each}}
-						</div>
-					</div>
-				</div>
-				<div class="admin-editor__patient" data-hide="service-search">
-					<div class="text-bold mb-10">Выбраны услуги</div>
-				</div>
-				<div class="admin-editor__summ" data-hide="service-search">
-					<p>Всего</p>
-					<input type="hidden" name="price">
-					<p class="price">0 ₽</p>
-				</div>
-				<button class="btn btn--black form__submit" type="submit"> Записаться</button>
-			</form>
-
-			<div class="popup__panel --succed">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Запись на прием</div>
-				<h3 class="h3">Успешно!</h3>
-				<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
-			</div>
-		</template>
-	</div>
-
 	<div class="popup --analize-type">
 		<template id="popupAnalizeType">
 			<div class="popup__overlay"></div>
@@ -468,6 +362,7 @@
 			</div>
 		</template>
 	</div>
+
 	<div class="popup --confirm-sms-code">
 		<template id="popupConfirmSmsCode">
 			<div class="popup__overlay"></div>
@@ -860,117 +755,109 @@
 		</template>
 	</div>
 
-	<script wbapp>
-		window.popupAnalizeType    = new Ractive({
-			el: '.popup.--analize-type',
-			template: document.querySelector('.popup.--analize-type > template').innerHTML,
-			data: {},
-			on: {
-				submit() {
-					let form = this.find('.popup.--analize-type .popup__form');
-					if ($(form).verify()) {
-						let post = $(form).serializeJSON();
-						wbapp.post('/create/records', post, function (data) {
-							if (data.error) {
-								wbapp.trigger('wb-save-error', {'data': data});
-							} else {
-								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-							}
-						});
-					}
-				}
-			}
-		});
-		window.popupsCreateProfile  = new Ractive({
-			el: '.popup.--create-client',
-			template: document.querySelector('.popup.--create-client > template').innerHTML,
-			data: {},
-			on: {
-				submit() {
-					let form = this.find('.popup.--create-client .popup__form');
-					if ($(form).verify()) {
-						let post = $(form).serializeJSON();
-						$.ajax({
-							url: '/form/phoneAuth/get_code',
-							method: 'POST',
-							data: {
-								phone: post.phone,
-							},
-							success: function (data) {
-								let res = JSON.parse(data);
-								console.log(res)
-
-								if (res.status === 'error') {
-									toast(res.message, '', 'error');
+	<script wbapp remove>
+		setTimeout(function () {
+			window.popupAnalizeType     = new Ractive({
+				el: '.popup.--analize-type',
+				template: wbapp.tpl('#popupAnalizeType').html,
+				data: {},
+				on: {
+					submit() {
+						let form = this.find('.popup.--analize-type .popup__form');
+						if ($(form).verify()) {
+							let post = $(form).serializeJSON();
+							wbapp.post('/create/records', post, function (data) {
+								if (data.error) {
+									wbapp.trigger('wb-save-error', {'data': data});
 								} else {
-									popupsConfirmSmsCode.showPopup();
+									$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
+									$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
 								}
-							}
-						})
-						wbapp.post('/create/users/', post, function (data) {
-							if (data.error) {
-								wbapp.trigger('wb-save-error', {'data': data});
-							} else {
-								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-							}
-						});
+							});
+						}
 					}
 				}
-			}
-		});
-		window.popupsConfirmSmsCode = new Ractive({
-			el: '.popup.--confirm-sms-code',
-			template: document.querySelector('.popup.--confirm-sms-code > template').innerHTML,
-			data: {},
-			on: {
-				keyup(ev) {
-					const _this = $(ev.node);
-					const _phone = $(ev.node).find('[name="phone"]').val();
-					_this.next().focus();
+			});
+			window.popupsCreateProfile  = new Ractive({
+				el: '.popup.--create-client',
+				template: wbapp.tpl('#popupCreateClient').html,
+				data: {},
+				on: {
+					submit() {
+						let form = this.find('.popup.--create-client .popup__form');
+						if ($(form).verify()) {
+							let post = $(form).serializeJSON();
 
-					var sms_code = '';
-					$.each(auth.smscode_window_digits, function (digit, item) {
-						sms_code += $(item).val();
-					});
+							$.ajax({
+								url: '/form/phoneAuth/get_code',
+								method: 'POST',
+								data: {
+									phone: post.phone
+								},
+								success: function (data) {
+									let res = JSON.parse(data);
+									console.log(res);
 
-					if (sms_code.length === 6) {
-						$.ajax({
-							url: '/form/phoneAuth/check_code',
-							method: 'POST',
-							data: {
-								phone: _phone,
-								code: sms_code
-							},
-							success: function (data) {
+									if (res.status === 'error') {
+										toast(res.message, '', 'error');
+									} else {
+										popupsConfirmSmsCode.set('phone', post.phone);
+										popupsConfirmSmsCode.set('client', post);
+										popupsConfirmSmsCode.showPopup();
+									}
+								}
+							});
 
-								if (data.status === 'ok') {
-									$.ajax({
-										url: '/form/phoneAuth/createUser',
-										data: {
-											phone: auth.phone_current,
-											password: auth.sms_code
-										},
-										method: 'POST',
-										success: function (data) {
-											if (data.status === 'ok') {
-												toast('')
-												location.replace(data.user.group.url_login);
+						}
+					}
+				}
+			});
+			window.popupsConfirmSmsCode = new Ractive({
+				el: '.popup.--confirm-sms-code',
+				template: wbapp.tpl('#popupConfirmSmsCode').html,
+				data: {
+					phone: '',
+					client:{}
+				},
+				on: {
+					keyup(ev) {
+						const _this  = $(ev.node);
+						const _phone = $(ev.node).find('[name="phone"]').val();
+						_this.next().focus();
+
+						var sms_code = '';
+						$.each(auth.smscode_window_digits, function (digit, item) {
+							sms_code += $(item).val();
+						});
+
+						if (sms_code.length === 6) {
+							$.ajax({
+								url: '/form/phoneAuth/check_code',
+								method: 'POST',
+								data: {
+									phone: _phone,
+									code: sms_code
+								},
+								success: function (data) {
+									if (data.status === 'ok') {
+										wbapp.post('/create/users/', post, function (data) {
+											if (data.error) {
+												wbapp.trigger('wb-save-error', {'data': data});
 											} else {
-												console.warn(data);
+												toast('Карточка клиента создана!');
+												$('.popup.--confirm-sms-code').hide();
 											}
-										}
-									});
+										});
+									}
 								}
-							}
-						});
+							});
+						}
 					}
+				},
+				showPopup: function () {
+					$('.popup.--confirm-sms-code').show();
 				}
-			},
-			showPopup: function(){
-				$('.popup.--confirm-sms-code').show();
-			}
+			});
 		});
 	</script>
 </view>

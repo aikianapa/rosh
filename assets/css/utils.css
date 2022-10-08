@@ -153,3 +153,7 @@
 .jq-toast-wrap {
 	width : 320px !important;
 }
+.account__table .acount__table-accardeon{
+	padding-left: 20px;
+	padding-right: 20px;
+}

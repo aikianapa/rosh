@@ -11,25 +11,28 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-
 	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
-		<div class="account">
-			<div class="crumbs">
-				<a class="crumbs__arrow" href="#">
-					<svg class="svgsprite _crumbs-back">
-						<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-					</svg>
-				</a>
-				<a class="crumbs__link" href="/">Главная</a>
-				<a class="crumbs__link" href="#">Личный кабинет</a>
-			</div>
-			<div class="title-flex --flex --jcsb">
-				<div class="title">
-					<h1 class="h1 mb-10">Личный кабинет </h1>
+		<div class="container">
+			<div class="account">
+				<div class="crumbs">
+					<a class="crumbs__arrow" href="#">
+						<svg class="svgsprite _crumbs-back">
+							<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+						</svg>
+					</a>
+					<a class="crumbs__link" href="/">Главная</a>
+					<a class="crumbs__link" href="#">Личный кабинет</a>
 				</div>
-				<button class="btn btn--black --openpopup" data-popup="--record" on-click="popupCreateQuote">Записаться на прием</button>
-			</div>
-			<div class="container">
+
+				<div class="title-flex --flex --jcsb">
+					<div class="title">
+						<h1 class="h1 mb-10">Личный кабинет</h1>
+					</div>
+					<button class="btn btn--black --openpopup" data-popup="--record"
+						on-click="popupCreateQuote">
+						Записаться на прием
+					</button>
+				</div>
 				<div class="account__panel">
 					<div class="account__info">
 						<div class="user">
@@ -408,25 +411,27 @@
 												<div class="col-md-6">
 													<div class="acount__photo">
 														<p>Фото до начала лечения</p>
-														{{#each this.photos.before}}
+														{{#each photos.before}}
 														<div class="col-md-6">
 															<a class="after-healing__item"
 																data-fancybox="images"
-																href="{{this.image.src}}"
-																data-caption="{{this.date}}">
-																<div class="healing__date">{{this.date}}</div>
+																href="{{.image.src}}"
+																data-caption="{{.date}}">
+																<div class="healing__date">{{.date}}</div>
 																<div class="after-healing__photo"
-																	style="background-image: url('{{this.image.src}}')">
+																	style="background-image: url({{.image.src}})">
 																</div>
 															</a>
 														</div>
+														{{else}}
+
 														{{/each}}
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="acount__photo">
 														<p>Фото в процессе лечения</p>
-														{{#each this.photos.after}}
+														{{#each photos.after}}
 														<a class="after-healing__item"
 															data-fancybox="images"
 															href="{{this.image.src}}"
@@ -527,6 +532,7 @@
 					</div>
 				</div>
 			</div>
+		</div>
 	</main>
 
 	<script wbapp>
@@ -555,7 +561,7 @@
 
 					wbapp.get('/api/v2/list/records?status=upcoming&client=' + wbapp._session.user.id,
 						function (data) {
-							const curr_timestamp = parseInt(getdate()[0]);
+							let curr_timestamp = parseInt(getdate()[0]);
 
 							data.forEach(function (rec) {
 								const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
@@ -564,12 +570,12 @@
 									cabinet.push('events.upcoming', data); /* get actually user next events */
 								}
 
-								if (((curr_timestamp - 15 * 60) < rec.event_begin_time)
-								    && (rec.event_end_time > curr_time)) {
+								if ((curr_timestamp+10) > rec.event_begin_time && (rec.event_end_time >= curr_timestamp)) {
 									cabinet.push('events.current', rec);
 								}
 							});
 						});
+
 					wbapp.get('/api/v2/list/records?status=past&client=' + wbapp._session.user.id,
 						function (data) {
 							console.log('history.events:', data);
@@ -601,12 +607,6 @@
 								console.log('ready!', catalog);
 								initServicesSearchInput($('#popup-services-list'), servicesList);
 								initPlugins();
-							},
-							cancel(ev) {
-
-							},
-							close(ev) {
-
 							},
 							submit(ev) {
 								let $form = $(ev.node);
@@ -663,8 +663,114 @@
 		});
 	</script>
 </div>
+
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
+	<div class="popup --record">
+		<template id="popupRecord">
+			<div class="popup__overlay"></div>
+			<form class="popup__panel" on-submit="submit">
+				<button class="popup__close" on-click="cancel">
+					<svg class="svgsprite _close">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+					</svg>
+				</button>
+				<div class="popup__name text-bold">Запись на прием</div>
+				<div class="text-bold mb-10">Разделы услуг</div>
+				<div class="popups__text-chexboxs">
+					{{#each categories}}
+					<label class="text-radio">
+						<input type="radio" name="service_category" value="{{id}}">
+						<span>{{name}}</span>
+					</label>
+					{{/each}}
+				</div>
+				<div class="input" data-hide="service-search">
+					<input class="search__input" type="text"
+						placeholder="Поиск по услугам"
+						id="popup-services-list">
+					<div class="search__drop">
+					</div>
+					<button class="search__btn" type="button">
+						<svg class="svgsprite _search">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+						</svg>
+					</button>
+				</div>
+				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
+					<input class="checkbox-hidden-next-form" type="checkbox" name="no_services" value="1">
+					<span></span>
+					<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
+				</label>
+				<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+					<input class="checkbox-visible-next-form" type="checkbox"
+						name="for_consultation" value="1">
+					<span></span>
+					<div class="checbox__name">Консультация врача</div>
+				</label>
+				<div class="select-form" style="display: none;" data-show="service">
+					<div class="text-bold mb-20">Тип события</div>
+					<div class="popups__text-chexboxs">
+						<label class="text-radio">
+							<input type="radio" name="type" value="clinic" checked>
+							<span>В клинике</span>
+						</label>
+						<label class="text-radio switch-blocks">
+							<input type="radio" name="type" value="online">
+							<span>Онлайн</span>
+						</label>
+					</div>
+				</div>
+
+				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
+					<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
+					<span></span>
+					<div class="checbox__name">Я не знаю, кого выбрать</div>
+				</label>
+				<div class="select-form" data-hide="expert">
+					<div class="select">
+						<div class="select__main">
+							<div class="select__placeholder">Выберите специалиста</div>
+							<div class="select__values"></div>
+						</div>
+						<div class="select__list">
+							{{#each experts}}
+							<div class="select__item select__item--checkbox">
+								<label class="checkbox checkbox--record">
+									<input type="checkbox" name="experts[]" value="{{id}}">
+									<span></span>
+									<div class="checbox__name">
+										<div class="select__name">{{name}}</div>
+									</div>
+								</label>
+							</div>
+							{{/each}}
+						</div>
+					</div>
+				</div>
+				<div class="admin-editor__patient" data-hide="service-search">
+					<div class="text-bold mb-10">Выбраны услуги</div>
+				</div>
+				<div class="admin-editor__summ" data-hide="service-search">
+					<p>Всего</p>
+					<input type="hidden" name="price">
+					<p class="price">0 ₽</p>
+				</div>
+				<button class="btn btn--black form__submit" type="submit"> Записаться</button>
+			</form>
+
+			<div class="popup__panel --succed">
+				<button class="popup__close">
+					<svg class="svgsprite _close">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+					</svg>
+				</button>
+				<div class="popup__name text-bold">Запись на прием</div>
+				<h3 class="h3">Успешно!</h3>
+				<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+			</div>
+		</template>
+	</div>
 </div>
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

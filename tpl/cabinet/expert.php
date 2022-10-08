@@ -443,7 +443,7 @@
 				<div class="lk-title">История посещений и приемов</div>
 				<div class="account__history">
 					<div class="account__table">
-						<div class="account__table-head" style="padding:0 40px;">
+						<div class="account__table-head">
 							<div class="history-item">Дата</div>
 							<div class="history-item">Время</div>
 							<div class="history-item">Пациент</div>
