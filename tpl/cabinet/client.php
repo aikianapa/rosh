@@ -597,6 +597,7 @@
 							complete() {
 								console.log('ready!', catalog);
 								initServicesSearchInput($('#popup-services-list'), servicesList);
+								initPlugins();
 							},
 							cancel(ev) {
 
