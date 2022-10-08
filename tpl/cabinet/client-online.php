@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ru">
 <head>
-    <title seo>Онлайн консультация</title>
+    <title seo>Онлайн консультация со специалистом</title>
 </head>
 <body class="body lk-cabinet online-consultation" data-barba="wrapper">
     <div>

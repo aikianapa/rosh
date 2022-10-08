@@ -258,7 +258,7 @@
 											</div>
 										</div>
 									</div>
-									{{/else}}
+									{{else}}
 									<div class="acount__table-accardeon accardeon">
 										<div class="acount__table-main accardeon__main">
 											Нет записей о посещении
@@ -269,6 +269,7 @@
 								</div>
 							</div>
 						</div>
+						
 						<!-- !!! longterm tab !!! -->
 						<div class="account__tab data-tab-item" data-tab="longterm">
 							<div class="account__table">
@@ -285,31 +286,34 @@
 												<p>Дата</p> {{this.event_date}} - {{this.longterm_date_end}}
 											</div>
 											<div class="healing-item">
-												<p>Услуги</p> {{this.longterm_name}}
+												<p>Услуги</p> {{this.title}}
 											</div>
 										</div>
 										<div class="acount__table-list accardeon__list">
 											<div class="row">
 												<div class="col-md-4">
 													<div class="text-bold text-big mb-20">Фото до начала лечения</div>
-
-													<a class="before-healing" href="{{image_before.image.src}}" data-fancybox="images" data-caption="{{image_before.date}}">
-														<h2 class="h2 healing__date-title">{{image_before.date}}</h2>
-														<div class="before-healing__photo" style="background-image: url('{{image_before.src}}')">
-														</div>
-														<div class="healing__date">{{image_before.date}}</div>
-														<div class="healing__description">
-															{{this.longterm_comment}}
-														</div>
-													</a>
+													{{#each photos.before}}
+														<a class="after-healing__item"
+															data-fancybox="images"
+															href="{{this.image.src}}"
+															data-caption="{{this.date}}">
+															<h2 class="h2 healing__date-title">{{this.date}}</div>
+															<div class="after-healing__photo"
+																style="background-image: url('{{this.image.src}}')">
+															</div>
+															<div class="healing__description">
+																{{this.comment}}
+															</div>
+														</a>
+													{{/each}}
 												</div>
 												<div class="col-md-8">
 													<div class="text-bold text-big mb-20">
 														Фото после начала лечения
 													</div>
 													<div class="after-healing">
-														<h2 class="h2 healing__date-title">Сентябрь 2022</h2>
-
+														<h2 class="h2 healing__date-title d-none month-header"></h2>
 														<div class="row">
 															{{#each image_after}}
 															<div class="col-md-6">
@@ -330,7 +334,7 @@
 											</div>
 										</div>
 									</div>
-									{{/else}}
+									{{else}}
 									<div class="acount__table-accardeon accardeon">
 										<div class="acount__table-main accardeon__main">
 											Нет записей о продолжительном лечении

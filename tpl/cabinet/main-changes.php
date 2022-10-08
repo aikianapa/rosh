@@ -46,107 +46,49 @@
 								<div class="changes-item">ФИО</div>
 								<div class="changes-item">Специалист</div>
 								<div class="changes-item">Услуга</div>
-								<div class="changes-item">Рекомендация</div>
-								<div class="changes-item">Новая рекомендация</div>
+								<div class="changes-item">Изменения</div>
 							</div>
 							<div class="account__table-body">
+								{{#each changes}}
 								<div class="acount__table-accardeon accardeon">
-									<div class="acount__table-main accardeon__main acount__table-auto">
-										<div class="changes-item">
-											<p>Дата / время изменения</p>
-											<span>03.10.2022 16:23</span>
+									<div class="acount__table-main accardeon__main accardeon__click">
+										<div class="history-item">
+											<p>Дата / время изменения</p>{{this.date}} {{this.time}}
 										</div>
-										<div class="changes-item">
-											<p>ФИО</p>
-											<span>Кира Глумова</span>
+										<div class="history-item">
+											<p>ФИО</p>{{this.clientData.fullname}}
 										</div>
-										<div class="changes-item">
+										<div class="history-item">
 											<p>Специалист</p>
-											<span>Иванов Иван Алексеевич</span>
+											{{catalog.experts[this.expert].head}}
 										</div>
-										<div class="changes-item">
-											<p>Услуга </p>
-											<div>Фотолечение BBL</div>
+										<div class="history-item">
+											<p>Услуги</p>
+											{{#services}}
+											{{catalog.services[this].header}}<br>
+											{{/services}}
 										</div>
-										<div class="changes-item">
-											<p>Рекомендация</p>
-											<span>Ut tortor pretium viverra suspendisse potenti nullam ac tortor vitae. Diam vel quam elementum pulvinar etiam. Rhoncus est pellentesque elit ullamcorper. Vitae tempus quam pellentesque nec nam aliquam sem.</span>
-										</div>
-										<div class="changes-item">
-											<p>Новая рекомендация </p>
-											<span>Ut tortor pretium viverra suspendisse potenti nullam ac tortor vitae.</span>
+										<div class="history-item">
+											<p>Изменения</p>
+											{{#each this.changes}}
+											<p>
+												<span>Поле: {{catalog.labels[this.field]}}</span>
+												<span>Предыдущее значение: {{this.prev_val}}</span>
+												<span>Новое значение:{{this.curr_val}}</span>
+											</p>
+											{{/each}}
 										</div>
 									</div>
-									<div class="acount__table-list accardeon__list"></div>
+									<div class="acount__table-list accardeon__list">
+									</div>
 								</div>
-							</div>
-							<div class="account__table-body">
+								{{else}}
 								<div class="acount__table-accardeon accardeon">
-									<div class="acount__table-main accardeon__main acount__table-auto">
-										<div class="changes-item">
-											<p>Дата / время изменения</p>
-											<span>03.10.2022 16:21</span>
-										</div>
-										<div class="changes-item">
-											<p>ФИО</p>
-											<span>Иванов Иван</span>
-										</div>
-										<div class="changes-item">
-											<p>Специалист</p>
-											<span>Иванов Иван Алексеевич</span>
-										</div>
-										<div class="changes-item">
-											<p>Услуга </p>
-											<div>Консультация врача</div>
-										</div>
-										<div class="changes-item">
-											<p>Рекомендация</p>
-											<span>Lorem ipsum dolor sit amet consectetur adipiscing elit ut. Suspendisse ultrices gravida dictum fusce ut placerat orci. A diam maecenas sed enim ut. Sem et tortor consequat id porta nibh venenatis cras sed. Pharetra et ultrices neque ornare aenean euismod elementum nisi. Ut sem viverra aliquet eget sit amet. Id leo in vitae turpis massa sed elementum tempus egestas</span>
-										</div>
-										<div class="changes-item">
-											<p>Новая рекомендация </p>
-											<span>Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
-										</div>
-									</div>
-									<div class="acount__table-list accardeon__list"></div>
-								</div>
-							</div>
-							<div class="account__table-head">
-								<div class="changes-item">Дата / время изменения</div>
-								<div class="changes-item">ФИО</div>
-								<div class="changes-item">Специалист</div>
-								<div class="changes-item">Услуга</div>
-								<div class="changes-item">Рекомендация</div>
-								<div class="changes-item">Новая рекомендация</div>
-							</div>
-							<div class="account__table-body">
-								<div class="acount__table-accardeon accardeon --yellow">
-									<div class="acount__table-main accardeon__main acount__table-auto">
-										<div class="changes-item">
-											<p>Дата / время изменения</p>
-											<span>03.10.2022 16:20</span>
-										</div>
-										<div class="changes-item">
-											<p>ФИО</p><span>Client Rosh</span>
-										</div>
-										<div class="changes-item">
-											<p>Специалист</p><span>Иванов Иван Алексеевич</span>
-										</div>
-										<div class="changes-item">
-											<p>Услуга </p>
-											<div>Консультация врача</div>
-											<div>Фотолечение BBL</div>
-										</div>
-										<div class="changes-item">
-											<p>Рекомендация</p>
-											<span>-</span>
-										</div>
-										<div class="changes-item">
-											<p>Новая рекомендация </p>
-											<span>Тестовая рекомендация</span>
-										</div>
+									<div class="acount__table-main accardeon__main">
+										В журналe изменений нет даных 
 									</div>
 								</div>
+								{{/each}}
 							</div>
 						</div>
 					</div>
@@ -155,29 +97,18 @@
         </main>
 
         <script>
-            var cabinet = new Ractive({
+            var cabinetChanges = new Ractive({
                 el: 'main.page',
                 template: $('main.page').html(),
                 data: {
-                    user: wbapp._session.user
+                    user: wbapp._session.user,
+	                changes: []
                 },
                 on: {
                     init() {
-                        //wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function(data) {
-                        //    cabinet.set('user', data); /* get actually user data */
-                        //});
-                    },
-                    profileSave(ev) {
-                        //let $form = $(ev.node);
-                        //let uid = cabinet.get('user.id');
-                        //if ($form.verify() && uid > '') {
-                        //    let data = $form.serializeJson()
-                        //    data.phone = str_replace([' ','+','-','(',')'],'',data.phone)
-                        //    wbapp.post('/api/v2/update/users/'+uid,data,function(res){
-                        //        console.log(res);
-                        //    })
-                        //}
-                        //return false
+                        wbapp.get('/api/v2/list/changes/@sort=date:d', function(data) {
+                            cabinetChanges.set('changes', data);
+                        });
                     }
                 }
             })

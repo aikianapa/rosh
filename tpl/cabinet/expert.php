@@ -469,9 +469,9 @@
 									</div>
 									<div class="history-item">
 										<p>Услуги</p>
-										{{#this.services}}
-										{{this.name}}<br>
-										{{/}}
+										{{#services}}
+										{{catalog.services[this].header}}<br>
+										{{/services}}
 									</div>
 									<div class="history-item">
 										<p>Анализы</p>
@@ -492,10 +492,10 @@
 										</a>
 									</div>
 									<textarea class="account-edit__textarea" id="{{this.id}}-recommendation" name="recommendation">{{this.recommendation}}</textarea>
-									<button class="btn btn--white" on-click="@.saveRecommendation({{this.id}}, '{{this.id}}-recommendation')">Сохранить</button>
+									<button class="btn btn--white" on-click="saveRecommendation">Сохранить</button>
 								</div>
 							</div>
-							{{/else}}
+							{{else}}
 							<div class="acount__table-accardeon accardeon">
 								<div class="acount__table-main accardeon__main">
 									Нет записей о посещении
@@ -607,6 +607,11 @@
 							}
 						}
 					});
+				},
+				saveRecommendation(ev) {
+					//Record.saveRecommendation();
+					// need orig rec. getter
+					var diff = getChangesJSON( ['recommendation']);
 				}
 			}
 		});

@@ -2,6 +2,7 @@
 <html class="no-js" lang="ru">
 <head>
     <title seo>Кабинет специалиста</title>
+    <link rel="icon" href="/favicon.svg" type=" image/svg+xml">
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
@@ -97,7 +98,7 @@
                                         <button class="btn btn--white" on-click="@.saveRecomendation" data-record="{{this.id}}">Сохранить</button>
                                     </div>
                                 </div>
-                                {{/else}}
+                                {{else}}
                                 <div class="account__panel" wb-if="'{{_route.params.q}}' == 'йцу'">
                                     <span>Ничего не найдено. Измените запрос и повторите поиск</span>
                                 </div>

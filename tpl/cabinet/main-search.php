@@ -2,6 +2,7 @@
 <html class="no-js" lang="ru">
 <head>
 	<title seo>Кабинет администратора</title>
+	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
