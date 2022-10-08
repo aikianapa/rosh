@@ -162,9 +162,9 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
 									<div class="account-event">
-										{{#this.services}}
-										<p>{{this.name}}</p>
-										{{/this.services}}
+										{{#services}}
+										{{catalog.services[this].header}}<br>
+										{{/services}}
 									</div>
 								</div>
 							</div>
@@ -232,9 +232,9 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
 									<div class="account-event">
-										{{#this.services}}
-										<p>{{this.name}}</p>
-										{{/this.services}}
+										{{#services}}
+										{{catalog.services[this].header}}<br>
+										{{/services}}
 									</div>
 								</div>
 							</div>
@@ -331,15 +331,15 @@
 										</div>
 										<div class="history-item">
 											<p>Специалисты</p>
-											{{#this.experts}}
+											{{#experts}}
 											{{catalog.experts[this].head}}<br>
-											{{/}}
+											{{/experts}}
 										</div>
 										<div class="history-item">
 											<p>Услуги</p>
-											{{#this.services}}
-											{{this.name}}<br>
-											{{/}}
+											{{#services}}
+											{{catalog.services[this].header}}<br>
+											{{/services}}
 										</div>
 										<div class="history-item">
 											<p>Анализы</p>

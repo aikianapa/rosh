@@ -150,15 +150,15 @@
 											</div>
 											<div class="history-item">
 												<p>Специалисты</p>
-												{{#this.experts}}
+												{{#experts}}
 												{{catalog.experts[this].head}}<br>
-												{{/}}
+												{{/experts}}
 											</div>
 											<div class="history-item">
 												<p>Услуги</p>
-												{{#this.services}}
+												{{#services}}
 												{{this.name}}<br>
-												{{/}}
+												{{/services}}
 											</div>
 											<div class="history-item">
 												<p>Анализы</p>
@@ -206,7 +206,7 @@
 											<div class="experts__worked">
 												<div class="experts__worked-title">С вами работали</div>
 												<div class="row">
-													{{#this.experts}}
+													{{#experts}}
 													<div class="col-md-6">
 														<a class="expert__worked"
 															target="_blank"
@@ -218,7 +218,7 @@
 															<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
 														</a>
 													</div>
-													{{/}}
+													{{/experts}}
 												</div>
 											</div>
 											<div class="acount__photos d-none">
