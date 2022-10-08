@@ -469,9 +469,9 @@
 									</div>
 									<div class="history-item">
 										<p>Услуги</p>
-										{{#this.services}}
-										{{this.name}}<br>
-										{{/}}
+										{{#services}}
+										{{catalog.services[this].header}}<br>
+										{{/services}}
 									</div>
 									<div class="history-item">
 										<p>Анализы</p>
@@ -495,7 +495,7 @@
 									<button class="btn btn--white" on-click="@.saveRecommendation({{this.id}}, '{{this.id}}-recommendation')">Сохранить</button>
 								</div>
 							</div>
-							{{/else}}
+							{{else}}
 							<div class="acount__table-accardeon accardeon">
 								<div class="acount__table-main accardeon__main">
 									Нет записей о посещении

@@ -258,7 +258,7 @@
 											</div>
 										</div>
 									</div>
-									{{/else}}
+									{{else}}
 									<div class="acount__table-accardeon accardeon">
 										<div class="acount__table-main accardeon__main">
 											Нет записей о посещении
@@ -330,7 +330,7 @@
 											</div>
 										</div>
 									</div>
-									{{/else}}
+									{{else}}
 									<div class="acount__table-accardeon accardeon">
 										<div class="acount__table-main accardeon__main">
 											Нет записей о продолжительном лечении
