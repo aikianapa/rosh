@@ -1,7 +1,168 @@
+var catalog      = {
+	/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
+	spec_service: {
+		experts_consultation: {
+			header: 'Общая консультация специалиста',
+			price: 4000
+		},
+		analises_interpretation: {
+			header: 'Расшифровка анализов',
+			price: 2000
+		}
+	}
+};
+var servicesList = [];
+var serviceTags  = {
+	"face": {
+		"name": "Лицо",
+		"color": "yellow"
+	},
+	"body": {
+		"name": "Тело",
+		"color": "green"
+	},
+	"hair": {
+		"name": "Волосы",
+		"color": "red"
+	},
+	"gyn": {
+		"name": "Гинекология",
+		"color": "blue"
+	},
+	"lab": {
+		"name": "Лаборатория",
+		"color": "purple"
+	}
+};
+
+fetch('/api/v2/func/catalogs/getQuoteStatus', {method: 'GET'})
+	.then((response) => {
+		return response.json();
+	}).then(function (data) {
+	catalog.quoteStatus = data;
+});
+
+fetch('/api/v2/func/catalogs/getQuotePay', {
+	method: 'GET'
+}).then((response) => {
+	return response.json();
+}).then(function (data) {
+	catalog.quotePay = data;
+});
+
+fetch('/api/v2/func/catalogs/getQuoteType', {
+	method: 'GET'
+}).then((response) => {
+	return response.json();
+}).then(function (data) {
+	catalog.quoteType = data;
+});
+
+wbapp.get('/api/v2/list/services?active=on', function (res) {
+	console.log('services', res);
+	catalog.servicePrices = {};
+	let _services         = {};
+	res.forEach(function (service, i) {
+		_services[service.id] = service;
+		const _cats           = service.category;
+		const _tags           = [];
+		const _price          = 0.0;
+
+		_cats.forEach(function (cat) {
+			_tags.push({
+				"id": cat,
+				"color": serviceTags[cat].color,
+				"tag": Array.from(serviceTags[cat].name)[0]
+			});
+		});
+
+		service.blocks.landing_price.price.forEach(function (serv_price, j) {
+			if (serv_price.price == 0) {
+				return;
+			}
+			let _item = {
+				value: serv_price.header,
+				id: service.id + '-' + j,
+				data: {
+					service_id: service.id,
+					service_title: service.header,
+					tags: _tags,
+					price: serv_price.price,
+					price_id: j
+				}
+			};
+			servicesList.push(_item);
+			catalog.servicePrices[service.id][j] = {
+				'price': serv_price.price,
+				'header': serv_price.header
+			};
+		});
+	});
+	console.log('services:', _services);
+	catalog.services = _services;
+
+});
+
+wbapp.get('/api/v2/list/users?role=main&active=on&@return=id,fullname', function (res) {
+	let _admins = {};
+	res.forEach(function (admin, i) {
+		_admins[admin.id] = admin;
+	});
+
+	console.log('catalog.admins:', _admins);
+	catalog.experts = _admins;
+});
+wbapp.get('/api/v2/list/experts?active=on', function (res) {
+	let _experts = {};
+	res.forEach(function (expert, i) {
+		_experts[expert.id] = expert;
+		wbapp.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
+			_experts[expert.id].info_uri = res[u] || '';
+		});
+	});
+
+	console.log('catalog.experts:', _experts);
+	catalog.experts = _experts;
+});
+
+wbapp.get('/api/v2/list/catalogs/srvcat', function (res) {
+	let _serviceCats = {};
+	Object.keys(res.tree.data).forEach(function (_key) {
+		const _cat = res.tree.data[_key];
+		if (_cat.active != 'on') {
+			return;
+		}
+		_serviceCats[_cat.id] = {
+			'id': _cat.id,
+			'name': _cat.name,
+			'color': _cat.data.color
+		};
+	});
+	console.log('catalog.categories:', _serviceCats);
+	catalog.categories = _serviceCats;
+});
 
 $(function () {
 	/* common function */
-	window.toast = function(text, head, type){
+	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
+		var changes = {};
+		var to_compare = field_to_compare;
+		for (var i in obj2) {
+			if (!!to_compare && !to_compare.include(i)){
+				return;
+			}
+			if (!prev_data.hasOwnProperty(i) || curr_data[i] !== prev_data[i]) {
+				changes[i] = {
+					'from': (typeof prev_data[i] === 'undefined') ? '-' : prev_data[i],
+					'to': curr_data[i]
+				};
+			}
+		}
+
+		return changes;
+	};
+
+	window.toast = function (text, head, type) {
 		$.toast({
 			text: text, // Text that is to be shown in the toast
 			heading: head || '', // Optional heading to be shown on the toast
@@ -11,7 +172,7 @@ $(function () {
 			stack: 5,
 			position: 'top-right',
 			bgColor: '#616161',  // Background color of the toast
-			textColor: '#fefefe',  // Text color of the toast
+			textColor: '#FEFEFE',  // Text color of the toast
 			textAlign: 'left',  // Text alignment i.e. left, right or center
 			loader: false,  // Whether to show loader or not. True by default
 			beforeShow: function () {}, // will be triggered before the toast is shown
@@ -20,54 +181,7 @@ $(function () {
 			afterHidden: function () {}  // will be triggered after the toast has been hidden
 		});
 	};
-	window.transliterate = function (word){
-			var a         = {
-				"Ё": "e",
-				"ё": "e",
 
-				"ЫЙ": "iy",
-				"ый": "iy",
-				"ия": "iya",
-				"ии": 'ii',
-				"ій": "iy",
-				"Й": "y",
-				"й": "y",
-
-				"Ц": "ts",
-				"ц": "ts",
-
-				"У": "u",
-				"К": "k",
-				"Е": "e",
-				"Н": "n",
-				"Г": "g",
-				"Ш": "sh",
-				"Щ": "shch",
-				"З": "z",
-				"Х": "h",
-				"Ъ": "",
-				"у": "u", "к": "k",
-				"е": "e", "н": "n",
-				"г": "g", "ш": "sh", "щ": "shch",
-				"з": "z", "х": "h", "ъ": "", "Ф": "f", "Ы": "y", "В": "V", "А": "a",
-				"П": "P", "Р": "R", "О": "O", "Л": "l", "Д": "d",
-				"Ж": "ZH", "Э": "E", "ф": "f", "ы": "y", "в": "v", "ґ": "g", "Ґ": "g",
-				"а": "a", "п": "p", "р": "r", "о": "o", "л": "l", "д": "d", "ж": "zh",
-				"э": "e", "Я": "ya", "Ч": "ch", "С": "s", "М": "M", "И": "I", "Т": "T",
-				"Ь": "", "Б": "B",
-				"Ю": "yu", "я": "ya", "ч": "ch", "ї": "yi", "Ї": "yi",
-				"с": "s", "м": "m",
-				"и": "i",
-				"і": "i", "т": "t", "ь": "", "б": "b",
-				"ю": "yu"
-			};
-			var delimiter = '-';
-			return word.split('').map(function (char) {
-				return a.hasOwnProperty(char) ? a[char] : char;
-			}).join("").replace(/[^a-zA-Z0-9]/g, delimiter).replace(/[-]{2,}/g, '-')
-				.replace(/[-_]*$/g, '')
-				.toLowerCase();
-	};
 	window.initServicesSearchInput = function ($selector, service_list) {
 		var _parent_form = $selector.parents('form');
 		$selector.autocomplete({
@@ -117,6 +231,7 @@ $(function () {
 			onSelect: function (suggestion) {
 				console.log(suggestion);
 				$selector.val('');
+
 				if (_parent_form.find('.admin-editor__patient [data-id=' + suggestion.id + ']').length) {
 					return;
 				}
@@ -137,22 +252,27 @@ $(function () {
 						"data-price": suggestion.data.price
 					}).append(
 						$('<input type="hidden">').attr({
-							"name": 'services[' + suggestion.id + '][service_id]',
+							"name": 'services[]',
 							"value": suggestion.data.service_id
 						}).val(suggestion.data.service_id)
 					).append(
 						$('<input type="hidden">').attr({
-							"name": 'services[' + suggestion.id + '][price_id]',
+							"name": 'service_prices[' + suggestion.id + '][service_id]',
+							"value": suggestion.data.service_id
+						}).val(suggestion.data.service_id)
+					).append(
+						$('<input type="hidden">').attr({
+							"name": 'service_prices[' + suggestion.id + '][price_id]',
 							"value": suggestion.data.price_id
 						}).val(suggestion.data.price_id)
 					).append(
 						$('<input type="hidden">').attr({
-							"name": 'services[' + suggestion.id + '][name]',
+							"name": 'service_prices[' + suggestion.id + '][name]',
 							"value": suggestion.value
 						}).val(suggestion.value)
 					).append(
 						$('<input type="hidden">').attr({
-							"name": 'services[' + suggestion.id + '][price]',
+							"name": 'service_prices[' + suggestion.id + '][price]',
 							"value": suggestion.data.price
 						}).val(suggestion.data.price)
 					).append(
@@ -174,7 +294,7 @@ $(function () {
 				});
 				console.log(_parent_form.find('.admin-editor__patient .search__drop-item').length);
 				_parent_form.find('.admin-editor__summ .total-price').text(numFormaSpace(sum) + ' ₽');
-				_parent_form.find('.admin-editor__summ [name="total_price"]').val(sum);
+				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
 		$(document).on('click', '.search__drop-delete', function (e) {
@@ -185,88 +305,66 @@ $(function () {
 			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
-			_parent_form.find('.admin-editor__summ .total-price').text(numFormaSpace(sum) + ' ₽');
-			_parent_form.find('.admin-editor__summ [name="total_price"]').val(sum);
+			_parent_form.find('.admin-editor__summ .price').text(numFormaSpace(sum) + ' ₽');
+			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
-	window.initClientSearchInput   = function ($selector) {
-		var _parent_form = $selector.parents('form');
-		$selector.autocomplete({
+
+	window.initAdvAutocomplete = function ($selector) {
+		$('input.autocomplete.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
-			noSuggestionNotice: '<p>Нет результатов..</p>',
-			lookup: function (query, done) {
-				// Do Ajax call or lookup locally, when done,
-				// call the callback and pass your results:
-				var result = {
-					suggestions: [
-						{"value": "United Arab Emirates", "data": "AE"},
-						{"value": "United Kingdom", "data": "UK"},
-						{"value": "United States", "data": "US"}
-					]
+			deferRequestBy: 300,
+			dataType: 'json',
+			type: 'GET',
+			paramName: 'fullname~',
+			serviceUrl: '/api/v2/list/users?role=client',
+			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
+			transformResult: function (response) {
+				return {
+					suggestions: response.forEach(function (item) {
+						return {value: item.fullname, data: item.id};
+					})
 				};
-
-				done(result);
 			},
 			onSelect: function (suggestion) {
-				alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+				$(this).parents('.popup__form').find('input[name="client"]').val(suggestion.data);
+			}
+		});
+
+		$('input.autocomplete.longterm-search').autocomplete({
+			noCache: true,
+			minChars: 1,
+			deferRequestBy: 300,
+			dataType: 'json',
+			type: 'GET',
+			paramName: 'title~',
+			serviceUrl: '/api/v2/list/records?group=longterm',
+			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
+			transformResult: function (response) {
+				return {
+					suggestions: response.forEach(function (item) {
+						return {value: item.title, data: item.id};
+					})
+				};
+			},
+			onSelect: function (suggestion) {
+				$(this).parents('.popup__form').find('input[name="id"]').val(suggestion.data);
 			}
 		});
 	};
-	$(document).on('change input', '#image-selected', function (e) {
-		console.log($(this).val());
-	});
+
 	setTimeout(function() {
 		initPlugins();
-		$(document).on('mod-filepicker-done', function (e, list) {
-			$('.file-photo__ico img.preview').attr('src', list[0].img);
-			$('.after-healing.mb-10.d-none img').attr('src', list[0].img);
-			$('.after-healing.mb-10.d-none img').attr('src', list[0].img);
-			wbapp.loading();
-			setTimeout(function () {
-				wbapp.unloading();
-			}, 570);
-		}).on('click', '.admin-editor__patient .btn--white', function (e) {
-			wbapp.loading();
-			e.preventDefault();
-			setTimeout(function () {
-				wbapp.unloading();
-				toast('Успешно сохранено');
-			}, 370);
-		}).on('click', '.user__notconfirm', function (e) {
-			wbapp.loading();
-			e.preventDefault();
-			setTimeout(function () {
-				wbapp.unloading();
-				toast('Код восстановления отправлен на почту клиента.', 'Успешно!');
-			}, 2170);
-		}).on('click', '.popup.--create-appoint .btn--white', function (e) {
-			wbapp.loading();
-			setTimeout(function () {
-				wbapp.unloading();
-				toast('Информация о предстоящем приеме доступна в Личном кабинете клиента', 'Успешно!');
-				$('.account-events__block.d-none').removeClass('d-none');
-			}, 1170);
-		}).on('click', '.popup.--photo-profile .btn--white', function (e, list) {
-			$('.popup.--photo-profile').fadeOut(200, function (e) {
-				toast('Добавлено новое фото');
-				setTimeout(function () {
-					$('.after-healing.mb-10.d-none').removeClass('d-none');
-				}, 770);
-			});
-		}).on('click', '.popup.--photo-longterm .btn--white', function (e, list) {
-			$('.popup.--photo-longterm').fadeOut(200, function (e) {
-				toast('Добавлено новое фото: Продолжительное лечение');
-				setTimeout(function () {
-					$('.after-healing .col-md-6.d-none').removeClass('d-none');
-				}, 770);
-			});
-		}).on('change', '#upload-file', function (e, list) {
-			wbapp.loading();
-			setTimeout(function () {
-				wbapp.unloading();
 
-			}, 1770);
-		})
+		$(document).on('mod-filepicker-done', function (e, list) {
+			//$('.file-photo__ico img.preview').attr('src', list[0].img);
+			var src = list[0].img;
+			$(e.target);
+			wbapp.loading();
+			setTimeout(function () {
+				wbapp.unloading();
+			}, 100);
+		});
 	});
 });

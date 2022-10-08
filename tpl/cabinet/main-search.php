@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru">
+<head>
+	<title seo>Кабинет администратора</title>
+</head>
+
+<body class="body lk-cabinet" data-barba="wrapper">
+<div class="scroll-container" data-scroll-container>
+	<div>
+		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
+	</div>
+	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
+		<div class="account admin">
+			<form class="search" action="/cabinet/search">
+				<div class="container">
+					<div class="crumbs">
+						<a class="crumbs__arrow" href="#">
+							<svg class="svgsprite _crumbs-back">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+							</svg>
+						</a>
+						<a class="crumbs__link" href="/">Главная</a>
+						<a class="crumbs__link" href="/cabinet">Кабинет администратора</a>
+						<span class="crumbs__link">Поиск</span>
+					</div>
+					<div class="title-flex --flex --jcsb">
+						<div class="title">
+							<h1 class="h1 mb-10">Кабинет администратора </h1>
+						</div>
+						<a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
+					</div>
+					<div class="search__block --flex --aicn">
+						<div class="input">
+							<input class="search__input" type="text" name="q" placeholder="Поиск" value="{{_route.params.q}}">
+						</div>
+						<button class="btn btn--black">Найти</button>
+					</div>
+				</div>
+			</form>
+			<div class="search-result" wb-off>
+				<div class="container">
+					<div class="lk-title">Результаты поиска</div>
+					{{#each results}}
+					<div class="account__panel">
+						<div class="account__info">
+							<div class="user">
+								<div class="user__name">{{this.fullname}}</div>
+								<div class="user__item">Дата рождения:
+									<span>{{this.birthdate}}</span>
+								</div>
+								<a href="callto:+{{this.phone}}" class="user__item">Тел:
+									<span>+{{this.phone}}</span>
+								</a>
+
+								<div class="user__item">Почта:
+									<span>{{this.email}}</span>
+								</div>
+								<div class="user__confirm">
+									<svg class="svgsprite _confirm">
+										<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
+									</svg>
+									Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
+								</div>
+								<div class="admin-edit__user-btns d-none">
+									<a class="admin-edit__user-btn btn btn--white --openpopup" 
+										data-popup="--create-appoint">Записать пациента на прием</a>
+									<a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a>
+									<div class="admin-edit__uploads">
+										<input class="admin-edit__upload" type="file" id="analises-file">
+										<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<a class="account__detail" href="/cabinet/client/{{this.id}}">Подробнее</a>
+					</div>
+					{{else}}
+					<div class="account__panel">
+						<span>Ничего не найдено. Измените запрос и повторите поиск</span>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script wbapp>
+        var q = '{{_route.params.q}}';
+		var cabinet = new Ractive({
+			el: 'main.page',
+			template: $('main.page').html(),
+			data: {
+				q: '{{_route.params.q}}',
+				user: wbapp._session.user,
+				results: []
+			},
+			on: {
+				init() {
+					wbapp.get('/api/v2/list/users/fullname~=' + q, function(data) {
+					    cabinet.set('results', data);
+					});
+				},
+				complete(ev) {
+					console.log('page ready');
+				}
+			}
+		});
+	</script>
+</div>
+<div>
+	<wb-module wb="module=yonger&mode=render&view=footer" />
+</div>
+</body>
+<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');" />
+<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');" />
+
+</html>

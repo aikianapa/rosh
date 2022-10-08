@@ -1,6 +1,7 @@
 <view head>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>-->
+    
     <wb-snippet name="wbapp"></wb-snippet>
     <wb-scripts src="scripts">
         [
@@ -9,7 +10,6 @@
             "/assets/js/jquery.autocomplete.min.js",
             "/assets/js/jquery.fancybox.min.js",
             "/assets/js/jquery.serializejson.min.js",
-            "/assets/js/jquery.diffs.min.js",
             "/assets/js/air-datepicker.js",
 	        "/assets/js/jquery.toast.min.js",
             "/assets/js/main.js",
@@ -37,14 +37,14 @@
             });
         });
     </script>
-    <!--
-    <script type="text/javascript">
-    var __cs = __cs || [];
-    __cs.push(["setCsAccount", "VZFXRLYeQPw2Bg8xzsSHG1XSqdzBz7Ku"]);
-    </script>
-    <script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>
-    -->
-	<link href="/assets/css/jquery.fancybox.min.css" rel="stylesheet">
+   
+    <!--<script type="text/javascript">-->
+    <!--var __cs = __cs || [];-->
+    <!--__cs.push(["setCsAccount", "VZFXRLYeQPw2Bg8xzsSHG1XSqdzBz7Ku"]);-->
+    <!--</script>-->
+    <!--<script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>-->
+	<!---->
+    <link href="/assets/css/jquery.fancybox.min.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/new.css" rel="stylesheet">
     <link href="/assets/css/utils.css?v=1.4" rel="stylesheet">

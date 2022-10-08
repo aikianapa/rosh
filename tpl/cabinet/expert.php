@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="account">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -78,12 +78,12 @@
 												value="{{user.expert.licenses[idx]}}">
 											<div class="input__placeholder">Добавьте лицензию</div>
 											{{#idx}}
-												<a class="profile-licenses__delete repeater-delete" href="#">
-													<svg class="svgsprite _delete-black">
-														<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
-														</use>
-													</svg>
-												</a>
+											<a class="profile-licenses__delete repeater-delete" href="#">
+												<svg class="svgsprite _delete-black">
+													<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+													</use>
+												</svg>
+											</a>
 											{{/idx}}
 										</div>
 										{{else}}
@@ -244,6 +244,7 @@
 						<button class="btn btn--white">Сохранить</button>
 					</form>
 				</template>
+
 				<div class="account__panel">
 					<div class="account__info">
 						<div class="user --flex">
@@ -286,16 +287,20 @@
 					<div class="profile-edit">
 					</div>
 				</div>
-				<div class="lk-title current_event" style="display:none">Текущее событие</div>
-				<div class="account-events current_event" style="display:none">
+
+				{{#if events.currents}}
+				<div class="lk-title current_event">Текущее событие</div>
+				<div class="account-events current_event">
+					{{#each events.currents}}
 					<div class="account-events__block">
-						<div class="account-events__block-wrap">
+						<div class="account-events__block-wrap mb-20">
 							<div class="account-events__item">
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
 									<div class="account-event">
-										<p>Консультация врача</p>
-										<p>Фотолечение BBL</p>
+										{{#this.services}}
+										<p>{{this.name}}</p>
+										{{/this.services}}
 									</div>
 								</div>
 							</div>
@@ -303,13 +308,13 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Дата приема:</div>
 									<div class="account-event">
-										<p>03.10.2022</p>
+										<p>{{this.event_date}}</p>
 									</div>
 								</div>
 								<div class="account-event-wrap">
 									<div class="account-events__name">Время приема:</div>
 									<div class="account-event">
-										<p>15:30 – 16:30</p>
+										<p>{{this.event_time}}</p>
 									</div>
 								</div>
 							</div>
@@ -317,16 +322,17 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Пациент:</div>
 									<div class="account-event">
-										<p>Client Rosh</p>
+										<p>{{this.clientData.fullname}}</p>
 									</div>
 								</div>
 							</div>
 						</div>
+						{{#if this.type == 'online'}}
 						<div class="account-events__btns">
 							<div class="account-event-wrap --aicn">
 								<div class="account-events__btn">
 									<a class="btn btn--black"
-										onclick="window.open('/cabinet/online#id6267fa8a2297', '_blank',
+										onclick="window.open('/cabinet/online#{{this.id}}', '_blank',
                                              'width='+screen.availWidth+',height='+screen.availHeight+
                                              ',location=yes,height=0,width=0,scrollbars=yes,status=yes');">
 										Начать консультацию
@@ -335,6 +341,7 @@
 								<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
 							</div>
 						</div>
+						{{/if}}
 						<div class="account-edit pt-30">
 							<div class="account-edit__title">
 								<p>Рекомендации</p><a class="user__edit" href="#">
@@ -346,17 +353,31 @@
 							<textarea class="account-edit__textarea"></textarea>
 							<button class="btn btn--white">Сохранить</button>
 						</div>
+						{{#if this.analises}}
+						<div class="account-events__download">
+							<div class="lk-title">Анализы</div>
+							<a class="btn btn--white" href="{{this.analises.file.src}}" download="Анализы.pdf">Скачать анализы</a>
+						</div>
+						{{/if}}
+
 					</div>
+					{{/each}}
 				</div>
+				{{/if}}
+
+				{{#if events.upcoming}}
 				<div class="lk-title">Предстоящие события</div>
 				<div class="account-events">
+					{{#each events.upcoming}}
 					<div class="account-events__block">
-						<div class="account-events__block-wrap">
-							<div class="account-events__item --flex">
+						<div class="account-events__block-wrap mb-20">
+							<div class="account-events__item">
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
 									<div class="account-event">
-										<p>Консультация врача</p>
+										{{#this.services}}
+										<p>{{this.name}}</p>
+										{{/this.services}}
 									</div>
 								</div>
 							</div>
@@ -364,13 +385,13 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Дата приема:</div>
 									<div class="account-event">
-										<p>03.10.2022</p>
+										<p>{{this.event_date}}</p>
 									</div>
 								</div>
 								<div class="account-event-wrap">
 									<div class="account-events__name">Время приема:</div>
 									<div class="account-event">
-										<p>10:00 – 11:00</p>
+										<p>{{this.event_time}}</p>
 									</div>
 								</div>
 							</div>
@@ -378,75 +399,49 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Пациент:</div>
 									<div class="account-event">
-										<p>Иванов Иван</p>
+										<p>{{this.clientData.fullname}}</p>
 									</div>
 								</div>
 							</div>
 						</div>
+
+						{{#if this.pay_status == 'unpay'}}
+						<div class="account-events__btns">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<button class="btn btn--black --openpopup" data-popup="--pay-one">Внести предоплату
+									</button>
+								</div>
+								<p>Услуга требует внесения предоплаты</p>
+							</div>
+						</div>
+						{{elseif this.type == 'online'}}
+						<div class="account-events__btns">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<button class="btn btn--white disabled" disabled>
+										Онлайн консультация
+									</button>
+								</div>
+								<p>Кнопка станет активной за 5 минут до начала приема</p>
+							</div>
+						</div>
+						{{/if}}
+
+						{{#if this.analises}}
+						<div class="account-events__download">
+							<div class="lk-title">Анализы</div>
+							<a class="btn btn--white" href="{{this.analises.src}}" download="Анализы.pdf">Скачать анализы</a>
+						</div>
+						{{/if}}
+
 					</div>
+					{{/each}}
 				</div>
+				{{/if}}
+
 				<div class="lk-title">История посещений и приемов</div>
 				<div class="account__history">
-					<template id="eventsHistory">
-						<div class="account__table">
-							<div class="account__table-head" style="padding:0 40px;">
-								<div class="history-item">Дата</div>
-								<div class="history-item">Время</div>
-								<div class="history-item">Пациент</div>
-								<div class="history-item">Услуги</div>
-								<div class="history-item">Анализы</div>
-							</div>
-							<div class="account__table-body">
-								<div class="acount__table-accardeon accardeon">
-									<div class="acount__table-main accardeon__main accardeon__click">
-										<div class="history-item">16.09.2022</div>
-										<div class="history-item">08:45-09:45</div>
-										<div class="history-item">Кира Глумова</div>
-										<div class="history-item">Фотолечение BBL</div>
-										<div class="history-item">Нет анализов</div>
-									</div>
-									<div class="acount__table-list accardeon__list">
-										<form class="recomendation-text">
-											<div class="account-edit__title">
-												<p>Рекомендация врача</p>
-												<a class="user__edit" href="#">
-													<svg class="svgsprite _edit">
-														<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-													</svg>
-												</a>
-											</div>
-											<textarea class="account-edit__textarea">Ut tortor pretium viverra suspendisse potenti nullam ac tortor vitae. Diam vel quam elementum pulvinar etiam. Rhoncus est pellentesque elit ullamcorper.
-                                        Vitae tempus quam pellentesque nec nam aliquam sem.</textarea>
-											<button class="btn btn--white">Сохранить</button>
-										</form>
-									</div>
-								</div>
-								<div class="acount__table-accardeon accardeon">
-									<div class="acount__table-main accardeon__main accardeon__click">
-										<div class="history-item">18.09.2022</div>
-										<div class="history-item">10:00-11:00</div>
-										<div class="history-item">Иван Иванов</div>
-										<div class="history-item">Консультация врача</div>
-										<div class="history-item">Нет анализов</div>
-									</div>
-									<div class="acount__table-list accardeon__list">
-										<div class="account-edit__title">
-											<p>Рекомендация врача</p><a class="user__edit" href="#">
-												<svg class="svgsprite _edit">
-													<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-												</svg>
-											</a>
-										</div>
-										<textarea class="account-edit__textarea">Lorem ipsum dolor sit amet consectetur adipiscing elit ut. Suspendisse ultrices gravida dictum fusce ut placerat orci. A diam maecenas sed enim ut. Sem et tortor consequat id porta nibh venenatis cras sed. Pharetra et ultrices neque ornare aenean euismod elementum nisi. Ut sem viverra aliquet eget sit amet. Id leo in vitae turpis massa sed elementum tempus egestas.</textarea>
-										<button class="btn btn--white">Сохранить</button>
-									</div>
-								</div>
-							</div>
-							<div class="account__table-body">
-
-							</div>
-						</div>
-					</template>
 					<div class="account__table">
 						<div class="account__table-head" style="padding:0 40px;">
 							<div class="history-item">Дата</div>
@@ -456,50 +451,58 @@
 							<div class="history-item">Анализы</div>
 						</div>
 						<div class="account__table-body">
-							<div class="acount__table-accardeon accardeon">
+							<!-- !!! quote history item !!! -->
+							{{#each history}}
+							<div class="acount__table-accardeon accardeon" data-record_id="{{this.id}}">
 								<div class="acount__table-main accardeon__main accardeon__click">
-									<div class="history-item">16.09.2022</div>
-									<div class="history-item">08:45-09:45</div>
-									<div class="history-item">Кира Глумова</div>
-									<div class="history-item">Фотолечение BBL</div>
-									<div class="history-item">Нет анализов</div>
-								</div>
-								<form class="acount__table-list accardeon__list">
-									<div class="account-edit__title">
-										<p>Рекомендация врача</p><a class="user__edit" href="#">
-											<svg class="svgsprite _edit">
-												<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-											</svg>
-										</a>
+									<div class="history-item">
+										<p>Дата</p>
+										{{this.event_date}}
 									</div>
-									<textarea class="account-edit__textarea">Ut tortor pretium viverra suspendisse potenti nullam ac tortor vitae. Diam vel quam elementum pulvinar etiam. Rhoncus est pellentesque elit ullamcorper.
-                                        Vitae tempus quam pellentesque nec nam aliquam sem.</textarea>
-									<button class="btn btn--white">Сохранить</button>
-								</form>
-							</div>
-							<div class="acount__table-accardeon accardeon">
-								<div class="acount__table-main accardeon__main accardeon__click">
-									<div class="history-item">18.09.2022</div>
-									<div class="history-item">10:00-11:00</div>
-									<div class="history-item">Иван Иванов</div>
-									<div class="history-item">Консультация врача</div>
-									<div class="history-item">Нет анализов</div>
+									<div class="history-item">
+										<p>Время</p>
+										{{this.event_time}}
+									</div>
+									<div class="history-item">
+										<p>Пациент</p>
+										{{this.clientData.fullname}}
+									</div>
+									<div class="history-item">
+										<p>Услуги</p>
+										{{#this.services}}
+										{{this.name}}<br>
+										{{/}}
+									</div>
+									<div class="history-item">
+										<p>Анализы</p>
+										{{#if this.analises.file}}
+										Есть анализы
+										{{else}}
+										Нет анализов
+										{{/if}}
+									</div>
 								</div>
 								<div class="acount__table-list accardeon__list">
 									<div class="account-edit__title">
-										<p>Рекомендация врача</p><a class="user__edit" href="#">
+										<p>Рекомендация врача</p>
+										<a class="user__edit" href="#">
 											<svg class="svgsprite _edit">
 												<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
 											</svg>
 										</a>
 									</div>
-									<textarea class="account-edit__textarea">Lorem ipsum dolor sit amet consectetur adipiscing elit ut. Suspendisse ultrices gravida dictum fusce ut placerat orci. A diam maecenas sed enim ut. Sem et tortor consequat id porta nibh venenatis cras sed. Pharetra et ultrices neque ornare aenean euismod elementum nisi. Ut sem viverra aliquet eget sit amet. Id leo in vitae turpis massa sed elementum tempus egestas.</textarea>
-									<button class="btn btn--white">Сохранить</button>
+									<textarea class="account-edit__textarea" id="{{this.id}}-recommendation" name="recommendation">{{this.recommendation}}</textarea>
+									<button class="btn btn--white" on-click="@.saveRecommendation({{this.id}}, '{{this.id}}-recommendation')">Сохранить</button>
 								</div>
 							</div>
-						</div>
-						<div class="account__table-body">
-
+							{{/else}}
+							<div class="acount__table-accardeon accardeon">
+								<div class="acount__table-main accardeon__main">
+									Нет записей о посещении
+								</div>
+							</div>
+							{{/each}}
+							<!-- !!! / quote history item !!! -->
 						</div>
 					</div>
 				</div>
@@ -510,117 +513,116 @@
 	<script wbapp>
 		setTimeout(function () {
 			let editorProfile = wbapp.tpl('#editorProfile').html;
-			var expertCabinet = new Ractive({
-				el: 'main.page .account__panel',
-				template: $('main.page .account__panel').html(),
-				data: {
-					user: wbapp._session.user,
-					expert: {}
-				},
-				on: {
-					init() {
-						wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
-							expertCabinet.set('user', data); /* get actually user data */
-							console.log('user', data);
-						});
-						wbapp.get('/api/v2/list/experts/?login=' + wbapp._session.user.id, function (data) {
-							expertCabinet.set('expert', data[0]); /* get actually user data */
-							console.log('expert', data[0]);
-						});
+			var cabinet       = new Ractive({
+					el: 'main.page',
+					template: $('main.page').html(),
+					data: {
+						user: wbapp._session.user,
+						expert: {},
+						catalog: {},
+						events: {
+							'upcoming': [],
+							'current': []
+						},
+						history: []
 					},
-					complete(ev) {
-						let profileEditor = new Ractive({
-							el: 'main.page .profile-edit',
-							template: editorProfile,
-							data: {
-								user: expertCabinet.get('user')
-							},
-							on: {
-								complete() {
-									console.log('expert editor ready!');
-									//$('.profile-education__inner.row').each(function(){
-									//	$(this).find('input[name="stages[stage][]"]').attr('name', 'stages['+$(this).data('idx')+'][stage]');
-									//	$(this).find('input[name="stages[year][]"]').attr('name', 'stages['+$(this).data('idx')+'][year]');
-									//	$(this).find('input[name="stages[year_end][]"]').attr('name', 'stages['+$(this).data('idx')+'][year_end]');
-									//});
+					on: {
+						init() {
+							wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
+								cabinet.set('user', data); /* get actually user data */
+								console.log('user', data);
+							});
+							wbapp.get('/api/v2/list/experts/?login=' + wbapp._session.user.id, function (data) {
+								cabinet.set('expert', data[0]); /* get actually user data */
+								console.log('expert', data[0]);
+							});
+							wbapp.get(
+								'/api/v2/list/records?group=events&status=upcoming&experts~=' + wbapp._session.user.id,
+								function (data) {
+									const curr_timestamp = parseInt(getdate()[0]);
 
-									//$('.profile-licenses__inputs.repeater-container').each(function(){
-									//	$(this).find('input[name="stages[stage][]"]').attr('name', 'stages['+$(this).data('idx')+'][stage]');
-									//	$(this).find('input[name="stages[year][]"]').attr('name', 'stages['+$(this).data('idx')+'][year]');
-									//	$(this).find('input[name="stages[year_end][]"]').attr('name', 'stages['+$(this).data('idx')+'][year_end]');
-									//})
+									data.forEach(function (rec) {
+										const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
+
+										if (event_date !== (new Date()).toLocaleDateString()) {
+											cabinet.push('events.upcoming', data); /* get actually user next events */
+										}
+
+										if (((curr_timestamp - (15 * 60)) < rec.event_begin_time) &&
+										    (rec.event_end_time > curr_time)) {
+											cabinet.push('events.current', rec);
+										}
+									});
+								});
+
+							wbapp.get('/api/v2/list/records?group=events&status=past&experts~=' + wbapp._session.user.id,
+								function (data) {
+									console.log('history', data);
+									cabinet.set('history', data); /* get actually user next events */
+								});
+
+							setTimeout(function () {
+								cabinet.set('catalog', catalog);
+							});
+						},
+						complete(ev) {
+							let profileEditor = new Ractive({
+								el: 'main.page .profile-edit',
+								template: editorProfile,
+								data: {
+									user: cabinet.get('user')
 								},
-								profileSave(ev) {
-									let $form = $(ev.node);
-									let uid   = profileEditor.get('user.id');
-									if ($form.verify() && uid > '') {
-										let data   = $form.serializeJson();
-										data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-										wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
-											console.log(res);
-											expertCabinet.set('user', res);
-										});
-										$('.user__edit.all').trigger('click');
+								on: {
+									complete() {
+										console.log('expert editor ready!');
+									},
+									profileSave(ev) {
+										let $form = $(ev.node);
+										let uid   = profileEditor.get('user.id');
+										if ($form.verify() && uid > '') {
+											let data   = $form.serializeJson();
+											data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+											wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
+												console.log(res);
+												cabinet.set('user', res);
+											});
+											$('.user__edit.all').trigger('click');
+										}
+										return false;
+									},
+									saveExpert(ev) {
+										let $form = $(ev.node);
+										let uid   = profileEditor.get('user.expert.id');
+										console.log('saved', uid);
 
+										if ($form.verify() && uid > '') {
+											let data = $form.serializeJSON();
+											wbapp.post('/api/v2/update/experts/' + uid, data, function (res) {
+												cabinet.set('expert', res);
+												cabinet.set('user.expert', res);
+												console.log('saved', res);
+											});
+											$('.user__edit.all').trigger('click');
+										}
+										return false;
 									}
-									return false;
-								},
-								saveExpert(ev) {
-									let $form = $(ev.node);
-									let uid   = profileEditor.get('user.expert.id');
-									console.log('saved', uid);
-
-									if ($form.verify() && uid > '') {
-										let data = $form.serializeJSON();
-										wbapp.post('/api/v2/update/experts/' + uid, data, function (res) {
-											expertCabinet.set('expert', res);
-											expertCabinet.set('user.expert', res);
-											console.log('saved', res);
-										});
-										$('.user__edit.all').trigger('click');
-									}
-									return false;
 								}
-							}
-						});
+							});
+						}
 					}
 
 				}
+
+				,
+				50);
+			$(function () {
+				setTimeout(function () {
+
+				}, 50);
+				setTimeout(function () {
+					$('.current_event').slideDown('fast');
+				}, 15000);
 			});
-		}, 50);
-		$(function () {
-			setTimeout(function () {
-				$('.datebirthdaypickr').each(function () {
-					new AirDatepicker(this, {autoClose: true, selectedDates: $(this).val()});
-				});
-				$('.daterangepickr').each(function () { new AirDatepicker(this, {autoClose: true, range: true}); });
-				$('.datepickr')
-					.each(function () { new AirDatepicker(this, {selectedDates: $(this).val(), autoClose: true}); });
-				$('.datetimepickr').each(function () {
-					new AirDatepicker(this,
-						{selectedDates: $(this).val(), timepicker: true, autoClose: true, minutesStep: 10});
-				});
-				$(this).find('input.yearpickr').each(function () {
-					new AirDatepicker(this,
-						{selectedDates: $(this).val(), view: 'years', minView: 'years', autoClose: true});
-				});
-				$('.dtp-test').each(function () { new AirDatepicker(this, {autoClose: true, inline: true}); });
-
-				$('input[data-inputmask]').each(function () {
-					$(this).inputmask();
-				});
-
-				$('input.autocomplete').each(function () {
-					$(this).autocomplete({
-						noCache: true,
-						minChars: 3
-					});
-				});
-			}, 50);
-			setTimeout(function () {
-				$('.current_event').slideDown('fast');
-			}, 15000);
-		});
 	</script>
 </div>
 <div>

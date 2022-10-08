@@ -9,117 +9,9 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
 	</div>
-	<script>
-		var catalog      = {};
-		var servicesList = [];
-		var serviceTags  = {
-			"face": {
-				"name": "Лицо",
-				"color": "yellow"
-			},
-			"body": {
-				"name": "Тело",
-				"color": "green"
-			},
-			"hair": {
-				"name": "Волосы",
-				"color": "red"
-			},
-			"gyn": {
-				"name": "Гинекология",
-				"color": "blue"
-			},
-			"lab": {
-				"name": "Лаборатория",
-				"color": "purple"
-			}
-		};
-		fetch('/api/v2/func/catalogs/getQuoteStatus', {
-			method: 'GET'
-		}).then((response) => {
-			return response.json();
-		}).then(function (data) {
-			catalog.quoteStatus = data;
-		});
-		fetch('/api/v2/func/catalogs/getQuotePay', {
-			method: 'GET'
-		}).then((response) => {
-			return response.json();
-		}).then(function (data) {
-			catalog.quotePay = data;
-		});
-		fetch('/api/v2/func/catalogs/getQuoteType', {
-			method: 'GET'
-		}).then((response) => {
-			return response.json();
-		}).then(function (data) {
-			catalog.quoteType = data;
-		});
-		wbapp.get('/api/v2/list/services?active=on', function (res) {
-			console.log('services', res);
-
-			let _services = {};
-			res.forEach(function (service, i) {
-				_services[service.id] = service;
-				const _cats           = service.category;
-				const _tags           = [];
-				const _price          = 0.0;
-
-				_cats.forEach(function (cat) {
-					_tags.push({
-						"id": cat,
-						"color": serviceTags[cat].color,
-						"tag": Array.from(serviceTags[cat].name)[0]
-					});
-				});
-
-				service.blocks.landing_price.price.forEach(function (serv_price, j) {
-					if (serv_price.price == 0) {
-						return;
-					}
-					let _item = {
-						value: serv_price.header,
-						id: service.id + '-' + j,
-						data: {
-							service_id: service.id,
-							service_title: service.header,
-							tags: _tags,
-							price: serv_price.price,
-							price_id: j
-						}
-					};
-					servicesList.push(_item);
-				});
-			});
-			console.log('services:', _services);
-			catalog.services = _services;
-		});
-		wbapp.get('/api/v2/list/experts?active=on', function (res) {
-			console.log('experts:', res);
-			let _experts = {};
-			res.forEach(function (expert, i) {
-				_experts[expert.id] = expert;
-			});
-			console.log('experts:', _experts);
-			catalog.experts = _experts;
-		});
-		wbapp.get('/api/v2/list/catalogs/srvcat', function (res) {
-			let _serviceCats = {};
-			Object.keys(res.tree.data).forEach(function (_key) {
-				const _cat = res.tree.data[_key];
-				if (_cat.active != 'on') {
-					return;
-				}
-				_serviceCats[_cat.id] = {
-					'id': _cat.id,
-					'name': _cat.name,
-					'color': _cat.data.color
-				};
-			});
-			console.log('srvcat:', _serviceCats);
-			catalog.categories = _serviceCats;
-		});
-	</script>
+	<div>
+		<wb-module wb="module=yonger&mode=render&view=popups-cabinet"/>
+	</div>
 
 	<div class="popup --fast">
 		<template>
@@ -347,278 +239,6 @@
 		</div>
 	</div>
 
-	<!--!!! for cabinet !!!-->
-	<div class="popup --record">
-		<template id="popupNewQuote">
-			<div class="popup__overlay"></div>
-			<form class="popup__panel" on-submit="submit">
-				<button class="popup__close" on-click="cancel">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Запись на прием</div>
-				<div class="text-bold mb-10">Разделы услуг</div>
-				<div class="popups__text-chexboxs">
-					{{#each categories}}
-					<label class="text-radio">
-						<input type="radio" name="service_category" value="{{id}}">
-						<span>{{name}}</span>
-					</label>
-					{{/each}}
-				</div>
-				<div class="input">
-					<input class="search__input" type="text"
-						placeholder="Поиск по услугам"
-						id="popup-services-list">
-					<div class="search__drop">
-					</div>
-					<button class="search__btn" type="button">
-						<svg class="svgsprite _search">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-						</svg>
-					</button>
-				</div>
-				<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-					<input class="checkbox-visible-next-form" type="checkbox"
-						name="for_consultation" value="1">
-					<span></span>
-					<div class="checbox__name">Консультация врача</div>
-				</label>
-				<div class="select-form" style="display: none;" data-show="service">
-					<div class="text-bold mb-20">Тип события</div>
-					<div class="popups__text-chexboxs">
-						<label class="text-radio">
-							<input type="radio" name="type" value="clinic" checked>
-							<span>В клинике</span>
-						</label>
-						<label class="text-radio switch-blocks">
-							<input type="radio" name="type" value="online">
-							<span>Онлайн</span>
-						</label>
-					</div>
-				</div>
-				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service">
-					<input class="checkbox-hidden-next-form" type="checkbox" name="no_services" value="1">
-					<span></span>
-					<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
-				</label>
-				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
-					<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
-					<span></span>
-					<div class="checbox__name">Я не знаю, кого выбрать</div>
-				</label>
-				<div class="select-form" data-hide="expert">
-					<div class="select">
-						<div class="select__main">
-							<div class="select__placeholder">Выберите специалиста</div>
-							<div class="select__values"></div>
-						</div>
-						<div class="select__list">
-							{{#each experts}}
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox" name="experts[]" value="{{id}}">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">{{name}}</div>
-									</div>
-								</label>
-							</div>
-							{{/each}}
-						</div>
-					</div>
-				</div>
-				<div class="admin-editor__patient">
-					<div class="text-bold mb-10">Выбраны услуги</div>
-				</div>
-				<div class="admin-editor__summ">
-					<p>Всего</p>
-					<input type="hidden" name="total_price">
-					<p class="total-price">0 ₽</p>
-				</div>
-				<button class="btn btn--black form__submit" type="submit"> Записаться</button>
-			</form>
-
-			<div class="popup__panel --succed">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Запись на прием</div>
-				<h3 class="h3">Успешно!</h3>
-				<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
-			</div>
-		</template>
-	</div>
-
-	<div class="popup --analize-type">
-
-		<template id="popupAnalizeType">
-			<div class="popup__overlay"></div>
-			<div class="popup__panel">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Расшифровка анализов</div>
-				<form class="popup__form" method="post">
-					<div class="text-bold mb-20">Тип события</div>
-					<div class="popups__text-chexboxs">
-						<label class="text-radio" name="type" value="clinic">
-							<input type="radio" name="status">
-							<span>В клинике</span>
-						</label>
-						<label class="text-radio switch-blocks" value="online">
-							<input type="radio" name="status">
-							<span>Онлайн</span>
-						</label>
-					</div>
-					<p class="text-grey mb-30">Нажмите на способ получения анализа</p>
-					<button class="btn btn--black popup__change --openpopup" data-popup="--pay-one">
-						Далее
-					</button>
-				</form>
-			</div>
-		</template>
-	</div>
-
-	<div class="popup --pay">
-		<template id="popupPay">
-			<div class="popup__overlay"></div>
-			<div class="popup__panel">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Расшифровка анализов</div>
-				<h3 class="h3">В ближайшее время с вами свяжутся для определения удобной даты</h3>
-				<div class="text-grey text-small mb-10">Стоимость услуги</div>
-				<div class="popup-summ">
-					<div class="popup-summ__big">5 000 ₽</div>
-					<div class="popup-summ__small">Предоплата - 1 000 ₽</div>
-				</div>
-				<div class="popup__description">Для подтверждения записи необходимо произвести оплату в размере 20% от стоимости услуги</div>
-				<div class="form-bottom --flex">
-					<button class="btn btn--white form__submit --switchpopup" type="button">Назад</button>
-					<button class="btn btn--black form__submit --switchpopup" type="button">Внести предоплату</button>
-				</div>
-			</div>
-			<div class="popup__panel --succed">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Внести предоплату</div>
-				<h3 class="h3">Успешно!</h3>
-				<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
-			</div>
-		</template>
-	</div>
-
-	<div class="popup --pay-one">
-		<template id="popupPayOne">
-			<div class="popup__overlay"></div>
-			<div class="popup__panel">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Внести предоплату</div>
-				<h3 class="h3">В ближайшее время с вами свяжутся для определения удобной даты</h3>
-				<div class="text-grey text-small mb-10">Стоимость услуги</div>
-				<div class="popup-summ --aifs mb-20">
-					<div class="popup-summ__big">2 000₽</div>
-					<div class="popup-summ__small">Предоплата - 400 ₽</div>
-				</div>
-				<div class="popup__description text-grey mb-30">
-					Для подтверждения необходимо произвести оплату в размере 20% от стоимости услуги
-				</div>
-				<form method='POST' action='https://demo.paykeeper.ru/create/' target="_blank">
-					<input type='hidden' name='sum' value='{{sum}}'/>
-					<input type='hidden' name='orderid' value='{{quote_id}}'/>
-					<input type='hidden' name='clientid' value='{{client_id}}'/>
-					<button class="btn btn--black form__submit --openpopup"
-						data-popup="--succed-pay"
-						type="submit">
-						Внести предоплату
-					</button>
-				</form>
-			</div>
-			<div class="popup__panel --succed-pay">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Внести предоплату</div>
-				<h3 class="h3">Успешно !</h3>
-				<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете</p>
-			</div>
-		</template>
-	</div>
-
-	<div class="popup --download">
-		<template id="popupDownload">
-			<div class="popup__overlay"></div>
-			<div class="popup__panel">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Выгрузить данные</div>
-				<div class="select-form">
-					<div class="select input">
-						<div class="select__main">Все специалисты</div>
-						<div class="select__list">
-							{{>list_experts}}
-						</div>
-					</div>
-				</div>
-				<div class="select-form">
-					<input type="hidden" name="admins[]">
-
-					<div class="select input">
-						<div class="select__main">Все администраторы</div>
-						<div class="select__list">
-							{{>list_admins}}
-						</div>
-					</div>
-				</div>
-				<div class="input">
-					<input class="input__control datebirthdaypickr" type="text"
-						name="client_birthdate" placeholder="Дата рождения">
-					<div class="input__placeholder">Дата рождения</div>
-				</div>
-				<label class="checkbox checkbox--record">
-					<input type="checkbox" name="only_phones">
-					<span></span>
-					<div class="checbox__name">Выгрузить только список номеров</div>
-				</label>
-				<div class="input">
-					<input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
-					<div class="input__placeholder">Номер телефона</div>
-				</div>
-				<label class="checkbox checkbox--record">
-					<input type="checkbox" name="only_emails">
-					<span></span>
-					<div class="checbox__name">Введите только список е-мейлов</div>
-				</label>
-				<div class="input">
-					<input class="input__control" type="email" placeholder="Ваш е-мейл">
-					<div class="input__placeholder">Введите е-мейл</div>
-				</div>
-				<a class="btn btn--black" href="{{file.src}}" download="{{file.name}}"> Скачать</a>
-			</div>
-		</template>
-	</div>
-
 	<div class="popup --filter">
 		<div class="popup__overlay"></div>
 		<div class="popup__panel">
@@ -702,226 +322,9 @@
 		</div>
 	</div>
 
-	<div class="popup --photo">
-		<div class="popup__overlay"></div>
-		<template id="popupNewPhoto">
-			<div class="popup__panel">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Добавить фото</div>
-				<form class="popup__form">
-					<div class="search-form input">
-						<input class="input__control" type="text" placeholder="Выбрать пациента">
-						<div class="input__placeholder">Выбрать пациента</div>
-					</div>
-					<div class="input calendar mb-20">
-						<input class="input__control datepickr" type="text" name="visit_date" placeholder="Выбрать дату посещения">
-						<div class="input__placeholder">Выбрать дату посещения</div>
-					</div>
-					<div class="popup-title__checkbox">
-						<p class="mb-10">Выбрать статус</p>
-						<input type="hidden" name="is_longterm" value="0">
-						<label class="checkbox mb-10 show-checkbox" data-show-input="longterm">
-							<input type="checkbox" name="is_longterm" value="1">
-							<span></span>
-							<div class="checbox__name">Продолжительное лечение</div>
-						</label>
-						<div class="input calendar mb-20" style="display:none;" data-show="longterm">
-							<input class="input__control datepickr" type="text" name="photo.longterm" placeholder="Название продолжительного лечения">
-							<div class="input__placeholder">Название продолжительного лечения</div>
-						</div>
-					</div>
-					<div class="radios --flex">
-						<label class="text-radio">
-							<input type="radio" name="status233">
-							<span>В клинике</span>
-						</label>
-						<label class="text-radio">
-							<input type="radio" name="status233">
-							<span>Онлайн</span>
-						</label>
-					</div>
-					<label class="file-photo">
-						<input type="file">
-						<div class="file-photo__ico">
-							<svg class="svgsprite _file">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-							</svg>
-						</div>
-						<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
-							превышать 10 мб
-						</div>
-					</label>
-					<button class="btn btn--white">Сохранить</button>
-				</form>
-			</div>
-		</template>
-	</div>
-	<div class="popup --photo-longterm">
-		<div class="popup__overlay"></div>
-		<div class="popup__panel">
-			<button class="popup__close">
-				<svg class="svgsprite _close">
-					<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-				</svg>
-			</button>
-			<div class="popup__name text-bold">Добавить продолжительное лечение</div>
-			<div class="popup__form">
-				<div class="search-form input disabled">
-					<input class="input__control" type="text" placeholder="Выбрать пациента"
-						value="Client Rosh">
-					<div class="input__placeholder">Выбрать пациента</div>
-				</div>
-				<div class="input calendar mb-20">
-					<input class="input__control datepickr" type="text" name="visit_date" placeholder="Выбрать дату посещения" value="03.10.2022">
-					<div class="input__placeholder">Выбрать дату посещения</div>
-				</div>
-				<div class="popup-title__checkbox">
-					<input type="hidden" name="is_longterm" value="0">
-					<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
-						<input type="checkbox" name="is_longterm" value="1" checked>
-						<span></span>
-						<div class="checbox__name">Продолжительное лечение</div>
-					</label>
-
-				</div>
-				<div class="input calendar mb-20" data-show="longterm">
-					<input class="input__control autocomplete-inline"
-						data-lookup="Фототерапия BBL"
-						type="text" name="photo.longterm"
-						placeholder="Название продолжительного лечения" value="">
-					<div class="input__placeholder">Название продолжительного лечения</div>
-				</div>
-				<div class="radios --flex">
-					<label class="text-radio">
-						<input type="radio" name="status2331" checked="checked">
-						<span>В клинике</span>
-					</label>
-					<label class="text-radio disabled">
-						<input type="radio" name="status2331">
-						<span>Онлайн</span>
-					</label>
-				</div>
-				<label class="file-photo" for="image-selector">
-					<div class="filepicker">
-						<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
-						<!-- Button Bar -->
-						<div class="button-bar">
-							<button class="btn btn-success fileinput" style="height:70px;">
-								<div class="file-photo__ico">
-									<img class="preview" alt="upload preview" src="">
-									<svg class="svgsprite _file">
-										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-									</svg>
-								</div>
-								<input type="file" id="image-selector" name="files[]" class="wb-unsaved">
-								<input type="hidden" name="upload_url" value="/uploads/events"
-									class="wb-unsaved">
-								<input type="hidden" name="prevent_img" class="wb-unsaved">
-							</button>
-						</div>
-						<script type="text/javascript">
-							wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
-						</script>
-					</div>
-					<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
-						превышать 10 мб
-					</div>
-				</label>
-				<button class="btn btn--white">Сохранить</button>
-			</div>
-		</div>
-	</div>
-
-	<div class="popup --photo-profile">
-		<div class="popup__overlay"></div>
-		<div class="popup__panel">
-			<button class="popup__close">
-				<svg class="svgsprite _close">
-					<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-				</svg>
-			</button>
-			<div class="popup__name text-bold">Добавить фото</div>
-			<div class="popup__form">
-				<div class="search-form input disabled">
-					<input class="input__control" type="text" placeholder="Выбрать пациента"
-						value="Client Rosh">
-					<div class="input__placeholder">Выбрать пациента</div>
-				</div>
-				<div class="input calendar mb-20 disabled">
-					<input class="input__control datepickr" type="text" name="visit_date" placeholder="Выбрать дату посещения" value="16.09.2022">
-					<div class="input__placeholder">Выбрать дату посещения</div>
-				</div>
-				<div class="popup-title__checkbox disabled">
-					<p class="mb-10">Выбрать статус</p>
-					<input type="hidden" name="is_longterm" value="0">
-					<label class="checkbox mb-10 show-checkbox" data-show-input="longterm">
-						<input type="checkbox" name="is_longterm" value="1">
-						<span></span>
-						<div class="checbox__name">Продолжительное лечение</div>
-					</label>
-					<div class="input calendar mb-20" style="display:none;" data-show="longterm">
-						<input class="input__control datepickr" type="text" name="photo.longterm" placeholder="Название продолжительного лечения">
-						<div class="input__placeholder">Название продолжительного лечения</div>
-					</div>
-				</div>
-				<div class="radios --flex disabled">
-					<label class="text-radio">
-						<input type="radio" name="status233" checked>
-						<span>В клинике</span>
-					</label>
-					<label class="text-radio">
-						<input type="radio" name="status233">
-						<span>Онлайн</span>
-					</label>
-				</div>
-				<!--<label class="file-photo" for="image-select">-->
-				<!--	<input type="file">-->
-				<!--	<div class="file-photo__ico">-->
-				<!--		<svg class="svgsprite _file">-->
-				<!--			<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>-->
-				<!--		</svg>-->
-				<!--	</div>-->
-				<!--	<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно-->
-				<!--		превышать 10 мб-->
-				<!--	</div>-->
-				<!--</label>-->
-				<label class="file-photo" for="image-selector">
-					<div class="filepicker">
-						<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
-						<!-- Button Bar -->
-						<div class="button-bar">
-							<button class="btn btn-success fileinput" style="height:70px;">
-								<div class="file-photo__ico">
-									<img class="preview" src="">
-									<svg class="svgsprite _file">
-										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-									</svg>
-								</div>
-								<input type="file" id="image-selector" name="files[]" class="wb-unsaved" done="">
-								<input type="hidden" name="upload_url" value="/uploads/events" class="wb-unsaved" done="">
-								<input type="hidden" name="prevent_img" class="wb-unsaved" done="">
-							</button>
-						</div>
-						<script type="text/javascript">
-							wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
-						</script>
-					</div>
-					<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
-						превышать 10 мб
-					</div>
-				</label>
-				<button class="btn btn--white">Сохранить</button>
-			</div>
-		</div>
-	</div>
-
 	<div class="popup --photo-edit">
-		<div class="popup__overlay"></div>
-		<template id="popupEditPhoto">
+		<template id="popupPhotoEdit">
+			<div class="popup__overlay"></div>
 			<div class="popup__panel">
 				<button class="popup__close">
 					<svg class="svgsprite _close">
@@ -1004,34 +407,6 @@
 				</form>
 			</div>
 		</template>
-	</div>
-
-	<div class="popup --create">
-		<div class="popup__overlay"></div>
-		<div class="popup__panel">
-			<button class="popup__close">
-				<svg class="svgsprite _close">
-					<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-				</svg>
-			</button>
-			<div class="popup__name text-bold">Создать карточку пациента</div>
-			<form class="popup__form">
-				<div class="input">
-					<input class="input__control" type="text" placeholder="ФИО">
-					<div class="input__placeholder">ФИО</div>
-				</div>
-				<div class="input">
-					<input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения">
-					<div class="input__placeholder">Дата рождения</div>
-				</div>
-				<div class="input mb-30">
-					<input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
-					<div class="input__placeholder">Номер телефона</div>
-				</div>
-				<button class="btn btn--black form__submit --switchpopup" data-popup="--code">Создать</button>
-				<div class="form-bottom">После отправки заявки для пациента будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
-			</form>
-		</div>
 	</div>
 
 	<div class="popup --create-recover">
@@ -1246,136 +621,46 @@
 				</svg>
 			</button>
 			<div class="popup__name text-bold">Выгрузить данные</div>
-			<form class="popup__form">
+			<form class="popup__form" action="/cabinet/download/">
 				<div class="select-form">
-
 					<div class="select">
-						<div class="select__main">Все услуги</div>
+						<div class="select__main">
+							<div class="select__placeholder">Все услуги</div>
+							<div class="select__values"></div>
+						</div>
 						<div class="select__list">
-
+							{{#each catalog.services}}
 							<div class="select__item select__item--checkbox">
 								<label class="checkbox checkbox--record">
-									<input type="checkbox">
+									<input type="checkbox" name="services[]" value="{{this.id}}">
 									<span></span>
-									<div class="checbox__name --flex --aic --jcsb">
-										<div class="select__name">Термовоздействие.Skin Tyte - нижняя треть лица+ментальная зона
-										</div>
-										<div>28 000 ₽</div>
+									<div class="checbox__name">
+										<div class="select__name">{{this.header}}</div>
 									</div>
 								</label>
 							</div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox">
-									<span></span>
-									<div class="checbox__name --flex --aic --jcsb">
-										<div class="select__name">Термовоздействие Skin Tyte - уши</div>
-										<div>8 000 ₽</div>
-									</div>
-								</label>
-							</div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox">
-									<span></span>
-									<div class="checbox__name --flex --aic --jcsb">
-										<div class="select__name">Термовоздействие. Skin Tyte - шея</div>
-										<div>24 000 ₽</div>
-									</div>
-								</label>
-							</div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox">
-									<span></span>
-									<div class="checbox__name --flex --aic --jcsb">
-										<div class="select__name">Термовоздействие. Skin Tyte - щеки, шея, декольте</div>
-										<div>52 000 ₽</div>
-									</div>
-								</label>
-							</div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox">
-									<span></span>
-									<div class="checbox__name --flex --aic --jcsb">
-										<div class="select__name">Дерматологический пилинг Enerpeel Jessners
-											салициловый-резорциновый
-										</div>
-										<div>17 000 ₽</div>
-									</div>
-								</label>
-							</div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox">
-									<span></span>
-									<div class="checbox__name --flex --aic --jcsb">
-										<div class="select__name">Дерматологический пилинг для кожи с гиперпигментацией
-											"SC Pigment Balancing Peel"
-										</div>
-										<div>7 000 ₽</div>
-									</div>
-								</label>
-							</div>
+							{{/each}}
 						</div>
 					</div>
 				</div>
 				<div class="select-form">
 					<div class="select">
-						<div class="select__main">Все специалисты</div>
+						<div class="select__main">
+							<div class="select__placeholder">Выберите специалиста</div>
+							<div class="select__values"></div>
+						</div>
 						<div class="select__list">
+							{{#each catalog.experts}}
 							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record"><input type="checkbox" value="id6263ae3e26bd" name="experts[]">
+								<label class="checkbox checkbox--record">
+									<input type="checkbox" name="experts[]" value="{{this.id}}">
 									<span></span>
 									<div class="checbox__name">
-										<div class="select__name">Хачатурян Любовь Андреевна</div>
-									</div>
-								</label></div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record"><input type="checkbox" value="id63049aba1204" name="experts[]">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">Салонтай Инна Рафаэловна</div>
-									</div>
-								</label></div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record"><input type="checkbox" value="id63049a29140e" name="experts[]">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">Цветкова Инна Сергеевна</div>
-									</div>
-								</label></div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record"><input type="checkbox" value="id6304989b0d4c" name="experts[]">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">Молотилова Ольга Юрьевна</div>
-									</div>
-								</label></div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record"><input type="checkbox" value="id630498b4189f" name="experts[]">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">Рассадина Татьяна Александровна</div>
-									</div>
-								</label></div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record"><input type="checkbox" value="id630498f80f90" name="experts[]">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">Айрапетян Амалия Суреновна</div>
+										<div class="select__name">{{this.name}}</div>
 									</div>
 								</label>
 							</div>
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record"><input type="checkbox" value="id6304998b114d" name="experts[]">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">Иванов Иван Алексеевич</div>
-									</div>
-								</label>
-							</div>
+							{{/each}}
 						</div>
 					</div>
 				</div>
@@ -1383,15 +668,17 @@
 					<div class="select">
 						<div class="select__main">Все администраторы</div>
 						<div class="select__list">
+							{{#each catalog.admins}}
 							<div class="select__item select__item--checkbox">
 								<label class="checkbox checkbox--record">
-									<input type="checkbox" value="id6304998b114d" name="admins[]">
+									<input type="checkbox" name="experts[]" value="{{this.id}}">
 									<span></span>
 									<div class="checbox__name">
-										<div class="select__name">Admin Rosh</div>
+										<div class="select__name">{{this.name}}</div>
 									</div>
 								</label>
 							</div>
+							{{/each}}
 						</div>
 					</div>
 				</div>
@@ -1421,7 +708,7 @@
 						<div class="input__placeholder">Введите е-мейл</div>
 					</div>
 				</div>
-				<a class="btn btn--black" href="/uploads/events/test-import.xlsx" download="Данные_03.10.2022.xlsx"> Скачать</a>
+				<a class="btn btn--black" href="" download="Данные_03.10.2022.xlsx"> Скачать</a>
 			</form>
 		</div>
 	</div>

@@ -216,14 +216,36 @@ $(function () {
 
         initPlugins = function () {
 
-            $('.datebirthdaypickr').each(function () { new AirDatepicker(this, { autoClose: true }); });
-            $('.daterangepickr').each(function () { new AirDatepicker(this, { autoClose: true, range: true }); });
-            $('.datepickr').each(function () { new AirDatepicker(this, { autoClose: true }); });
+            $('.datebirthdaypickr').each(function () {
+                new AirDatepicker(this, {
+                    selectedDates: [$(this).val()], autoClose: true, timepicker: false
+                });
+            });
+            $('.daterangepickr').each(function () {
+                new AirDatepicker(this, {
+                    selectedDates: [$(this).val()],
+                    autoClose: true,
+                    range: true
+                });
+            });
+            $('.datepickr').each(function () {
+                new AirDatepicker(this, {
+                    view: 'years',
+                    timepicker: false,
+                    minView: 'years ',
+                    dateFormat: 'yyyy',
+                    autoClose: true
+                });
+            });
             $('.datetimepickr').each(function () {
-                new AirDatepicker(this, { timepicker: true, autoClose: true, minutesStep: 10 });
+                new AirDatepicker(this, {
+                    minHours: 8,
+                    maxHours:20,
+
+                    timepicker: true, autoClose: true, minutesStep: 10, timeFormat:"HH:mm",});
             });
 
-            $('.dtp-test').each(function () { new AirDatepicker(this, { autoClose: true, inline: true }); });
+            $('.dtp-test').each(function () { new AirDatepicker(this, {autoClose: true, inline: true}); });
 
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();

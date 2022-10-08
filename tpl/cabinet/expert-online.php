@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ru">
 <head>
-    <title seo>Онлайн консультация</title>
+	<title seo>Онлайн консультация с пациентом</title>
+	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
 </head>
 <body class="body lk-cabinet online-consultation" data-barba="wrapper">
     <div>

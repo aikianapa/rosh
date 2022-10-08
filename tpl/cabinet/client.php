@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="container">
 			<div class="account">
 				<div class="crumbs">
@@ -149,7 +149,7 @@
 						{{/user}}
 					</form>
 				</div>
-				{{if events.current}}
+				{{#if events.current}}
 				<div class="lk-title">Текущее событие</div>
 				<div class="account-events">
 					<!-- multiple: .account-events__block -->
@@ -191,23 +191,28 @@
 								</div>
 							</div>
 						</div>
-						{{if this.type == 'online'}}
-						<div class="account-event-wrap --aicn">
-							<div class="account-events__btn">
-								<a class="btn btn--black"
-									onclick="window.open('/cabinet/online#{{this.id}}', '_blank', 'width='+screen.availWidth+',height='+screen.availHeight+
-                                             ',location=yes,height=0,width=0,scrollbars=yes,status=yes');">
-									Начать консультацию
-								</a>
+						
+						{{#if this.type == 'online'}}
+						<div class="account-events__btns">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<a class="btn btn--black"
+										onclick="window.open('/cabinet/online#{{this.id}}', 
+											 '_blank',
+                                             'width='+screen.availWidth+',height='+screen.availHeight+
+                                             ',location=yes,scrollbars=yes,status=no');">
+										Начать консультацию
+									</a>
+								</div>
+								<p>Вас ожидает специалист, можете подключиться прямо сейчас</p>
 							</div>
-
-							<p>Вас ожидает специалист, можете подключиться прямо сейчас</p>
 						</div>
 						{{/if}}
-						{{if this.clientData.analises}}
+						
+						{{#if this.analises}}
 						<div class="account-events__download">
 							<div class="lk-title">Анализы</div>
-							<a class="btn btn--white" href="/uploads/analizes/{{this.client}}.pdf" download="Анализы.pdf">Скачать анализы</a>
+							<a class="btn btn--white" href="{{this.client}}.pdf" download="Анализы.pdf">Скачать анализы</a>
 						</div>
 						{{/if}}
 					</div>
@@ -215,7 +220,7 @@
 				</div>
 				{{/if}}
 
-				{{if events.upcoming}}
+				{{#if events.upcoming}}
 				<div class="lk-title">Предстоящие события</div>
 				<div class="account-events">
 					{{#each events.upcoming}}
@@ -250,14 +255,24 @@
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{catalog.experts[this]}}</p>
+										<p>{{catalog.experts[this].head}}</p>
 										{{/this.experts}}
 									</div>
 								</div>
 							</div>
 						</div>
 
-						{{if this.type == 'online'}}
+						{{#if this.pay_status == 'unpay'}}
+						<div class="account-events__btns">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<button class="btn btn--black --openpopup" data-popup="--pay-one">Внести предоплату
+									</button>
+								</div>
+								<p>Услуга требует внесения предоплаты</p>
+							</div>
+						</div>
+						{{elseif this.type == 'online'}}
 						<div class="account-events__btns">
 							<div class="account-event-wrap --aicn">
 								<div class="account-events__btn">
@@ -269,17 +284,14 @@
 							</div>
 						</div>
 						{{/if}}
-						{{if this.pay_status == 'unpay'}}
-						<div class="account-events__btns">
-							<div class="account-event-wrap --aicn">
-								<div class="account-events__btn">
-									<button class="btn btn--black --openpopup" data-popup="--pay-one">Внести предоплату
-									</button>
-								</div>
-								<p>Услуга требует внесения предоплаты</p>
-							</div>
+						
+						{{#if this.analises}}
+						<div class="account-events__download">
+							<div class="lk-title">Анализы</div>
+							<a class="btn btn--white" href="{{this.analises.src}}" download="Анализы.pdf">Скачать анализы</a>
 						</div>
 						{{/if}}
+						
 					</div>
 					{{/each}}
 				</div>
@@ -313,38 +325,58 @@
 											<p>Дата</p>{{this.event_date}}
 										</div>
 										<div class="history-item">
-											<p>Время</p>08:45-09:45
+											<p>Время</p>{{this.event_time}}
 										</div>
 										<div class="history-item">
-											<p>Специалисты</p>Иванов Иван Алексеевич
+											<p>Специалисты</p>
+											{{#this.experts}}
+											{{catalog.experts[this].head}}<br>
+											{{/}}
 										</div>
 										<div class="history-item">
-											<p>Услуги</p>Консультация врача
+											<p>Услуги</p>
+											{{#this.services}}
+											{{this.name}}<br>
+											{{/}}
 										</div>
 										<div class="history-item">
-											<p>Анализы</p>Есть анализы
+											<p>Анализы</p>
+											{{#if this.analises}}
+												Есть анализы
+											{{else}}
+												Нет анализов
+											{{/if}}
 										</div>
 									</div>
 									<div class="acount__table-list accardeon__list">
 										<div class="analysis mb-40">
 											<div class="row">
 												<div class="col-md-6">
+													{{#if this.analises}}
 													<div class="analysis__top --aicn --flex mb-20">
 														<div class="analysis__title">Анализы</div>
-														<a class="btn btn--white" href="/uploads/events/id6334d318img04ba.pdf" download="Анализы(за 03.10.2022).pdf">Скачать анализы</a>
+														<a class="btn btn--white" href="{{this.analises.src}}" download="Анализы(за 03.10.2022).pdf">Скачать анализы</a>
 													</div>
+													{{/if}}
 													<div class="analysis__description">
 														<p class="text-bold mb-20">Выполнялись процедуры</p>
-														<p class="text-grey">test text about procedures done</p>
+														<p class="text-grey">{{this.description}}</p>
 													</div>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn--black mb-20 --openpopup" href="#" data-popup="--analize-type">Получить расшифровку анализов
+													{{#if this.analises}}
+													<a class="btn btn--black mb-20 --openpopup" 
+														data-popup="--analize-type" 
+														on-click="@.analisesQuote" 
+														data-file="{{this.analises.src}}" 
+														data-record="{{this.id}}">
+														Получить расшифровку анализов
 													</a>
+													{{/if}}
 													<div class="analysis__description">
 														<p class="text-bold mb-20">Рекомендация врача</p>
 														<div class="text">
-
+															{{this.recommendation}}
 														</div>
 													</div>
 												</div>
@@ -353,18 +385,19 @@
 										<div class="experts__worked">
 											<div class="experts__worked-title">С вами работали</div>
 											<div class="row">
+												{{#this.experts}}
 												<div class="col-md-6">
 													<a class="expert__worked"
 														target="_blank"
-														href="/about/experts/kovalyov-dmitrii-alekseevich">
+														href="/about/experts/{{catalog.experts[this].page_uri}}">
 														<div class="expert__worked-pic">
-															<img src="/uploads/events/2.jpg" alt="">
+															<img src="{{catalog.experts[this].image.src}}" alt="{{catalog.experts[this].head}}">
 														</div>
-														<div class="expert__worked-name">Иванов Иван Алексеевич
-														</div>
-														<div class="expert__worked-work">Инженер по электронно-вычислительным средствам, врач-терапевт, специалист по биорезонансной диагностике и терапии</div>
+														<div class="expert__worked-name">{{catalog.experts[this].head}}</div>
+														<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
 													</a>
 												</div>
+												{{/}}
 											</div>
 										</div>
 										<div class="acount__photos d-none">
@@ -372,20 +405,32 @@
 												<div class="col-md-6">
 													<div class="acount__photo">
 														<p>Фото до начала лечения</p>
-														<img src="./assets/img/experts/1.jpg"
-															alt="">
+														{{#each photos.before}}
+														<div class="col-md-6">
+															<a class="after-healing__item"
+																data-fancybox="images"
+																href="{{this.image.src}}"
+																data-caption="{{this.date}}">
+																<div class="healing__date">{{this.date}}</div>
+																<div class="after-healing__photo"
+																	style="background-image: url('{{this.image.src}}')">
+																</div>
+															</a>
+														</div>
+														{{/each}}
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="acount__photo">
 														<p>Фото в процессе лечения</p>
-														<img src="./assets/img/experts/1.jpg"
-															alt="">
-														<img src="./assets/img/experts/1.jpg"
-															alt="">
-														<img src="./assets/img/experts/1.jpg"
-															alt="">
-														<!-- can be more than one -->
+														{{#each photos.after}}
+														<a class="after-healing__item"
+															data-fancybox="images"
+															href="{{this.image.src}}"
+															data-caption="{{this.date}}">
+															<img src="{{this.image.src}}" alt="After visit {{this.date}}">
+														</a>
+														{{/each}}
 													</div>
 												</div>
 											</div>
@@ -502,24 +547,37 @@
 						data.phone     = '+' + data.phone;
 						cabinet.set('user', data); /* get actually user data */
 					});
+					
 
-					wbapp.get('/api/v2/list/events?status=upcoming&client=' + wbapp._session.user.id,
+					wbapp.get('/api/v2/list/records?status=upcoming&client=' + wbapp._session.user.id,
 						function (data) {
-							console.log('events.upcoming:', data);
-							cabinet.set('events.upcoming', data); /* get actually user next events */
-						});
+								const curr_timestamp = parseInt(getdate()[0]);
+								
+								data.forEach(function(rec){
+									const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString()
 
-					wbapp.get('/api/v2/list/events?status=past&client=' + wbapp._session.user.id,
+									if (event_date !== (new Date()).toLocaleDateString()){
+										cabinet.push('events.upcoming', data); /* get actually user next events */
+									}
+									
+									if (((curr_timestamp - (15*60))  =< rec.event_begin_time) 
+										&& (rec.event_end_time > curr_time)) {
+										cabinet.push('events.current', rec);
+									}
+								});
+							});
+					wbapp.get('/api/v2/list/records?status=past&client=' + wbapp._session.user.id,
 						function (data) {
 							console.log('history.events:', data);
 							cabinet.set('history.events', data); /* get actually user next events */
 						});
 
-					wbapp.get('/api/v2/list/events?longterm=1&client=' + wbapp._session.user.id,
+					wbapp.get('/api/v2/list/records?longterm=1&client=' + wbapp._session.user.id,
 						function (data) {
 							console.log('history.longterms:', data);
 							cabinet.set('history.longterms', data); /* get actually user next events */
 						});
+						
 					setTimeout(function () {
 						cabinet.set('catalog', catalog);
 					});
@@ -527,7 +585,7 @@
 				popupCreateQuote(ev) {
 					var createQuote = new Ractive({
 						el: '.popup.--record',
-						template: wbapp.tpl('#popupNewQuote').html,
+						template: wbapp.tpl('#popupRecord').html,
 						data: {
 							user: wbapp._session.user,
 							'experts': catalog.experts,
@@ -551,25 +609,32 @@
 
 								if ($form.verify() && uid > '') {
 									let data            = $form.serializeJSON();
+									data.group 			= 'quotes';
 									data.status         = 'new';
+									data.status         = 'new';
+									data.analises = {};
+									data.photos   = {before: [],after: []};
+																		
 									data.pay_status     = 'unpay';
 									data.client         = uid;
-									data.comment        = '';
 									data.priority       = 0;
 									data.marked         = 0;
+
+									data.comment        = '';
 									data.recommendation = '';
 									data.description    = '';
+
 									data.clientData     = {
-										'name': wbapp._session.user.fullname,
-										'email': wbapp._session.user.email,
-										'phone': wbapp._session.user.phone
+										'fullname': cabinet.get('user.fullname'),
+										'email': cabinet.get('user.email'),
+										'phone': cabinet.get('user.phone')
 									};
-									wbapp.post('/api/v2/create/quotes/', data, function (res) {
-										console.log('saved', res);
+									wbapp.post('/api/v2/create/records/', data, function (res) {
 										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 										$('.popup.--record .popup__panel.--succed').addClass('d-block');
 									});
 								}
+
 								return false;
 							}
 						}
@@ -584,6 +649,9 @@
 						data.birthdate = new Date(data.birthdate).toLocaleDateString();
 						wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
 							console.log(res);
+							cabinet.set('user.birthdate', data.birthdate);
+							cabinet.set('user.phone', '+' + data.birthdate);
+							cabinet.set('user.email', data.birthdate);
 						});
 					}
 					return false;

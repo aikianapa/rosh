@@ -9,7 +9,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="account admin">
 			<form class="search">
 				<div class="container">
@@ -26,7 +26,8 @@
 						<div class="title">
 							<h1 class="h1 mb-10">Кабинет администратора </h1>
 						</div>
-						<a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
+						<a class="btn btn--black --openpopup" data-popup="--create"
+							on-click="@.newClient">Создать карточку пациента</a>
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
@@ -147,7 +148,7 @@
 						<div class="select pay">
 							<div class="select__main">Статус оплаты</div>
 							<div class="select__list">
-								<input type="hidden" name="payment" value="{{ payment }}">
+								<input type="hidden" name="pay_status" value="{{ pay_status }}">
 								{{#each catalog.quotePay}}
 								<div class="select__item" data-id="{{ id }}"
 									onclick="$(this).parent('.select__list').children('input').val($(this).attr('data-id'))">
@@ -162,13 +163,15 @@
 						<div class="select status">
 							<div class="select__main">Изменить статус</div>
 							<div class="select__list">
-								<input type="hidden" name="status" value="{{ status }}">
+								<input type="hidden" class="status" name="status" value="{{ status }}">
+								<input type="hidden" class="group" name="group" value="{{ group }}">
 								{{#each catalog.quoteStatus}}
 								{{#if id == 'delimiter'}}
 								<div class="select__delimiter" disabled></div>
 								{{else}}
-								<div class="select__item select__item--acc-{{color}}" data-id="{{ id }}"
-									onclick="$(this).parent('.select__list').children('input').val($(this).attr('data-id'))">
+								<div class="select__item select__item--acc-{{color}}" 
+									data-id="{{ id }}" data-group="{{ type }}"
+									onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parent('.select__list').children('input.group').val($(this).attr('data-type'))">
 									{{name}}
 								</div>
 								{{/if}}
@@ -185,7 +188,10 @@
 							<div class="col-md-7">
 								<div class="lk-title">Редактировать заявку</div>
 								<input type="hidden" value="{{ quote.id }}" name="id">
-
+								{{#if this.spec_service}}
+								<input type="hidden" name="spec_service" value="{{this.spec_service}}">
+								<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
+								{{else}}
 								<div class="admin-editor__event mb-20">
 									<div class="search__block --flex --aicn">
 										<div class="input">
@@ -203,6 +209,7 @@
 								<div class="admin-editor__event mb-20">
 									<!-- services-select.dropdown -->
 								</div>
+								{{/if}}
 								<div class="admin-editor__type-event">
 									<p class="mb-10">Тип события</p>
 									<div class="text-radios">
@@ -219,14 +226,17 @@
 										{{/each}}
 									</div>
 									<div class="row">
+										{{#if this.spec_service}}
+										
+										{{else}}
 										<div class="col-md-6">
 											<div class="select-form select-checkboxes">
 												<div class="select has-values">
 													<div class="select__main">
 														<div class="select__placeholder">Выберите специалиста</div>
-														<div class="select__values">Иванов Иван Алексеевич</div>
+														<div class="select__values"></div>
 													</div>
-													<div class="select__list">
+													<div class="select__list" multiple value="{{catalog.experts}}">
 														{{#each catalog.experts}}
 														<div class="select__item select__item--checkbox">
 															<label class="checkbox checkbox--record">
@@ -243,7 +253,8 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-md-6">
+										{{/if}}
+										<div class="col-md-4">
 											<div class="input input-lk-calendar input--grey">
 												<input class="input__control datetimepickr"
 													name="event_datetime" value="{{event_datetime}}"
@@ -251,40 +262,62 @@
 												<div class="input__placeholder">Выбрать дату и время</div>
 											</div>
 										</div>
+										<div class="col-md-2">
+											<div class="input input-lk-calendar input--grey">
+												<input class="input__control datetimepickr"
+													name="event_duration" value="{{event_duration}}"
+													type="text" placeholder="Продолжительность">
+												<div class="input__placeholder">Продолжительность (часов)</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="admin-editor__patient">
 									<div class="text-bold mb-10">Выбраны услуги</div>
-									{{#each quote.services: idx, key}}
-									<div class="search__drop-item" data-index="{{idx}}"
-										data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
-										<input type="hidden" name="services[{{key}}][service_id]"
-											value="{{service_id}}">
-										<input type="hidden" name="services[{{key}}][price_id]"
-											value="{{price_id}}">
-										<input type="hidden" name="services[{{key}}][name]"
-											value="{{name}}">
-										<input type="hidden" name="services[{{key}}][price]"
-											value="{{price}}">
-										<div class="search__drop-name">
-											{{name}}
-											<div class="search__drop-delete">
-												<svg class="svgsprite _delete">
-													<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
-												</svg>
+									{{#if this.spec_service}}
+										<div class="search__drop-item">
+											<input type="hidden" name="services[]" value="">
+											<div class="search__drop-name">
+												{{catalog.spec_service[this.spec_service].header}}
+											</div>
+											<div class="search__drop-right">
+												<div class="search__drop-summ">{{catalog.spec_service[this.spec_service].price}} ₽</div>
+											</div>
+										</div
+									{{else}}
+										{{#each quote.service_prices: idx, key}}
+										<div class="search__drop-item" data-index="{{idx}}"
+											data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+											<input type="hidden" name="services[]"
+												value="{{service_id}}">
+											<input type="hidden" name="service_prices[{{key}}][service_id]"
+												value="{{service_id}}">
+											<input type="hidden" name="service_prices[{{key}}][price_id]"
+												value="{{price_id}}">
+											<input type="hidden" name="service_prices[{{key}}][name]"
+												value="{{name}}">
+											<input type="hidden" name="service_prices[{{key}}][price]"
+												value="{{price}}">
+											<div class="search__drop-name">
+												{{name}}
+												<div class="search__drop-delete">
+													<svg class="svgsprite _delete">
+														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+													</svg>
+												</div>
+											</div>
+											<div class="search__drop-right">
+												<div class="search__drop-summ">{{price}} ₽</div>
 											</div>
 										</div>
-										<div class="search__drop-right">
-											<div class="search__drop-summ">{{price}} ₽</div>
-										</div>
-									</div>
-									{{/each}}
+										{{/each}}
+									{{/if}}
 								</div>
 
 								<div class="admin-editor__summ">
 									<p>Всего</p>
-									<input type="hidden" name="total_price" value="{{quote.total_price}}">
-									<p class="total-price">{{quote.total_price_text}} ₽</p>
+									<input type="hidden" name="price" value="{{quote.price}}">
+									<p class="price">{{quote.price}} ₽</p>
 								</div>
 
 								<button class="btn btn--white" on-click="save">Сохранить</button>
@@ -504,7 +537,7 @@
 											</div>
 											<div class="admin-events-item">
 												<p>Приём</p>
-												<span class="dt">22.10.2022 <br>11:00</span>
+												<span class="dt">{{event_date}} <br>{{event_time}}</span>
 											</div>
 											<div class="admin-events-item">
 												<p>ФИО</p><a href="#">{{clientData.fullname}}</a>
@@ -513,7 +546,8 @@
 												<p>Телефон</p>{{clientData.phone}}
 											</div>
 											<div class="admin-events-item">
-												<p>Специалист</p>{{expert}}
+												<p>Специалист</p>
+												{{expert}}
 											</div>
 											<div class="admin-events-item">
 												<p>Тип</p>
