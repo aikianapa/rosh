@@ -1321,7 +1321,7 @@
 									let copy = $('<form></form>');
 									$(copy).html($(form).clone());
 									let post = $(copy).serializeJSON();
-									wbapp.post('/api/v2/update/quotes/' + lead, post, function (res) {
+									wbapp.post('/api/v2/update/records/' + lead, post, function (res) {
 										tabQuotes.set('results.' + lead, res);
 
 										toast('Успешно сохранено');
