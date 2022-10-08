@@ -312,13 +312,13 @@ $(function () {
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
             });
-
-            $('input.autocomplete').each(function () {
-                $(this).autocomplete({
-                    noCache: true,
-                    minChars: 3,
-                });
-            });
+            //
+            //$('input.autocomplete').each(function () {
+            //    $(this).autocomplete({
+            //        noCache: true,
+            //        minChars: 3,
+            //    });
+            //});
 
             $('input.autocomplete-inline').each(function () {
                 let _lookup = $(this).data('lookup');

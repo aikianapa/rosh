@@ -439,7 +439,7 @@
 										</div>
 									</div>
 								</div>
-								{{/else}}
+								{{else}}
 								<div class="acount__table-accardeon accardeon">
 									<div class="acount__table-main accardeon__main">
 										Нет записей о посещении
@@ -511,7 +511,7 @@
 										</div>
 									</div>
 								</div>
-								{{/else}}
+								{{else}}
 								<div class="acount__table-accardeon accardeon">
 									<div class="acount__table-main accardeon__main">
 										Нет записей о продолжительном лечении
@@ -651,9 +651,7 @@
 						data.birthdate = new Date(data.birthdate).toLocaleDateString();
 						wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
 							console.log(res);
-							cabinet.set('user.birthdate', data.birthdate);
-							cabinet.set('user.phone', '+' + data.birthdate);
-							cabinet.set('user.email', data.birthdate);
+							toast('Успешно сохранено');
 						});
 					}
 					return false;
