@@ -1253,7 +1253,7 @@ wbapp.get('/api/v2/list/services?active=on', function (res) {
 				}
 			};
 			servicesList.push(_item);
-			catalog.servicePrices[service.id][j] = {
+			catalog.servicePrices[service.id + '-' + j] = {
 				'price': serv_price.price,
 				'header': serv_price.header
 			};
@@ -1278,7 +1278,7 @@ wbapp.get('/api/v2/list/experts?active=on', function (res) {
 	res.forEach(function (expert, i) {
 		_experts[expert.id] = expert;
 		wbapp.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
-			_experts[expert.id].info_uri = res[u] || '';
+			_experts[expert.id].info_uri = res[0]['u'] || '';
 		});
 	});
 
