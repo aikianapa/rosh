@@ -85,7 +85,7 @@
 								{{else}}
 								<div class="acount__table-accardeon accardeon">
 									<div class="acount__table-main accardeon__main">
-										В журналe изменений нет даных 
+										Нет записей журналe изменений
 									</div>
 								</div>
 								{{/each}}
