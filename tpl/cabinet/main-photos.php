@@ -2,6 +2,7 @@
 <html class="no-js" lang="ru">
 <head>
 	<title seo>Кабинет администратора</title>
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
@@ -58,17 +59,17 @@
 				</div>
 				<div class="admin-photos">
 					{{#each photos: idx}}
-						<a class="admin-photo" data-idx="{{idx}}"
-							data-filter-client="{{this.client}}" 
-							data-filter-date="{{this.date}}"
-							data-fancybox="gallery" href="{{this.image.src}}" 
-							style="background-image: url('{{this.image.src}}')">
-							<div class="admin-photo__date">{{this.date}}</div>
-							<div class="admin-photo__info">
-								<p class="text-bold mb-10 admin-photo__name">{{this.clientData.fullname}}</p>
-								<div class="admin-photo__description">{{this.title}}</div>
-							</div>
-						</a>
+					<a class="admin-photo" data-idx="{{idx}}"
+						data-filter-client="{{this.client}}"
+						data-filter-date="{{this.date}}"
+						data-fancybox="gallery" href="{{this.image.src}}"
+						style="background-image: url('{{this.image.src}}')">
+						<div class="admin-photo__date">{{this.date}}</div>
+						<div class="admin-photo__info">
+							<p class="text-bold mb-10 admin-photo__name">{{this.clientData.fullname}}</p>
+							<div class="admin-photo__description">{{this.title}}</div>
+						</div>
+					</a>
 					{{/each}}
 				</div>
 			</div>
@@ -80,27 +81,27 @@
 			el: 'main.page',
 			template: $('main.page').html(),
 			data: {
-                    user: wbapp._session.user,
-                    photos: []
-                },
+				user: wbapp._session.user,
+				photos: []
+			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/records/', function(data) {
+					wbapp.get('/api/v2/list/records/', function (data) {
 						let _images = [];
-						data.forEach(function(rec){
+						data.forEach(function (rec) {
 							_before_photo = rec.photos.before[0];
-							if(!!_before_photo){
+							if (!!_before_photo) {
 								_images.push({
-									date: rec.photos.before[]photo.date,
-									comment: photo.comment,
-									image: photo.image.src,
-									
+									date: _before_photo.date,
+									comment: _before_photo.comment,
+									image: _before_photo.image.src,
+
 									client: rec.client,
 									record: rec.id
 
 								});
 							}
-							rec.photos.after.forEach(function(photo){
+							rec.photos.after.forEach(function (photo) {
 								_images.push({
 									date: photo.date,
 									comment: photo.comment,
@@ -114,7 +115,7 @@
 					});
 				},
 				filterPhotos(ev) {
-				
+
 				}
 			}
 		});
