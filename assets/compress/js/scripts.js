@@ -1195,113 +1195,130 @@ var serviceTags  = {
 		"color": "purple"
 	}
 };
+window.cabinetPage = {
+	catalog:{},
+	objects:{
+		record: {
 
-fetch('/api/v2/func/catalogs/getQuoteStatus', {method: 'GET'})
-	.then((response) => {
-		return response.json();
-	}).then(function (data) {
-	catalog.quoteStatus = data;
-});
+		},
+		photo: {
 
-fetch('/api/v2/func/catalogs/getQuotePay', {
-	method: 'GET'
-}).then((response) => {
-	return response.json();
-}).then(function (data) {
-	catalog.quotePay = data;
-});
+		},
+		analises: {
 
-fetch('/api/v2/func/catalogs/getQuoteType', {
-	method: 'GET'
-}).then((response) => {
-	return response.json();
-}).then(function (data) {
-	catalog.quoteType = data;
-});
+		},
+	},
+	initData: function(){
+		fetch('/api/v2/func/catalogs/getQuoteStatus', {method: 'GET'})
+			.then((response) => {
+				return response.json();
+			}).then(function (data) {
+			catalog.quoteStatus = data;
+		});
 
-wbapp.get('/api/v2/list/services?active=on', function (res) {
-	console.log('services', res);
-	catalog.servicePrices = {};
-	let _services         = {};
-	res.forEach(function (service, i) {
-		_services[service.id] = service;
-		const _cats           = service.category;
-		const _tags           = [];
-		const _price          = 0.0;
+		fetch('/api/v2/func/catalogs/getQuotePay', {
+			method: 'GET'
+		}).then((response) => {
+			return response.json();
+		}).then(function (data) {
+			catalog.quotePay = data;
+		});
 
-		_cats.forEach(function (cat) {
-			_tags.push({
-				"id": cat,
-				"color": serviceTags[cat].color,
-				"tag": Array.from(serviceTags[cat].name)[0]
+		fetch('/api/v2/func/catalogs/getQuoteType', {
+			method: 'GET'
+		}).then((response) => {
+			return response.json();
+		}).then(function (data) {
+			catalog.quoteType = data;
+		});
+
+		wbapp.get('/api/v2/list/services?active=on', function (res) {
+			console.log('services', res);
+			catalog.servicePrices = {};
+			let _services         = {};
+			res.forEach(function (service, i) {
+				_services[service.id] = service;
+				const _cats           = service.category;
+				const _tags           = [];
+				const _price          = 0.0;
+
+				_cats.forEach(function (cat) {
+					_tags.push({
+						"id": cat,
+						"color": serviceTags[cat].color,
+						"tag": Array.from(serviceTags[cat].name)[0]
+					});
+				});
+
+				service.blocks.landing_price.price.forEach(function (serv_price, j) {
+					if (serv_price.price == 0) {
+						return;
+					}
+					let _item = {
+						value: serv_price.header,
+						id: service.id + '-' + j,
+						data: {
+							service_id: service.id,
+							service_title: service.header,
+							tags: _tags,
+							price: serv_price.price,
+							price_id: j
+						}
+					};
+					servicesList.push(_item);
+					catalog.servicePrices[service.id + '-' + j] = {
+						'price': serv_price.price,
+						'header': serv_price.header
+					};
+				});
 			});
-		});
+			console.log('services:', _services);
+			catalog.services = _services;
 
-		service.blocks.landing_price.price.forEach(function (serv_price, j) {
-			if (serv_price.price == 0) {
-				return;
-			}
-			let _item = {
-				value: serv_price.header,
-				id: service.id + '-' + j,
-				data: {
-					service_id: service.id,
-					service_title: service.header,
-					tags: _tags,
-					price: serv_price.price,
-					price_id: j
+		});
+		wbapp.get('/api/v2/list/users?role=main&active=on&@return=id,fullname', function (res) {
+			let _admins = {};
+			res.forEach(function (admin, i) {
+				_admins[admin.id] = admin;
+			});
+
+			console.log('catalog.admins:', _admins);
+			catalog.experts = _admins;
+		});
+		wbapp.get('/api/v2/list/experts?active=on', function (res) {
+			let _experts = {};
+			res.forEach(function (expert, i) {
+				_experts[expert.id] = expert;
+				wbapp.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
+					_experts[expert.id].info_uri = res[0]['u'] || '';
+				});
+			});
+
+			console.log('catalog.experts:', _experts);
+			catalog.experts = _experts;
+		});
+		wbapp.get('/api/v2/list/catalogs/srvcat', function (res) {
+			let _serviceCats = {};
+			Object.keys(res.tree.data).forEach(function (_key) {
+				const _cat = res.tree.data[_key];
+				if (_cat.active != 'on') {
+					return;
 				}
-			};
-			servicesList.push(_item);
-			catalog.servicePrices[service.id + '-' + j] = {
-				'price': serv_price.price,
-				'header': serv_price.header
-			};
+				_serviceCats[_cat.id] = {
+					'id': _cat.id,
+					'name': _cat.name,
+					'color': _cat.data.color
+				};
+			});
+			console.log('catalog.categories:', _serviceCats);
+			catalog.categories = _serviceCats;
 		});
-	});
-	console.log('services:', _services);
-	catalog.services = _services;
+	},
+	initPopups: function(){
 
-});
+	}
+};
 
-wbapp.get('/api/v2/list/users?role=main&active=on&@return=id,fullname', function (res) {
-	let _admins = {};
-	res.forEach(function (admin, i) {
-		_admins[admin.id] = admin;
-	});
-
-	console.log('catalog.admins:', _admins);
-	catalog.experts = _admins;
-});
-wbapp.get('/api/v2/list/experts?active=on', function (res) {
-	let _experts = {};
-	res.forEach(function (expert, i) {
-		_experts[expert.id] = expert;
-		wbapp.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
-			_experts[expert.id].info_uri = res[0]['u'] || '';
-		});
-	});
-
-	console.log('catalog.experts:', _experts);
-	catalog.experts = _experts;
-});
-
-wbapp.get('/api/v2/list/catalogs/srvcat', function (res) {
-	let _serviceCats = {};
-	Object.keys(res.tree.data).forEach(function (_key) {
-		const _cat = res.tree.data[_key];
-		if (_cat.active != 'on') {
-			return;
-		}
-		_serviceCats[_cat.id] = {
-			'id': _cat.id,
-			'name': _cat.name,
-			'color': _cat.data.color
-		};
-	});
-	console.log('catalog.categories:', _serviceCats);
-	catalog.categories = _serviceCats;
-});
 
 $(function () {
 	/* common function */
@@ -1323,7 +1340,8 @@ $(function () {
 		return changes;
 	};
 
-	window.toast = function (text, head, type) {
+	window.toast = function (text, head, icon) {
+
 		$.toast({
 			text: text, // Text that is to be shown in the toast
 			heading: head || '', // Optional heading to be shown on the toast
@@ -1336,6 +1354,7 @@ $(function () {
 			textColor: '#FEFEFE',  // Text color of the toast
 			textAlign: 'left',  // Text alignment i.e. left, right or center
 			loader: false,  // Whether to show loader or not. True by default
+			icon: (!!icon) ? icon : false,
 			beforeShow: function () {}, // will be triggered before the toast is shown
 			afterShown: function () {}, // will be triggered after the toat has been shown
 			beforeHide: function () {}, // will be triggered before the toast gets hidden

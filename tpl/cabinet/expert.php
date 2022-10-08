@@ -35,7 +35,7 @@
 			<div class="container">
 				<template id="editorProfile">
 					<form on-submit="profileSave">
-						{{#user}}
+						{{#await user}}
 						<div class="profile-edit__block">
 							<div class="lk-title">Редактировать профиль</div>
 							<div class="row profile-edit__wrap">

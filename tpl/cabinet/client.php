@@ -13,23 +13,23 @@
 	</div>
 
 	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
-		<div class="container">
-			<div class="account">
-				<div class="crumbs">
-					<a class="crumbs__arrow" href="#">
-						<svg class="svgsprite _crumbs-back">
-							<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-						</svg>
-					</a>
-					<a class="crumbs__link" href="/">Главная</a>
-					<a class="crumbs__link" href="#">Личный кабинет</a>
+		<div class="account">
+			<div class="crumbs">
+				<a class="crumbs__arrow" href="#">
+					<svg class="svgsprite _crumbs-back">
+						<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+					</svg>
+				</a>
+				<a class="crumbs__link" href="/">Главная</a>
+				<a class="crumbs__link" href="#">Личный кабинет</a>
+			</div>
+			<div class="title-flex --flex --jcsb">
+				<div class="title">
+					<h1 class="h1 mb-10">Личный кабинет </h1>
 				</div>
-				<div class="title-flex --flex --jcsb">
-					<div class="title">
-						<h1 class="h1 mb-10">Личный кабинет </h1>
-					</div>
-					<button class="btn btn--black --openpopup" data-popup="--record" on-click="popupCreateQuote">Записаться на прием</button>
-				</div>
+				<button class="btn btn--black --openpopup" data-popup="--record" on-click="popupCreateQuote">Записаться на прием</button>
+			</div>
+			<div class="container">
 				<div class="account__panel">
 					<div class="account__info">
 						<div class="user">
@@ -151,6 +151,7 @@
 						{{/user}}
 					</form>
 				</div>
+
 				{{#if events.current}}
 				<div class="lk-title">Текущее событие</div>
 				<div class="account-events">
@@ -473,19 +474,19 @@
 										<div class="row">
 											<div class="col-md-4">
 												<div class="text-bold text-big mb-20">Фото до начала лечения</div>
-												{{#each this.photos.before}}
-													<a class="after-healing__item"
-														data-fancybox="images"
-														href="{{this.image.src}}"
-														data-caption="{{this.date}}">
-														<h2 class="h2 healing__date-title">{{this.date}}</div>
-														<div class="after-healing__photo"
-															style="background-image: url('{{this.image.src}}')">
-														</div>
-														<div class="healing__description">
-															{{this.comment}}
-														</div>
-													</a>
+												{{#each this.photos.before}} <!--single photo!-->
+												<a class="after-healing__item"
+													data-fancybox="images"
+													href="{{this.image.src}}"
+													data-caption="{{this.date}}">
+													<h2 class="h2 healing__date-title">{{this.date}}</h2>
+													<div class="after-healing__photo"
+														style="background-image: url('{{this.image.src}}')">
+													</div>
+													<div class="healing__description">
+														{{this.comment}}
+													</div>
+												</a>
 												{{/each}}
 											</div>
 											<div class="col-md-8">
@@ -524,8 +525,8 @@
 							</div>
 						</div>
 					</div>
+				</div>
 			</div>
-		</div>
 	</main>
 
 	<script wbapp>

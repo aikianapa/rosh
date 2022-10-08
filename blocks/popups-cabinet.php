@@ -432,11 +432,11 @@
 		</template>
 	</div>
 
-	<div class="popup --create">
-		<template id="popupCreate">
+	<div class="popup --create-client">
+		<template id="popupCreateClient">
 			<div class="popup__overlay"></div>
 			<div class="popup__panel">
-				<button class="popup__close">
+				<button class="popup__close" on-click="close">
 					<svg class="svgsprite _close">
 						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
 					</svg>
@@ -445,7 +445,6 @@
 				<form class="popup__form" on-submit="submit">
 					<input type="hidden" name="role" value="client">
 					<input type="hidden" name="confirmed" value="0">
-					<input type="hidden" name="confirm_code" value="XXXXXX">
 					<div class="input">
 						<input class="input__control" type="text"
 							placeholder="ФИО" name="fullname">
@@ -459,59 +458,52 @@
 					<div class="input mb-30">
 						<input class="input__control" type="tel"
 							placeholder="Номер телефона"
-							data-inputmask="'mask': '+7 (999) 999-99-99'" name="phone">
+							data-inputmask="'mask': '+7 (999) 999-99-99'"
+							name="phone">
 						<div class="input__placeholder">Номер телефона</div>
 					</div>
-					<button class="btn btn--black form__submit --switchpopup">Создать</button>
-					<div class="form-bottom" on-click="@.createClientCard">После отправки заявки для пациента будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
+					<button class="btn btn--black form__submit">Создать</button>
+					<div class="form-bottom">После отправки для пациента будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
 				</form>
 			</div>
 		</template>
 	</div>
-	<script wbapp>
-		let popupAnalizeType   = new Ractive({
-			el: '.popup.--analize-type',
-			template: document.querySelector('.popup.--analize-type > template').innerHTML,
-			data: {},
-			on: {
-				submit() {
-					let form = this.find('.popup.--analize-type .popup__form');
-					if ($(form).verify()) {
-						let post = $(form).serializeJSON();
-						wbapp.post('/create/records', post, function (data) {
-							if (data.error) {
-								wbapp.trigger('wb-save-error', {'data': data});
-							} else {
-								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-							}
-						});
-					}
-				}
-			}
-		});
-		let popupCreateProfile = new Ractive({
-			el: '.popup.--create',
-			template: document.querySelector('.popup.--create > template').innerHTML,
-			data: {},
-			on: {
-				submit() {
-					let form = this.find('.popup.--create .popup__form');
-					if ($(form).verify()) {
-						let post = $(form).serializeJSON();
-						wbapp.post('/create/users/', post, function (data) {
-							if (data.error) {
-								wbapp.trigger('wb-save-error', {'data': data});
-							} else {
-								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-							}
-						});
-					}
-				}
-			}
-		});
-	</script>
+	<div class="popup --confirm-sms-code">
+		<template id="popupConfirmSmsCode">
+			<div class="popup__overlay"></div>
+			<div class="popup__panel">
+				<button class="popup__close">
+					<svg class="svgsprite _close">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+					</svg>
+				</button>
+				<div class="popup__name text-bold">Вход</div>
+				<form class="popup__form">
+					<h3 class="h3">Введите код</h3>
+					<div class="form-title__description">
+						Мы отправили код подтверждения на номер
+						<span class="current_phone">{{phone}}</span>
+						.<br>
+						Время жизни кода 30 секунд.<br>
+						Осталось <strong>
+							<span class="sms_code_lifetime"></span>
+						</strong>
+					</div>
+
+					<div class="code">
+						<input class="code__input" type="text">
+						<input class="code__input" type="text">
+						<input class="code__input" type="text">
+						<input class="code__input" type="text">
+						<input class="code__input" type="text">
+						<input class="code__input" type="text">
+					</div>
+
+					<div class="alert alert-warning mb-2"></div>
+				</form>
+			</div>
+		</template>
+	</div>
 
 	<div class="popup --photo-profile">
 		<template id="popupPhotoProfile">
@@ -767,7 +759,6 @@
 
 	<div class="popup --download-data">
 		<template id="popupDownloadData">
-
 			<div class="popup__overlay"></div>
 			<div class="popup__panel">
 				<button class="popup__close">
@@ -867,10 +858,123 @@
 				</form>
 			</div>
 		</template>
-
 	</div>
+
+	<script wbapp>
+		window.popupAnalizeType    = new Ractive({
+			el: '.popup.--analize-type',
+			template: document.querySelector('.popup.--analize-type > template').innerHTML,
+			data: {},
+			on: {
+				submit() {
+					let form = this.find('.popup.--analize-type .popup__form');
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+						wbapp.post('/create/records', post, function (data) {
+							if (data.error) {
+								wbapp.trigger('wb-save-error', {'data': data});
+							} else {
+								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
+								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
+							}
+						});
+					}
+				}
+			}
+		});
+		window.popupsCreateProfile  = new Ractive({
+			el: '.popup.--create-client',
+			template: document.querySelector('.popup.--create-client > template').innerHTML,
+			data: {},
+			on: {
+				submit() {
+					let form = this.find('.popup.--create-client .popup__form');
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+						$.ajax({
+							url: '/form/phoneAuth/get_code',
+							method: 'POST',
+							data: {
+								phone: post.phone,
+							},
+							success: function (data) {
+								let res = JSON.parse(data);
+								console.log(res)
+
+								if (res.status === 'error') {
+									toast(res.message, '', 'error');
+								} else {
+									popupsConfirmSmsCode.showPopup();
+								}
+							}
+						})
+						wbapp.post('/create/users/', post, function (data) {
+							if (data.error) {
+								wbapp.trigger('wb-save-error', {'data': data});
+							} else {
+								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
+								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
+							}
+						});
+					}
+				}
+			}
+		});
+		window.popupsConfirmSmsCode = new Ractive({
+			el: '.popup.--confirm-sms-code',
+			template: document.querySelector('.popup.--confirm-sms-code > template').innerHTML,
+			data: {},
+			on: {
+				keyup(ev) {
+					const _this = $(ev.node);
+					const _phone = $(ev.node).find('[name="phone"]').val();
+					_this.next().focus();
+
+					var sms_code = '';
+					$.each(auth.smscode_window_digits, function (digit, item) {
+						sms_code += $(item).val();
+					});
+
+					if (sms_code.length === 6) {
+						$.ajax({
+							url: '/form/phoneAuth/check_code',
+							method: 'POST',
+							data: {
+								phone: _phone,
+								code: sms_code
+							},
+							success: function (data) {
+
+								if (data.status === 'ok') {
+									$.ajax({
+										url: '/form/phoneAuth/createUser',
+										data: {
+											phone: auth.phone_current,
+											password: auth.sms_code
+										},
+										method: 'POST',
+										success: function (data) {
+											if (data.status === 'ok') {
+												toast('')
+												location.replace(data.user.group.url_login);
+											} else {
+												console.warn(data);
+											}
+										}
+									});
+								}
+							}
+						});
+					}
+				}
+			},
+			showPopup: function(){
+				$('.popup.--confirm-sms-code').show();
+			}
+		});
+	</script>
 </view>
-<edit header="Все попапы">
+<edit header="Все попапы для ЛК">
 	<div>
 		<wb-module wb="module=yonger&mode=edit&block=common.inc"/>
 	</div>
