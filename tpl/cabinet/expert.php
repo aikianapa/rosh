@@ -482,7 +482,7 @@
 										{{/if}}
 									</div>
 								</div>
-								<div class="acount__table-list accardeon__list">
+								<form class="acount__table-list accardeon__list" on-submit="saveRecommendation">
 									<div class="account-edit__title">
 										<p>Рекомендация врача</p>
 										<a class="user__edit" href="#">
@@ -493,7 +493,7 @@
 									</div>
 									<textarea class="account-edit__textarea" id="{{this.id}}-recommendation" name="recommendation">{{this.recommendation}}</textarea>
 									<button class="btn btn--white" on-click="saveRecommendation">Сохранить</button>
-								</div>
+								</form>
 							</div>
 							{{else}}
 							<div class="acount__table-accardeon accardeon">

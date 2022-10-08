@@ -387,7 +387,7 @@
 										<div class="experts__worked">
 											<div class="experts__worked-title">С вами работали</div>
 											<div class="row">
-												{{#this.experts}}
+												{{#experts}}
 												<div class="col-md-6">
 													<a class="expert__worked"
 														target="_blank"
@@ -399,7 +399,7 @@
 														<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
 													</a>
 												</div>
-												{{/}}
+												{{/experts}}
 											</div>
 										</div>
 										<div class="acount__photos d-none">
@@ -407,7 +407,7 @@
 												<div class="col-md-6">
 													<div class="acount__photo">
 														<p>Фото до начала лечения</p>
-														{{#each photos.before}}
+														{{#each this.photos.before}}
 														<div class="col-md-6">
 															<a class="after-healing__item"
 																data-fancybox="images"
@@ -425,7 +425,7 @@
 												<div class="col-md-6">
 													<div class="acount__photo">
 														<p>Фото в процессе лечения</p>
-														{{#each photos.after}}
+														{{#each this.photos.after}}
 														<a class="after-healing__item"
 															data-fancybox="images"
 															href="{{this.image.src}}"
@@ -473,7 +473,7 @@
 										<div class="row">
 											<div class="col-md-4">
 												<div class="text-bold text-big mb-20">Фото до начала лечения</div>
-												{{#each photos.before}}
+												{{#each this.photos.before}}
 													<a class="after-healing__item"
 														data-fancybox="images"
 														href="{{this.image.src}}"
@@ -495,7 +495,7 @@
 												<div class="after-healing">
 													<h2 class="h2 healing__date-title d-none month-header"></h2>
 													<div class="row">
-														{{#each image_after}}
+														{{#each this.photos.after}}
 														<div class="col-md-6">
 															<a class="after-healing__item"
 																data-fancybox="images"
@@ -524,7 +524,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
 			</div>
 		</div>
 	</main>
