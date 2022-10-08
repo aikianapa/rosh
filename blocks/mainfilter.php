@@ -162,7 +162,7 @@
                                         </div>
                                     {{/each}}
                                 </div>
-                                <a href="#" class="mainfilter__symptoms-link">
+                                <a href="#" class="mainfilter__symptoms-link" on-click="clearProblems">
                                     <svg class="svgsprite _delete"><use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use></svg>
                                     <span>Очистить все</span>
                                 </a>
@@ -186,7 +186,7 @@
                                     {{/each}}
 
                                 </div>
-                                <a href="#" class="mainfilter__symptoms-link">
+                                <a href="#" class="mainfilter__symptoms-link" on-click="clearSymptoms">
                                     <svg class="svgsprite _delete"><use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use></svg>
                                     <span>Очистить все</span>
                                 </a>
@@ -242,6 +242,13 @@
                         mainFilter.fire('checkChoose')
                     })
                     },3000)
+                },
+                clearSymptoms() {
+                    $(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').trigger('click')
+                },
+                clearProblems() {
+                    $(document).find('.mainfilter__tab[data-tab="services"] input[type="checkbox"]:checked').trigger('click')
+                    $(document).find('.mainfilter__tab[data-tab="problems"] input[type="checkbox"]:checked').trigger('click')
                 },
                 delete(ev) {
                     did = $(ev.node).data('id')

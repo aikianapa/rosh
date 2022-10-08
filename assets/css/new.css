@@ -1345,6 +1345,36 @@ h3{
 .landing h2{
     margin-top: 24px;
 }
+.landing .mb-80{
+    margin-bottom: 20px;
+}
+.landing .mb-40{
+    margin-bottom: 30px;
+}
+blockquote{
+    margin-bottom: 24px;
+}
+blockquote p{
+    font-size: 24px;
+    line-height: 29px;
+    font-style: italic;
+    color: #545454;
+}
+blockquote figcaption{
+    font-size: 20px;
+    line-height: 1.4;
+    font-weight: bold;
+    color: #080e0d;
+    margin-bottom: 4px;
+}
+blockquote cite{
+    display: block;
+    font-size: 14px;
+    line-height: 1.5;
+    font-style: normal;
+    font-weight: normal;
+    color: #545454;
+}
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{
         min-width: 300px;
@@ -1630,7 +1660,12 @@ h3{
         width: 100%;
         padding: 0;
     }
-
+}
+@media (max-width: 600px) {
+    blockquote p{
+        font-size: 17px;
+        line-height: 23px;
+    }
 }
 @media (max-width: 550px) {
     .header--transparent .header__left{
