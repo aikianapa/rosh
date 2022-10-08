@@ -170,7 +170,7 @@
 								{{#if id == 'delimiter'}}
 								<div class="select__delimiter" disabled></div>
 								{{else}}
-								<div class="select__item select__item--acc-{{color}}" 
+								<div class="select__item select__item--acc-{{color}}"
 									data-id="{{ id }}" data-group="{{ type }}"
 									onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parent('.select__list').children('input.group').val($(this).attr('data-type'))">
 									{{name}}
@@ -228,7 +228,7 @@
 									</div>
 									<div class="row">
 										{{#if this.spec_service}}
-										
+
 										{{else}}
 										<div class="col-md-6">
 											<div class="select-form select-checkboxes">
@@ -242,7 +242,7 @@
 														<div class="select__item select__item--checkbox">
 															<label class="checkbox checkbox--record">
 																<input type="checkbox" name="experts[]" value="{{id}}"
-																	{{#if id == 'id6304998b114d'}}checked{{/if}}>
+																	{{#if id== 'id6304998b114d'}}checked{{/if}}>
 																<span></span>
 																<div class="checbox__name">
 																	<div class="select__name">{{name}}</div>
@@ -276,42 +276,42 @@
 								<div class="admin-editor__patient">
 									<div class="text-bold mb-10">Выбраны услуги</div>
 									{{#if this.spec_service}}
-										<div class="search__drop-item">
-											<input type="hidden" name="services[]" value="">
-											<div class="search__drop-name">
-												{{catalog.spec_service[this.spec_service].header}}
-											</div>
-											<div class="search__drop-right">
-												<div class="search__drop-summ">{{catalog.spec_service[this.spec_service].price}} ₽</div>
-											</div>
-										</div
-									{{else}}
+									<div class="search__drop-item">
+										<input type="hidden" name="services[]" value="">
+										<div class="search__drop-name">
+											{{catalog.spec_service[this.spec_service].header}}
+										</div>
+										<div class="search__drop-right">
+											<div class="search__drop-summ">{{catalog.spec_service[this.spec_service].price}} ₽</div>
+										</div>
+									</div
+										{{else}}
 										{{#each quote.service_prices: idx, key}}
-										<div class="search__drop-item" data-index="{{idx}}"
-											data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
-											<input type="hidden" name="services[]"
-												value="{{service_id}}">
-											<input type="hidden" name="service_prices[{{key}}][service_id]"
-												value="{{service_id}}">
-											<input type="hidden" name="service_prices[{{key}}][price_id]"
-												value="{{price_id}}">
-											<input type="hidden" name="service_prices[{{key}}][name]"
-												value="{{name}}">
-											<input type="hidden" name="service_prices[{{key}}][price]"
-												value="{{price}}">
-											<div class="search__drop-name">
-												{{name}}
-												<div class="search__drop-delete">
-													<svg class="svgsprite _delete">
-														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
-													</svg>
-												</div>
-											</div>
-											<div class="search__drop-right">
-												<div class="search__drop-summ">{{price}} ₽</div>
+									<div class="search__drop-item" data-index="{{idx}}"
+										data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+										<input type="hidden" name="services[]"
+											value="{{service_id}}">
+										<input type="hidden" name="service_prices[{{key}}][service_id]"
+											value="{{service_id}}">
+										<input type="hidden" name="service_prices[{{key}}][price_id]"
+											value="{{price_id}}">
+										<input type="hidden" name="service_prices[{{key}}][name]"
+											value="{{name}}">
+										<input type="hidden" name="service_prices[{{key}}][price]"
+											value="{{price}}">
+										<div class="search__drop-name">
+											{{name}}
+											<div class="search__drop-delete">
+												<svg class="svgsprite _delete">
+													<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+												</svg>
 											</div>
 										</div>
-										{{/each}}
+										<div class="search__drop-right">
+											<div class="search__drop-summ">{{price}} ₽</div>
+										</div>
+									</div>
+									{{/each}}
 									{{/if}}
 								</div>
 
@@ -1253,14 +1253,15 @@
 
 	<script wbapp>
 		setTimeout(function () {
-			let tpl         = wbapp.tpl('#leadsList').html;
+			let tplQuotes   = wbapp.tpl('#quotesList').html;
+			let tplEvents   = wbapp.tpl('#eventsList').html;
 			let editProfile = wbapp.tpl('#editProfile').html;
 			let editStatus  = wbapp.tpl('#editStatus').html;
 			let editQuote   = wbapp.tpl('#editQuote').html;
 
-			let tabLeads    = new Ractive({
+			let tabQuotes = new Ractive({
 				el: '.data-tab-item[data-tab="leads"]',
-				template: tpl,
+				template: tplQuotes,
 				data: {},
 				on: {
 					editProfile(ev) {
@@ -1275,9 +1276,9 @@
 								save(ev) {
 									let post = $($(ev.node).parents('form')).serializeJSON();
 									wbapp.post('/form/users/setClient/' + item, post, function (res) {
-										tabLeads.set('result.' + lead + '.clientData', res);
+										tabQuotes.set('result.' + lead + '.clientData', res);
 										$(form).html('');
-										toast('Успешно сохранено')
+										toast('Успешно сохранено');
 									});
 								}
 							}
@@ -1292,10 +1293,10 @@
 						});
 					},
 					editQuote(ev) {
-						const _parent          = $(ev.node).parents('.accardeon');
-						let lead               = $(ev.node).data('id');
-						let quote              = tabLeads.get('result.' + lead);
-						if (!quote.total_price){
+						const _parent = $(ev.node).parents('.accardeon');
+						let lead      = $(ev.node).data('id');
+						let quote     = tabQuotes.get('result.' + lead);
+						if (!quote.total_price) {
 							quote.total_price = 0;
 						}
 						quote.total_price_text = numFormaSpace(quote.total_price);
@@ -1312,7 +1313,7 @@
 									$(statusEdt.find(`.select.pay [data-id="${quote.pay_status}"]`)).trigger('click');
 									console.log('status editor ready!', quote);
 								},
-								save(ev){
+								save(ev) {
 									let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
 									let item = $(ev.node).data('id');
 									let form = $(ev.node).parents('.admin-editor');
@@ -1321,12 +1322,11 @@
 									$(copy).html($(form).clone());
 									let post = $(copy).serializeJSON();
 									wbapp.post('/api/v2/update/quotes/' + lead, post, function (res) {
-										tabLeads.set('results.'+lead, res);
+										tabQuotes.set('results.' + lead, res);
 
 										toast('Успешно сохранено');
 									});
 									delete copy;
-									console.log(post);
 								}
 							}
 						});
@@ -1354,8 +1354,7 @@
 					}
 				}
 			});
-			let tplEvents   = wbapp.tpl('#eventsList').html;
-			let tabEvents   = new Ractive({
+			let tabEvents = new Ractive({
 				el: '.data-tab-item[data-tab="events"]',
 				template: tplEvents,
 				data: {},
@@ -1368,14 +1367,14 @@
 						let copy = $('<form></form>');
 						$(copy).html($(form).clone());
 						let post = $(copy).serializeJSON();
-						delete copy;
-						wbapp.post('/api/v2/update/quotes/' + lead, post, function (res) {
+						wbapp.post('/api/v2/update/records/' + lead, post, function (res) {
 							console.log(res);
 							tabEvents.set('result.' + lead, res);
 
-							toast('Успешно сохранено');
+							toast('Успешно сохранено.');
 						});
-						console.log(post);
+						delete copy;
+
 					},
 					editProfile(ev) {
 						let lead   = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
@@ -1394,6 +1393,7 @@
 									wbapp.post('/form/users/setClient/' + item, post, function (res) {
 										tabEvents.set('result.' + lead + '.clientData', res);
 										toast('Успешно сохранено');
+
 										$(form).html('');
 									});
 								}
@@ -1424,6 +1424,13 @@
 								save(ev) {
 									let post = $($(ev.node).parents('form')).serializeJSON();
 									console.log('event data:', post);
+
+									wbapp.post('/api/v2/update/records/' + event, post, function (res) {
+										console.log(res);
+										tabEvents.set('result.' + event, res);
+
+										toast('Успешно сохранено');
+									});
 									return false;
 								}
 							}
@@ -1431,8 +1438,8 @@
 					},
 					editQuote(ev) {
 						let event  = $(ev.node).data('id');
-						let form = $(ev.node).parents('.admin-editor').find('.admin-editor__events');
-						let quote  = tplEvents.get('result.' + event);
+						let form   = $(ev.node).parents('.admin-editor').find('.admin-editor__events');
+						let record = tplEvents.get('result.' + event);
 						let editor = new Ractive({
 							el: form,
 							template: editStatus,
@@ -1444,6 +1451,12 @@
 								save(ev) {
 									let post = $($(ev.node).parents('form')).serializeJSON();
 									console.log('event data:', post);
+									wbapp.post('/api/v2/update/records/' + event, post, function (res) {
+										console.log(res);
+										tabEvents.set('result.' + event, res);
+
+										toast('Успешно сохранено');
+									});
 									return false;
 								}
 							}
@@ -1452,11 +1465,11 @@
 				}
 			});
 
-			['/api/v2/list/quotes?status=[new,uncall]&@size=10&@sort=priority:d',
-			 '/api/v2/list/quotes?status=!new&@size=10&@sort=priority:d'].forEach(
+			[
+				'/api/v2/list/records?group=quotes&@size=10&@sort=priority:d',
+				'/api/v2/list/records?group=events&@size=10&@sort=priority:d'
+			].forEach(
 				function (api_url, i) {
-					console.log(i, api_url);
-
 					fetch(api_url, {
 						method: 'GET'
 					}).then((response) => {
@@ -1466,26 +1479,24 @@
 
 						data.catalog = catalog;
 						if (i === 0) {
-							tabLeads.set(data);
+							tabQuotes.set(data);
 						} else {
 							tabEvents.set(data);
 						}
-						//console.log('fill: ', data);
+
 						initPlugins();
 					});
 				});
 		}, 50);
-		console.log('loading...');
 		$(function () {
-			console.log('loaded!');
 			$(document).on('click', 'button.flag-date__ico', function (e) {
 				e.stopPropagation();
 				const _parent    = $(this).parents('.acount__table-accardeon');
 				const _id        = _parent.data('id');
 				const _is_marked = $(this).hasClass('checked');
 				console.log('flagged', _id, _is_marked);
-				wbapp.post('/api/v2/update/quotes/' + _id, {marked: _is_marked ? 1 : 0}, function (res) {
-					console.log(res);
+				wbapp.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}, function (res) {
+					toast('Успешно обновлено');
 				});
 			}).on('change', '.flag-date [type="checkbox"]', function (e) {
 				e.stopPropagation();
@@ -1502,8 +1513,8 @@
 					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 				}).appendTo(_list);
 
-				wbapp.post('/api/v2/update/quotes/' + _id, {priority: _priority}, function (res) {
-					console.log(res);
+				wbapp.post('/api/v2/update/records/' + _id, {priority: _priority}, function (res) {
+					toast('Успешно обновлено');
 				});
 			});
 		});
