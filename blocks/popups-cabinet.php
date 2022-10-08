@@ -55,7 +55,7 @@
 						</label>
 					</div>
 				</div>
-				
+
 				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
 					<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
 					<span></span>
@@ -122,9 +122,9 @@
 					<input type="hidden" name="price" value="{{catalog.spec_service.analises_interpretation.price}}">
 					<input type="hidden" name="group" value="quote">
 					<input type="hidden" name="status" value="new">
-					
+
 					<input type="hidden" name="title" value="Расшифровка анализов">
-					
+
 					<div class="text-bold mb-20">Тип события</div>
 					<div class="popups__text-chexboxs">
 						<label class="text-radio" name="type" value="clinic">
@@ -154,29 +154,7 @@
 			</div>
 		</template>
 	</div>
-	<script wbapp remove>
-		let popupAnalizeType = new Ractive({
-			el: '.popup.--analize-type',
-			template: document.querySelector('.popup.--analize-type > template').innerHTML,
-			data: {},
-			on: {
-				submit() {
-					let form = this.find('.popup.--analize-type .popup__form');
-					if ($(form).verify()) {
-						let post = $(form).serializeJSON();
-						wbapp.post('/create/records', post, function (data) {
-							if (data.error) {
-								wbapp.trigger('wb-save-error', {'data': data});
-							} else {
-								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-							}
-						});
-					}
-				}
-			}
-		});
-	</script>
+
 	<div class="popup --pay">
 		<template id="popupPay">
 			<div class="popup__overlay"></div>
@@ -200,7 +178,7 @@
 					<input type='hidden' name='sum' value='{{this.price / 5}}'/>
 					<input type='hidden' name='orderid' value='{{this.id}}'/>
 					<input type='hidden' name='clientid' value='{{this.client}}'/>
-					<button class="btn btn--black form__submit"type="submit">
+					<button class="btn btn--black form__submit" type="submit">
 						Внести предоплату
 					</button>
 				</form>
@@ -241,7 +219,7 @@
 					<input type='hidden' name='sum' value='{{this.price / 5}}'/>
 					<input type='hidden' name='orderid' value='{{this.id}}'/>
 					<input type='hidden' name='clientid' value='{{this.client}}'/>
-					<button class="btn btn--black form__submit"type="submit">
+					<button class="btn btn--black form__submit" type="submit">
 						Внести предоплату
 					</button>
 				</form>
@@ -314,7 +292,7 @@
 			</div>
 		</template>
 	</div>
-	
+
 	<div class="popup --photo">
 		<template id="popupPhoto">
 			<div class="popup__overlay"></div>
@@ -373,84 +351,84 @@
 			</div>
 		</template>
 	</div>
-	
+
 	<div class="popup --photo-longterm">
 		<template id="popupPhotoLongterm">
-		<div class="popup__overlay"></div>
-		<div class="popup__panel">
-			<button class="popup__close">
-				<svg class="svgsprite _close">
-					<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-				</svg>
-			</button>
-			<div class="popup__name text-bold">Добавить фото к событию</div>
-			<div class="popup__form">
-				<div class="search-form input disabled">
-					<input class="input__control autocomplete client-search" 
-						type="text" placeholder="Выбрать пациента">
-					<div class="input__placeholder">Выбрать пациента</div>
-				</div>
-				<div class="input calendar mb-20">
-					<input class="input__control datepickr" type="text" 
-						name="event_date" placeholder="Выбрать дату посещения">
-					<div class="input__placeholder">Выбрать дату посещения</div>
-				</div>
-				<input type="hidden" name="group" value="event">
-				<input type="hidden" name="id" value="{{this.id}}">
-				<div class="popup-title__checkbox">
-					<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
-						<input type="checkbox" name="group" value="longterm" 
-						{{#if this.group == 'longterm' }}checked{{/if}}>
-						<span></span>
-						<div class="checbox__name">Продолжительное лечение</div>
-					</label>
-				</div>
-				<div class="input calendar mb-20" data-show="longterm">
-					<input class="input__control longterm-search"
-						type="text" name="title"
-						placeholder="Название продолжительного лечения" 
-						value="">
-					<div class="input__placeholder">Название продолжительного лечения</div>
-				</div>
-				<div class="radios --flex">
-					<label class="text-radio">
-						<input type="radio" name="photo_group" value="before" checked="checked">
-						<span>До начала лечения</span>
-					</label>
-					<label class="text-radio disabled">
-						<input type="radio" name="photo_group" value="after">
-						<span>В процессе лечения</span>
-					</label>
-				</div>
-				<label class="file-photo" for="image-selector">
-					<div class="filepicker">
-						<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
-						<!-- Button Bar -->
-						<div class="button-bar">
-							<button class="btn btn-success fileinput" style="height:70px;">
-								<div class="file-photo__ico">
-									<img class="preview" alt="upload preview" src="">
-									<svg class="svgsprite _file">
-										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-									</svg>
-								</div>
-								<input type="file" id="image-selector" name="files[]" class="wb-unsaved">
-								<input type="hidden" name="upload_url" value="/uploads/records/"
-									class="wb-unsaved">
-								<input type="hidden" name="prevent_img" class="wb-unsaved">
-							</button>
+			<div class="popup__overlay"></div>
+			<div class="popup__panel">
+				<button class="popup__close">
+					<svg class="svgsprite _close">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+					</svg>
+				</button>
+				<div class="popup__name text-bold">Добавить фото к событию</div>
+				<div class="popup__form">
+					<div class="search-form input disabled">
+						<input class="input__control autocomplete client-search"
+							type="text" placeholder="Выбрать пациента">
+						<div class="input__placeholder">Выбрать пациента</div>
+					</div>
+					<div class="input calendar mb-20">
+						<input class="input__control datepickr" type="text"
+							name="event_date" placeholder="Выбрать дату посещения">
+						<div class="input__placeholder">Выбрать дату посещения</div>
+					</div>
+					<input type="hidden" name="group" value="event">
+					<input type="hidden" name="id" value="{{this.id}}">
+					<div class="popup-title__checkbox">
+						<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
+							<input type="checkbox" name="group" value="longterm"
+								{{#if this.group== 'longterm' }}checked{{/if}}>
+							<span></span>
+							<div class="checbox__name">Продолжительное лечение</div>
+						</label>
+					</div>
+					<div class="input calendar mb-20" data-show="longterm">
+						<input class="input__control longterm-search"
+							type="text" name="title"
+							placeholder="Название продолжительного лечения"
+							value="">
+						<div class="input__placeholder">Название продолжительного лечения</div>
+					</div>
+					<div class="radios --flex">
+						<label class="text-radio">
+							<input type="radio" name="photo_group" value="before" checked="checked">
+							<span>До начала лечения</span>
+						</label>
+						<label class="text-radio disabled">
+							<input type="radio" name="photo_group" value="after">
+							<span>В процессе лечения</span>
+						</label>
+					</div>
+					<label class="file-photo" for="image-selector">
+						<div class="filepicker">
+							<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
+							<!-- Button Bar -->
+							<div class="button-bar">
+								<button class="btn btn-success fileinput" style="height:70px;">
+									<div class="file-photo__ico">
+										<img class="preview" alt="upload preview" src="">
+										<svg class="svgsprite _file">
+											<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
+										</svg>
+									</div>
+									<input type="file" id="image-selector" name="files[]" class="wb-unsaved">
+									<input type="hidden" name="upload_url" value="/uploads/records/"
+										class="wb-unsaved">
+									<input type="hidden" name="prevent_img" class="wb-unsaved">
+								</button>
+							</div>
+							<script type="text/javascript">
+								wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
+							</script>
 						</div>
-						<script type="text/javascript">
-							wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
-						</script>
-					</div>
-					<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
-						превышать 10 мб
-					</div>
-				</label>
-				<button class="btn btn--white">Сохранить</button>
+						<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
+							превышать 10 мб
+						</div>
+					</label>
+					<button class="btn btn--white">Сохранить</button>
+				</div>
 			</div>
-		</div>
 		</template>
 	</div>
 
@@ -469,19 +447,19 @@
 					<input type="hidden" name="confirmed" value="0">
 					<input type="hidden" name="confirm_code" value="XXXXXX">
 					<div class="input">
-						<input class="input__control" type="text" 
-						placeholder="ФИО" name="fullname">
+						<input class="input__control" type="text"
+							placeholder="ФИО" name="fullname">
 						<div class="input__placeholder">ФИО</div>
 					</div>
 					<div class="input">
-						<input class="input__control datebirthdaypickr" 
-						type="text" placeholder="Дата рождения" name="birthdate">
+						<input class="input__control datebirthdaypickr"
+							type="text" placeholder="Дата рождения" name="birthdate">
 						<div class="input__placeholder">Дата рождения</div>
 					</div>
 					<div class="input mb-30">
-						<input class="input__control" type="tel" 
-						placeholder="Номер телефона" 
-						data-inputmask="'mask': '+7 (999) 999-99-99'" name="phone">
+						<input class="input__control" type="tel"
+							placeholder="Номер телефона"
+							data-inputmask="'mask': '+7 (999) 999-99-99'" name="phone">
 						<div class="input__placeholder">Номер телефона</div>
 					</div>
 					<button class="btn btn--black form__submit --switchpopup">Создать</button>
@@ -490,8 +468,29 @@
 			</div>
 		</template>
 	</div>
-	<script wbapp remove>
-		let popupCreate = new Ractive({
+	<script wbapp>
+		let popupAnalizeType   = new Ractive({
+			el: '.popup.--analize-type',
+			template: document.querySelector('.popup.--analize-type > template').innerHTML,
+			data: {},
+			on: {
+				submit() {
+					let form = this.find('.popup.--analize-type .popup__form');
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+						wbapp.post('/create/records', post, function (data) {
+							if (data.error) {
+								wbapp.trigger('wb-save-error', {'data': data});
+							} else {
+								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
+								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
+							}
+						});
+					}
+				}
+			}
+		});
+		let popupCreateProfile = new Ractive({
 			el: '.popup.--create',
 			template: document.querySelector('.popup.--create > template').innerHTML,
 			data: {},
@@ -516,156 +515,83 @@
 
 	<div class="popup --photo-profile">
 		<template id="popupPhotoProfile">
-		<div class="popup__overlay"></div>
-		<div class="popup__panel">
-			<button class="popup__close">
-				<svg class="svgsprite _close">
-					<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-				</svg>
-			</button>
-			<div class="popup__name text-bold">Добавить фото</div>
-			<div class="popup__form">
-				<input type="hidden" name="client" value="{{this.client}}">
-				<input type="hidden" name="id" value="{{this.id}}">
-				
-				<div class="search-form input disabled">
-					<input class="input__control autocomplete client-search" 
-						type="text" placeholder="Выбрать пациента">
-					<div class="input__placeholder">Выбрать пациента</div>
-				</div>
-				<div class="input calendar mb-20">
-					<input class="input__control datepickr" type="text" 
-						name="event_date" placeholder="Выбрать дату посещения">
-					<div class="input__placeholder">Выбрать дату посещения</div>
-				</div>
-				<input type="hidden" name="group" value="event">
-				<input type="hidden" name="id">
-				<div class="popup-title__checkbox">
-					<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
-						<input type="checkbox" name="group" value="longterm" checked>
-						<span></span>
-						<div class="checbox__name">Продолжительное лечение</div>
-					</label>
-				</div>
-				<div class="input calendar mb-20" data-show="longterm">
-					<input class="input__control longterm-search"
-						type="text" name="title"
-						placeholder="Название продолжительного лечения" 
-						value="">
-					<div class="input__placeholder">Название продолжительного лечения</div>
-				</div>
-				<div class="radios --flex">
-					<label class="text-radio">
-						<input type="radio" name="photo_group" value="before" checked="checked">
-						<span>До начала лечения</span>
-					</label>
-					<label class="text-radio disabled">
-						<input type="radio" name="photo_group" value="after">
-						<span>В процессе лечения</span>
-					</label>
-				</div>
-				<label class="file-photo" for="image-selector">
-					<div class="filepicker">
-						<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
-						<!-- Button Bar -->
-						<div class="button-bar">
-							<button class="btn btn-success fileinput" style="height:70px;">
-								<div class="file-photo__ico">
-									<img class="preview" alt="upload preview" src="">
-									<svg class="svgsprite _file">
-										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-									</svg>
-								</div>
-								<input type="file" id="image-selector" name="files[]" class="wb-unsaved">
-								<input type="hidden" name="upload_url" value="/uploads/records/"
-									class="wb-unsaved">
-								<input type="hidden" name="prevent_img" class="wb-unsaved">
-							</button>
-						</div>
-						<script type="text/javascript">
-							wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
-						</script>
+			<div class="popup__overlay"></div>
+			<div class="popup__panel">
+				<button class="popup__close">
+					<svg class="svgsprite _close">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+					</svg>
+				</button>
+				<div class="popup__name text-bold">Добавить фото</div>
+				<div class="popup__form">
+					<input type="hidden" name="client" value="{{this.client}}">
+					<input type="hidden" name="id" value="{{this.id}}">
+
+					<div class="search-form input disabled">
+						<input class="input__control autocomplete client-search"
+							type="text" placeholder="Выбрать пациента">
+						<div class="input__placeholder">Выбрать пациента</div>
 					</div>
-					<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
-						превышать 10 мб
+					<div class="input calendar mb-20">
+						<input class="input__control datepickr" type="text"
+							name="event_date" placeholder="Выбрать дату посещения">
+						<div class="input__placeholder">Выбрать дату посещения</div>
 					</div>
-				</label>
-				<button class="btn btn--white">Сохранить</button>
-			</div>
-		</div>
-		</template>
-		
-		<template id="popupPhotoProfile">
-		<div class="popup__overlay"></div>
-		<div class="popup__panel">
-			<button class="popup__close">
-				<svg class="svgsprite _close">
-					<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-				</svg>
-			</button>
-			<div class="popup__name text-bold">Добавить фото</div>
-			<div class="popup__form">
-				<div class="search-form input disabled">
-					<input class="input__control" type="text" placeholder="Выбрать пациента"
-						value="Client Rosh">
-					<div class="input__placeholder">Выбрать пациента</div>
-				</div>
-				<div class="input calendar mb-20 disabled">
-					<input class="input__control datepickr" type="text" name="visit_date" placeholder="Выбрать дату посещения" value="16.09.2022">
-					<div class="input__placeholder">Выбрать дату посещения</div>
-				</div>
-				<div class="popup-title__checkbox disabled">
-					<p class="mb-10">Выбрать статус</p>
-					<input type="hidden" name="is_longterm" value="0">
-					<label class="checkbox mb-10 show-checkbox" data-show-input="longterm">
-						<input type="checkbox" name="is_longterm" value="1">
-						<span></span>
-						<div class="checbox__name">Продолжительное лечение</div>
-					</label>
-					<div class="input calendar mb-20" style="display:none;" data-show="longterm">
-						<input class="input__control datepickr" type="text" name="photo.longterm" placeholder="Название продолжительного лечения">
+					<input type="hidden" name="group" value="event">
+					<input type="hidden" name="id">
+					<div class="popup-title__checkbox">
+						<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
+							<input type="checkbox" name="group" value="longterm" checked>
+							<span></span>
+							<div class="checbox__name">Продолжительное лечение</div>
+						</label>
+					</div>
+					<div class="input calendar mb-20" data-show="longterm">
+						<input class="input__control longterm-search"
+							type="text" name="title"
+							placeholder="Название продолжительного лечения"
+							value="">
 						<div class="input__placeholder">Название продолжительного лечения</div>
 					</div>
-				</div>
-				<div class="radios --flex disabled">
-					<label class="text-radio">
-						<input type="radio" name="status233" checked>
-						<span>В клинике</span>
-					</label>
-					<label class="text-radio">
-						<input type="radio" name="status233">
-						<span>Онлайн</span>
-					</label>
-				</div>
-				
-				<label class="file-photo" for="image-selector">
-					<div class="filepicker">
-						<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
-						<!-- Button Bar -->
-						<div class="button-bar">
-							<button class="btn btn-success fileinput" style="height:70px;">
-								<div class="file-photo__ico">
-									<img class="preview" src="">
-									<svg class="svgsprite _file">
-										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-									</svg>
-								</div>
-								<input type="file" id="image-selector" name="files[]" class="wb-unsaved" done="">
-								<input type="hidden" name="upload_url" value="/uploads/events" class="wb-unsaved" done="">
-								<input type="hidden" name="prevent_img" class="wb-unsaved" done="">
-							</button>
+					<div class="radios --flex">
+						<label class="text-radio">
+							<input type="radio" name="photo_group" value="before" checked="checked">
+							<span>До начала лечения</span>
+						</label>
+						<label class="text-radio disabled">
+							<input type="radio" name="photo_group" value="after">
+							<span>В процессе лечения</span>
+						</label>
+					</div>
+					<label class="file-photo" for="image-selector">
+						<div class="filepicker">
+							<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
+							<!-- Button Bar -->
+							<div class="button-bar">
+								<button class="btn btn-success fileinput" style="height:70px;">
+									<div class="file-photo__ico">
+										<img class="preview" alt="upload preview" src="">
+										<svg class="svgsprite _file">
+											<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
+										</svg>
+									</div>
+									<input type="file" id="image-selector" name="files[]" class="wb-unsaved">
+									<input type="hidden" name="upload_url" value="/uploads/records/"
+										class="wb-unsaved">
+									<input type="hidden" name="prevent_img" class="wb-unsaved">
+								</button>
+							</div>
+							<script type="text/javascript">
+								wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
+							</script>
 						</div>
-						<script type="text/javascript">
-							wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
-						</script>
-					</div>
-					<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
-						превышать 10 мб
-					</div>
-				</label>
-				<button class="btn btn--white">Сохранить</button>
+						<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
+							превышать 10 мб
+						</div>
+					</label>
+					<button class="btn btn--white">Сохранить</button>
+				</div>
 			</div>
-		</div>
 		</template>
 	</div>
 
