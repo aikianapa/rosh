@@ -1,15 +1,44 @@
+function numFormaSpace(val) {
+    // remove sign if negative
+    var sign = 1;
+    if (val < 0) {
+        sign = -1;
+        val  = -val;
+    }
+    // trim the number decimal point if it exists
+    let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
+    let len    = num.toString().length;
+    let result = '';
+    let count  = 1;
+
+    for (let i = len - 1; i >= 0; i--) {
+        result = num.toString()[i] + result;
+        if (count % 3 === 0 && count !== 0 && i !== 0) {
+            result = ' ' + result;
+        }
+        count++;
+    }
+
+    // add number after decimal point
+    if (val.toString().includes('.')) {
+        result = result + '.' + val.toString().split('.')[1];
+    }
+    // return result with - sign if negative
+    return sign < 0 ? '-' + result : result;
+}
+
 $(function () {
 
     $(document).ready(function () {
         $(document).delegate('.select .select__main', 'click', function () {
-            $(this).parent().toggleClass('active')
+            $(this).parent().toggleClass('active');
             return false;
         }).delegate('.select .select__item', 'click', function (e) {
             //e.stopPropagation(); - не работает фильр блога
             var value = false;
             if ($(this).hasClass('select__item--checkbox')) {
                 var ne = false;
-                value = [];
+                value  = [];
                 $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
                     if ($(this).find('input[type=checkbox]:checked').length) {
                         value.push($(this).find('.select__name:first').text());
@@ -28,7 +57,6 @@ $(function () {
                 });
             }
         })
-
 
         $('body').on('click', 'a.--openfilter', function () {
             $($(this).attr('href')).show();
@@ -58,6 +86,13 @@ $(function () {
             var P = $(this).attr('data-popup');
             $(this).closest('.popup').hide();
             $('body').find('div.' + P + ':first').show();
+            return false;
+        }).on('click', '.popup__panel.--succed.d-block .popup__close', function (e) {
+            e.stopPropagation();
+            $(this).closest('.popup').hide();
+            $(this).closest('.popup').find('.popup__panel.d-none:not(.--succed)').removeClass('d-none');
+            $(this).closest('.popup').find('.--succed.d-block').removeClass('d-block');
+            window.location.reload();
             return false;
         }).on('click', '.popup__close', function () {
             $(this).closest('.popup').hide();
@@ -108,10 +143,13 @@ $(function () {
                 });
             }
         }).on('click', '.admin-editor button.user__edit', function () {
-            $(this).closest('.admin-editor').find('form.profile-edit:first').addClass('active');
+            $(this).closest('.admin-editor').find('.profile-edit:first').addClass('active');
             return false;
-        }).on('click', '.account button.user__edit', function () {
-            $(this).closest('.account').find('form.profile-edit:first').addClass('active');
+        }).on('click', '.account button.user__edit.all', function () {
+            $(this).parents('.account').find('.profile-edit').toggleClass('active');
+            return false;
+        }).on('click', '.account button.user__edit:not(.all)', function () {
+            $(this).closest('.account').find('.profile-edit:first').toggleClass('active');
             return false;
         }).on('click', '.popup__overlay', function () {
             $(this).closest('.popup').hide();
@@ -137,9 +175,19 @@ $(function () {
                 S.trigger('repeaterAdd');
             }
             return false;
+        }).on('repeaterAdd', '[data-repeater="license"]', function () {
+            $(this).find('input').attr('name', 'licenses[]');
         }).on('repeaterAdd', '[data-repeater="study"]', function () {
-            $(this).find('input.datepickr').each(function () {
-                new AirDatepicker(this, { autoClose: true });
+            var _max_idx = $(this).parents('.repeater-container')
+                .find('.profile-education__inner.row[data-idx]:last')
+                .data('idx');
+            _max_idx++;
+            $(this).attr('data-idx', _max_idx);
+            $(this).find('input[name="stages[][stage]"]').attr('name', 'stages[' + _max_idx + '][stage]');
+            $(this).find('input[name="stages[][year]"]').attr('name', 'stages[' + _max_idx + '][year]');
+            $(this).find('input[name="stages[][year_end]"]').attr('name', 'stages[' + _max_idx + '][year_end]');
+            $(this).find('input.yearpickr').each(function () {
+                new AirDatepicker(this, {view: 'years', minView: 'years', autoClose: true});
             });
         }).on('click', '.ddl', function () {
             $(this).toggleClass('active');
@@ -158,7 +206,6 @@ $(function () {
             $('#mainfilter').hide();
         });
 
-
         $(document).find('.gallery__slider').each(function () {
             new Swiper(this, {
                 loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,
@@ -169,34 +216,82 @@ $(function () {
 
         initPlugins = function () {
 
-            $('.datebirthdaypickr').each(function () { new AirDatepicker(this, { autoClose: true }); });
-            $('.daterangepickr').each(function () { new AirDatepicker(this, { autoClose: true, range: true }); });
-            $('.datepickr').each(function () { new AirDatepicker(this, { autoClose: true }); });
+            $('.datebirthdaypickr').each(function () {
+                new AirDatepicker(this, {
+                    selectedDates: [$(this).val()], autoClose: true, timepicker: false
+                });
+            });
+            $('.daterangepickr').each(function () {
+                new AirDatepicker(this, {
+                    selectedDates: [$(this).val()],
+                    autoClose: true,
+                    range: true
+                });
+            });
+            $('.datepickr').each(function () {
+                new AirDatepicker(this, {
+                    view: 'years',
+                    timepicker: false,
+                    minView: 'years ',
+                    dateFormat: 'yyyy',
+                    autoClose: true
+                });
+            });
             $('.datetimepickr').each(function () {
-                new AirDatepicker(this, { timepicker: true, autoClose: true, minutesStep: 10 });
+                new AirDatepicker(this, {
+                    minHours: 8,
+                    maxHours:20,
+
+                    timepicker: true, autoClose: true, minutesStep: 10, timeFormat:"HH:mm",});
             });
 
-            $('.dtp-test').each(function () { new AirDatepicker(this, { autoClose: true, inline: true }); });
+            $('.dtp-test').each(function () { new AirDatepicker(this, {autoClose: true, inline: true}); });
 
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
             });
+            //
+            //$('input.autocomplete').each(function () {
+            //    $(this).autocomplete({
+            //        noCache: true,
+            //        minChars: 3,
+            //    });
+            //});
 
-            $('input.autocomplete').each(function () {
+            $('input.autocomplete-inline').each(function () {
+                let _lookup = $(this).data('lookup');
+                if(!!_lookup){
+                    _lookup = _lookup.split(',');
+                } else {
+                    _lookup = [];
+                }
                 $(this).autocomplete({
                     noCache: true,
-                    minChars: 3,
+                    minChars: 1,
+                    noSuggestionNotice: '<p>Нет результатов..</p>',
+                    lookup: function (query, done) {
+                        // Do Ajax call or lookup locally, when done,
+                        // call the callback and pass your results:
+                        var _res = [];
+                        _lookup.forEach(function(v, k){
+                            _res.push({"value": v, "data": k});
+                        });
+                        var result = {suggestions: _res};
+
+                        done(result);
+                    },
+
                 });
             });
 
-        }
+        };
+
         $(document).on('wb-verify-false', function (e, el, err) {
             if (err !== undefined) {
                 alert(err)
                 //wbapp.toast(wbapp._settings.sysmsg.error, err, { target: '.content-toasts', 'bgcolor': 'warning', 'txcolor': 'white' });
             }
         });
-
 
         $(document).on('wb-save-error', function (e, res) {
             if (res.data == undefined) return;
@@ -217,6 +312,7 @@ $(function () {
             var match = document.cookie.match(RegExp('(?:^|;\\s*)' + name + '=([^;]*)'));
             return match ? match[1] : null;
         }
+
         function setCookie(c_name, value, exdays) {
             var exdate = new Date();
             exdate.setDate(exdate.getDate() + exdays);
@@ -225,42 +321,41 @@ $(function () {
         }
 
         /*
-            var map = document.querySelector('#map');
-            if (map) {
-                new google.maps.Map(map, {
-                    center: { lat: 55.742403, lng: 37.575313 },
-                    zoom: 12,
-                });
-            }
-        */
-
+         var map = document.querySelector('#map');
+         if (map) {
+         new google.maps.Map(map, {
+         center: { lat: 55.742403, lng: 37.575313 },
+         zoom: 12,
+         });
+         }
+         */
 
         /*
-        var header = $('.header'),
-          scrollPrev = 0;
-      
-        $(window).scroll(function() {
-          var scrolled = $(window).scrollTop();
-      
-          if ((scrolled > 10) && (scrolled > scrollPrev)) {
-            header.addClass('out');
-          } else {
-            header.removeClass('out');
-          }
-      
-          scrollPrev = scrolled;
-        });
-      
+         var header = $('.header'),
+         scrollPrev = 0;
+
+         $(window).scroll(function() {
+         var scrolled = $(window).scrollTop();
+
+         if ((scrolled > 10) && (scrolled > scrollPrev)) {
+         header.addClass('out');
+         } else {
+         header.removeClass('out');
+         }
+
+         scrollPrev = scrolled;
+         });
+
          */
 
         //header flip
         /*
-        if($('.header__logo').hasClass('header__logo-red')){
-          setTimeout(function(){
-            $('.header__logo-red').addClass('active');
-          }, 2000);
-        }
-      */
+         if($('.header__logo').hasClass('header__logo-red')){
+         setTimeout(function(){
+         $('.header__logo-red').addClass('active');
+         }, 2000);
+         }
+         */
 
         //sliders
         var swiper = new Swiper('.product-slider', {
@@ -273,12 +368,12 @@ $(function () {
             },
         });
         /*
-        var swiper = new Swiper('.post-slider', {
-          slidesPerView: 1,
-          watchOverflow: true,
-          spaceBetween: 30,
-        });
-      
+         var swiper = new Swiper('.post-slider', {
+         slidesPerView: 1,
+         watchOverflow: true,
+         spaceBetween: 30,
+         });
+
          */
 
         if (getCookie('cookok')) {

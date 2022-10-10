@@ -1,1 +1,129 @@
-{"id6263f75c06c7":{"id":"id6263f75c06c7","cover":[{"img":"\/uploads\/equipment\/id6263f6feimg00d9.jpg","width":"300","height":"300","alt":"","title":""}],"header":"Мультиплатформа Joule SCITON","preset":"","blocks":{"content_text":{"header":"content-text","block_id":"","block_class":"","active":"on","title":"","text":"\u003Cp\u003EМедицинский центр \u0026quot;ROSH\u0026quot; представляет мультиплатформу Joule SCITON, которая на сегодня не знает аналогов во всем мире. Все Голливудские дивы уже по достоинству оценили и являются поклонниками данного аппарата.И есть от чего: единственная преследуемая цель процедуры - это удовлетворенность пациентов конечными результатами. Лазер SCITON поистине универсален, чтобы предложить эффективную и безопасную коррекцию большинства патологий кожи (дерматологических и эстетических) на всех типах кожи с минимальным восстановительным периодом и восхитительными результатами.\u003C\/p\u003E\n","container":"","id":"content_text","name":"content-text","form":"\/_app_\/blocks\/content-text.php"},"content_gallery":{"header":"content-gallery","block_id":"","block_class":"","active":"on","images":[{"img":"\/uploads\/content\/\/id62641610img1d4f.jpg","width":"250","height":"150","alt":"","title":""},{"img":"\/uploads\/content\/\/id6304a9c4img1b9c.png","width":"250","height":"150","alt":"","title":""}],"container":"","id":"content_gallery","name":"content-gallery","form":"\/_app_\/blocks\/content-gallery.php"},"content_text_1":{"header":"content-text","block_id":"","block_class":"","active":"on","title":"","text":"\u003Cul\u003E\n\t\u003Cli\u003Eомоложение (морщины, снижение тонуса кожи),\u003C\/li\u003E\n\t\u003Cli\u003Eпигментация,\u003C\/li\u003E\n\t\u003Cli\u003Eсосуды и сосудистые новообразования,\u003C\/li\u003E\n\t\u003Cli\u003Eрасширенные поры и повышенное салоотделение,\u003C\/li\u003E\n\t\u003Cli\u003Eакне (угревая болезнь),\u003C\/li\u003E\n\t\u003Cli\u003Eрубцы и стрии,\u003C\/li\u003E\n\u003C\/ul\u003E\n\n\u003Cp\u003EКроме того, на данном аппарате проводится уникальная методика FOREVER YOUNG - мало того, что она устраняет абсолютно все недостатки, имеющиеся на лице и теле, это еще и омоложение на генном уровне!\u003C\/p\u003E\n","container":"","id":"content_text_1","name":"content-text","form":"\/_app_\/blocks\/content-text.php"}},"active":"on","_site":null,"_login":null,"_id":"id6263f75c06c7","_form":"equipment","_table":"equipment","_creator":"id625eb9a80a70","_lastdate":"2022-08-23 13:20:07","_lastuser":"id627c0dc909f0","_sort":"999999999","_created":"2022-08-23 13:13:31"},"id6263f6c90e3c":{"id":"id6263f6c90e3c","cover":[{"img":"\/uploads\/equipment\/id6263f7d6img1e8c.jpg","width":"300","height":"300","alt":"","title":""}],"header":"Метод регенерации Regenera","preset":"equipment","blocks":"","active":"on","_site":null,"_login":null,"_id":"id6263f6c90e3c","_form":"equipment","_table":"equipment","_creator":"id625eb9a80a70","_lastdate":"2022-04-23 18:11:57","_lastuser":"id625eb9a80a70","_sort":"999999999"},"id6263f7e71ad9":{"id":"id6263f7e71ad9","cover":[{"img":"\/uploads\/equipment\/id6263f6f9img2236.jpg","width":"300","height":"300","alt":"","title":""}],"header":"Аппарат Futura-Pro. Биостимуляция","preset":"equipment","blocks":"","active":"on","_site":null,"_login":null,"_id":"id6263f7e71ad9","_form":"equipment","_table":"equipment","_creator":"id625eb9a80a70","_lastdate":"2022-04-23 18:12:03","_lastuser":"id625eb9a80a70","_sort":"999999999"}}
+{
+    "id6263f75c06c7": {
+        "id": "id6263f75c06c7",
+        "cover": [
+            {
+                "img": "\/uploads\/equipment\/id6263f6feimg00d9.jpg",
+                "width": "300",
+                "height": "300",
+                "alt": "",
+                "title": ""
+            }
+        ],
+        "header": "Мультиплатформа Joule SCITON",
+        "preset": "",
+        "blocks": {
+            "content_text": {
+                "header": "content-text",
+                "block_id": "",
+                "block_class": "",
+                "active": "on",
+                "title": "",
+                "text": "<p>Медицинский центр &quot;ROSH&quot; представляет мультиплатформу Joule SCITON, которая на сегодня не знает аналогов во всем мире. Все Голливудские дивы уже по достоинству оценили и являются поклонниками данного аппарата.И есть от чего: единственная преследуемая цель процедуры - это удовлетворенность пациентов конечными результатами. Лазер SCITON поистине универсален, чтобы предложить эффективную и безопасную коррекцию большинства патологий кожи (дерматологических и эстетических) на всех типах кожи с минимальным восстановительным периодом и восхитительными результатами.<\/p>\n",
+                "container": "",
+                "id": "content_text",
+                "name": "content-text",
+                "form": "\/_app_\/blocks\/content-text.php"
+            },
+            "content_gallery": {
+                "header": "content-gallery",
+                "block_id": "",
+                "block_class": "",
+                "active": "on",
+                "images": [
+                    {
+                        "img": "\/uploads\/content\/\/id62641610img1d4f.jpg",
+                        "width": "250",
+                        "height": "150",
+                        "alt": "",
+                        "title": ""
+                    },
+                    {
+                        "img": "\/uploads\/content\/\/id6304a9c4img1b9c.png",
+                        "width": "250",
+                        "height": "150",
+                        "alt": "",
+                        "title": ""
+                    }
+                ],
+                "container": "",
+                "id": "content_gallery",
+                "name": "content-gallery",
+                "form": "\/_app_\/blocks\/content-gallery.php"
+            },
+            "content_text_1": {
+                "header": "content-text",
+                "block_id": "",
+                "block_class": "",
+                "active": "on",
+                "title": "",
+                "text": "<ul>\n\t<li>омоложение (морщины, снижение тонуса кожи),<\/li>\n\t<li>пигментация,<\/li>\n\t<li>сосуды и сосудистые новообразования,<\/li>\n\t<li>расширенные поры и повышенное салоотделение,<\/li>\n\t<li>акне (угревая болезнь),<\/li>\n\t<li>рубцы и стрии,<\/li>\n<\/ul>\n\n<p>Кроме того, на данном аппарате проводится уникальная методика FOREVER YOUNG - мало того, что она устраняет абсолютно все недостатки, имеющиеся на лице и теле, это еще и омоложение на генном уровне!<\/p>\n",
+                "container": "",
+                "id": "content_text_1",
+                "name": "content-text",
+                "form": "\/_app_\/blocks\/content-text.php"
+            }
+        },
+        "active": "on",
+        "_site": null,
+        "_login": null,
+        "_id": "id6263f75c06c7",
+        "_form": "equipment",
+        "_table": "equipment",
+        "_creator": "id625eb9a80a70",
+        "_lastdate": "2022-08-23 13:20:07",
+        "_lastuser": "id627c0dc909f0",
+        "_sort": "999999999",
+        "_created": "2022-08-23 13:13:31"
+    },
+    "id6263f6c90e3c": {
+        "id": "id6263f6c90e3c",
+        "cover": [
+            {
+                "img": "\/uploads\/equipment\/id6263f7d6img1e8c.jpg",
+                "width": "300",
+                "height": "300",
+                "alt": "",
+                "title": ""
+            }
+        ],
+        "header": "Метод регенерации Regenera",
+        "preset": "equipment",
+        "blocks": "",
+        "active": "on",
+        "_site": null,
+        "_login": null,
+        "_id": "id6263f6c90e3c",
+        "_form": "equipment",
+        "_table": "equipment",
+        "_creator": "id625eb9a80a70",
+        "_lastdate": "2022-04-23 18:11:57",
+        "_lastuser": "id625eb9a80a70",
+        "_sort": "999999999"
+    },
+    "id6263f7e71ad9": {
+        "id": "id6263f7e71ad9",
+        "cover": [
+            {
+                "img": "\/uploads\/equipment\/id6263f6f9img2236.jpg",
+                "width": "300",
+                "height": "300",
+                "alt": "",
+                "title": ""
+            }
+        ],
+        "header": "Аппарат Futura-Pro. Биостимуляция",
+        "preset": "equipment",
+        "blocks": "",
+        "active": "on",
+        "_site": null,
+        "_login": null,
+        "_id": "id6263f7e71ad9",
+        "_form": "equipment",
+        "_table": "equipment",
+        "_creator": "id625eb9a80a70",
+        "_lastdate": "2022-04-23 18:12:03",
+        "_lastuser": "id625eb9a80a70",
+        "_sort": "999999999"
+    }
+}

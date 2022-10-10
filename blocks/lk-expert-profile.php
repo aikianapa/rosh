@@ -7,6 +7,7 @@
                         <div class="lk-title mb-0">Редактировать личные данные </div>
                         <button type="button" class="btn btn--black" wb-save="{'table':'users','item':'{{_id}}','form':'#userProfile','update':'cms.list.users' }">Сохранить изменения</button>
                     </div>
+
                     <div class="grey-form">
 
                         <h2 class="h2 mb-30">Личные данные</h2>
@@ -75,7 +76,7 @@
     </div>
     <script wbapp remove>
         $(document).on('wb-save-done', function (e, res) {
-            document.location.href = '/lk/{{_sess.user.role}}'
+            document.location.href = '/cabinet'
         })
     </script>
 </view>

@@ -3,6 +3,7 @@
             <form class="search">
                 <div class="container">
                     <div class="search__block --flex --aicn">
+
                         <div class="input">
                             <input class="search__input" type="text" placeholder="Поиск">
                         </div>

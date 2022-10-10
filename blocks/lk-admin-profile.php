@@ -18,6 +18,7 @@
                                         <div class="input__placeholder">ФИО</div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="input">
                                         <input class="input__control datebirthdaypickr" name="birthdate" type="text" placeholder="Дата рождения" required>
@@ -75,7 +76,7 @@
     </div>
     <script wbapp remove>
         $(document).on('wb-save-done', function (e, res) {
-            document.location.href = '/lk/{{_sess.user.role}}'
+            document.location.href = '/cabinet'
         })
     </script>
 </view>

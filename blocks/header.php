@@ -4,7 +4,7 @@
 
         <header class="header header--transparent header--fixed --unfilter">
             <!---div class="container --flex --jcsb --aicn"  wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='admin' OR '{{_sess.user.role}}'=='client'"-->
-            <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','admin','client','expert'])">
+            <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','client','expert'])">
 
                 <wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
 
@@ -21,7 +21,7 @@
                 </a>
 
 
-                <div class="header__left --flex --aicn">
+                <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['','client'])">
                     <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
                     <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
                     <div class="header__contacts"> <a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
@@ -31,7 +31,6 @@
                             <div class="header__contact header__contact--small">{{worktime}}</div>
                         </wb-data>
                     </div>
-                    <a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
                 </div>
                 <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'==''">
                     <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
@@ -39,15 +38,25 @@
                     <a href="#" class="hb-ico basket-ico header-basket"><i>0</i></a>
                     <button class="burger"></button>
                 </div>
-                <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'>''">
-                    <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
+                
+                <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
+                    <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
+                    <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
+                    <div class="header__contacts"> <a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
+                            {{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
+                        <div wb-if="'{{_route.uri}}' !=='/english'" class="header__contact header__contact--small">{{_var.worktime}}</div>
+                        <wb-data wb="table=pages&item={{_route.item}}&field=blocks.contacts_english" wb-if="'{{_route.uri}}' =='/english'">
+                            <div class="header__contact header__contact--small">{{worktime}}</div>
+                        </wb-data>
+                    </div>
+                </div>
+                <div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','client'])">
                     <button class="btn btn-link profile-menu">
                         Профиль
                         <svg class="svgsprite _drop">
                             <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
                         </svg>
                         <div class="enter__panel">
-                            <a class="enter__btn text-small" href="/cabinet#profile">Мой профиль</a>
                             <a class="enter__btn text-small" href="/cabinet">Мой кабинет</a>
                             <a class="enter__btn text-small" href="/signout">Выйти</a>
                         </div>
@@ -58,20 +67,22 @@
 
             <div class="container --flex --jcsb --aicn" wb-if="'{{_sess.user.role}}'=='main'">
                 <div class="header__admin --flex --aicn">
-                    <span class="lower-deck"><button class="btn btn--white loaddata --openpopup" data-popup="--download-data">
+                    <span class="lower-deck">
+	                    <button class="btn btn--white loaddata --openpopup" data-popup="--download-data">
                             <svg class="svgsprite _xl">
                                 <use xlink:href="/assets/img/sprites/svgsprites.svg#xl"></use>
                             </svg>Выгрузить данные
-                        </button><a class="btn btn-link" href="/lk-admin-photos.html">Медиатека</a></span><a class="btn btn-link" href="/lk-admin-changes.html">Журнал изменений</a>
+                        </button>
+	                    <a class="btn btn-link" href="/cabinet/photos">Медиатека</a></span><a class="btn btn-link" href="/cabinet/changes">Журнал изменений</a>
                 </div>
                 <div class="header__right --flex --aicn">
-                    <button class="btn btn-link enter profile-menu">
+                    <button class="btn btn-link profile-menu">
                         Профиль
                         <svg class="svgsprite _drop">
                             <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
                         </svg>
                         <div class="enter__panel">
-                            <a class="enter__btn text-small" href="/lk/admin/profile">Редактировать</a>
+                            <a class="enter__btn text-small" href="/cabinet/profile">Редактировать</a>
                             <a class="enter__btn text-small" href="/signout">Выйти</a>
                         </div>
                     </button>

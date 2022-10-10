@@ -12,3 +12,4 @@ uploads/_cache
 *.cssgz
 
 uploads/
+.docs
