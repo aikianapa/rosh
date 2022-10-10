@@ -4,14 +4,14 @@
     <wb-snippet name="wbapp"></wb-snippet>
     <wb-scripts src="scripts">
         [
-            "/assets/js/jquery.autocomplete.min.js",
-            "/assets/js/air-datepicker.js",
-            "/assets/js/jquery.inputmask.min.js",
-            "/assets/js/jquery.maskedinput.min.js",
-            "/assets/js/main.js",
-            "/assets/js/new.js",
-            "/assets/js/blogFilter.js",
-            "/assets/js/auth.js"
+        "/assets/js/jquery.autocomplete.min.js",
+        "/assets/js/air-datepicker.js",
+        "/assets/js/jquery.inputmask.min.js",
+        "/assets/js/jquery.maskedinput.min.js",
+        "/assets/js/main.js",
+        "/assets/js/new.js",
+        "/assets/js/blogFilter.js",
+        "/assets/js/auth.js"
         ]
     </wb-scripts>
 
@@ -32,12 +32,13 @@
             });
         });
     </script>
-    <script type="text/javascript">
-    var __cs = __cs || [];
-    __cs.push(["setCsAccount", "VZFXRLYeQPw2Bg8xzsSHG1XSqdzBz7Ku"]);
-    </script>
-    <script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>
-
+    <wb-if wb-if="'{{_route.hostname}}' !== 'rosh.loc'">
+        <script type="text/javascript">
+        var __cs = __cs || [];
+        __cs.push(["setCsAccount", "VZFXRLYeQPw2Bg8xzsSHG1XSqdzBz7Ku"]);
+        </script>
+        <script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>
+    </wb-if>
     <link href="/assets/css/new.css" rel="stylesheet">
     <link href="/assets/css/additional/frontend.css" rel="stylesheet">
 

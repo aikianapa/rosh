@@ -53,8 +53,9 @@ class pagesClass extends cmsFormsClass
         @$item['url'] = $item['path'] . '/' . $item['name'];
     }
 
-    function afterItemSave($item)
+    function afterItemSave(&$item)
     {
+        $this->beforeItemShow($item);
         $this->app->shadow($item['url']);
     }
 
