@@ -77,7 +77,7 @@
 										<div class="history-item">
 											<p>Специалисты</p>
 											{{#this.experts}}
-											<p>{{catalog.experts[this].head}}</p>
+											<p>{{catalog.experts[this].name}}</p>
 											{{/this.experts}}
 										</div>
 										<div class="history-item">

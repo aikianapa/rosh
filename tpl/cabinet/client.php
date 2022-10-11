@@ -15,7 +15,7 @@
 		<div class="container">
 			<div class="account">
 				<div class="crumbs">
-					<a class="crumbs__arrow" href="#">
+					<a class="crumbs__arrow">
 						<svg class="svgsprite _crumbs-back">
 							<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
 						</svg>
@@ -191,7 +191,7 @@
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{catalog.experts[this].head}}</p>
+										<p>{{catalog.experts[this].name}}</p>
 										{{/this.experts}}
 									</div>
 								</div>
@@ -261,7 +261,7 @@
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{catalog.experts[this].head}}</p>
+										<p>{{catalog.experts[this].name}}</p>
 										{{/this.experts}}
 									</div>
 								</div>
@@ -336,7 +336,7 @@
 										<div class="history-item">
 											<p>Специалисты</p>
 											{{#experts}}
-											{{catalog.experts[this].head}}<br>
+											{{catalog.experts[this].name}}<br>
 											{{/experts}}
 										</div>
 										<div class="history-item">
@@ -395,11 +395,11 @@
 												<div class="col-md-6">
 													<a class="expert__worked"
 														target="_blank"
-														href="{{'/about/experts/'+catalog.experts[this].page_uri}}">
+														data-href="/about/experts/{{catalog.experts[this].info_uri}}">
 														<div class="expert__worked-pic">
-															<img src="{{catalog.experts[this].image.src}}" alt="{{catalog.experts[this].head}}">
+															<img src="{{catalog.experts[this].image.0.src}}" alt="{{catalog.experts[this].name}}">
 														</div>
-														<div class="expert__worked-name">{{catalog.experts[this].head}}</div>
+														<div class="expert__worked-name">{{catalog.experts[this].name}}</div>
 														<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
 													</a>
 												</div>
@@ -678,19 +678,16 @@
 				<div class="popup__name text-bold">Запись на прием</div>
 				<div class="text-bold mb-10">Разделы услуг</div>
 				<div class="popups__text-chexboxs">
-					{{#each categories}}
-					<label class="text-radio">
-						<input type="radio" name="service_category" value="{{id}}">
-						<span>{{name}}</span>
-					</label>
-					{{/each}}
+					<wb-foreach wb="table=catalogs&item=srvcat&from=tree.data">
+						<label class="text-radio">
+							<input type="radio" name="service_category" value="{{id}}">
+							<span>{{name}}</span>
+						</label>
+					</wb-foreach>
 				</div>
 				<div class="input" data-hide="service-search">
-					<input class="search__input" type="text"
-						placeholder="Поиск по услугам"
-						id="popup-services-list">
-					<div class="search__drop">
-					</div>
+					<input class="search__input search-services" type="text" placeholder="Поиск по услугам">
+					<div class="search__drop"></div>
 					<button class="search__btn" type="button">
 						<svg class="svgsprite _search">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
@@ -734,17 +731,17 @@
 							<div class="select__values"></div>
 						</div>
 						<div class="select__list">
-							{{#each experts}}
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox" name="experts[]" value="{{id}}">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">{{name}}</div>
-									</div>
-								</label>
-							</div>
-							{{/each}}
+							<wb-foreach wb="table=experts" wb-filter="active=on">
+								<div class="select__item select__item--checkbox">
+									<label class="checkbox checkbox--record">
+										<input type="checkbox" name="experts[]" value="{{id}}">
+										<span></span>
+										<div class="checbox__name">
+											<div class="select__name">{{name}}</div>
+										</div>
+									</label>
+								</div>
+							</wb-foreach>
 						</div>
 					</div>
 				</div>

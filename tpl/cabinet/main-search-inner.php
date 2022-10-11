@@ -101,9 +101,9 @@
 									<div class="account-event-wrap">
 										<div class="account-events__name">Специалист:</div>
 										<div class="account-event">
-											{{#this.experts}}
-											<p>{{catalog.experts[this].head}}</p>
-											{{/this.experts}}
+											{{#experts}}
+											<p>{{catalog.experts[this].name}}</p>
+											{{/experts}}
 										</div>
 									</div>
 								</div>
@@ -151,13 +151,13 @@
 											<div class="history-item">
 												<p>Специалисты</p>
 												{{#experts}}
-												{{catalog.experts[this].head}}<br>
+												{{catalog.experts[this].name}}<br>
 												{{/experts}}
 											</div>
 											<div class="history-item">
 												<p>Услуги</p>
 												{{#services}}
-												{{this.name}}<br>
+												{{catalog.services[this].header}}<br>
 												{{/services}}
 											</div>
 											<div class="history-item">
@@ -210,11 +210,11 @@
 													<div class="col-md-6">
 														<a class="expert__worked"
 															target="_blank"
-															href="{{'/about/experts/'+catalog.experts[this].page_uri}}">
+															data-link="/about/experts/{{catalog.experts[this].info_uri}}">
 															<div class="expert__worked-pic">
-																<img src="{{catalog.experts[this].image.src}}" alt="{{catalog.experts[this].head}}">
+																<img src="{{catalog.experts[this].image.0.src}}" alt="{{catalog.experts[this].name}}">
 															</div>
-															<div class="expert__worked-name">{{catalog.experts[this].head}}</div>
+															<div class="expert__worked-name">{{catalog.experts[this].name}}</div>
 															<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
 														</a>
 													</div>
