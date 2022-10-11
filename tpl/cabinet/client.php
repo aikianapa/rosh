@@ -567,7 +567,7 @@
 								const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
 
 								if (event_date !== (new Date()).toLocaleDateString()) {
-									cabinet.push('events.upcoming', data); /* get actually user next events */
+									cabinet.push('events.upcoming', rec); /* get actually user next events */
 								}
 
 								if ((curr_timestamp+10) > rec.event_begin_time && (rec.event_end_time >= curr_timestamp)) {

@@ -43,6 +43,10 @@
 					<div class="lk-title">Журнал изменений</div>
 					<div class="accoutn-scroll">
 						<div class="account__table">
+							<div class="loading-overlay">
+								<div class="loader"></div>
+							</div>
+
 							<div class="account__table-head">
 								<div class="changes-item">Дата / время изменения</div>
 								<div class="changes-item">ФИО</div>
@@ -108,10 +112,13 @@
                 },
                 on: {
                     init() {
-                        wbapp.get('/api/v2/list/changes/@sort=date:d', function(data) {
+                        wbapp.get('/api/v2/list/record-changes/@sort=date:d', function(data) {
                             cabinetChanges.set('changes', data);
                         });
-                    }
+                    },
+	                complete(ev) {
+		                $('main.page .loading-overlay').remove();
+	                }
                 }
             })
         </script>

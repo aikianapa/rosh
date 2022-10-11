@@ -88,7 +88,7 @@
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/records/', function (data) {
+					wbapp.get('/api/v2/list/record-photos/', function (data) {
 						let _images = [];
 						data.forEach(function (rec) {
 							_before_photo = rec.photos.before[0];
@@ -116,8 +116,8 @@
 						cabinet.set('photos', data); /* get actually user data */
 					});
 				},
-				filterPhotos(ev) {
-
+				filter(ev) {
+					cabinet.set('photos', clientPhotos.filterBy($(ev.node)));
 				}
 			}
 		});

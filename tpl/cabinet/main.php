@@ -516,12 +516,17 @@
 								data: {},
 								on: {
 									save(ev) {
-										let post = $($(ev.node).parents('form')).serializeJSON();
-										wbapp.post('/form/users/setClient/' + item, post, function (res) {
-											tabQuotes.set('result.' + lead + '.clientData', res);
-											$(form).html('');
-											toast('Успешно сохранено');
-										});
+										let $form       = $(form);
+										if ($form.verify() && item > '') {
+											let data       = $form.serializeJSON();
+											data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+											data.birthdate = new Date(data.birthdate).toLocaleDateString();
+											wbapp.post('/api/v2/update/users/' + item, data, function (res) {
+												console.log(res);
+												$(form).html('');
+												toast('Успешно сохранено');
+											});
+										}
 									}
 								}
 							});

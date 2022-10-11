@@ -52,7 +52,7 @@
 								</div>
 							</div>
 						</div>
-						<a class="account__detail" data-link="[[id]]">
+						<a class="account__detail" data-client="[[id]]">
 							Подробнее
 						</a>
 					</div>

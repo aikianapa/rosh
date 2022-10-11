@@ -766,7 +766,7 @@
 				</button>
 				<div class="popup__name text-bold">Выгрузить данные</div>
 
-				<form class="popup__form" method="GET" action="/cabinet/download/">
+				<form class="popup__form" method="GET" action="/cabinet/download-data/">
 					<div class="select-form">
 						<div class="select">
 							<div class="select__main">

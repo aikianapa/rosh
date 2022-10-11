@@ -42,6 +42,9 @@
 			</form>
 			<div class="search-result" wb-off>
 				<div class="container">
+					<div class="loading-overlay">
+						<div class="loader"></div>
+					</div>
 					<div class="lk-title">Результаты поиска</div>
 					{{#each results}}
 					<div class="account__panel">
@@ -52,7 +55,7 @@
 									<span>{{this.birthdate}}</span>
 								</div>
 								<a href="callto:+{{this.phone}}" class="user__item">Тел:
-									<span>+{{this.phone}}</span>
+									<span>{{this.phone}}</span>
 								</a>
 
 								<div class="user__item">Почта:
@@ -75,7 +78,12 @@
 								</div>
 							</div>
 						</div>
-						<a class="account__detail" href="{{'/cabinet/client/'+.id}}">Подробнее</a>
+						<a class="account__detail" data-link="[[id]]">
+							Подробнее
+						</a>
+						<a class="account__detail" data-client="[[id]]">
+							Подробнее
+						</a>
 					</div>
 					{{else}}
 					<div class="account__panel">
@@ -95,16 +103,28 @@
 			data: {
 				q: '{{_route.params.q}}',
 				user: wbapp._session.user,
-				results: []
+				results: {}
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/users/fullname~=' + q, function(data) {
-					    cabinet.set('results', data);
+					wbapp.get('/api/v2/list/users/?role=client&phone~=' + q, function(data) {
+						data.forEach(function (user, i) {
+							cabinet.set('results.' + user.id, result);
+						});
+					});
+					wbapp.get('/api/v2/list/users/?role=client&email~=' + q, function(data) {
+						data.forEach(function (user, i) {
+							cabinet.set('results.' + user.id, user);
+						});
+					});
+					wbapp.get('/api/v2/list/users/?role=client&fullname~=' + q, function(data) {
+						data.forEach(function (user, i) {
+							cabinet.set('results.' + user.id, user);
+						});
 					});
 				},
 				complete(ev) {
-					console.log('page ready');
+					$('main.page .loading-overlay').remove();
 				}
 			}
 		});
