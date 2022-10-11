@@ -465,7 +465,7 @@
 							<input type="hidden" name="path" value="/records/">
 							<div class="file-photo__ico">
 								<svg class="svgsprite _file">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
+									<use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
 								</svg>
 								<img class="preview d-none" alt="upload preview">
 							</div>
