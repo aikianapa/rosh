@@ -813,13 +813,13 @@
 						<div class="select">
 							<div class="select__main">Все администраторы</div>
 							<div class="select__list">
-								{{#each catalog.admins}}
+								{{#each admins}}
 								<div class="select__item select__item--checkbox">
 									<label class="checkbox checkbox--record">
-										<input type="checkbox" name="experts[]" value="{{this.id}}">
+										<input type="checkbox" name="admins[]" value="{{this.id}}">
 										<span></span>
 										<div class="checbox__name">
-											<div class="select__name">{{this.name}}</div>
+											<div class="select__name">{{this.fullname}}</div>
 										</div>
 									</label>
 								</div>
@@ -897,13 +897,16 @@
 				el: '.popup.--download-data',
 				template: wbapp.tpl('#popupDownloadData').html,
 				data: {
-					client:{},
-					record:{}
+					catalog:{},
+					admins:[]
 				},
 				on: {
 					init() {
-						setTimeout(function () {
-							window.popupAnalizeType.set('catalog', catalog);
+						wbapp.get('/api/v2/list/users/?role=main', function (data) {
+							popupDownloadData.set('admins', data);
+							setTimeout(function () {
+								popupDownloadData.set('catalog', catalog);
+							});
 						});
 					}
 				}
@@ -939,15 +942,29 @@
 							//	}
 							//});
 
-							wbapp.post('/api/v2/create/users/', post, function (data) {
-								if (data.error) {
-									wbapp.trigger('wb-save-error', {'data': data});
+							wbapp.get('/api/v2/list/users/?role=client&email='+post.email, function (data) {
+								if (data.length == 0) {
+									wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone, function (data) {
+										if (data.length == 0) {
+											wbapp.post('/api/v2/create/users/', post, function (data) {
+												if (data.error) {
+													wbapp.trigger('wb-save-error', {'data': data});
+												} else {
+													toast('Карточка клиента успешно создана!');
+													$('.popup.--create-client').fadeOut('fast');
+												}
+											});
+										} else {
+											form.find('[name="phone"]').focus();
+											toast('Этот номер уже используется!', 'Ошибка!', 'error');
+										}
+									});
 								} else {
-									toast('Карточка клиента создана!');
-									//$('.popup.--confirm-sms-code').hide();
-									//$('.popup.--confirm-sms-code .code__input').val('');
+									form.find('[name="email"]').focus();
+									toast('E-mail уже используется!', 'Ошибка!', 'error');
 								}
 							});
+
 						}
 						return false;
 					}

@@ -195,8 +195,7 @@
 											{{#each catalog.experts}}
 											<div class="select__item select__item--checkbox">
 												<label class="checkbox checkbox--record">
-													<input type="checkbox" name="experts[]" value="{{id}}"
-														{{#if id== 'id6304998b114d'}}checked{{/if}}>
+													<input type="checkbox" name="experts[]" value="{{id}}">
 													<span></span>
 													<div class="checbox__name">
 														<div class="select__name">{{name}}</div>
