@@ -218,7 +218,7 @@
 						{{#if this.analises}}
 						<div class="account-events__download">
 							<div class="lk-title">Анализы</div>
-							<a class="btn btn--white" href="{{this.client}}.pdf" download="Анализы.pdf">Скачать анализы</a>
+							<a class="btn btn--white" href="[[this.analises.src]]" download="Анализы.pdf">Скачать анализы</a>
 						</div>
 						{{/if}}
 					</div>
@@ -358,12 +358,16 @@
 										<div class="analysis mb-40">
 											<div class="row">
 												<div class="col-md-6">
-													{{#if this.analises}}
-													<div class="analysis__top --aicn --flex mb-20">
-														<div class="analysis__title">Анализы</div>
-														<a class="btn btn--white" href="{{this.analises.src}}" download="Анализы(за 03.10.2022).pdf">Скачать анализы</a>
+													{{#if analises}}
+													<div class="account-events__download">
+														<div class="lk-title">Анализы</div>
+														<a class="btn btn--white" href="{{.}}"
+															download="Анализы(за {{this.event_date}}).pdf">
+															Скачать анализы
+														</a>
 													</div>
 													{{/if}}
+
 													<div class="analysis__description">
 														<p class="text-bold mb-20">Выполнялись процедуры</p>
 														<p class="text-grey">{{this.description}}</p>
@@ -373,8 +377,8 @@
 													{{#if this.analises}}
 													<a class="btn btn--black mb-20 --openpopup"
 														data-popup="--analize-type"
-														on-click="@.analisesQuote"
-														data-file="{{this.analises.src}}"
+														on-click="quoteAnalises"
+														data-file="{{this.analises}}"
 														data-record="{{this.id}}">
 														Получить расшифровку анализов
 													</a>
@@ -415,11 +419,11 @@
 														<div class="col-md-6">
 															<a class="after-healing__item"
 																data-fancybox="images"
-																href="{{.image.src}}"
+																href="{{.src}}"
 																data-caption="{{.date}}">
 																<div class="healing__date">{{.date}}</div>
 																<div class="after-healing__photo"
-																	style="background-image: url({{.image.src}})">
+																	style="background-image: url({{.src}})">
 																</div>
 															</a>
 														</div>
@@ -434,9 +438,9 @@
 														{{#each photos.after}}
 														<a class="after-healing__item"
 															data-fancybox="images"
-															href="{{this.image.src}}"
-															data-caption="{{this.date}}">
-															<img src="{{this.image.src}}" alt="After visit {{this.date}}">
+															href="{{.src}}"
+															data-caption="{{.date}}">
+															<img src="{{.src}}" alt="After visit {{.date}}">
 														</a>
 														{{/each}}
 													</div>
@@ -469,7 +473,7 @@
 								<div class="acount__table-accardeon accardeon">
 									<div class="acount__table-main accardeon__main accardeon__click">
 										<div class="healing-item">
-											<p>Дата</p> {{this.event_date}} - {{this.longterm_date_end}}
+											<p>Дата</p> {{this.longterm_date_from}} - {{this.longterm_date_to}}
 										</div>
 										<div class="healing-item">
 											<p>Услуги</p> {{this.title}}
@@ -482,14 +486,14 @@
 												{{#each this.photos.before}} <!--single photo!-->
 												<a class="after-healing__item"
 													data-fancybox="images"
-													href="{{this.image.src}}"
-													data-caption="{{this.date}}">
-													<h2 class="h2 healing__date-title">{{this.date}}</h2>
+													href="{{.src}}"
+													data-caption="{{.date}}">
+													<h2 class="h2 healing__date-title">{{.date}}</h2>
 													<div class="after-healing__photo"
-														style="background-image: url('{{this.image.src}}')">
+														style="background-image: url('{{.src}}')">
 													</div>
 													<div class="healing__description">
-														{{this.comment}}
+														{{.comment}}
 													</div>
 												</a>
 												{{/each}}
@@ -505,11 +509,11 @@
 														<div class="col-md-6">
 															<a class="after-healing__item"
 																data-fancybox="images"
-																href="{{this.image.src}}"
-																data-caption="{{this.date}}">
-																<div class="healing__date">{{this.date}}</div>
+																href="{{.src}}"
+																data-caption="{{.date}}">
+																<div class="healing__date">{{.date}}</div>
 																<div class="after-healing__photo"
-																	style="background-image: url('{{this.image.src}}')">
+																	style="background-image: url({{.src}});">
 																</div>
 															</a>
 														</div>
@@ -614,26 +618,24 @@
 
 								if ($form.verify() && uid > '') {
 									let data      = $form.serializeJSON();
-									data.group    = 'quotes';
-									data.status   = 'new';
-									data.status   = 'new';
-									data.analises = {};
+
+									data.group      = 'quotes';
+									data.status     = 'new';
+									data.pay_status = 'unpay';
+
+									data.analises = false;
 									data.photos   = {before: [], after: []};
 
-									data.pay_status = 'unpay';
 									data.client     = uid;
 									data.priority   = 0;
-									data.marked     = 0;
+									data.marked     = false;
 
 									data.comment        = '';
 									data.recommendation = '';
 									data.description    = '';
 
-									data.clientData = {
-										'fullname': cabinet.get('user.fullname'),
-										'email': cabinet.get('user.email'),
-										'phone': cabinet.get('user.phone')
-									};
+									data.price = parseInt(data.price);
+
 									wbapp.post('/api/v2/create/records/', data, function (res) {
 										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 										$('.popup.--record .popup__panel.--succed').addClass('d-block');
@@ -666,108 +668,6 @@
 
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
-	<div class="popup --record">
-		<template id="popupRecord">
-			<div class="popup__overlay"></div>
-			<form class="popup__panel" on-submit="submit">
-				<button class="popup__close" on-click="cancel">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Запись на прием</div>
-				<div class="text-bold mb-10">Разделы услуг</div>
-				<div class="popups__text-chexboxs">
-					<wb-foreach wb="table=catalogs&item=srvcat&from=tree.data">
-						<label class="text-radio">
-							<input type="radio" name="service_category" value="{{id}}">
-							<span>{{name}}</span>
-						</label>
-					</wb-foreach>
-				</div>
-				<div class="input" data-hide="service-search">
-					<input class="search__input search-services" type="text" placeholder="Поиск по услугам">
-					<div class="search__drop"></div>
-					<button class="search__btn" type="button">
-						<svg class="svgsprite _search">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-						</svg>
-					</button>
-				</div>
-				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-					<input class="checkbox-hidden-next-form" type="checkbox" name="no_services" value="1">
-					<span></span>
-					<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
-				</label>
-				<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-					<input class="checkbox-visible-next-form" type="checkbox"
-						name="for_consultation" value="1">
-					<span></span>
-					<div class="checbox__name">Консультация врача</div>
-				</label>
-				<div class="select-form" style="display: none;" data-show="service">
-					<div class="text-bold mb-20">Тип события</div>
-					<div class="popups__text-chexboxs">
-						<label class="text-radio">
-							<input type="radio" name="type" value="clinic" checked>
-							<span>В клинике</span>
-						</label>
-						<label class="text-radio switch-blocks">
-							<input type="radio" name="type" value="online">
-							<span>Онлайн</span>
-						</label>
-					</div>
-				</div>
-
-				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
-					<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
-					<span></span>
-					<div class="checbox__name">Я не знаю, кого выбрать</div>
-				</label>
-				<div class="select-form" data-hide="expert">
-					<div class="select">
-						<div class="select__main">
-							<div class="select__placeholder">Выберите специалиста</div>
-							<div class="select__values"></div>
-						</div>
-						<div class="select__list">
-							<wb-foreach wb="table=experts" wb-filter="active=on">
-								<div class="select__item select__item--checkbox">
-									<label class="checkbox checkbox--record">
-										<input type="checkbox" name="experts[]" value="{{id}}">
-										<span></span>
-										<div class="checbox__name">
-											<div class="select__name">{{name}}</div>
-										</div>
-									</label>
-								</div>
-							</wb-foreach>
-						</div>
-					</div>
-				</div>
-				<div class="admin-editor__patient" data-hide="service-search">
-					<div class="text-bold mb-10">Выбраны услуги</div>
-				</div>
-				<div class="admin-editor__summ" data-hide="service-search">
-					<p>Всего</p>
-					<input type="hidden" name="price">
-					<p class="price">0 ₽</p>
-				</div>
-				<button class="btn btn--black form__submit" type="submit"> Записаться</button>
-			</form>
-
-			<div class="popup__panel --succed">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Запись на прием</div>
-				<h3 class="h3">Успешно!</h3>
-				<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
-			</div>
-		</template>
-	</div>
 </div>
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

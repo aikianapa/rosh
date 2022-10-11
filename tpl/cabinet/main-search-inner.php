@@ -68,22 +68,13 @@
 										</svg>
 										Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
 									</div>
-									<div class="admin-edit__user-btns d-none">
-										<a class="admin-edit__user-btn btn btn--white --openpopup"
-											data-popup="--create-appoint">Записать пациента на прием</a>
-										<a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a>
-										<div class="admin-edit__uploads">
-											<input class="admin-edit__upload" type="file" id="analises-file">
-											<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>
 						{{/client}}
 					</div>
 
-					<div>
+					<div class="events upcoming">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
@@ -127,12 +118,43 @@
 											</div>
 										</div>
 									</div>
+									<input class="admin-edit__upload" type="hidden" id="analises-file">
+									<div class="filepicker">
+										<textarea type="json" name="analises-file"
+											class="d-none filepicker-data"></textarea>
+										<!-- Button Bar -->
+										<div class="button-bar">
+											<button class="btn btn-success fileinput" style="height:70px;">
+												<input type="file" id="file-selector" name="files[]"
+													class="wb-unsaved" accept="application/pdf">
+												<input type="hidden" name="upload_url"
+													value="/uploads/analises/{{this.client}}/"
+													class="wb-unsaved">
+												<input type="hidden" name="prevent_img" class="wb-unsaved">
+											</button>
+										</div>
+										<script type="text/javascript">
+											wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"],
+												"filepicker-js");
+										</script>
+									</div>
+									<a class="account__detail popup add-analises">
+										<input class="admin-edit__upload" type="hidden" id="analises-file">
+										<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
+
+									</a>
 									<a class="account__detail --openpopup"
 										data-popup="--edit-event"
 										on-click="editEvent"
 										data-record="{{this.id}}">
 										Редактировать
 									</a>
+									<div class="admin-edit__user-btns d-none">
+										<a class="admin-edit__user-btn btn btn--white --openpopup"
+											data-popup="--create-appoint">Записать пациента на прием</a>
+										<a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a>
+
+									</div>
 								</div>
 							</div>
 							{{/each}}

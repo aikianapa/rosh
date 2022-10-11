@@ -78,9 +78,6 @@
 								</div>
 							</div>
 						</div>
-						<a class="account__detail" data-link="[[id]]">
-							Подробнее
-						</a>
 						<a class="account__detail" data-client="[[id]]">
 							Подробнее
 						</a>
@@ -107,17 +104,26 @@
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/users/?role=client&phone~=' + q, function(data) {
-						data.forEach(function (user, i) {
-							cabinet.set('results.' + user.id, result);
-						});
-					});
-					wbapp.get('/api/v2/list/users/?role=client&email~=' + q, function(data) {
+					wbapp.get('/api/v2/list/users?active=on&role=client&phone~=' + q, function(data) {
+						if (!data) {
+							return;
+						}
 						data.forEach(function (user, i) {
 							cabinet.set('results.' + user.id, user);
 						});
 					});
-					wbapp.get('/api/v2/list/users/?role=client&fullname~=' + q, function(data) {
+					wbapp.get('/api/v2/list/users?active=on&role=client&email~=' + q, function(data) {
+						if (!data) {
+							return;
+						}
+						data.forEach(function (user, i) {
+							cabinet.set('results.' + user.id, user);
+						});
+					});
+					wbapp.get('/api/v2/list/users?active=on&role=client&fullname~=' + q, function(data) {
+						if (!data){
+							return;
+						}
 						data.forEach(function (user, i) {
 							cabinet.set('results.' + user.id, user);
 						});

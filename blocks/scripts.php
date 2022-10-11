@@ -19,11 +19,7 @@
 		    "/assets/js/cabinet.js"
 	    ]
     </wb-scripts>
-
-
     <script type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/ractive-transitions-slide"></script>
-
     <script type="wbapp">
         $(function () {
             wbapp.init()

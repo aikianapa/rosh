@@ -78,7 +78,7 @@
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/users/?role=client&fullname~=' + q, function(data) {
+					wbapp.get('/api/v2/list/users?role=client&active=on&fullname~=' + q, function(data) {
 						console.log('found:', data);
 					    cabinet.set('results', data);
 					});

@@ -367,12 +367,11 @@
 							{{#if this.analises}}
 							<div class="account-events__download">
 								<div class="lk-title">Анализы</div>
-								<a class="btn btn--white" href="{{this.analises.file.src}}"
-									download="Анализы-{{this.clientData.fullname}}-{{this.event_date}}.pdf">
+								<a class="btn btn--white" href="{{this.analises}}"
+									download="Анализы({{this.clientData.fullname}}, {{this.event_date}}).pdf">
 									Скачать анализы</a>
 							</div>
 							{{/if}}
-
 						</div>
 						{{/each}}
 					</div>
@@ -440,8 +439,8 @@
 							{{#if this.analises}}
 							<div class="account-events__download">
 								<div class="lk-title">Анализы</div>
-								<a class="btn btn--white" href="{{this.analises.src}}"
-									download="Анализы-{{this.clientData.fullname}}-{{this.event_date}}.pdf">
+								<a class="btn btn--white" href="{{this.analises}}"
+									download="Анализы({{this.clientData.fullname}}, {{this.event_date}}).pdf">
 									Скачать анализы</a>
 							</div>
 							{{/if}}
@@ -491,7 +490,7 @@
 									</div>
 									<div class="history-item">
 										<p>Анализы</p>
-										{{#if this.analises.file}}
+										{{#if this.analises}}
 										Есть анализы
 										{{else}}
 										Нет анализов

@@ -1,10 +1,255 @@
+var Utils     = {
+	formatPhone(phone) {
+		var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+		var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+		if (match) {
+			var intlCode = (match[1] ? '+7 ' : '');
+			return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
+		}
+		return null;
+	},
+	formatPrice(price, sufix) {
+		var sign = 1;
+		if (val < 0) {
+			sign = -1;
+			val  = -val;
+		}
+		// trim the number decimal point if it exists
+		let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
+		let len    = num.toString().length;
+		let result = '';
+		let count  = 1;
+
+		for (let i = len - 1; i >= 0; i--) {
+			result = num.toString()[i] + result;
+			if (count % 3 === 0 && count !== 0 && i !== 0) {
+				result = ' ' + result;
+			}
+			count++;
+		}
+
+		// add number after decimal point
+		if (val.toString().includes('.')) {
+			result = result + '.' + val.toString().split('.')[1];
+		}
+		// return result with - sign if negative
+		return (sign < 0 ? '-' + result : result) + (sufix || '');
+	},
+	varType(val) {
+		return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+	},
+	uniqueArray(arr) {
+		if (this.varType(arr) === 'array') {
+			console.warn('value not array: ', arr);
+			return arr;
+		}
+
+		function onlyUnique(value, index, self) {
+			return self.indexOf(value) === index;
+		}
+
+		return arr.filter(onlyUnique);
+	},
+	api: {
+		get(path, data, options) {
+			const fullPath = (data === undefined) ? path : path + `?${new URLSearchParams(data)}`;
+			return this.request(fullPath, 'get', undefined, options);
+		},
+		post(path, data, options) {
+			return this.request(path, 'post', data, options);
+		},
+		async request(path, method, data, options) {
+			const defaultOptions = {
+				method
+			};
+			if (method !== 'get' && method !== 'head') {
+				defaultOptions.body = new URLSearchParams(data);
+			}
+			return fetch(path,
+				options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
+				.then((result) => result.json());
+		}
+	},
+	arrIndexBy(array, index_key) {
+		const _index = index_key || 'id';
+		let _result  = {};
+		array.forEach(function (item) {
+			_result[item[_index]] = item;
+		});
+
+		return _result;
+	}
+};
+var Record    = {
+	data: {},
+	find: function (id) {
+		if (!!id) {
+			this.data.id = id;
+		}
+	},
+	validate: function (data) {
+
+	},
+	save: function () {
+
+	}
+
+};
+
+const catalog = {
+	/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
+	spec_service: {
+		experts_consultation: {
+			header: 'Общая консультация специалиста',
+			price: 4000
+		},
+		analises_interpretation: {
+			header: 'Расшифровка анализов',
+			price: 2000
+		}
+	},
+	/*dyctionary types*/
+	quoteStatus: {},
+	quoteType: {},
+	quotePay: {},
+
+	services: {},
+	servicePrices: {},
+	servicesList: [], /* for autocomplete */
+	serviceTags: {
+		"face": {
+			"name": "Лицо",
+			"color": "yellow"
+		},
+		"body": {
+			"name": "Тело",
+			"color": "green"
+		},
+		"hair": {
+			"name": "Волосы",
+			"color": "red"
+		},
+		"gyn": {
+			"name": "Гинекология",
+			"color": "blue"
+		},
+		"lab": {
+			"name": "Лаборатория",
+			"color": "purple"
+		}
+	},
+	categories: {},
+	experts: {},
+	clients: {},
+	admins: {},
+
+	init() {
+		var _self = this;
+
+		Utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
+			_self.quoteStatus = Utils.arrIndexBy(data);
+		});
+
+		Utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+			_self.quotePay = Utils.arrIndexBy(data);
+		});
+		Utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
+			_self.quoteType = Utils.arrIndexBy(data);
+		});
+
+		Utils.api.get('/api/v2/list/services?active=on').then(function (data) {
+
+			let _services       = {};
+			_self.servicePrices = {};
+
+			data.forEach(function (service, i) {
+				_services[service.id] = service;
+				const _cats           = service.category;
+				const _tags           = [];
+
+				_cats.forEach(function (cat) {
+					_tags.push({
+						"id": cat,
+						"color": _self.serviceTags[cat].color,
+						"tag": Array.from(_self.serviceTags[cat].name)[0]
+					});
+				});
+
+				service.blocks.landing_price.price.forEach(function (serv_price, j) {
+					if (serv_price.price === 0) {
+						return;
+					}
+					let _item = {
+						value: serv_price.header,
+						id: service.id + '-' + j,
+						data: {
+							service_id: service.id,
+							service_title: service.header,
+							tags: _tags,
+							price: serv_price.price,
+							price_id: j
+						}
+					};
+					_self.servicesList.push(_item);
+					_self.servicePrices[service.id + '-' + j] = {
+						'price': serv_price.price,
+						'header': serv_price.header
+					};
+				});
+			});
+
+			_self.services = _services;
+		});
+
+		Utils.api.get('/api/v2/list/users?role=main&active=on' +
+		              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
+			_self.admins = Utils.arrIndexBy(data);
+		});
+
+		Utils.api.get('/api/v2/list/users?role=client&active=on' +
+		              '&@return=id,fullname,phone,email,birthdate&@sort=fullname:a').then(function (data) {
+			_self.clients = Utils.arrIndexBy(data);
+		});
+
+		Utils.api.get('/api/v2/list/experts?active=on&@sort=name:a').then(function (data) {
+			let _experts = {};
+			data.forEach(function (expert, i) {
+				_experts[expert.id] = expert;
+				Utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
+					_experts[expert.id].info_uri = res[0]['u'] || '';
+				});
+			});
+			_self.experts = _experts;
+		});
+		Utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
+			let _serviceCats = {};
+			Object.keys(res.tree.data).forEach(function (_key) {
+				const _cat = res.tree.data[_key];
+				if (_cat.active != 'on') {
+					return;
+				}
+				_serviceCats[_cat.id] = {
+					'id': _cat.id,
+					'name': _cat.name,
+					'color': _cat.data.color
+				};
+			});
+			_self.categories = _serviceCats;
+		});
+
+		console.log('-- start preload catalogs data --');
+	}
+};
+
 $(function () {
+	catalog.init();
+
 	/* common function */
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
-		var changes = {};
+		var changes    = {};
 		var to_compare = field_to_compare;
 		for (var i in obj2) {
-			if (!!to_compare && !to_compare.include(i)){
+			if (!!to_compare && !to_compare.include(i)) {
 				return;
 			}
 			if (!prev_data.hasOwnProperty(i) || curr_data[i] !== prev_data[i]) {
@@ -227,6 +472,7 @@ $(function () {
 		$(document).on('mod-filepicker-done', function (e, list) {
 			//$('.file-photo__ico img.preview').attr('src', list[0].img);
 			var src = list[0].img;
+
 			$(e.target).parents('.popup__panel').find('input[name="src"]').val(src);
 			$(e.target).find('img.preview').attr('src', list[0].img);
 			$(e.target).parents('.popup__panel button.upload-image').show();
