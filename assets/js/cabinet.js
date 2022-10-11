@@ -436,13 +436,13 @@ $(function () {
 	window.initLongtermSearch = function ($form, for_client) {
 		let client_qry = '';
 		if (!!for_client) {
-			client_qry = '&client='.$($form).find('[name="client"]').val();
+			client_qry = '&client=' + $($form).find('[name="client"]').val();
 		}
 
-		$form.find('input.autocomplete.event-search').autocomplete({
+		$form.find('.event-search.longterm-search').autocomplete({
 			noCache: true,
 			minChars: 1,
-			deferRequestBy: 300,
+			deferRequestBy: 350,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'title~',
@@ -621,8 +621,9 @@ $(function () {
 					init() {
 						setTimeout(function () {
 							popup.set('catalog', catalog);
-							initClientSearch();
-							initLongtermSearch()
+							initPlugins();
+							initClientSearch($('.popup.--photo form'));
+							initLongtermSearch($('.popup.--photo form'), true);
 						});
 					},
 					submit() {
