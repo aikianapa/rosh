@@ -27,7 +27,8 @@
 						<div class="title">
 							<h1 class="h1 mb-10">Кабинет администратора </h1>
 						</div>
-						<a class="btn btn--black --openpopup" data-popup="--create-client">
+						<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
+							data-popup="--create-client">
 							Создать карточку пациента
 						</a>
 					</div>
@@ -152,7 +153,8 @@
 									<div class="admin-edit__user-btns d-none">
 										<a class="admin-edit__user-btn btn btn--white --openpopup"
 											data-popup="--create-appoint">Записать пациента на прием</a>
-										<a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a>
+										<a class="admin-edit__user-btn btn btn--white --openpopup" onclick="popupPhoto()"
+											data-popup="--photo">Добавить продолжительное лечение </a>
 
 									</div>
 								</div>

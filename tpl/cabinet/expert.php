@@ -58,7 +58,7 @@
 								{{#idx}}
 								<a class="profile-licenses__delete repeater-delete" href="#">
 									<svg class="svgsprite _delete-black">
-										<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#delete-black">
 										</use>
 									</svg>
 								</a>
@@ -85,7 +85,7 @@
 							<div class="input__placeholder">Добавьте лицензию</div>
 							<a class="profile-licenses__delete repeater-delete" href="#">
 								<svg class="svgsprite _delete-black">
-									<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#delete-black">
 									</use>
 								</svg>
 							</a>
@@ -133,7 +133,7 @@
 							{{#idx}}
 							<a class="profile-study__delete repeater-delete" href="#">
 								<svg class="svgsprite _delete-black">
-									<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#delete-black">
 									</use>
 								</svg>
 							</a>
@@ -210,7 +210,7 @@
 							<div class="col-md-1">
 								<a class="profile-study__delete repeater-delete" href="#">
 									<svg class="svgsprite _delete-black">
-										<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#delete-black">
 										</use>
 									</svg>
 								</a>
@@ -230,7 +230,7 @@
 					<div class="crumbs">
 						<a class="crumbs__arrow" href="#">
 							<svg class="svgsprite _crumbs-back">
-								<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
 							</svg>
 						</a>
 						<a class="crumbs__link" href="/">Главная</a>
@@ -259,7 +259,7 @@
 									{{.name}}
 									<button class="user__edit all">
 										<svg class="svgsprite _edit">
-											<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+											<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 										</svg>
 									</button>
 								</div>
@@ -281,7 +281,7 @@
 
 								<div class="user__notifcation closest-event d-none">
 									<svg class="svgsprite _notification">
-										<use xlink:href="assets/img/sprites/svgsprites.svg#notification"></use>
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#notification"></use>
 									</svg>
 									Ближайшая запись: {{.closest_date}}, {{.closest_times}}
 								</div>
@@ -357,7 +357,7 @@
 									<p>Рекомендации</p>
 									<a class="user__edit">
 										<svg class="svgsprite _edit">
-											<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+											<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 										</svg>
 									</a>
 								</div>
@@ -502,7 +502,7 @@
 										<p>Рекомендация врача</p>
 										<a class="user__edit">
 											<svg class="svgsprite _edit">
-												<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+												<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 											</svg>
 										</a>
 									</div>

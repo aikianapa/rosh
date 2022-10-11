@@ -151,7 +151,11 @@
 	box-shadow    : rgba(156, 172, 172, 0.2) 0 2px 2px, rgba(156, 172, 172, 0.2) 0 4px 4px, rgba(156, 172, 172, 0.2) 0 8px 8px, rgba(156, 172, 172, 0.2) 0 16px 16px, rgba(156, 172, 172, 0.2) 0 32px 32px, rgba(156, 172, 172, 0.2) 0 64px 64px;
 }
 .jq-toast-wrap {
-	width : 320px !important;
+	width : 340px !important;
+}
+.jq-toast-wrap .jq-toast-single{
+	font-size: 13px;
+	line-height: 18px;
 }
 .account__table .acount__table-accardeon {
 	padding-left  : 20px;
@@ -189,4 +193,8 @@
 }
 .admin-photos .account__panel {
 	width: 100%;
+}
+.file-photo .file-photo__ico{
+	width: 35%;
+	height: auto;
 }

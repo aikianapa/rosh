@@ -27,7 +27,8 @@
 							<div class="title">
 								<h1 class="h1 mb-10">Кабинет администратора </h1>
 							</div>
-							<a class="btn btn--black --openpopup" data-popup="--create-client">
+							<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
+								data-popup="--create-client">
 								Создать карточку пациента
 							</a>
 						</div>

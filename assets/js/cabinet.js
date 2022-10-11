@@ -216,11 +216,13 @@ const catalog = {
 			data.forEach(function (expert, i) {
 				_experts[expert.id] = expert;
 				Utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
+					console.log('-- expert url:', res[0]['u']);
 					_experts[expert.id].info_uri = res[0]['u'] || '';
 				});
 			});
 			_self.experts = _experts;
 		});
+
 		Utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
 			let _serviceCats = {};
 			Object.keys(res.tree.data).forEach(function (_key) {
@@ -243,7 +245,6 @@ const catalog = {
 
 $(function () {
 	catalog.init();
-
 	/* common function */
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
 		var changes    = {};
@@ -264,6 +265,22 @@ $(function () {
 	};
 
 	window.toast = function (text, head, icon) {
+		var bgColor   = '#616161';
+		var textColor = '#FEFEFE';
+		switch (icon) {
+			case 'error':
+				bgColor = '#DC3545';
+				break;
+			case 'success':
+				bgColor = '#198754';
+				break;
+			case 'warning':
+				bgColor = '#FFC107';
+				break;
+			default:
+				bgColor = '#616161';
+		}
+
 		$.toast({
 			text: text, // Text that is to be shown in the toast
 			heading: head || '', // Optional heading to be shown on the toast
@@ -272,11 +289,11 @@ $(function () {
 			hideAfter: 4000,
 			stack: 5,
 			position: 'top-right',
-			bgColor: '#616161',  // Background color of the toast
-			textColor: '#FEFEFE',  // Text color of the toast
+			bgColor: bgColor,  // Background color of the toast
+			textColor: textColor,  // Text color of the toast
 			textAlign: 'left',  // Text alignment i.e. left, right or center
 			loader: false,  // Whether to show loader or not. True by default
-			icon: (!!icon) ? icon : false,
+			icon: false,
 			beforeShow: function () {}, // will be triggered before the toast is shown
 			afterShown: function () {}, // will be triggered after the toat has been shown
 			beforeHide: function () {}, // will be triggered before the toast gets hidden
@@ -456,8 +473,8 @@ $(function () {
 			transformResult: function (response) {
 				console.log(response);
 				return {
-					suggestions: response.forEach(function (item) {
-						return {value: item.fullname, data: item.id};
+					suggestions: $.map(response, function (dataItem) {
+						return {value: dataItem.fullname, data: dataItem.id};
 					})
 				};
 			},
@@ -466,16 +483,200 @@ $(function () {
 			}
 		});
 	};
+	setTimeout(function () {
+		window.popupDownloadData    = function () {
+			let popup = new Ractive({
+				el: '.popup.--download-data',
+				template: wbapp.tpl('#popupDownloadData').html,
+				data: {
+					catalog: {},
+					admins: []
+				},
+				on: {
+					init() {
+						wbapp.get('/api/v2/list/users/?role=main', function (data) {
+							popup.set('admins', data);
+							setTimeout(function () {
+								popup.set('catalog', catalog);
+							});
+						});
+					}
+				}
+			});
+		};
+		window.popupsCreateProfile  = function () {
+			let popup = new Ractive({
+				el: '.popup.--create-client',
+				template: wbapp.tpl('#popupCreateClient').html,
+				data: {},
+				on: {
+					submit() {
+						let form = this.find('.popup.--create-client .popup__form');
+						if ($(form).verify()) {
+							let post = $(form).serializeJSON();
+							console.log(post);
 
-	setTimeout(function() {
+							let names = post.fullname.split(' ', 3);
+							let keys = ['last_name', 'first_name', 'middle_name'];
+							for (var i = 0; i < names.length; i++) {
+								post[keys[i]] = names[i];
+							}
+
+							wbapp.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
+								if (data.length == 0) {
+									wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
+										function (data) {
+											if (data.length == 0) {
+												wbapp.post('/api/v2/create/users/', post, function (data) {
+													if (data.error) {
+														wbapp.trigger('wb-save-error', {'data': data});
+													} else {
+														toast('Карточка клиента успешно создана!');
+														$('.popup.--create-client').fadeOut('fast');
+													}
+												});
+											} else {
+												form.find('[name="phone"]').focus();
+												toast('Этот номер уже используется!', 'Ошибка!', 'error');
+											}
+										});
+								} else {
+									form.find('[name="email"]').focus();
+									toast('E-mail уже используется!', 'Ошибка!', 'error');
+								}
+							});
+
+						}
+						return false;
+					}
+				}
+			});
+		};
+
+		window.popupsConfirmSmsCode = function () {
+			let popup = new Ractive({
+				el: '.popup.--confirm-sms-code',
+				template: wbapp.tpl('#popupConfirmSmsCode').html,
+				data: {
+					phone: '',
+					client: {}
+				},
+				on: {
+					init(ev) {
+
+					},
+					keyup(ev) {
+						console.log(ev, $(ev.node));
+						const _this  = $(ev.node);
+						const _phone = $(ev.node).find('[name="phone"]').val();
+
+						var sms_code = '';
+						$('.popup.--confirm-sms-code .code__input').each(function (digit, item) {
+							sms_code += $(item).val();
+						});
+
+						if (sms_code.length === 6) {
+							$.ajax({
+								url: '/form/phoneAuth/check_code',
+								method: 'POST',
+								data: {
+									phone: _phone,
+									code: sms_code
+								},
+								success: function (data) {
+									if (data.status === 'ok') {
+										wbapp.post('/create/users/', post, function (data) {
+											if (data.error) {
+												wbapp.trigger('wb-save-error', {'data': data});
+											} else {
+												toast('Карточка клиента создана!');
+												$('.popup.--confirm-sms-code').hide();
+												$('.popup.--confirm-sms-code .code__input').val('');
+											}
+										});
+									}
+								}
+							});
+						} else {
+							_this.next().focus();
+						}
+					}
+				},
+				showPopup: function () {
+					$('.popup.--confirm-sms-code .code__input').mask('9', {placeholder: ''});
+					$('.popup.--confirm-sms-code').show();
+				}
+			});
+		};
+		window.popupPhoto           = function (is_longterm) {
+			let popup = new Ractive({
+				el: '.popup.--photo',
+				template: wbapp.tpl('#popupPhoto').html,
+				data: {
+					catalog: {},
+					record: {},
+					longterm: is_longterm
+				},
+				on: {
+					init() {
+						setTimeout(function () {
+							popup.set('catalog', catalog);
+							initClientSearch();
+							initLongtermSearch()
+						});
+					},
+					submit() {
+						let form = this.parents('.popup__form').find('form');
+
+						if ($(form).verify()) {
+							let post = $(form).serializeJSON();
+							wbapp.post('/update/records/', post, function (data) {
+
+							});
+						}
+						return false;
+					}
+				}
+			});
+		};
+	});
+	setTimeout(function () {
 		initPlugins();
-		$(document).on('mod-filepicker-done', function (e, list) {
-			//$('.file-photo__ico img.preview').attr('src', list[0].img);
-			var src = list[0].img;
 
-			$(e.target).parents('.popup__panel').find('input[name="src"]').val(src);
-			$(e.target).find('img.preview').attr('src', list[0].img);
-			$(e.target).parents('.popup__panel button.upload-image').show();
+		$(document).on('change', '#file-photo', function (e, list) {
+			e.stopPropagation();
+			var _block   = $(this).parents('.file-photo');
+			var _files   = e.target.files;
+			var _preview = _block.find('img.preview');
+			console.log(_block, 'selected!');
+
+			if (!!_preview.length) {
+				var reader;
+				var file;
+				var url;
+
+				var max_size = 10 * 1024 * 1024;
+				if (_files && _files.length > 0) {
+					file = _files[0];
+					if (file.size >= max_size) {
+						toast('Размер файла c фото не может превышать 10 мб', '', 'error');
+						$(this).val('');
+						return;
+					}
+
+					if (URL) {
+						_preview.attr('src', URL.createObjectURL(file));
+						_preview.removeClass('d-none');
+					} else if (FileReader) {
+						reader        = new FileReader();
+						reader.onload = function (e) {
+							_preview.attr('src', reader.result);
+							_preview.removeClass('d-none');
+						};
+						reader.readAsDataURL(file);
+					}
+				}
+			}
 		}).on('click', 'a.account__detail[data-link]', function (e) {
 			e.stopPropagation();
 			e.preventDefault();

@@ -16,7 +16,7 @@
 				<div class="container">
 					<div class="crumbs"><a class="crumbs__arrow" href="#">
 							<svg class="svgsprite _crumbs-back">
-								<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
 							</svg>
 						</a><a class="crumbs__link" href="/">Главная</a>
 						<span class="crumbs__link" href="/cabinet">Кабинет специалиста</span>
@@ -100,7 +100,7 @@
 											<p>Рекомендация врача</p>
 											<a class="user__edit">
 												<svg class="svgsprite _edit">
-													<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+													<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 												</svg>
 											</a>
 										</div>

@@ -43,6 +43,8 @@ $(function () {
             return false;
         }).on('click', '.--openpopup', function () {
             var P = $(this).attr('data-popup');
+            var _f = $(this).data('call');
+
             $('body').find('div.' + P + ':first').show();
             setTimeout(function() {
                 $(document).find('.gallery__slider').each(function () {

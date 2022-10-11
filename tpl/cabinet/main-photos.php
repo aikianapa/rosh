@@ -28,7 +28,8 @@
 						<div class="title">
 							<h1 class="h1 mb-10">Кабинет администратора </h1>
 						</div>
-						<a class="btn btn--black --openpopup" data-popup="--create-client">
+						<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
+							data-popup="--create-client">
 							Создать карточку пациента
 						</a>
 					</div>
@@ -44,7 +45,7 @@
 				<div class="title-flex --flex --jcsb photos-title">
 					<div class="add-photo">
 						<div class="lk-title mb-0 mr-20">Библиотека фотографий</div>
-						<a class="btn btn--black --openpopup" data-popup="--photo">Добавить фото</a>
+						<a class="btn btn--black --openpopup" data-popup="--photo" onclick="popupPhoto()">Добавить фото</a>
 					</div>
 					<div class="filter__item">
 						<a class="filter__name text-bold" href="#">Удалить фильтры</a>
