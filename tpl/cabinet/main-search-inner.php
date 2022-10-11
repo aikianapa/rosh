@@ -39,6 +39,7 @@
 					</div>
 				</div>
 			</form>
+
 			<div class="search-result">
 				<div class="container">
 					<div>
@@ -55,7 +56,7 @@
 										<span>{{this.birthdate}}</span>
 									</div>
 									<a href="callto:+{{this.phone}}" class="user__item">Тел:
-										<span>+{{this.phone}}</span>
+										<span>{{this.phone}}</span>
 									</a>
 
 									<div class="user__item">Почта:
@@ -78,10 +79,10 @@
 									</div>
 								</div>
 							</div>
-							<a class="account__detail" href="/cabinet/client/id631f0bdf2137"> Подробнее</a>
 						</div>
 						{{/client}}
 					</div>
+
 					<div>
 						<div class="loading-overlay">
 							<div class="loader"></div>
@@ -90,8 +91,8 @@
 						<div class="lk-title">Предстоящие события</div>
 						<div class="account-events">
 							{{#each events.upcoming}}
-							<div class="account-events__block --flex --jcsb d-none">
-								<div class="account-events__block-wrap d-none">
+							<div class="account-events__block --flex --jcsb">
+								<div class="account-events__block-wrap">
 									<div class="account-events__item">
 										<div class="account-event-wrap">
 											<div class="account-events__name">Услуги:</div>
@@ -145,10 +146,12 @@
 						</div>
 						<div class="account__history data-tab-wrapper" data-tabs="history">
 							<div class="account__tab-items">
-								<div class="account__tab-item data-tab-link active" data-tabs="history" data-tab="visits">
+								<div class="account__tab-item data-tab-link active"
+									data-tabs="history" data-tab="visits">
 									История посещений
 								</div>
-								<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="longterm">
+								<div class="account__tab-item data-tab-link"
+									data-tabs="history" data-tab="longterm">
 									Продолжительное лечение
 								</div>
 							</div>
@@ -318,41 +321,42 @@
 												<div class="row">
 													<div class="col-md-4">
 														<div class="text-bold text-big mb-20">Фото до начала лечения</div>
-														{{#each photos.before}}
+														{{#each this.photos.before}} <!--single photo!-->
 														<a class="after-healing__item"
 															data-fancybox="images"
 															href="{{this.image.src}}"
 															data-caption="{{this.date}}">
-															<h2 class="h2 healing__date-title">{{this.date}}</div>
-													<div class="after-healing__photo"
-														style="background-image: url('{{this.image.src}}')">
-													</div>
-													<div class="healing__description">
-														{{this.comment}}
-													</div>
-													</a>
-													{{/each}}
-												</div>
-												<div class="col-md-8">
-													<div class="text-bold text-big mb-20">
-														Фото после начала лечения
-													</div>
-													<div class="after-healing">
-														<h2 class="h2 healing__date-title d-none month-header"></h2>
-														<div class="row">
-															{{#each image_after}}
-															<div class="col-md-6">
-																<a class="after-healing__item"
-																	data-fancybox="images"
-																	href="{{this.image.src}}"
-																	data-caption="{{this.date}}">
-																	<div class="healing__date">{{this.date}}</div>
-																	<div class="after-healing__photo"
-																		style="background-image: url('{{this.image.src}}')">
-																	</div>
-																</a>
+															<h2 class="h2 healing__date-title">{{this.date}}</h2>
+															<div class="after-healing__photo"
+																style="background-image: url('{{this.image.src}}')">
 															</div>
-															{{/each}}
+															<div class="healing__description">
+																{{this.comment}}
+															</div>
+														</a>
+														{{/each}}
+													</div>
+													<div class="col-md-8">
+														<div class="text-bold text-big mb-20">
+															Фото после начала лечения
+														</div>
+														<div class="after-healing">
+															<h2 class="h2 healing__date-title d-none month-header"></h2>
+															<div class="row">
+																{{#each this.photos.after}}
+																<div class="col-md-6">
+																	<a class="after-healing__item"
+																		data-fancybox="images"
+																		href="{{this.image.src}}"
+																		data-caption="{{this.date}}">
+																		<div class="healing__date">{{this.date}}</div>
+																		<div class="after-healing__photo"
+																			style="background-image: url('{{this.image.src}}')">
+																		</div>
+																	</a>
+																</div>
+																{{/each}}
+															</div>
 														</div>
 													</div>
 												</div>
@@ -376,7 +380,8 @@
 	</main>
 
 	<script wbapp>
-		var cabinet = new Ractive({
+		var client_id = '{{_route.client}}';
+		var cabinet   = new Ractive({
 			el: 'main.page',
 			template: $('main.page').html(),
 			data: {
@@ -399,6 +404,7 @@
 						data.phone     = '+' + data.phone;
 						cabinet.set('client', data); /* get actually user data */
 					});
+
 					wbapp.get('/api/v2/list/records?status=upcoming&client=' + client_id,
 						function (data) {
 							cabinet.push('events.upcoming', data);
