@@ -72,6 +72,10 @@
 							<div class="admin-photo__description">{{this.title}}</div>
 						</div>
 					</a>
+					{{else}}
+					<div class="account__panel">
+						<span>Нет записей с фото пациентов</span>
+					</div>
 					{{/each}}
 				</div>
 			</div>
@@ -88,7 +92,7 @@
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/record-photos/', function (data) {
+					wbapp.get('/api/v2/list/records/?group=[events,longterm]', function (data) {
 						let _images = [];
 						data.forEach(function (rec) {
 							_before_photo = rec.photos.before[0];

@@ -1371,7 +1371,7 @@ $(function () {
 	};
 
 	window.initClientSearch = function ($form) {
-		$form.find('input.autocomplete.client-search').autocomplete({
+		$form.find('input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
 			deferRequestBy: 300,
@@ -1381,6 +1381,7 @@ $(function () {
 			serviceUrl: '/api/v2/list/users?role=client',
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			transformResult: function (response) {
+				console.log(response);
 				return {
 					suggestions: response.forEach(function (item) {
 						return {value: item.fullname, data: item.id};
@@ -1398,11 +1399,9 @@ $(function () {
 		$(document).on('mod-filepicker-done', function (e, list) {
 			//$('.file-photo__ico img.preview').attr('src', list[0].img);
 			var src = list[0].img;
-			$(e.target);
-			wbapp.loading();
-			setTimeout(function () {
-				wbapp.unloading();
-			}, 100);
+			$(e.target).parents('.popup__panel').find('input[name="src"]').val(src);
+			$(e.target).find('img.preview').attr('src', list[0].img);
+			$(e.target).parents('.popup__panel button.upload-image').show();
 		}).on('click', 'a.account__detail[data-link]', function (e) {
 			e.stopPropagation();
 			e.preventDefault();

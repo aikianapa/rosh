@@ -315,15 +315,18 @@
 					<div class="popup-title__checkbox">
 						<p class="mb-10">Выбрать статус</p>
 						<input type="hidden" name="is_longterm" value="0">
-						<label class="checkbox mb-10 show-checkbox" data-show-input="longterm">
+						<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
 							<input type="checkbox" name="is_longterm" value="1">
 							<span></span>
 							<div class="checbox__name">Продолжительное лечение</div>
 						</label>
-						<div class="input calendar mb-20" style="display:none;" data-show="longterm">
-							<input class="input__control datepickr" type="text" name="photo.longterm" placeholder="Название продолжительного лечения">
-							<div class="input__placeholder">Название продолжительного лечения</div>
-						</div>
+					</div>
+					<div class="input calendar mb-20" data-show="longterm" style="display:none">
+						<input class="input__control longterm-search"
+							type="text" name="title"
+							placeholder="Название продолжительного лечения"
+							value="">
+						<div class="input__placeholder">Название продолжительного лечения</div>
 					</div>
 					<div class="radios --flex">
 						<label class="text-radio">
@@ -335,19 +338,36 @@
 							<span>Онлайн</span>
 						</label>
 					</div>
-					<label class="file-photo">
-						<input type="file">
-						<div class="file-photo__ico">
-							<svg class="svgsprite _file">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-							</svg>
-						</div>
-						<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
-							превышать 10 мб
-						</div>
-					</label>
-					<button class="btn btn--white">Сохранить</button>
+					<input type="hidden" name="src">
+
 				</form>
+				<label class="file-photo" for="image-selector">
+					<div class="filepicker">
+						<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
+						<!-- Button Bar -->
+						<div class="button-bar">
+							<button class="btn btn-success fileinput" style="height:70px;">
+								<div class="file-photo__ico">
+									<img class="preview d-none" alt="upload preview" src="">
+									<svg class="svgsprite _file">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
+									</svg>
+								</div>
+								<input type="file" id="image-selector" name="files[]" class="wb-unsaved">
+								<input type="hidden" name="upload_url" value="/uploads/records/"
+									class="wb-unsaved">
+								<input type="hidden" name="prevent_img" class="wb-unsaved">
+							</button>
+						</div>
+						<script type="text/javascript">
+							wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
+						</script>
+					</div>
+					<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
+						превышать 10 мб
+					</div>
+				</label>
+				<button class="btn btn--white upload-image" on-click="submit">Сохранить</button>
 			</div>
 		</template>
 	</div>
@@ -906,15 +926,15 @@
 					init(){
 						setTimeout(function () {
 							window.popupPhoto.set('catalog', catalog);
-							initPlugins();
 							initClientSearch($('.popup.--photo form'));
 						});
 					},
 					submit() {
-						let form = this.find('.popup.--analize-type .popup__form');
+						let form = this.parents('.popup__form').find('form');
+
 						if ($(form).verify()) {
 							let post = $(form).serializeJSON();
-							wbapp.post('/create/record-photo', post, function (data) {
+							wbapp.post('/update/records/', post, function (data) {
 
 							});
 						}
