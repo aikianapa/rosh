@@ -49,7 +49,11 @@
 					.then((response) => {
 						return response.json();
 					}).then(function (data) {
-					catalog.quoteStatus = data;
+					let _statuses = {};
+					data.forEach(function (status, i) {
+						_statuses[status.id] = status;
+					});
+					catalog.quoteStatus = _statuses;
 				});
 
 				fetch('/api/v2/func/catalogs/getQuotePay', {
@@ -65,6 +69,7 @@
 				}).then((response) => {
 					return response.json();
 				}).then(function (data) {
+
 					catalog.quoteType = data;
 				});
 
@@ -155,99 +160,6 @@
 
 		cabinetPage.initData();
 	</script>
-	<div class="popup --record-new">
-		<div class="popup__overlay"></div>
-		<form class="popup__panel" on-submit="submit">
-			<button class="popup__close" on-click="cancel">
-				<svg class="svgsprite _close">
-					<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-				</svg>
-			</button>
-			<div class="popup__name text-bold">Запись на прием</div>
-			<div class="text-bold mb-10">Разделы услуг</div>
-			<div class="popups__text-chexboxs">
-				<wb-foreach wb="table=catalogs&item=srvcat&from=tree.data">
-					<label class="text-radio">
-						<input type="radio" name="service_category" value="{{id}}">
-						<span>{{name}}</span>
-					</label>
-				</wb-foreach>
-			</div>
-			<div class="input" data-hide="service-search">
-				<input class="search__input" type="text"
-					placeholder="Поиск по услугам"
-					id="popup-services-list">
-				<div class="search__drop">
-				</div>
-				<button class="search__btn" type="button">
-					<svg class="svgsprite _search">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-					</svg>
-				</button>
-			</div>
-			<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-				<input class="checkbox-hidden-next-form" type="checkbox" name="no_services" value="1">
-				<span></span>
-				<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
-			</label>
-			<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-				<input class="checkbox-visible-next-form" type="checkbox"
-					name="for_consultation" value="1">
-				<span></span>
-				<div class="checbox__name">Консультация врача</div>
-			</label>
-			<div class="select-form" style="display: none;" data-show="service">
-				<div class="text-bold mb-20">Тип события</div>
-				<div class="popups__text-chexboxs">
-					<label class="text-radio">
-						<input type="radio" name="type" value="clinic" checked>
-						<span>В клинике</span>
-					</label>
-					<label class="text-radio switch-blocks">
-						<input type="radio" name="type" value="online">
-						<span>Онлайн</span>
-					</label>
-				</div>
-			</div>
-
-			<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
-				<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
-				<span></span>
-				<div class="checbox__name">Я не знаю, кого выбрать</div>
-			</label>
-			<div class="select-form" data-hide="expert">
-				<div class="select">
-					<div class="select__main">
-						<div class="select__placeholder">Выберите специалиста</div>
-						<div class="select__values"></div>
-					</div>
-					<div class="select__list">
-
-					</div>
-				</div>
-			</div>
-			<div class="admin-editor__patient" data-hide="service-search">
-				<div class="text-bold mb-10">Выбраны услуги</div>
-			</div>
-			<div class="admin-editor__summ" data-hide="service-search">
-				<p>Всего</p>
-				<input type="hidden" name="price">
-				<p class="price">0 ₽</p>
-			</div>
-			<button class="btn btn--black form__submit" type="submit"> Записаться</button>
-		</form>
-
-		<div class="popup__panel --succed">
-			<button class="popup__close">
-				<svg class="svgsprite _close">
-					<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-				</svg>
-			</button>
-			<div class="popup__name text-bold">Запись на прием</div>
-			<h3 class="h3">Успешно!</h3>
-			<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
-		</div>
-	</div>
 	<div class="popup --analize-type">
 		<template id="popupAnalizeType">
 			<div class="popup__overlay"></div>
@@ -375,62 +287,6 @@
 				<div class="popup__name text-bold">Внести предоплату</div>
 				<h3 class="h3">Успешно !</h3>
 				<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете</p>
-			</div>
-		</template>
-	</div>
-
-	<div class="popup --download">
-		<template id="popupDownload">
-			<div class="popup__overlay"></div>
-			<div class="popup__panel">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Выгрузить данные</div>
-				<div class="select-form">
-					<div class="select input">
-						<div class="select__main">Все специалисты</div>
-						<div class="select__list">
-							{{>list_experts}}
-						</div>
-					</div>
-				</div>
-				<div class="select-form">
-					<input type="hidden" name="admins[]">
-
-					<div class="select input">
-						<div class="select__main">Все администраторы</div>
-						<div class="select__list">
-							{{>list_admins}}
-						</div>
-					</div>
-				</div>
-				<div class="input">
-					<input class="input__control datebirthdaypickr" type="text"
-						name="client_birthdate" placeholder="Дата рождения">
-					<div class="input__placeholder">Дата рождения</div>
-				</div>
-				<label class="checkbox checkbox--record">
-					<input type="checkbox" name="only_phones">
-					<span></span>
-					<div class="checbox__name">Выгрузить только список номеров</div>
-				</label>
-				<div class="input">
-					<input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
-					<div class="input__placeholder">Номер телефона</div>
-				</div>
-				<label class="checkbox checkbox--record">
-					<input type="checkbox" name="only_emails">
-					<span></span>
-					<div class="checbox__name">Введите только список е-мейлов</div>
-				</label>
-				<div class="input">
-					<input class="input__control" type="email" placeholder="Ваш е-мейл">
-					<div class="input__placeholder">Введите е-мейл</div>
-				</div>
-				<a class="btn btn--black" href="{{file.src}}" download="{{file.name}}"> Скачать</a>
 			</div>
 		</template>
 	</div>
@@ -610,7 +466,6 @@
 			</div>
 		</template>
 	</div>
-
 	<div class="popup --confirm-sms-code">
 		<template id="popupConfirmSmsCode">
 			<div class="popup__overlay"></div>
@@ -634,12 +489,12 @@
 					</div>
 
 					<div class="code">
-						<input class="code__input" type="text">
-						<input class="code__input" type="text">
-						<input class="code__input" type="text">
-						<input class="code__input" type="text">
-						<input class="code__input" type="text">
-						<input class="code__input" type="text">
+						<input class="code__input" on-keyup="keyup" type="text">
+						<input class="code__input" on-keyup="keyup" type="text">
+						<input class="code__input" on-keyup="keyup" type="text">
+						<input class="code__input" on-keyup="keyup" type="text">
+						<input class="code__input" on-keyup="keyup" type="text">
+						<input class="code__input" on-keyup="keyup" type="text">
 					</div>
 
 					<div class="alert alert-warning mb-2"></div>
@@ -910,7 +765,8 @@
 					</svg>
 				</button>
 				<div class="popup__name text-bold">Выгрузить данные</div>
-				<form class="popup__form" action="/cabinet/download/">
+
+				<form class="popup__form" method="GET" action="/cabinet/download/">
 					<div class="select-form">
 						<div class="select">
 							<div class="select__main">
@@ -997,7 +853,7 @@
 							<div class="input__placeholder">Введите е-мейл</div>
 						</div>
 					</div>
-					<a class="btn btn--black" href="" download="Данные_03.10.2022.xlsx"> Скачать</a>
+					<button type="submit" class="btn btn--black">Скачать</button>
 				</form>
 			</div>
 		</template>
@@ -1005,16 +861,20 @@
 
 	<script wbapp remove>
 		setTimeout(function () {
-			console.log('-- start init popups --');
 			
 			window.popupAnalizeType     = new Ractive({
 				el: '.popup.--analize-type',
 				template: wbapp.tpl('#popupAnalizeType').html,
 				data: {
-					client:{},
+					catalog:{},
 					record:{}
 				},
 				on: {
+					init(){
+						setTimeout(function () {
+							window.popupAnalizeType.set('catalog', catalog);
+						});
+					},
 					submit() {
 						let form = this.find('.popup.--analize-type .popup__form');
 						if ($(form).verify()) {
@@ -1028,9 +888,27 @@
 								}
 							});
 						}
+						return false;
 					}
 				}
 			});
+
+			window.popupDownloadData     = new Ractive({
+				el: '.popup.--download-data',
+				template: wbapp.tpl('#popupDownloadData').html,
+				data: {
+					client:{},
+					record:{}
+				},
+				on: {
+					init() {
+						setTimeout(function () {
+							window.popupAnalizeType.set('catalog', catalog);
+						});
+					}
+				}
+			});
+
 			window.popupsCreateProfile  = new Ractive({
 				el: '.popup.--create-client',
 				template: wbapp.tpl('#popupCreateClient').html,
@@ -1041,27 +919,37 @@
 						if ($(form).verify()) {
 							let post = $(form).serializeJSON();
 
-							$.ajax({
-								url: '/form/phoneAuth/get_code',
-								method: 'POST',
-								data: {
-									phone: post.phone
-								},
-								success: function (data) {
-									let res = JSON.parse(data);
-									console.log(res);
+							//$.ajax({
+							//	url: '/form/phoneAuth/get_code',
+							//	method: 'POST',
+							//	data: {
+							//		phone: post.phone
+							//	},
+							//	success: function (data) {
+							//		let res = JSON.parse(data);
+							//		console.log(res);
+							//
+							//		if (res.status === 'error') {
+							//			toast(res.message, '', 'error');
+							//		} else {
+							//			popupsConfirmSmsCode.set('phone', post.phone);
+							//			popupsConfirmSmsCode.set('client', post);
+							//			popupsConfirmSmsCode.showPopup();
+							//		}
+							//	}
+							//});
 
-									if (res.status === 'error') {
-										toast(res.message, '', 'error');
-									} else {
-										popupsConfirmSmsCode.set('phone', post.phone);
-										popupsConfirmSmsCode.set('client', post);
-										popupsConfirmSmsCode.showPopup();
-									}
+							wbapp.post('/api/v2/create/users/', post, function (data) {
+								if (data.error) {
+									wbapp.trigger('wb-save-error', {'data': data});
+								} else {
+									toast('Карточка клиента создана!');
+									//$('.popup.--confirm-sms-code').hide();
+									//$('.popup.--confirm-sms-code .code__input').val('');
 								}
 							});
-
 						}
+						return false;
 					}
 				}
 			});
@@ -1073,13 +961,16 @@
 					client:{}
 				},
 				on: {
+					init(ev){
+
+					},
 					keyup(ev) {
+						console.log(ev, $(ev.node));
 						const _this  = $(ev.node);
 						const _phone = $(ev.node).find('[name="phone"]').val();
-						_this.next().focus();
 
 						var sms_code = '';
-						$.each(auth.smscode_window_digits, function (digit, item) {
+						$('.popup.--confirm-sms-code .code__input').each(function (digit, item) {
 							sms_code += $(item).val();
 						});
 
@@ -1099,15 +990,19 @@
 											} else {
 												toast('Карточка клиента создана!');
 												$('.popup.--confirm-sms-code').hide();
+												$('.popup.--confirm-sms-code .code__input').val('');
 											}
 										});
 									}
 								}
 							});
+						} else {
+							_this.next().focus();
 						}
 					}
 				},
 				showPopup: function () {
+					$('.popup.--confirm-sms-code .code__input').mask('9', {placeholder: ''});
 					$('.popup.--confirm-sms-code').show();
 				}
 			});

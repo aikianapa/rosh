@@ -297,9 +297,7 @@
 						</button>
 						<span>Заявка</span>
 					</div>
-					{{#if group === 'events'}}
 					<div class="admin-events-item">Приём</div>
-					{{/if}}
 					<div class="admin-events-item">ФИО</div>
 					<div class="admin-events-item">Телефон</div>
 					<div class="admin-events-item">Специалист</div>
@@ -311,7 +309,7 @@
 				</div>
 				<div class="account__table-body">
 					{{#each result}}
-					<div class="acount__table-accardeon accardeon --yellow acount__table-accardeon--pmin"
+					<div class="acount__table-accardeon accardeon --{{catalog.quoteStatus[status].color}} acount__table-accardeon--pmin"
 						data-id="{{id}}" data-priority="{{priority}}" data-group="{{group}}">
 						<div class="acount__table-main accardeon__main acount__table-auto">
 							<div class="admin-events-item heap">
@@ -348,11 +346,14 @@
 									</span>
 								</div>
 							</div>
-							{{#if group === 'events'}}
 							<div class="admin-events-item">
-								<p>Приём</p><a href="#">{{event_date}}, {{event_time}}</a>
+								<p>Приём</p>
+								{{#if group === 'events'}}
+								<a href="#">{{event_date}}, {{event_time}}</a>
+								{{else}}
+								- уточнить -
+								{{/if}}
 							</div>
-							{{/if}}
 							<div class="admin-events-item">
 								<p>ФИО</p><a href="#">{{clientData.fullname}}</a>
 							</div>
@@ -361,9 +362,13 @@
 							</div>
 							<div class="admin-events-item">
 								<p>Специалист</p>
+								{{#if no_experts == '1'}}
+								- уточнить -
+								{{else}}
 								{{#experts}}
 								{{catalog.experts[this].name}}<br>
 								{{/experts}}
+								{{/if}}
 							</div>
 							<div class="admin-events-item">
 								<p>Тип</p>
@@ -373,9 +378,13 @@
 							</div>
 							<div class="admin-events-item">
 								<p>Услуга</p>
+								{{#if no_services == '1'}}
+								- уточнить -
+								{{else}}
 								{{#services}}
 								{{catalog.services[this].header}}<br>
 								{{/services}}
+								{{/if}}
 							</div>
 							<div class="admin-events-item">
 								<p>Оплата</p>
@@ -385,9 +394,7 @@
 							</div>
 							<div class="admin-events-item">
 								<p>Статус</p>
-								{{#each catalog.quoteStatus as item}}
-								{{#if item.id == status }}{{item.name}}{{/if}}
-								{{/each}}
+								{{catalog.quoteStatus[status].name}}
 							</div>
 							<div class="admin-events-item">
 								<p>Комментарии</p>{{comment}}
@@ -448,8 +455,9 @@
 						<div class="title">
 							<h1 class="h1 mb-10">Кабинет администратора </h1>
 						</div>
-						<a class="btn btn--black --openpopup" data-popup="--create"
-							on-click="@.newClient">Создать карточку пациента</a>
+						<a class="btn btn--black --openpopup" data-popup="--create-client">
+							Создать карточку пациента
+						</a>
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
@@ -500,7 +508,7 @@
 					data: {},
 					on: {
 						editProfile(ev) {
-							let lead   = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
+							let record = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
 							let item   = $(ev.node).data('id');
 							let form   = $(ev.node).parents('.admin-editor').find('.admin-editor__edit-profile');
 							let editor = new Ractive({
@@ -529,11 +537,20 @@
 						},
 						editQuote(ev) {
 							const _parent = $(ev.node).parents('.accardeon');
-							let lead      = $(ev.node).data('id');
-							let quote     = tabQuotes.get('result.' + lead);
+							let id      = $(ev.node).data('id');
+							let record     = _ractive_tab.get('result.' + id);
 							if (!quote.total_price) {
 								quote.total_price = 0;
 							}
+
+							fetch('/form/users/getClient/' + item, {
+								method: 'GET'
+							}).then((response) => {
+								return response.json();
+							}).then(function (data) {
+								_ractive_tab.set('result.'+ id+'.clientData', data);
+							});
+
 							quote.total_price_text = numFormaSpace(quote.total_price);
 							let statusEdt          = new Ractive({
 								el: _parent.find('.admin-editor__top-select'),

@@ -17,11 +17,19 @@
 							<svg class="svgsprite _crumbs-back">
 								<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
 							</svg>
-						</a><a class="crumbs__link" href="/">Главная</a>
+						</a>
+						<a class="crumbs__link" href="/">Главная</a>
 						<a class="crumbs__link" href="/cabinet">Кабинет администратора</a>
 						<span class="crumbs__link">Поиск</span>
 					</div>
-					<h1 class="h1 mb-40">Кабинет администратора</h1>
+					<div class="title-flex --flex --jcsb">
+						<div class="title">
+							<h1 class="h1 mb-10">Кабинет администратора </h1>
+						</div>
+						<a class="btn btn--black --openpopup" data-popup="--create-client">
+							Создать карточку пациента
+						</a>
+					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
 							<input class="search__input" type="text" name="q" placeholder="Поиск">
