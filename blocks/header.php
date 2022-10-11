@@ -68,7 +68,9 @@
             <div class="container --flex --jcsb --aicn" wb-if="'{{_sess.user.role}}'=='main'">
                 <div class="header__admin --flex --aicn">
                     <span class="lower-deck">
-	                    <button class="btn btn--white loaddata --openpopup" data-popup="--download-data">
+	                    <button class="btn btn--white loaddata --openpopup"
+		                    onclick="popupDownloadData();"
+		                    data-popup="--download-data">
                             <svg class="svgsprite _xl">
                                 <use xlink:href="/assets/img/sprites/svgsprites.svg#xl"></use>
                             </svg>Выгрузить данные

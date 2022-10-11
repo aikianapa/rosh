@@ -272,7 +272,9 @@
 						<div class="account-events__btns">
 							<div class="account-event-wrap --aicn">
 								<div class="account-events__btn">
-									<button class="btn btn--black --openpopup" data-popup="--pay-one">Внести предоплату
+									<button class="btn btn--black --openpopup"
+										on-click="prepay" data-record="{{this.id}}">
+										Внести предоплату
 									</button>
 								</div>
 								<p>Услуга требует внесения предоплаты</p>
@@ -660,6 +662,9 @@
 						});
 					}
 					return false;
+				},
+				prepay(ev) {
+					popupPay.showPopup($(ev.node).data('record'));
 				}
 			}
 		});

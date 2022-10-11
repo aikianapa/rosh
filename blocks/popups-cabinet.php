@@ -171,9 +171,12 @@
 					<div class="popup__description text-grey mb-30">
 						Для подтверждения необходимо произвести оплату в размере 20% от стоимости
 					</div>
+					<!--!!! change `action` address on PROD. !!!-->
 					<form
-						action="https://demo.paykeeper.ru/create/" <!--!!! change before use on PROD !!!-->
-						method="POST" target="_blank">
+						on-submit="submit"
+						action="https://demo.paykeeper.ru/create/"
+						method="POST"
+						target="_blank">
 						<input type='hidden' name='sum' value='{{this.price / 5}}'/>
 						<input type='hidden' name='orderid' value='{{this.id}}'/>
 						<input type='hidden' name='clientid' value='{{this.client}}'/>
@@ -182,90 +185,41 @@
 						</button>
 					</form>
 				</div>
-				<div class="popup__panel --succed-pay" fade-in="@.checkPayment({{this.id}})">
+				<div class="popup__panel --succed-pay">
 					<button class="popup__close">
 						<svg class="svgsprite _close">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
 						</svg>
 					</button>
 					<div class="popup__name text-bold">Внести предоплату</div>
-					<h3 class="h3">Успешно !</h3>
-					<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете</p>
+					<h3 class="h3">Успешно!</h3>
+					<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете после подтверждения оплаты</p>
 				</div>
 			</template>
 		</div>
 
-		<div class="popup --pay-one">
-			<template id="popupPayOne">
-				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Внести предоплату</div>
-					<h3 class="h3">В ближайшее время с вами свяжутся для определения удобной даты</h3>
-					<div class="text-grey text-small mb-10">Стоимость услуги</div>
-					<div class="popup-summ --aifs mb-20">
-						<div class="popup-summ__big">{{this.price}} ₽</div>
-						<div class="popup-summ__small">Предоплата - {{this.price / 5}} ₽</div>
-					</div>
-					<div class="popup__description text-grey mb-30">
-						Для подтверждения необходимо произвести оплату в размере 20% от стоимости
-					</div>
-					<form on-submit="@.paymentSubmit({{this.id}})" method='POST' action='https://demo.paykeeper.ru/create/' target="_blank">
-						<input type='hidden' name='sum' value='{{this.price / 5}}'/>
-						<input type='hidden' name='orderid' value='{{this.id}}'/>
-						<input type='hidden' name='clientid' value='{{this.client}}'/>
-						<button class="btn btn--black form__submit" type="submit">
-							Внести предоплату
-						</button>
-					</form>
-				</div>
-				<div class="popup__panel --succed-pay" fade-in="@.checkPayment({{this.id}})">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Внести предоплату</div>
-					<h3 class="h3">Успешно !</h3>
-					<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете</p>
-				</div>
-			</template>
-		</div>
 		<script wbapp remove>
 			setTimeout(function () {
-				window.popupAnalizeInterpretation = new Ractive({
-					el: '.popup.--analize-interpretation',
-					template: wbapp.tpl('#popupAnalizeInterpretation').html,
+				window.popupPay                   = new Ractive({
+					el: '.popup.--pay',
+					template: wbapp.tpl('#popupPay').html,
 					data: {
-						catalog: {},
 						record: {}
 					},
 					on: {
-						init() {
-							setTimeout(function () {
-								window.popupAnalizeInterpretation.set('catalog', catalog);
-							});
-						},
+						init() {},
 						submit() {
-							let form = this.find('.popup.--analize-interpretation .popup__form');
-							if ($(form).verify()) {
-								let post = $(form).serializeJSON();
-
-								wbapp.post('/create/records', post, function (data) {
-									if (data.error) {
-										wbapp.trigger('wb-save-error', {'data': data});
-									} else {
-										$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-										$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-									}
-								});
-							}
-							return false;
+							$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+							$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
 						}
+					},
+					showPopup: function (id) {
+						Utils.api.get('/api/v2/read/records/' + id).then(function (data) {
+							popupPay.set('record', data);
+							popupPay.resetTemplate(wbapp.tpl('#popupPay').html);
+
+							$('.popup.--pay').show();
+						});
 					}
 				});
 				window.popupAnalizeInterpretation = new Ractive({
@@ -352,45 +306,24 @@
 								<span>Онлайн</span>
 							</label>
 						</div>
-						<label class="file-photo" for="">
+						<label class="file-photo" for="file-photo">
 							<div class="file-photo__ico">
 								<svg class="svgsprite _file">
 									<use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
 								</svg>
 								<img class="preview d-none" alt="upload preview">
 							</div>
+							<input type="file" id="file-photo" name="file">
 							<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
 								<br>Фото не должно превышать 10 мб
 							</div>
 						</label>
-						<input type="hidden" name="src">
-						<input type="hidden" name="date" value="">
-						<div class="file-photo__text text-grey">Для загрузки фото заполните все поля <br>Фото не должно
-							превышать 10 мб
-						</div>
+						<button class="btn btn--white upload-image disabled" on-click="submit">Сохранить</button>
 					</form>
-					<label class="file-photo" for="image-selector">
-						<div class="filepicker">
-							<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
-							<!-- Button Bar -->
-							<div class="button-bar">
-								<button class="btn btn-success fileinput" style="height:70px;">
-									<input type="file" id="client-photo-selector" name="files[]" class="wb-unsaved">
-									<input type="hidden" name="upload_url" value="/uploads/record-photos/"
-										class="wb-unsaved">
-									<input type="hidden" name="prevent_img" class="wb-unsaved">
-								</button>
-							</div>
-							<script type="text/javascript">
-								wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
-							</script>
-						</div>
-
-					</label>
-					<button class="btn btn--white upload-image" on-click="submit">Сохранить</button>
 				</div>
 			</template>
 		</div>
+
 		<div class="popup --photo-longterm">
 			<template id="popupPhotoLongterm">
 				<div class="popup__overlay"></div>
@@ -471,6 +404,7 @@
 				</div>
 			</template>
 		</div>
+
 		<div class="popup --photo-profile">
 			<template id="popupPhotoProfile">
 				<div class="popup__overlay"></div>
@@ -521,31 +455,18 @@
 								<span>В процессе лечения</span>
 							</label>
 						</div>
-						<label class="file-photo" for="image-selector">
-							<div class="filepicker">
-								<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
-								<!-- Button Bar -->
-								<div class="button-bar">
-									<button class="btn btn-success fileinput" style="height:70px;">
-										<div class="file-photo__ico">
-											<img class="preview" alt="upload preview" src="">
-											<svg class="svgsprite _file">
-												<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-											</svg>
-										</div>
-										<input type="file" id="image-selector" name="files[]" class="wb-unsaved">
-										<input type="hidden" name="upload_url" value="/uploads/records/"
-											class="wb-unsaved">
-										<input type="hidden" name="prevent_img" class="wb-unsaved">
-									</button>
-								</div>
-								<script type="text/javascript">
-									wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
-								</script>
+
+						<label class="file-photo" for="file-photo">
+							<input type="hidden" name="path" value="/records/">
+							<div class="file-photo__ico">
+								<svg class="svgsprite _file">
+									<use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
+								</svg>
+								<img class="preview d-none" alt="upload preview">
 							</div>
+							<input type="file" id="file-photo" name="file">
 							<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
-								<br>Фото не должно
-								превышать 10 мб
+								<br>Фото не должно превышать 10 мб
 							</div>
 						</label>
 						<button class="btn btn--white">Сохранить</button>
@@ -983,196 +904,7 @@
 			</template>
 		</div>
 		<script wbapp remove>
-			setTimeout(function () {
-				window.popupAnalizeInterpretation = new Ractive({
-					el: '.popup.--analize-interpretation',
-					template: wbapp.tpl('#popupAnalizeInterpretation').html,
-					data: {
-						catalog: {},
-						record: {}
-					},
-					on: {
-						init() {
-							setTimeout(function () {
-								window.popupAnalizeInterpretation.set('catalog', catalog);
-							});
-						},
-						submit() {
-							let form = this.find('.popup.--analize-interpretation .popup__form');
-							if ($(form).verify()) {
-								let post = $(form).serializeJSON();
 
-								wbapp.post('/create/records', post, function (data) {
-									if (data.error) {
-										wbapp.trigger('wb-save-error', {'data': data});
-									} else {
-										$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-										$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-									}
-								});
-							}
-							return false;
-						}
-					}
-				});
-				window.popupDownloadData          = new Ractive({
-					el: '.popup.--download-data',
-					template: wbapp.tpl('#popupDownloadData').html,
-					data: {
-						catalog: {},
-						admins: []
-					},
-					on: {
-						init() {
-							wbapp.get('/api/v2/list/users/?role=main', function (data) {
-								popupDownloadData.set('admins', data);
-								setTimeout(function () {
-									popupDownloadData.set('catalog', catalog);
-								});
-							});
-						}
-					}
-				});
-				window.popupsCreateProfile        = new Ractive({
-					el: '.popup.--create-client',
-					template: wbapp.tpl('#popupCreateClient').html,
-					data: {},
-					on: {
-						submit() {
-							let form = this.find('.popup.--create-client .popup__form');
-							if ($(form).verify()) {
-								let post = $(form).serializeJSON();
-
-								//$.ajax({
-								//	url: '/form/phoneAuth/get_code',
-								//	method: 'POST',
-								//	data: {
-								//		phone: post.phone
-								//	},
-								//	success: function (data) {
-								//		let res = JSON.parse(data);
-								//		console.log(res);
-								//
-								//		if (res.status === 'error') {
-								//			toast(res.message, '', 'error');
-								//		} else {
-								//			popupsConfirmSmsCode.set('phone', post.phone);
-								//			popupsConfirmSmsCode.set('client', post);
-								//			popupsConfirmSmsCode.showPopup();
-								//		}
-								//	}
-								//});
-
-								wbapp.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
-									if (data.length == 0) {
-										wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
-											function (data) {
-												if (data.length == 0) {
-													wbapp.post('/api/v2/create/users/', post, function (data) {
-														if (data.error) {
-															wbapp.trigger('wb-save-error', {'data': data});
-														} else {
-															toast('Карточка клиента успешно создана!');
-															$('.popup.--create-client').fadeOut('fast');
-														}
-													});
-												} else {
-													form.find('[name="phone"]').focus();
-													toast('Этот номер уже используется!', 'Ошибка!', 'error');
-												}
-											});
-									} else {
-										form.find('[name="email"]').focus();
-										toast('E-mail уже используется!', 'Ошибка!', 'error');
-									}
-								});
-
-							}
-							return false;
-						}
-					}
-				});
-				window.popupsConfirmSmsCode       = new Ractive({
-					el: '.popup.--confirm-sms-code',
-					template: wbapp.tpl('#popupConfirmSmsCode').html,
-					data: {
-						phone: '',
-						client: {}
-					},
-					on: {
-						init(ev) {
-
-						},
-						keyup(ev) {
-							console.log(ev, $(ev.node));
-							const _this  = $(ev.node);
-							const _phone = $(ev.node).find('[name="phone"]').val();
-
-							var sms_code = '';
-							$('.popup.--confirm-sms-code .code__input').each(function (digit, item) {
-								sms_code += $(item).val();
-							});
-
-							if (sms_code.length === 6) {
-								$.ajax({
-									url: '/form/phoneAuth/check_code',
-									method: 'POST',
-									data: {
-										phone: _phone,
-										code: sms_code
-									},
-									success: function (data) {
-										if (data.status === 'ok') {
-											wbapp.post('/create/users/', post, function (data) {
-												if (data.error) {
-													wbapp.trigger('wb-save-error', {'data': data});
-												} else {
-													toast('Карточка клиента создана!');
-													$('.popup.--confirm-sms-code').hide();
-													$('.popup.--confirm-sms-code .code__input').val('');
-												}
-											});
-										}
-									}
-								});
-							} else {
-								_this.next().focus();
-							}
-						}
-					},
-					showPopup: function () {
-						$('.popup.--confirm-sms-code .code__input').mask('9', {placeholder: ''});
-						$('.popup.--confirm-sms-code').show();
-					}
-				});
-				window.popupPhoto                 = new Ractive({
-					el: '.popup.--photo',
-					template: wbapp.tpl('#popupPhoto').html,
-					data: {
-						catalog: {},
-						record: {}
-					},
-					on: {
-						init() {
-							setTimeout(function () {
-								window.popupPhoto.set('catalog', catalog);
-								initClientSearch($('.popup.--photo form'));
-							});
-						},
-						submit() {
-							let form = this.parents('.popup__form').find('form');
-
-							if ($(form).verify()) {
-								let post = $(form).serializeJSON();
-								wbapp.post('/update/records/', post, function (data) {
-
-								});
-							}
-							return false;
-						}
-					}
-				});
-			});
 		</script>
 	</div>
 
