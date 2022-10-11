@@ -448,9 +448,10 @@ $(function () {
 			paramName: 'title~',
 			serviceUrl: '/api/v2/list/records?group=longterm' + client_qry,
 			transformResult: function (response) {
+				console.log(response);
 				return {
-					suggestions: response.forEach(function (item) {
-						return {value: item.title, data: item.id};
+					suggestions: $.map(response, function (dataItem) {
+						return {value: dataItem.fullname, data: dataItem.id};
 					})
 				};
 			},
