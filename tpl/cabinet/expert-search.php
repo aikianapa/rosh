@@ -27,7 +27,8 @@
 					<h1 class="h1 mb-40">Кабинет специалиста</h1>
 					<div class="search__block --flex --aicn">
 						<div class="input">
-							<input class="search__input" type="text" name="q" placeholder="Поиск" value="{{_route.params.q}}">
+							<input class="search__input" type="text" name="q" placeholder="Поиск"
+								value="{{_route.params.q}}">
 						</div>
 						<button class="btn btn--black">Найти</button>
 					</div>
@@ -35,20 +36,23 @@
 			</form>
 			<div class="search-result">
 				<div class="container">
+					<div class="loading-overlay">
+						<div class="loader"></div>
+					</div>
 					<div class="lk-title">Результаты поиска</div>
 					{{#each results}}
 					<div class="account__panel">
 						<div class="account__info">
 							<div class="user">
-								<div class="user__name">{{this.fullname}}</div>
+								<div class="user__name">{{.fullname}}</div>
 								<div class="user__group">
 									<div class="user__birthday">Дата рождения:
-										<span>{{this.birthdate}}</span>
+										<span>{{.birthdate}}</span>
 									</div>
 								</div>
 							</div>
 						</div>
-						<a class="account__detail" href="/cabinet/client/{{this.id}}">
+						<a class="account__detail" data-link="[[id]]">
 							Подробнее
 						</a>
 					</div>
@@ -74,12 +78,13 @@
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/users/fullname*=' + q, function(data) {
+					wbapp.get('/api/v2/list/users/?role=client&fullname~=' + q, function(data) {
+						console.log('found:', data);
 					    cabinet.set('results', data);
 					});
 				},
 				complete(ev) {
-					console.log('page ready');
+					$('main.page .loading-overlay').remove();
 				}
 			}
 		});

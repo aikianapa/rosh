@@ -22,6 +22,7 @@
 
 
     <script type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/ractive-transitions-slide"></script>
 
     <script type="wbapp">
         $(function () {
@@ -44,10 +45,11 @@
     <!--</script>-->
     <!--<script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>-->
 	<!---->
+
     <link href="/assets/css/jquery.fancybox.min.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/new.css" rel="stylesheet">
-    <link href="/assets/css/utils.css?v=1.4" rel="stylesheet">
+    <link href="/assets/css/cabinet.css?v=1.0" rel="stylesheet">
     <link href="/assets/css/additional/frontend.css" rel="stylesheet">
 </view>
 

@@ -186,9 +186,7 @@ $(function () {
             $(this).find('input[name="stages[][stage]"]').attr('name', 'stages[' + _max_idx + '][stage]');
             $(this).find('input[name="stages[][year]"]').attr('name', 'stages[' + _max_idx + '][year]');
             $(this).find('input[name="stages[][year_end]"]').attr('name', 'stages[' + _max_idx + '][year_end]');
-            $(this).find('input.yearpickr').each(function () {
-                new AirDatepicker(this, {view: 'years', minView: 'years', autoClose: true});
-            });
+
         }).on('click', '.ddl', function () {
             $(this).toggleClass('active');
             return false;
@@ -218,34 +216,50 @@ $(function () {
 
             $('.datebirthdaypickr').each(function () {
                 new AirDatepicker(this, {
-                    selectedDates: [$(this).val()], autoClose: true, timepicker: false
+                    selectedDates: [$(this).val() || (new Date())],
+                    autoClose: true,
+                    dateFormat: 'dd.MM.yyyy',
+                    timepicker: false
                 });
             });
             $('.daterangepickr').each(function () {
                 new AirDatepicker(this, {
-                    selectedDates: [$(this).val()],
                     autoClose: true,
-                    range: true
+                    range: true,
+                    multipleDatesSeparator: ' - '
                 });
             });
-            $('.datepickr').each(function () {
+            $('.yearpickr').each(function () {
                 new AirDatepicker(this, {
+                    selectedDates: [$(this).val() || (new Date())],
                     view: 'years',
                     timepicker: false,
-                    minView: 'years ',
+                    minView: 'years',
                     dateFormat: 'yyyy',
+                    autoClose: true
+                });
+            });
+
+            $('.datepickr').each(function () {
+                new AirDatepicker(this, {
+                    selectedDates: [$(this).val() || (new Date())],
+                    timepicker: false,
+                    dateFormat: 'dd.MM.yyyy',
                     autoClose: true
                 });
             });
             $('.datetimepickr').each(function () {
                 new AirDatepicker(this, {
+                    selectedDates: [$(this).val() || (new Date())],
                     minHours: 8,
-                    maxHours:20,
-
-                    timepicker: true, autoClose: true, minutesStep: 10, timeFormat:"HH:mm",});
+                    maxHours: 20,
+                    timepicker: true,
+                    autoClose: true,
+                    minutesStep: 10,
+                    dateFormat: 'dd.MM.yyyy',
+                    timeFormat: "HH:mm"
+                });
             });
-
-            $('.dtp-test').each(function () { new AirDatepicker(this, {autoClose: true, inline: true}); });
 
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
@@ -277,13 +291,10 @@ $(function () {
                             _res.push({"value": v, "data": k});
                         });
                         var result = {suggestions: _res};
-
                         done(result);
                     },
-
                 });
             });
-
         };
 
         $(document).on('wb-verify-false', function (e, el, err) {

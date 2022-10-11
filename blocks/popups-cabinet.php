@@ -146,8 +146,10 @@
 					});
 					catalog.categories = _serviceCats;
 				});
+				console.log('-- start preload catalogs data --');
 			},
 			initPopups: function () {
+				
 			}
 		};
 
@@ -911,12 +913,15 @@
 
 	<script wbapp remove>
 		setTimeout(function () {
-			cabinetPage.initData();
-
+			console.log('-- start init popups --');
+			
 			window.popupAnalizeType     = new Ractive({
 				el: '.popup.--analize-type',
 				template: wbapp.tpl('#popupAnalizeType').html,
-				data: {},
+				data: {
+					client:{},
+					record:{}
+				},
 				on: {
 					submit() {
 						let form = this.find('.popup.--analize-type .popup__form');

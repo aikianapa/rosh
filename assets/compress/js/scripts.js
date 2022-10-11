@@ -248,9 +248,7 @@ $(function () {
             $(this).find('input[name="stages[][stage]"]').attr('name', 'stages[' + _max_idx + '][stage]');
             $(this).find('input[name="stages[][year]"]').attr('name', 'stages[' + _max_idx + '][year]');
             $(this).find('input[name="stages[][year_end]"]').attr('name', 'stages[' + _max_idx + '][year_end]');
-            $(this).find('input.yearpickr').each(function () {
-                new AirDatepicker(this, {view: 'years', minView: 'years', autoClose: true});
-            });
+
         }).on('click', '.ddl', function () {
             $(this).toggleClass('active');
             return false;
@@ -280,34 +278,50 @@ $(function () {
 
             $('.datebirthdaypickr').each(function () {
                 new AirDatepicker(this, {
-                    selectedDates: [$(this).val()], autoClose: true, timepicker: false
+                    selectedDates: [$(this).val() || (new Date())],
+                    autoClose: true,
+                    dateFormat: 'dd.MM.yyyy',
+                    timepicker: false
                 });
             });
             $('.daterangepickr').each(function () {
                 new AirDatepicker(this, {
-                    selectedDates: [$(this).val()],
                     autoClose: true,
-                    range: true
+                    range: true,
+                    multipleDatesSeparator: ' - '
                 });
             });
-            $('.datepickr').each(function () {
+            $('.yearpickr').each(function () {
                 new AirDatepicker(this, {
+                    selectedDates: [$(this).val() || (new Date())],
                     view: 'years',
                     timepicker: false,
-                    minView: 'years ',
+                    minView: 'years',
                     dateFormat: 'yyyy',
+                    autoClose: true
+                });
+            });
+
+            $('.datepickr').each(function () {
+                new AirDatepicker(this, {
+                    selectedDates: [$(this).val() || (new Date())],
+                    timepicker: false,
+                    dateFormat: 'dd.MM.yyyy',
                     autoClose: true
                 });
             });
             $('.datetimepickr').each(function () {
                 new AirDatepicker(this, {
+                    selectedDates: [$(this).val() || (new Date())],
                     minHours: 8,
-                    maxHours:20,
-
-                    timepicker: true, autoClose: true, minutesStep: 10, timeFormat:"HH:mm",});
+                    maxHours: 20,
+                    timepicker: true,
+                    autoClose: true,
+                    minutesStep: 10,
+                    dateFormat: 'dd.MM.yyyy',
+                    timeFormat: "HH:mm"
+                });
             });
-
-            $('.dtp-test').each(function () { new AirDatepicker(this, {autoClose: true, inline: true}); });
 
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
@@ -339,13 +353,10 @@ $(function () {
                             _res.push({"value": v, "data": k});
                         });
                         var result = {suggestions: _res};
-
                         done(result);
                     },
-
                 });
             });
-
         };
 
         $(document).on('wb-verify-false', function (e, el, err) {
@@ -1159,8 +1170,6 @@ $(document).ready(function(){
 
 })
 ;
-
-
 $(function () {
 	/* common function */
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
@@ -1182,7 +1191,6 @@ $(function () {
 	};
 
 	window.toast = function (text, head, icon) {
-
 		$.toast({
 			text: text, // Text that is to be shown in the toast
 			heading: head || '', // Optional heading to be shown on the toast
@@ -1203,7 +1211,7 @@ $(function () {
 		});
 	};
 
-	window.initServicesSearchInput = function ($selector, service_list) {
+	window.initServicesSearch = function ($selector, service_list) {
 		console.log($selector, service_list);
 
 		var _parent_form = $selector.parents('form');
@@ -1335,8 +1343,35 @@ $(function () {
 		});
 	};
 
-	window.initAdvAutocomplete = function ($selector) {
-		$('input.autocomplete.client-search').autocomplete({
+	window.initLongtermSearch = function ($form, for_client) {
+		let client_qry = '';
+		if (!!for_client) {
+			client_qry = '&client='.$($form).find('[name="client"]').val();
+		}
+
+		$form.find('input.autocomplete.event-search').autocomplete({
+			noCache: true,
+			minChars: 1,
+			deferRequestBy: 300,
+			dataType: 'json',
+			type: 'GET',
+			paramName: 'title~',
+			serviceUrl: '/api/v2/list/records?group=longterm' + client_qry,
+			transformResult: function (response) {
+				return {
+					suggestions: response.forEach(function (item) {
+						return {value: item.title, data: item.id};
+					})
+				};
+			},
+			onSelect: function (suggestion) {
+				$form.find('input[name="record"]').val(suggestion.data);
+			}
+		});
+	};
+
+	window.initClientSearch = function ($form) {
+		$form.find('input.autocomplete.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
 			deferRequestBy: 300,
@@ -1353,35 +1388,13 @@ $(function () {
 				};
 			},
 			onSelect: function (suggestion) {
-				$(this).parents('.popup__form').find('input[name="client"]').val(suggestion.data);
-			}
-		});
-
-		$('input.autocomplete.longterm-search').autocomplete({
-			noCache: true,
-			minChars: 1,
-			deferRequestBy: 300,
-			dataType: 'json',
-			type: 'GET',
-			paramName: 'title~',
-			serviceUrl: '/api/v2/list/records?group=longterm',
-			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
-			transformResult: function (response) {
-				return {
-					suggestions: response.forEach(function (item) {
-						return {value: item.title, data: item.id};
-					})
-				};
-			},
-			onSelect: function (suggestion) {
-				$(this).parents('.popup__form').find('input[name="id"]').val(suggestion.data);
+				$form.find('input[name="client"]').val(suggestion.data);
 			}
 		});
 	};
 
 	setTimeout(function() {
 		initPlugins();
-
 		$(document).on('mod-filepicker-done', function (e, list) {
 			//$('.file-photo__ico img.preview').attr('src', list[0].img);
 			var src = list[0].img;
@@ -1390,6 +1403,10 @@ $(function () {
 			setTimeout(function () {
 				wbapp.unloading();
 			}, 100);
+		}).on('click', 'a.account__detail[data-link]', function (e) {
+			e.stopPropagation();
+			e.preventDefault();
+			window.location.href = "/cabinet/client/" + $(this).data('link');
 		});
 	});
 });

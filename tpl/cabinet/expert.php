@@ -10,6 +10,219 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
+
+	<template id="editorProfile">
+		<form on-submit="submitUserForm">
+			{{#user}}
+			<div class="profile-edit__block">
+				<div class="lk-title">Редактировать профиль</div>
+				<div class="row profile-edit__wrap">
+					<div class="col-md-3">
+						<div class="input input--grey">
+							<input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
+							<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input input--grey">
+							<input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
+							<div class="input__placeholder input__placeholder--dark">Телефон</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input input--grey">
+							<input class="input__control" type="email" name="email" value="{{.email}}" placeholder="E-mail">
+							<div class="input__placeholder input__placeholder--dark">E-mail</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn--white profile-edit__submit">Сохранить</button>
+					</div>
+				</div>
+			</div>
+			{{/user}}
+		</form>
+		<form on-submit="submitExpertForm">
+			<div class="profile-edit__block">
+				<div class="lk-title">Лицензия</div>
+				<div class="profile-licenses row">
+					<div class="col-md-6">
+						<div class="profile-licenses__inputs repeater-container" data-repeater="license" data-name="licenses[]">
+							{{#each user.expert.licenses: idx}}
+							<div class="profile-licenses__input input repeater-item input--grey">
+								<input class="input__control" type="text"
+									name="licenses[]"
+									placeholder="Добавьте лицензию"
+									value="{{user.expert.licenses[idx]}}">
+								<div class="input__placeholder">Добавьте лицензию</div>
+								{{#idx}}
+								<a class="profile-licenses__delete repeater-delete" href="#">
+									<svg class="svgsprite _delete-black">
+										<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+										</use>
+									</svg>
+								</a>
+								{{/idx}}
+							</div>
+							{{else}}
+							<div class="profile-licenses__inputs repeater-container"
+								data-repeater="license">
+								<div class="profile-licenses__input input input--grey">
+									<input class="input__control" type="text"
+										placeholder="Добавьте лицензию" value="">
+									<div class="input__placeholder">Добавьте лицензию</div>
+								</div>
+							</div>
+							{{/each}}
+						</div>
+					</div>
+					<div class="col-md-6 --flex">
+						<a class="btn btn--black add-license repeater-add" href="#"
+							data-repeater="license">Добавить лицензию</a>
+						<div class="profile-licenses__input input input--grey repeater-sample"
+							data-repeater="license">
+							<input class="input__control" type="text" placeholder="№ лицензии">
+							<div class="input__placeholder">Добавьте лицензию</div>
+							<a class="profile-licenses__delete repeater-delete" href="#">
+								<svg class="svgsprite _delete-black">
+									<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+									</use>
+								</svg>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="profile-edit__block profile-education">
+				<div class="lk-title">Образование</div>
+				<div class="profile-education__wrap repeater-container" data-repeater="study">
+					{{#each user.expert.stages: idx}}
+					<div class="profile-education__inner row repeater-item" data-idx="{{idx}}">
+						<div class="col-md-6">
+							<div class="input input--grey">
+								<input class="input__control" type="text"
+									placeholder="Название учебного заведения"
+									name="stages[{{idx}}][stage]"
+									value="{{.stage}}">
+								<div class="input__placeholder">Название учебного заведения</div>
+							</div>
+						</div>
+						<div class="col-md-5">
+							<div class="profile-education__inputs">
+								<div class="profile-education__input">
+									<div class="input input-lk-calendar input--grey">
+										<input class="input__control yearpickr" type="text"
+											name="stages[{{idx}}][year]"
+											placeholder="Начало обучения"
+											value="{{.year}}">
+										<div class="input__placeholder">Начало обучения</div>
+									</div>
+								</div>
+								<div class="profile-education__input">
+									<div class="input input-lk-calendar input--grey">
+										<input class="input__control yearpickr" type="text"
+											placeholder="Окончание обучения"
+											name="stages[{{idx}}][year_end]"
+											value="{{.year_end}}">
+										<div class="input__placeholder">Окончание обучения</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-1">
+							{{#idx}}
+							<a class="profile-study__delete repeater-delete" href="#">
+								<svg class="svgsprite _delete-black">
+									<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+									</use>
+								</svg>
+							</a>
+							{{/idx}}
+						</div>
+					</div>
+					{{else}}
+					<div class="profile-education__inner row repeater-item" data-idx="{{idx}}">
+						<div class="col-md-6">
+							<div class="input input--grey">
+								<input class="input__control" type="text"
+									placeholder="Название учебного заведения"
+									name="stages[{{idx}}][stage]"
+									value="{{.stage}}">
+								<div class="input__placeholder">Название учебного заведения</div>
+							</div>
+						</div>
+						<div class="col-md-5">
+							<div class="profile-education__inputs">
+								<div class="profile-education__input">
+									<div class="input input-lk-calendar input--grey">
+										<input class="input__control yearpickr" type="text"
+											name="stages[{{idx}}][year]"
+											placeholder="Начало обучения"
+											value="{{.year}}">
+										<div class="input__placeholder">Начало обучения</div>
+									</div>
+								</div>
+								<div class="profile-education__input">
+									<div class="input input-lk-calendar input--grey">
+										<input class="input__control yearpickr" type="text"
+											placeholder="Окончание обучения"
+											name="stages[{{idx}}][year_end]"
+											value="{{.year_end}}">
+										<div class="input__placeholder">Окончание обучения</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					{{/each}}
+				</div>
+				<div class="profile-education__inner row">
+					<div class="col-md-6 --flex">
+						<a class="btn btn--black add-education repeater-add" href="#"
+							data-repeater="study">Добавить обучение</a>
+						<div class="profile-education__inner row repeater-sample" data-repeater="study">
+							<div class="col-md-6">
+								<div class="input input--grey">
+									<input class="input__control" type="text"
+										placeholder="Название учебного заведения">
+									<div class="input__placeholder">Название учебного заведения</div>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="profile-education__inputs">
+									<div class="profile-education__input">
+										<div class="input input-lk-calendar input--grey">
+											<input class="input__control yearpickr" type="text"
+												placeholder="Начало обучения">
+											<div class="input__placeholder">Начало обучения</div>
+										</div>
+									</div>
+									<div class="profile-education__input">
+										<div class="input input-lk-calendar input--grey">
+											<input class="input__control yearpickr" type="text"
+												placeholder="Окончание обучения">
+											<div class="input__placeholder">Окончание обучения</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-1">
+								<a class="profile-study__delete repeater-delete" href="#">
+									<svg class="svgsprite _delete-black">
+										<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
+										</use>
+									</svg>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="btn btn--white">Сохранить</button>
+		</form>
+	</template>
+
 	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
 		<div class="account">
 			<form class="search" action="/cabinet/search">
@@ -33,224 +246,17 @@
 				</div>
 			</form>
 			<div class="container">
-				<template id="editorProfile">
-					<form on-submit="profileSave">
-						{{#await user}}
-						<div class="profile-edit__block">
-							<div class="lk-title">Редактировать профиль</div>
-							<div class="row profile-edit__wrap">
-								<div class="col-md-3">
-									<div class="input input--grey">
-										<input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
-										<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="input input--grey">
-										<input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
-										<div class="input__placeholder input__placeholder--dark">Телефон</div>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="input input--grey">
-										<input class="input__control" type="email" name="email" value="{{.email}}" placeholder="E-mail">
-										<div class="input__placeholder input__placeholder--dark">E-mail</div>
-									</div>
-								</div>
-								<div class="col-md-2">
-									<button class="btn btn--white profile-edit__submit">Сохранить</button>
-								</div>
-							</div>
-						</div>
-						{{/user}}
-					</form>
-					<form on-submit="saveExpert">
-						<div class="profile-edit__block">
-							<div class="lk-title">Лицензия</div>
-							<div class="profile-licenses row">
-								<div class="col-md-6">
-									<div class="profile-licenses__inputs repeater-container" data-repeater="license" data-name="licenses[]">
-										{{#user.expert.licenses: idx}}
-										<div class="profile-licenses__input input repeater-item input--grey">
-											<input class="input__control" type="text"
-												name="licenses[]"
-												placeholder="Добавьте лицензию"
-												value="{{user.expert.licenses[idx]}}">
-											<div class="input__placeholder">Добавьте лицензию</div>
-											{{#idx}}
-											<a class="profile-licenses__delete repeater-delete" href="#">
-												<svg class="svgsprite _delete-black">
-													<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
-													</use>
-												</svg>
-											</a>
-											{{/idx}}
-										</div>
-										{{else}}
-										<div class="profile-licenses__inputs repeater-container"
-											data-repeater="license">
-											<div class="profile-licenses__input input input--grey">
-												<input class="input__control" type="text"
-													placeholder="Добавьте лицензию" value="">
-												<div class="input__placeholder">Добавьте лицензию</div>
-											</div>
-										</div>
-										{{/user.expert}}
-									</div>
-								</div>
-								<div class="col-md-6 --flex">
-									<a class="btn btn--black add-license repeater-add" href="#"
-										data-repeater="license">Добавить лицензию</a>
-									<div class="profile-licenses__input input input--grey repeater-sample"
-										data-repeater="license">
-										<input class="input__control" type="text" placeholder="№ лицензии">
-										<div class="input__placeholder">Добавьте лицензию</div>
-										<a class="profile-licenses__delete repeater-delete" href="#">
-											<svg class="svgsprite _delete-black">
-												<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
-												</use>
-											</svg>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="profile-edit__block profile-education">
-							<div class="lk-title">Образование</div>
-							<div class="profile-education__wrap repeater-container" data-repeater="study">
-								{{#each user.expert.stages: idx}}
-								<div class="profile-education__inner row repeater-item" data-idx="{{idx}}">
-									<div class="col-md-6">
-										<div class="input input--grey">
-											<input class="input__control" type="text"
-												placeholder="Название учебного заведения"
-												name="stages[{{idx}}][stage]"
-												value="{{.stage}}">
-											<div class="input__placeholder">Название учебного заведения</div>
-										</div>
-									</div>
-									<div class="col-md-5">
-										<div class="profile-education__inputs">
-											<div class="profile-education__input">
-												<div class="input input-lk-calendar input--grey">
-													<input class="input__control yearpickr" type="text"
-														name="stages[{{idx}}][year]"
-														placeholder="Начало обучения"
-														value="{{.year}}">
-													<div class="input__placeholder">Начало обучения</div>
-												</div>
-											</div>
-											<div class="profile-education__input">
-												<div class="input input-lk-calendar input--grey">
-													<input class="input__control yearpickr" type="text"
-														placeholder="Окончание обучения"
-														name="stages[{{idx}}][year_end]"
-														value="{{.year_end}}">
-													<div class="input__placeholder">Окончание обучения</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-1">
-										{{#idx}}
-										<a class="profile-study__delete repeater-delete" href="#">
-											<svg class="svgsprite _delete-black">
-												<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
-												</use>
-											</svg>
-										</a>
-										{{/idx}}
-									</div>
-								</div>
-								{{else}}
-								<div class="profile-education__inner row repeater-item" data-idx="{{idx}}">
-									<div class="col-md-6">
-										<div class="input input--grey">
-											<input class="input__control" type="text"
-												placeholder="Название учебного заведения"
-												name="stages[{{idx}}][stage]"
-												value="{{.stage}}">
-											<div class="input__placeholder">Название учебного заведения</div>
-										</div>
-									</div>
-									<div class="col-md-5">
-										<div class="profile-education__inputs">
-											<div class="profile-education__input">
-												<div class="input input-lk-calendar input--grey">
-													<input class="input__control yearpickr" type="text"
-														name="stages[{{idx}}][year]"
-														placeholder="Начало обучения"
-														value="{{.year}}">
-													<div class="input__placeholder">Начало обучения</div>
-												</div>
-											</div>
-											<div class="profile-education__input">
-												<div class="input input-lk-calendar input--grey">
-													<input class="input__control yearpickr" type="text"
-														placeholder="Окончание обучения"
-														name="stages[{{idx}}][year_end]"
-														value="{{.year_end}}">
-													<div class="input__placeholder">Окончание обучения</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-1"></div>
-								</div>
-								{{/each}}
-							</div>
-							<div class="profile-education__inner row">
-								<div class="col-md-6 --flex">
-									<a class="btn btn--black add-education repeater-add" href="#"
-										data-repeater="study">Добавить обучение</a>
-									<div class="profile-education__inner row repeater-sample" data-repeater="study">
-										<div class="col-md-6">
-											<div class="input input--grey">
-												<input class="input__control" type="text"
-													placeholder="Название учебного заведения">
-												<div class="input__placeholder">Название учебного заведения</div>
-											</div>
-										</div>
-										<div class="col-md-5">
-											<div class="profile-education__inputs">
-												<div class="profile-education__input">
-													<div class="input input-lk-calendar input--grey">
-														<input class="input__control yearpickr" type="text"
-															placeholder="Начало обучения">
-														<div class="input__placeholder">Начало обучения</div>
-													</div>
-												</div>
-												<div class="profile-education__input">
-													<div class="input input-lk-calendar input--grey">
-														<input class="input__control yearpickr" type="text"
-															placeholder="Окончание обучения">
-														<div class="input__placeholder">Окончание обучения</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-1">
-											<a class="profile-study__delete repeater-delete" href="#">
-												<svg class="svgsprite _delete-black">
-													<use xlink:href="assets/img/sprites/svgsprites.svg#delete-black">
-													</use>
-												</svg>
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<button class="btn btn--white">Сохранить</button>
-					</form>
-				</template>
-
 				<div class="account__panel">
+					<div class="loading-overlay">
+						<div class="loader"></div>
+					</div>
+
 					<div class="account__info">
 						<div class="user --flex">
 							{{#user.expert}}
 							<div class="user__panel">
-								<div class="user__name">{{.name}}
+								<div class="user__name">
+									{{.name}}
 									<button class="user__edit all">
 										<svg class="svgsprite _edit">
 											<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
@@ -273,175 +279,185 @@
 							<div class="user__panel user__panel--border">
 								<div class="user__item">{{.spec}}</div>
 
-								<div class="user__notifcation">
+								<div class="user__notifcation closest-event d-none">
 									<svg class="svgsprite _notification">
 										<use xlink:href="assets/img/sprites/svgsprites.svg#notification"></use>
 									</svg>
-									Ближайшая запись: 03.10.2022, 15:30 – 16:30
+									Ближайшая запись: {{.closest_date}}, {{.closest_times}}
 								</div>
 							</div>
 							{{/user.expert}}
 						</div>
 					</div>
 					<a class="account__exit" href="/signout">Выйти из аккаунта</a>
-					<div class="profile-edit">
-					</div>
+					<div class="profile-edit" data-template="editorProfile"></div>
 				</div>
 
-				{{#if events.currents}}
-				<div class="lk-title current_event">Текущее событие</div>
-				<div class="account-events current_event">
-					{{#each events.currents}}
-					<div class="account-events__block">
-						<div class="account-events__block-wrap mb-20">
-							<div class="account-events__item">
-								<div class="account-event-wrap">
-									<div class="account-events__name">Услуги:</div>
-									<div class="account-event">
-										{{#this.services}}
-										<p>{{this.name}}</p>
-										{{/this.services}}
+				<div>
+					<div class="loading-overlay">
+						<div class="loader"></div>
+					</div>
+
+					{{#if events.currents}}
+					<div class="lk-title current_event">Текущее событие</div>
+					<div class="account-events current_event">
+						{{#each events.currents}}
+						<div class="account-events__block">
+							<div class="account-events__block-wrap mb-20">
+								<div class="account-events__item">
+									<div class="account-event-wrap">
+										<div class="account-events__name">Услуги:</div>
+										<div class="account-event">
+											{{#this.services}}
+											<p>{{this.name}}</p>
+											{{/this.services}}
+										</div>
+									</div>
+								</div>
+								<div class="account-events__item">
+									<div class="account-event-wrap">
+										<div class="account-events__name">Дата приема:</div>
+										<div class="account-event">
+											<p>{{this.event_date}}</p>
+										</div>
+									</div>
+									<div class="account-event-wrap">
+										<div class="account-events__name">Время приема:</div>
+										<div class="account-event">
+											<p>{{this.event_time}}</p>
+										</div>
+									</div>
+								</div>
+								<div class="account-events__item">
+									<div class="account-event-wrap">
+										<div class="account-events__name">Пациент:</div>
+										<div class="account-event">
+											<p>{{this.clientData.fullname}}</p>
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="account-events__item">
-								<div class="account-event-wrap">
-									<div class="account-events__name">Дата приема:</div>
-									<div class="account-event">
-										<p>{{this.event_date}}</p>
-									</div>
-								</div>
-								<div class="account-event-wrap">
-									<div class="account-events__name">Время приема:</div>
-									<div class="account-event">
-										<p>{{this.event_time}}</p>
-									</div>
-								</div>
-							</div>
-							<div class="account-events__item">
-								<div class="account-event-wrap">
-									<div class="account-events__name">Пациент:</div>
-									<div class="account-event">
-										<p>{{this.clientData.fullname}}</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						{{#if this.type == 'online'}}
-						<div class="account-events__btns">
-							<div class="account-event-wrap --aicn">
-								<div class="account-events__btn">
-									<a class="btn btn--black"
-										onclick="window.open('/cabinet/online#{{this.id}}', '_blank',
+							{{#if this.type == 'online'}}
+							<div class="account-events__btns">
+								<div class="account-event-wrap --aicn">
+									<div class="account-events__btn">
+										<a class="btn btn--black"
+											onclick="window.open('/cabinet/online#{{this.id}}', '_blank',
                                              'width='+screen.availWidth+',height='+screen.availHeight+
-                                             ',location=yes,height=0,width=0,scrollbars=yes,status=yes');">
-										Начать консультацию
+                                             ',location=yes,scrollbars=yes,status=yes');">
+											Начать консультацию
+										</a>
+									</div>
+									<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
+								</div>
+							</div>
+							{{/if}}
+							<div class="account-edit pt-30">
+								<div class="account-edit__title">
+									<p>Рекомендации</p>
+									<a class="user__edit">
+										<svg class="svgsprite _edit">
+											<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+										</svg>
 									</a>
 								</div>
-								<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
+								<textarea class="account-edit__textarea">{{this.recommendation}}</textarea>
+								<button class="btn btn--white">Сохранить</button>
 							</div>
-						</div>
-						{{/if}}
-						<div class="account-edit pt-30">
-							<div class="account-edit__title">
-								<p>Рекомендации</p><a class="user__edit" href="#">
-									<svg class="svgsprite _edit">
-										<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
-									</svg>
-								</a>
+							{{#if this.analises}}
+							<div class="account-events__download">
+								<div class="lk-title">Анализы</div>
+								<a class="btn btn--white" href="{{this.analises.file.src}}"
+									download="Анализы-{{this.clientData.fullname}}-{{this.event_date}}.pdf">
+									Скачать анализы</a>
 							</div>
-							<textarea class="account-edit__textarea"></textarea>
-							<button class="btn btn--white">Сохранить</button>
-						</div>
-						{{#if this.analises}}
-						<div class="account-events__download">
-							<div class="lk-title">Анализы</div>
-							<a class="btn btn--white" href="{{this.analises.file.src}}" download="Анализы.pdf">Скачать анализы</a>
-						</div>
-						{{/if}}
+							{{/if}}
 
+						</div>
+						{{/each}}
 					</div>
-					{{/each}}
+					{{/if}}
 				</div>
-				{{/if}}
 
-				{{#if events.upcoming}}
-				<div class="lk-title">Предстоящие события</div>
-				<div class="account-events">
-					{{#each events.upcoming}}
-					<div class="account-events__block">
-						<div class="account-events__block-wrap mb-20">
-							<div class="account-events__item">
-								<div class="account-event-wrap">
-									<div class="account-events__name">Услуги:</div>
-									<div class="account-event">
-										{{#this.services}}
-										<p>{{this.name}}</p>
-										{{/this.services}}
-									</div>
-								</div>
-							</div>
-							<div class="account-events__item">
-								<div class="account-event-wrap">
-									<div class="account-events__name">Дата приема:</div>
-									<div class="account-event">
-										<p>{{this.event_date}}</p>
-									</div>
-								</div>
-								<div class="account-event-wrap">
-									<div class="account-events__name">Время приема:</div>
-									<div class="account-event">
-										<p>{{this.event_time}}</p>
-									</div>
-								</div>
-							</div>
-							<div class="account-events__item">
-								<div class="account-event-wrap">
-									<div class="account-events__name">Пациент:</div>
-									<div class="account-event">
-										<p>{{this.clientData.fullname}}</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						{{#if this.pay_status == 'unpay'}}
-						<div class="account-events__btns">
-							<div class="account-event-wrap --aicn">
-								<div class="account-events__btn">
-									<button class="btn btn--black --openpopup" data-popup="--pay-one">Внести предоплату
-									</button>
-								</div>
-								<p>Услуга требует внесения предоплаты</p>
-							</div>
-						</div>
-						{{elseif this.type == 'online'}}
-						<div class="account-events__btns">
-							<div class="account-event-wrap --aicn">
-								<div class="account-events__btn">
-									<button class="btn btn--white disabled" disabled>
-										Онлайн консультация
-									</button>
-								</div>
-								<p>Кнопка станет активной за 5 минут до начала приема</p>
-							</div>
-						</div>
-						{{/if}}
-
-						{{#if this.analises}}
-						<div class="account-events__download">
-							<div class="lk-title">Анализы</div>
-							<a class="btn btn--white" href="{{this.analises.src}}" download="Анализы.pdf">Скачать анализы</a>
-						</div>
-						{{/if}}
-
+				<div>
+					<div class="loading-overlay">
+						<div class="loader"></div>
 					</div>
-					{{/each}}
+
+					{{#if events.upcoming}}
+					<div class="lk-title">Предстоящие события</div>
+					<div class="account-events">
+						{{#each events.upcoming}}
+						<div class="account-events__block">
+							<div class="account-events__block-wrap mb-20">
+								<div class="account-events__item">
+									<div class="account-event-wrap">
+										<div class="account-events__name">Услуги:</div>
+										<div class="account-event">
+											{{#this.services}}
+											<p>{{this.name}}</p>
+											{{/this.services}}
+										</div>
+									</div>
+								</div>
+								<div class="account-events__item">
+									<div class="account-event-wrap">
+										<div class="account-events__name">Дата приема:</div>
+										<div class="account-event">
+											<p>{{this.event_date}}</p>
+										</div>
+									</div>
+									<div class="account-event-wrap">
+										<div class="account-events__name">Время приема:</div>
+										<div class="account-event">
+											<p>{{this.event_time}}</p>
+										</div>
+									</div>
+								</div>
+								<div class="account-events__item">
+									<div class="account-event-wrap">
+										<div class="account-events__name">Пациент:</div>
+										<div class="account-event">
+											<p>{{this.clientData.fullname}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{{#if this.type == 'online'}}
+							<div class="account-events__btns">
+								<div class="account-event-wrap --aicn">
+									<div class="account-events__btn">
+										<button class="btn btn--white disabled" disabled>
+											Онлайн консультация
+										</button>
+									</div>
+									<p>Кнопка станет активной за 5 минут до начала приема</p>
+								</div>
+							</div>
+							{{/if}}
+
+							{{#if this.analises}}
+							<div class="account-events__download">
+								<div class="lk-title">Анализы</div>
+								<a class="btn btn--white" href="{{this.analises.src}}"
+									download="Анализы-{{this.clientData.fullname}}-{{this.event_date}}.pdf">
+									Скачать анализы</a>
+							</div>
+							{{/if}}
+
+						</div>
+						{{/each}}
+					</div>
+					{{/if}}
 				</div>
-				{{/if}}
 
 				<div class="lk-title">История посещений и приемов</div>
 				<div class="account__history">
+					<div class="loading-overlay">
+						<div class="loader"></div>
+					</div>
+
 					<div class="account__table">
 						<div class="account__table-head">
 							<div class="history-item">Дата</div>
@@ -482,18 +498,22 @@
 										{{/if}}
 									</div>
 								</div>
-								<form class="acount__table-list accardeon__list" on-submit="saveRecommendation">
+								<div class="acount__table-list accardeon__list">
 									<div class="account-edit__title">
 										<p>Рекомендация врача</p>
-										<a class="user__edit" href="#">
+										<a class="user__edit">
 											<svg class="svgsprite _edit">
 												<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
 											</svg>
 										</a>
 									</div>
-									<textarea class="account-edit__textarea" id="{{this.id}}-recommendation" name="recommendation">{{this.recommendation}}</textarea>
-									<button class="btn btn--white" on-click="saveRecommendation">Сохранить</button>
-								</form>
+									<textarea class="account-edit__textarea"
+										id="{{this.id}}--recommendation"
+										name="recommendation">{{this.recommendation}}</textarea>
+									<button class="btn btn--white" on-click="saveRecommendation"
+										data-id="{{this.id}}">Сохранить
+									</button>
+								</div>
 							</div>
 							{{else}}
 							<div class="acount__table-accardeon accardeon">
@@ -511,10 +531,10 @@
 	</main>
 
 	<script wbapp>
-		let editorProfile = wbapp.tpl('#editorProfile').html;
-		var cabinet       = new Ractive({
+		var cabinet = new Ractive({
 			el: 'main.page',
 			template: $('main.page').html(),
+			//delimiters: ['<!--{', '}-->'],
 			data: {
 				user: wbapp._session.user,
 				expert: {},
@@ -565,9 +585,10 @@
 					});
 				},
 				complete(ev) {
+					$('main.page .loading-overlay').remove();
 					let profileEditor = new Ractive({
 						el: 'main.page .profile-edit',
-						template: editorProfile,
+						template: wbapp.tpl('#editorProfile').html,
 						data: {
 							user: cabinet.get('user')
 						},
@@ -575,7 +596,7 @@
 							complete() {
 								console.log('expert editor ready!');
 							},
-							profileSave(ev) {
+							submitUserForm(ev) {
 								let $form = $(ev.node);
 								let uid   = profileEditor.get('user.id');
 								if ($form.verify() && uid > '') {
@@ -589,7 +610,7 @@
 								}
 								return false;
 							},
-							saveExpert(ev) {
+							submitExpertForm(ev) {
 								let $form = $(ev.node);
 								let uid   = profileEditor.get('user.expert.id');
 								console.log('saved', uid);
@@ -604,14 +625,38 @@
 									$('.user__edit.all').trigger('click');
 								}
 								return false;
+							},
+							saveRecommendation(ev) {
+								const _id             = $(ev.node).data('id');
+								const _recommendation = $('#' + _id + '--recommendation').val();
+
+								wbapp.get('/api/v2/read/records/' + _id, function (data) {
+									var prev_recommendation = data.recommendation;
+
+									wbapp.post('/api/v2/update/records/' + _id,
+										{'recommendation': _recommendation}, function (res) {
+											toast('Рекомендация сохранена!');
+										}
+									);
+									if (_recommendation !== prev_recommendation) {
+										wbapp.post('/api/v2/create/record-changes/',
+											{
+												record: data.id,
+												experts: data.experts,
+												client: data.client,
+												changes: [{
+													field: 'recommendation',
+													prev_val: prev_recommendation,
+													new_val: _recommendation
+												}]
+											},
+											function (res) {}
+										);
+									}
+								});
 							}
 						}
 					});
-				},
-				saveRecommendation(ev) {
-					//Record.saveRecommendation();
-					// need orig rec. getter
-					var diff = getChangesJSON( ['recommendation']);
 				}
 			}
 		});

@@ -395,7 +395,7 @@
 												<div class="col-md-6">
 													<a class="expert__worked"
 														target="_blank"
-														href="/about/experts/{{catalog.experts[this].page_uri}}">
+														href="{{'/about/experts/'+catalog.experts[this].page_uri}}">
 														<div class="expert__worked-pic">
 															<img src="{{catalog.experts[this].image.src}}" alt="{{catalog.experts[this].head}}">
 														</div>

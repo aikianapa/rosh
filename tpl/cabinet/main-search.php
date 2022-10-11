@@ -73,7 +73,7 @@
 								</div>
 							</div>
 						</div>
-						<a class="account__detail" href="/cabinet/client/{{this.id}}">Подробнее</a>
+						<a class="account__detail" href="{{'/cabinet/client/'+.id}}">Подробнее</a>
 					</div>
 					{{else}}
 					<div class="account__panel">
