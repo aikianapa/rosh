@@ -44,7 +44,7 @@
 				<div class="title-flex --flex --jcsb photos-title">
 					<div class="add-photo">
 						<div class="lk-title mb-0 mr-20">Библиотека фотографий</div>
-						<a class="btn btn--black --openpopup" data-popup="--photo" on-click="addPhoto">Добавить фото</a>
+						<a class="btn btn--black --openpopup" data-popup="--photo">Добавить фото</a>
 					</div>
 					<div class="filter__item">
 						<a class="filter__name text-bold" href="#">Удалить фильтры</a>

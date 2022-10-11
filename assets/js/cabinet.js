@@ -199,7 +199,7 @@ $(function () {
 	};
 
 	window.initClientSearch = function ($form) {
-		$form.find('input.autocomplete.client-search').autocomplete({
+		$form.find('input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
 			deferRequestBy: 300,

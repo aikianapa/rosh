@@ -301,13 +301,15 @@
 					</svg>
 				</button>
 				<div class="popup__name text-bold">Добавить фото</div>
-				<form class="popup__form">
+				<form class="popup__form" on-submit="submit">
 					<div class="search-form input">
-						<input class="input__control" type="text" placeholder="Выбрать пациента">
+						<input class="input__control client-search" type="text"
+							placeholder="Выбрать пациента">
 						<div class="input__placeholder">Выбрать пациента</div>
 					</div>
 					<div class="input calendar mb-20">
-						<input class="input__control datepickr" type="text" name="visit_date" placeholder="Выбрать дату посещения">
+						<input class="input__control datepickr" type="text"
+							name="visit_date" placeholder="Выбрать дату посещения">
 						<div class="input__placeholder">Выбрать дату посещения</div>
 					</div>
 					<div class="popup-title__checkbox">
@@ -886,6 +888,34 @@
 									$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
 									$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
 								}
+							});
+						}
+						return false;
+					}
+				}
+			});
+
+			window.popupPhoto     = new Ractive({
+				el: '.popup.--photo',
+				template: wbapp.tpl('#popupPhoto').html,
+				data: {
+					catalog:{},
+					record:{}
+				},
+				on: {
+					init(){
+						setTimeout(function () {
+							window.popupPhoto.set('catalog', catalog);
+							initPlugins();
+							initClientSearch($('.popup.--photo form'));
+						});
+					},
+					submit() {
+						let form = this.find('.popup.--analize-type .popup__form');
+						if ($(form).verify()) {
+							let post = $(form).serializeJSON();
+							wbapp.post('/create/record-photo', post, function (data) {
+
 							});
 						}
 						return false;
