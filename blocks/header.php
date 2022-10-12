@@ -31,7 +31,9 @@
                             <div class="header__contact header__contact--small">{{worktime}}</div>
                         </wb-data>
                     </div>
+	                <a class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
                 </div>
+
                 <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'==''">
                     <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>

@@ -3,7 +3,24 @@
     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>-->
     
     <wb-snippet name="wbapp"></wb-snippet>
-    <wb-scripts src="scripts">
+
+    <wb-scripts src="scripts" wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])">
+	    [
+	    "/assets/js/jquery.inputmask.min.js",
+	    "/assets/js/jquery.maskedinput.min.js",
+	    "/assets/js/jquery.autocomplete.min.js",
+	    "/assets/js/jquery.fancybox.min.js",
+	    "/assets/js/jquery.serializejson.min.js",
+	    "/assets/js/air-datepicker.js",
+	    "/assets/js/jquery.toast.min.js",
+	    "/assets/js/main.js",
+	    "/assets/js/new.js",
+	    "/assets/js/blogFilter.js",
+	    "/assets/js/auth.js",
+	    "/assets/js/cabinet.js"
+	    ]
+    </wb-scripts>
+    <wb-scripts src="scripts" wb-if="in_array('{{_sess.user.role}}',[''])">
         [
             "/assets/js/jquery.inputmask.min.js",
             "/assets/js/jquery.maskedinput.min.js",
@@ -15,12 +32,14 @@
             "/assets/js/main.js",
             "/assets/js/new.js",
             "/assets/js/blogFilter.js",
-            "/assets/js/auth.js",
-		    "/assets/js/cabinet.js"
+            "/assets/js/auth.js"
 	    ]
     </wb-scripts>
+
     <script type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
     <script type="wbapp">
+		var user_role = '{{_sess.user.role}}';
+
         $(function () {
             wbapp.init()
             new Swiper('.main-slider', {

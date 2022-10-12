@@ -166,7 +166,7 @@
 					<div class="text-grey text-small mb-10">Стоимость услуги</div>
 					<div class="popup-summ --aifs mb-20">
 						<div class="popup-summ__big">{{this.price}} ₽</div>
-						<div class="popup-summ__small">Предоплата - {{this.price / 5}} ₽</div>
+						<div class="popup-summ__small">Предоплата - {{this.pay_price}} ₽</div>
 					</div>
 					<div class="popup__description text-grey mb-30">
 						Для подтверждения необходимо произвести оплату в размере 20% от стоимости
@@ -177,7 +177,7 @@
 						action="https://demo.paykeeper.ru/create/"
 						method="POST"
 						target="_blank">
-						<input type='hidden' name='sum' value='{{this.price / 5}}'/>
+						<input type='hidden' name='sum' value='{{this.pay_price / 5}}'/>
 						<input type='hidden' name='orderid' value='{{this.id}}'/>
 						<input type='hidden' name='clientid' value='{{this.client}}'/>
 						<button class="btn btn--black form__submit" type="submit">
@@ -197,68 +197,9 @@
 				</div>
 			</template>
 		</div>
-
-		<script wbapp remove>
-			setTimeout(function () {
-				window.popupPay                   = new Ractive({
-					el: '.popup.--pay',
-					template: wbapp.tpl('#popupPay').html,
-					data: {
-						record: {}
-					},
-					on: {
-						init() {},
-						submit() {
-							$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
-							$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
-						}
-					},
-					showPopup: function (id) {
-						Utils.api.get('/api/v2/read/records/' + id).then(function (data) {
-							popupPay.set('record', data);
-							popupPay.resetTemplate(wbapp.tpl('#popupPay').html);
-
-							$('.popup.--pay').show();
-						});
-					}
-				});
-				window.popupAnalizeInterpretation = new Ractive({
-					el: '.popup.--analize-interpretation',
-					template: wbapp.tpl('#popupAnalizeInterpretation').html,
-					data: {
-						catalog: {},
-						record: {}
-					},
-					on: {
-						init() {
-							setTimeout(function () {
-								window.popupAnalizeInterpretation.set('catalog', catalog);
-							});
-						},
-						submit() {
-							let form = this.find('.popup.--analize-interpretation .popup__form');
-							if ($(form).verify()) {
-								let post = $(form).serializeJSON();
-
-								wbapp.post('/create/records', post, function (data) {
-									if (data.error) {
-										wbapp.trigger('wb-save-error', {'data': data});
-									} else {
-										$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-										$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-									}
-								});
-							}
-							return false;
-						}
-					}
-				});
-			});
-		</script>
 	</div>
 
 	<div wb-if="'{{_sess.user.role}}'=='main'">
-		<!-- with file uploads -->
 		<div class="popup --photo">
 			<template id="popupPhoto">
 				<div class="popup__overlay"></div>
@@ -328,7 +269,6 @@
 				</div>
 			</template>
 		</div>
-
 		<div class="popup --photo-longterm">
 			<template id="popupPhotoLongterm">
 				<div class="popup__overlay"></div>
@@ -409,7 +349,6 @@
 				</div>
 			</template>
 		</div>
-
 		<div class="popup --photo-profile">
 			<template id="popupPhotoProfile">
 				<div class="popup__overlay"></div>
@@ -634,7 +573,6 @@
 			</template>
 		</div>
 
-
 		<div class="popup --create-appoint">
 			<template id="popupCreateAppoint">
 				<div class="popup__overlay"></div>
@@ -804,7 +742,6 @@
 				</div>
 			</template>
 		</div>
-
 		<div class="popup --download-data">
 			<template id="popupDownloadData">
 				<div class="popup__overlay"></div>
@@ -908,11 +845,8 @@
 				</div>
 			</template>
 		</div>
-		<script wbapp remove>
 
-		</script>
 	</div>
-
 </view>
 <edit header="Все попапы для ЛК">
 	<div>

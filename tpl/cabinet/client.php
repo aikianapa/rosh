@@ -29,7 +29,7 @@
 						<h1 class="h1 mb-10">Личный кабинет</h1>
 					</div>
 					<button class="btn btn--black --openpopup" data-popup="--record"
-						on-click="popupCreateQuote">
+						onclick="popupCreateQuote('{{user.id}}')">
 						Записаться на прием
 					</button>
 				</div>
@@ -272,8 +272,8 @@
 						<div class="account-events__btns">
 							<div class="account-event-wrap --aicn">
 								<div class="account-events__btn">
-									<button class="btn btn--black --openpopup"
-										on-click="prepay" data-record="{{this.id}}">
+									<button class="btn btn--black"
+										onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
 										Внести предоплату
 									</button>
 								</div>
@@ -379,9 +379,7 @@
 													{{#if this.analises}}
 													<a class="btn btn--black mb-20 --openpopup"
 														data-popup="--analize-type"
-														on-click="quoteAnalises"
-														data-file="{{this.analises}}"
-														data-record="{{this.id}}">
+														onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analises}}')">
 														Получить расшифровку анализов
 													</a>
 													{{/if}}
@@ -599,66 +597,16 @@
 					});
 				},
 				popupCreateQuote(ev) {
-					var createQuote = new Ractive({
-						el: '.popup.--record',
-						template: wbapp.tpl('#popupRecord').html,
-						data: {
-							user: wbapp._session.user,
-							'experts': catalog.experts,
-							'categories': catalog.categories,
-							'services': catalog.services
-						},
-						on: {
-							complete() {
-								console.log('ready!', catalog);
-								initServicesSearchInput($('#popup-services-list'), servicesList);
-								initPlugins();
-							},
-							submit(ev) {
-								let $form = $(ev.node);
-								let uid   = createQuote.get('user.id');
 
-								if ($form.verify() && uid > '') {
-									let data      = $form.serializeJSON();
-
-									data.group      = 'quotes';
-									data.status     = 'new';
-									data.pay_status = 'unpay';
-
-									data.analises = false;
-									data.photos   = {before: [], after: []};
-
-									data.client     = uid;
-									data.priority   = 0;
-									data.marked     = false;
-
-									data.comment        = '';
-									data.recommendation = '';
-									data.description    = '';
-
-									data.price = parseInt(data.price);
-
-									wbapp.post('/api/v2/create/records/', data, function (res) {
-										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-										$('.popup.--record .popup__panel.--succed').addClass('d-block');
-									});
-								}
-
-								return false;
-							}
-						}
-					});
 				},
 				profileSave(ev) {
 					let $form = $(ev.node);
 					let uid   = cabinet.get('user.id');
 					if ($form.verify() && uid > '') {
-						let data       = $form.serializeJSON();
-						data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-						data.birthdate = new Date(data.birthdate).toLocaleDateString();
-						wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
+						let data = $form.serializeJSON();
+						CabinetController.updateProfile(data, function (res) {
 							console.log(res);
-							toast('Успешно сохранено');
+							toast('Профиль успешно обновлён');
 						});
 					}
 					return false;

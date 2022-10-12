@@ -1204,13 +1204,23 @@ var Utils     = {
 			return this.request(path, 'post', data, options);
 		},
 		async request(path, method, data, options) {
+			let _path = path;
+			if (!path.includes('__token')) {
+				let parts = path.split('?', 2);
+				if (parts.length === 2) {
+					parts[1] += '&__token=' + wbapp._session.token;
+				} else {
+					parts[0] += '?__token=' + wbapp._session.token;
+				}
+				_path = parts.join('?');
+			}
 			const defaultOptions = {
 				method
 			};
 			if (method !== 'get' && method !== 'head') {
 				defaultOptions.body = new URLSearchParams(data);
 			}
-			return fetch(path,
+			return fetch(_path,
 				options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
 				.then((result) => result.json());
 		}
@@ -1223,20 +1233,53 @@ var Utils     = {
 		});
 
 		return _result;
+	},
+	formatDate(date) {
+		return new Date(date).toLocaleDateString();
+	},
+	formatDateTime(date) {
+		return new Date(date).toLocaleString();
 	}
 };
-var Record    = {
-	data: {},
-	find: function (id) {
-		if (!!id) {
-			this.data.id = id;
-		}
-	},
-	validate: function (data) {
+var CabinetController = {
+	updateProfile(profile_id, profile_data, callback) {
+		let data       = profile_data;
+		data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+		data.birthdate = new Date(data.birthdate).toLocaleDateString();
 
+		Utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
+			if (!!callback){
+				callback(res);
+			}
+		});
 	},
-	save: function () {
+	createQuote(record_data, callback) {
+		let data = record_data;
 
+		data.group      = 'quotes';
+		data.status     = 'new';
+		data.pay_status = 'unpay';
+
+		data.priority = 0;
+		data.marked   = false;
+
+		data.event_date        = '';
+		data.event_time        = '';
+		data.longterm_date_end = '';
+
+		data.longterm_ = '';
+		data.analises  = false;
+		data.photos    = {before: [], after: []};
+
+		data.comment        = '';
+		data.recommendation = '';
+		data.description    = '';
+
+		data.price = parseInt(data.price);
+
+		Utils.api.post('/api/v2/create/records/', data).then(function (res) {
+			callback(res);
+		});
 	}
 
 };
@@ -1389,12 +1432,14 @@ const catalog = {
 };
 
 $(function () {
-	catalog.init();
+	if (!!window.user_role.length) {
+		catalog.init();
+	}
 	/* common function */
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
 		var changes    = {};
 		var to_compare = field_to_compare;
-		for (var i in obj2) {
+		for (var i in curr_data) {
 			if (!!to_compare && !to_compare.include(i)) {
 				return;
 			}
@@ -1593,9 +1638,10 @@ $(function () {
 			paramName: 'title~',
 			serviceUrl: '/api/v2/list/records?group=longterm' + client_qry,
 			transformResult: function (response) {
+				console.log(response);
 				return {
-					suggestions: response.forEach(function (item) {
-						return {value: item.title, data: item.id};
+					suggestions: $.map(response, function (dataItem) {
+						return {value: dataItem.fullname, data: dataItem.id};
 					})
 				};
 			},
@@ -1629,6 +1675,111 @@ $(function () {
 		});
 	};
 	setTimeout(function () {
+		window.popupCreateQuote = function(){
+			var popup = new Ractive({
+				el: '.popup.--record',
+				template: wbapp.tpl('#popupRecord').html,
+				data: {
+					user: wbapp._session.user,
+					'experts': catalog.experts,
+					'categories': catalog.categories,
+					'services': catalog.services
+				},
+				on: {
+					complete() {
+						console.log('ready!', catalog);
+						initServicesSearch($('#popup-services-list'), catalog.servicesList);
+						initPlugins();
+					},
+					submit(ev) {
+						let $form = $(ev.node);
+						let uid   = popup.get('user.id');
+
+						if ($form.verify() && uid > '') {
+							let data = $form.serializeJSON();
+
+							data.group      = 'quotes';
+							data.status     = 'new';
+							data.pay_status = 'unpay';
+
+							data.analises = false;
+							data.photos   = {before: [], after: []};
+
+							data.client   = uid;
+							data.priority = 0;
+							data.marked   = false;
+
+							data.comment        = '';
+							data.recommendation = '';
+							data.description    = '';
+
+							data.price = parseInt(data.price);
+							CabinetController.createQuote(data, function (res) {
+								$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+								$('.popup.--record .popup__panel.--succed').addClass('d-block');
+							});
+						}
+
+						return false;
+					}
+				}
+			});
+		};
+		window.popupPay                   = new Ractive({
+			el: '.popup.--pay',
+			template: wbapp.tpl('#popupPay').html,
+			data: {
+				record: {}
+			},
+			on: {
+				init() {},
+				submit() {
+					$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+					$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+				}
+			},
+			showPopup: function (id) {
+				Utils.api.get('/api/v2/read/records/' + id).then(function (data) {
+					popupPay.set('record', data);
+					popupPay.resetTemplate(wbapp.tpl('#popupPay').html);
+
+					$('.popup.--pay').show();
+				});
+			}
+		});
+		window.popupAnalizeInterpretation = function() {
+			let popup = new Ractive({
+				el: '.popup.--analize-interpretation',
+				template: wbapp.tpl('#popupAnalizeInterpretation').html,
+				data: {
+					catalog: {},
+					record: {}
+				},
+				on: {
+					init() {
+						setTimeout(function () {
+							popup.set('catalog', catalog);
+						});
+					},
+					submit() {
+						let form = this.find('.popup.--analize-interpretation .popup__form');
+						if ($(form).verify()) {
+							let post = $(form).serializeJSON();
+
+							wbapp.post('/create/records', post, function (data) {
+								if (data.error) {
+									wbapp.trigger('wb-save-error', {'data': data});
+								} else {
+									$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
+									$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
+								}
+							});
+						}
+						return false;
+					}
+				}
+			});
+		};
 		window.popupDownloadData    = function () {
 			let popup = new Ractive({
 				el: '.popup.--download-data',
@@ -1697,7 +1848,6 @@ $(function () {
 				}
 			});
 		};
-
 		window.popupsConfirmSmsCode = function () {
 			let popup = new Ractive({
 				el: '.popup.--confirm-sms-code',
@@ -1786,6 +1936,7 @@ $(function () {
 			});
 		};
 	});
+
 	setTimeout(function () {
 		initPlugins();
 

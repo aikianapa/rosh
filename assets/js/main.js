@@ -237,6 +237,9 @@ $(function () {
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
             });
+            $('input[data-inputmask]').each(function () {
+                $(this).inputmask();
+            });
             //
             //$('input.autocomplete').each(function () {
             //    $(this).autocomplete({

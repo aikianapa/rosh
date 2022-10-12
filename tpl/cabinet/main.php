@@ -191,11 +191,15 @@
 											<div class="select__placeholder">Выберите специалиста</div>
 											<div class="select__values"></div>
 										</div>
-										<div class="select__list" multiple value="{{catalog.experts}}">
+										<div class="select__list">
 											{{#each catalog.experts}}
 											<div class="select__item select__item--checkbox">
 												<label class="checkbox checkbox--record">
+													{{#if @global.expertSelected(quote.experts, this)}}
+													<input type="checkbox" name="experts[]" checked value="{{id}}">
+													{{else}}
 													<input type="checkbox" name="experts[]" value="{{id}}">
+													{{/if}}
 													<span></span>
 													<div class="checbox__name">
 														<div class="select__name">{{name}}</div>
@@ -208,20 +212,21 @@
 								</div>
 							</div>
 							{{/if}}
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<div class="input input-lk-calendar input--grey">
-									<input class="input__control datetimepickr"
-										name="event_datetime" value="{{event_datetime}}"
+									<input class="input__control datepickr"
+										name="event_datetime" value="{{event_date}}"
 										type="text" placeholder="Выбрать дату и время">
-									<div class="input__placeholder">Выбрать дату и время</div>
+									<div class="input__placeholder">Выбрать дату</div>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-3">
 								<div class="input input-lk-calendar input--grey">
 									<input class="input__control datetimepickr"
-										name="event_duration" value="{{event_duration}}"
-										type="text" placeholder="Продолжительность">
-									<div class="input__placeholder">Продолжительность (часов)</div>
+										name="event_time" value="{{event_time}}"
+										data-inputmask="HH:MM - HH:MM"
+										type="text" placeholder="Выбрать время">
+									<div class="input__placeholder"></div>
 								</div>
 							</div>
 						</div>
@@ -420,7 +425,7 @@
 									</div>
 								</div>
 								<div class="admin-editor__top-status">
-									<div class="admin-editor__top-date">Заявка сформирована {{date}} / {{time}}</div>
+									<div class="admin-editor__top-date">Заявка сформирована {{@global.Utils.formatDate(_created)}} / {{time}}</div>
 									<div class="admin-editor__top-select">
 									</div>
 								</div>
@@ -517,15 +522,13 @@
 								data: {},
 								on: {
 									save(ev) {
-										let $form       = $(form);
+										let $form = $(form);
 										if ($form.verify() && item > '') {
-											let data       = $form.serializeJSON();
-											data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-											data.birthdate = new Date(data.birthdate).toLocaleDateString();
-											wbapp.post('/api/v2/update/users/' + item, data, function (res) {
+											let data = $form.serializeJSON();
+											CabinetController.updateProfile(data, function (res) {
 												console.log(res);
 												$(form).html('');
-												toast('Успешно сохранено');
+												toast('Профиль успешно обновлён');
 											});
 										}
 									}
@@ -542,10 +545,10 @@
 						},
 						editQuote(ev) {
 							const _parent = $(ev.node).parents('.accardeon');
-							let id      = $(ev.node).data('id');
-							let record     = _ractive_tab.get('result.' + id);
-							if (!quote.total_price) {
-								quote.total_price = 0;
+							let id        = $(ev.node).data('id');
+							let record    = _ractive_tab.get('result.' + id);
+							if (!quote.price) {
+								quote.price = 0;
 							}
 
 							fetch('/form/users/getClient/' + item, {
@@ -553,11 +556,11 @@
 							}).then((response) => {
 								return response.json();
 							}).then(function (data) {
-								_ractive_tab.set('result.'+ id+'.clientData', data);
+								_ractive_tab.set('result.' + id + '.clientData', data);
 							});
 
-							quote.total_price_text = numFormaSpace(quote.total_price);
-							let statusEdt          = new Ractive({
+							quote.price_text = numFormaSpace(quote.price);
+							let statusEdt    = new Ractive({
 								el: _parent.find('.admin-editor__top-select'),
 								template: editStatus,
 								data: {

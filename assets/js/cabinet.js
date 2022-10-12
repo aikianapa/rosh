@@ -1,3 +1,4 @@
+var expertSelected = function(){};
 var Utils     = {
 	formatPhone(phone) {
 		var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
@@ -59,13 +60,23 @@ var Utils     = {
 			return this.request(path, 'post', data, options);
 		},
 		async request(path, method, data, options) {
+			let _path = path;
+			if (!path.includes('__token')) {
+				let parts = path.split('?', 2);
+				if (parts.length === 2) {
+					parts[1] += '&__token=' + wbapp._session.token;
+				} else {
+					parts[0] += '?__token=' + wbapp._session.token;
+				}
+				_path = parts.join('?');
+			}
 			const defaultOptions = {
 				method
 			};
 			if (method !== 'get' && method !== 'head') {
 				defaultOptions.body = new URLSearchParams(data);
 			}
-			return fetch(path,
+			return fetch(_path,
 				options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
 				.then((result) => result.json());
 		}
@@ -78,19 +89,90 @@ var Utils     = {
 		});
 
 		return _result;
+	},
+	formatDate(date) {
+		return new Date(date).toLocaleDateString();
+	},
+	formatDateTime(date) {
+		return new Date(date).toLocaleString();
 	}
 };
-var Record    = {
-	data: {},
-	find: function (id) {
-		if (!!id) {
-			this.data.id = id;
-		}
+var CabinetController = {
+	updateProfile(profile_id, profile_data, callback) {
+		let data       = profile_data;
+		data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+		data.birthdate = new Date(data.birthdate).toLocaleDateString();
+
+		Utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
+			if (!!callback) {
+				callback(res);
+			}
+		});
 	},
-	validate: function (data) {
+	createQuote(record_data, callback) {
+		let data = record_data;
+
+		data.group      = 'quotes';
+		data.status     = 'new';
+		data.pay_status = 'unpay';
+
+		data.priority = 0;
+		data.marked   = false;
+
+		data.event_date        = '';
+		data.event_time        = '';
+		data.longterm_date_end = '';
+
+		data.longterm_ = '';
+		data.analises  = false;
+		data.photos    = {before: [], after: []};
+
+		data.comment        = '';
+		data.recommendation = '';
+		data.description    = '';
+
+		data.price = parseInt(data.price);
+
+		Utils.api.post('/api/v2/create/records/', data).then(function (res) {
+			callback(res);
+		});
+	},
+	listClientUpcoming(client_id, callback) {
+		Utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
+			function (data) {
+				if (!data) {
+					callback([]);
+				}
+				let curr_timestamp = parseInt(getdate()[0]);
+				data.forEach(function (rec) {
+					const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
+
+					if (event_date !== (new Date()).toLocaleDateString()) {
+						cabinet.push('events.upcoming', rec); /* get actually user next events */
+					}
+
+					if ((curr_timestamp + 10) > rec.event_begin_time && (rec.event_end_time >= curr_timestamp)) {
+						cabinet.push('events.current', rec);
+					}
+				});
+			});
+
+		wbapp.get('/api/v2/list/records?status=past&client=' + wbapp._session.user.id,
+			function (data) {
+				console.log('history.events:', data);
+				cabinet.set('history.events', data); /* get actually user next events */
+			});
+
+		wbapp.get('/api/v2/list/records?longterm=1&client=' + wbapp._session.user.id,
+			function (data) {
+				console.log('history.longterms:', data);
+				cabinet.set('history.longterms', data); /* get actually user next events */
+			});
+	},
+	listClientPast() {
 
 	},
-	save: function () {
+	listClientLongterms() {
 
 	}
 
@@ -244,12 +326,14 @@ const catalog = {
 };
 
 $(function () {
-	catalog.init();
+	if (!!window.user_role.length) {
+		catalog.init();
+	}
 	/* common function */
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
 		var changes    = {};
 		var to_compare = field_to_compare;
-		for (var i in obj2) {
+		for (var i in curr_data) {
 			if (!!to_compare && !to_compare.include(i)) {
 				return;
 			}
@@ -485,7 +569,116 @@ $(function () {
 		});
 	};
 	setTimeout(function () {
-		window.popupDownloadData    = function () {
+		window.popupCreateQuote = function (user_id) {
+			console.log(user_id);
+
+			var popup = new Ractive({
+				el: '.popup.--record',
+				template: wbapp.tpl('#popupRecord').html,
+				data: {
+					user: wbapp._session.user,
+					'experts': catalog.experts,
+					'categories': catalog.categories,
+					'services': catalog.services
+				},
+				on: {
+					complete() {
+						console.log('ready!', catalog);
+						initServicesSearch($('#popup-services-list'), catalog.servicesList);
+						initPlugins();
+					},
+					submit(ev) {
+						let $form = $(ev.node);
+						let uid   = popup.get('user.id');
+
+						if ($form.verify() && uid > '') {
+							let data = $form.serializeJSON();
+
+							data.group      = 'quotes';
+							data.status     = 'new';
+							data.pay_status = 'unpay';
+
+							data.analises = false;
+							data.photos   = {before: [], after: []};
+
+							data.client   = uid;
+							data.priority = 0;
+							data.marked   = false;
+
+							data.comment        = '';
+							data.recommendation = '';
+							data.description    = '';
+
+							data.price = parseInt(data.price);
+							CabinetController.createQuote(data, function (res) {
+								$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+								$('.popup.--record .popup__panel.--succed').addClass('d-block');
+							});
+						}
+
+						return false;
+					}
+				}
+			});
+		};
+
+		window.popupPay                   = function (record_id, price, user_id) {
+			const pay_price = Math.floor(parseInt(price) / 5);
+
+			var popup = new Ractive({
+				el: '.popup.--pay',
+				template: wbapp.tpl('#popupPay').html,
+				data: {
+					pay_price: pay_price,
+					price: parseInt(price),
+					client: user_id,
+					id: record_id
+				},
+				on: {
+					complite(ev) {
+						$('.popup.--pay').show();
+					},
+					submit() {
+						$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+						$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+					}
+				}
+			});
+		};
+		window.popupAnalizeInterpretation = function () {
+			let popup = new Ractive({
+				el: '.popup.--analize-interpretation',
+				template: wbapp.tpl('#popupAnalizeInterpretation').html,
+				data: {
+					catalog: {},
+					record: {}
+				},
+				on: {
+					init() {
+						setTimeout(function () {
+							popup.set('catalog', catalog);
+						});
+					},
+					submit() {
+						let form = this.find('.popup.--analize-interpretation .popup__form');
+						if ($(form).verify()) {
+							let post = $(form).serializeJSON();
+
+							wbapp.post('/create/records', post, function (data) {
+								if (data.error) {
+									wbapp.trigger('wb-save-error', {'data': data});
+								} else {
+									$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
+									$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
+								}
+							});
+						}
+						return false;
+					}
+				}
+			});
+		};
+		window.popupDownloadData          = function () {
 			let popup = new Ractive({
 				el: '.popup.--download-data',
 				template: wbapp.tpl('#popupDownloadData').html,
@@ -505,7 +698,7 @@ $(function () {
 				}
 			});
 		};
-		window.popupsCreateProfile  = function () {
+		window.popupsCreateProfile        = function () {
 			let popup = new Ractive({
 				el: '.popup.--create-client',
 				template: wbapp.tpl('#popupCreateClient').html,
@@ -518,7 +711,7 @@ $(function () {
 							console.log(post);
 
 							let names = post.fullname.split(' ', 3);
-							let keys = ['last_name', 'first_name', 'middle_name'];
+							let keys  = ['last_name', 'first_name', 'middle_name'];
 							for (var i = 0; i < names.length; i++) {
 								post[keys[i]] = names[i];
 							}
@@ -553,7 +746,6 @@ $(function () {
 				}
 			});
 		};
-
 		window.popupsConfirmSmsCode = function () {
 			let popup = new Ractive({
 				el: '.popup.--confirm-sms-code',
@@ -641,10 +833,8 @@ $(function () {
 				}
 			});
 		};
-	});
-	setTimeout(function () {
-		initPlugins();
 
+		initPlugins();
 		$(document).on('change', '#file-photo', function (e, list) {
 			e.stopPropagation();
 			var _block   = $(this).parents('.file-photo');
