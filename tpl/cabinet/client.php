@@ -51,7 +51,7 @@
 							</div>
 							<div class="user__group">
 								<div class="user__birthday">Дата рождения:
-									<span>{{user.birthdate}}</span>
+									<span>{{user.birthdate_fmt}}</span>
 								</div>
 								<div class="user__phone">Тел:
 									<span>{{user.phone}}</span>
@@ -72,11 +72,10 @@
 						<div class="row profile-edit__wrap">
 							<div class="col-md-3">
 								<div class="input input--grey">
-
-									<b>{{.birthdate}}</b>
-
 									<input class="input__control datebirthdaypickr"
-										name="birthdate" value="{{.birthdate}}" type="text"
+										name="birthdate"
+										value="{{.birthdate}}"
+										type="text"
 										placeholder="Дата рождения">
 									<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
 								</div>
@@ -574,8 +573,8 @@
 				},
 				init() {
 					wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
-						data.birthdate = Utils.formatDate(data.birthdate);
-						data.phone     = Utils.formatPhone(data.phone);
+						data.birthdate_fmt = Utils.formatDate(data.birthdate);
+						data.phone         = Utils.formatPhone(data.phone);
 						cabinet.set('user', data); /* get actually user data */
 					});
 
@@ -621,8 +620,8 @@
 					if ($form.verify() && uid > '') {
 						let data = $form.serializeJSON();
 						CabinetController.updateProfile(uid, data, function (data) {
-							data.birthdate = Utils.formatDate(data.birthdate);
-							data.phone     = Utils.formatPhone(data.phone);
+							data.birthdate_fmt = Utils.formatDate(data.birthdate);
+							data.phone         = Utils.formatPhone(data.phone);
 							cabinet.set('user', data); /* get actually user data */
 							toast('Профиль успешно обновлён');
 						});

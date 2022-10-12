@@ -557,17 +557,19 @@
 					wbapp.get(
 						'/api/v2/list/records?group=events&status=upcoming&experts~=' + wbapp._session.user.id,
 						function (data) {
-							const curr_timestamp = parseInt(getdate()[0]);
+							let curr_timestamp = parseInt(getdate()[0]);
 
 							data.forEach(function (rec) {
-								const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
-
-								if (event_date !== (new Date()).toLocaleDateString()) {
-									cabinet.push('events.upcoming', data); /* get actually user next events */
+								if (rec.event_date !== (new Date()).toLocaleDateString()) {
+									cabinet.push('events.upcoming', rec); /* get actually user next events */
 								}
 
-								if (((curr_timestamp - (15 * 60)) < rec.event_begin_time) &&
-								    (rec.event_end_time > curr_time)) {
+								let times                = rec.event_time.split(' - ');
+								let event_from_timestamp = Utils.timestamp(rec.event_date + ' ' + times[0]);
+								let event_to_timestamp   = Utils.timestamp(rec.event_date + ' ' + times[1]);
+
+								if (event_from_timestamp < curr_timestamp
+								    && (event_to_timestamp >= curr_timestamp)) {
 									cabinet.push('events.current', rec);
 								}
 							});

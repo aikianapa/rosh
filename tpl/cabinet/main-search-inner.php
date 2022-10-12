@@ -54,7 +54,7 @@
 								<div class="user">
 									<div class="user__name">{{this.fullname}}</div>
 									<div class="user__item">Дата рождения:
-										<span>{{this.birthdate}}</span>
+										<span>{{this.birthdate_fmt}}</span>
 									</div>
 									<a href="callto:+{{this.phone}}" class="user__item">Тел:
 										<span>{{this.phone}}</span>
@@ -424,15 +424,29 @@
 			on: {
 				init() {
 					wbapp.get('/api/v2/read/users/' + client_id, function (data) {
-						data.birthdate = new Date(data.birthdate).toLocaleDateString();
-						data.phone     = '+' + data.phone;
+						data.birthdate_fmt = Utils.formatDate(data.birthdate);
+						data.phone         = Utils.formatPhone(data.phone);
 						cabinet.set('client', data); /* get actually user data */
 					});
 
-					wbapp.get('/api/v2/list/records?status=upcoming&client=' + client_id,
-						function (data) {
-							cabinet.push('events.upcoming', data);
+					wbapp.get('/api/v2/list/records?status=upcoming&client=' + client_id, function (data) {
+						let curr_timestamp = parseInt(getdate()[0]);
+
+						data.forEach(function (rec) {
+							if (rec.event_date !== (new Date()).toLocaleDateString()) {
+								cabinet.push('events.upcoming', rec); /* get actually user next events */
+							}
+
+							let times                = rec.event_time.split(' - ');
+							let event_from_timestamp = Utils.timestamp(rec.event_date + ' ' + times[0]);
+							let event_to_timestamp   = Utils.timestamp(rec.event_date + ' ' + times[1]);
+
+							if (event_from_timestamp < curr_timestamp
+							    && (event_to_timestamp >= curr_timestamp)) {
+								cabinet.push('events.current', rec);
+							}
 						});
+					});
 
 					wbapp.get('/api/v2/list/records?status=past&client=' + client_id,
 						function (data) {

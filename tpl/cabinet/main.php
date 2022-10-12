@@ -513,19 +513,20 @@
 					data: {},
 					on: {
 						editProfile(ev) {
-							let record = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
-							let item   = $(ev.node).data('id');
-							let form   = $(ev.node).parents('.admin-editor').find('.admin-editor__edit-profile');
-							let editor = new Ractive({
+							let record     = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
+							let profile_id = $(ev.node).data('id');
+							let form       = $(ev.node).parents('.admin-editor')
+								.find('.admin-editor__edit-profile');
+							let editor     = new Ractive({
 								el: form,
 								template: editProfile,
 								data: {},
 								on: {
 									save(ev) {
 										let $form = $(form);
-										if ($form.verify() && item > '') {
+										if ($form.verify() && profile_id > '') {
 											let data = $form.serializeJSON();
-											CabinetController.updateProfile(data, function (res) {
+											CabinetController.updateProfile(profile_id, data, function (res) {
 												console.log(res);
 												$(form).html('');
 												toast('Профиль успешно обновлён');
@@ -534,7 +535,7 @@
 									}
 								}
 							});
-							fetch('/form/users/getClient/' + item, {
+							fetch('/form/users/getClient/' + profile_id, {
 								method: 'GET'
 							}).then((response) => {
 								return response.json();
