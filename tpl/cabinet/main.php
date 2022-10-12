@@ -528,6 +528,9 @@
 											let data = $form.serializeJSON();
 											CabinetController.updateProfile(profile_id, data, function (res) {
 												console.log(res);
+												data.birthdate_fmt = Utils.formatDate(data.birthdate);
+												data.phone         = Utils.formatPhone(data.phone);
+												cabinet.set('user', data); /* get actually user data */
 												$(form).html('');
 												toast('Профиль успешно обновлён');
 											});
@@ -584,7 +587,7 @@
 										$(copy).html($(form).clone());
 										let post = $(copy).serializeJSON();
 										wbapp.post('/api/v2/update/records/' + lead, post, function (res) {
-											tabQuotes.set('results.' + lead, res);
+											_ractive_tab.set('results.' + lead, res);
 
 											toast('Успешно сохранено');
 										});
@@ -601,14 +604,25 @@
 								},
 								on: {
 									complete(ev) {
-										console.log('quote editor ready!');
-										initServicesSearch($('.popup-services-list'), servicesList);
+										initServicesSearch($('.popup-services-list'), catalog.servicesList);
 										initPlugins();
 									},
 									save(ev) {
+										let lead = $(ev.node).parents('.acount__table-accardeon[data-id]')
+											.data('id');
+										let item = $(ev.node).data('id');
+										let form = $(ev.node).parents('.admin-editor');
+
 										let post = $($(ev.node).parents('form')).serializeJSON();
-										console.log('event data:', post);
-										toast('Успешно сохранено');
+										CabinetController.updateQuote(lead, post, function (res) {
+											console.log('event data:', post);
+											toast('Успешно сохранено');
+											_ractive_tab.set('results.' + lead, res);
+
+											toast('Успешно сохранено');
+										});
+
+										return false;
 									}
 								}
 							});
