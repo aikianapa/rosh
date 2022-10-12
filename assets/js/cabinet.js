@@ -82,7 +82,7 @@ var catalog = {
 			_self.servicePrices = {};
 
 			data.forEach(function (service, i) {
-				_services[service.id] = service;
+				_self.services[service.id] = service;
 				const _cats           = service.category;
 				const _tags           = [];
 
@@ -93,31 +93,31 @@ var catalog = {
 						"tag": Array.from(_self.serviceTags[cat].name)[0]
 					});
 				});
-
-				service.blocks.landing_price.price.forEach(function (serv_price, j) {
-					if (serv_price.price === 0) {
-						return;
-					}
-					let _item = {
-						value: serv_price.header,
-						id: service.id + '-' + j,
-						data: {
-							service_id: service.id,
-							service_title: service.header,
-							tags: _tags,
-							price: serv_price.price,
-							price_id: j
+				if(!!service.blocks) {
+					service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
+						if (serv_price.price === 0) {
+							return;
 						}
-					};
-					_self.servicesList.push(_item);
-					_self.servicePrices[service.id + '-' + j] = {
-						'price': serv_price.price,
-						'header': serv_price.header
-					};
-				});
+						let _item = {
+							value: serv_price.header,
+							id: service.id + '-' + j,
+							data: {
+								service_id: service.id,
+								service_title: service.header,
+								tags: _tags,
+								price: serv_price.price,
+								price_id: j
+							}
+						};
+						_self.servicesList.push(_item);
+						_self.servicePrices[service.id + '-' + j] = {
+							'price': serv_price.price,
+							'header': serv_price.header
+						};
+					});
+				}
 			});
 
-			_self.services = _services;
 		});
 		/* for Admins only */
 		if (window.user_role === 'main') {
@@ -366,6 +366,7 @@ var CabinetController = {
 	}
 
 };
+
 $(function () {
 	if (!!window.user_role.length) {
 		catalog.init();
