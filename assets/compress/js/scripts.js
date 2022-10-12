@@ -1418,8 +1418,7 @@ var CabinetController = {
 	updateProfile(profile_id, profile_data, callback) {
 		let data       = profile_data;
 		data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-		data.birthdate = new Date(data.birthdate).toLocaleDateString();
-
+		
 		Utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
 			if (!!callback) {
 				callback(res);
@@ -1440,7 +1439,7 @@ var CabinetController = {
 		data.event_time        = '';
 		data.longterm_date_end = '';
 
-		data.longterm_ = '';
+		data.longterm_title = '';
 		data.analises  = false;
 		data.photos    = {before: [], after: []};
 
@@ -1451,6 +1450,27 @@ var CabinetController = {
 		data.price = parseInt(data.price);
 
 		Utils.api.post('/api/v2/create/records/', data).then(function (res) {
+			callback(res);
+		});
+	},
+	updateQuote(record_id, record_data, callback) {
+		let data = record_data;
+
+		//data.event_date        = '';
+		//data.event_time        = '';
+		//data.longterm_date_end = '';
+
+		data.longterm_title = '';
+		//data.analises  = false;
+		//data.photos    = {before: [], after: []};
+
+		//data.comment        = '';
+		//data.recommendation = '';
+		//data.description    = '';
+
+		data.price = parseInt(data.price);
+
+		Utils.api.post('/api/v2/update/records/' + record_id, data).then(function (res) {
 			callback(res);
 		});
 	},

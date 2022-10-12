@@ -270,7 +270,6 @@ var CabinetController = {
 	updateProfile(profile_id, profile_data, callback) {
 		let data       = profile_data;
 		data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-		data.birthdate = new Date(data.birthdate).toLocaleDateString();
 
 		Utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
 			if (!!callback) {

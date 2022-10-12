@@ -76,7 +76,7 @@
 										name="birthdate"
 										value="{{.birthdate}}"
 										type="text"
-										placeholder="Дата рождения">
+										placeholder="Дата рождения" twoway="false">
 									<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
 								</div>
 							</div>

@@ -189,7 +189,7 @@ $(function () {
 
             $('.datebirthdaypickr').each(function () {
                 new AirDatepicker(this, {
-                    selectedDates: [(new Date($(this).val()))],
+                    selectedDates: [new Date($(this).val())],
                     autoClose: true,
                     dateFormat: 'dd.MM.yyyy',
                     timepicker: false
