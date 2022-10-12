@@ -559,7 +559,7 @@
 								_ractive_tab.set('result.' + id + '.clientData', data);
 							});
 
-							quote.price_text = numFormaSpace(quote.price);
+							quote.price_text = Utils.formatPrice(quote.price);
 							let statusEdt    = new Ractive({
 								el: _parent.find('.admin-editor__top-select'),
 								template: editStatus,
@@ -573,7 +573,6 @@
 											.trigger('click');
 										$(statusEdt.find(`.select.pay [data-id="${quote.pay_status}"]`))
 											.trigger('click');
-										console.log('status editor ready!', quote);
 									},
 									save(ev) {
 										let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
@@ -592,7 +591,7 @@
 									}
 								}
 							});
-							let quoteEdt           = new Ractive({
+							let quoteEdt     = new Ractive({
 								el: _parent.find('.admin-editor__events'),
 								template: editQuote,
 								data: {
@@ -620,7 +619,7 @@
 						return response.json();
 					})
 					.then(function (result) {
-						let data = {};
+						let data     = {};
 						data.group   = target_tab;
 						data.result  = result;
 						data.catalog = catalog;
@@ -631,117 +630,117 @@
 					});
 				tabs.push(_ractive_tab);
 			});
-/*
-			let tabEvents = new Ractive({
-				el: '.data-tab-item[data-tab="events"]',
-				template: tplEvents,
-				data: {},
-				on: {
-					saveQuote(ev) {
-						let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
+			/*
+			 let tabEvents = new Ractive({
+			 el: '.data-tab-item[data-tab="events"]',
+			 template: tplEvents,
+			 data: {},
+			 on: {
+			 saveQuote(ev) {
+			 let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
 
-						let form = $(ev.node).parents('.admin-editor');
-						$(form).find('.admin-editor__edit-profile').html('');
-						let copy = $('<form></form>');
-						$(copy).html($(form).clone());
-						let post = $(copy).serializeJSON();
-						wbapp.post('/api/v2/update/records/' + lead, post, function (res) {
-							console.log(res);
-							tabEvents.set('result.' + lead, res);
+			 let form = $(ev.node).parents('.admin-editor');
+			 $(form).find('.admin-editor__edit-profile').html('');
+			 let copy = $('<form></form>');
+			 $(copy).html($(form).clone());
+			 let post = $(copy).serializeJSON();
+			 wbapp.post('/api/v2/update/records/' + lead, post, function (res) {
+			 console.log(res);
+			 tabEvents.set('result.' + lead, res);
 
-							toast('Успешно сохранено.');
-						});
-						delete copy;
+			 toast('Успешно сохранено.');
+			 });
+			 delete copy;
 
-					},
-					editProfile(ev) {
-						let lead   = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
-						let item   = $(ev.node).data('id');
-						let form   = $(ev.node).parents('.admin-editor').find('.admin-editor__edit-profile');
-						let editor = new Ractive({
-							el: form,
-							template: editProfile,
-							data: {},
-							on: {
-								complete() {
+			 },
+			 editProfile(ev) {
+			 let lead   = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
+			 let item   = $(ev.node).data('id');
+			 let form   = $(ev.node).parents('.admin-editor').find('.admin-editor__edit-profile');
+			 let editor = new Ractive({
+			 el: form,
+			 template: editProfile,
+			 data: {},
+			 on: {
+			 complete() {
 
-								},
-								save(ev) {
-									let post = $($(ev.node).parents('form')).serializeJSON();
-									wbapp.post('/form/users/setClient/' + item, post, function (res) {
-										tabEvents.set('result.' + lead + '.clientData', res);
-										toast('Успешно сохранено');
+			 },
+			 save(ev) {
+			 let post = $($(ev.node).parents('form')).serializeJSON();
+			 wbapp.post('/form/users/setClient/' + item, post, function (res) {
+			 tabEvents.set('result.' + lead + '.clientData', res);
+			 toast('Успешно сохранено');
 
-										$(form).html('');
-									});
-								}
-							}
-						});
-						fetch('/form/users/getClient/' + item, {
-							method: 'GET'
-						}).then((response) => {
-							return response.json();
-						}).then(function (data) {
-							editor.set(data);
-							form.find('form').show();
-							initPlugins();
-						});
-					},
-					editQuoteStatus(ev) {
-						let event  = $(ev.node).data('id');
-						let quote  = tplEvents.get('result.' + event);
-						let status = new Ractive({
-							el: $(ev.node).parents('.accardeon').find('.admin-editor__top-select'),
-							template: editStatus,
-							data: {catalog: catalog},
-							on: {
-								complete() {
-									$(status.find(`.select.status [data-id="${quote.status}"]`)).trigger('click');
-									$(status.find(`.select.pay [data-id="${quote.pay_status}"]`)).trigger('click');
-								},
-								save(ev) {
-									let post = $($(ev.node).parents('form')).serializeJSON();
-									console.log('event data:', post);
+			 $(form).html('');
+			 });
+			 }
+			 }
+			 });
+			 fetch('/form/users/getClient/' + item, {
+			 method: 'GET'
+			 }).then((response) => {
+			 return response.json();
+			 }).then(function (data) {
+			 editor.set(data);
+			 form.find('form').show();
+			 initPlugins();
+			 });
+			 },
+			 editQuoteStatus(ev) {
+			 let event  = $(ev.node).data('id');
+			 let quote  = tplEvents.get('result.' + event);
+			 let status = new Ractive({
+			 el: $(ev.node).parents('.accardeon').find('.admin-editor__top-select'),
+			 template: editStatus,
+			 data: {catalog: catalog},
+			 on: {
+			 complete() {
+			 $(status.find(`.select.status [data-id="${quote.status}"]`)).trigger('click');
+			 $(status.find(`.select.pay [data-id="${quote.pay_status}"]`)).trigger('click');
+			 },
+			 save(ev) {
+			 let post = $($(ev.node).parents('form')).serializeJSON();
+			 console.log('event data:', post);
 
-									wbapp.post('/api/v2/update/records/' + event, post, function (res) {
-										console.log(res);
-										tabEvents.set('result.' + event, res);
+			 wbapp.post('/api/v2/update/records/' + event, post, function (res) {
+			 console.log(res);
+			 tabEvents.set('result.' + event, res);
 
-										toast('Успешно сохранено');
-									});
-									return false;
-								}
-							}
-						});
-					},
-					editQuote(ev) {
-						let event  = $(ev.node).data('id');
-						let form   = $(ev.node).parents('.admin-editor').find('.admin-editor__events');
-						let record = tplEvents.get('result.' + event);
-						let editor = new Ractive({
-							el: form,
-							template: editStatus,
-							data: {catalog: catalog},
-							on: {
-								complete() {
-									console.log('editor ready!');
-								},
-								save(ev) {
-									let post = $($(ev.node).parents('form')).serializeJSON();
-									console.log('event data:', post);
-									wbapp.post('/api/v2/update/records/' + event, post, function (res) {
-										console.log(res);
-										tabEvents.set('result.' + event, res);
+			 toast('Успешно сохранено');
+			 });
+			 return false;
+			 }
+			 }
+			 });
+			 },
+			 editQuote(ev) {
+			 let event  = $(ev.node).data('id');
+			 let form   = $(ev.node).parents('.admin-editor').find('.admin-editor__events');
+			 let record = tplEvents.get('result.' + event);
+			 let editor = new Ractive({
+			 el: form,
+			 template: editStatus,
+			 data: {catalog: catalog},
+			 on: {
+			 complete() {
+			 console.log('editor ready!');
+			 },
+			 save(ev) {
+			 let post = $($(ev.node).parents('form')).serializeJSON();
+			 console.log('event data:', post);
+			 wbapp.post('/api/v2/update/records/' + event, post, function (res) {
+			 console.log(res);
+			 tabEvents.set('result.' + event, res);
 
-										toast('Успешно сохранено');
-									});
-									return false;
-								}
-							}
-						});
-					}
-				}
-			});*/
+			 toast('Успешно сохранено');
+			 });
+			 return false;
+			 }
+			 }
+			 });
+			 }
+			 }
+			 });*/
 		}, 50);
 		$(function () {
 			$(document).on('click', 'button.flag-date__ico', function (e) {

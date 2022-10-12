@@ -1,13 +1,177 @@
-var expertSelected = function(){};
-var Utils     = {
+var in_list = function (val, list) {
+	if (!val || !list) {
+		return false;
+	}
+	return list.includes(val);
+};
+var formatPhone = function(phone) {
+	var cleaned = ('' + phone).replace(/\D/g, '');
+	console.log(cleaned);
+	var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+	if (match) {
+		var intlCode = (match[1] ? '+7 ' : '');
+		return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
+	}
+	return phone;
+};
+var catalog = {
+	/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
+	spec_service: {
+		experts_consultation: {
+			header: 'Общая консультация специалиста',
+			price: 4000
+		},
+		analises_interpretation: {
+			header: 'Расшифровка анализов',
+			price: 2000
+		}
+	},
+	/*dyctionary types*/
+	quoteStatus: {},
+	quoteType: {},
+	quotePay: {},
+
+	services: {},
+	servicePrices: {},
+	servicesList: [], /* for autocomplete */
+	serviceTags: {
+		"face": {
+			"name": "Лицо",
+			"color": "yellow"
+		},
+		"body": {
+			"name": "Тело",
+			"color": "green"
+		},
+		"hair": {
+			"name": "Волосы",
+			"color": "red"
+		},
+		"gyn": {
+			"name": "Гинекология",
+			"color": "blue"
+		},
+		"lab": {
+			"name": "Лаборатория",
+			"color": "purple"
+		}
+	},
+	categories: {},
+
+	experts: {},
+	clients: {},
+	admins: {},
+
+	init() {
+		var _self = this;
+
+		Utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
+			_self.quoteStatus = Utils.arrIndexBy(data);
+		});
+
+		Utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+			_self.quotePay = Utils.arrIndexBy(data);
+		});
+		Utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
+			_self.quoteType = Utils.arrIndexBy(data);
+		});
+
+		Utils.api.get('/api/v2/list/services?active=on').then(function (data) {
+
+			let _services       = {};
+			_self.servicePrices = {};
+
+			data.forEach(function (service, i) {
+				_services[service.id] = service;
+				const _cats           = service.category;
+				const _tags           = [];
+
+				_cats.forEach(function (cat) {
+					_tags.push({
+						"id": cat,
+						"color": _self.serviceTags[cat].color,
+						"tag": Array.from(_self.serviceTags[cat].name)[0]
+					});
+				});
+
+				service.blocks.landing_price.price.forEach(function (serv_price, j) {
+					if (serv_price.price === 0) {
+						return;
+					}
+					let _item = {
+						value: serv_price.header,
+						id: service.id + '-' + j,
+						data: {
+							service_id: service.id,
+							service_title: service.header,
+							tags: _tags,
+							price: serv_price.price,
+							price_id: j
+						}
+					};
+					_self.servicesList.push(_item);
+					_self.servicePrices[service.id + '-' + j] = {
+						'price': serv_price.price,
+						'header': serv_price.header
+					};
+				});
+			});
+
+			_self.services = _services;
+		});
+		/* for Admins only */
+		if (window.user_role === 'main') {
+			Utils.api.get('/api/v2/list/users?role=main&active=on' +
+			              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
+				_self.admins = Utils.arrIndexBy(data);
+			});
+			Utils.api.get('/api/v2/list/users?role=client&active=on' +
+			              '&@return=id,fullname,phone,email,birthdate&@sort=fullname:a').then(function (data) {
+				_self.clients = Utils.arrIndexBy(data);
+			});
+		}
+
+		Utils.api.get('/api/v2/list/experts?active=on&@sort=name:a').then(function (data) {
+			let _experts = {};
+			data.forEach(function (expert, i) {
+				_experts[expert.id] = expert;
+				Utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
+					console.log('-- expert url:', res[0]['u']);
+					_experts[expert.id].info_uri = res[0]['u'] || '';
+				});
+			});
+			_self.experts = _experts;
+		});
+
+		Utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
+			let _serviceCats = {};
+			Object.keys(res.tree.data).forEach(function (_key) {
+				const _cat = res.tree.data[_key];
+				if (_cat.active != 'on') {
+					return;
+				}
+				_serviceCats[_cat.id] = {
+					'id': _cat.id,
+					'name': _cat.name,
+					'color': _cat.data.color
+				};
+			});
+			_self.categories = _serviceCats;
+		});
+
+		console.log('-- start preload catalogs data --');
+	}
+};
+var Utils   = {
 	formatPhone(phone) {
-		var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+		var cleaned = ('' + phone).replace(/\D/g, '');
+		console.log(cleaned);
 		var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
 		if (match) {
 			var intlCode = (match[1] ? '+7 ' : '');
 			return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
 		}
-		return null;
+		return phone;
 	},
 	formatPrice(price, sufix) {
 		var sign = 1;
@@ -51,6 +215,9 @@ var Utils     = {
 
 		return arr.filter(onlyUnique);
 	},
+	timestamp(datetime){
+		return Math.floor(new Date(datetime).getTime() / 1000);
+	},
 	api: {
 		get(path, data, options) {
 			const fullPath = (data === undefined) ? path : path + `?${new URLSearchParams(data)}`;
@@ -91,12 +258,14 @@ var Utils     = {
 		return _result;
 	},
 	formatDate(date) {
+		console.log(date);
 		return new Date(date).toLocaleDateString();
 	},
 	formatDateTime(date) {
 		return new Date(date).toLocaleString();
 	}
 };
+
 var CabinetController = {
 	updateProfile(profile_id, profile_data, callback) {
 		let data       = profile_data;
@@ -177,154 +346,6 @@ var CabinetController = {
 	}
 
 };
-
-const catalog = {
-	/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
-	spec_service: {
-		experts_consultation: {
-			header: 'Общая консультация специалиста',
-			price: 4000
-		},
-		analises_interpretation: {
-			header: 'Расшифровка анализов',
-			price: 2000
-		}
-	},
-	/*dyctionary types*/
-	quoteStatus: {},
-	quoteType: {},
-	quotePay: {},
-
-	services: {},
-	servicePrices: {},
-	servicesList: [], /* for autocomplete */
-	serviceTags: {
-		"face": {
-			"name": "Лицо",
-			"color": "yellow"
-		},
-		"body": {
-			"name": "Тело",
-			"color": "green"
-		},
-		"hair": {
-			"name": "Волосы",
-			"color": "red"
-		},
-		"gyn": {
-			"name": "Гинекология",
-			"color": "blue"
-		},
-		"lab": {
-			"name": "Лаборатория",
-			"color": "purple"
-		}
-	},
-	categories: {},
-	experts: {},
-	clients: {},
-	admins: {},
-
-	init() {
-		var _self = this;
-
-		Utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
-			_self.quoteStatus = Utils.arrIndexBy(data);
-		});
-
-		Utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-			_self.quotePay = Utils.arrIndexBy(data);
-		});
-		Utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
-			_self.quoteType = Utils.arrIndexBy(data);
-		});
-
-		Utils.api.get('/api/v2/list/services?active=on').then(function (data) {
-
-			let _services       = {};
-			_self.servicePrices = {};
-
-			data.forEach(function (service, i) {
-				_services[service.id] = service;
-				const _cats           = service.category;
-				const _tags           = [];
-
-				_cats.forEach(function (cat) {
-					_tags.push({
-						"id": cat,
-						"color": _self.serviceTags[cat].color,
-						"tag": Array.from(_self.serviceTags[cat].name)[0]
-					});
-				});
-
-				service.blocks.landing_price.price.forEach(function (serv_price, j) {
-					if (serv_price.price === 0) {
-						return;
-					}
-					let _item = {
-						value: serv_price.header,
-						id: service.id + '-' + j,
-						data: {
-							service_id: service.id,
-							service_title: service.header,
-							tags: _tags,
-							price: serv_price.price,
-							price_id: j
-						}
-					};
-					_self.servicesList.push(_item);
-					_self.servicePrices[service.id + '-' + j] = {
-						'price': serv_price.price,
-						'header': serv_price.header
-					};
-				});
-			});
-
-			_self.services = _services;
-		});
-
-		Utils.api.get('/api/v2/list/users?role=main&active=on' +
-		              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
-			_self.admins = Utils.arrIndexBy(data);
-		});
-
-		Utils.api.get('/api/v2/list/users?role=client&active=on' +
-		              '&@return=id,fullname,phone,email,birthdate&@sort=fullname:a').then(function (data) {
-			_self.clients = Utils.arrIndexBy(data);
-		});
-
-		Utils.api.get('/api/v2/list/experts?active=on&@sort=name:a').then(function (data) {
-			let _experts = {};
-			data.forEach(function (expert, i) {
-				_experts[expert.id] = expert;
-				Utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
-					console.log('-- expert url:', res[0]['u']);
-					_experts[expert.id].info_uri = res[0]['u'] || '';
-				});
-			});
-			_self.experts = _experts;
-		});
-
-		Utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
-			let _serviceCats = {};
-			Object.keys(res.tree.data).forEach(function (_key) {
-				const _cat = res.tree.data[_key];
-				if (_cat.active != 'on') {
-					return;
-				}
-				_serviceCats[_cat.id] = {
-					'id': _cat.id,
-					'name': _cat.name,
-					'color': _cat.data.color
-				};
-			});
-			_self.categories = _serviceCats;
-		});
-
-		console.log('-- start preload catalogs data --');
-	}
-};
-
 $(function () {
 	if (!!window.user_role.length) {
 		catalog.init();
@@ -347,7 +368,6 @@ $(function () {
 
 		return changes;
 	};
-
 	window.toast = function (text, head, icon) {
 		var bgColor   = '#616161';
 		var textColor = '#FEFEFE';
@@ -500,7 +520,7 @@ $(function () {
 					sum += parseInt($(this).data('price'));
 				});
 				console.log(sum);
-				_parent_form.find('.admin-editor__summ .price').text(numFormaSpace(sum) + ' ₽');
+				_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
@@ -512,11 +532,10 @@ $(function () {
 			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
-			_parent_form.find('.admin-editor__summ .price').text(numFormaSpace(sum) + ' ₽');
+			_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
-
 	window.initLongtermSearch = function ($form, for_client) {
 		let client_qry = '';
 		if (!!for_client) {
@@ -544,7 +563,6 @@ $(function () {
 			}
 		});
 	};
-
 	window.initClientSearch = function ($form) {
 		$form.find('input.client-search').autocomplete({
 			noCache: true,
@@ -568,10 +586,10 @@ $(function () {
 			}
 		});
 	};
-	setTimeout(function () {
-		window.popupCreateQuote = function (user_id) {
-			console.log(user_id);
 
+	setTimeout(function () {
+		window.popupCreateQuote    = function (user_id) {
+			console.log(user_id);
 			var popup = new Ractive({
 				el: '.popup.--record',
 				template: wbapp.tpl('#popupRecord').html,
@@ -583,8 +601,9 @@ $(function () {
 				},
 				on: {
 					complete() {
-						console.log('ready!', catalog);
-						initServicesSearch($('#popup-services-list'), catalog.servicesList);
+						this.set('catalog', catalog);
+
+						initServicesSearch($('.search-services'), catalog.servicesList);
 						initPlugins();
 					},
 					submit(ev) {
@@ -698,7 +717,7 @@ $(function () {
 				}
 			});
 		};
-		window.popupsCreateProfile        = function () {
+		window.popupsCreateProfile = function () {
 			let popup = new Ractive({
 				el: '.popup.--create-client',
 				template: wbapp.tpl('#popupCreateClient').html,
@@ -717,7 +736,7 @@ $(function () {
 							}
 
 							wbapp.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
-								if (data.length == 0) {
+								if (data.length === 0) {
 									wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
 										function (data) {
 											if (data.length == 0) {

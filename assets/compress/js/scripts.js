@@ -251,7 +251,7 @@ $(function () {
 
             $('.datebirthdaypickr').each(function () {
                 new AirDatepicker(this, {
-                    selectedDates: [$(this).val() || (new Date())],
+                    selectedDates: [(new Date($(this).val()))],
                     autoClose: true,
                     dateFormat: 'dd.MM.yyyy',
                     timepicker: false
@@ -296,6 +296,9 @@ $(function () {
                 });
             });
 
+            $('input[data-inputmask]').each(function () {
+                $(this).inputmask();
+            });
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
             });
@@ -1143,148 +1146,23 @@ $(document).ready(function(){
 
 })
 ;
-var Utils     = {
-	formatPhone(phone) {
-		var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
-		var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
-		if (match) {
-			var intlCode = (match[1] ? '+7 ' : '');
-			return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
-		}
-		return null;
-	},
-	formatPrice(price, sufix) {
-		var sign = 1;
-		if (val < 0) {
-			sign = -1;
-			val  = -val;
-		}
-		// trim the number decimal point if it exists
-		let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
-		let len    = num.toString().length;
-		let result = '';
-		let count  = 1;
-
-		for (let i = len - 1; i >= 0; i--) {
-			result = num.toString()[i] + result;
-			if (count % 3 === 0 && count !== 0 && i !== 0) {
-				result = ' ' + result;
-			}
-			count++;
-		}
-
-		// add number after decimal point
-		if (val.toString().includes('.')) {
-			result = result + '.' + val.toString().split('.')[1];
-		}
-		// return result with - sign if negative
-		return (sign < 0 ? '-' + result : result) + (sufix || '');
-	},
-	varType(val) {
-		return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-	},
-	uniqueArray(arr) {
-		if (this.varType(arr) === 'array') {
-			console.warn('value not array: ', arr);
-			return arr;
-		}
-
-		function onlyUnique(value, index, self) {
-			return self.indexOf(value) === index;
-		}
-
-		return arr.filter(onlyUnique);
-	},
-	api: {
-		get(path, data, options) {
-			const fullPath = (data === undefined) ? path : path + `?${new URLSearchParams(data)}`;
-			return this.request(fullPath, 'get', undefined, options);
-		},
-		post(path, data, options) {
-			return this.request(path, 'post', data, options);
-		},
-		async request(path, method, data, options) {
-			let _path = path;
-			if (!path.includes('__token')) {
-				let parts = path.split('?', 2);
-				if (parts.length === 2) {
-					parts[1] += '&__token=' + wbapp._session.token;
-				} else {
-					parts[0] += '?__token=' + wbapp._session.token;
-				}
-				_path = parts.join('?');
-			}
-			const defaultOptions = {
-				method
-			};
-			if (method !== 'get' && method !== 'head') {
-				defaultOptions.body = new URLSearchParams(data);
-			}
-			return fetch(_path,
-				options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
-				.then((result) => result.json());
-		}
-	},
-	arrIndexBy(array, index_key) {
-		const _index = index_key || 'id';
-		let _result  = {};
-		array.forEach(function (item) {
-			_result[item[_index]] = item;
-		});
-
-		return _result;
-	},
-	formatDate(date) {
-		return new Date(date).toLocaleDateString();
-	},
-	formatDateTime(date) {
-		return new Date(date).toLocaleString();
+var in_list = function (val, list) {
+	if (!val || !list) {
+		return false;
 	}
+	return list.includes(val);
 };
-var CabinetController = {
-	updateProfile(profile_id, profile_data, callback) {
-		let data       = profile_data;
-		data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-		data.birthdate = new Date(data.birthdate).toLocaleDateString();
-
-		Utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
-			if (!!callback){
-				callback(res);
-			}
-		});
-	},
-	createQuote(record_data, callback) {
-		let data = record_data;
-
-		data.group      = 'quotes';
-		data.status     = 'new';
-		data.pay_status = 'unpay';
-
-		data.priority = 0;
-		data.marked   = false;
-
-		data.event_date        = '';
-		data.event_time        = '';
-		data.longterm_date_end = '';
-
-		data.longterm_ = '';
-		data.analises  = false;
-		data.photos    = {before: [], after: []};
-
-		data.comment        = '';
-		data.recommendation = '';
-		data.description    = '';
-
-		data.price = parseInt(data.price);
-
-		Utils.api.post('/api/v2/create/records/', data).then(function (res) {
-			callback(res);
-		});
+var formatPhone = function(phone) {
+	var cleaned = ('' + phone).replace(/\D/g, '');
+	console.log(cleaned);
+	var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+	if (match) {
+		var intlCode = (match[1] ? '+7 ' : '');
+		return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
 	}
-
+	return phone;
 };
-
-const catalog = {
+var catalog = {
 	/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
 	spec_service: {
 		experts_consultation: {
@@ -1327,6 +1205,7 @@ const catalog = {
 		}
 	},
 	categories: {},
+
 	experts: {},
 	clients: {},
 	admins: {},
@@ -1388,16 +1267,17 @@ const catalog = {
 
 			_self.services = _services;
 		});
-
-		Utils.api.get('/api/v2/list/users?role=main&active=on' +
-		              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
-			_self.admins = Utils.arrIndexBy(data);
-		});
-
-		Utils.api.get('/api/v2/list/users?role=client&active=on' +
-		              '&@return=id,fullname,phone,email,birthdate&@sort=fullname:a').then(function (data) {
-			_self.clients = Utils.arrIndexBy(data);
-		});
+		/* for Admins only */
+		if (window.user_role === 'main') {
+			Utils.api.get('/api/v2/list/users?role=main&active=on' +
+			              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
+				_self.admins = Utils.arrIndexBy(data);
+			});
+			Utils.api.get('/api/v2/list/users?role=client&active=on' +
+			              '&@return=id,fullname,phone,email,birthdate&@sort=fullname:a').then(function (data) {
+				_self.clients = Utils.arrIndexBy(data);
+			});
+		}
 
 		Utils.api.get('/api/v2/list/experts?active=on&@sort=name:a').then(function (data) {
 			let _experts = {};
@@ -1430,7 +1310,190 @@ const catalog = {
 		console.log('-- start preload catalogs data --');
 	}
 };
+var Utils   = {
+	formatPhone(phone) {
+		var cleaned = ('' + phone).replace(/\D/g, '');
+		console.log(cleaned);
+		var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+		if (match) {
+			var intlCode = (match[1] ? '+7 ' : '');
+			return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
+		}
+		return phone;
+	},
+	formatPrice(price, sufix) {
+		var sign = 1;
+		if (val < 0) {
+			sign = -1;
+			val  = -val;
+		}
+		// trim the number decimal point if it exists
+		let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
+		let len    = num.toString().length;
+		let result = '';
+		let count  = 1;
 
+		for (let i = len - 1; i >= 0; i--) {
+			result = num.toString()[i] + result;
+			if (count % 3 === 0 && count !== 0 && i !== 0) {
+				result = ' ' + result;
+			}
+			count++;
+		}
+
+		// add number after decimal point
+		if (val.toString().includes('.')) {
+			result = result + '.' + val.toString().split('.')[1];
+		}
+		// return result with - sign if negative
+		return (sign < 0 ? '-' + result : result) + (sufix || '');
+	},
+	varType(val) {
+		return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+	},
+	uniqueArray(arr) {
+		if (this.varType(arr) === 'array') {
+			console.warn('value not array: ', arr);
+			return arr;
+		}
+
+		function onlyUnique(value, index, self) {
+			return self.indexOf(value) === index;
+		}
+
+		return arr.filter(onlyUnique);
+	},
+	timestamp(datetime){
+		return Math.floor(new Date(datetime).getTime() / 1000);
+	},
+	api: {
+		get(path, data, options) {
+			const fullPath = (data === undefined) ? path : path + `?${new URLSearchParams(data)}`;
+			return this.request(fullPath, 'get', undefined, options);
+		},
+		post(path, data, options) {
+			return this.request(path, 'post', data, options);
+		},
+		async request(path, method, data, options) {
+			let _path = path;
+			if (!path.includes('__token')) {
+				let parts = path.split('?', 2);
+				if (parts.length === 2) {
+					parts[1] += '&__token=' + wbapp._session.token;
+				} else {
+					parts[0] += '?__token=' + wbapp._session.token;
+				}
+				_path = parts.join('?');
+			}
+			const defaultOptions = {
+				method
+			};
+			if (method !== 'get' && method !== 'head') {
+				defaultOptions.body = new URLSearchParams(data);
+			}
+			return fetch(_path,
+				options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
+				.then((result) => result.json());
+		}
+	},
+	arrIndexBy(array, index_key) {
+		const _index = index_key || 'id';
+		let _result  = {};
+		array.forEach(function (item) {
+			_result[item[_index]] = item;
+		});
+
+		return _result;
+	},
+	formatDate(date) {
+		console.log(date);
+		return new Date(date).toLocaleDateString();
+	},
+	formatDateTime(date) {
+		return new Date(date).toLocaleString();
+	}
+};
+
+var CabinetController = {
+	updateProfile(profile_id, profile_data, callback) {
+		let data       = profile_data;
+		data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+		data.birthdate = new Date(data.birthdate).toLocaleDateString();
+
+		Utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
+			if (!!callback) {
+				callback(res);
+			}
+		});
+	},
+	createQuote(record_data, callback) {
+		let data = record_data;
+
+		data.group      = 'quotes';
+		data.status     = 'new';
+		data.pay_status = 'unpay';
+
+		data.priority = 0;
+		data.marked   = false;
+
+		data.event_date        = '';
+		data.event_time        = '';
+		data.longterm_date_end = '';
+
+		data.longterm_ = '';
+		data.analises  = false;
+		data.photos    = {before: [], after: []};
+
+		data.comment        = '';
+		data.recommendation = '';
+		data.description    = '';
+
+		data.price = parseInt(data.price);
+
+		Utils.api.post('/api/v2/create/records/', data).then(function (res) {
+			callback(res);
+		});
+	},
+	listClientUpcoming(client_id, callback) {
+		Utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
+			function (data) {
+				if (!data) {
+					callback([]);
+				}
+				let curr_timestamp = parseInt(getdate()[0]);
+				data.forEach(function (rec) {
+					const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
+
+					if (event_date !== (new Date()).toLocaleDateString()) {
+						cabinet.push('events.upcoming', rec); /* get actually user next events */
+					}
+
+					if ((curr_timestamp + 10) > rec.event_begin_time && (rec.event_end_time >= curr_timestamp)) {
+						cabinet.push('events.current', rec);
+					}
+				});
+			});
+
+		wbapp.get('/api/v2/list/records?status=past&client=' + wbapp._session.user.id,
+			function (data) {
+				console.log('history.events:', data);
+				cabinet.set('history.events', data); /* get actually user next events */
+			});
+
+		wbapp.get('/api/v2/list/records?longterm=1&client=' + wbapp._session.user.id,
+			function (data) {
+				console.log('history.longterms:', data);
+				cabinet.set('history.longterms', data); /* get actually user next events */
+			});
+	},
+	listClientPast() {
+
+	},
+	listClientLongterms() {
+
+	}
+
+};
 $(function () {
 	if (!!window.user_role.length) {
 		catalog.init();
@@ -1453,7 +1516,6 @@ $(function () {
 
 		return changes;
 	};
-
 	window.toast = function (text, head, icon) {
 		var bgColor   = '#616161';
 		var textColor = '#FEFEFE';
@@ -1606,7 +1668,7 @@ $(function () {
 					sum += parseInt($(this).data('price'));
 				});
 				console.log(sum);
-				_parent_form.find('.admin-editor__summ .price').text(numFormaSpace(sum) + ' ₽');
+				_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
@@ -1618,11 +1680,10 @@ $(function () {
 			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
-			_parent_form.find('.admin-editor__summ .price').text(numFormaSpace(sum) + ' ₽');
+			_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
-
 	window.initLongtermSearch = function ($form, for_client) {
 		let client_qry = '';
 		if (!!for_client) {
@@ -1650,7 +1711,6 @@ $(function () {
 			}
 		});
 	};
-
 	window.initClientSearch = function ($form) {
 		$form.find('input.client-search').autocomplete({
 			noCache: true,
@@ -1674,8 +1734,10 @@ $(function () {
 			}
 		});
 	};
+
 	setTimeout(function () {
-		window.popupCreateQuote = function(){
+		window.popupCreateQuote    = function (user_id) {
+			console.log(user_id);
 			var popup = new Ractive({
 				el: '.popup.--record',
 				template: wbapp.tpl('#popupRecord').html,
@@ -1687,8 +1749,9 @@ $(function () {
 				},
 				on: {
 					complete() {
-						console.log('ready!', catalog);
-						initServicesSearch($('#popup-services-list'), catalog.servicesList);
+						this.set('catalog', catalog);
+
+						initServicesSearch($('.search-services'), catalog.servicesList);
 						initPlugins();
 					},
 					submit(ev) {
@@ -1725,29 +1788,31 @@ $(function () {
 				}
 			});
 		};
-		window.popupPay                   = new Ractive({
-			el: '.popup.--pay',
-			template: wbapp.tpl('#popupPay').html,
-			data: {
-				record: {}
-			},
-			on: {
-				init() {},
-				submit() {
-					$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
-					$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
-				}
-			},
-			showPopup: function (id) {
-				Utils.api.get('/api/v2/read/records/' + id).then(function (data) {
-					popupPay.set('record', data);
-					popupPay.resetTemplate(wbapp.tpl('#popupPay').html);
 
-					$('.popup.--pay').show();
-				});
-			}
-		});
-		window.popupAnalizeInterpretation = function() {
+		window.popupPay                   = function (record_id, price, user_id) {
+			const pay_price = Math.floor(parseInt(price) / 5);
+
+			var popup = new Ractive({
+				el: '.popup.--pay',
+				template: wbapp.tpl('#popupPay').html,
+				data: {
+					pay_price: pay_price,
+					price: parseInt(price),
+					client: user_id,
+					id: record_id
+				},
+				on: {
+					complite(ev) {
+						$('.popup.--pay').show();
+					},
+					submit() {
+						$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+						$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+					}
+				}
+			});
+		};
+		window.popupAnalizeInterpretation = function () {
 			let popup = new Ractive({
 				el: '.popup.--analize-interpretation',
 				template: wbapp.tpl('#popupAnalizeInterpretation').html,
@@ -1780,7 +1845,7 @@ $(function () {
 				}
 			});
 		};
-		window.popupDownloadData    = function () {
+		window.popupDownloadData          = function () {
 			let popup = new Ractive({
 				el: '.popup.--download-data',
 				template: wbapp.tpl('#popupDownloadData').html,
@@ -1800,7 +1865,7 @@ $(function () {
 				}
 			});
 		};
-		window.popupsCreateProfile  = function () {
+		window.popupsCreateProfile = function () {
 			let popup = new Ractive({
 				el: '.popup.--create-client',
 				template: wbapp.tpl('#popupCreateClient').html,
@@ -1813,13 +1878,13 @@ $(function () {
 							console.log(post);
 
 							let names = post.fullname.split(' ', 3);
-							let keys = ['last_name', 'first_name', 'middle_name'];
+							let keys  = ['last_name', 'first_name', 'middle_name'];
 							for (var i = 0; i < names.length; i++) {
 								post[keys[i]] = names[i];
 							}
 
 							wbapp.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
-								if (data.length == 0) {
+								if (data.length === 0) {
 									wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
 										function (data) {
 											if (data.length == 0) {
@@ -1935,11 +2000,8 @@ $(function () {
 				}
 			});
 		};
-	});
 
-	setTimeout(function () {
 		initPlugins();
-
 		$(document).on('change', '#file-photo', function (e, list) {
 			e.stopPropagation();
 			var _block   = $(this).parents('.file-photo');

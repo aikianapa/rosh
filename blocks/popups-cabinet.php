@@ -12,12 +12,12 @@
 					<div class="popup__name text-bold">Запись на прием</div>
 					<div class="text-bold mb-10">Разделы услуг</div>
 					<div class="popups__text-chexboxs">
-						<wb-foreach wb="table=catalogs&item=srvcat&from=tree.data">
-							<label class="text-radio">
-								<input type="radio" name="service_category" value="{{id}}">
-								<span>{{name}}</span>
-							</label>
-						</wb-foreach>
+						{{#each categories}}
+						<label class="text-radio">
+							<input type="radio" name="service_category" value="{{id}}">
+							<span>{{name}}</span>
+						</label>
+						{{/each}}
 					</div>
 					<div class="input" data-hide="service-search">
 						<input class="search__input search-services" type="text" placeholder="Поиск по услугам">
@@ -65,17 +65,17 @@
 								<div class="select__values"></div>
 							</div>
 							<div class="select__list">
-								<wb-foreach wb="table=experts" wb-filter="active=on">
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox" name="experts[]" value="{{id}}">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">{{name}}</div>
-											</div>
-										</label>
-									</div>
-								</wb-foreach>
+								{{#each experts}}
+								<div class="select__item select__item--checkbox">
+									<label class="checkbox checkbox--record">
+										<input type="checkbox" name="experts[]" value="{{id}}">
+										<span></span>
+										<div class="checbox__name">
+											<div class="select__name">{{name}}</div>
+										</div>
+									</label>
+								</div>
+								{{/each}}
 							</div>
 						</div>
 					</div>

@@ -11,7 +11,11 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
+
 	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+		<div class="loading-overlay">
+			<div class="loader"></div>
+		</div>
 		<div class="container">
 			<div class="account">
 				<div class="crumbs">
@@ -21,7 +25,7 @@
 						</svg>
 					</a>
 					<a class="crumbs__link" href="/">Главная</a>
-					<a class="crumbs__link" href="#">Личный кабинет</a>
+					<span class="crumbs__link">Личный кабинет</span>
 				</div>
 
 				<div class="title-flex --flex --jcsb">
@@ -33,10 +37,12 @@
 						Записаться на прием
 					</button>
 				</div>
+
 				<div class="account__panel">
 					<div class="account__info">
 						<div class="user">
-							<div class="user__name">{{user.fullname}}
+							<div class="user__name">
+								{{user.fullname}}
 								<button class="user__edit">
 									<svg class="svgsprite _edit">
 										<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
@@ -66,7 +72,12 @@
 						<div class="row profile-edit__wrap">
 							<div class="col-md-3">
 								<div class="input input--grey">
-									<input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
+
+									<b>{{.birthdate}}</b>
+
+									<input class="input__control datebirthdaypickr"
+										name="birthdate" value="{{.birthdate}}" type="text"
+										placeholder="Дата рождения">
 									<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
 								</div>
 							</div>
@@ -78,7 +89,8 @@
 							</div>
 							<div class="col-md-3">
 								<div class="input input--grey">
-									<input class="input__control" type="email" name="email" value="{{.email}}" placeholder="E-mail">
+									<input class="input__control" type="email"
+										name="email" value="{{.email}}" placeholder="E-mail">
 									<div class="input__placeholder input__placeholder--dark">E-mail</div>
 								</div>
 							</div>
@@ -555,11 +567,15 @@
 					'longterms': []
 				}
 			},
+
 			on: {
+				complete() {
+					$(this.el).find('.loading-overlay').remove();
+				},
 				init() {
 					wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
-						data.birthdate = new Date(data.birthdate).toLocaleDateString();
-						data.phone     = '+' + data.phone;
+						data.birthdate = Utils.formatDate(data.birthdate);
+						data.phone     = Utils.formatPhone(data.phone);
 						cabinet.set('user', data); /* get actually user data */
 					});
 
@@ -568,13 +584,16 @@
 							let curr_timestamp = parseInt(getdate()[0]);
 
 							data.forEach(function (rec) {
-								const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
-
-								if (event_date !== (new Date()).toLocaleDateString()) {
+								if (rec.event_date !== (new Date()).toLocaleDateString()) {
 									cabinet.push('events.upcoming', rec); /* get actually user next events */
 								}
 
-								if ((curr_timestamp+10) > rec.event_begin_time && (rec.event_end_time >= curr_timestamp)) {
+								let times                = rec.event_time.split(' - ');
+								let event_from_timestamp = Utils.timestamp(rec.event_date + ' ' + times[0]);
+								let event_to_timestamp   = Utils.timestamp(rec.event_date + ' ' + times[1]);
+
+								if (event_from_timestamp < curr_timestamp
+								    && (event_to_timestamp >= curr_timestamp)) {
 									cabinet.push('events.current', rec);
 								}
 							});
@@ -596,16 +615,15 @@
 						cabinet.set('catalog', catalog);
 					});
 				},
-				popupCreateQuote(ev) {
-
-				},
 				profileSave(ev) {
 					let $form = $(ev.node);
 					let uid   = cabinet.get('user.id');
 					if ($form.verify() && uid > '') {
 						let data = $form.serializeJSON();
-						CabinetController.updateProfile(data, function (res) {
-							console.log(res);
+						CabinetController.updateProfile(uid, data, function (data) {
+							data.birthdate = Utils.formatDate(data.birthdate);
+							data.phone     = Utils.formatPhone(data.phone);
+							cabinet.set('user', data); /* get actually user data */
 							toast('Профиль успешно обновлён');
 						});
 					}

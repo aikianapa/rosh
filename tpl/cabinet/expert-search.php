@@ -67,7 +67,7 @@
 	</main>
 
 	<script wbapp>
-        var q = '{{_route.params.q}}';
+		var q       = '{{_route.params.q}}';
 		var cabinet = new Ractive({
 			el: 'main.page',
 			template: $('main.page').html(),
@@ -78,9 +78,9 @@
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/users?role=client&active=on&fullname~=' + q, function(data) {
+					wbapp.get('/api/v2/list/users?role=client&active=on&fullname~=' + q, function (data) {
 						console.log('found:', data);
-					    cabinet.set('results', data);
+						cabinet.set('results', data);
 					});
 				},
 				complete(ev) {
