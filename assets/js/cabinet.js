@@ -4,16 +4,111 @@ var in_list = function (val, list) {
 	}
 	return list.includes(val);
 };
-var formatPhone = function(phone) {
-	var cleaned = ('' + phone).replace(/\D/g, '');
-	console.log(cleaned);
-	var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
-	if (match) {
-		var intlCode = (match[1] ? '+7 ' : '');
-		return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
+
+window.Utils   = {
+	formatPhone(phone) {
+		var cleaned = ('' + phone).replace(/\D/g, '');
+		console.log(cleaned);
+		var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+		if (match) {
+			var intlCode = (match[1] ? '+7 ' : '');
+			return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
+		}
+		return phone;
+	},
+	formatPrice(val, sufix) {
+		var sign = 1;
+		if (val < 0) {
+			sign = -1;
+			val  = -val;
+		}
+		// trim the number decimal point if it exists
+		let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
+		let len    = num.toString().length;
+		let result = '';
+		let count  = 1;
+
+		for (let i = len - 1; i >= 0; i--) {
+			result = num.toString()[i] + result;
+			if (count % 3 === 0 && count !== 0 && i !== 0) {
+				result = ' ' + result;
+			}
+			count++;
+		}
+
+		// add number after decimal point
+		if (val.toString().includes('.')) {
+			result = result + '.' + val.toString().split('.')[1];
+		}
+		// return result with - sign if negative
+		return (sign < 0 ? '-' + result : result) + (sufix || '');
+	},
+	varType(val) {
+		return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+	},
+	uniqueArray(arr) {
+		if (this.varType(arr) === 'array') {
+			console.warn('value not array: ', arr);
+			return arr;
+		}
+
+		function onlyUnique(value, index, self) {
+			return self.indexOf(value) === index;
+		}
+
+		return arr.filter(onlyUnique);
+	},
+	timestamp(datetime){
+		return Math.floor(new Date(datetime).getTime() / 1000);
+	},
+	api: {
+		get(path, data, options) {
+			const fullPath = (data === undefined) ? path : path + `?${new URLSearchParams(data)}`;
+			return this.request(fullPath, 'get', undefined, options);
+		},
+		post(path, data, options) {
+			return this.request(path, 'post', data, options);
+		},
+		async request(path, method, data, options) {
+			let _path = path;
+			if (!path.includes('__token')) {
+				let parts = path.split('?', 2);
+				if (parts.length === 2) {
+					parts[1] += '&__token=' + wbapp._session.token;
+				} else {
+					parts[0] += '?__token=' + wbapp._session.token;
+				}
+				_path = parts.join('?');
+			}
+			const defaultOptions = {
+				method
+			};
+			if (method !== 'get' && method !== 'head') {
+				defaultOptions.body = new URLSearchParams(data);
+			}
+			return fetch(_path,
+				options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
+				.then((result) => result.json());
+		}
+	},
+	arrIndexBy(array, index_key) {
+		const _index = index_key || 'id';
+		let _result  = {};
+		array.forEach(function (item) {
+			_result[item[_index]] = item;
+		});
+
+		return _result;
+	},
+	formatDate(date) {
+		console.log(date);
+		return new Date(date).toLocaleDateString();
+	},
+	formatDateTime(date) {
+		return new Date(date).toLocaleString();
 	}
-	return phone;
 };
+
 var catalog = {
 	/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
 	spec_service: {
@@ -159,110 +254,6 @@ var catalog = {
 			_self.categories = _serviceCats;
 		});
 
-		console.log('-- start preload catalogs data --');
-	}
-};
-var Utils   = {
-	formatPhone(phone) {
-		var cleaned = ('' + phone).replace(/\D/g, '');
-		console.log(cleaned);
-		var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
-		if (match) {
-			var intlCode = (match[1] ? '+7 ' : '');
-			return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
-		}
-		return phone;
-	},
-	formatPrice(price, sufix) {
-		var sign = 1;
-		if (val < 0) {
-			sign = -1;
-			val  = -val;
-		}
-		// trim the number decimal point if it exists
-		let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
-		let len    = num.toString().length;
-		let result = '';
-		let count  = 1;
-
-		for (let i = len - 1; i >= 0; i--) {
-			result = num.toString()[i] + result;
-			if (count % 3 === 0 && count !== 0 && i !== 0) {
-				result = ' ' + result;
-			}
-			count++;
-		}
-
-		// add number after decimal point
-		if (val.toString().includes('.')) {
-			result = result + '.' + val.toString().split('.')[1];
-		}
-		// return result with - sign if negative
-		return (sign < 0 ? '-' + result : result) + (sufix || '');
-	},
-	varType(val) {
-		return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-	},
-	uniqueArray(arr) {
-		if (this.varType(arr) === 'array') {
-			console.warn('value not array: ', arr);
-			return arr;
-		}
-
-		function onlyUnique(value, index, self) {
-			return self.indexOf(value) === index;
-		}
-
-		return arr.filter(onlyUnique);
-	},
-	timestamp(datetime){
-		return Math.floor(new Date(datetime).getTime() / 1000);
-	},
-	api: {
-		get(path, data, options) {
-			const fullPath = (data === undefined) ? path : path + `?${new URLSearchParams(data)}`;
-			return this.request(fullPath, 'get', undefined, options);
-		},
-		post(path, data, options) {
-			return this.request(path, 'post', data, options);
-		},
-		async request(path, method, data, options) {
-			let _path = path;
-			if (!path.includes('__token')) {
-				let parts = path.split('?', 2);
-				if (parts.length === 2) {
-					parts[1] += '&__token=' + wbapp._session.token;
-				} else {
-					parts[0] += '?__token=' + wbapp._session.token;
-				}
-				_path = parts.join('?');
-			}
-			const defaultOptions = {
-				method
-			};
-			if (method !== 'get' && method !== 'head') {
-				defaultOptions.body = new URLSearchParams(data);
-			}
-			return fetch(_path,
-				options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
-				.then((result) => result.json());
-		}
-	},
-	arrIndexBy(array, index_key) {
-		const _index = index_key || 'id';
-		let _result  = {};
-		array.forEach(function (item) {
-			_result[item[_index]] = item;
-		});
-
-		return _result;
-	},
-	formatDate(date) {
-		console.log(date);
-		return new Date(date).toLocaleDateString();
-	},
-	formatDateTime(date) {
-		return new Date(date).toLocaleString();
 	}
 };
 
@@ -675,8 +666,7 @@ $(function () {
 					id: record_id
 				},
 				on: {
-					complite(ev) {
-						$('.popup.--pay').show();
+					complite() {
 					},
 					submit() {
 						$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
@@ -684,6 +674,8 @@ $(function () {
 					}
 				}
 			});
+			
+			$('.popup.--pay').show();
 		};
 		window.popupAnalizeInterpretation = function () {
 			let popup = new Ractive({

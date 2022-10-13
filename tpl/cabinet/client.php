@@ -572,13 +572,14 @@
 					$(this.el).find('.loading-overlay').remove();
 				},
 				init() {
-					wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
+					Utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
 						data.birthdate_fmt = Utils.formatDate(data.birthdate);
 						data.phone         = Utils.formatPhone(data.phone);
 						cabinet.set('user', data); /* get actually user data */
 					});
 
-					wbapp.get('/api/v2/list/records?status=upcoming&client=' + wbapp._session.user.id,
+					Utils.api.get('/api/v2/list/records?status=upcoming&client=' + wbapp._session.user.id)
+					.then(
 						function (data) {
 							let curr_timestamp = parseInt(getdate()[0]);
 
@@ -598,14 +599,15 @@
 							});
 						});
 
-					wbapp.get('/api/v2/list/records?status=past&client=' + wbapp._session.user.id,
+					Utils.api.get('/api/v2/list/records?status=past&group=events&client=' + wbapp._session.user.id)
+					.then(
 						function (data) {
 							console.log('history.events:', data);
 							cabinet.set('history.events', data); /* get actually user next events */
 						});
 
-					wbapp.get('/api/v2/list/records?longterm=1&client=' + wbapp._session.user.id,
-						function (data) {
+					Utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+					.then(function (data) {
 							console.log('history.longterms:', data);
 							cabinet.set('history.longterms', data); /* get actually user next events */
 						});
@@ -619,6 +621,7 @@
 					let uid   = cabinet.get('user.id');
 					if ($form.verify() && uid > '') {
 						let data = $form.serializeJSON();
+						
 						CabinetController.updateProfile(uid, data, function (data) {
 							data.birthdate_fmt = Utils.formatDate(data.birthdate);
 							data.phone         = Utils.formatPhone(data.phone);

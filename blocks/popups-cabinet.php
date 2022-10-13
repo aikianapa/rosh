@@ -177,7 +177,7 @@
 						action="https://demo.paykeeper.ru/create/"
 						method="POST"
 						target="_blank">
-						<input type='hidden' name='sum' value='{{this.pay_price / 5}}'/>
+						<input type='hidden' name='sum' value='{{this.pay_price}}'/>
 						<input type='hidden' name='orderid' value='{{this.id}}'/>
 						<input type='hidden' name='clientid' value='{{this.client}}'/>
 						<button class="btn btn--black form__submit" type="submit">
@@ -185,7 +185,7 @@
 						</button>
 					</form>
 				</div>
-				<div class="popup__panel --succed-pay">
+				<div class="popup__panel --succed-pay d-none">
 					<button class="popup__close">
 						<svg class="svgsprite _close">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
@@ -583,165 +583,91 @@
 						</svg>
 					</button>
 					<div class="popup__name text-bold">Запись на прием</div>
-					<form class="popup__form">
-						<p class="text-bold text-big mb-20">Client Rosh</p>
-						<div class="select-form">
-							<div class="select has-values">
-								<div class="select__main">
-									<div class="select__placeholder">Услуга</div>
-									<div class="select__values">Термовоздействие Skin Tyte - уши</div>
-								</div>
-								<div class="select__list">
+					<form class="popup__form" on-submit="submit">
+						<p class="text-bold text-big mb-20">{{client_fullname}}</p>
+						
+						<div class="input" data-hide="service-search">
+							<input class="search__input search-services" type="text" placeholder="Поиск по услугам">
+							<div class="search__drop"></div>
+							<button class="search__btn" type="button">
+								<svg class="svgsprite _search">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+								</svg>
+							</button>
+						</div>
+						<div class="admin-editor__patient" data-hide="service-search">
+							<div class="text-bold mb-10">Выбраны услуги</div>
+						</div>
+						<div class="admin-editor__summ" data-hide="service-search">
+							<p>Всего</p>
+							<input type="hidden" name="price">
+							<p class="price">0 ₽</p>
+						</div>
 
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox">
-											<span></span>
-											<div class="checbox__name --flex --aic --jcsb">
-												<div class="select__name">Термовоздействие.Skin Tyte - нижняя треть лица+ментальная зона
-												</div>
-												<div>28 000 ₽</div>
-											</div>
-										</label>
-									</div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox" checked>
-											<span></span>
-											<div class="checbox__name --flex --aic --jcsb">
-												<div class="select__name">Термовоздействие Skin Tyte - уши</div>
-												<div>8 000 ₽</div>
-											</div>
-										</label>
-									</div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox">
-											<span></span>
-											<div class="checbox__name --flex --aic --jcsb">
-												<div class="select__name">Термовоздействие. Skin Tyte - шея</div>
-												<div>24 000 ₽</div>
-											</div>
-										</label>
-									</div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox">
-											<span></span>
-											<div class="checbox__name --flex --aic --jcsb">
-												<div class="select__name">Термовоздействие. Skin Tyte - щеки, шея, декольте</div>
-												<div>52 000 ₽</div>
-											</div>
-										</label>
-									</div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox">
-											<span></span>
-											<div class="checbox__name --flex --aic --jcsb">
-												<div class="select__name">Дерматологический пилинг Enerpeel Jessners
-													салициловый-резорциновый
-												</div>
-												<div>17 000 ₽</div>
-											</div>
-										</label>
-									</div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox">
-											<span></span>
-											<div class="checbox__name --flex --aic --jcsb">
-												<div class="select__name">Дерматологический пилинг для кожи с гиперпигментацией
-													"SC Pigment Balancing Peel"
-												</div>
-												<div>7 000 ₽</div>
-											</div>
-										</label>
-									</div>
-								</div>
+						<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+							<input class="checkbox-visible-next-form" type="checkbox"
+								name="for_consultation" value="1">
+							<span></span>
+							<div class="checbox__name">Консультация врача</div>
+						</label>
+						<div class="select-form" style="display: none;" data-show="service">
+							<div class="text-bold mb-20">Тип события</div>
+							<div class="popups__text-chexboxs">
+								<label class="text-radio">
+									<input type="radio" name="type" value="clinic" checked>
+									<span>В клинике</span>
+								</label>
+								<label class="text-radio switch-blocks">
+									<input type="radio" name="type" value="online">
+									<span>Онлайн</span>
+								</label>
 							</div>
 						</div>
-						<p class="mb-10">Тип события</p>
-						<div class="radios --flex">
-							<label class="text-radio">
-								<input type="radio" name="status233" checked>
-								<span>В клинике</span>
-							</label>
-							<label class="text-radio">
-								<input type="radio" name="status233">
-								<span>Онлайн</span>
-							</label>
-						</div>
-						<div class="select-form">
-							<div class="select has-values">
+
+						<div class="select-form" data-hide="expert">
+							<div class="select">
 								<div class="select__main">
 									<div class="select__placeholder">Выберите специалиста</div>
-									<div class="select__values">Айрапетян Амалия Суреновна</div>
+									<div class="select__values"></div>
 								</div>
 								<div class="select__list">
+									{{#each catalog.experts}}
 									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record"><input type="checkbox" value="id6263ae3e26bd" name="experts[]">
+										<label class="checkbox checkbox--record">
+											<input type="checkbox" name="experts[]" value="{{id}}">
 											<span></span>
 											<div class="checbox__name">
-												<div class="select__name">Хачатурян Любовь Андреевна</div>
+												<div class="select__name">{{name}}</div>
 											</div>
-										</label></div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record"><input type="checkbox" value="id63049aba1204" name="experts[]">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">Салонтай Инна Рафаэловна</div>
-											</div>
-										</label></div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record"><input type="checkbox" value="id63049a29140e" name="experts[]">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">Цветкова Инна Сергеевна</div>
-											</div>
-										</label></div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record"><input type="checkbox" value="id6304989b0d4c" name="experts[]">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">Молотилова Ольга Юрьевна</div>
-											</div>
-										</label></div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record"><input type="checkbox" value="id630498b4189f" name="experts[]">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">Рассадина Татьяна Александровна</div>
-											</div>
-										</label></div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record"><input type="checkbox" value="id630498f80f90" name="experts[]" checked>
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">Айрапетян Амалия Суреновна</div>
-											</div>
-										</label></div>
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record"><input type="checkbox" value="id6304998b114d" name="experts[]">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">Иванов Иван Алексеевич</div>
-											</div>
-										</label></div>
+										</label>
+									</div>
+									{{/each}}
 								</div>
 							</div>
-
 						</div>
+
 						<div class="calendar input mb-30">
-							<input class="input__control datetimepickr" type="text"
-								value="" placeholder="Выбрать дату и время">
+							<input class="input__control datepickr" type="text"
+								name="event_date" required
+								placeholder="Выбрать дату и время">
 							<div class="input__placeholder">Выбрать время и дату</div>
 						</div>
-						<button class="btn btn--black --switchpopup">Продолжить</button>
+						<div class="calendar input mb-30">
+							<input class="input__control" type="text"
+								name="event_time" required
+								placeholder="Выбрать дату и время">
+							<div class="input__placeholder">Выбрать время</div>
+						</div>
+						<input type="hidden" name="client" value="{{client_id}}">
+						<input type="hidden" name="group" value="quotes">
+						<input type="hidden" name="status" value="new">
+						<input type="hidden" name="pay_status" value="unpay">
+						<button class="btn btn--black" type="submit">Продолжить</button>
 					</form>
 				</div>
 			</template>
 		</div>
+		
 		<div class="popup --download-data">
 			<template id="popupDownloadData">
 				<div class="popup__overlay"></div>
