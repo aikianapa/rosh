@@ -27,7 +27,10 @@
 							<div class="title">
 								<h1 class="h1 mb-10">Кабинет администратора </h1>
 							</div>
-							<a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
+							<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
+								data-popup="--create-client">
+								Создать карточку пациента
+							</a>
 						</div>
 						<div class="search__block --flex --aicn">
 							<div class="input">
@@ -41,6 +44,10 @@
 					<div class="lk-title">Журнал изменений</div>
 					<div class="accoutn-scroll">
 						<div class="account__table">
+							<div class="loading-overlay">
+								<div class="loader"></div>
+							</div>
+
 							<div class="account__table-head">
 								<div class="changes-item">Дата / время изменения</div>
 								<div class="changes-item">ФИО</div>
@@ -106,10 +113,13 @@
                 },
                 on: {
                     init() {
-                        wbapp.get('/api/v2/list/changes/@sort=date:d', function(data) {
+                        wbapp.get('/api/v2/list/record-changes/@sort=date:d', function(data) {
                             cabinetChanges.set('changes', data);
                         });
-                    }
+                    },
+	                complete(ev) {
+		                $('main.page .loading-overlay').remove();
+	                }
                 }
             })
         </script>

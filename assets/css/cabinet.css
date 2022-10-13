@@ -151,9 +151,50 @@
 	box-shadow    : rgba(156, 172, 172, 0.2) 0 2px 2px, rgba(156, 172, 172, 0.2) 0 4px 4px, rgba(156, 172, 172, 0.2) 0 8px 8px, rgba(156, 172, 172, 0.2) 0 16px 16px, rgba(156, 172, 172, 0.2) 0 32px 32px, rgba(156, 172, 172, 0.2) 0 64px 64px;
 }
 .jq-toast-wrap {
-	width : 320px !important;
+	width : 340px !important;
 }
-.account__table .acount__table-accardeon{
-	padding-left: 20px;
-	padding-right: 20px;
+.jq-toast-wrap .jq-toast-single{
+	font-size: 13px;
+	line-height: 18px;
+}
+.account__table .acount__table-accardeon {
+	padding-left  : 20px;
+	padding-right : 20px;
+}
+
+.loading-overlay {
+	height              : 100%;
+	left                : 0;
+	position            : absolute;
+	top                 : 0;
+	width               : 100%;
+	border-radius       : inherit;
+	-webkit-align-items : center;
+	-ms-flex-align      : center;
+	align-items         : center;
+	background-color    : rgba(242, 240, 238, .6);
+	backdrop-filter     : blur(4px);
+	display             : flex;
+	justify-content     : center;
+	z-index             : 99;
+}
+.loading-overlay .loader {
+	border        : 6px solid #EEE; /* Light */
+	border-top    : 6px solid #444; /* Dark */
+	border-radius : 50%;
+	width         : 64px;
+	height        : 64px;
+	animation     : spin .75s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform : rotate(0deg); }
+	100% { transform : rotate(360deg); }
+}
+.admin-photos .account__panel {
+	width: 100%;
+}
+.file-photo .file-photo__ico{
+	width: 35%;
+	height: auto;
 }

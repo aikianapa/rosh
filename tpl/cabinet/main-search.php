@@ -28,7 +28,10 @@
 						<div class="title">
 							<h1 class="h1 mb-10">Кабинет администратора </h1>
 						</div>
-						<a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
+						<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
+							data-popup="--create-client">
+							Создать карточку пациента
+						</a>
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
@@ -40,6 +43,9 @@
 			</form>
 			<div class="search-result" wb-off>
 				<div class="container">
+					<div class="loading-overlay">
+						<div class="loader"></div>
+					</div>
 					<div class="lk-title">Результаты поиска</div>
 					{{#each results}}
 					<div class="account__panel">
@@ -50,7 +56,7 @@
 									<span>{{this.birthdate}}</span>
 								</div>
 								<a href="callto:+{{this.phone}}" class="user__item">Тел:
-									<span>+{{this.phone}}</span>
+									<span>{{this.phone}}</span>
 								</a>
 
 								<div class="user__item">Почта:
@@ -65,7 +71,9 @@
 								<div class="admin-edit__user-btns d-none">
 									<a class="admin-edit__user-btn btn btn--white --openpopup" 
 										data-popup="--create-appoint">Записать пациента на прием</a>
-									<a class="admin-edit__user-btn btn btn--white --openpopup" href="#" data-popup="--photo">Добавить продолжительное лечение </a>
+									<a class="admin-edit__user-btn btn btn--white --openpopup"
+										onclick="popupPhoto(true)"
+										data-popup="--photo">Добавить продолжительное лечение </a>
 									<div class="admin-edit__uploads">
 										<input class="admin-edit__upload" type="file" id="analises-file">
 										<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
@@ -73,7 +81,9 @@
 								</div>
 							</div>
 						</div>
-						<a class="account__detail" href="/cabinet/client/{{this.id}}">Подробнее</a>
+						<a class="account__detail" data-client="[[id]]">
+							Подробнее
+						</a>
 					</div>
 					{{else}}
 					<div class="account__panel">
@@ -93,16 +103,37 @@
 			data: {
 				q: '{{_route.params.q}}',
 				user: wbapp._session.user,
-				results: []
+				results: {}
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/users/fullname~=' + q, function(data) {
-					    cabinet.set('results', data);
+					wbapp.get('/api/v2/list/users?active=on&role=client&phone~=' + q, function(data) {
+						if (!data) {
+							return;
+						}
+						data.forEach(function (user, i) {
+							cabinet.set('results.' + user.id, user);
+						});
+					});
+					wbapp.get('/api/v2/list/users?active=on&role=client&email~=' + q, function(data) {
+						if (!data) {
+							return;
+						}
+						data.forEach(function (user, i) {
+							cabinet.set('results.' + user.id, user);
+						});
+					});
+					wbapp.get('/api/v2/list/users?active=on&role=client&fullname~=' + q, function(data) {
+						if (!data){
+							return;
+						}
+						data.forEach(function (user, i) {
+							cabinet.set('results.' + user.id, user);
+						});
 					});
 				},
 				complete(ev) {
-					console.log('page ready');
+					$('main.page .loading-overlay').remove();
 				}
 			}
 		});

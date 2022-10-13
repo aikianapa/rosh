@@ -11,17 +11,21 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
+
 	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+		<div class="loading-overlay">
+			<div class="loader"></div>
+		</div>
 		<div class="container">
 			<div class="account">
 				<div class="crumbs">
-					<a class="crumbs__arrow" href="#">
+					<a class="crumbs__arrow">
 						<svg class="svgsprite _crumbs-back">
 							<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
 						</svg>
 					</a>
 					<a class="crumbs__link" href="/">Главная</a>
-					<a class="crumbs__link" href="#">Личный кабинет</a>
+					<span class="crumbs__link">Личный кабинет</span>
 				</div>
 
 				<div class="title-flex --flex --jcsb">
@@ -29,14 +33,16 @@
 						<h1 class="h1 mb-10">Личный кабинет</h1>
 					</div>
 					<button class="btn btn--black --openpopup" data-popup="--record"
-						on-click="popupCreateQuote">
+						onclick="popupCreateQuote('{{user.id}}')">
 						Записаться на прием
 					</button>
 				</div>
+
 				<div class="account__panel">
 					<div class="account__info">
 						<div class="user">
-							<div class="user__name">{{user.fullname}}
+							<div class="user__name">
+								{{user.fullname}}
 								<button class="user__edit">
 									<svg class="svgsprite _edit">
 										<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
@@ -45,7 +51,7 @@
 							</div>
 							<div class="user__group">
 								<div class="user__birthday">Дата рождения:
-									<span>{{user.birthdate}}</span>
+									<span>{{user.birthdate_fmt}}</span>
 								</div>
 								<div class="user__phone">Тел:
 									<span>{{user.phone}}</span>
@@ -66,7 +72,11 @@
 						<div class="row profile-edit__wrap">
 							<div class="col-md-3">
 								<div class="input input--grey">
-									<input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
+									<input class="input__control datebirthdaypickr"
+										name="birthdate"
+										value="{{.birthdate}}"
+										type="text"
+										placeholder="Дата рождения" twoway="false">
 									<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
 								</div>
 							</div>
@@ -78,7 +88,8 @@
 							</div>
 							<div class="col-md-3">
 								<div class="input input--grey">
-									<input class="input__control" type="email" name="email" value="{{.email}}" placeholder="E-mail">
+									<input class="input__control" type="email"
+										name="email" value="{{.email}}" placeholder="E-mail">
 									<div class="input__placeholder input__placeholder--dark">E-mail</div>
 								</div>
 							</div>
@@ -191,7 +202,7 @@
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{catalog.experts[this].head}}</p>
+										<p>{{catalog.experts[this].name}}</p>
 										{{/this.experts}}
 									</div>
 								</div>
@@ -218,7 +229,7 @@
 						{{#if this.analises}}
 						<div class="account-events__download">
 							<div class="lk-title">Анализы</div>
-							<a class="btn btn--white" href="{{this.client}}.pdf" download="Анализы.pdf">Скачать анализы</a>
+							<a class="btn btn--white" href="[[this.analises.src]]" download="Анализы.pdf">Скачать анализы</a>
 						</div>
 						{{/if}}
 					</div>
@@ -261,7 +272,7 @@
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{catalog.experts[this].head}}</p>
+										<p>{{catalog.experts[this].name}}</p>
 										{{/this.experts}}
 									</div>
 								</div>
@@ -272,7 +283,9 @@
 						<div class="account-events__btns">
 							<div class="account-event-wrap --aicn">
 								<div class="account-events__btn">
-									<button class="btn btn--black --openpopup" data-popup="--pay-one">Внести предоплату
+									<button class="btn btn--black"
+										onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+										Внести предоплату
 									</button>
 								</div>
 								<p>Услуга требует внесения предоплаты</p>
@@ -336,7 +349,7 @@
 										<div class="history-item">
 											<p>Специалисты</p>
 											{{#experts}}
-											{{catalog.experts[this].head}}<br>
+											{{catalog.experts[this].name}}<br>
 											{{/experts}}
 										</div>
 										<div class="history-item">
@@ -358,12 +371,16 @@
 										<div class="analysis mb-40">
 											<div class="row">
 												<div class="col-md-6">
-													{{#if this.analises}}
-													<div class="analysis__top --aicn --flex mb-20">
-														<div class="analysis__title">Анализы</div>
-														<a class="btn btn--white" href="{{this.analises.src}}" download="Анализы(за 03.10.2022).pdf">Скачать анализы</a>
+													{{#if analises}}
+													<div class="account-events__download">
+														<div class="lk-title">Анализы</div>
+														<a class="btn btn--white" href="{{.}}"
+															download="Анализы(за {{this.event_date}}).pdf">
+															Скачать анализы
+														</a>
 													</div>
 													{{/if}}
+
 													<div class="analysis__description">
 														<p class="text-bold mb-20">Выполнялись процедуры</p>
 														<p class="text-grey">{{this.description}}</p>
@@ -373,9 +390,7 @@
 													{{#if this.analises}}
 													<a class="btn btn--black mb-20 --openpopup"
 														data-popup="--analize-type"
-														on-click="@.analisesQuote"
-														data-file="{{this.analises.src}}"
-														data-record="{{this.id}}">
+														onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analises}}')">
 														Получить расшифровку анализов
 													</a>
 													{{/if}}
@@ -395,11 +410,11 @@
 												<div class="col-md-6">
 													<a class="expert__worked"
 														target="_blank"
-														href="/about/experts/{{catalog.experts[this].page_uri}}">
+														data-href="/about/experts/{{catalog.experts[this].info_uri}}">
 														<div class="expert__worked-pic">
-															<img src="{{catalog.experts[this].image.src}}" alt="{{catalog.experts[this].head}}">
+															<img src="{{catalog.experts[this].image.0.src}}" alt="{{catalog.experts[this].name}}">
 														</div>
-														<div class="expert__worked-name">{{catalog.experts[this].head}}</div>
+														<div class="expert__worked-name">{{catalog.experts[this].name}}</div>
 														<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
 													</a>
 												</div>
@@ -415,11 +430,11 @@
 														<div class="col-md-6">
 															<a class="after-healing__item"
 																data-fancybox="images"
-																href="{{.image.src}}"
+																href="{{.src}}"
 																data-caption="{{.date}}">
 																<div class="healing__date">{{.date}}</div>
 																<div class="after-healing__photo"
-																	style="background-image: url({{.image.src}})">
+																	style="background-image: url({{.src}})">
 																</div>
 															</a>
 														</div>
@@ -434,9 +449,9 @@
 														{{#each photos.after}}
 														<a class="after-healing__item"
 															data-fancybox="images"
-															href="{{this.image.src}}"
-															data-caption="{{this.date}}">
-															<img src="{{this.image.src}}" alt="After visit {{this.date}}">
+															href="{{.src}}"
+															data-caption="{{.date}}">
+															<img src="{{.src}}" alt="After visit {{.date}}">
 														</a>
 														{{/each}}
 													</div>
@@ -469,7 +484,7 @@
 								<div class="acount__table-accardeon accardeon">
 									<div class="acount__table-main accardeon__main accardeon__click">
 										<div class="healing-item">
-											<p>Дата</p> {{this.event_date}} - {{this.longterm_date_end}}
+											<p>Дата</p> {{this.longterm_date_from}} - {{this.longterm_date_to}}
 										</div>
 										<div class="healing-item">
 											<p>Услуги</p> {{this.title}}
@@ -482,14 +497,14 @@
 												{{#each this.photos.before}} <!--single photo!-->
 												<a class="after-healing__item"
 													data-fancybox="images"
-													href="{{this.image.src}}"
-													data-caption="{{this.date}}">
-													<h2 class="h2 healing__date-title">{{this.date}}</h2>
+													href="{{.src}}"
+													data-caption="{{.date}}">
+													<h2 class="h2 healing__date-title">{{.date}}</h2>
 													<div class="after-healing__photo"
-														style="background-image: url('{{this.image.src}}')">
+														style="background-image: url('{{.src}}')">
 													</div>
 													<div class="healing__description">
-														{{this.comment}}
+														{{.comment}}
 													</div>
 												</a>
 												{{/each}}
@@ -505,11 +520,11 @@
 														<div class="col-md-6">
 															<a class="after-healing__item"
 																data-fancybox="images"
-																href="{{this.image.src}}"
-																data-caption="{{this.date}}">
-																<div class="healing__date">{{this.date}}</div>
+																href="{{.src}}"
+																data-caption="{{.date}}">
+																<div class="healing__date">{{.date}}</div>
 																<div class="after-healing__photo"
-																	style="background-image: url('{{this.image.src}}')">
+																	style="background-image: url({{.src}});">
 																</div>
 															</a>
 														</div>
@@ -551,11 +566,15 @@
 					'longterms': []
 				}
 			},
+
 			on: {
+				complete() {
+					$(this.el).find('.loading-overlay').remove();
+				},
 				init() {
 					wbapp.get('/api/v2/read/users/' + wbapp._session.user.id, function (data) {
-						data.birthdate = new Date(data.birthdate).toLocaleDateString();
-						data.phone     = '+' + data.phone;
+						data.birthdate_fmt = Utils.formatDate(data.birthdate);
+						data.phone         = Utils.formatPhone(data.phone);
 						cabinet.set('user', data); /* get actually user data */
 					});
 
@@ -564,13 +583,16 @@
 							let curr_timestamp = parseInt(getdate()[0]);
 
 							data.forEach(function (rec) {
-								const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
-
-								if (event_date !== (new Date()).toLocaleDateString()) {
-									cabinet.push('events.upcoming', data); /* get actually user next events */
+								if (rec.event_date !== (new Date()).toLocaleDateString()) {
+									cabinet.push('events.upcoming', rec); /* get actually user next events */
 								}
 
-								if ((curr_timestamp+10) > rec.event_begin_time && (rec.event_end_time >= curr_timestamp)) {
+								let times                = rec.event_time.split(' - ');
+								let event_from_timestamp = Utils.timestamp(rec.event_date + ' ' + times[0]);
+								let event_to_timestamp   = Utils.timestamp(rec.event_date + ' ' + times[1]);
+
+								if (event_from_timestamp < curr_timestamp
+								    && (event_to_timestamp >= curr_timestamp)) {
 									cabinet.push('events.current', rec);
 								}
 							});
@@ -592,72 +614,22 @@
 						cabinet.set('catalog', catalog);
 					});
 				},
-				popupCreateQuote(ev) {
-					var createQuote = new Ractive({
-						el: '.popup.--record',
-						template: wbapp.tpl('#popupRecord').html,
-						data: {
-							user: wbapp._session.user,
-							'experts': catalog.experts,
-							'categories': catalog.categories,
-							'services': catalog.services
-						},
-						on: {
-							complete() {
-								console.log('ready!', catalog);
-								initServicesSearchInput($('#popup-services-list'), servicesList);
-								initPlugins();
-							},
-							submit(ev) {
-								let $form = $(ev.node);
-								let uid   = createQuote.get('user.id');
-
-								if ($form.verify() && uid > '') {
-									let data      = $form.serializeJSON();
-									data.group    = 'quotes';
-									data.status   = 'new';
-									data.status   = 'new';
-									data.analises = {};
-									data.photos   = {before: [], after: []};
-
-									data.pay_status = 'unpay';
-									data.client     = uid;
-									data.priority   = 0;
-									data.marked     = 0;
-
-									data.comment        = '';
-									data.recommendation = '';
-									data.description    = '';
-
-									data.clientData = {
-										'fullname': cabinet.get('user.fullname'),
-										'email': cabinet.get('user.email'),
-										'phone': cabinet.get('user.phone')
-									};
-									wbapp.post('/api/v2/create/records/', data, function (res) {
-										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-										$('.popup.--record .popup__panel.--succed').addClass('d-block');
-									});
-								}
-
-								return false;
-							}
-						}
-					});
-				},
 				profileSave(ev) {
 					let $form = $(ev.node);
 					let uid   = cabinet.get('user.id');
 					if ($form.verify() && uid > '') {
-						let data       = $form.serializeJSON();
-						data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-						data.birthdate = new Date(data.birthdate).toLocaleDateString();
-						wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
-							console.log(res);
-							toast('Успешно сохранено');
+						let data = $form.serializeJSON();
+						CabinetController.updateProfile(uid, data, function (data) {
+							data.birthdate_fmt = Utils.formatDate(data.birthdate);
+							data.phone         = Utils.formatPhone(data.phone);
+							cabinet.set('user', data); /* get actually user data */
+							toast('Профиль успешно обновлён');
 						});
 					}
 					return false;
+				},
+				prepay(ev) {
+					popupPay.showPopup($(ev.node).data('record'));
 				}
 			}
 		});
@@ -666,111 +638,6 @@
 
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
-	<div class="popup --record">
-		<template id="popupRecord">
-			<div class="popup__overlay"></div>
-			<form class="popup__panel" on-submit="submit">
-				<button class="popup__close" on-click="cancel">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Запись на прием</div>
-				<div class="text-bold mb-10">Разделы услуг</div>
-				<div class="popups__text-chexboxs">
-					{{#each categories}}
-					<label class="text-radio">
-						<input type="radio" name="service_category" value="{{id}}">
-						<span>{{name}}</span>
-					</label>
-					{{/each}}
-				</div>
-				<div class="input" data-hide="service-search">
-					<input class="search__input" type="text"
-						placeholder="Поиск по услугам"
-						id="popup-services-list">
-					<div class="search__drop">
-					</div>
-					<button class="search__btn" type="button">
-						<svg class="svgsprite _search">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-						</svg>
-					</button>
-				</div>
-				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-					<input class="checkbox-hidden-next-form" type="checkbox" name="no_services" value="1">
-					<span></span>
-					<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
-				</label>
-				<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-					<input class="checkbox-visible-next-form" type="checkbox"
-						name="for_consultation" value="1">
-					<span></span>
-					<div class="checbox__name">Консультация врача</div>
-				</label>
-				<div class="select-form" style="display: none;" data-show="service">
-					<div class="text-bold mb-20">Тип события</div>
-					<div class="popups__text-chexboxs">
-						<label class="text-radio">
-							<input type="radio" name="type" value="clinic" checked>
-							<span>В клинике</span>
-						</label>
-						<label class="text-radio switch-blocks">
-							<input type="radio" name="type" value="online">
-							<span>Онлайн</span>
-						</label>
-					</div>
-				</div>
-
-				<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
-					<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
-					<span></span>
-					<div class="checbox__name">Я не знаю, кого выбрать</div>
-				</label>
-				<div class="select-form" data-hide="expert">
-					<div class="select">
-						<div class="select__main">
-							<div class="select__placeholder">Выберите специалиста</div>
-							<div class="select__values"></div>
-						</div>
-						<div class="select__list">
-							{{#each experts}}
-							<div class="select__item select__item--checkbox">
-								<label class="checkbox checkbox--record">
-									<input type="checkbox" name="experts[]" value="{{id}}">
-									<span></span>
-									<div class="checbox__name">
-										<div class="select__name">{{name}}</div>
-									</div>
-								</label>
-							</div>
-							{{/each}}
-						</div>
-					</div>
-				</div>
-				<div class="admin-editor__patient" data-hide="service-search">
-					<div class="text-bold mb-10">Выбраны услуги</div>
-				</div>
-				<div class="admin-editor__summ" data-hide="service-search">
-					<p>Всего</p>
-					<input type="hidden" name="price">
-					<p class="price">0 ₽</p>
-				</div>
-				<button class="btn btn--black form__submit" type="submit"> Записаться</button>
-			</form>
-
-			<div class="popup__panel --succed">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Запись на прием</div>
-				<h3 class="h3">Успешно!</h3>
-				<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
-			</div>
-		</template>
-	</div>
 </div>
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

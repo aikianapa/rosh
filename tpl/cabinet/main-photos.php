@@ -28,7 +28,10 @@
 						<div class="title">
 							<h1 class="h1 mb-10">Кабинет администратора </h1>
 						</div>
-						<a class="btn btn--black --openpopup" href="#" data-popup="--create">Создать карточку пациента</a>
+						<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
+							data-popup="--create-client">
+							Создать карточку пациента
+						</a>
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
@@ -42,7 +45,7 @@
 				<div class="title-flex --flex --jcsb photos-title">
 					<div class="add-photo">
 						<div class="lk-title mb-0 mr-20">Библиотека фотографий</div>
-						<a class="btn btn--black --openpopup" data-popup="--photo" on-click="addPhoto">Добавить фото</a>
+						<a class="btn btn--black --openpopup" data-popup="--photo" onclick="popupPhoto()">Добавить фото</a>
 					</div>
 					<div class="filter__item">
 						<a class="filter__name text-bold" href="#">Удалить фильтры</a>
@@ -70,6 +73,10 @@
 							<div class="admin-photo__description">{{this.title}}</div>
 						</div>
 					</a>
+					{{else}}
+					<div class="account__panel">
+						<span>Нет записей с фото пациентов</span>
+					</div>
 					{{/each}}
 				</div>
 			</div>
@@ -86,7 +93,7 @@
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/list/records/', function (data) {
+					wbapp.get('/api/v2/list/records/?group=[events,longterm]', function (data) {
 						let _images = [];
 						data.forEach(function (rec) {
 							_before_photo = rec.photos.before[0];
@@ -114,8 +121,8 @@
 						cabinet.set('photos', data); /* get actually user data */
 					});
 				},
-				filterPhotos(ev) {
-
+				filter(ev) {
+					cabinet.set('photos', clientPhotos.filterBy($(ev.node)));
 				}
 			}
 		});

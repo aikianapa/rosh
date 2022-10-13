@@ -3,7 +3,24 @@
     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>-->
     
     <wb-snippet name="wbapp"></wb-snippet>
-    <wb-scripts src="scripts">
+
+    <wb-scripts src="scripts" wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])">
+	    [
+	    "/assets/js/jquery.inputmask.min.js",
+	    "/assets/js/jquery.maskedinput.min.js",
+	    "/assets/js/jquery.autocomplete.min.js",
+	    "/assets/js/jquery.fancybox.min.js",
+	    "/assets/js/jquery.serializejson.min.js",
+	    "/assets/js/air-datepicker.js",
+	    "/assets/js/jquery.toast.min.js",
+	    "/assets/js/main.js",
+	    "/assets/js/new.js",
+	    "/assets/js/blogFilter.js",
+	    "/assets/js/auth.js",
+	    "/assets/js/cabinet.js"
+	    ]
+    </wb-scripts>
+    <wb-scripts src="scripts" wb-if="in_array('{{_sess.user.role}}',[''])">
         [
             "/assets/js/jquery.inputmask.min.js",
             "/assets/js/jquery.maskedinput.min.js",
@@ -15,15 +32,14 @@
             "/assets/js/main.js",
             "/assets/js/new.js",
             "/assets/js/blogFilter.js",
-            "/assets/js/auth.js",
-		    "/assets/js/cabinet.js"
+            "/assets/js/auth.js"
 	    ]
     </wb-scripts>
 
-
     <script type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
-
     <script type="wbapp">
+		var user_role = '{{_sess.user.role}}';
+
         $(function () {
             wbapp.init()
             new Swiper('.main-slider', {
@@ -44,10 +60,11 @@
     <!--</script>-->
     <!--<script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>-->
 	<!---->
+
     <link href="/assets/css/jquery.fancybox.min.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/new.css" rel="stylesheet">
-    <link href="/assets/css/utils.css?v=1.4" rel="stylesheet">
+    <link href="/assets/css/cabinet.css?v=1.0" rel="stylesheet">
     <link href="/assets/css/additional/frontend.css" rel="stylesheet">
 </view>
 
