@@ -643,7 +643,7 @@
 					},
 					exec_lazyload(ev){
 						$("img[data-src]:not([src])").lazyload();
-					}
+					},
 					toggleEdit(ev) {
 						console.log(ev, $(ev.node), this);
 						if (!!window.profile_inline_editor) {
