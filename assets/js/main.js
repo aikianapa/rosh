@@ -189,7 +189,7 @@ $(function () {
 
             $('.datebirthdaypickr').each(function () {
                 new AirDatepicker(this, {
-                    selectedDates: [new Date($(this).val())],
+                    selectedDates: [$(this).val() || (new Date())],
                     autoClose: true,
                     dateFormat: 'dd.MM.yyyy',
                     timepicker: false
@@ -237,9 +237,7 @@ $(function () {
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
             });
-            $('input[data-inputmask]').each(function () {
-                $(this).inputmask();
-            });
+           
             //
             //$('input.autocomplete').each(function () {
             //    $(this).autocomplete({

@@ -119,31 +119,7 @@
 											</div>
 										</div>
 									</div>
-									<input class="admin-edit__upload" type="hidden" id="analises-file">
-									<div class="filepicker">
-										<textarea type="json" name="analises-file"
-											class="d-none filepicker-data"></textarea>
-										<!-- Button Bar -->
-										<div class="button-bar">
-											<button class="btn btn-success fileinput" style="height:70px;">
-												<input type="file" id="file-selector" name="files[]"
-													class="wb-unsaved" accept="application/pdf">
-												<input type="hidden" name="upload_url"
-													value="/uploads/analises/{{this.client}}/"
-													class="wb-unsaved">
-												<input type="hidden" name="prevent_img" class="wb-unsaved">
-											</button>
-										</div>
-										<script type="text/javascript">
-											wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"],
-												"filepicker-js");
-										</script>
-									</div>
-									<a class="account__detail popup add-analises">
-										<input class="admin-edit__upload" type="hidden" id="analises-file">
-										<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
 
-									</a>
 									<a class="account__detail --openpopup"
 										data-popup="--edit-event"
 										on-click="editEvent"

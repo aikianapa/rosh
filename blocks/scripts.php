@@ -4,24 +4,8 @@
     
     <wb-snippet name="wbapp"></wb-snippet>
 
-    <wb-scripts src="scripts" wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])">
+    <wb-scripts src="scripts">
 	    [
-	    "/assets/js/jquery.inputmask.min.js",
-	    "/assets/js/jquery.maskedinput.min.js",
-	    "/assets/js/jquery.autocomplete.min.js",
-	    "/assets/js/jquery.fancybox.min.js",
-	    "/assets/js/jquery.serializejson.min.js",
-	    "/assets/js/air-datepicker.js",
-	    "/assets/js/jquery.toast.min.js",
-	    "/assets/js/main.js",
-	    "/assets/js/new.js",
-	    "/assets/js/blogFilter.js",
-	    "/assets/js/auth.js",
-	    "/assets/js/cabinet.js"
-	    ]
-    </wb-scripts>
-    <wb-scripts src="scripts" wb-if="in_array('{{_sess.user.role}}',[''])">
-        [
             "/assets/js/jquery.inputmask.min.js",
             "/assets/js/jquery.maskedinput.min.js",
             "/assets/js/jquery.autocomplete.min.js",
@@ -38,10 +22,9 @@
 
     <script type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
     <script type="wbapp">
-		var user_role = '{{_sess.user.role}}';
-
         $(function () {
-            wbapp.init()
+        	console.log('>>> wbapp.init ..');
+            wbapp.init();
             new Swiper('.main-slider', {
                 loop: true,
                 slidesPerView: 1,
@@ -64,8 +47,9 @@
     <link href="/assets/css/jquery.fancybox.min.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/new.css" rel="stylesheet">
-    <link href="/assets/css/cabinet.css?v=1.0" rel="stylesheet">
     <link href="/assets/css/additional/frontend.css" rel="stylesheet">
+
+	<link wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])" href="/assets/css/cabinet.css?v=1.0" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">
