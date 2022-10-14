@@ -111,14 +111,14 @@
 						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Дата приема:</div>
 							<div class="account-event">
-								<p>{{ @global.Utils.formatDate(this.event_date) }}</p>
+								<p>{{ @global.utils.formatDate(this.event_date) }}</p>
 							</div>
 						</div>
 
 						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Время приема:</div>
 							<div class="account-event">
-								<p>{{this.event_time}}</p>
+								<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
 							</div>
 						</div>
 					</div>
@@ -182,13 +182,13 @@
 						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Дата приема:</div>
 							<div class="account-event">
-								<p>{{ @global.Utils.formatDate(this.event_date) }}</p>
+								<p>{{ @global.utils.formatDate(this.event_date) }}</p>
 							</div>
 						</div>
 						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Время приема:</div>
 							<div class="account-event">
-								<p>{{this.event_time}}</p>
+								<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
 							</div>
 						</div>
 					</div>
@@ -254,21 +254,21 @@
 					</div>
 					<div class="account__table-body">
 						<!-- !!! quote history item !!! -->
-						{{#each history.visits}}
+						{{#each history.events}}
 						<div class="acount__table-accardeon accardeon">
 							<div class="acount__table-main accardeon__main accardeon__click">
 								<div class="history-item">
 									<p>Дата</p>
-									{{ @global.Utils.formatDate(this.event_date) }}
+									{{ @global.utils.formatDate(this.event_date) }}
 								</div>
 								<div class="history-item">
-									<p>Время</p>{{this.event_time}}
+									<p>Время</p>{{this.event_time_start}}-{{this.event_time_end}}
 								</div>
 								<div class="history-item">
 									<p>Специалисты</p>
-									{{#experts}}
+									{{#each experts}}
 									{{catalog.experts[this].name}}<br>
-									{{/experts}}
+									{{/each}}
 								</div>
 								<div class="history-item">
 									<p>Услуги</p>
@@ -301,7 +301,7 @@
 
 											<div class="analysis__description">
 												<p class="text-bold mb-20">Выполнялись процедуры</p>
-												<p class="text-grey">{{this.description}}</p>
+												<p class="text-grey">{{this.comment}}</p>
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -324,13 +324,15 @@
 								<div class="experts__worked">
 									<div class="experts__worked-title">С вами работали</div>
 									<div class="row">
-										{{#each experts}}
+										{{#each .experts: idx}}
 										<div class="col-md-6">
 											<a class="expert__worked"
 												target="_blank"
-												data-href="/about/experts/{{catalog.experts[this].info_uri}}">
+												data-href="/about/experts/{{catalog.experts[@key].info_uri}}">
 												<div class="expert__worked-pic">
-													<img src="{{this}}" alt="{{catalog.experts[this].name}}">
+													<img class="lazyload"
+														data-src="{{{catalog.experts[this].image[0].img}}}"
+														alt="{{catalog.experts[this].name}}">
 												</div>
 												<div class="expert__worked-name">{{catalog.experts[this].name}}</div>
 												<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
@@ -400,7 +402,7 @@
 						{{#each history.longterms}}
 						<!-- !!! longterm item !!! -->
 						<div class="acount__table-accardeon accardeon">
-							<div class="acount__table-main accardeon__main accardeon__click">
+							<div class="acount__table-main accardeon__main accardeon__click" on-click="exec_lazyload">
 								<div class="healing-item">
 									<p>Дата</p> {{this._created}} - {{this._lastdate}}
 								</div>
@@ -587,13 +589,13 @@
 				},
 				on: {
 					init() {
-						Utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
-							data.birthdate_fmt = Utils.formatDate(data.birthdate);
-							data.phone         = Utils.formatPhone(data.phone);
+						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
+							data.birthdate_fmt = utils.formatDate(data.birthdate);
+							data.phone         = utils.formatPhone(data.phone);
 							page.set('user', data); /* get actually user data */
 						});
 
-						Utils.api.get('/api/v2/list/records?status=upcoming&client=' +
+						utils.api.get('/api/v2/list/records?status=upcoming&client=' +
 						              wbapp._session.user.id).then(
 							function (data) {
 								let curr_timestamp = parseInt(getdate()[0]);
@@ -603,9 +605,10 @@
 										page.push('events.upcoming', rec); /* get actually user next events */
 									}
 
-									let times                = rec.event_time.split(' - ');
-									let event_from_timestamp = Utils.timestamp(rec.event_date + ' ' + times[0]);
-									let event_to_timestamp   = Utils.timestamp(rec.event_date + ' ' + times[1]);
+									let event_from_timestamp = utils.timestamp(
+										rec.event_date + ' ' + rec.event_time_start);
+									let event_to_timestamp   = utils.timestamp(
+										rec.event_date + ' ' + rec.event_time_end);
 
 									if (event_from_timestamp < curr_timestamp
 									    && (event_to_timestamp >= curr_timestamp)) {
@@ -614,14 +617,14 @@
 								});
 							});
 
-						Utils.api.get('/api/v2/list/records?status=past&group=events&client=' +
+						utils.api.get('/api/v2/list/records?status=past&group=events&client=' +
 						              wbapp._session.user.id).then(
 							function (data) {
 								console.log('history.events:', data);
 								page.set('history.events', data); /* get actually user next events */
 							});
 
-						Utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+						utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
 							.then(function (data) {
 								console.log('history.longterms:', data);
 								page.set('history.longterms', data); /* get actually user next events */
@@ -631,10 +634,16 @@
 							page.set('catalog', catalog);
 						});
 					},
+					complete(){
+						$("[data-src]:not([src])").lazyload();
+					},
 					runOnlineChat(ev){
 						const _rec_id = $(ev.node).data('id');
 						CabinetController.runOnlineChat(_rec_id);
 					},
+					exec_lazyload(ev){
+						$("img[data-src]:not([src])").lazyload();
+					}
 					toggleEdit(ev) {
 						console.log(ev, $(ev.node), this);
 						if (!!window.profile_inline_editor) {
@@ -659,8 +668,8 @@
 										let data = $form.serializeJSON();
 
 										CabinetController.updateProfile(uid, data, function (data) {
-											data.birthdate_fmt = Utils.formatDate(data.birthdate);
-											data.phone         = Utils.formatPhone(data.phone);
+											data.birthdate_fmt = utils.formatDate(data.birthdate);
+											data.phone         = utils.formatPhone(data.phone);
 											page.set('user', data); /* get actually user data */
 											toast('Профиль успешно обновлён');
 										});

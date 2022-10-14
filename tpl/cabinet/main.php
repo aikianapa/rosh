@@ -212,21 +212,31 @@
 								</div>
 							</div>
 							{{/if}}
-							<div class="col-md-3">
-								<div class="input input-lk-calendar input--grey">
-									<input class="input__control datepickr"
-										name="event_datetime" value="{{event_date}}"
-										type="text" placeholder="Выбрать дату и время">
-									<div class="input__placeholder">Выбрать дату</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="input input-lk-calendar input--grey">
-									<input class="input__control datetimepickr"
-										name="event_time" value="{{event_time}}"
-										data-inputmask="HH:MM - HH:MM"
-										type="text" placeholder="Выбрать время">
-									<div class="input__placeholder"></div>
+							<div class="col-md-6">
+								<div class="row">
+
+									<div class="col-md-6">
+										<div class="input input-lk-calendar input--grey">
+											<input class="input__control datepickr"
+												name="event_datetime" value="{{event_date}}"
+												type="text" placeholder="Выбрать дату и время">
+											<div class="input__placeholder">Выбрать дату</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="calendar input mb-30">
+											<input class="input__control" type="time" name="event_time_start"
+												min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+											<div class="input__placeholder">Время начала</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="calendar input mb-30">
+											<input class="input__control" type="time" name="event_time_end"
+												min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+											<div class="input__placeholder">Время окончания</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -242,9 +252,9 @@
 							<div class="search__drop-right">
 								<div class="search__drop-summ">{{catalog.spec_service[this.spec_service].price}} ₽</div>
 							</div>
-						</div
-							{{else}}
-							{{#each quote.service_prices: idx, key}}
+						</div>
+						{{else}}
+						{{#each quote.service_prices: idx, key}}
 						<div class="search__drop-item" data-index="{{idx}}"
 							data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
 							<input type="hidden" name="services[]"
@@ -353,7 +363,7 @@
 							<div class="admin-events-item">
 								<p>Приём</p>
 								{{#if group === 'events'}}
-								<a href="#">{{event_date}}, {{event_time}}</a>
+								<a href="#">{{event_date}}, {{event_time_start}}-{{event_time_end}}</a>
 								{{else}}
 								- уточнить -
 								{{/if}}
@@ -425,7 +435,7 @@
 									</div>
 								</div>
 								<div class="admin-editor__top-status">
-									<div class="admin-editor__top-date">Заявка сформирована {{@global.Utils.formatDate(_created)}} / {{time}}</div>
+									<div class="admin-editor__top-date">Заявка сформирована {{@global.utils.formatDate(_created)}} / {{time}}</div>
 									<div class="admin-editor__top-select">
 									</div>
 								</div>
@@ -539,8 +549,8 @@
 												let data = $form.serializeJSON();
 												CabinetController.updateProfile(profile_id, data, function (res) {
 													console.log(res);
-													data.birthdate_fmt = Utils.formatDate(data.birthdate);
-													data.phone         = Utils.formatPhone(data.phone);
+													data.birthdate_fmt = utils.formatDate(data.birthdate);
+													data.phone         = utils.formatPhone(data.phone);
 													cabinet.set('user', data); /* get actually user data */
 													$(form).html('');
 													toast('Профиль успешно обновлён');
@@ -574,7 +584,7 @@
 									_tab.set('result.' + id + '.clientData', data);
 								});
 
-								quote.price_text = Utils.formatPrice(quote.price);
+								quote.price_text = utils.formatPrice(quote.price);
 								let statusEdt    = new Ractive({
 									el: _parent.find('.admin-editor__top-select'),
 									template: editStatus,
@@ -640,21 +650,22 @@
 							}
 						}
 					});
-					
-					Utils.api.get('/api/v2/list/records?active=on&group=' + target_tab + '&@sort=priority:d').then(function (result) {
-						let data     = {
-							group  : target_tab,
-							records: result,
-							catalog: catalog
-						};
-						console.log('>>> loaded '+ target_tab+':', data);
-						_tab.set(data);
-					});
-					
+
+					utils.api.get('/api/v2/list/records?active=on&group=' + target_tab + '&@sort=priority:d')
+						.then(function (result) {
+							let data = {
+								group: target_tab,
+								records: result,
+								catalog: catalog
+							};
+							console.log('>>> loaded ' + target_tab + ':', data);
+							_tab.set(data);
+						});
+
 					tabs[target_tab] = _tab;
 				}
 			);
-		
+
 			$(document).on('click', 'button.flag-date__ico', function (e) {
 				e.stopPropagation();
 				const _parent    = $(this).parents('.acount__table-accardeon');
@@ -679,9 +690,9 @@
 					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 				}).appendTo(_list);
 
-				Utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
+				utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
 					.then(function (res) {
-						toast('Список обновлен','success');
+						toast('Список обновлен', 'success');
 					});
 			});
 		});

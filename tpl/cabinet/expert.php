@@ -324,7 +324,7 @@
 									<div class="account-event-wrap">
 										<div class="account-events__name">Время приема:</div>
 										<div class="account-event">
-											<p>{{this.event_time}}</p>
+											<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
 										</div>
 									</div>
 								</div>
@@ -409,7 +409,7 @@
 									<div class="account-event-wrap">
 										<div class="account-events__name">Время приема:</div>
 										<div class="account-event">
-											<p>{{this.event_time}}</p>
+											<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
 										</div>
 									</div>
 								</div>
@@ -565,8 +565,8 @@
 								}
 
 								let times                = rec.event_time.split(' - ');
-								let event_from_timestamp = Utils.timestamp(rec.event_date + ' ' + times[0]);
-								let event_to_timestamp   = Utils.timestamp(rec.event_date + ' ' + times[1]);
+								let event_from_timestamp = utils.timestamp(rec.event_date + ' ' + times[0]);
+								let event_to_timestamp   = utils.timestamp(rec.event_date + ' ' + times[1]);
 
 								if (event_from_timestamp < curr_timestamp
 								    && (event_to_timestamp >= curr_timestamp)) {

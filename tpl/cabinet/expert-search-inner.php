@@ -72,7 +72,7 @@
 											<p>Дата</p>{{event_date}}
 										</div>
 										<div class="history-item">
-											<p>Время</p>{{event_time}}
+											<p>Время</p>{{this.event_time_start}}-{{this.event_time_end}}
 										</div>
 										<div class="history-item">
 											<p>Специалисты</p>

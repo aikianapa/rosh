@@ -573,7 +573,7 @@
 			</template>
 		</div>
 
-		<div class="popup --create-appoint">
+		<div class="popup --edit-event">
 			<template id="popupCreateAppoint">
 				<div class="popup__overlay"></div>
 				<div class="popup__panel">
@@ -653,9 +653,10 @@
 							<div class="input__placeholder">Выбрать время и дату</div>
 						</div>
 						<div class="calendar input mb-30">
-							<input class="input__control" type="text"
-								name="event_time" required
-								placeholder="Выбрать дату и время">
+							<input class="input__control" type="time" name="event_time_start"
+								min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+							<input class="input__control" type="time" name="event_time_end"
+								min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
 							<div class="input__placeholder">Выбрать время</div>
 						</div>
 						<input type="hidden" name="client" value="{{client_id}}">
@@ -667,7 +668,114 @@
 				</div>
 			</template>
 		</div>
-		
+		<div class="popup --create-event">
+			<template id="popupClientEvent">
+				<div class="popup__overlay"></div>
+				<div class="popup__panel">
+					<button class="popup__close">
+						<svg class="svgsprite _close">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+						</svg>
+					</button>
+					<div class="popup__name text-bold">{{popup.title}}</div>
+					<form class="popup__form" on-submit="submit" data-record="{{record.id}}">
+						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
+
+						<div class="input" data-hide="service-search">
+							<input class="search__input search-services" type="text"
+								placeholder="Поиск по услугам">
+							<div class="search__drop"></div>
+							<button class="search__btn" type="button">
+								<svg class="svgsprite _search">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+								</svg>
+							</button>
+						</div>
+						<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+							<input class="checkbox-visible-next-form" type="checkbox"
+								name="for_consultation" value="1">
+							<span></span>
+							<div class="checbox__name">Консультация врача</div>
+						</label>
+						<div class="select-form" style="display: none;" data-show="service">
+							<div class="text-bold mb-20">Тип события</div>
+							<div class="popups__text-chexboxs">
+								<label class="text-radio">
+									<input type="radio" name="type" value="clinic" checked>
+									<span>В клинике</span>
+								</label>
+								<label class="text-radio switch-blocks">
+									<input type="radio" name="type" value="online">
+									<span>Онлайн</span>
+								</label>
+							</div>
+						</div>
+
+						<div class="select-form" data-hide="expert">
+							<div class="select">
+								<div class="select__main">
+									<div class="select__placeholder">Выберите специалиста</div>
+									<div class="select__values"></div>
+								</div>
+								<div class="select__list">
+									{{#each catalog.experts}}
+									<div class="select__item select__item--checkbox">
+										<label class="checkbox checkbox--record">
+											<input type="checkbox" name="experts[]" value="{{id}}">
+											<span></span>
+											<div class="checbox__name">
+												<div class="select__name">{{name}}</div>
+											</div>
+										</label>
+									</div>
+									{{/each}}
+								</div>
+							</div>
+						</div>
+
+						<div class="calendar input mb-30">
+							<input class="input__control datepickr" type="text"
+								name="event_date" required
+								placeholder="Выбрать дату и время">
+							<div class="input__placeholder">Выбрать время и дату</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="calendar input mb-30">
+									<input class="input__control" type="time" name="event_time_start"
+										min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+									<div class="input__placeholder">Время начала</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="calendar input mb-30">
+									<input class="input__control" type="time" name="event_time_end"
+										min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+									<div class="input__placeholder">Время окончания</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="admin-editor__patient" data-hide="service-search">
+							<div class="text-bold mb-10">Выбраны услуги</div>
+						</div>
+						<div class="admin-editor__summ" data-hide="service-search">
+							<p>Всего</p>
+							<input type="hidden" name="price">
+							<p class="price">0 ₽</p>
+						</div>
+
+						<input type="hidden" name="client" value="{{client_id}}">
+						<input type="hidden" name="group" value="events">
+						<input type="hidden" name="status" value="upcoming">
+						<input type="hidden" name="pay_status" value="unpay">
+
+						<button class="btn btn--black" type="submit">Продолжить</button>
+					</form>
+				</div>
+			</template>
+		</div>
+
 		<div class="popup --download-data">
 			<template id="popupDownloadData">
 				<div class="popup__overlay"></div>

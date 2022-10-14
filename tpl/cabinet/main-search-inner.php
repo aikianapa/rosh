@@ -120,7 +120,7 @@
 										<div class="account-event-wrap">
 											<div class="account-events__name">Дата приема:</div>
 											<div class="account-event">
-												<p>{{ @global.Utils.formatDate(this.event_date) }}</p>
+												<p>{{ @global.utils.formatDate(this.event_date) }}</p>
 											</div>
 										</div>
 										<div class="account-event-wrap">
@@ -186,7 +186,7 @@
 											<div class="acount__table-main accardeon__main accardeon__click">
 												<div class="history-item">
 													<p>Дата</p>
-													{{ @global.Utils.formatDate(this.event_date) }}
+													{{ @global.utils.formatDate(this.event_date) }}
 												</div>
 												<div class="history-item">
 													<p>Время</p>
@@ -328,7 +328,7 @@
 											<div class="acount__table-main accardeon__main accardeon__click">
 												<div class="healing-item">
 													<p>Дата</p>
-													{{ @global.Utils.formatDate(this.event_date) }} - {{ @global.Utils.formatDate(this.longterm_) }}
+													{{ @global.utils.formatDate(this.event_date) }} - {{ @global.utils.formatDate(this.longterm_) }}
 												</div>
 												<div class="healing-item">
 													<p>Услуги</p> {{this.title}}
@@ -417,8 +417,8 @@
 			on: {
 				init() {
 					wbapp.get('/api/v2/read/users/' + client_id, function (data) {
-						data.birthdate_fmt = Utils.formatDate(data.birthdate);
-						data.phone         = Utils.formatPhone(data.phone);
+						data.birthdate_fmt = utils.formatDate(data.birthdate);
+						data.phone         = utils.formatPhone(data.phone);
 						cabinet.set('client', data); /* get actually user data */
 					});
 
@@ -431,8 +431,8 @@
 							}
 
 							let times                = rec.event_time.split(' - ');
-							let event_from_timestamp = Utils.timestamp(rec.event_date + ' ' + times[0]);
-							let event_to_timestamp   = Utils.timestamp(rec.event_date + ' ' + times[1]);
+							let event_from_timestamp = utils.timestamp(rec.event_date + ' ' + times[0]);
+							let event_to_timestamp   = utils.timestamp(rec.event_date + ' ' + times[1]);
 
 							if (event_from_timestamp < curr_timestamp
 							    && (event_to_timestamp >= curr_timestamp)) {

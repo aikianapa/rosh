@@ -10,14 +10,53 @@ $(function () {
 	};
 
 	window.CabinetController = {
+		runOnlineChat(record_id) {
+			/*!! check record  exists & status & pay_status & date !!*/
+			/*!! mark record as "online_waiting"=1 !!*/
+			if (!wbapp?._session?.user) {
+				return false;
+			}
+			window.open('/cabinet/online#' + record_id,
+				'_blank', 'width=' + screen.availWidth + ',' +
+				          'height=' + screen.availHeight +
+				          ',location=yes,scrollbars=yes,status=no');
+		},
 		updateProfile(profile_id, profile_data, callback) {
 			let data   = profile_data;
 			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
 
-			Utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
+			utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
 				if (!!callback) {
 					callback(res);
 				}
+			});
+		},
+		createLongterm(record_data, callback) {
+			let data = record_data;
+
+			data.group      = 'longterm';
+			data.status     = 'upcoming';
+			data.pay_status = 'free';
+
+			data.priority = 0;
+			data.marked   = 0;
+
+			//data.event_date       = '';
+			//data.event_time       = '';
+			//data.event_time_start = '';
+			//data.event_time_end   = '';
+
+			data.analises = false;
+			data.photos   = {before: [], after: []};
+
+			data.comment        = '';
+			data.recommendation = '';
+			data.description    = '';
+
+			data.price = 0;
+
+			utils.api.post('/api/v2/create/records/', data).then(function (res) {
+				callback(res);
 			});
 		},
 		createQuote(record_data, callback) {
@@ -28,15 +67,18 @@ $(function () {
 			data.pay_status = 'unpay';
 
 			data.priority = 0;
-			data.marked   = false;
+			data.marked   = 0;
 
-			data.event_date        = '';
-			data.event_time        = '';
+			data.event_date       = '';
+			data.event_time       = '';
+			data.event_time_start = '';
+			data.event_time_end   = '';
+
 			data.longterm_date_end = '';
+			data.longterm_title    = '';
 
-			data.longterm_title = '';
-			data.analises       = false;
-			data.photos         = {before: [], after: []};
+			data.analises = false;
+			data.photos   = {before: [], after: []};
 
 			data.comment        = '';
 			data.recommendation = '';
@@ -44,7 +86,7 @@ $(function () {
 
 			data.price = parseInt(data.price);
 
-			Utils.api.post('/api/v2/create/records/', data).then(function (res) {
+			utils.api.post('/api/v2/create/records/', data).then(function (res) {
 				callback(res);
 			});
 		},
@@ -54,6 +96,11 @@ $(function () {
 			//data.event_date        = '';
 			//data.event_time        = '';
 			//data.longterm_date_end = '';
+			if (record_data?.status_type == 'event') {
+				data.group = 'events';
+			} else if (record_data?.status_type == 'quote') {
+				data.group = 'quotes';
+			}
 
 			data.longterm_title = '';
 			//data.analises  = false;
@@ -65,51 +112,70 @@ $(function () {
 
 			data.price = parseInt(data.price);
 
-			Utils.api.post('/api/v2/update/records/' + record_id, data).then(function (res) {
+			utils.api.post('/api/v2/update/records/' + record_id, data).then(function (res) {
 				callback(res);
 			});
 		},
-		listClientUpcoming(client_id, callback) {
-			Utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
-				function (data) {
-					if (!data) {
-						callback([]);
-					}
-					let curr_timestamp = parseInt(getdate()[0]);
-					data.forEach(function (rec) {
-						const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
+		listUpcomingEvents(options, callback) {
+			var _options = options || {};
+			var upcomings = [], currents = [];
 
-						if (event_date !== (new Date()).toLocaleDateString()) {
-							cabinet.push('events.upcoming', rec); /* get actually user next events */
+			var qry_str = '';
+			if (!!_options?.client) {
+				qry_str += '&client=' + _options?.client;
+			}
+			if (!!_options?.expert) {
+				qry_str += '&experts~=' + _options?.expert;
+			}
+
+			const curr_timestamp = parseInt(getdate()[0]);
+
+			utils.api.get('/api/v2/list/records?active=on&status=upcoming').then(
+				function (data) {
+
+					data.forEach(function (rec) {
+						if (rec.event_date !== (new Date()).toLocaleDateString()) {
+							upcomings.push(rec); /* get actually user next events */
 						}
 
-						if ((curr_timestamp + 10) > rec.event_begin_time && (rec.event_end_time >= curr_timestamp)) {
-							cabinet.push('events.current', rec);
+						let times = rec.event_time.split('-');
+
+						let event_from_timestamp = utils.timestamp(rec.event_date + ' ' + rec.event_time_start);
+						let event_to_timestamp   = utils.timestamp(rec.event_date + ' ' + rec.event_time_end);
+
+						if (event_from_timestamp < curr_timestamp
+						    && (event_to_timestamp >= curr_timestamp)) {
+							currents.push(rec);
 						}
 					});
-				});
 
-			wbapp.get('/api/v2/list/records?status=past&client=' + wbapp._session.user.id,
+					if (!!callback){
+						callback({currents: currents, upcomings: upcomings});
+					}
+
+					return {currents: currents, upcomings: upcomings};
+				}).then(function (list) {
+
+				console.log('???', list);
+			});
+		},
+		listPastEvents(client_id, callback) {
+			return Utils.api.get('/api/v2/list/records?status=past&group=events').then(
 				function (data) {
 					console.log('history.events:', data);
-					cabinet.set('history.events', data); /* get actually user next events */
+					page.set('history.events', data); /* get actually user next events */
 				});
-
-			wbapp.get('/api/v2/list/records?longterm=1&client=' + wbapp._session.user.id,
-				function (data) {
+		},
+		listLongterms(client_id) {
+			Utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+				.then(function (data) {
 					console.log('history.longterms:', data);
-					cabinet.set('history.longterms', data); /* get actually user next events */
+					page.set('history.longterms', data); /* get actually user next events */
 				});
-		},
-		listClientPast() {
-
-		},
-		listClientLongterms() {
-
 		}
 
 	};
-	window.Utils   = {
+	window.utils             = {
 		formatPhone(phone) {
 			var cleaned = ('' + phone).replace(/\D/g, '');
 			console.log(cleaned);
@@ -187,12 +253,12 @@ $(function () {
 				if (is_string(data)) {
 					data += '&__token=' + wbapp._session.token;
 				} else {
-					try { data.__token = wbapp._session.token; } catch (error) { null }
+					try { data.__token = wbapp._session.token; } catch (error) { null; }
 				}
 				wbapp.loading();
-				return $.post(path, data, function(){
+				return $.post(path, data, function () {
 					wbapp.unloading();
-				})
+				});
 			},
 			async request(path, method, data, options) {
 
@@ -215,7 +281,7 @@ $(function () {
 			return new Date(date).toLocaleString();
 		}
 	};
-	window.catalog = {
+	window.catalog           = {
 		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
 		spec_service: {
 			experts_consultation: {
@@ -266,18 +332,18 @@ $(function () {
 		init() {
 			var _self = this;
 
-			Utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
-				_self.quoteStatus = Utils.arrIndexBy(data);
+			utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
+				_self.quoteStatus = utils.arrIndexBy(data);
 			});
 
-			Utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-				_self.quotePay = Utils.arrIndexBy(data);
+			utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+				_self.quotePay = utils.arrIndexBy(data);
 			});
-			Utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
-				_self.quoteType = Utils.arrIndexBy(data);
+			utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
+				_self.quoteType = utils.arrIndexBy(data);
 			});
 
-			Utils.api.get('/api/v2/list/services?active=on').then(function (data) {
+			utils.api.get('/api/v2/list/services?active=on').then(function (data) {
 
 				let _services       = {};
 				_self.servicePrices = {};
@@ -322,29 +388,29 @@ $(function () {
 			});
 			/* for Admins only */
 			if (window.user_role === 'main') {
-				Utils.api.get('/api/v2/list/users?role=main&active=on' +
+				utils.api.get('/api/v2/list/users?role=main&active=on' +
 				              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
-					_self.admins = Utils.arrIndexBy(data);
+					_self.admins = utils.arrIndexBy(data);
 				});
-				Utils.api.get('/api/v2/list/users?role=client&active=on' +
+				utils.api.get('/api/v2/list/users?role=client&active=on' +
 				              '&@return=id,fullname,phone,email,birthdate&@sort=fullname:a').then(function (data) {
-					_self.clients = Utils.arrIndexBy(data);
+					_self.clients = utils.arrIndexBy(data);
 				});
 			}
 
-			Utils.api.get('/api/v2/list/experts?active=on&@sort=name:a').then(function (data) {
+			utils.api.get('/api/v2/list/experts?active=on&@sort=name:a').then(function (data) {
 				let _experts = {};
 				data.forEach(function (expert, i) {
 					_experts[expert.id] = expert;
-					Utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
+					utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id).then(function (res) {
 						console.log('-- expert url:', res[0]['u']);
-						_experts[expert.id].info_uri = res[0]['u'] || '';
+						_self.experts[expert.id].info_uri = res[0]['u'] || '';
 					});
 				});
 				_self.experts = _experts;
 			});
 
-			Utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
+			utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
 				let _serviceCats = {};
 				Object.keys(res.tree.data).forEach(function (_key) {
 					const _cat = res.tree.data[_key];
@@ -384,7 +450,7 @@ $(function () {
 
 		return changes;
 	};
-	window.toast          = function (text, head, icon) {
+	window.toast             = function (text, head, icon) {
 		var bgColor   = '#616161';
 		var textColor = '#FEFEFE';
 		switch (icon) {
@@ -395,7 +461,10 @@ $(function () {
 				bgColor = '#198754';
 				break;
 			case 'warning':
-				bgColor = '#FFC107';
+				bgColor = '#BB9107';
+				break;
+			case 'info':
+				bgColor = '#0A6BB9';
 				break;
 			default:
 				bgColor = '#616161';
@@ -419,6 +488,18 @@ $(function () {
 			beforeHide: function () {}, // will be triggered before the toast gets hidden
 			afterHidden: function () {}  // will be triggered after the toast has been hidden
 		});
+	};
+	window.toast_success     = function (text, head) {
+		toast(text, head, 'success');
+	};
+	window.toast_error       = function (text, head) {
+		toast(text, head, 'error');
+	};
+	window.toast_info        = function (text, head) {
+		toast(text, head, 'info');
+	};
+	window.toast_warning     = function (text, head) {
+		toast(text, head, 'warning');
 	};
 
 	window.initServicesSearch = function ($selector, service_list) {
@@ -537,7 +618,7 @@ $(function () {
 					sum += parseInt($(this).data('price'));
 				});
 				console.log(sum);
-				_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
+				_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
@@ -549,7 +630,7 @@ $(function () {
 			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
-			_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
+			_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
