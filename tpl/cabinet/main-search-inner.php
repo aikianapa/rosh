@@ -59,7 +59,6 @@
 									<a href="callto:+{{this.phone}}" class="user__item">Тел:
 										<span>{{this.phone}}</span>
 									</a>
-
 									<div class="user__item">Почта:
 										<span>{{this.email}}</span>
 									</div>
@@ -68,6 +67,24 @@
 											<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
 										</svg>
 										Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
+									</div>
+									<div class="admin-edit__user-btns">
+										<a class="admin-edit__user-btn btn btn--white"
+											onclick="popupCreateQuote('{{this.id}}', true)">
+											Записать пациента на прием
+										</a>
+										<a class="admin-edit__user-btn btn btn--white"
+											onclick="popupPhoto({longterm:1, client:'{{this.id}}'})">
+											Добавить продолжительное лечение
+										</a>
+										<div class="admin-edit__uploads">
+											<input class="admin-edit__upload" type="file" id="upload-analises"
+												name="files[]" accept="application/pdf"
+												onchange="CabinetController.uploadAnalises('{{this.id}}', '{{}}')">
+											<label class="admin-edit__upload-btn btn btn--white" for="upload-file">
+												Добавить анализы
+											</label>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -89,9 +106,10 @@
 										<div class="account-event-wrap">
 											<div class="account-events__name">Услуги:</div>
 											<div class="account-event">
-												{{#this.services}}
-												<p>{{this.name}}</p>
-												{{/this.services}}
+												<p>Услуги</p>
+												{{#services}}
+												{{catalog.services[this].header}}<br>
+												{{/services}}
 											</div>
 										</div>
 									</div>
@@ -99,13 +117,13 @@
 										<div class="account-event-wrap">
 											<div class="account-events__name">Дата приема:</div>
 											<div class="account-event">
-												<p>{{this.event_date}}</p>
+												<p>{{ @global.Utils.formatDate(this.event_date) }}</p>
 											</div>
 										</div>
 										<div class="account-event-wrap">
 											<div class="account-events__name">Время приема:</div>
 											<div class="account-event">
-												<p>{{this.event_time}}</p>
+												<p>{{ this.event_time }}</p>
 											</div>
 										</div>
 									</div>
@@ -126,13 +144,6 @@
 										data-record="{{this.id}}">
 										Редактировать
 									</a>
-									<div class="admin-edit__user-btns d-none">
-										<a class="admin-edit__user-btn btn btn--white --openpopup"
-											data-popup="--create-appoint">Записать пациента на прием</a>
-										<a class="admin-edit__user-btn btn btn--white --openpopup" onclick="popupPhoto()"
-											data-popup="--photo">Добавить продолжительное лечение </a>
-
-									</div>
 								</div>
 							</div>
 							{{/each}}
@@ -171,10 +182,12 @@
 										<div class="acount__table-accardeon accardeon">
 											<div class="acount__table-main accardeon__main accardeon__click">
 												<div class="history-item">
-													<p>Дата</p>{{this.event_date}}
+													<p>Дата</p>
+													{{ @global.Utils.formatDate(this.event_date) }}
 												</div>
 												<div class="history-item">
-													<p>Время</p>{{this.event_time}}
+													<p>Время</p>
+													{{ this.event_time }}
 												</div>
 												<div class="history-item">
 													<p>Специалисты</p>
@@ -311,7 +324,8 @@
 										<div class="acount__table-accardeon accardeon">
 											<div class="acount__table-main accardeon__main accardeon__click">
 												<div class="healing-item">
-													<p>Дата</p> {{this.event_date}} - {{this.longterm_date_end}}
+													<p>Дата</p>
+													{{ @global.Utils.formatDate(this.event_date) }} - {{ @global.Utils.formatDate(this.longterm_) }}
 												</div>
 												<div class="healing-item">
 													<p>Услуги</p> {{this.title}}

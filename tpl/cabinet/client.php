@@ -134,7 +134,7 @@
 						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Дата приема:</div>
 							<div class="account-event">
-								<p>{{this.event_date}}</p>
+								<p>{{ @global.Utils.formatDate(this.event_date) }}</p>
 							</div>
 						</div>
 
@@ -208,7 +208,7 @@
 						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Дата приема:</div>
 							<div class="account-event">
-								<p>{{this.event_date}}</p>
+								<p>{{ @global.Utils.formatDate(this.event_date) }}</p>
 							</div>
 						</div>
 						<div class="account-event-wrap --jcsb">
@@ -284,7 +284,8 @@
 						<div class="acount__table-accardeon accardeon">
 							<div class="acount__table-main accardeon__main accardeon__click">
 								<div class="history-item">
-									<p>Дата</p>{{this.event_date}}
+									<p>Дата</p>
+									{{ @global.Utils.formatDate(this.event_date) }}
 								</div>
 								<div class="history-item">
 									<p>Время</p>{{this.event_time}}
@@ -359,7 +360,7 @@
 												<div class="expert__worked-pic">
 													<img src="{{this}}" alt="{{catalog.experts[this].name}}">
 												</div>
-												<div class="expert__worked-name">{{catalog.experts[this ].name}}</div>
+												<div class="expert__worked-name">{{catalog.experts[this].name}}</div>
 												<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
 											</a>
 										</div>
@@ -429,7 +430,7 @@
 						<div class="acount__table-accardeon accardeon">
 							<div class="acount__table-main accardeon__main accardeon__click">
 								<div class="healing-item">
-									<p>Дата</p> {{this.longterm_date_from}} - {{this.longterm_date_to}}
+									<p>Дата</p> {{this._created}} - {{this._lastdate}}
 								</div>
 								<div class="healing-item">
 									<p>Услуги</p> {{this.title}}
