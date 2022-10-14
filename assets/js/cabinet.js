@@ -605,7 +605,6 @@ $(function () {
 	};
 
 	window.popupCreateQuote           = function (user_id) {
-		console.log(user_id);
 		var popup = new Ractive({
 			el: '.popup.--record',
 			template: wbapp.tpl('#popupRecord').html,

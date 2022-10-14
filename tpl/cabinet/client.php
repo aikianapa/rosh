@@ -29,16 +29,11 @@
 						<h1 class="h1 mb-10">Личный кабинет</h1>
 					</div>
 					<button class="btn btn--black --openpopup" data-popup="--record"
-						onclick="popupCreateQuote('{{user.id}}')">
+						onclick="popupCreateQuote()">
 						Записаться на прием
 					</button>
 				</div>
 
-				<div class="account__detail popup add-analises">
-					<input class="admin-edit__upload" type="hidden" id="analises-file">
-					<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
-
-				</div>
 				<div class="page-content">
 					<div class="loading-overlay">
 						<div class="loader"></div>
