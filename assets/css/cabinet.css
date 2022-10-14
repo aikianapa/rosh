@@ -204,4 +204,14 @@
 .account-events__block .account-events__block-wrap {
 	max-width : 1100px;
 }
-.account-events__item.event_date {width : calc(35% - 120px)}
+.account-events__item.event_date {
+	width : calc(35% - 120px);
+}
+.account-events__btns .account-events__btn {
+	width : calc(40% - 40px);
+}
+.profile-editor-inline {
+	padding-top : 20px;
+	margin-top  : 20px;
+	border-top  : 1px solid #E7E7E7;
+}
