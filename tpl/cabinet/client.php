@@ -43,7 +43,7 @@
 		</div>
 	</main>
 	<!--!!! TEMPLATES !!!-->
-	<template id="page-content">
+	<template id="page-content" wb-off>
 		<div class="account__panel">
 			<div class="account__info">
 				<div class="user">
@@ -128,14 +128,11 @@
 				<div class="account-events__btns">
 					<div class="account-event-wrap --aicn">
 						<div class="account-events__btn">
-							<a class="btn btn--black"
-								onclick="window.open('/cabinet/online#{{this.id}}',
-											 '_blank',
-                                             'width='+screen.availWidth+',height='+screen.availHeight+
-                                             ',location=yes,scrollbars=yes,status=no');">
+							<a class="btn btn--black" on-click="runOnlineChat">
 								Начать консультацию
 							</a>
 						</div>
+						<!-- TODO: add record.expert_waiting for detect online expert status -->
 						<p>Вас ожидает специалист, можете подключиться прямо сейчас</p>
 					</div>
 				</div>
@@ -144,7 +141,7 @@
 				{{#if this.analises}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="[[this.analises.src]]" download="Анализы.pdf">Скачать анализы</a>
+					<a class="btn btn--white" data-href="[[this.analises]]" download="Анализы.pdf">Скачать анализы</a>
 				</div>
 				{{/if}}
 			</div>
@@ -228,7 +225,7 @@
 				{{#if this.analises}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="{{this.analises.src}}" download="Анализы.pdf">Скачать анализы</a>
+					<a class="btn btn--white" data-href="[[this.analises]]" download="Анализы.pdf">Скачать анализы</a>
 				</div>
 				{{/if}}
 			</div>
@@ -328,8 +325,6 @@
 									<div class="experts__worked-title">С вами работали</div>
 									<div class="row">
 										{{#each experts}}
-
-										<span>{{this}}</span>
 										<div class="col-md-6">
 											<a class="expert__worked"
 												target="_blank"
@@ -636,7 +631,10 @@
 							page.set('catalog', catalog);
 						});
 					},
-
+					runOnlineChat(ev){
+						const _rec_id = $(ev.node).data('id');
+						CabinetController.runOnlineChat(_rec_id);
+					},
 					toggleEdit(ev) {
 						console.log(ev, $(ev.node), this);
 						if (!!window.profile_inline_editor) {
@@ -686,7 +684,6 @@
 </div>
 
 <script src="/assets/js/cabinet.js"></script>
-
 </body>
 
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

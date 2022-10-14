@@ -74,14 +74,17 @@
 											Записать пациента на прием
 										</a>
 										<a class="admin-edit__user-btn btn btn--white"
-											onclick="popupPhoto({longterm:1, client:'{{this.id}}'})">
+											onclick="popupPhoto({longterm:1, client:"{{this.id}}"})">
 											Добавить продолжительное лечение
 										</a>
-										<div class="admin-edit__uploads">
-											<input class="admin-edit__upload" type="file" id="upload-analises"
-												name="files[]" accept="application/pdf"
-												onchange="CabinetController.uploadAnalises('{{this.id}}', '{{}}')">
-											<label class="admin-edit__upload-btn btn btn--white" for="upload-file">
+										<div class="admin-edit__uploads" data-client="{{this.id}}">
+											<input type="hidden" name="analises">
+											<input class="admin-edit__upload upload-analises"
+												id="upload-analises-file"
+												type="file" 
+												name="files[]" 
+												accept="application/pdf">
+											<label class="admin-edit__upload-btn btn btn--white" for="upload-analises-file">
 												Добавить анализы
 											</label>
 										</div>
@@ -476,6 +479,9 @@
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
+
+<script src="/assets/js/cabinet.js"></script>
+
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
 <wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>

@@ -36,7 +36,7 @@
 		</div>
 	</main>
 </div>
-<script type='text/javascript' src='/assets/js/scaledrone.min.js'></script>
+<script src='/assets/js/scaledrone.min.js'></script>
 <script>
 	if (!location.hash) {
 		location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
