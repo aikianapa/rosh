@@ -127,7 +127,6 @@ $(function () {
             $(this).closest('.popup').hide();
             $(this).closest('.popup').find('.popup__panel.d-none:not(.--succed)').removeClass('d-none');
             $(this).closest('.popup').find('.--succed.d-block').removeClass('d-block');
-            window.location.reload();
             return false;
         }).on('click', '.popup__close', function () {
             $(this).closest('.popup').hide();

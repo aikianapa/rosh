@@ -772,14 +772,6 @@
 			</template>
 		</div>
 	</div>
-	
-	<script>
-		$(function (){
-			console.log('cabinet popups scripts');
-
-		});
-
-	</script>
 </view>
 <edit header="Все попапы для ЛК">
 	<div>

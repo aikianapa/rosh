@@ -109,7 +109,7 @@ $(function () {
 		}
 
 	};
-	window.Utils             = {
+	window.Utils   = {
 		formatPhone(phone) {
 			var cleaned = ('' + phone).replace(/\D/g, '');
 			console.log(cleaned);
@@ -167,15 +167,8 @@ $(function () {
 		},
 		api: {
 			get(path, data, options) {
-				const fullPath = (data === undefined) ? path : path + `?${new URLSearchParams(data)}`;
-				return this.request(fullPath, 'get', undefined, options);
-			},
-			post(path, data, options) {
-				return this.request(path, 'post', data, options);
-			},
-			async request(path, method, data, options) {
-				let _path = path;
-				if (!path.includes('__token')) {
+				let _path = (data === undefined) ? path : path + '?' + $.param(data);
+				if (!_path.includes('__token')) {
 					let parts = path.split('?', 2);
 					if (parts.length === 2) {
 						parts[1] += '&__token=' + wbapp._session.token;
@@ -184,15 +177,25 @@ $(function () {
 					}
 					_path = parts.join('?');
 				}
-				const defaultOptions = {
-					method
-				};
-				if (method !== 'get' && method !== 'head') {
-					defaultOptions.body = new URLSearchParams(data);
-				}
+				const defaultOptions = {Method: 'GET'};
 				return fetch(_path,
 					options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
 					.then((result) => result.json());
+			},
+			post(path, data, options) {
+				//return this.request(path, 'post', data, options);
+				if (is_string(data)) {
+					data += '&__token=' + wbapp._session.token;
+				} else {
+					try { data.__token = wbapp._session.token; } catch (error) { null }
+				}
+				wbapp.loading();
+				return $.post(path, data, function(){
+					wbapp.unloading();
+				})
+			},
+			async request(path, method, data, options) {
+
 			}
 		},
 		arrIndexBy(array, index_key) {
@@ -212,7 +215,6 @@ $(function () {
 			return new Date(date).toLocaleString();
 		}
 	};
-
 	window.catalog = {
 		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
 		spec_service: {
@@ -359,628 +361,629 @@ $(function () {
 			});
 		}
 	};
-	if (!!window.user_role.length) {
+
+	if (!!wbapp._session?.user?.role?.length) {
 		window.catalog.init();
 	}
 	/* common function */
-	setTimeout(function () {
-		window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
-			var changes    = {};
-			var to_compare = field_to_compare;
-			for (var i in curr_data) {
-				if (!!to_compare && !to_compare.include(i)) {
-					return;
-				}
-				if (!prev_data.hasOwnProperty(i) || curr_data[i] !== prev_data[i]) {
-					changes[i] = {
-						'from': (typeof prev_data[i] === 'undefined') ? '-' : prev_data[i],
-						'to': curr_data[i]
-					};
-				}
+	//setTimeout(function () {
+	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
+		var changes    = {};
+		var to_compare = field_to_compare;
+		for (var i in curr_data) {
+			if (!!to_compare && !to_compare.include(i)) {
+				return;
 			}
-
-			return changes;
-		};
-		window.toast          = function (text, head, icon) {
-			var bgColor   = '#616161';
-			var textColor = '#FEFEFE';
-			switch (icon) {
-				case 'error':
-					bgColor = '#DC3545';
-					break;
-				case 'success':
-					bgColor = '#198754';
-					break;
-				case 'warning':
-					bgColor = '#FFC107';
-					break;
-				default:
-					bgColor = '#616161';
+			if (!prev_data.hasOwnProperty(i) || curr_data[i] !== prev_data[i]) {
+				changes[i] = {
+					'from': (typeof prev_data[i] === 'undefined') ? '-' : prev_data[i],
+					'to': curr_data[i]
+				};
 			}
+		}
 
-			$.toast({
-				text: text, // Text that is to be shown in the toast
-				heading: head || '', // Optional heading to be shown on the toast
-				showHideTransition: 'slide', // fade, slide or plain
-				allowToastClose: true, // Boolean value true or false
-				hideAfter: 4000,
-				stack: 5,
-				position: 'top-right',
-				bgColor: bgColor,  // Background color of the toast
-				textColor: textColor,  // Text color of the toast
-				textAlign: 'left',  // Text alignment i.e. left, right or center
-				loader: false,  // Whether to show loader or not. True by default
-				icon: false,
-				beforeShow: function () {}, // will be triggered before the toast is shown
-				afterShown: function () {}, // will be triggered after the toat has been shown
-				beforeHide: function () {}, // will be triggered before the toast gets hidden
-				afterHidden: function () {}  // will be triggered after the toast has been hidden
-			});
-		};
+		return changes;
+	};
+	window.toast          = function (text, head, icon) {
+		var bgColor   = '#616161';
+		var textColor = '#FEFEFE';
+		switch (icon) {
+			case 'error':
+				bgColor = '#DC3545';
+				break;
+			case 'success':
+				bgColor = '#198754';
+				break;
+			case 'warning':
+				bgColor = '#FFC107';
+				break;
+			default:
+				bgColor = '#616161';
+		}
 
-		window.initServicesSearch = function ($selector, service_list) {
-			console.log($selector, service_list);
+		$.toast({
+			text: text, // Text that is to be shown in the toast
+			heading: head || '', // Optional heading to be shown on the toast
+			showHideTransition: 'slide', // fade, slide or plain
+			allowToastClose: true, // Boolean value true or false
+			hideAfter: 4000,
+			stack: 5,
+			position: 'top-right',
+			bgColor: bgColor,  // Background color of the toast
+			textColor: textColor,  // Text color of the toast
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: false,  // Whether to show loader or not. True by default
+			icon: false,
+			beforeShow: function () {}, // will be triggered before the toast is shown
+			afterShown: function () {}, // will be triggered after the toat has been shown
+			beforeHide: function () {}, // will be triggered before the toast gets hidden
+			afterHidden: function () {}  // will be triggered after the toast has been hidden
+		});
+	};
 
-			var _parent_form = $selector.parents('form');
-			$selector.autocomplete({
-				noCache: true,
-				minChars: 1,
-				lookup: service_list,
-				beforeRender: function (container, suggestions) {
-					console.log(suggestions);
+	window.initServicesSearch = function ($selector, service_list) {
+		console.log($selector, service_list);
 
-					var CNT = $(container);
-					$(container).addClass('search__drop').html('');
-					var _catSelector = $(this).parents('form').find('[name="service_category"]:checked');
-					var _selectedCat = '';
-					if (_catSelector.length) {
-						_selectedCat = _catSelector.val();
-					}
-					$(suggestions).each(function (index) {
-						var PRICE = new Intl.NumberFormat('ru-RU').format(this.data.price);
-						var TAGS  = $('<div></div>').addClass('search__drop-tags');
-						var _cats = [];
-						$(this.data.tags).each(function () {
-							_cats.push(this.id);
-							TAGS.append(
-								$('<div></div>').addClass('search__drop-tag --' + this.color).text(this.tag)
-							);
-						});
-						if (!!_selectedCat && !_cats.includes(_selectedCat)) {
-							return;
-						}
-						CNT.append(
-							$('<label></label>').addClass(
-								'search__drop-item autocomplete-suggestion').attr({
-								"data-index": index,
-								'data-id': this.id,
-								"data-service_id": this.data.service_id,
-								"data-price": this.data.price
-							}).append(
-								$('<div></div>').addClass('search__drop-name').text(this.value)
-							).append(
-								$('<div></div>').addClass('search__drop-right').append(
-									TAGS).append(
-									$('<div></div>').addClass('search__drop-summ').text(
-										PRICE + ' ₽')
-								)
-							)
-						);
-					});
-				},
-				onSelect: function (suggestion) {
-					console.log(suggestion);
-					$selector.val('');
+		var _parent_form = $selector.parents('form');
+		$selector.autocomplete({
+			noCache: true,
+			minChars: 1,
+			lookup: service_list,
+			beforeRender: function (container, suggestions) {
+				console.log(suggestions);
 
-					if (_parent_form.find('.admin-editor__patient [data-id=' + suggestion.id + ']').length) {
-						return;
-					}
-					var PRICE = new Intl.NumberFormat('ru-RU').format(suggestion.data.price);
+				var CNT = $(container);
+				$(container).addClass('search__drop').html('');
+				var _catSelector = $(this).parents('form').find('[name="service_category"]:checked');
+				var _selectedCat = '';
+				if (_catSelector.length) {
+					_selectedCat = _catSelector.val();
+				}
+				$(suggestions).each(function (index) {
+					var PRICE = new Intl.NumberFormat('ru-RU').format(this.data.price);
 					var TAGS  = $('<div></div>').addClass('search__drop-tags');
-					$(suggestion.data.tags).each(function () {
+					var _cats = [];
+					$(this.data.tags).each(function () {
+						_cats.push(this.id);
 						TAGS.append(
 							$('<div></div>').addClass('search__drop-tag --' + this.color).text(this.tag)
 						);
 					});
-					const index = _parent_form.find(
-						'.admin-editor__patient .search__drop-item[data-service_id]').length;
-					var sum     = 0;
-					_parent_form.find('.admin-editor__patient').append(
-						$('<div></div>').addClass('search__drop-item').attr({
+					if (!!_selectedCat && !_cats.includes(_selectedCat)) {
+						return;
+					}
+					CNT.append(
+						$('<label></label>').addClass(
+							'search__drop-item autocomplete-suggestion').attr({
 							"data-index": index,
-							'data-id': suggestion.id,
-							"data-service_id": suggestion.data.service_id,
-							"data-price": suggestion.data.price
+							'data-id': this.id,
+							"data-service_id": this.data.service_id,
+							"data-price": this.data.price
 						}).append(
-							$('<input type="hidden">').attr({
-								"name": 'services[]',
-								"value": suggestion.data.service_id
-							}).val(suggestion.data.service_id)
+							$('<div></div>').addClass('search__drop-name').text(this.value)
 						).append(
-							$('<input type="hidden">').attr({
-								"name": 'service_prices[' + suggestion.id + '][service_id]',
-								"value": suggestion.data.service_id
-							}).val(suggestion.data.service_id)
-						).append(
-							$('<input type="hidden">').attr({
-								"name": 'service_prices[' + suggestion.id + '][price_id]',
-								"value": suggestion.data.price_id
-							}).val(suggestion.data.price_id)
-						).append(
-							$('<input type="hidden">').attr({
-								"name": 'service_prices[' + suggestion.id + '][name]',
-								"value": suggestion.value
-							}).val(suggestion.value)
-						).append(
-							$('<input type="hidden">').attr({
-								"name": 'service_prices[' + suggestion.id + '][price]',
-								"value": suggestion.data.price
-							}).val(suggestion.data.price)
-						).append(
-							$('<div></div>').addClass('search__drop-name').text(suggestion.value).append(
-								$('<div class="search__drop-delete">' +
-								  '<svg class="svgsprite _delete">' +
-								  '	<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>' +
-								  '</svg>' +
-								  '</div>')
+							$('<div></div>').addClass('search__drop-right').append(
+								TAGS).append(
+								$('<div></div>').addClass('search__drop-summ').text(
+									PRICE + ' ₽')
 							)
-						).append(
-							$('<div></div>').addClass('search__drop-right')
-								.append(TAGS)
-								.append($('<div></div>').addClass('search__drop-summ').text(PRICE + ' ₽'))
 						)
 					);
-					_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
-						sum += parseInt($(this).data('price'));
-					});
-					console.log(sum);
-					_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
-					_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
+				});
+			},
+			onSelect: function (suggestion) {
+				console.log(suggestion);
+				$selector.val('');
+
+				if (_parent_form.find('.admin-editor__patient [data-id=' + suggestion.id + ']').length) {
+					return;
 				}
-			});
-			$(document).on('click', '.search__drop-delete', function (e) {
-				e.stopPropagation();
-				$(this).parents('.search__drop-item').remove();
-				let sum = 0;
-				console.log(_parent_form.find('.admin-editor__patient .search__drop-item').length);
+				var PRICE = new Intl.NumberFormat('ru-RU').format(suggestion.data.price);
+				var TAGS  = $('<div></div>').addClass('search__drop-tags');
+				$(suggestion.data.tags).each(function () {
+					TAGS.append(
+						$('<div></div>').addClass('search__drop-tag --' + this.color).text(this.tag)
+					);
+				});
+				const index = _parent_form.find(
+					'.admin-editor__patient .search__drop-item[data-service_id]').length;
+				var sum     = 0;
+				_parent_form.find('.admin-editor__patient').append(
+					$('<div></div>').addClass('search__drop-item').attr({
+						"data-index": index,
+						'data-id': suggestion.id,
+						"data-service_id": suggestion.data.service_id,
+						"data-price": suggestion.data.price
+					}).append(
+						$('<input type="hidden">').attr({
+							"name": 'services[]',
+							"value": suggestion.data.service_id
+						}).val(suggestion.data.service_id)
+					).append(
+						$('<input type="hidden">').attr({
+							"name": 'service_prices[' + suggestion.id + '][service_id]',
+							"value": suggestion.data.service_id
+						}).val(suggestion.data.service_id)
+					).append(
+						$('<input type="hidden">').attr({
+							"name": 'service_prices[' + suggestion.id + '][price_id]',
+							"value": suggestion.data.price_id
+						}).val(suggestion.data.price_id)
+					).append(
+						$('<input type="hidden">').attr({
+							"name": 'service_prices[' + suggestion.id + '][name]',
+							"value": suggestion.value
+						}).val(suggestion.value)
+					).append(
+						$('<input type="hidden">').attr({
+							"name": 'service_prices[' + suggestion.id + '][price]',
+							"value": suggestion.data.price
+						}).val(suggestion.data.price)
+					).append(
+						$('<div></div>').addClass('search__drop-name').text(suggestion.value).append(
+							$('<div class="search__drop-delete">' +
+							  '<svg class="svgsprite _delete">' +
+							  '	<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>' +
+							  '</svg>' +
+							  '</div>')
+						)
+					).append(
+						$('<div></div>').addClass('search__drop-right')
+							.append(TAGS)
+							.append($('<div></div>').addClass('search__drop-summ').text(PRICE + ' ₽'))
+					)
+				);
 				_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 					sum += parseInt($(this).data('price'));
 				});
+				console.log(sum);
 				_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
-			});
-		};
-		window.initLongtermSearch = function ($form, for_client) {
-			let client_qry = '';
-			if (!!for_client) {
-				client_qry = '&client=' + $($form).find('[name="client"]').val();
 			}
-
-			$form.find('.event-search.longterm-search').autocomplete({
-				noCache: true,
-				minChars: 1,
-				deferRequestBy: 350,
-				dataType: 'json',
-				type: 'GET',
-				paramName: 'title~',
-				serviceUrl: '/api/v2/list/records?group=longterm' + client_qry,
-				transformResult: function (response) {
-					console.log(response);
-					return {
-						suggestions: $.map(response, function (dataItem) {
-							return {value: dataItem.fullname, data: dataItem.id};
-						})
-					};
-				},
-				onSelect: function (suggestion) {
-					$form.find('input[name="record"]').val(suggestion.data);
-				}
+		});
+		$(document).on('click', '.search__drop-delete', function (e) {
+			e.stopPropagation();
+			$(this).parents('.search__drop-item').remove();
+			let sum = 0;
+			console.log(_parent_form.find('.admin-editor__patient .search__drop-item').length);
+			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
+				sum += parseInt($(this).data('price'));
 			});
-		};
-		window.initClientSearch   = function ($form) {
-			$form.find('input.client-search').autocomplete({
-				noCache: true,
-				minChars: 1,
-				deferRequestBy: 300,
-				dataType: 'json',
-				type: 'GET',
-				paramName: 'fullname~',
-				serviceUrl: '/api/v2/list/users?role=client',
-				noSuggestionNotice: '<p>Пациентов не найдено..</p>',
-				transformResult: function (response) {
-					console.log(response);
-					return {
-						suggestions: $.map(response, function (dataItem) {
-							return {value: dataItem.fullname, data: dataItem.id};
-						})
-					};
+			_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
+			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
+		});
+	};
+	window.initLongtermSearch = function ($form, for_client) {
+		let client_qry = '';
+		if (!!for_client) {
+			client_qry = '&client=' + $($form).find('[name="client"]').val();
+		}
+
+		$form.find('.event-search.longterm-search').autocomplete({
+			noCache: true,
+			minChars: 1,
+			deferRequestBy: 350,
+			dataType: 'json',
+			type: 'GET',
+			paramName: 'title~',
+			serviceUrl: '/api/v2/list/records?group=longterm' + client_qry,
+			transformResult: function (response) {
+				console.log(response);
+				return {
+					suggestions: $.map(response, function (dataItem) {
+						return {value: dataItem.fullname, data: dataItem.id};
+					})
+				};
+			},
+			onSelect: function (suggestion) {
+				$form.find('input[name="record"]').val(suggestion.data);
+			}
+		});
+	};
+	window.initClientSearch   = function ($form) {
+		$form.find('input.client-search').autocomplete({
+			noCache: true,
+			minChars: 1,
+			deferRequestBy: 300,
+			dataType: 'json',
+			type: 'GET',
+			paramName: 'fullname~',
+			serviceUrl: '/api/v2/list/users?role=client',
+			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
+			transformResult: function (response) {
+				console.log(response);
+				return {
+					suggestions: $.map(response, function (dataItem) {
+						return {value: dataItem.fullname, data: dataItem.id};
+					})
+				};
+			},
+			onSelect: function (suggestion) {
+				$form.find('input[name="client"]').val(suggestion.data);
+			}
+		});
+	};
+
+	window.popupCreateQuote           = function (user_id) {
+		console.log(user_id);
+		var popup = new Ractive({
+			el: '.popup.--record',
+			template: wbapp.tpl('#popupRecord').html,
+			data: {
+				user: wbapp._session.user,
+				'experts': catalog.experts,
+				'categories': catalog.categories,
+				'services': catalog.services
+			},
+			on: {
+				complete() {
+					this.set('catalog', catalog);
+
+					initServicesSearch($('.search-services'), catalog.servicesList);
+					initPlugins();
 				},
-				onSelect: function (suggestion) {
-					$form.find('input[name="client"]').val(suggestion.data);
-				}
-			});
-		};
+				submit(ev) {
+					let $form = $(ev.node);
+					let uid   = popup.get('user.id');
 
-		window.popupCreateQuote     = function (user_id) {
-			console.log(user_id);
-			var popup = new Ractive({
-				el: '.popup.--record',
-				template: wbapp.tpl('#popupRecord').html,
-				data: {
-					user: wbapp._session.user,
-					'experts': catalog.experts,
-					'categories': catalog.categories,
-					'services': catalog.services
-				},
-				on: {
-					complete() {
-						this.set('catalog', catalog);
+					if ($form.verify() && uid > '') {
+						let data = $form.serializeJSON();
 
-						initServicesSearch($('.search-services'), catalog.servicesList);
-						initPlugins();
-					},
-					submit(ev) {
-						let $form = $(ev.node);
-						let uid   = popup.get('user.id');
+						data.group      = 'quotes';
+						data.status     = 'new';
+						data.pay_status = 'unpay';
 
-						if ($form.verify() && uid > '') {
-							let data = $form.serializeJSON();
+						data.analises = false;
+						data.photos   = {before: [], after: []};
 
-							data.group      = 'quotes';
-							data.status     = 'new';
-							data.pay_status = 'unpay';
+						data.client   = uid;
+						data.priority = 0;
+						data.marked   = false;
 
-							data.analises = false;
-							data.photos   = {before: [], after: []};
+						data.comment        = '';
+						data.recommendation = '';
+						data.description    = '';
 
-							data.client   = uid;
-							data.priority = 0;
-							data.marked   = false;
-
-							data.comment        = '';
-							data.recommendation = '';
-							data.description    = '';
-
-							data.price = parseInt(data.price);
-							CabinetController.createQuote(data, function (res) {
-								$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--record .popup__panel.--succed').addClass('d-block');
-							});
-						}
-
-						return false;
+						data.price = parseInt(data.price);
+						CabinetController.createQuote(data, function (res) {
+							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+							$('.popup.--record .popup__panel.--succed').addClass('d-block');
+						});
 					}
-				}
-			});
-		};
-		window.popupPay             = function (record_id, price, user_id) {
-			const pay_price = Math.floor(parseInt(price) / 5);
 
-			var popup = new Ractive({
-				el: '.popup.--pay',
-				template: wbapp.tpl('#popupPay').html,
-				data: {
-					pay_price: pay_price,
-					price: parseInt(price),
-					client: user_id,
-					id: record_id
+					return false;
+				}
+			}
+		});
+	};
+	window.popupPay                   = function (record_id, price, user_id) {
+		const pay_price = Math.floor(parseInt(price) / 5);
+
+		var popup = new Ractive({
+			el: '.popup.--pay',
+			template: wbapp.tpl('#popupPay').html,
+			data: {
+				pay_price: pay_price,
+				price: parseInt(price),
+				client: user_id,
+				id: record_id
+			},
+			on: {
+				complite() {
 				},
-				on: {
-					complite() {
-					},
-					submit() {
-						$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
-						$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+				submit() {
+					$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+					$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+				}
+			}
+		});
+
+		$('.popup.--pay').show();
+	};
+	window.popupAnalizeInterpretation = function () {
+		let popup = new Ractive({
+			el: '.popup.--analize-interpretation',
+			template: wbapp.tpl('#popupAnalizeInterpretation').html,
+			data: {
+				catalog: {},
+				record: {}
+			},
+			on: {
+				init() {
+					setTimeout(function () {
+						popup.set('catalog', catalog);
+					});
+				},
+				submit() {
+					let form = this.find('.popup.--analize-interpretation .popup__form');
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+
+						wbapp.post('/create/records', post, function (data) {
+							if (data.error) {
+								wbapp.trigger('wb-save-error', {'data': data});
+							} else {
+								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
+								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
+							}
+						});
 					}
+					return false;
 				}
-			});
-
-			$('.popup.--pay').show();
-		};
-		window.popupAnalizeInterpretation = function () {
-			let popup = new Ractive({
-				el: '.popup.--analize-interpretation',
-				template: wbapp.tpl('#popupAnalizeInterpretation').html,
-				data: {
-					catalog: {},
-					record: {}
-				},
-				on: {
-					init() {
+			}
+		});
+	};
+	window.popupDownloadData          = function () {
+		let popup = new Ractive({
+			el: '.popup.--download-data',
+			template: wbapp.tpl('#popupDownloadData').html,
+			data: {
+				catalog: {},
+				admins: []
+			},
+			on: {
+				init() {
+					wbapp.get('/api/v2/list/users/?role=main', function (data) {
+						popup.set('admins', data);
 						setTimeout(function () {
 							popup.set('catalog', catalog);
 						});
-					},
-					submit() {
-						let form = this.find('.popup.--analize-interpretation .popup__form');
-						if ($(form).verify()) {
-							let post = $(form).serializeJSON();
-
-							wbapp.post('/create/records', post, function (data) {
-								if (data.error) {
-									wbapp.trigger('wb-save-error', {'data': data});
-								} else {
-									$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-									$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-								}
-							});
-						}
-						return false;
-					}
+					});
 				}
-			});
-		};
-		window.popupDownloadData          = function () {
-			let popup = new Ractive({
-				el: '.popup.--download-data',
-				template: wbapp.tpl('#popupDownloadData').html,
-				data: {
-					catalog: {},
-					admins: []
-				},
-				on: {
-					init() {
-						wbapp.get('/api/v2/list/users/?role=main', function (data) {
-							popup.set('admins', data);
-							setTimeout(function () {
-								popup.set('catalog', catalog);
-							});
-						});
-					}
-				}
-			});
-		};
-		window.popupsCreateProfile = function () {
-			let popup = new Ractive({
-				el: '.popup.--create-client',
-				template: wbapp.tpl('#popupCreateClient').html,
-				data: {},
-				on: {
-					submit() {
-						let form = this.find('.popup.--create-client .popup__form');
-						if ($(form).verify()) {
-							let post = $(form).serializeJSON();
-							console.log(post);
-
-							let names = post.fullname.split(' ', 3);
-							let keys  = ['last_name', 'first_name', 'middle_name'];
-							for (var i = 0; i < names.length; i++) {
-								post[keys[i]] = names[i];
-							}
-
-							wbapp.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
-								if (data.length === 0) {
-									wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
-										function (data) {
-											if (data.length == 0) {
-												wbapp.post('/api/v2/create/users/', post, function (data) {
-													if (data.error) {
-														wbapp.trigger('wb-save-error', {'data': data});
-													} else {
-														toast('Карточка клиента успешно создана!');
-														$('.popup.--create-client').fadeOut('fast');
-													}
-												});
-											} else {
-												form.find('[name="phone"]').focus();
-												toast('Этот номер уже используется!', 'Ошибка!', 'error');
-											}
-										});
-								} else {
-									form.find('[name="email"]').focus();
-									toast('E-mail уже используется!', 'Ошибка!', 'error');
-								}
-							});
-
-						}
-						return false;
-					}
-				}
-			});
-		};
-		window.popupsConfirmSmsCode = function () {
-			let popup = new Ractive({
-				el: '.popup.--confirm-sms-code',
-				template: wbapp.tpl('#popupConfirmSmsCode').html,
-				data: {
-					phone: '',
-					client: {}
-				},
-				on: {
-					init(ev) {
-
-					},
-					keyup(ev) {
-						console.log(ev, $(ev.node));
-						const _this  = $(ev.node);
-						const _phone = $(ev.node).find('[name="phone"]').val();
-
-						var sms_code = '';
-						$('.popup.--confirm-sms-code .code__input').each(function (digit, item) {
-							sms_code += $(item).val();
-						});
-
-						if (sms_code.length === 6) {
-							$.ajax({
-								url: '/form/phoneAuth/check_code',
-								method: 'POST',
-								data: {
-									phone: _phone,
-									code: sms_code
-								},
-								success: function (data) {
-									if (data.status === 'ok') {
-										wbapp.post('/create/users/', post, function (data) {
-											if (data.error) {
-												wbapp.trigger('wb-save-error', {'data': data});
-											} else {
-												toast('Карточка клиента создана!');
-												$('.popup.--confirm-sms-code').hide();
-												$('.popup.--confirm-sms-code .code__input').val('');
-											}
-										});
-									}
-								}
-							});
-						} else {
-							_this.next().focus();
-						}
-					}
-				},
-				showPopup: function () {
-					$('.popup.--confirm-sms-code .code__input').mask('9', {placeholder: ''});
-					$('.popup.--confirm-sms-code').show();
-				}
-			});
-		};
-		window.popupPhoto           = function (params) {
-			var _data = {}, _default = {
-				description: '',
-				longterm: 0,
-				client: null,
-				record: null,
-				title: '',
-				type: null,
-				date: (new Date())
-			};
-			if (!!params) {
-				_data = $.extend({}, params, _default);
 			}
-			_data.catalog = catalog;
-			return new Ractive({
-				el: '.popup.--photo',
-				template: wbapp.tpl('#popupPhoto').html,
-				data: _data,
-				on: {
-					init() {
-						setTimeout(function () {
-							initPlugins();
-							initClientSearch($('.popup.--photo form'));
-							initLongtermSearch($('.popup.--photo form'), true);
-						});
-					},
-					complete() {
-						$(this.el).show();
-					},
-					submit(ev) {
-						let form = $(ev.node);
+		});
+	};
+	window.popupsCreateProfile        = function () {
+		let popup = new Ractive({
+			el: '.popup.--create-client',
+			template: wbapp.tpl('#popupCreateClient').html,
+			data: {},
+			on: {
+				submit() {
+					let form = this.find('.popup.--create-client .popup__form');
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+						console.log(post);
 
-						if ($(form).verify()) {
-							let post = $(form).serializeJSON();
-							wbapp.post('/update/records/', post, function (data) {
-
-							});
+						let names = post.fullname.split(' ', 3);
+						let keys  = ['last_name', 'first_name', 'middle_name'];
+						for (var i = 0; i < names.length; i++) {
+							post[keys[i]] = names[i];
 						}
-						return false;
+
+						wbapp.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
+							if (data.length === 0) {
+								wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
+									function (data) {
+										if (data.length == 0) {
+											wbapp.post('/api/v2/create/users/', post, function (data) {
+												if (data.error) {
+													wbapp.trigger('wb-save-error', {'data': data});
+												} else {
+													toast('Карточка клиента успешно создана!');
+													$('.popup.--create-client').fadeOut('fast');
+												}
+											});
+										} else {
+											form.find('[name="phone"]').focus();
+											toast('Этот номер уже используется!', 'Ошибка!', 'error');
+										}
+									});
+							} else {
+								form.find('[name="email"]').focus();
+								toast('E-mail уже используется!', 'Ошибка!', 'error');
+							}
+						});
+
+					}
+					return false;
+				}
+			}
+		});
+	};
+	window.popupsConfirmSmsCode       = function () {
+		let popup = new Ractive({
+			el: '.popup.--confirm-sms-code',
+			template: wbapp.tpl('#popupConfirmSmsCode').html,
+			data: {
+				phone: '',
+				client: {}
+			},
+			on: {
+				init(ev) {
+
+				},
+				keyup(ev) {
+					console.log(ev, $(ev.node));
+					const _this  = $(ev.node);
+					const _phone = $(ev.node).find('[name="phone"]').val();
+
+					var sms_code = '';
+					$('.popup.--confirm-sms-code .code__input').each(function (digit, item) {
+						sms_code += $(item).val();
+					});
+
+					if (sms_code.length === 6) {
+						$.ajax({
+							url: '/form/phoneAuth/check_code',
+							method: 'POST',
+							data: {
+								phone: _phone,
+								code: sms_code
+							},
+							success: function (data) {
+								if (data.status === 'ok') {
+									wbapp.post('/create/users/', post, function (data) {
+										if (data.error) {
+											wbapp.trigger('wb-save-error', {'data': data});
+										} else {
+											toast('Карточка клиента создана!');
+											$('.popup.--confirm-sms-code').hide();
+											$('.popup.--confirm-sms-code .code__input').val('');
+										}
+									});
+								}
+							}
+						});
+					} else {
+						_this.next().focus();
 					}
 				}
-			});
-
+			},
+			showPopup: function () {
+				$('.popup.--confirm-sms-code .code__input').mask('9', {placeholder: ''});
+				$('.popup.--confirm-sms-code').show();
+			}
+		});
+	};
+	window.popupPhoto                 = function (params) {
+		var _data = {}, _default = {
+			description: '',
+			longterm: 0,
+			client: null,
+			record: null,
+			title: '',
+			type: null,
+			date: (new Date())
 		};
-
-		window.uploadFile = function (file_input, path, callback) {
-			var formData = new FormData();
-
-			formData.append("__token", wbapp._session.token);
-			formData.append("file", file_input.files[0]);
-			formData.append("path", path);
-
-			$.ajax({
-				url: "/api/v2/upload/record-files",
-				type: "POST",
-				data: formData,
-				contentType: false,
-				cache: false,
-				processData: false,
-				beforeSend: function () {
-					return true;
+		if (!!params) {
+			_data = $.extend({}, params, _default);
+		}
+		_data.catalog = catalog;
+		return new Ractive({
+			el: '.popup.--photo',
+			template: wbapp.tpl('#popupPhoto').html,
+			data: _data,
+			on: {
+				init() {
+					setTimeout(function () {
+						initPlugins();
+						initClientSearch($('.popup.--photo form'));
+						initLongtermSearch($('.popup.--photo form'), true);
+					});
 				},
-				success: function (data) {
-					console.log(data);
-					callback(data);
+				complete() {
+					$(this.el).show();
 				},
-				error: function (e) {
-					callback(e);
-				}
-			});
-		};
-		window.uploader   = function (file_input, upload_url, callback) {
-			var formData = new FormData();
+				submit(ev) {
+					let form = $(ev.node);
 
-			formData.append("__token", wbapp._session.token);
-			formData.append("files[]", file_input.files[0]);
-			formData.append("upload_url", path);
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+						wbapp.post('/update/records/', post, function (data) {
 
-			$.ajax({
-				url: "/engine/modules/filepicker/uploader/index.php",
-				type: "POST",
-				data: formData,
-				contentType: false,
-				cache: false,
-				processData: false,
-				beforeSend: function () {
-					return true;
-				},
-				success: function (data) {
-					console.log(data);
-					callback(data);
-				},
-				error: function (e) {
-					callback(e);
-				}
-			});
-		};
-
-		$(document)
-			.on('change', '#file-photo', function (e) {
-				e.stopPropagation();
-				var _block   = $(this).parents('.file-photo');
-				var _files   = e.target.files;
-				var _preview = _block.find('img.preview');
-				console.log(_block, 'selected!');
-
-				if (!!_preview.length) {
-					var reader;
-					var file;
-					var url;
-
-					var max_size = 10 * 1024 * 1024;
-					if (_files && _files.length > 0) {
-						file = _files[0];
-						if (file.size >= max_size) {
-							toast('Размер файла c фото не может превышать 10 мб', '', 'error');
-							$(this).val('');
-							return;
-						}
-
-						uploadFile(this, 'photos', function (data) {
-							toast('uploaded!!!', 'success');
-							console.log(data);
 						});
+					}
+					return false;
+				}
+			}
+		});
 
-						if (URL) {
-							_preview.attr('src', URL.createObjectURL(file));
+	};
+
+	window.uploadFile = function (file_input, path, callback) {
+		var formData = new FormData();
+
+		formData.append("__token", wbapp._session.token);
+		formData.append("file", file_input.files[0]);
+		formData.append("path", path);
+
+		$.ajax({
+			url: "/api/v2/upload/record-files",
+			type: "POST",
+			data: formData,
+			contentType: false,
+			cache: false,
+			processData: false,
+			beforeSend: function () {
+				return true;
+			},
+			success: function (data) {
+				console.log(data);
+				callback(data);
+			},
+			error: function (e) {
+				callback(e);
+			}
+		});
+	};
+	window.uploader   = function (file_input, upload_url, callback) {
+		var formData = new FormData();
+
+		formData.append("__token", wbapp._session.token);
+		formData.append("files[]", file_input.files[0]);
+		formData.append("upload_url", path);
+
+		$.ajax({
+			url: "/engine/modules/filepicker/uploader/index.php",
+			type: "POST",
+			data: formData,
+			contentType: false,
+			cache: false,
+			processData: false,
+			beforeSend: function () {
+				return true;
+			},
+			success: function (data) {
+				console.log(data);
+				callback(data);
+			},
+			error: function (e) {
+				callback(e);
+			}
+		});
+	};
+
+	$(document)
+		.on('change', '#file-photo', function (e) {
+			e.stopPropagation();
+			var _block   = $(this).parents('.file-photo');
+			var _files   = e.target.files;
+			var _preview = _block.find('img.preview');
+			console.log(_block, 'selected!');
+
+			if (!!_preview.length) {
+				var reader;
+				var file;
+				var url;
+
+				var max_size = 10 * 1024 * 1024;
+				if (_files && _files.length > 0) {
+					file = _files[0];
+					if (file.size >= max_size) {
+						toast('Размер файла c фото не может превышать 10 мб', '', 'error');
+						$(this).val('');
+						return;
+					}
+
+					uploadFile(this, 'photos', function (data) {
+						toast('uploaded!!!', 'success');
+						console.log(data);
+					});
+
+					if (URL) {
+						_preview.attr('src', URL.createObjectURL(file));
+						_preview.removeClass('d-none');
+					} else if (FileReader) {
+						reader        = new FileReader();
+						reader.onload = function (e) {
+							_preview.attr('src', reader.result);
 							_preview.removeClass('d-none');
-						} else if (FileReader) {
-							reader        = new FileReader();
-							reader.onload = function (e) {
-								_preview.attr('src', reader.result);
-								_preview.removeClass('d-none');
-							};
-							reader.readAsDataURL(file);
-						}
+						};
+						reader.readAsDataURL(file);
 					}
 				}
-			})
-			.on('click', 'a.account__detail[data-link]', function (e) {
-				e.stopPropagation();
-				e.preventDefault();
-				window.location.href = $(this).data('link');
-			})
-			.on('click', 'a.account__detail[data-client]', function (e) {
-				e.stopPropagation();
-				e.preventDefault();
-				window.location.href = "/cabinet/client/" + $(this).data('link');
-			});
-	});
+			}
+		})
+		.on('click', 'a.account__detail[data-link]', function (e) {
+			e.stopPropagation();
+			e.preventDefault();
+			window.location.href = $(this).data('link');
+		})
+		.on('click', 'a.account__detail[data-client]', function (e) {
+			e.stopPropagation();
+			e.preventDefault();
+			window.location.href = "/cabinet/client/" + $(this).data('link');
+		});
+
 });
