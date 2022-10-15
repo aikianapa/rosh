@@ -19,7 +19,7 @@
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
 							</svg>
 						</a><a class="crumbs__link" href="/">Главная</a>
-						<span class="crumbs__link" href="/cabinet">Кабинет специалиста</span>
+						<a class="crumbs__link" href="/cabinet">Кабинет специалиста</a>
 						<span class="crumbs__link">Поиск</span>
 					</div>
 					<h1 class="h1 mb-40">Кабинет специалиста</h1>

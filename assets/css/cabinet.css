@@ -184,9 +184,11 @@
 	height        : 42px;
 	animation     : spin .75s linear infinite;
 }
+.account:has(.loading-overlay),
 .page-content:has(.loading-overlay) {
 	padding-bottom : 110px;
 }
+.account .loading-overlay,
 .page-content .loading-overlay {
 	min-height : 120px;
 }
