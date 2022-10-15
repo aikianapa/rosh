@@ -255,7 +255,7 @@
 					<div class="account__table-body">
 						<!-- !!! quote history item !!! -->
 						{{#each history.events}}
-						<div class="acount__table-accardeon accardeon">
+						<div class="acount__table-accardeon accardeon" on-click="exec_lazyload">
 							<div class="acount__table-main accardeon__main accardeon__click">
 								<div class="history-item">
 									<p>Дата</p>
@@ -636,15 +636,14 @@
 					},
 					complete(){
 
-						setTimeout(function () {
-							$("[data-src]:not([src])").lazyload();
-						});
+
 					},
 					runOnlineChat(ev){
 						const _rec_id = $(ev.node).data('id');
 						CabinetController.runOnlineChat(_rec_id);
 					},
 					exec_lazyload(ev){
+						console.log('---_');
 						$("img[data-src]:not([src])").lazyload();
 					},
 					toggleEdit(ev) {
