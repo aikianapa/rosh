@@ -724,8 +724,8 @@
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
+<script src="/assets/js/cabinet.js?v=1.2"></script>
 
-<script src="/assets/js/cabinet.js?v=1.1"></script>
 </body>
 
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
