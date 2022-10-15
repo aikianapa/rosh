@@ -433,7 +433,7 @@
 						<div class="admin-events-item">
 							<p>Приём</p>
 							{{#if group === 'events'}}
-							<a href="#">{{event_date}}, {{event_time_start}}-{{event_time_end}}</a>
+							<a href="#">{{@global.utils.formatDate(event_date)}}, {{event_time_start}}-{{event_time_end}}</a>
 							{{else}}
 							<span class="link-danger">- уточнить -</span>
 							{{/if}}
@@ -682,7 +682,7 @@
 
 							console.log('>>> loaded ' + target_tab + ':', data);
 							_tab.fire('loaded');
-							tabs[target_tab] = _tab;
+							tabs[target_tab] = {ractive: _tab, data: data};
 						});
 
 				}
