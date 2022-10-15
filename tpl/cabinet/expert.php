@@ -518,7 +518,7 @@
 	</template>
 	<script wbapp>
 		$(function () {
-			var cabinet = new Ractive({
+			var page = new Ractive({
 				el: 'main.page .expert-page',
 				template: wbapp.tpl('#expert-page').html,
 				data: {
@@ -534,43 +534,51 @@
 				on: {
 					init() {
 						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
-							cabinet.set('user', data); /* get actually user data */
+							page.set('user', data); /* get actually user data */
 							console.log('user', data);
 						});
 						utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id).then(function (data) {
-							cabinet.set('expert', data[0]); /* get actually user data */
-							console.log('expert', data[0]);
-						});
-						utils.api.get('/api/v2/list/records?group=events&status=upcoming&experts~=' +
-						              wbapp._session.user.id).then(
-							function (data) {
-								let curr_timestamp = parseInt(getdate()[0]);
+							if (!data) {
+								return;
+							}
 
-								data.forEach(function (rec) {
-									if (rec.event_date !== (new Date()).toLocaleDateString()) {
-										cabinet.push('events.upcoming', rec); /* get actually user next events */
-									}
+							var _expert = data[0];
+							page.set('expert', _expert); /* get actually user data */
+							console.log('expert', _expert);
 
-									let times                = rec.event_time.split(' - ');
-									let event_from_timestamp = utils.timestamp(rec.event_date + ' ' + times[0]);
-									let event_to_timestamp   = utils.timestamp(rec.event_date + ' ' + times[1]);
+							utils.api.get('/api/v2/list/records?group=events&status=upcoming&experts~=' +
+							              _expert.id).then(
+								function (data) {
+									let curr_timestamp = parseInt(getdate()[0]);
 
-									if (event_from_timestamp < curr_timestamp
-									    && (event_to_timestamp >= curr_timestamp)) {
-										cabinet.push('events.current', rec);
-									}
+									data.forEach(function (rec) {
+										if (rec.event_date !== (new Date()).toLocaleDateString()) {
+											page.push('events.upcoming', rec); /* get actually user next events */
+										}
+
+										let event_from_timestamp = utils.timestamp(
+											rec.event_date + ' ' + rec.event_time_start);
+										let event_to_timestamp   = utils.timestamp(
+											rec.event_date + ' ' + rec.event_time_end);
+
+										if (event_from_timestamp < curr_timestamp
+										    && (event_to_timestamp >= curr_timestamp)) {
+											page.push('events.current', rec);
+										}
+									});
 								});
-							});
 
-						utils.api.get('/api/v2/list/records?group=events&status=past&experts~='
-						              + wbapp._session.user.id).then(
-							function (data) {
-								console.log('history', data);
-								cabinet.set('history', data); /* get actually user next events */
-							});
+							utils.api.get('/api/v2/list/records?group=events&status=past&experts~='
+							              + _expert.id)
+								.then(
+									function (data) {
+										console.log('history', data);
+										page.set('history', data); /* get actually user next events */
+									});
+						});
 
 						setTimeout(function () {
-							cabinet.set('catalog', catalog);
+							page.set('catalog', catalog);
 						});
 					},
 					complete(ev) {
@@ -579,7 +587,7 @@
 							el: 'main.page .profile-edit',
 							template: wbapp.tpl('#editorProfile').html,
 							data: {
-								user: cabinet.get('user')
+								user: page.get('user')
 							},
 							on: {
 								complete() {
@@ -593,7 +601,7 @@
 										data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
 										wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
 											console.log(res);
-											cabinet.set('user', res);
+											page.set('user', res);
 										});
 										$('.user__edit.all').trigger('click');
 									}
@@ -607,8 +615,8 @@
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
 										wbapp.post('/api/v2/update/experts/' + uid, data, function (res) {
-											cabinet.set('expert', res);
-											cabinet.set('user.expert', res);
+											page.set('expert', res);
+											page.set('user.expert', res);
 											console.log('saved', res);
 										});
 										$('.user__edit.all').trigger('click');
