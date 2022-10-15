@@ -293,7 +293,7 @@
 						{{else}}
 						<div class="acount__table-accardeon accardeon">
 							<div class="acount__table-main accardeon__main">
-								Нет записей о посещении
+								<span>Нет записей о посещении</span>
 							</div>
 						</div>
 						{{/each}}
@@ -422,8 +422,8 @@
 				<div class="col-md-6">
 					<a class="expert__worked"
 						target="_blank"
-						title="Откр"
-						data-href="{{{catalog.experts[this].info_uri}}}">
+						title="Открыть страницу о специалисте"
+						data-link="{{catalog.experts[this].info_uri}}">
 						<div class="expert__worked-pic">
 							<img class="lazyload"
 								data-src="{{{catalog.experts[this].image[0].img}}}"
@@ -582,6 +582,9 @@
 
 	<script wb-app remove>
 		$(function () {
+			$(document).on('wb-ready', function(e){
+				toast_info('Async. scripts loaded!');
+			});
 			//console.log('>>> cabinet page script.');
 			var page = new Ractive({
 				el: 'main.page .page-content',

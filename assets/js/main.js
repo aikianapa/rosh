@@ -391,7 +391,7 @@ $(function () {
                 $('.to_top_btn').addClass('showed');
             }
         });
-
+        initPlugins();
     });
 
 });

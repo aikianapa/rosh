@@ -1054,16 +1054,15 @@ $(function () {
 					}
 				}
 			}
-		})
-		.on('click', 'a.account__detail[data-link]', function (e) {
+		}).on('click', 'a[data-link]', function (e) {
 			e.stopPropagation();
 			e.preventDefault();
 			window.location.href = $(this).data('link');
 		})
-		.on('click', 'a.account__detail[data-client]', function (e) {
+		.on('click', 'a[data-client]', function (e) {
 			e.stopPropagation();
 			e.preventDefault();
-			window.location.href = "/cabinet/client/" + $(this).data('link');
+			window.location.href = "/cabinet/client/" + $(this).data('client');
 		});
 
 });
