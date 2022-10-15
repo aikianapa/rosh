@@ -767,193 +767,192 @@
 	<script wb-app remove>
 		var client_id = '{{_route.client}}';
 		$(function () {
-			$(document).on('wb-ready', function (e) {
-				toast_info('Async. scripts loaded!');
-			});
-			//console.log('>>> cabinet page script.');
-			var page = new Ractive({
-				el: 'main.page .page-content',
-				template: wbapp.tpl('#page-content').html,
-				data: {
-					catalog: {},
-					q: '{{_route.params.q}}',
-					user: {},
-					events: {
-						'upcoming': []
+			setTimeout(function () {
+				//console.log('>>> cabinet page script.');
+				var page = new Ractive({
+					el: 'main.page .page-content',
+					template: wbapp.tpl('#page-content').html,
+					data: {
+						catalog: {},
+						q: '{{_route.params.q}}',
+						user: {},
+						events: {
+							'upcoming': []
+						},
+						history: {
+							'events': [],
+							'longterms': []
+						}
 					},
-					history: {
-						'events': [],
-						'longterms': []
-					}
-				},
-				on: {
-					init() {
-						utils.api.get('/api/v2/read/users/' + client_id).then(function (data) {
-							data.birthdate_fmt = utils.formatDate(data.birthdate);
-							data.phone         = utils.formatPhone(data.phone);
-							page.set('user', data); /* get actually user data */
-						});
+					on: {
+						init() {
+							utils.api.get('/api/v2/read/users/' + client_id).then(function (data) {
+								data.birthdate_fmt = utils.formatDate(data.birthdate);
+								data.phone         = utils.formatPhone(data.phone);
+								page.set('user', data); /* get actually user data */
+							});
 
-						utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
-							function (data) {
-								let curr_timestamp = parseInt(getdate()[0]);
+							utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
+								function (data) {
+									let curr_timestamp = parseInt(getdate()[0]);
 
-								data.forEach(function (rec) {
-									page.push('events.upcoming', rec); /* get actually user next events */
+									data.forEach(function (rec) {
+										page.push('events.upcoming', rec); /* get actually user next events */
+									});
 								});
+
+							utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
+								function (data) {
+									console.log('history.events:', data);
+									page.set('history.events', data); /* get actually user next events */
+								});
+
+							utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
+								.then(function (data) {
+									console.log('history.longterms:', data);
+									page.set('history.longterms', data); /* get actually user next events */
+								});
+
+							setTimeout(function () {
+								page.set('catalog', catalog);
 							});
+						},
+						complete() {
 
-						utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
-							function (data) {
-								console.log('history.events:', data);
-								page.set('history.events', data); /* get actually user next events */
-							});
-
-						utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
-							.then(function (data) {
-								console.log('history.longterms:', data);
-								page.set('history.longterms', data); /* get actually user next events */
-							});
-
-						setTimeout(function () {
-							page.set('catalog', catalog);
-						});
-					},
-					complete() {
-
-					},
-					showEventDetails(ev) {
-						var _parent = $(ev.node).parents('.accardeon');
-						if (!_parent.hasClass('loaded')) {
-							var _record_idx      = _parent.data('idx');
-							var _record          = page.get('history.events.' + _record_idx);
-							var _accardeon__list = new Ractive({
-								el: _parent.find('.accardeon__list'),
-								template: wbapp.tpl('#event-details').html,
-								data: {
-									event: _record,
-									user: page.get('user'),
-									catalog: catalog
-								},
-								on: {
-									init() {
-										var _this = this;
-										if (!!_record.photos?.before || !!_record.photos?.after) {
-											utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
-												function (result) {
-													if (!result) {
-														return;
-													}
-
-													var list = {before: [], after: []};
-													result.forEach(function (photo) {
-														if (_record.photos?.before &&
-														    _record.photos.before.includes(photo.id)) {
-															list.before.push(photo);
-														} else if (_record.photos?.after &&
-														           _record.photos.after.includes(photo.id)) {
-															list.after.push(photo);
-														}
-													});
-													_this.set('photos', list);
-												}
-											);
-										}
+						},
+						showEventDetails(ev) {
+							var _parent = $(ev.node).parents('.accardeon');
+							if (!_parent.hasClass('loaded')) {
+								var _record_idx      = _parent.data('idx');
+								var _record          = page.get('history.events.' + _record_idx);
+								var _accardeon__list = new Ractive({
+									el: _parent.find('.accardeon__list'),
+									template: wbapp.tpl('#event-details').html,
+									data: {
+										event: _record,
+										user: page.get('user'),
+										catalog: catalog
 									},
-									complete() {
-										_parent.find("img[data-src]:not([src])").lazyload();
-										_parent.addClass('loaded');
-									}
-								}
-							});
-						}
-					},
-					showLongtermDetails(ev) {
-						var _parent = $(ev.node).parents('.accardeon');
-						if (!_parent.hasClass('loaded')) {
-							var _record_idx      = _parent.data('idx');
-							var _record          = page.get('history.longterms.' + _record_idx);
-							var _accardeon__list = new Ractive({
-								el: _parent.find('.accardeon__list'),
-								template: wbapp.tpl('#longterm-details').html,
-								data: {
-									event: _record,
-									user: page.get('user'),
-									catalog: catalog
-								},
-								on: {
-									init() {
-										var _this = this;
-										if (!!_record.photos?.before || !!_record.photos?.after) {
-											utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
-												function (result) {
-													if (!result) {
-														return;
-													}
-
-													var list = {before: [], after: []};
-													result.forEach(function (photo) {
-														if (_record.photos?.before &&
-														    _record.photos.before.includes(photo.id)) {
-															list.before.push(photo);
-														} else if (_record.photos?.after &&
-														           _record.photos.after.includes(photo.id)) {
-															list.after.push(photo);
+									on: {
+										init() {
+											var _this = this;
+											if (!!_record.photos?.before || !!_record.photos?.after) {
+												utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
+													function (result) {
+														if (!result) {
+															return;
 														}
-													});
-													_this.set('photos', list);
-												}
-											);
-										}
-									},
-									complete() {
-										_parent.find("img[data-src]:not([src])").lazyload();
-										_parent.addClass('loaded');
-									}
-								}
-							});
-						}
-					},
-					toggleEdit(ev) {
-						console.log(ev, $(ev.node), this);
-						if (!!window.profile_inline_editor) {
-							$('.profile-editor-inline').toggleClass('d-none');
-							return;
-						}
-						window.profile_inline_editor = new Ractive({
-							el: '.profile-editor-inline',
-							template: wbapp.tpl('#profile-editor-inline').html,
-							data: {
-								user: page.get('user')
-							},
-							on: {
-								complete() {
-									$('.profile-editor-inline').removeClass('d-none');
-									initPlugins();
-								},
-								submit(ev) {
-									let $form = $(ev.node);
-									let uid   = page.get('user.id');
-									if ($form.verify() && uid > '') {
-										let data = $form.serializeJSON();
 
-										CabinetController.updateProfile(uid, data, function (data) {
-											data.birthdate_fmt = utils.formatDate(data.birthdate);
-											data.phone         = utils.formatPhone(data.phone);
-											page.set('user', data); /* get actually user data */
-											toast('Профиль успешно обновлён');
-										});
+														var list = {before: [], after: []};
+														result.forEach(function (photo) {
+															if (_record.photos?.before &&
+															    _record.photos.before.includes(photo.id)) {
+																list.before.push(photo);
+															} else if (_record.photos?.after &&
+															           _record.photos.after.includes(photo.id)) {
+																list.after.push(photo);
+															}
+														});
+														_this.set('photos', list);
+													}
+												);
+											}
+										},
+										complete() {
+											_parent.find("img[data-src]:not([src])").lazyload();
+											_parent.addClass('loaded');
+										}
 									}
-									return false;
-								}
+								});
 							}
-						});
-					},
+						},
+						showLongtermDetails(ev) {
+							var _parent = $(ev.node).parents('.accardeon');
+							if (!_parent.hasClass('loaded')) {
+								var _record_idx      = _parent.data('idx');
+								var _record          = page.get('history.longterms.' + _record_idx);
+								var _accardeon__list = new Ractive({
+									el: _parent.find('.accardeon__list'),
+									template: wbapp.tpl('#longterm-details').html,
+									data: {
+										event: _record,
+										user: page.get('user'),
+										catalog: catalog
+									},
+									on: {
+										init() {
+											var _this = this;
+											if (!!_record.photos?.before || !!_record.photos?.after) {
+												utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
+													function (result) {
+														if (!result) {
+															return;
+														}
 
-					prepay(ev) {
-						popupPay.showPopup($(ev.node).data('record'));
+														var list = {before: [], after: []};
+														result.forEach(function (photo) {
+															if (_record.photos?.before &&
+															    _record.photos.before.includes(photo.id)) {
+																list.before.push(photo);
+															} else if (_record.photos?.after &&
+															           _record.photos.after.includes(photo.id)) {
+																list.after.push(photo);
+															}
+														});
+														_this.set('photos', list);
+													}
+												);
+											}
+										},
+										complete() {
+											_parent.find("img[data-src]:not([src])").lazyload();
+											_parent.addClass('loaded');
+										}
+									}
+								});
+							}
+						},
+						toggleEdit(ev) {
+							console.log(ev, $(ev.node), this);
+							if (!!window.profile_inline_editor) {
+								$('.profile-editor-inline').toggleClass('d-none');
+								return;
+							}
+							window.profile_inline_editor = new Ractive({
+								el: '.profile-editor-inline',
+								template: wbapp.tpl('#profile-editor-inline').html,
+								data: {
+									user: page.get('user')
+								},
+								on: {
+									complete() {
+										$('.profile-editor-inline').removeClass('d-none');
+										initPlugins();
+									},
+									submit(ev) {
+										let $form = $(ev.node);
+										let uid   = page.get('user.id');
+										if ($form.verify() && uid > '') {
+											let data = $form.serializeJSON();
+
+											CabinetController.updateProfile(uid, data, function (data) {
+												data.birthdate_fmt = utils.formatDate(data.birthdate);
+												data.phone         = utils.formatPhone(data.phone);
+												page.set('user', data); /* get actually user data */
+												toast('Профиль успешно обновлён');
+											});
+										}
+										return false;
+									}
+								}
+							});
+						},
+
+						prepay(ev) {
+							popupPay.showPopup($(ev.node).data('record'));
+						}
 					}
-				}
+				});
 			});
 		});
 	</script>
