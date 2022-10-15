@@ -452,7 +452,7 @@
 							<span class="link-danger">- уточнить -</span>
 							{{else}}
 							{{#experts}}
-							<span>{{catalog.experts[this].name}}</span><br>
+							<div>{{catalog.experts[this].name}}</div>
 							{{/experts}}
 							{{/if}}
 						</div>
@@ -462,13 +462,13 @@
 							{{#if item.id == type }}{{item.name}}{{/if}}
 							{{/each}}
 						</div>
-						<div class="admin-events-item">
+						<div class="admin-events-item col-services">
 							<p>Услуга</p>
 							{{#if no_services == '1'}}
 							<span class="link-danger">- уточнить -</span>
 							{{else}}
 							{{#services}}
-								{{catalog.services[this].header}}<br>
+							<div>{{catalog.services[this].header}}</div>
 							{{/services}}
 							{{/if}}
 						</div>
@@ -508,7 +508,8 @@
 							</div>
 							<div class="admin-editor__top-status">
 								<div class="admin-editor__top-date">
-									Заявка сформирована {{@global.utils.formatDate(_created)}} / {{@global.utils.formatTime(_created)}}</div>
+									Заявка сформирована {{@global.utils.formatDate(_created)}} / {{@global.utils.formatTime(_created)}}
+								</div>
 								<div class="admin-editor__top-select"></div>
 							</div>
 						</div>
@@ -531,186 +532,191 @@
 <script wb-app remove>
 	var tabs = {};
 	$(function () {
-		let editProfile = wbapp.tpl('#editProfile').html;
-		let editStatus  = wbapp.tpl('#editStatus').html;
-		let editQuote   = wbapp.tpl('#editQuote').html;
+		setTimeout(function () {
+			let editProfile = wbapp.tpl('#editProfile').html;
+			let editStatus  = wbapp.tpl('#editStatus').html;
+			let editQuote   = wbapp.tpl('#editQuote').html;
 
-		['quotes', 'events'].forEach(function (target_tab) {
-				var _tab = new Ractive({
-					el: '.data-tab-item[data-tab="' + target_tab + '"]',
-					template: wbapp.tpl('#listRecords').html,
-					data: {
-						group: '',
-						records: [],
-						catalog: {}
-					},
-					on: {
-						loaded(){
-							console.log('>>> loaded', target_tab);
-							this.find('.loading-overlay').remove();
-						},
-						editProfile(ev) {
-							let record     = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
-							let profile_id = $(ev.node).data('id');
-							let form       = $(ev.node).parents('.admin-editor')
-								.find('.admin-editor__edit-profile');
-							let editor     = new Ractive({
-								el: form,
-								template: editProfile,
-								data: {},
-								on: {
-									save(ev) {
-										let $form = $(form);
-										if ($form.verify() && profile_id > '') {
-											let data = $form.serializeJSON();
-											CabinetController.updateProfile(profile_id, data, function (res) {
-												console.log(res);
-												data.birthdate_fmt = utils.formatDate(data.birthdate);
-												data.phone         = utils.formatPhone(data.phone);
-												cabinet.set('user', data); /* get actually user data */
-												$(form).html('');
-												toast('Профиль успешно обновлён');
-											});
-										}
-									}
-								}
-							});
-							fetch('/form/users/getClient/' + profile_id, {
-								method: 'GET'
-							}).then((response) => {
-								return response.json();
-							}).then(function (data) {
-								editor.set(data);
-								initPlugins();
-							});
-						},
-						editQuote(ev) {
-							const _parent = $(ev.node).parents('.accardeon');
-							let id        = $(ev.node).data('id');
-							let record    = _tab.get('result.' + id);
-							if (!quote.price) {
-								quote.price = 0;
-							}
-
-							fetch('/form/users/getClient/' + item, {
-								method: 'GET'
-							}).then((response) => {
-								return response.json();
-							}).then(function (data) {
-								_tab.set('result.' + id + '.clientData', data);
-							});
-
-							quote.price_text = utils.formatPrice(quote.price);
-							let statusEdt    = new Ractive({
-								el: _parent.find('.admin-editor__top-select'),
-								template: editStatus,
+			['quotes', 'events'].forEach(
+				function (target_tab) {
+					utils.api.get('/api/v2/list/records?group=' + target_tab + '&@sort=priority:d')
+						.then(function (result) {
+							let data = {
+								group: target_tab,
+								records: result,
+								catalog: catalog
+							};
+							var _tab = new Ractive({
+								el: '.data-tab-item[data-tab="' + target_tab + '"]',
+								template: wbapp.tpl('#listRecords').html,
 								data: {
-									catalog: catalog,
-									quote: quote
+									group: target_tab,
+									records: result,
+									catalog: catalog
 								},
 								on: {
-									complete() {
-										$(statusEdt.find(`.select.status [data-id="${quote.status}"]`))
-											.trigger('click');
-										$(statusEdt.find(`.select.pay [data-id="${quote.pay_status}"]`))
-											.trigger('click');
+									loaded() {
+										console.log('>>> loaded', target_tab);
+										this.find('.loading-overlay').remove();
 									},
-									save(ev) {
-										let lead = $(ev.node).parents('.acount__table-accardeon[data-id]').data('id');
-										let item = $(ev.node).data('id');
-										let form = $(ev.node).parents('.admin-editor');
-										$(form).find('.admin-editor__edit-profile').html('');
-										let copy = $('<form></form>');
-										$(copy).html($(form).clone());
-										let post = $(copy).serializeJSON();
-										wbapp.post('/api/v2/update/records/' + lead, post, function (res) {
-											_tab.set('results.' + lead, res);
-
-											toast('Успешно сохранено');
-										});
-										delete copy;
-									}
-								}
-							});
-							let quoteEdt     = new Ractive({
-								el: _parent.find('.admin-editor__events'),
-								template: editQuote,
-								data: {
-									catalog: catalog,
-									quote: quote
-								},
-								on: {
-									complete(ev) {
-										initServicesSearch($('.popup-services-list'), catalog.servicesList);
-										initPlugins();
-									},
-									save(ev) {
-										let lead = $(ev.node).parents('.acount__table-accardeon[data-id]')
+									editProfile(ev) {
+										let record     = $(ev.node).parents('.acount__table-accardeon[data-id]')
 											.data('id');
-										let item = $(ev.node).data('id');
-										let form = $(ev.node).parents('.admin-editor');
+										let profile_id = $(ev.node).data('id');
+										let form       = $(ev.node).parents('.admin-editor')
+											.find('.admin-editor__edit-profile');
+										let editor     = new Ractive({
+											el: form,
+											template: editProfile,
+											data: {},
+											on: {
+												save(ev) {
+													let $form = $(form);
+													if ($form.verify() && profile_id > '') {
+														let data = $form.serializeJSON();
+														CabinetController.updateProfile(profile_id, data,
+															function (res) {
+																console.log(res);
+																data.birthdate_fmt = utils.formatDate(data.birthdate);
+																data.phone         = utils.formatPhone(data.phone);
+																cabinet.set('user', data); /* get actually user data */
+																$(form).html('');
+																toast('Профиль успешно обновлён');
+															});
+													}
+												}
+											}
+										});
+										fetch('/form/users/getClient/' + profile_id, {
+											method: 'GET'
+										}).then((response) => {
+											return response.json();
+										}).then(function (data) {
+											editor.set(data);
+											initPlugins();
+										});
+									},
+									editQuote(ev) {
+										const _parent = $(ev.node).parents('.accardeon');
+										let id        = $(ev.node).data('id');
+										let record    = _tab.get('result.' + id);
+										if (!quote.price) {
+											quote.price = 0;
+										}
 
-										let post = $($(ev.node).parents('form')).serializeJSON();
-										CabinetController.updateQuote(lead, post, function (res) {
-											console.log('event data:', post);
-											toast('Успешно сохранено');
-											_tab.set('results.' + lead, res);
-
-											toast('Успешно сохранено');
+										fetch('/form/users/getClient/' + item, {
+											method: 'GET'
+										}).then((response) => {
+											return response.json();
+										}).then(function (data) {
+											_tab.set('result.' + id + '.clientData', data);
 										});
 
-										return false;
+										quote.price_text = utils.formatPrice(quote.price);
+										let statusEdt    = new Ractive({
+											el: _parent.find('.admin-editor__top-select'),
+											template: editStatus,
+											data: {
+												catalog: catalog,
+												quote: quote
+											},
+											on: {
+												complete() {
+													$(statusEdt.find(`.select.status [data-id="${quote.status}"]`))
+														.trigger('click');
+													$(statusEdt.find(`.select.pay [data-id="${quote.pay_status}"]`))
+														.trigger('click');
+												},
+												save(ev) {
+													let lead = $(ev.node).parents('.acount__table-accardeon[data-id]')
+														.data('id');
+													let item = $(ev.node).data('id');
+													let form = $(ev.node).parents('.admin-editor');
+													$(form).find('.admin-editor__edit-profile').html('');
+													let copy = $('<form></form>');
+													$(copy).html($(form).clone());
+													let post = $(copy).serializeJSON();
+													wbapp.post('/api/v2/update/records/' + lead, post, function (res) {
+														_tab.set('results.' + lead, res);
+
+														toast('Успешно сохранено');
+													});
+													delete copy;
+												}
+											}
+										});
+										let quoteEdt     = new Ractive({
+											el: _parent.find('.admin-editor__events'),
+											template: editQuote,
+											data: {
+												catalog: catalog,
+												quote: quote
+											},
+											on: {
+												complete(ev) {
+													initServicesSearch($('.popup-services-list'), catalog.servicesList);
+													initPlugins();
+												},
+												save(ev) {
+													let lead = $(ev.node).parents('.acount__table-accardeon[data-id]')
+														.data('id');
+													let item = $(ev.node).data('id');
+													let form = $(ev.node).parents('.admin-editor');
+
+													let post = $($(ev.node).parents('form')).serializeJSON();
+													CabinetController.updateQuote(lead, post, function (res) {
+														console.log('event data:', post);
+														toast('Успешно сохранено');
+														_tab.set('results.' + lead, res);
+
+														toast('Успешно сохранено');
+													});
+
+													return false;
+												}
+											}
+										});
 									}
 								}
 							});
-						}
-					}
-				});
 
-				utils.api.get('/api/v2/list/records?group=' + target_tab + '&@sort=priority:d')
-					.then(function (result) {
-						let data = {
-							group: target_tab,
-							records: result,
-							catalog: catalog
-						};
-						console.log('>>> loaded ' + target_tab + ':', data);
-						_tab.set(data);
-						_tab.fire('loaded');
+							console.log('>>> loaded ' + target_tab + ':', data);
+							_tab.fire('loaded');
+							tabs[target_tab] = _tab;
+						});
+
+				}
+			);
+
+			$(document).on('click', 'button.flag-date__ico', function (e) {
+				e.stopPropagation();
+				const _parent    = $(this).parents('.acount__table-accardeon');
+				const _id        = _parent.data('id');
+				const _is_marked = $(this).hasClass('checked');
+				console.log('flagged', _id, _is_marked);
+				wbapp.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}, function (res) {
+					toast('Успешно обновлено');
+				});
+			}).on('change', '.flag-date [type="checkbox"]', function (e) {
+				e.stopPropagation();
+				const _list      = $(this).parents('.account__table-body');
+				const _parent    = $(this).parents('.acount__table-accardeon');
+				const _id        = _parent.data('id');
+				const _is_marked = $(this).is(':checked');
+				const _priority  = _is_marked ? Date.now() : 0;
+
+				_parent.attr('data-priority', _priority);
+				_list.find(".acount__table-accardeon").sort(function (a, b) {
+					const _a = parseInt($(a).attr('data-priority'));
+					const _b = parseInt($(b).attr('data-priority'));
+					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+				}).appendTo(_list);
+
+				utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
+					.then(function (res) {
+						toast('Список обновлен', 'success');
 					});
-
-				tabs[target_tab] = _tab;
-			}
-		);
-
-		$(document).on('click', 'button.flag-date__ico', function (e) {
-			e.stopPropagation();
-			const _parent    = $(this).parents('.acount__table-accardeon');
-			const _id        = _parent.data('id');
-			const _is_marked = $(this).hasClass('checked');
-			console.log('flagged', _id, _is_marked);
-			wbapp.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}, function (res) {
-				toast('Успешно обновлено');
 			});
-		}).on('change', '.flag-date [type="checkbox"]', function (e) {
-			e.stopPropagation();
-			const _list      = $(this).parents('.account__table-body');
-			const _parent    = $(this).parents('.acount__table-accardeon');
-			const _id        = _parent.data('id');
-			const _is_marked = $(this).is(':checked');
-			const _priority  = _is_marked ? Date.now() : 0;
-
-			_parent.attr('data-priority', _priority);
-			_list.find(".acount__table-accardeon").sort(function (a, b) {
-				const _a = parseInt($(a).attr('data-priority'));
-				const _b = parseInt($(b).attr('data-priority'));
-				return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-			}).appendTo(_list);
-
-			utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
-				.then(function (res) {
-					toast('Список обновлен', 'success');
-				});
 		});
 	});
 </script>
