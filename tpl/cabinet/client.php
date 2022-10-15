@@ -591,9 +591,6 @@
 
 <script wb-app remove>
 	$(function () {
-		$(document).on('wb-ready', function (e) {
-			toast_info('Async. scripts loaded!');
-		});
 		//console.log('>>> cabinet page script.');
 		var page = new Ractive({
 			el: 'main.page .page-content',
@@ -803,7 +800,7 @@
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
 
-<script src="/assets/js/cabinet.js"></script>
+<script src="/assets/js/cabinet.js?v=1.1"></script>
 </body>
 
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

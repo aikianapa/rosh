@@ -117,7 +117,7 @@ $(function () {
 			});
 		},
 		listUpcomingEvents(options, callback) {
-			var _options = options || {};
+			var _options  = options || {};
 			var upcomings = [], currents = [];
 
 			var qry_str = '';
@@ -149,7 +149,7 @@ $(function () {
 						}
 					});
 
-					if (!!callback){
+					if (!!callback) {
 						callback({currents: currents, upcomings: upcomings});
 					}
 
@@ -176,43 +176,6 @@ $(function () {
 
 	};
 	window.utils             = {
-		formatPhone(phone) {
-			var cleaned = ('' + phone).replace(/\D/g, '');
-			console.log(cleaned);
-			var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
-			if (match) {
-				var intlCode = (match[1] ? '+7 ' : '');
-				return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
-			}
-			return phone;
-		},
-		formatPrice(val, sufix) {
-			var sign = 1;
-			if (val < 0) {
-				sign = -1;
-				val  = -val;
-			}
-			// trim the number decimal point if it exists
-			let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
-			let len    = num.toString().length;
-			let result = '';
-			let count  = 1;
-
-			for (let i = len - 1; i >= 0; i--) {
-				result = num.toString()[i] + result;
-				if (count % 3 === 0 && count !== 0 && i !== 0) {
-					result = ' ' + result;
-				}
-				count++;
-			}
-
-			// add number after decimal point
-			if (val.toString().includes('.')) {
-				result = result + '.' + val.toString().split('.')[1];
-			}
-			// return result with - sign if negative
-			return (sign < 0 ? '-' + result : result) + (sufix || '');
-		},
 		varType(val) {
 			return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 		},
@@ -279,8 +242,49 @@ $(function () {
 		},
 		formatDateTime(date) {
 			return new Date(date).toLocaleString();
+		},
+		formatTime(date) {
+			return new Date(date).toLocaleTimeString();
+		},
+		formatPhone(phone) {
+			var cleaned = ('' + phone).replace(/\D/g, '');
+			console.log(cleaned);
+			var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+			if (match) {
+				var intlCode = (match[1] ? '+7 ' : '');
+				return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
+			}
+			return phone;
+		},
+		formatPrice(val, sufix) {
+			var sign = 1;
+			if (val < 0) {
+				sign = -1;
+				val  = -val;
+			}
+			// trim the number decimal point if it exists
+			let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
+			let len    = num.toString().length;
+			let result = '';
+			let count  = 1;
+
+			for (let i = len - 1; i >= 0; i--) {
+				result = num.toString()[i] + result;
+				if (count % 3 === 0 && count !== 0 && i !== 0) {
+					result = ' ' + result;
+				}
+				count++;
+			}
+
+			// add number after decimal point
+			if (val.toString().includes('.')) {
+				result = result + '.' + val.toString().split('.')[1];
+			}
+			// return result with - sign if negative
+			return (sign < 0 ? '-' + result : result) + (sufix || '');
 		}
 	};
+
 	window.catalog           = {
 		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
 		spec_service: {
@@ -324,7 +328,6 @@ $(function () {
 			}
 		},
 		categories: {},
-
 		experts: {},
 		clients: {},
 		admins: {},
@@ -450,7 +453,8 @@ $(function () {
 
 		return changes;
 	};
-	window.toast             = function (text, head, icon) {
+
+	window.toast         = function (text, head, icon) {
 		var bgColor   = '#616161';
 		var textColor = '#FEFEFE';
 		switch (icon) {
@@ -489,16 +493,16 @@ $(function () {
 			afterHidden: function () {}  // will be triggered after the toast has been hidden
 		});
 	};
-	window.toast_success     = function (text, head) {
+	window.toast_success = function (text, head) {
 		toast(text, head, 'success');
 	};
-	window.toast_error       = function (text, head) {
+	window.toast_error   = function (text, head) {
 		toast(text, head, 'error');
 	};
-	window.toast_info        = function (text, head) {
+	window.toast_info    = function (text, head) {
 		toast(text, head, 'info');
 	};
-	window.toast_warning     = function (text, head) {
+	window.toast_warning = function (text, head) {
 		toast(text, head, 'warning');
 	};
 
@@ -1063,6 +1067,7 @@ $(function () {
 			e.stopPropagation();
 			e.preventDefault();
 			window.location.href = "/cabinet/client/" + $(this).data('client');
-		});
-
+		}).on('wb-ready', function (e) {
+		console.log('Async. scripts loaded!');
+	});
 });

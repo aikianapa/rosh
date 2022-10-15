@@ -220,3 +220,6 @@
 .expert__worked-pic img{
 	max-height : 300px;
 }
+.admin-events-item.col-experts span{
+	line-height: 1.1em;
+}
