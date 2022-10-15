@@ -81,6 +81,7 @@ $(function () {
             } else {
                 $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
             }
+
             return false;
         }).on('___click', '.select .select__main', function () { // ###############
             if ($(this).parent().hasClass('active')) {

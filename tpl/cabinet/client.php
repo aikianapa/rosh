@@ -635,7 +635,10 @@
 						});
 					},
 					complete(){
-						$("[data-src]:not([src])").lazyload();
+
+						setTimeout(function () {
+							$("[data-src]:not([src])").lazyload();
+						});
 					},
 					runOnlineChat(ev){
 						const _rec_id = $(ev.node).data('id');
