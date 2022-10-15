@@ -835,30 +835,30 @@ $(function () {
 							post[keys[i]] = names[i];
 						}
 
-						wbapp.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
-							if (data.length === 0) {
-								wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
-									function (data) {
-										if (data.length == 0) {
-											wbapp.post('/api/v2/create/users/', post, function (data) {
-												if (data.error) {
-													wbapp.trigger('wb-save-error', {'data': data});
-												} else {
-													toast('Карточка клиента успешно создана!');
-													$('.popup.--create-client').fadeOut('fast');
-												}
-											});
+						//utils.api.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
+						//	if (data.length === 0) {
+						//
+						//	} else {
+						//		form.find('[name="email"]').focus();
+						//		toast('E-mail уже используется!', 'Ошибка!', 'error');
+						//	}
+						//});
+						utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
+							function (data) {
+								if (!data.length) {
+									utils.api.post('/api/v2/create/users/', post).then(function (data) {
+										if (data.error) {
+											wbapp.trigger('wb-save-error', {'data': data});
 										} else {
-											form.find('[name="phone"]').focus();
-											toast('Этот номер уже используется!', 'Ошибка!', 'error');
+											toast('Карточка клиента успешно создана!');
+											$('.popup.--create-client').fadeOut('fast');
 										}
 									});
-							} else {
-								form.find('[name="email"]').focus();
-								toast('E-mail уже используется!', 'Ошибка!', 'error');
-							}
-						});
-
+								} else {
+									form.find('[name="phone"]').focus();
+									toast('Этот номер уже используется!', 'Ошибка!', 'error');
+								}
+							});
 					}
 					return false;
 				}
