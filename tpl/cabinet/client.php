@@ -255,8 +255,9 @@
 					<div class="account__table-body">
 						<!-- !!! quote history item !!! -->
 						{{#each history.events}}
-						<div class="acount__table-accardeon accardeon" on-click="exec_lazyload">
-							<div class="acount__table-main accardeon__main accardeon__click">
+						<div class="acount__table-accardeon accardeon"
+							data-idx="{{@index}}">
+							<div class="acount__table-main accardeon__main accardeon__click" on-click="showEventDetails">
 								<div class="history-item">
 									<p>Дата</p>
 									{{ @global.utils.formatDate(this.event_date) }}
@@ -286,98 +287,7 @@
 								</div>
 							</div>
 							<div class="acount__table-list accardeon__list">
-								<div class="analysis mb-40">
-									<div class="row">
-										<div class="col-md-6">
-											{{#if analises}}
-											<div class="account-events__download">
-												<div class="lk-title">Анализы</div>
-												<a class="btn btn--white" href="{{.}}"
-													download="Анализы(за {{this.event_date}}).pdf">
-													Скачать анализы
-												</a>
-											</div>
-											{{/if}}
 
-											<div class="analysis__description">
-												<p class="text-bold mb-20">Выполнялись процедуры</p>
-												<p class="text-grey">{{this.comment}}</p>
-											</div>
-										</div>
-										<div class="col-md-6">
-											{{#if this.analises}}
-											<a class="btn btn--black mb-20 --openpopup"
-												data-popup="--analize-type"
-												onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analises}}')">
-												Получить расшифровку анализов
-											</a>
-											{{/if}}
-											<div class="analysis__description">
-												<p class="text-bold mb-20">Рекомендация врача</p>
-												<div class="text">
-													{{this.recommendation}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="experts__worked">
-									<div class="experts__worked-title">С вами работали</div>
-									<div class="row">
-										{{#each .experts: idx}}
-										<div class="col-md-6">
-											<a class="expert__worked"
-												target="_blank"
-												data-href="/about/experts/{{catalog.experts[@key].info_uri}}">
-												<div class="expert__worked-pic">
-													<img class="lazyload"
-														data-src="{{{catalog.experts[this].image[0].img}}}"
-														alt="{{catalog.experts[this].name}}">
-												</div>
-												<div class="expert__worked-name">{{catalog.experts[this].name}}</div>
-												<div class="expert__worked-work">{{catalog.experts[this].spec}}</div>
-											</a>
-										</div>
-										{{/each}}
-									</div>
-								</div>
-								<div class="acount__photos d-none">
-									<div class="row acount__photos-wrap">
-										<div class="col-md-6">
-											<div class="acount__photo">
-												<p>Фото до начала лечения</p>
-												{{#each photos.before}}
-												<div class="col-md-6">
-													<a class="after-healing__item"
-														data-fancybox="images"
-														href="{{.src}}"
-														data-caption="{{.date}}">
-														<div class="healing__date">{{.date}}</div>
-														<div class="after-healing__photo"
-															style="background-image: url({{.src}})">
-														</div>
-													</a>
-												</div>
-												{{else}}
-
-												{{/each}}
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="acount__photo">
-												<p>Фото в процессе лечения</p>
-												{{#each photos.after}}
-												<a class="after-healing__item"
-													data-fancybox="images"
-													href="{{.src}}"
-													data-caption="{{.date}}">
-													<img src="{{.src}}" alt="After visit {{.date}}">
-												</a>
-												{{/each}}
-											</div>
-										</div>
-									</div>
-								</div>
 							</div>
 						</div>
 						{{else}}
@@ -468,6 +378,107 @@
 		</div>
 	</template>
 
+	<template id="event-details">
+		{{#event}}
+		<div class="analysis mb-40">
+			<div class="row">
+				<div class="col-md-6">
+					{{#if .analises}}
+					<div class="account-events__download">
+						<div class="lk-title">Анализы</div>
+						<a class="btn btn--white" href="{{.}}"
+							download="Анализы(за {{this.event_date}}).pdf">
+							Скачать анализы
+						</a>
+					</div>
+					{{/if}}
+
+					<div class="analysis__description">
+						<p class="text-bold mb-20">Выполнялись процедуры</p>
+						<p class="text-grey">{{.comment}}</p>
+					</div>
+				</div>
+				<div class="col-md-6">
+					{{#if this.analises}}
+					<a class="btn btn--black mb-20 --openpopup"
+						data-popup="--analize-type"
+						onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analises}}')">
+						Получить расшифровку анализов
+					</a>
+					{{/if}}
+					<div class="analysis__description">
+						<p class="text-bold mb-20">Рекомендация врача</p>
+						<div class="text">
+							{{.recommendation}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="experts__worked">
+			<div class="experts__worked-title">С вами работали</div>
+			<div class="row">
+				{{#each .experts: idx}}
+				<div class="col-md-6">
+					<a class="expert__worked"
+						target="_blank"
+						title="Откр"
+						data-href="{{{catalog.experts[this].info_uri}}}">
+						<div class="expert__worked-pic">
+							<img class="lazyload"
+								data-src="{{{catalog.experts[this].image[0].img}}}"
+								alt="{{catalog.experts[this].name}}">
+						</div>
+						<div class="expert__worked-name">
+							{{catalog.experts[this].name}}
+						</div>
+						<div class="expert__worked-work">
+							{{catalog.experts[this].spec}}
+						</div>
+					</a>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+		<div class="acount__photos d-none">
+			<div class="row acount__photos-wrap">
+				<div class="col-md-6">
+					<div class="acount__photo">
+						<p>Фото до начала лечения</p>
+						{{#each .photos.before}}
+						<div class="col-md-6">
+							<a class="after-healing__item"
+								data-fancybox="images"
+								href="{{.src}}"
+								data-caption="{{.date}}">
+								<div class="healing__date">{{.date}}</div>
+								<div class="after-healing__photo"
+									style="background-image: url({{.src}})">
+								</div>
+							</a>
+						</div>
+						{{else}}
+
+						{{/each}}
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="acount__photo">
+						<p>Фото в процессе лечения</p>
+						{{#each .photos.after}}
+						<a class="after-healing__item"
+							data-fancybox="images"
+							href="{{.src}}"
+							data-caption="{{.date}}">
+							<img src="{{.src}}" alt="After visit {{.date}}">
+						</a>
+						{{/each}}
+					</div>
+				</div>
+			</div>
+		</div>
+		{{/event}}
+	</template>
 	<template id="profile-editor-inline">
 		<form on-submit="submit">
 			{{#user}}
@@ -634,17 +645,30 @@
 							page.set('catalog', catalog);
 						});
 					},
-					complete(){
-
+					complete() {
 
 					},
-					runOnlineChat(ev){
+					runOnlineChat(ev) {
 						const _rec_id = $(ev.node).data('id');
 						CabinetController.runOnlineChat(_rec_id);
 					},
-					exec_lazyload(ev){
-						console.log('---_');
-						$("img[data-src]:not([src])").lazyload();
+					showEventDetails(ev) {
+						var _parent          = $(ev.node).parents('.accardeon');
+						var _event_idx       = _parent.data('idx');
+						var _accardeon__list = new Ractive({
+							el: _parent.find('.accardeon__list'),
+							template: wbapp.tpl('#event-details').html,
+							data: {
+								event: page.get('history.events.' + _event_idx),
+								user: page.get('user'),
+								catalog: catalog
+							},
+							on: {
+								complete() {
+									_parent.find("img[data-src]:not([src])").lazyload();
+								}
+							}
+						});
 					},
 					toggleEdit(ev) {
 						console.log(ev, $(ev.node), this);
