@@ -440,11 +440,11 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<a href="/search/client/{{.client}}">{{clientData.fullname}}</a>
+							<a href="/search/client/{{.client}}">{{catalog.clients[client].fullname}}</a>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
-							{{clientData.phone}}
+							{{catalog.clients[client].phone}}
 						</div>
 						<div class="admin-events-item col-experts">
 							<p>Специалист</p>
@@ -490,7 +490,7 @@
 						<div class="admin-editor__top">
 							<div class="admin-editor__top-info">
 								<div class="lk-title">Редактировать профиль</div>
-								<div class="admin-editor__name user__edit">{{clientData.fullname}}
+								<div class="admin-editor__name user__edit">{{catalog.clients[client].fullname}}
 									<button class="user__edit" on-click="editProfile" data-id="{{client}}">
 										<svg class="svgsprite _edit">
 											<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
@@ -499,10 +499,10 @@
 								</div>
 								<div class="admin-editor__iser-contacts">
 									<p>Дата рождения:
-										<span>{{clientData.birthdate}}</span>
+										<span>{{catalog.clients[client].birthdate}}</span>
 									</p>
 									<p>Телефон:
-										<span>{{clientData.phone}}</span>
+										<span>{{catalog.clients[client].phone}}</span>
 									</p>
 								</div>
 							</div>
