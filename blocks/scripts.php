@@ -49,7 +49,7 @@
     <link href="/assets/css/additional/frontend.css" rel="stylesheet">
 
 	<link wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=2"
+		href="/assets/css/cabinet.css?v=1.1"
 		rel="stylesheet">
 </view>
 

@@ -170,7 +170,7 @@
 	border-radius    : 20px;
 	min-height       : 64px;
 	align-items      : center;
-	background-color : #F3F1F0;
+	background-color : #F0F1F1CC;
 	backdrop-filter  : blur(4px);
 	display          : flex;
 	justify-content  : center;
@@ -184,10 +184,12 @@
 	height        : 42px;
 	animation     : spin .75s linear infinite;
 }
+.account__table-body:has(.loading-overlay),
 .account:has(.loading-overlay),
 .page-content:has(.loading-overlay) {
 	padding-bottom : 110px;
 }
+.account__table-body .loading-overlay,
 .account .loading-overlay,
 .page-content .loading-overlay {
 	min-height : 120px;

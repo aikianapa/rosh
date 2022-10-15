@@ -78,10 +78,6 @@
 		</div>
 	</main>
 </div>
-
-<template id="page-content">
-
-</template>
 <template id="editProfile">
 	<form class="profile-editor">
 		<input type="hidden" value="{{ id }}">
@@ -379,7 +375,7 @@
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
 						</svg>
 					</button>
-					<span>Заявка</span>
+					<span>{{#if group == 'events'}} Событие {{else}} Заявка {{/if}}</span>
 				</div>
 				<div class="admin-events-item">Приём</div>
 				<div class="admin-events-item">ФИО</div>
@@ -395,6 +391,7 @@
 				<div class="loading-overlay">
 					<div class="loader"></div>
 				</div>
+
 				{{#each records}}
 				<div class="acount__table-accardeon accardeon --{{catalog.quoteStatus[this.status].color}} acount__table-accardeon--pmin"
 					data-client={{client}} data-id="{{id}}" data-priority="{{priority}}" data-group="{{group}}">
@@ -517,6 +514,12 @@
 						</div>
 						<div class="admin-editor__edit-profile" data-client="{{this.client}}"></div>
 						<div class="admin-editor__events" data-id="{{this.id}}"></div>
+					</div>
+				</div>
+				{{else}}
+				<div class="acount__table-accardeon accardeon">
+					<div class="acount__table-main accardeon__main">
+						Нет записей о продолжительном лечении
 					</div>
 				</div>
 				{{/each}}
