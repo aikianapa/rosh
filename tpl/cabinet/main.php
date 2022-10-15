@@ -411,7 +411,7 @@
 								</label>
 								{{/if}}
 
-								{{#if marked == '1' }}
+								{{#if marked == 'true' }}
 								<button class="flag-date__ico checked">
 									<svg class="svgsprite _flag">
 										<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
@@ -714,7 +714,7 @@
 
 				utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
 					.then(function (res) {
-						toast('Список обновлен', 'success');
+						//toast('Список обновлен');
 					});
 			});
 		});
