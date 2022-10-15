@@ -105,26 +105,26 @@
 
 	<script>
 		$(function () {
-			setTimeout(function (){
-		var cabinetChanges = new Ractive({
-			el: 'main.page',
-			template: $('main.page').html(),
-			data: {
-				user: wbapp._session.user,
-				changes: []
-			},
-			on: {
-				init() {
-					wbapp.get('/api/v2/list/record-changes/@sort=date:d', function (data) {
-						cabinetChanges.set('changes', data);
-					});
-				},
-				complete(ev) {
-					$('main.page .loading-overlay').remove();
-				}
-			}
-		});
-		});
+			setTimeout(function () {
+				var page = new Ractive({
+					el: 'main.page',
+					template: $('main.page').html(),
+					data: {
+						user: wbapp._session.user,
+						changes: []
+					},
+					on: {
+						init() {
+							utils.api.get('/api/v2/list/record-changes?@sort=date:d').then(function (data) {
+								page.set('changes', data);
+							});
+						},
+						complete(ev) {
+							$('main.page .loading-overlay').remove();
+						}
+					}
+				});
+			});
 		});
 	</script>
 </div>
