@@ -9,7 +9,7 @@
             "/assets/js/jquery.inputmask.min.js",
             "/assets/js/jquery.maskedinput.min.js",
             "/assets/js/jquery.autocomplete.min.js",
-            "/assets/js/jquery.fancybox.min.js",
+            "/assets/js/fancybox.umd.js",
             "/assets/js/jquery.serializejson.min.js",
             "/assets/js/air-datepicker.js",
 	        "/assets/js/jquery.toast.min.js",
@@ -23,8 +23,7 @@
     <script type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
     <script type="wbapp">
         $(function () {
-        	console.log('>>> wbapp.init ..');
-            wbapp.init();
+        	wbapp.init();
             new Swiper('.main-slider', {
                 loop: true,
                 slidesPerView: 1,
@@ -44,12 +43,14 @@
     <!--<script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>-->
 	<!---->
 
-    <link href="/assets/css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/new.css" rel="stylesheet">
     <link href="/assets/css/additional/frontend.css" rel="stylesheet">
 
-	<link wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])" href="/assets/css/cabinet.css?v=1.0" rel="stylesheet">
+	<link wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
+		href="/assets/css/cabinet.css?v=2"
+		rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">
