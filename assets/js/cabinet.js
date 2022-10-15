@@ -834,6 +834,7 @@ $(function () {
 						for (var i = 0; i < names.length; i++) {
 							post[keys[i]] = names[i];
 						}
+						post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
 
 						//utils.api.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
 						//	if (data.length === 0) {

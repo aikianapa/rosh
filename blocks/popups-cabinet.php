@@ -514,17 +514,17 @@
 						<input type="hidden" name="role" value="client">
 						<input type="hidden" name="confirmed" value="0">
 						<div class="input">
-							<input class="input__control" type="text"
+							<input class="input__control" type="text" required
 								placeholder="ФИО" name="fullname">
 							<div class="input__placeholder">ФИО</div>
 						</div>
 						<div class="input">
-							<input class="input__control datebirthdaypickr"
+							<input class="input__control datebirthdaypickr" required
 								type="text" placeholder="Дата рождения" name="birthdate">
 							<div class="input__placeholder">Дата рождения</div>
 						</div>
 						<div class="input mb-30">
-							<input class="input__control" type="tel"
+							<input class="input__control" type="tel" required
 								placeholder="Номер телефона"
 								data-inputmask="'mask': '+7 (999) 999-99-99'"
 								name="phone">
