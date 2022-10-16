@@ -671,6 +671,36 @@
 								}
 							}
 						});
+					},
+					saveRecommendation(ev) {
+						const _id             = $(ev.node).data('id');
+						const _recommendation = $('#' + _id + '--recommendation').val();
+						console.log('CLICKED 2!');
+
+						utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
+							var prev_recommendation = data.recommendation;
+
+							utils.api.post('/api/v2/update/records/' + _id,
+								{'recommendation': _recommendation}).then(function (res) {
+								toast('Рекомендация сохранена!');
+							});
+							if (_recommendation !== prev_recommendation) {
+								utils.api.post('/api/v2/create/record-changes/',
+										{
+											record: data.id,
+											experts: data.experts,
+											client: data.client,
+											changes: [{
+												field: 'recommendation',
+												prev_val: prev_recommendation,
+												new_val: _recommendation
+											}]
+										})
+									.then(function (res) {
+
+									});
+							}
+						});
 					}
 				}
 			});
