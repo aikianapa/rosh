@@ -588,211 +588,210 @@
 	</form>
 </template>
 
-<script wb-app remove>
-	$(function () {
-		setTimeout(function () {
-			//console.log('>>> cabinet page script.');
-			var page = new Ractive({
-				el: 'main.page .page-content',
-				template: wbapp.tpl('#page-content').html,
-				data: {
-					catalog: {},
-					user: wbapp._session.user,
-					events: {
-						'upcoming': [],
-						'current': []
-					},
-					history: {
-						'events': [],
-						'longterms': []
-					}
+<script>
+	$(document).on('cabinet-js-ready', function () {
+		console.log('>>> cabinet page script.');
+		var page = new Ractive({
+			el: 'main.page .page-content',
+			template: wbapp.tpl('#page-content').html,
+			data: {
+				catalog: {},
+				user: wbapp._session.user,
+				events: {
+					'upcoming': [],
+					'current': []
 				},
-				on: {
-					init() {
-						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
-							data.birthdate_fmt = utils.formatDate(data.birthdate);
-							data.phone         = utils.formatPhone(data.phone);
-							page.set('user', data); /* get actually user data */
-						});
+				history: {
+					'events': [],
+					'longterms': []
+				}
+			},
+			on: {
+				init() {
+					utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
+						data.birthdate_fmt = utils.formatDate(data.birthdate);
+						data.phone         = utils.formatPhone(data.phone);
+						page.set('user', data); /* get actually user data */
+					});
 
-						utils.api.get('/api/v2/list/records?status=upcoming&client=' +
-						              wbapp._session.user.id).then(
-							function (data) {
-								let curr_timestamp = parseInt(getdate()[0]);
+					utils.api.get('/api/v2/list/records?status=upcoming&client=' +
+					              wbapp._session.user.id).then(
+						function (data) {
+							let curr_timestamp = parseInt(getdate()[0]);
 
-								data.forEach(function (rec) {
-									if (rec.event_date !== (new Date()).toLocaleDateString()) {
-										page.push('events.upcoming', rec); /* get actually user next events */
-									}
+							data.forEach(function (rec) {
+								if (rec.event_date !== (new Date()).toLocaleDateString()) {
+									page.push('events.upcoming', rec); /* get actually user next events */
+								}
 
-									let event_from_timestamp = utils.timestamp(
-										rec.event_date + ' ' + rec.event_time_start);
-									let event_to_timestamp   = utils.timestamp(
-										rec.event_date + ' ' + rec.event_time_end);
+								let event_from_timestamp = utils.timestamp(
+									rec.event_date + ' ' + rec.event_time_start);
+								let event_to_timestamp   = utils.timestamp(
+									rec.event_date + ' ' + rec.event_time_end);
 
-									if (event_from_timestamp < curr_timestamp
-									    && (event_to_timestamp >= curr_timestamp)) {
-										page.push('events.current', rec);
-									}
-								});
-							});
-
-						utils.api.get('/api/v2/list/records?status=past&group=events&client=' +
-						              wbapp._session.user.id).then(
-							function (data) {
-								console.log('history.events:', data);
-								page.set('history.events', data); /* get actually user next events */
-							});
-
-						utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
-							.then(function (data) {
-								console.log('history.longterms:', data);
-								page.set('history.longterms', data); /* get actually user next events */
-							});
-
-						setTimeout(function () {
-							page.set('catalog', catalog);
-						});
-					},
-					complete() {
-
-					},
-					runOnlineChat(ev) {
-						const _rec_id = $(ev.node).data('id');
-						CabinetController.runOnlineChat(_rec_id);
-					},
-					showLongtermDetails(ev) {
-						var _parent = $(ev.node).parents('.accardeon');
-						if (!_parent.hasClass('loaded')) {
-							var _record_idx      = _parent.data('idx');
-							var _record          = page.get('history.longterms.' + _record_idx);
-							var _accardeon__list = new Ractive({
-								el: _parent.find('.accardeon__list'),
-								template: wbapp.tpl('#longterm-details').html,
-								data: {
-									event: _record,
-									user: page.get('user'),
-									catalog: catalog
-								},
-								on: {
-									init() {
-										var _this = this;
-										if (!!_record.photos?.before || !!_record.photos?.after) {
-											utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
-												function (result) {
-													if (!result) {
-														return;
-													}
-
-													var list = {before: [], after: []};
-													result.forEach(function (photo) {
-														if (_record.photos?.before &&
-														    _record.photos.before.includes(photo.id)) {
-															list.before.push(photo);
-														} else if (_record.photos?.after &&
-														           _record.photos.after.includes(photo.id)) {
-															list.after.push(photo);
-														}
-													});
-													_this.set('photos', list);
-												}
-											);
-										}
-									},
-									complete() {
-										_parent.find("img[data-src]:not([src])").lazyload();
-										_parent.addClass('loaded');
-									}
+								if (event_from_timestamp < curr_timestamp
+								    && (event_to_timestamp >= curr_timestamp)) {
+									page.push('events.current', rec);
 								}
 							});
-						}
-					},
-					showEventDetails(ev) {
-						var _parent          = $(ev.node).parents('.accardeon');
-						if (!_parent.hasClass('loaded')) {
-							var _record_idx       = _parent.data('idx');
-							var _record = page.get('history.events.' + _record_idx)
-							var _accardeon__list = new Ractive({
-								el: _parent.find('.accardeon__list'),
-								template: wbapp.tpl('#event-details').html,
-								data: {
-									event: _record,
-									user: page.get('user'),
-									catalog: catalog
-								},
-								on: {
-									init() {
-										var _this = this;
-										if (!!_record.photos?.before || !!_record.photos?.after) {
-											utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
-												function (result) {
-													if(!result){
-														return;
-													}
+						});
 
-													var list = {before: [], after: []};
-													result.forEach(function (photo) {
-														if(_record.photos?.before && _record.photos.before.includes(photo.id)){
-															list.before.push(photo);
-														} else if (_record.photos?.after &&
-														           _record.photos.after.includes(photo.id)) {
-															list.after.push(photo);
-														}
-													});
-													_this.set('photos', list);
-												}
-											)
-										}
-									},
-									complete() {
-										_parent.find("img[data-src]:not([src])").lazyload();
-										_parent.addClass('loaded');
-									}
-								}
-							});
-						}
-					},
-					toggleEdit(ev) {
-						console.log(ev, $(ev.node), this);
-						if (!!window.profile_inline_editor) {
-							$('.profile-editor-inline').toggleClass('d-none');
-							return;
-						}
-						window.profile_inline_editor = new Ractive({
-							el: '.profile-editor-inline',
-							template: wbapp.tpl('#profile-editor-inline').html,
+					utils.api.get('/api/v2/list/records?status=past&group=events&client=' +
+					              wbapp._session.user.id).then(
+						function (data) {
+							console.log('history.events:', data);
+							page.set('history.events', data); /* get actually user next events */
+						});
+
+					utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+						.then(function (data) {
+							console.log('history.longterms:', data);
+							page.set('history.longterms', data); /* get actually user next events */
+						});
+
+					setTimeout(function () {
+						page.set('catalog', catalog);
+					});
+				},
+				complete() {
+
+				},
+				runOnlineChat(ev) {
+					const _rec_id = $(ev.node).data('id');
+					CabinetController.runOnlineChat(_rec_id);
+				},
+				showLongtermDetails(ev) {
+					var _parent = $(ev.node).parents('.accardeon');
+					if (!_parent.hasClass('loaded')) {
+						var _record_idx      = _parent.data('idx');
+						var _record          = page.get('history.longterms.' + _record_idx);
+						var _accardeon__list = new Ractive({
+							el: _parent.find('.accardeon__list'),
+							template: wbapp.tpl('#longterm-details').html,
 							data: {
-								user: page.get('user')
+								event: _record,
+								user: page.get('user'),
+								catalog: catalog
 							},
 							on: {
-								complete() {
-									$('.profile-editor-inline').removeClass('d-none');
-									initPlugins();
-								},
-								submit(ev) {
-									let $form = $(ev.node);
-									let uid   = page.get('user.id');
-									if ($form.verify() && uid > '') {
-										let data = $form.serializeJSON();
+								init() {
+									var _this = this;
+									if (!!_record.photos?.before || !!_record.photos?.after) {
+										utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
+											function (result) {
+												if (!result) {
+													return;
+												}
 
-										CabinetController.updateProfile(uid, data, function (data) {
-											data.birthdate_fmt = utils.formatDate(data.birthdate);
-											data.phone         = utils.formatPhone(data.phone);
-											page.set('user', data); /* get actually user data */
-											toast('Профиль успешно обновлён');
-										});
+												var list = {before: [], after: []};
+												result.forEach(function (photo) {
+													if (_record.photos?.before &&
+													    _record.photos.before.includes(photo.id)) {
+														list.before.push(photo);
+													} else if (_record.photos?.after &&
+													           _record.photos.after.includes(photo.id)) {
+														list.after.push(photo);
+													}
+												});
+												_this.set('photos', list);
+											}
+										);
 									}
-									return false;
+								},
+								complete() {
+									_parent.find("img[data-src]:not([src])").lazyload();
+									_parent.addClass('loaded');
 								}
 							}
 						});
-					},
-
-					prepay(ev) {
-						popupPay.showPopup($(ev.node).data('record'));
 					}
+				},
+				showEventDetails(ev) {
+					var _parent = $(ev.node).parents('.accardeon');
+					if (!_parent.hasClass('loaded')) {
+						var _record_idx      = _parent.data('idx');
+						var _record          = page.get('history.events.' + _record_idx);
+						var _accardeon__list = new Ractive({
+							el: _parent.find('.accardeon__list'),
+							template: wbapp.tpl('#event-details').html,
+							data: {
+								event: _record,
+								user: page.get('user'),
+								catalog: catalog
+							},
+							on: {
+								init() {
+									var _this = this;
+									if (!!_record.photos?.before || !!_record.photos?.after) {
+										utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
+											function (result) {
+												if (!result) {
+													return;
+												}
+
+												var list = {before: [], after: []};
+												result.forEach(function (photo) {
+													if (_record.photos?.before &&
+													    _record.photos.before.includes(photo.id)) {
+														list.before.push(photo);
+													} else if (_record.photos?.after &&
+													           _record.photos.after.includes(photo.id)) {
+														list.after.push(photo);
+													}
+												});
+												_this.set('photos', list);
+											}
+										);
+									}
+								},
+								complete() {
+									_parent.find("img[data-src]:not([src])").lazyload();
+									_parent.addClass('loaded');
+								}
+							}
+						});
+					}
+				},
+				toggleEdit(ev) {
+					console.log(ev, $(ev.node), this);
+					if (!!window.profile_inline_editor) {
+						$('.profile-editor-inline').toggleClass('d-none');
+						return;
+					}
+					window.profile_inline_editor = new Ractive({
+						el: '.profile-editor-inline',
+						template: wbapp.tpl('#profile-editor-inline').html,
+						data: {
+							user: page.get('user')
+						},
+						on: {
+							complete() {
+								$('.profile-editor-inline').removeClass('d-none');
+								initPlugins();
+							},
+							submit(ev) {
+								let $form = $(ev.node);
+								let uid   = page.get('user.id');
+								if ($form.verify() && uid > '') {
+									let data = $form.serializeJSON();
+
+									CabinetController.updateProfile(uid, data, function (data) {
+										data.birthdate_fmt = utils.formatDate(data.birthdate);
+										data.phone         = utils.formatPhone(data.phone);
+										page.set('user', data); /* get actually user data */
+										toast('Профиль успешно обновлён');
+									});
+								}
+								return false;
+							}
+						}
+					});
+				},
+
+				prepay(ev) {
+					popupPay.showPopup($(ev.node).data('record'));
 				}
-			});
+			}
 		});
 	});
 </script>
@@ -800,7 +799,6 @@
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
-<script src="/assets/js/cabinet.js?v=1.2"></script>
 
 </body>
 

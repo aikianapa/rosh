@@ -69,7 +69,7 @@
 									Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
 								</div>
 								<div class="admin-edit__user-btns d-none">
-									<a class="admin-edit__user-btn btn btn--white --openpopup" 
+									<a class="admin-edit__user-btn btn btn--white --openpopup"
 										data-popup="--create-appoint">Записать пациента на прием</a>
 									<a class="admin-edit__user-btn btn btn--white --openpopup"
 										onclick="popupPhoto(true)"
@@ -96,50 +96,47 @@
 	</main>
 
 	<script wbapp>
-
 		var q = '{{_route.params.q}}';
-		$(function () {
-			setTimeout(function () {
-				var cabinet = new Ractive({
-					el: 'main.page',
-					template: $('main.page').html(),
-					data: {
-						q: '{{_route.params.q}}',
-						user: wbapp._session.user,
-						results: {}
+		$(document).on('cabinet-js-ready', function () {
+			var page = new Ractive({
+				el: 'main.page',
+				template: $('main.page').html(),
+				data: {
+					q: '{{_route.params.q}}',
+					user: wbapp._session.user,
+					results: {}
+				},
+				on: {
+					init() {
+						wbapp.get('/api/v2/list/users?active=on&role=client&phone~=' + q, function (data) {
+							if (!data) {
+								return;
+							}
+							data.forEach(function (user, i) {
+								page.set('results.' + user.id, user);
+							});
+						});
+						wbapp.get('/api/v2/list/users?active=on&role=client&email~=' + q, function (data) {
+							if (!data) {
+								return;
+							}
+							data.forEach(function (user, i) {
+								page.set('results.' + user.id, user);
+							});
+						});
+						wbapp.get('/api/v2/list/users?active=on&role=client&fullname~=' + q, function (data) {
+							if (!data) {
+								return;
+							}
+							data.forEach(function (user, i) {
+								page.set('results.' + user.id, user);
+							});
+						});
 					},
-					on: {
-						init() {
-							wbapp.get('/api/v2/list/users?active=on&role=client&phone~=' + q, function(data) {
-								if (!data) {
-									return;
-								}
-								data.forEach(function (user, i) {
-									cabinet.set('results.' + user.id, user);
-								});
-							});
-							wbapp.get('/api/v2/list/users?active=on&role=client&email~=' + q, function(data) {
-								if (!data) {
-									return;
-								}
-								data.forEach(function (user, i) {
-									cabinet.set('results.' + user.id, user);
-								});
-							});
-							wbapp.get('/api/v2/list/users?active=on&role=client&fullname~=' + q, function(data) {
-								if (!data){
-									return;
-								}
-								data.forEach(function (user, i) {
-									cabinet.set('results.' + user.id, user);
-								});
-							});
-						},
-						complete(ev) {
-							$('main.page .loading-overlay').remove();
-						}
+					complete(ev) {
+						$('main.page .loading-overlay').remove();
 					}
-				});
+				}
 			});
 		});
 	</script>
@@ -147,7 +144,6 @@
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
-<script src="/assets/js/cabinet.js?v=1.2"></script>
 
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

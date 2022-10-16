@@ -67,33 +67,34 @@
 	</main>
 
 	<script wbapp>
-		var q       = '{{_route.params.q}}';
-		var cabinet = new Ractive({
-			el: 'main.page',
-			template: $('main.page').html(),
-			data: {
-				q: '{{_route.params.q}}',
-				user: wbapp._session.user,
-				results: []
-			},
-			on: {
-				init() {
-					wbapp.get('/api/v2/list/users?role=client&active=on&fullname~=' + q, function (data) {
-						console.log('found:', data);
-						cabinet.set('results', data);
-					});
+		var q = '{{_route.params.q}}';
+		$(document).on('cabinet-js-ready', function () {
+			var page = new Ractive({
+				el: 'main.page',
+				template: $('main.page').html(),
+				data: {
+					q: '{{_route.params.q}}',
+					user: wbapp._session.user,
+					results: []
 				},
-				complete(ev) {
-					$('main.page .loading-overlay').remove();
+				on: {
+					init() {
+						wbapp.get('/api/v2/list/users?role=client&active=on&fullname~=' + q, function (data) {
+							console.log('found:', data);
+							page.set('results', data);
+						});
+					},
+					complete(ev) {
+						$('main.page .loading-overlay').remove();
+					}
 				}
-			}
+			});
 		});
 	</script>
 </div>
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
-<script src="/assets/js/cabinet.js?v=1.2"></script>
 
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

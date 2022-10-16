@@ -175,30 +175,86 @@ $(function () {
 		}
 
 	};
+	var isObj                = function (a) {
+		return (!!a) && (a.constructor === Object);
+	};
+	var _st                  = function (z, g) {
+		return "" + (g != "" ? "[" : "") + z + (g != "" ? "]" : "");
+	};
 	window.utils             = {
+		urlParams(params, skipobjects, prefix) {
+			if (skipobjects === void 0) {
+				skipobjects = false;
+			}
+			if (prefix === void 0) {
+				prefix = "";
+			}
+			var result = "";
+			if (typeof (params) != "object") {
+				return prefix + "=" + encodeURIComponent(params) + "&";
+			}
+			for (var param in params) {
+				var c = "" + prefix + _st(param, prefix);
+				if (isObj(params[param]) && !skipobjects) {
+					result += utils.urlParams(params[param], false, "" + c);
+				} else if (Array.isArray(params[param]) && !skipobjects) {
+					params[param].forEach(function (item, ind) {
+						result += utils.urlParams(item, false, c + "[" + ind + "]");
+					});
+				} else {
+					result += c + "=" + encodeURIComponent(params[param]) + "&";
+				}
+			}
+			return result;
+		},
+
 		varType(val) {
 			return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 		},
-		uniqueArray(arr) {
-			if (this.varType(arr) === 'array') {
-				console.warn('value not array: ', arr);
-				return arr;
-			}
 
-			function onlyUnique(value, index, self) {
-				return self.indexOf(value) === index;
-			}
+		arr: {
+			unique(array) {
+				if (utils.varType(array) !== 'array') {
+					console.warn('value not array: ', array);
+					return array;
+				}
 
-			return arr.filter(onlyUnique);
-		},
-		timestamp(datetime) {
-			return Math.floor(new Date(datetime).getTime() / 1000);
+				function onlyUnique(value, index, self) {
+					return self.indexOf(value) === index;
+				}
+
+				return array.filter(onlyUnique);
+			},
+			indexBy(array, index_key /* default "id" */) {
+				let _result = {};
+				if (utils.varType(array) !== 'array') {
+					console.warn('value not array: ', array);
+					return _result;
+				}
+				const _index = index_key || 'id';
+				array.forEach(function (item) {
+					_result[item[_index]] = item;
+				});
+
+				return _result;
+			}
 		},
 		api: {
-			get(path, data, options) {
-				let _path = (data === undefined) ? path : path + '?' + $.param(data);
+			get(path, data) {
+				let _path = path;
+				let parts = path.split('?', 2);
+				if (data !== undefined) {
+					if (parts.length === 2) {
+						parts[1] += '&' + $.param(data);
+					} else {
+						parts[0] += '?' + $.param(data);
+					}
+				}
+				_path = parts.join('?');
+
 				if (!_path.includes('__token')) {
-					let parts = path.split('?', 2);
+					parts = _path.split('?', 2);
+
 					if (parts.length === 2) {
 						parts[1] += '&__token=' + wbapp._session.token;
 					} else {
@@ -206,12 +262,11 @@ $(function () {
 					}
 					_path = parts.join('?');
 				}
+
 				const defaultOptions = {Method: 'GET'};
-				return fetch(_path,
-					options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
-					.then((result) => result.json());
+				return fetch(_path, defaultOptions).then((result) => result.json());
 			},
-			post(path, data, options) {
+			post(path, data) {
 				//return this.request(path, 'post', data, options);
 				if (is_string(data)) {
 					data += '&__token=' + wbapp._session.token;
@@ -227,17 +282,10 @@ $(function () {
 
 			}
 		},
-		arrIndexBy(array, index_key) {
-			const _index = index_key || 'id';
-			let _result  = {};
-			array.forEach(function (item) {
-				_result[item[_index]] = item;
-			});
-
-			return _result;
+		timestamp(datetime) {
+			return Math.floor(new Date(datetime).getTime() / 1000);
 		},
 		formatDate(date) {
-			console.log(date);
 			return new Date(date).toLocaleDateString();
 		},
 		formatDateTime(date) {
@@ -248,8 +296,7 @@ $(function () {
 		},
 		formatPhone(phone) {
 			var cleaned = ('' + phone).replace(/\D/g, '');
-			console.log(cleaned);
-			var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
 			if (match) {
 				var intlCode = (match[1] ? '+7 ' : '');
 				return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
@@ -285,7 +332,7 @@ $(function () {
 		}
 	};
 
-	window.catalog           = {
+	window.catalog = {
 		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
 		spec_service: {
 			experts_consultation: {
@@ -301,7 +348,6 @@ $(function () {
 		quoteStatus: {},
 		quoteType: {},
 		quotePay: {},
-
 		services: {},
 		servicePrices: {},
 		servicesList: [], /* for autocomplete */
@@ -331,109 +377,127 @@ $(function () {
 		experts: {},
 		clients: {},
 		admins: {},
-
 		init() {
-			var _self = this;
+			var _self   = this;
+			var getters = [
+				utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
+					_self.quoteStatus = utils.arr.indexBy(data);
+				}),
+				utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+					_self.quotePay = utils.arr.indexBy(data);
+				}),
+				utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
+					_self.quoteType = utils.arr.indexBy(data);
+				}),
+				utils.api.get('/api/v2/list/services?active=on' +
+				              '&@return=id,header,category,blocks' +
+				              '&@sort=header').then(function (data) {
+					let _services       = {};
+					_self.servicePrices = {};
 
-			utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
-				_self.quoteStatus = utils.arrIndexBy(data);
-			});
+					data.forEach(function (service, i) {
+						_self.services[service.id] = service;
+						const _cats                = service.category;
+						const _tags                = [];
 
-			utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-				_self.quotePay = utils.arrIndexBy(data);
-			});
-			utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
-				_self.quoteType = utils.arrIndexBy(data);
-			});
-
-			utils.api.get('/api/v2/list/services?active=on').then(function (data) {
-
-				let _services       = {};
-				_self.servicePrices = {};
-
-				data.forEach(function (service, i) {
-					_self.services[service.id] = service;
-					const _cats                = service.category;
-					const _tags                = [];
-
-					_cats.forEach(function (cat) {
-						_tags.push({
-							"id": cat,
-							"color": _self.serviceTags[cat].color,
-							"tag": Array.from(_self.serviceTags[cat].name)[0]
+						_cats.forEach(function (cat) {
+							_tags.push({
+								"id": cat,
+								"color": _self.serviceTags[cat].color,
+								"tag": Array.from(_self.serviceTags[cat].name)[0]
+							});
+						});
+						if (!!service.blocks) {
+							service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
+								if (serv_price.price === 0) {
+									return;
+								}
+								let _item = {
+									value: serv_price.header,
+									id: service.id + '-' + j,
+									data: {
+										service_id: service.id,
+										service_title: service.header,
+										tags: _tags,
+										price: serv_price.price,
+										price_id: j
+									}
+								};
+								_self.servicesList.push(_item);
+								_self.servicePrices[service.id + '-' + j] = {
+									'price': serv_price.price,
+									'header': serv_price.header
+								};
+							});
+						}
+					});
+				}),
+				utils.api.get('/api/v2/list/experts?active=on&' +
+				              '@return=id,name,image,devision,spec,experience,education' +
+				              '@sort=name:a').then(function (data) {
+					let _experts = {};
+					data.forEach(function (expert, i) {
+						_experts[expert.id] = expert;
+						utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id).then(function (res) {
+							console.log('-- expert url:', res[0]['u']);
+							_self.experts[expert.id].info_uri = res[0]['u'] || '';
 						});
 					});
-					if (!!service.blocks) {
-						service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-							if (serv_price.price === 0) {
-								return;
-							}
-							let _item = {
-								value: serv_price.header,
-								id: service.id + '-' + j,
-								data: {
-									service_id: service.id,
-									service_title: service.header,
-									tags: _tags,
-									price: serv_price.price,
-									price_id: j
-								}
-							};
-							_self.servicesList.push(_item);
-							_self.servicePrices[service.id + '-' + j] = {
-								'price': serv_price.price,
-								'header': serv_price.header
-							};
-						});
-					}
-				});
+					_self.experts = _experts;
+				}),
 
-			});
+				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
+					let _serviceCats = {};
+					Object.keys(res.tree.data).forEach(function (_key) {
+						const _cat = res.tree.data[_key];
+						if (_cat.active != 'on') {
+							return;
+						}
+						_serviceCats[_cat.id] = {
+							'id': _cat.id,
+							'name': _cat.name,
+							'color': _cat.data.color
+						};
+					});
+					_self.categories = _serviceCats;
+				}),
+				utils.api.get('/api/v2/list/users?role=main&active=on' +
+				              '&@return=id,fullname,phone,email,birthdate' +
+				              '&@sort=fullname:a').then(function (data) {
+					_self['admins'] = utils.arr.indexBy(data);
+				}),
+				utils.api.get('/api/v2/list/users?role=client&active=on' +
+				              '&@return=id,fullname,phone,email,birthdate' +
+				              'country,city,street,build,flat,intercom,entrance,level,address' +
+				              '&@sort=fullname:a').then(function (data) {
+					_self['clients'] = utils.arr.indexBy(data);
+				})
+
+			];
+
 			/* for Admins only */
 			if (window.user_role === 'main') {
-				utils.api.get('/api/v2/list/users?role=main&active=on' +
-				              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
-					_self.admins = utils.arrIndexBy(data);
-				});
-				utils.api.get('/api/v2/list/users?role=client&active=on' +
-				              '&@return=id,fullname,phone,email,birthdate&@sort=fullname:a').then(function (data) {
-					_self.clients = utils.arrIndexBy(data);
-				});
+				getters.push(
+					utils.api.get('/api/v2/list/users?role=main&active=on' +
+					              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
+						_self.admins = utils.arr.indexBy(data);
+					}));
+				getters.push(
+					utils.api.get('/api/v2/list/users?role=client&active=on' +
+					              '&@return=id,fullname,phone,email,birthdate' +
+					              'country,city,street,build,flat,intercom,entrance,level,address' +
+					              ',&@sort=fullname:a').then(function (data) {
+						_self.clients = utils.arr.indexBy(data);
+					})
+				);
 			}
 
-			utils.api.get('/api/v2/list/experts?active=on&@sort=name:a').then(function (data) {
-				let _experts = {};
-				data.forEach(function (expert, i) {
-					_experts[expert.id] = expert;
-					utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id).then(function (res) {
-						console.log('-- expert url:', res[0]['u']);
-						_self.experts[expert.id].info_uri = res[0]['u'] || '';
-					});
-				});
-				_self.experts = _experts;
-			});
-
-			utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
-				let _serviceCats = {};
-				Object.keys(res.tree.data).forEach(function (_key) {
-					const _cat = res.tree.data[_key];
-					if (_cat.active != 'on') {
-						return;
-					}
-					_serviceCats[_cat.id] = {
-						'id': _cat.id,
-						'name': _cat.name,
-						'color': _cat.data.color
-					};
-				});
-				_self.categories = _serviceCats;
+			/* for Admins only */
+			Promise.all(getters).then(function () {
+				$(document).trigger('cabinet-js-ready');
 			});
 		}
 	};
-
-	if (!!wbapp._session?.user?.role?.length) {
-		window.catalog.init();
-	}
 	/* common function */
 	//setTimeout(function () {
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
@@ -453,7 +517,6 @@ $(function () {
 
 		return changes;
 	};
-
 	window.toast         = function (text, head, icon) {
 		var bgColor   = '#616161';
 		var textColor = '#FEFEFE';
@@ -867,7 +930,7 @@ $(function () {
 		});
 	};
 	window.popupsConfirmSmsCode       = function () {
-		let popup = new Ractive({
+		return new Ractive({
 			el: '.popup.--confirm-sms-code',
 			template: wbapp.tpl('#popupConfirmSmsCode').html,
 			data: {
@@ -1019,6 +1082,7 @@ $(function () {
 		});
 	};
 
+
 	$(document)
 		.on('change', '#file-photo', function (e) {
 			e.stopPropagation();
@@ -1068,7 +1132,13 @@ $(function () {
 			e.stopPropagation();
 			e.preventDefault();
 			window.location.href = "/cabinet/client/" + $(this).data('client');
-		}).on('wb-ready', function (e) {
-		console.log('Async. scripts loaded!');
-	});
+		})
+		.on('wb-ready', function (e) {
+			console.log('Async. JS loaded!');
+			window.catalog.init();
+			$(document).trigger('plugins-ready');
+		})
+		.on('cabinet-page-ready', function (e) {
+			console.log('Cabinet page ready!');
+		});
 });

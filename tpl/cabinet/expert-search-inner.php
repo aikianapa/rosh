@@ -123,7 +123,7 @@
 		{{/with}}
 	</template>
 	<script wbapp>
-		$(function () {
+		$(document).on('cabinet-js-ready', function () {
 			var client_id = '{{_route.client}}';
 			var page      = new Ractive({
 				el: 'main.page .search-result',
@@ -176,7 +176,6 @@
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
 
-<script src="/assets/js/cabinet.js?v=1.2"></script>
 
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

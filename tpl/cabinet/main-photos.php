@@ -84,50 +84,48 @@
 	</main>
 
 	<script>
-		$(function () {
-			setTimeout(function () {
-				var cabinet = new Ractive({
-					el: 'main.page',
-					template: $('main.page').html(),
-					data: {
-						user: wbapp._session.user,
-						photos: []
-					},
-					on: {
-						init() {
-							wbapp.get('/api/v2/list/records/?group=[events,longterm]', function (data) {
-								let _images = [];
-								data.forEach(function (rec) {
-									_before_photo = rec.photos.before[0];
-									if (!!_before_photo) {
-										_images.push({
-											date: _before_photo.date,
-											comment: _before_photo.comment,
-											image: _before_photo.image.src,
+		$(document).on('cabinet-js-ready', function () {
+			var page = new Ractive({
+				el: 'main.page',
+				template: $('main.page').html(),
+				data: {
+					user: wbapp._session.user,
+					photos: []
+				},
+				on: {
+					init() {
+						wbapp.get('/api/v2/list/records/?group=[events,longterm]', function (data) {
+							let _images = [];
+							data.forEach(function (rec) {
+								_before_photo = rec.photos.before[0];
+								if (!!_before_photo) {
+									_images.push({
+										date: _before_photo.date,
+										comment: _before_photo.comment,
+										image: _before_photo.image.src,
 
-											client: rec.client,
-											record: rec.id
+										client: rec.client,
+										record: rec.id
 
-										});
-									}
-									rec.photos.after.forEach(function (photo) {
-										_images.push({
-											date: photo.date,
-											comment: photo.comment,
-											image: photo.image.src,
-											client: rec.client,
-											record: rec.id
-										});
+									});
+								}
+								rec.photos.after.forEach(function (photo) {
+									_images.push({
+										date: photo.date,
+										comment: photo.comment,
+										image: photo.image.src,
+										client: rec.client,
+										record: rec.id
 									});
 								});
-								cabinet.set('photos', data); /* get actually user data */
 							});
-						},
-						filter(ev) {
-							cabinet.set('photos', clientPhotos.filterBy($(ev.node)));
-						}
+							page.set('photos', data); /* get actually user data */
+						});
+					},
+					filter(ev) {
+						page.set('photos', clientPhotos.filterBy($(ev.node)));
 					}
-				});
+				}
 			});
 		});
 	</script>
@@ -135,7 +133,6 @@
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
-<script src="/assets/js/cabinet.js?v=1.2"></script>
 
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

@@ -104,26 +104,24 @@
 	</main>
 
 	<script>
-		$(function () {
-			setTimeout(function () {
-				var page = new Ractive({
-					el: 'main.page',
-					template: $('main.page').html(),
-					data: {
-						user: wbapp._session.user,
-						changes: []
+		$(document).on('cabinet-js-ready', function () {
+			var page = new Ractive({
+				el: 'main.page',
+				template: $('main.page').html(),
+				data: {
+					user: wbapp._session.user,
+					changes: []
+				},
+				on: {
+					init() {
+						utils.api.get('/api/v2/list/record-changes?@sort=date:d').then(function (data) {
+							page.set('changes', data);
+						});
 					},
-					on: {
-						init() {
-							utils.api.get('/api/v2/list/record-changes?@sort=date:d').then(function (data) {
-								page.set('changes', data);
-							});
-						},
-						complete(ev) {
-							$('main.page .loading-overlay').remove();
-						}
+					complete(ev) {
+						$('main.page .loading-overlay').remove();
 					}
-				});
+				}
 			});
 		});
 	</script>
@@ -131,7 +129,6 @@
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
-<script src="/assets/js/cabinet.js?v=1.2"></script>
 
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>

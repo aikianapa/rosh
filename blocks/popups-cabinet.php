@@ -880,6 +880,9 @@
 			</template>
 		</div>
 	</div>
+
+	<script wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
+		src="/assets/js/cabinet.js?v=3"></script>
 </view>
 <edit header="Все попапы для ЛК">
 	<div>
