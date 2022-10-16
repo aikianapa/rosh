@@ -538,7 +538,7 @@
 				data: {
 					user: wbapp._session.user,
 					expert: {},
-					catalog: {},
+					catalog: catalog,
 					events: {
 						'upcoming': [],
 						'current': []
@@ -547,55 +547,51 @@
 				},
 				on: {
 					init() {
+						var _self = this;
 						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id)
 							.then(function (data) {
 								page.set('user', data); /* get actually user data */
 								console.log('user', data);
 							});
 
-						utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id)
+						utils.api.get('/api/v2/list/experts?login=' + wbapp._session.user.id)
 							.then(function (data) {
 								if (!data) {
 									return;
 								}
-
 								var _expert = data[0];
+
 								page.set('expert', _expert); /* get actually user data */
-								console.log('expert', _expert);
-
-								utils.api.get('/api/v2/list/records?group=events&status=upcoming&experts~=' +
-								              _expert.id)
-									.then(
-										function (data) {
-											let curr_timestamp = parseInt(getdate()[0]);
-
-											data.forEach(function (rec) {
-												if (rec.event_date !== (new Date()).toLocaleDateString()) {
-													page.push('events.upcoming', rec); /* get actually user next events */
-												}
-
-												let event_from_timestamp = utils.timestamp(
-													rec.event_date + ' ' + rec.event_time_start);
-												let event_to_timestamp   = utils.timestamp(
-													rec.event_date + ' ' + rec.event_time_end);
-
-												if (event_from_timestamp < curr_timestamp
-												    && (event_to_timestamp >= curr_timestamp)) {
-													page.push('events.current', rec);
-												}
-											});
-										});
-								utils.api.get('/api/v2/list/records?group=events&status=past&experts~='
-								              + _expert.id)
-									.then(function (data) {
-										console.log('history', data);
-										page.set('history', data); /* get actually user next events */
-									});
+								page.file('loadRecords');
 							});
+					},
+					loadRecords() {
+						var _expert = this.get('expert');
+						utils.api.get('/api/v2/list/records?group=events&status=upcoming&experts~=' + _expert.id)
+							.then(function (data) {
+								let curr_timestamp = parseInt(getdate()[0]);
 
-						setTimeout(function () {
-							page.set('catalog', catalog);
-						});
+								data.forEach(function (rec) {
+									if (rec.event_date !== (new Date()).toLocaleDateString()) {
+										page.push('events.upcoming', rec); /* get actually user next events */
+									}
+
+									let event_from_timestamp = utils.timestamp(
+										rec.event_date + ' ' + rec.event_time_start);
+									let event_to_timestamp   = utils.timestamp(
+										rec.event_date + ' ' + rec.event_time_end);
+
+									if (event_from_timestamp < curr_timestamp
+									    && (event_to_timestamp >= curr_timestamp)) {
+										page.push('events.current', rec);
+									}
+								});
+							});
+						utils.api.get('/api/v2/list/records?group=events&status=past&experts~=' + _expert.id)
+							.then(function (data) {
+								console.log('history', data);
+								page.set('history', data); /* get actually user next events */
+							});
 					},
 					complete(ev) {
 						$('main.page .loading-overlay').remove();
@@ -604,11 +600,13 @@
 							el: 'main.page .profile-edit',
 							template: wbapp.tpl('#editorProfile').html,
 							data: {
-								user: page.get('user')
+								user: page.get('user'),
+								expert: page.get('expert')
 							},
 							on: {
 								complete() {
 									console.log('expert editor ready!');
+									initPlugins();
 								},
 								submitUserForm(ev) {
 									let $form = $(ev.node);
