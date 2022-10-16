@@ -297,7 +297,7 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="calendar input mb-30">
-										<input class="input__control time-start"
+										<input class="input__control timepickr"
 											type="text"
 											name="event_time_start"
 											value="{{record.event_time_start}}"
@@ -309,7 +309,7 @@
 								</div>
 								<div class="col-md-6">
 									<div class="calendar input mb-30">
-										<input class="input__control time-end" type="text"
+										<input class="input__control timepickr" type="text"
 											name="event_time_end"
 											value="{{record.event_time_end}}"
 											data-min-time="event_time_start"
@@ -666,26 +666,23 @@
 													catalog.servicesList);
 
 												initPlugins();
-											},
-											startTimeChange(ev) {
-												var _st = $(ev.node).val();
-												var _et = $(ev.node).parents('form')
-													.find('[name="event_time_end"]');
-												if (_st > '08:00') {
+												if (!!$('.select .select__item input:checked').length) {
+													$('.select.select_experts .select__item').trigger('click');
 												}
-												_et.attr('min', _st);
-												console.log(_st, _et.val());
 											},
 											save(ev) {
-												let post = $($(ev.node).parents('form')).serializeJSON();
-												CabinetController.updateQuote(_record.id, post, function (res) {
-													console.log('event data:', post);
-													toast('Успешно сохранено');
-													_tab.set('records.' + _row_idx, res);
+												if ($($(ev.node).parents('form')).verify()) {
 
-													toast('Успешно сохранено');
-												});
-
+													let post = $($(ev.node).parents('form')).serializeJSON();
+													CabinetController.updateQuote(_record.id, post,
+														function (res) {
+															console.log('event data:', post);
+															toast('Успешно сохранено');
+															_tab.set('records.' + _row_idx, res);
+														});
+												} else {
+													toast('Проверьте указанные данные');
+												}
 												return false;
 											}
 										}

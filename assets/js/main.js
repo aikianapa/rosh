@@ -221,7 +221,8 @@ $(function () {
                 });
             });
 
-            $('input.timepickr, input.time, .time-start, .time-end').each(function () {
+            $('.input__control.timepickr').each(function (e) {
+                console.log($(this), e);
                 $(this).timepicker({
                     timeFormat: $(this).data('time-format') || 'HH:mm',
                     interval: $(this).data('interval') || 15,
@@ -279,12 +280,6 @@ $(function () {
                         done(result);
                     },
                 });
-            });
-            setTimeout(function (){
-
-                if (!!$('.select .select__item input:checked').length) {
-                    $('.select .select__item').trigger('click');
-                }
             });
 
         };

@@ -444,7 +444,6 @@ $(function () {
 						_experts[expert.id] = expert;
 						utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
 							.then(function (res) {
-								console.log('-- expert url:', res[0]['u']);
 								_self.experts[expert.id].info_uri = res[0]['u'] || '';
 							});
 					});
