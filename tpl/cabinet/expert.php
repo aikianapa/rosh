@@ -562,7 +562,7 @@
 								var _expert = data[0];
 
 								page.set('expert', _expert); /* get actually user data */
-								page.file('loadRecords');
+								page.fire('loadRecords');
 							});
 					},
 					loadRecords() {
