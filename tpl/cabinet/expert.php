@@ -258,7 +258,7 @@
 		<div class="account__panel">
 			<div class="account__info">
 				<div class="user --flex">
-					{{#user.expert}}
+					{{#expert}}
 					<div class="user__panel">
 						<div class="user__name">
 							{{.name}}
@@ -273,9 +273,9 @@
 								<span>{{.education}}</span>
 							</div>
 							<div class="user__item">Лицензия:
-								{{#each user.expert.licenses: ixd}}
+								{{#each .licenses: ixd}}
 								<p>
-									<span>№ {{user.expert.licenses[ixd]}}</span>
+									<span>№ {{.licenses[ixd]}}</span>
 								</p>
 								{{/each}}
 							</div>
@@ -291,7 +291,7 @@
 							Ближайшая запись: {{.closest_date}}, {{.closest_times}}
 						</div>
 					</div>
-					{{/user.expert}}
+					{{/expert}}
 				</div>
 			</div>
 			<a class="account__exit" href="/signout">Выйти из аккаунта</a>
@@ -301,27 +301,39 @@
 		{{#if events.currents}}
 		<div class="lk-title current_event">Текущее событие</div>
 		<div class="account-events current_event">
-			{{#each events.currents}}
+			{{#each events.current}}
 			<div class="account-events__block">
 				<div class="account-events__block-wrap mb-20">
 					<div class="account-events__item">
 						<div class="account-event-wrap">
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
-								{{#this.services}}
-								<p>{{this.name}}</p>
-								{{/this.services}}
+								{{#services}}
+								{{catalog.services[this].header}}<br>
+								{{/services}}
 							</div>
 						</div>
 					</div>
+
 					<div class="account-events__item">
 						<div class="account-event-wrap">
-							<div class="account-events__name">Дата приема:</div>
+							<div class="account-events__name">Специалист:</div>
 							<div class="account-event">
-								<p>{{this.event_date}}</p>
+								{{#this.experts}}
+								<p>{{catalog.experts[this].name}}</p>
+								{{/this.experts}}
 							</div>
 						</div>
-						<div class="account-event-wrap">
+					</div>
+					<div class="account-events__item event_date">
+						<div class="account-event-wrap --jcsb">
+							<div class="account-events__name">Дата приема:</div>
+							<div class="account-event">
+								<p>{{ @global.utils.formatDate(this.event_date) }}</p>
+							</div>
+						</div>
+
+						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Время приема:</div>
 							<div class="account-event">
 								<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
@@ -332,11 +344,12 @@
 						<div class="account-event-wrap">
 							<div class="account-events__name">Пациент:</div>
 							<div class="account-event">
-								<p>{{this.clientData.fullname}}</p>
+								<p>{{ @global.catalog.clients[this.client].fullname }}</p>
 							</div>
 						</div>
 					</div>
 				</div>
+
 				{{#if this.type == 'online'}}
 				<div class="account-events__btns">
 					<div class="account-event-wrap --aicn">
@@ -387,20 +400,20 @@
 						<div class="account-event-wrap">
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
-								{{#this.services}}
-								<p>{{this.name}}</p>
-								{{/this.services}}
+								{{#services}}
+								{{catalog.services[this].header}}<br>
+								{{/services}}
 							</div>
 						</div>
 					</div>
-					<div class="account-events__item">
-						<div class="account-event-wrap">
+					<div class="account-events__item event_date">
+						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Дата приема:</div>
 							<div class="account-event">
-								<p>{{this.event_date}}</p>
+								<p>{{ @global.utils.formatDate(this.event_date) }}</p>
 							</div>
 						</div>
-						<div class="account-event-wrap">
+						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Время приема:</div>
 							<div class="account-event">
 								<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
@@ -411,11 +424,12 @@
 						<div class="account-event-wrap">
 							<div class="account-events__name">Пациент:</div>
 							<div class="account-event">
-								<p>{{this.clientData.fullname}}</p>
+								<p>{{ @global.catalog.clients[this.client].fullname }}</p>
 							</div>
 						</div>
 					</div>
 				</div>
+
 
 				{{#if this.type == 'online'}}
 				<div class="account-events__btns">
@@ -433,12 +447,11 @@
 				{{#if this.analises}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="{{this.analises}}"
-						download="Анализы({{this.clientData.fullname}}, {{this.event_date}}).pdf">
-						Скачать анализы</a>
+					<a class="btn btn--white" data-link="[[this.analises]]" download="Анализы.pdf">
+						Скачать анализы
+					</a>
 				</div>
 				{{/if}}
-
 			</div>
 			{{/each}}
 		</div>
@@ -516,7 +529,8 @@
 			</div>
 		</div>
 	</template>
-	<script wbapp>
+
+	<script wb-app>
 		$(document).on('cabinet-js-ready', function () {
 			var page = new Ractive({
 				el: 'main.page .expert-page',
@@ -533,49 +547,51 @@
 				},
 				on: {
 					init() {
-						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
-							page.set('user', data); /* get actually user data */
-							console.log('user', data);
-						});
-						utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id).then(function (data) {
-							if (!data) {
-								return;
-							}
+						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id)
+							.then(function (data) {
+								page.set('user', data); /* get actually user data */
+								console.log('user', data);
+							});
 
-							var _expert = data[0];
-							page.set('expert', _expert); /* get actually user data */
-							console.log('expert', _expert);
+						utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id)
+							.then(function (data) {
+								if (!data) {
+									return;
+								}
 
-							utils.api.get('/api/v2/list/records?group=events&status=upcoming&experts~=' +
-							              _expert.id).then(
-								function (data) {
-									let curr_timestamp = parseInt(getdate()[0]);
+								var _expert = data[0];
+								page.set('expert', _expert); /* get actually user data */
+								console.log('expert', _expert);
 
-									data.forEach(function (rec) {
-										if (rec.event_date !== (new Date()).toLocaleDateString()) {
-											page.push('events.upcoming', rec); /* get actually user next events */
-										}
+								utils.api.get('/api/v2/list/records?group=events&status=upcoming&experts~=' +
+								              _expert.id)
+									.then(
+										function (data) {
+											let curr_timestamp = parseInt(getdate()[0]);
 
-										let event_from_timestamp = utils.timestamp(
-											rec.event_date + ' ' + rec.event_time_start);
-										let event_to_timestamp   = utils.timestamp(
-											rec.event_date + ' ' + rec.event_time_end);
+											data.forEach(function (rec) {
+												if (rec.event_date !== (new Date()).toLocaleDateString()) {
+													page.push('events.upcoming', rec); /* get actually user next events */
+												}
 
-										if (event_from_timestamp < curr_timestamp
-										    && (event_to_timestamp >= curr_timestamp)) {
-											page.push('events.current', rec);
-										}
-									});
-								});
+												let event_from_timestamp = utils.timestamp(
+													rec.event_date + ' ' + rec.event_time_start);
+												let event_to_timestamp   = utils.timestamp(
+													rec.event_date + ' ' + rec.event_time_end);
 
-							utils.api.get('/api/v2/list/records?group=events&status=past&experts~='
-							              + _expert.id)
-								.then(
-									function (data) {
+												if (event_from_timestamp < curr_timestamp
+												    && (event_to_timestamp >= curr_timestamp)) {
+													page.push('events.current', rec);
+												}
+											});
+										});
+								utils.api.get('/api/v2/list/records?group=events&status=past&experts~='
+								              + _expert.id)
+									.then(function (data) {
 										console.log('history', data);
 										page.set('history', data); /* get actually user next events */
 									});
-						});
+							});
 
 						setTimeout(function () {
 							page.set('catalog', catalog);
@@ -583,6 +599,7 @@
 					},
 					complete(ev) {
 						$('main.page .loading-overlay').remove();
+
 						let profileEditor = new Ractive({
 							el: 'main.page .profile-edit',
 							template: wbapp.tpl('#editorProfile').html,
@@ -599,7 +616,7 @@
 									if ($form.verify() && uid > '') {
 										let data   = $form.serializeJson();
 										data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-										wbapp.post('/api/v2/update/users/' + uid, data, function (res) {
+										utils.api.post('/api/v2/update/users/' + uid, data).then(function (res) {
 											console.log(res);
 											page.set('user', res);
 										});
@@ -609,16 +626,16 @@
 								},
 								submitExpertForm(ev) {
 									let $form = $(ev.node);
-									let uid   = profileEditor.get('user.expert.id');
+									let uid   = profileEditor.get('user.id');
 									console.log('saved', uid);
 
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
-										wbapp.post('/api/v2/update/experts/' + uid, data, function (res) {
-											page.set('expert', res);
-											page.set('user.expert', res);
-											console.log('saved', res);
-										});
+										utils.api.post('/api/v2/update/experts/' + uid, data).then(
+											function (res) {
+												page.set('expert', res);
+												console.log('saved', res);
+											});
 										$('.user__edit.all').trigger('click');
 									}
 									return false;
@@ -627,28 +644,28 @@
 									const _id             = $(ev.node).data('id');
 									const _recommendation = $('#' + _id + '--recommendation').val();
 
-									wbapp.get('/api/v2/read/records/' + _id, function (data) {
+									utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
 										var prev_recommendation = data.recommendation;
 
-										wbapp.post('/api/v2/update/records/' + _id,
-											{'recommendation': _recommendation}, function (res) {
-												toast('Рекомендация сохранена!');
-											}
-										);
+										utils.api.post('/api/v2/update/records/' + _id,
+											{'recommendation': _recommendation}).then(function (res) {
+											toast('Рекомендация сохранена!');
+										});
 										if (_recommendation !== prev_recommendation) {
-											wbapp.post('/api/v2/create/record-changes/',
-												{
-													record: data.id,
-													experts: data.experts,
-													client: data.client,
-													changes: [{
-														field: 'recommendation',
-														prev_val: prev_recommendation,
-														new_val: _recommendation
-													}]
-												},
-												function (res) {}
-											);
+											utils.api.post('/api/v2/create/record-changes/',
+													{
+														record: data.id,
+														experts: data.experts,
+														client: data.client,
+														changes: [{
+															field: 'recommendation',
+															prev_val: prev_recommendation,
+															new_val: _recommendation
+														}]
+													})
+												.then(function (res) {
+
+												});
 										}
 									});
 								}
