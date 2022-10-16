@@ -172,7 +172,7 @@
 		<div class="select pay">
 			<div class="select__main">Статус оплаты</div>
 			<div class="select__list">
-				<input type="hidden" name="pay_status" value="{{ pay_status }}">
+				<input type="hidden" name="pay_status" value="{{ record.pay_status }}">
 				{{#each catalog.quotePay}}
 				<div class="select__item" data-id="{{ id }}"
 					onclick="$(this).parent('.select__list').children('input').val($(this).attr('data-id'))">
@@ -187,14 +187,15 @@
 		<div class="select status">
 			<div class="select__main">Изменить статус</div>
 			<div class="select__list">
-				<input type="hidden" class="status" name="status" value="{{ status }}">
-				<input type="hidden" class="group" name="group" value="{{ group }}">
+				<input type="hidden" class="status" name="status" value="{{ record.status }}">
+				<input type="hidden" class="group" name="group" value="{{ record.group }}">
 				{{#each catalog.quoteStatus}}
 				{{#if id == 'delimiter'}}
 				<div class="select__delimiter" disabled></div>
 				{{else}}
 				<div class="select__item select__item--acc-{{color}}"
-					data-id="{{ id }}" data-group="{{ type }}"
+					data-id="{{ id }}"
+					data-group="{{ type }}"
 					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parent('.select__list').children('input.group').val($(this).attr('data-type'))">
 					{{name}}
 				</div>
@@ -626,7 +627,7 @@
 										template: editStatus,
 										data: {
 											catalog: catalog,
-											quote: _record
+											record: _record
 										},
 										on: {
 											complete() {
@@ -636,19 +637,18 @@
 													.trigger('click');
 											},
 											save(ev) {
-												let lead = $(ev.node).parents('.acount__table-accardeon[data-id]')
-													.data('id');
-												let item = $(ev.node).data('id');
 												let form = $(ev.node).parents('.admin-editor');
 												$(form).find('.admin-editor__edit-profile').html('');
 												let copy = $('<form></form>');
 												$(copy).html($(form).clone());
-												let post = $(copy).serializeJSON();
-												wbapp.post('/api/v2/update/records/' + lead, post, function (res) {
-													_tab.set('results.' + lead, res);
 
-													toast('Успешно сохранено');
-												});
+												let post = $(copy).serializeJSON();
+												utils.api.post('/api/v2/update/records/' + _record.id, post)
+													.then(function (res) {
+														_tab.set('records.' + _row_idx, res);
+
+														toast('Успешно сохранено');
+													});
 												delete copy;
 											}
 										}
