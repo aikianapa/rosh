@@ -229,8 +229,12 @@
 	line-height: 1.1em;
 }
 div.accardeon.active > div.accardeon__list {
-	border : 1px solid #E7E7E7;
+	border-top : 1px solid #E0E0EA;
 }
 .ui-timepicker-container.ui-timepicker-standard {
 	z-index : 9999 !important;
+}
+.record-edit .search__block .input{
+	max-width: initial;
+	margin-right: 0;
 }

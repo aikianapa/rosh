@@ -301,8 +301,8 @@
 											type="text"
 											name="event_time_start"
 											value="{{record.event_time_start}}"
-											on-change="startTimeChange"
-											data-min-time="09:00" data-max-time="18:00"
+											data-min-time="09:00"
+											data-max-time="18:00"
 											pattern="[0-9]{2}:[0-9]{2}" required>
 										<div class="input__placeholder">Время (начало)</div>
 									</div>
@@ -312,9 +312,9 @@
 										<input class="input__control timepickr" type="text"
 											name="event_time_end"
 											value="{{record.event_time_end}}"
-											data-min-time="event_time_start"
-											step=""
-											min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+											data-min-time="09:00"
+											data-max-time="18:00"
+											pattern="[0-9]{2}:[0-9]{2}" required>
 										<div class="input__placeholder">Время (конец)</div>
 									</div>
 								</div>
