@@ -78,6 +78,7 @@
 		</div>
 	</main>
 </div>
+
 <template id="editProfile">
 	<form class="profile-edit d-block">
 		<input type="hidden" value="{{ id }}">
@@ -205,12 +206,13 @@
 
 	<button class="btn btn--white" on-click="save">Сохранить</button>
 </template>
-<template id="editQuote">
-	<form class="quote-edit">
+<template id="editorRecord">
+	<form class="record-edit">
 		<div class="row">
 			<div class="col-md-7">
 				<div class="lk-title">Редактировать заявку</div>
-				<input type="hidden" value="{{ quote.id }}" name="id">
+				<input type="hidden" value="{{ record.id }}" name="id">
+
 				{{#if this.spec_service}}
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
 				<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
@@ -218,9 +220,10 @@
 				<div class="admin-editor__event mb-20">
 					<div class="search__block --flex --aicn">
 						<div class="input">
-							<input class="popup-services-list" type="text" placeholder="Поиск по услугам" autocomplete="off">
-							<div class="search__drop">
-							</div>
+							<input class="popup-services-list"
+								type="text" placeholder="Поиск по услугам"
+								autocomplete="off">
+							<div class="search__drop"></div>
 							<button class="search__btn" type="button">
 								<svg class="svgsprite _search">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
@@ -233,23 +236,23 @@
 					<!-- services-select.dropdown -->
 				</div>
 				{{/if}}
+
 				<div class="admin-editor__type-event">
 					<p class="mb-10">Тип события</p>
 					<div class="text-radios">
-						{{#each catalog.quoteType as item}}
+						{{#each catalog.quoteType as qt}}
 						<label class="text-radio">
-							{{#if item.id == quote.type }}
-							<input type="radio" name="type" value="{{ item.id }}" checked>
-							<span>{{item.name}}</span>
+							{{#if qt.id === record.type }}
+							<input type="radio" name="type" value="{{ qt.id }}" checked>
 							{{else}}
-							<input type="radio" name="type" value="{{ item.id }}">
-							<span>{{item.name}}</span>
+							<input type="radio" name="type" value="{{ qt.id }}">
 							{{/if}}
+							<span>{{qt.name}}</span>
 						</label>
 						{{/each}}
 					</div>
 					<div class="row">
-						{{#if this.spec_service}}
+						{{#if record.spec_service}}
 						{{else}}
 						<div class="col-md-6">
 							<div class="select-form select-checkboxes">
@@ -262,10 +265,10 @@
 										{{#each catalog.experts}}
 										<div class="select__item select__item--checkbox">
 											<label class="checkbox checkbox--record">
-												{{#if @global.expertSelected(quote.experts, this)}}
-												<input type="checkbox" name="experts[]" checked value="{{id}}">
+												{{#if @global.utils.arr.search(.id, record.experts)}}
+												<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}">
 												{{else}}
-												<input type="checkbox" name="experts[]" value="{{id}}">
+												<input type="checkbox" name="experts[]" value="{{.id}}">
 												{{/if}}
 												<span></span>
 												<div class="checbox__name">
@@ -281,27 +284,38 @@
 						{{/if}}
 						<div class="col-md-6">
 							<div class="row">
-
-								<div class="col-md-6">
+								<div class="col-md-12">
 									<div class="input input-lk-calendar input--grey">
 										<input class="input__control datepickr"
-											name="event_datetime" value="{{event_date}}"
+											name="event_date"
+											value="{{record.event_date}}"
 											type="text" placeholder="Выбрать дату и время">
 										<div class="input__placeholder">Выбрать дату</div>
 									</div>
 								</div>
-								<div class="col-md-3">
+							</div>
+							<div class="row">
+								<div class="col-md-6">
 									<div class="calendar input mb-30">
-										<input class="input__control" type="time" name="event_time_start"
-											min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
-										<div class="input__placeholder">Время начала</div>
+										<input class="input__control time-start"
+											type="text"
+											name="event_time_start"
+											value="{{record.event_time_start}}"
+											on-change="startTimeChange"
+											data-min-time="09:00" data-max-time="18:00"
+											pattern="[0-9]{2}:[0-9]{2}" required>
+										<div class="input__placeholder">Время (начало)</div>
 									</div>
 								</div>
-								<div class="col-md-3">
+								<div class="col-md-6">
 									<div class="calendar input mb-30">
-										<input class="input__control" type="time" name="event_time_end"
+										<input class="input__control time-end" type="text"
+											name="event_time_end"
+											value="{{record.event_time_end}}"
+											data-min-time="event_time_start"
+											step=""
 											min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
-										<div class="input__placeholder">Время окончания</div>
+										<div class="input__placeholder">Время (конец)</div>
 									</div>
 								</div>
 							</div>
@@ -321,7 +335,7 @@
 						</div>
 					</div>
 					{{else}}
-					{{#each quote.service_prices: idx, key}}
+					{{#each record.service_prices: idx, key}}
 					<div class="search__drop-item" data-index="{{idx}}"
 						data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
 						<input type="hidden" name="services[]"
@@ -343,7 +357,7 @@
 							</div>
 						</div>
 						<div class="search__drop-right">
-							<div class="search__drop-summ">{{price}} ₽</div>
+							<div class="search__drop-summ">{{ @global.utils.formatPrice(record.price) }} ₽</div>
 						</div>
 					</div>
 					{{/each}}
@@ -352,15 +366,15 @@
 
 				<div class="admin-editor__summ">
 					<p>Всего</p>
-					<input type="hidden" name="price" value="{{quote.price}}">
-					<p class="price">{{quote.price}} ₽</p>
+					<input type="hidden" name="price" value="{{record.price}}">
+					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
 				</div>
 
 				<button class="btn btn--white" on-click="save">Сохранить</button>
 			</div>
 			<div class="col-md-1"></div>
 			<div class="col-md-4 --jcfe --flex">
-				<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{quote.comment}}</textarea>
+				<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
 			</div>
 		</div>
 	</form>
@@ -534,18 +548,16 @@
 	</div>
 </template>
 
-<script>
+<script wb-app remove>
 	var tabs = {};
 	$(document).on('cabinet-js-ready', function () {
-		console.log('!');
 		let editProfile = wbapp.tpl('#editProfile').html;
 		let editStatus  = wbapp.tpl('#editStatus').html;
-		let editQuote   = wbapp.tpl('#editQuote').html;
 
 		['quotes', 'events'].forEach(
 			function (target_tab) {
-				utils.api.get('/api/v2/list/records?group=' + target_tab + '&@sort=priority:d')
-					.then(function (result) {
+				utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "priority:d"}).then(
+					function (result) {
 						let data = {
 							group: target_tab,
 							records: result,
@@ -601,26 +613,26 @@
 								},
 								editRecord(ev) {
 									const _parent = $(ev.node).parents('.accardeon');
-									let idx       = $(ev.node).data('idx');
-									let record    = _tab.get('results.' + idx);
-									console.log(_tab.get('results'));
-									if (!record.price) {
-										record.price = 0;
+									var _row_idx  = $(ev.node).data('idx');
+									var _record   = this.get('records.' + _row_idx);
+									console.log('open ', _record);
+									if (!_record.price) {
+										_record.price = 0;
 									}
 
-									record.price_text = utils.formatPrice(record.price);
-									let statusEdt     = new Ractive({
+									_record.price_text = utils.formatPrice(_record.price);
+									let statusEditor   = new Ractive({
 										el: _parent.find('.admin-editor__top-select'),
 										template: editStatus,
 										data: {
 											catalog: catalog,
-											quote: record
+											quote: _record
 										},
 										on: {
 											complete() {
-												$(statusEdt.find(`.select.status [data-id="${record.status}"]`))
+												$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
 													.trigger('click');
-												$(statusEdt.find(`.select.pay [data-id="${record.pay_status}"]`))
+												$(statusEditor.find(`.select.pay [data-id="${_record.pay_status}"]`))
 													.trigger('click');
 											},
 											save(ev) {
@@ -641,29 +653,35 @@
 											}
 										}
 									});
-									let quoteEdt      = new Ractive({
+									let recordEditor   = new Ractive({
 										el: _parent.find('.admin-editor__events'),
-										template: editQuote,
+										template: wbapp.tpl('#editorRecord').html,
 										data: {
 											catalog: catalog,
-											quote: record
+											record: _record
 										},
 										on: {
-											complete(ev) {
-												initServicesSearch($('.popup-services-list'), catalog.servicesList);
+											complete() {
+												initServicesSearch($('.popup-services-list'),
+													catalog.servicesList);
+
 												initPlugins();
 											},
+											startTimeChange(ev) {
+												var _st = $(ev.node).val();
+												var _et = $(ev.node).parents('form')
+													.find('[name="event_time_end"]');
+												if (_st > '08:00') {
+												}
+												_et.attr('min', _st);
+												console.log(_st, _et.val());
+											},
 											save(ev) {
-												let lead = $(ev.node).parents('.acount__table-accardeon[data-id]')
-													.data('id');
-												let item = $(ev.node).data('id');
-												let form = $(ev.node).parents('.admin-editor');
-
 												let post = $($(ev.node).parents('form')).serializeJSON();
-												CabinetController.updateQuote(lead, post, function (res) {
+												CabinetController.updateQuote(_record.id, post, function (res) {
 													console.log('event data:', post);
 													toast('Успешно сохранено');
-													_tab.set('results.' + lead, res);
+													_tab.set('records.' + _row_idx, res);
 
 													toast('Успешно сохранено');
 												});
@@ -679,9 +697,8 @@
 						_tab.fire('loaded');
 						tabs[target_tab] = {ractive: _tab, data: data};
 					});
-
-			}
-		);
+			})
+		;
 
 		$(document).on('click', 'button.flag-date__ico', function (e) {
 			e.stopPropagation();
@@ -718,8 +735,6 @@
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
-
-</body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
 <wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 

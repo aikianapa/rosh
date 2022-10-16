@@ -228,3 +228,6 @@
 .admin-events-item.col-experts div{
 	line-height: 1.1em;
 }
+div.accardeon.active > div.accardeon__list {
+	border: 1px solid #E7E7E7;
+}

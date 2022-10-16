@@ -186,8 +186,7 @@ $(function () {
         })
 
         initPlugins = function () {
-
-            $('.datebirthdaypickr').each(function () {
+            $('input.datebirthdaypickr').each(function () {
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     autoClose: true,
@@ -195,14 +194,14 @@ $(function () {
                     timepicker: false
                 });
             });
-            $('.daterangepickr').each(function () {
+            $('input.daterangepickr').each(function () {
                 new AirDatepicker(this, {
                     autoClose: true,
                     range: true,
                     multipleDatesSeparator: ' - '
                 });
             });
-            $('.yearpickr').each(function () {
+            $('input.yearpickr').each(function () {
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     view: 'years',
@@ -213,7 +212,7 @@ $(function () {
                 });
             });
 
-            $('.datepickr').each(function () {
+            $('input.datepickr').each(function () {
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     timepicker: false,
@@ -221,7 +220,19 @@ $(function () {
                     autoClose: true
                 });
             });
-            $('.datetimepickr').each(function () {
+
+            $('input.timepickr, input.time, .time-start, .time-end').each(function () {
+                $(this).timepicker({
+                    timeFormat: $(this).data('time-format') || 'HH:mm',
+                    interval: $(this).data('interval') || 15,
+                    minTime: $(this).data('min-time') || '08:00',
+                    maxTime: $(this).data('max-time') || '19:00',
+                    dynamic: false,
+                    dropdown: true,
+                    scrollbar: true
+                });
+            });
+            $('input.datetimepickr').each(function () {
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     minHours: 8,
@@ -261,7 +272,7 @@ $(function () {
                         // Do Ajax call or lookup locally, when done,
                         // call the callback and pass your results:
                         var _res = [];
-                        _lookup.forEach(function(v, k){
+                        _lookup.forEach(function (v, k) {
                             _res.push({"value": v, "data": k});
                         });
                         var result = {suggestions: _res};
@@ -269,6 +280,13 @@ $(function () {
                     },
                 });
             });
+            setTimeout(function (){
+
+                if (!!$('.select .select__item input:checked').length) {
+                    $('.select .select__item').trigger('click');
+                }
+            });
+
         };
 
         $(document).on('wb-verify-false', function (e, el, err) {

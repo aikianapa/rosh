@@ -1,13 +1,6 @@
-var user_role = wbapp._session?.user?.role;
 $(function () {
-	console.log('>>> cabinet.js loaded ..');
 
-	window.in_list = function (val, list) {
-		if (!val || !list) {
-			return false;
-		}
-		return list.includes(val);
-	};
+	console.log('>>> cabinet.js loaded ..');
 
 	window.CabinetController = {
 		runOnlineChat(record_id) {
@@ -213,6 +206,17 @@ $(function () {
 		},
 
 		arr: {
+			search(val, array) {
+				if (!val || !array) {
+					return false;
+				}
+				var _include = false;
+				$(array).each(function (key){
+					_include = (this == val);
+					return !_include;
+				});
+				return _include;
+			},
 			unique(array) {
 				if (utils.varType(array) !== 'array') {
 					console.warn('value not array: ', array);
@@ -438,10 +442,11 @@ $(function () {
 					let _experts = {};
 					data.forEach(function (expert, i) {
 						_experts[expert.id] = expert;
-						utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id).then(function (res) {
-							console.log('-- expert url:', res[0]['u']);
-							_self.experts[expert.id].info_uri = res[0]['u'] || '';
-						});
+						utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
+							.then(function (res) {
+								console.log('-- expert url:', res[0]['u']);
+								_self.experts[expert.id].info_uri = res[0]['u'] || '';
+							});
 					});
 					_self.experts = _experts;
 				}),
@@ -493,11 +498,14 @@ $(function () {
 			}
 
 			/* for Admins only */
-			Promise.all(getters).then(function () {
+			Promise.allSettled(getters).then(function () {
 				$(document).trigger('cabinet-js-ready');
 			});
 		}
 	};
+
+	window.catalog.init();
+
 	/* common function */
 	//setTimeout(function () {
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
@@ -1082,7 +1090,6 @@ $(function () {
 		});
 	};
 
-
 	$(document)
 		.on('change', '#file-photo', function (e) {
 			e.stopPropagation();
@@ -1123,7 +1130,8 @@ $(function () {
 					}
 				}
 			}
-		}).on('click', 'a[data-link]', function (e) {
+		})
+		.on('click', 'a[data-link]', function (e) {
 			e.stopPropagation();
 			e.preventDefault();
 			window.location.href = $(this).data('link');
@@ -1135,7 +1143,6 @@ $(function () {
 		})
 		.on('wb-ready', function (e) {
 			console.log('Async. JS loaded!');
-			window.catalog.init();
 			$(document).trigger('plugins-ready');
 		})
 		.on('cabinet-page-ready', function (e) {
