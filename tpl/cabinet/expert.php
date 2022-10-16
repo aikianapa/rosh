@@ -475,15 +475,15 @@
 						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="history-item">
 								<p>Дата</p>
-								{{this.event_date}}
+								{{ @global.utils.formatDate(this.event_date) }}
 							</div>
 							<div class="history-item">
 								<p>Время</p>
-								{{this.event_time}}
+								{{this.event_time_start}} - {{this.event_time_end}}
 							</div>
 							<div class="history-item">
 								<p>Пациент</p>
-								{{this.clientData.fullname}}
+								<p>{{ @global.catalog.clients[this.client].fullname }}</p>
 							</div>
 							<div class="history-item">
 								<p>Услуги</p>
@@ -509,12 +509,13 @@
 									</svg>
 								</a>
 							</div>
-							<textarea class="account-edit__textarea"
-								id="{{this.id}}--recommendation"
+							<form on-submit="saveRecommendation">
+								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
 								name="recommendation">{{this.recommendation}}</textarea>
-							<button class="btn btn--white" on-click="saveRecommendation"
-								data-id="{{this.id}}">Сохранить
-							</button>
+
+								<button class="btn btn--white" type="submit"
+									data-id="{{this.id}}">Сохранить</button>
+							</form>
 						</div>
 					</div>
 					{{else}}
@@ -641,6 +642,7 @@
 								saveRecommendation(ev) {
 									const _id             = $(ev.node).data('id');
 									const _recommendation = $('#' + _id + '--recommendation').val();
+									console.log('CLICKED!');
 
 									utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
 										var prev_recommendation = data.recommendation;

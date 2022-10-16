@@ -465,33 +465,21 @@ $(function () {
 					});
 					_self.categories = _serviceCats;
 				}),
-				utils.api.get('/api/v2/list/users?role=main&active=on' +
-				              '&@return=id,fullname,phone,email,birthdate' +
-				              '&@sort=fullname:a').then(function (data) {
-					_self['admins'] = utils.arr.indexBy(data);
-				}),
+
 				utils.api.get('/api/v2/list/users?role=client&active=on' +
 				              '&@return=id,fullname,phone,email,birthdate' +
 				              'country,city,street,build,flat,intercom,entrance,level,address' +
 				              '&@sort=fullname:a').then(function (data) {
-					_self['clients'] = utils.arr.indexBy(data);
+					_self.clients = utils.arr.indexBy(data);
 				})
-
 			];
 
 			/* for Admins only */
 			if (window.user_role === 'main') {
-				getters.push(
-					utils.api.get('/api/v2/list/users?role=main&active=on' +
-					              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
+				getters.push(utils.api.get('/api/v2/list/users?role=main&active=on' +
+				                           '&@return=id,fullname&@sort=fullname:a')
+					.then(function (data) {
 						_self.admins = utils.arr.indexBy(data);
-					}));
-				getters.push(
-					utils.api.get('/api/v2/list/users?role=client&active=on' +
-					              '&@return=id,fullname,phone,email,birthdate' +
-					              'country,city,street,build,flat,intercom,entrance,level,address' +
-					              ',&@sort=fullname:a').then(function (data) {
-						_self.clients = utils.arr.indexBy(data);
 					})
 				);
 			}
