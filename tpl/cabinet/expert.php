@@ -509,12 +509,11 @@
 									</svg>
 								</a>
 							</div>
-							<form on-submit="saveRecommendation">
+							<form on-submit="saveRecommendation" data-id="{{this.id}}">
 								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
 								name="recommendation">{{this.recommendation}}</textarea>
 
-								<button class="btn btn--white" type="submit"
-									data-id="{{this.id}}">Сохранить</button>
+								<button class="btn btn--white" type="submit">Сохранить</button>
 							</form>
 						</div>
 					</div>
