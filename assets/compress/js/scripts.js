@@ -212,17 +212,21 @@ $(function () {
             }
             return false;
         }).on('repeaterAdd', '[data-repeater="license"]', function () {
-            $(this).find('input').attr('name', 'licenses[]');
+            $(this).find('input').attr('name', 'adv[licenses][]');
+            initPlugins();
         }).on('repeaterAdd', '[data-repeater="study"]', function () {
             var _max_idx = $(this).parents('.repeater-container')
                 .find('.profile-education__inner.row[data-idx]:last')
                 .data('idx');
             _max_idx++;
             $(this).attr('data-idx', _max_idx);
-            $(this).find('input[name="stages[][stage]"]').attr('name', 'stages[' + _max_idx + '][stage]');
-            $(this).find('input[name="stages[][year]"]').attr('name', 'stages[' + _max_idx + '][year]');
-            $(this).find('input[name="stages[][year_end]"]').attr('name', 'stages[' + _max_idx + '][year_end]');
-
+            $(this).find('input[name="stages[][stage]"]').attr('name', 'adv[stages][' +
+                                                                       _max_idx + '][stage]');
+            $(this).find('input[name="stages[][year]"]').attr('name', 'adv[stages][' +
+                                                                      _max_idx + '][year]');
+            $(this).find('input[name="stages[][year_end]"]').attr('name', 'adv[stages][' +
+                                                                          _max_idx + '][year_end]');
+            initPlugins();
         }).on('click', '.ddl', function () {
             $(this).toggleClass('active');
             return false;

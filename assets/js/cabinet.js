@@ -218,78 +218,32 @@ $(function () {
 		clients: {},
 		admins: {},
 
-		init() {
-			setTimeout(function () {
-			});
-
+		init(use_session_cache) {
 			var _self   = this;
-			var getters = [
-				utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
-					_self.quoteStatus = utils.arr.indexBy(data);
-				}),
-				utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-					_self.quotePay = utils.arr.indexBy(data);
-				}),
-				utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
-					_self.quoteType = utils.arr.indexBy(data);
-				}),
-				utils.api.get('/api/v2/list/services?active=on' +
-				              '&@return=id,header,category,blocks' +
-				              '&@sort=header').then(function (data) {
-					let _services       = {};
-					_self.servicePrices = {};
+			var getters = [];
+			if (!sessionStorage.getItem('db.quoteStatus')) {
+				getters.push(
+					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
+						_self.quoteStatus = utils.arr.indexBy(data);
+					})
+				);
+			}
+			if (!sessionStorage.getItem('db.quotePay')) {
+				getters.push(
+					utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+						_self.quotePay = utils.arr.indexBy(data);
+					})
+				);
+			}
+			if (!sessionStorage.getItem('db.quoteType')) {
+				getters.push(
+					utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
+						_self.quoteType = utils.arr.indexBy(data);
+					})
+				);
+			}
 
-					data.forEach(function (service, i) {
-						_self.services[service.id] = service;
-						const _cats                = service.category;
-						const _tags                = [];
-
-						_cats.forEach(function (cat) {
-							_tags.push({
-								"id": cat,
-								"color": _self.serviceTags[cat].color,
-								"tag": Array.from(_self.serviceTags[cat].name)[0]
-							});
-						});
-						if (!!service.blocks) {
-							service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-								if (serv_price.price === 0) {
-									return;
-								}
-								let _item = {
-									value: serv_price.header,
-									id: service.id + '-' + j,
-									data: {
-										service_id: service.id,
-										service_title: service.header,
-										tags: _tags,
-										price: serv_price.price,
-										price_id: j
-									}
-								};
-								_self.servicesList.push(_item);
-								_self.servicePrices[service.id + '-' + j] = {
-									'price': serv_price.price,
-									'header': serv_price.header
-								};
-							});
-						}
-					});
-				}),
-				utils.api.get('/api/v2/list/experts?active=on&' +
-				              '@return=id,name,image,devision,spec,experience,education' +
-				              '@sort=name:a').then(function (data) {
-					let _experts = {};
-					data.forEach(function (expert, i) {
-						_experts[expert.id] = expert;
-						utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
-							.then(function (res) {
-								_self.experts[expert.id].info_uri = res[0]['u'] || '';
-							});
-					});
-					_self.experts = _experts;
-				}),
-
+			if (!sessionStorage.getItem('db.categories')) {
 				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
 					let _serviceCats = {};
 					Object.keys(res.tree.data).forEach(function (_key) {
@@ -304,24 +258,91 @@ $(function () {
 						};
 					});
 					_self.categories = _serviceCats;
-				}),
+				});
+			}
+			if (!sessionStorage.getItem('db.services') || !sessionStorage.getItem('db.servicesPrices')) {
+				getters.push(
+					utils.api.get('/api/v2/list/services?active=on' +
+					              '&@return=id,header,category,blocks' +
+					              '&@sort=header').then(function (data) {
+						_self.servicePrices = {};
 
-				utils.api.get('/api/v2/list/users?role=client&active=on' +
-				              '&@return=id,fullname,phone,email,birthdate' +
-				              'country,city,street,build,flat,intercom,entrance,level,address' +
-				              '&@sort=fullname:a').then(function (data) {
-					_self.clients = utils.arr.indexBy(data);
-				})
-			];
+						data.forEach(function (service, i) {
+							_self.services[service.id] = service;
+							const _cats                = service.category;
+							const _tags                = [];
 
-			/* for Admins only */
-			if (window.user_role === 'main') {
-				getters.push(utils.api.get('/api/v2/list/users?role=main&active=on' +
-				                           '&@return=id,fullname&@sort=fullname:a')
-					.then(function (data) {
-						_self.admins = utils.arr.indexBy(data);
+							_cats.forEach(function (cat) {
+								_tags.push({
+									"id": cat,
+									"color": _self.serviceTags[cat].color,
+									"tag": Array.from(_self.serviceTags[cat].name)[0]
+								});
+							});
+							if (!!service.blocks) {
+								service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
+									if (serv_price.price === 0) {
+										return;
+									}
+									let _item = {
+										value: serv_price.header,
+										id: service.id + '-' + j,
+										data: {
+											service_id: service.id,
+											service_title: service.header,
+											tags: _tags,
+											price: serv_price.price,
+											price_id: j
+										}
+									};
+									_self.servicesList.push(_item);
+									_self.servicePrices[service.id + '-' + j] = {
+										'price': serv_price.price,
+										'header': serv_price.header
+									};
+								});
+							}
+						});
 					})
 				);
+			}
+			if (!sessionStorage.getItem('db.experts')) {
+				getters.push(
+					utils.api.get('/api/v2/list/experts?active=on&' +
+					              '@return=id,name,image,devision,spec,experience,education' +
+					              '@sort=name:a').then(function (data) {
+						let _experts = {};
+						data.forEach(function (expert, i) {
+							_experts[expert.id] = expert;
+							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
+								.then(function (res) {
+									_self.experts[expert.id].info_uri = res[0]['u'] || '';
+									/* save to SS */
+								});
+						});
+						_self.experts = _experts;
+					})
+				);
+			}
+			/* for Admins only */
+			if (!!window.user_role && window.user_role !== 'client') {
+				getters.push(
+					utils.api.get('/api/v2/list/users?role=client&active=on' +
+					              '&@return=id,fullname,phone,email,birthdate' +
+					              'country,city,street,build,flat,intercom,entrance,level,address' +
+					              '&@sort=fullname:a').then(function (data) {
+						_self.clients = utils.arr.indexBy(data);
+					})
+				);
+				if (window.user_role === 'main') {
+					getters.push(
+						utils.api.get('/api/v2/list/users?role=main&active=on' +
+						              '&@return=id,fullname&@sort=fullname:a')
+							.then(function (data) {
+								_self.admins = utils.arr.indexBy(data);
+							})
+					);
+				}
 			}
 
 			return Promise.allSettled(getters).then(() => {
@@ -495,9 +516,9 @@ $(function () {
 		}
 	};
 
-	window.catalog.init().then(() => {
-		console.log(this);
-	});
+	window.catalog.init(false);
+	//.then(() => {
+	//});
 
 	/* common function */
 	//setTimeout(function () {
@@ -570,7 +591,7 @@ $(function () {
 		toast(text, head, 'warning');
 	};
 
-	window.initServicesSearch         = function ($selector, service_list) {
+	window.initServicesSearch = function ($selector, service_list) {
 		console.log($selector, service_list);
 
 		var _parent_form = $selector.parents('form');
@@ -702,7 +723,7 @@ $(function () {
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
-	window.initLongtermSearch         = function ($form, for_client) {
+	window.initLongtermSearch = function ($form, for_client) {
 		let client_qry = '';
 		if (!!for_client) {
 			client_qry = '&client=' + $($form).find('[name="client"]').val();
@@ -729,7 +750,7 @@ $(function () {
 			}
 		});
 	};
-	window.initClientSearch           = function ($form) {
+	window.initClientSearch   = function ($form) {
 		$form.find('input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,

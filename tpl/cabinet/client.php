@@ -58,10 +58,10 @@
 				</div>
 				<div class="user__group">
 					<div class="user__birthday">Дата рождения:
-						<span>{{user.birthdate_fmt}}</span>
+						<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
 					</div>
 					<div class="user__phone">Тел:
-						<span>{{user.phone}}</span>
+						<span>{{ @global.utils.formatPhone(user.phone) }}</span>
 					</div>
 				</div>
 				<div class="user__confirm">
@@ -489,7 +489,7 @@
 </template>
 <template id="profile-editor-inline" wb-off>
 	<form on-submit="submit">
-		{{#user}}
+		{{#with user}}
 		<p class="text-bold mb-30">Редактировать профиль</p>
 		<div class="row profile-edit__wrap">
 			<div class="col-md-3">
@@ -498,20 +498,24 @@
 						name="birthdate"
 						value="{{.birthdate}}"
 						type="text"
+						required
 						placeholder="Дата рождения" twoway="false">
 					<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="input input--grey">
-					<input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
+					<input class="input__control" type="tel" name="phone"
+						required value="{{user.phone}}" placeholder="Телефон"
+						data-inputmask="'mask': '+9 (999) 999-99-99'">
 					<div class="input__placeholder input__placeholder--dark">Телефон</div>
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control" type="email"
-						name="email" value="{{.email}}" placeholder="E-mail">
+						name="email" value="{{.email}}" placeholder="E-mail"
+						required>
 					<div class="input__placeholder input__placeholder--dark">E-mail</div>
 				</div>
 			</div>
@@ -525,7 +529,8 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="input input--grey">
-							<input class="input__control" type="text" name="country" value="{{.country}}" placeholder="Страна">
+							<input class="input__control" type="text" name="country"
+								value="{{.country}}" placeholder="Страна">
 							<div class="input__placeholder input__placeholder--dark">Страна</div>
 						</div>
 					</div>
@@ -584,13 +589,12 @@
 				<button class="btn btn--white profile-edit__submit">Сохранить</button>
 			</div>
 		</div>
-		{{/user}}
+		{{/with}}
 	</form>
 </template>
 
 <script>
 	$(document).on('cabinet-db-ready', function () {
-		console.log('>>> cabinet page script.');
 		var page = new Ractive({
 			el: 'main.page .page-content',
 			template: wbapp.tpl('#page-content').html,
@@ -608,20 +612,21 @@
 			},
 			on: {
 				init() {
-					utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
-						data.birthdate_fmt = utils.formatDate(data.birthdate);
-						data.phone         = utils.formatPhone(data.phone);
-						page.set('user', data); /* get actually user data */
-					});
+					utils.api.get('/api/v2/read/users/' + wbapp._session.user.id)
+						.then(function (data) {
+							page.set('user', data);
+						});
 
 					utils.api.get('/api/v2/list/records?status=upcoming&client=' +
-					              wbapp._session.user.id).then(
+					              wbapp._session.user.id)
+						.then(
 						function (data) {
 							let curr_timestamp = parseInt(getdate()[0]);
 
 							data.forEach(function (rec) {
 								if (rec.event_date !== (new Date()).toLocaleDateString()) {
 									page.push('events.upcoming', rec); /* get actually user next events */
+									return;
 								}
 
 								let event_from_timestamp = utils.timestamp(
@@ -777,7 +782,6 @@
 
 									Cabinet.updateProfile(uid, data, function (data) {
 										data.birthdate_fmt = utils.formatDate(data.birthdate);
-										data.phone         = utils.formatPhone(data.phone);
 										page.set('user', data); /* get actually user data */
 										toast('Профиль успешно обновлён');
 									});

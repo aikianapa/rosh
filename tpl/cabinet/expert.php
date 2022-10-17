@@ -36,7 +36,6 @@
 				<div class="loading-overlay">
 					<div class="loader"></div>
 				</div>
-
 			</div>
 		</div>
 	</main>
@@ -48,7 +47,7 @@
 					<div class="user__panel">
 						<div class="user__name">
 							{{expert.name}}
-							<button class="user__edit all">
+							<button class="user__edit all" on-click="toggleEdit">
 								<svg class="svgsprite _edit">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 								</svg>
@@ -82,7 +81,7 @@
 				</div>
 			</div>
 			<a class="account__exit" href="/signout">Выйти из аккаунта</a>
-			<div class="profile-edit" data-template="editorProfile"></div>
+			<div class="profile-editor-inline profile-edit" data-template="editorProfile"></div>
 		</div>
 
 		{{#if events.currents}}
@@ -325,24 +324,27 @@
 				<div class="row profile-edit__wrap">
 					<div class="col-md-3">
 						<div class="input input--grey">
-							<input class="input__control datebirthdaypickr" name="birthdate" value="{{.birthdate}}" type="text" placeholder="Дата рождения">
+							<input class="input__control datebirthdaypickr" name="birthdate"
+								required value="{{.birthdate}}" type="text" placeholder="Дата рождения">
 							<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="input input--grey">
-							<input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
+							<input class="input__control" type="tel" name="phone" value="{{.phone}}"
+								required placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
 							<div class="input__placeholder input__placeholder--dark">Телефон</div>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="input input--grey">
-							<input class="input__control" type="email" name="email" value="{{.email}}" placeholder="E-mail">
+							<input class="input__control" type="email" name="email" value="{{.email}}"
+								required placeholder="E-mail">
 							<div class="input__placeholder input__placeholder--dark">E-mail</div>
 						</div>
 					</div>
 					<div class="col-md-2">
-						<button class="btn btn--white profile-edit__submit">Сохранить</button>
+						<button class="btn btn--white profile-edit__submit" type="submit">Сохранить</button>
 					</div>
 				</div>
 			</div>
@@ -353,13 +355,14 @@
 				<div class="lk-title">Лицензия</div>
 				<div class="profile-licenses row">
 					<div class="col-md-6">
-						<div class="profile-licenses__inputs repeater-container" data-repeater="license" data-name="licenses[]">
-							{{#each user.expert.licenses: idx}}
+						<div class="profile-licenses__inputs repeater-container" data-repeater="license"
+							data-name="adv[licenses][]">
+							{{#each user.adv.licenses: idx}}
 							<div class="profile-licenses__input input repeater-item input--grey">
 								<input class="input__control" type="text"
-									name="licenses[]"
+									name="adv[licenses][]"
 									placeholder="Добавьте лицензию"
-									value="{{user.expert.licenses[idx]}}">
+									value="{{user.adv.licenses[idx]}}">
 								<div class="input__placeholder">Добавьте лицензию</div>
 								{{#idx}}
 								<a class="profile-licenses__delete repeater-delete" href="#">
@@ -375,7 +378,7 @@
 								data-repeater="license">
 								<div class="profile-licenses__input input input--grey">
 									<input class="input__control" type="text"
-										placeholder="Добавьте лицензию" value="">
+										placeholder="Добавьте лицензию" name="adv[licenses][]">
 									<div class="input__placeholder">Добавьте лицензию</div>
 								</div>
 							</div>
@@ -383,7 +386,7 @@
 						</div>
 					</div>
 					<div class="col-md-6 --flex">
-						<a class="btn btn--black add-license repeater-add" href="#"
+						<a class="btn btn--black add-license repeater-add"
 							data-repeater="license">Добавить лицензию</a>
 						<div class="profile-licenses__input input input--grey repeater-sample"
 							data-repeater="license">
@@ -408,7 +411,7 @@
 							<div class="input input--grey">
 								<input class="input__control" type="text"
 									placeholder="Название учебного заведения"
-									name="stages[{{idx}}][stage]"
+									name="adv[stages][{{idx}}][stage]"
 									value="{{.stage}}">
 								<div class="input__placeholder">Название учебного заведения</div>
 							</div>
@@ -418,7 +421,7 @@
 								<div class="profile-education__input">
 									<div class="input input-lk-calendar input--grey">
 										<input class="input__control yearpickr" type="text"
-											name="stages[{{idx}}][year]"
+											name="adv[stages][{{idx}}][year]"
 											placeholder="Начало обучения"
 											value="{{.year}}">
 										<div class="input__placeholder">Начало обучения</div>
@@ -428,7 +431,7 @@
 									<div class="input input-lk-calendar input--grey">
 										<input class="input__control yearpickr" type="text"
 											placeholder="Окончание обучения"
-											name="stages[{{idx}}][year_end]"
+											name="adv[stages][{{idx}}][year_end]"
 											value="{{.year_end}}">
 										<div class="input__placeholder">Окончание обучения</div>
 									</div>
@@ -447,13 +450,12 @@
 						</div>
 					</div>
 					{{else}}
-					<div class="profile-education__inner row repeater-item" data-idx="{{idx}}">
+					<div class="profile-education__inner row repeater-item" data-idx="0">
 						<div class="col-md-6">
 							<div class="input input--grey">
 								<input class="input__control" type="text"
 									placeholder="Название учебного заведения"
-									name="stages[{{idx}}][stage]"
-									value="{{.stage}}">
+									name="adv[stages][0][stage]">
 								<div class="input__placeholder">Название учебного заведения</div>
 							</div>
 						</div>
@@ -462,9 +464,8 @@
 								<div class="profile-education__input">
 									<div class="input input-lk-calendar input--grey">
 										<input class="input__control yearpickr" type="text"
-											name="stages[{{idx}}][year]"
-											placeholder="Начало обучения"
-											value="{{.year}}">
+											name="adv[stages][0][year]"
+											placeholder="Начало обучения">
 										<div class="input__placeholder">Начало обучения</div>
 									</div>
 								</div>
@@ -472,8 +473,7 @@
 									<div class="input input-lk-calendar input--grey">
 										<input class="input__control yearpickr" type="text"
 											placeholder="Окончание обучения"
-											name="stages[{{idx}}][year_end]"
-											value="{{.year_end}}">
+											name="adv[stages][0][year_end]">
 										<div class="input__placeholder">Окончание обучения</div>
 									</div>
 								</div>
@@ -525,185 +525,156 @@
 					</div>
 				</div>
 			</div>
-			<button class="btn btn--white">Сохранить</button>
+			<button class="btn btn--white" type="submit">Сохранить</button>
 		</form>
 	</template>
 
 	<script wb-app>
 		$(document).on('cabinet-db-ready', function () {
-			window.page = new Ractive({
-				el: 'main.page .expert-page',
-				template: wbapp.tpl('#expert-page').html,
-				data: {
-					user: wbapp._session.user,
-					expert: {},
-					catalog: catalog,
-					events: {
-						'upcoming': [],
-						'current': []
-					},
-					history: []
-				},
-				on: {
-					init() {
-						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id)
-							.then(function (data) {
-								if (!data) {
+			utils.api.get('/api/v2/read/users/' + wbapp._session.user.id)
+				.then(function (user) {
+					window.page = new Ractive({
+						el: 'main.page .expert-page',
+						template: wbapp.tpl('#expert-page').html,
+						data: {
+							user: user,
+							expert: {},
+							catalog: catalog,
+							events: {
+								'upcoming': [],
+								'current': []
+							},
+							history: []
+						},
+						on: {
+							init() {
+								utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id)
+									.then(function (data) {
+										page.set('expert', data[0]); /* get actually user data */
+										page.set('show_history', true);
+										return data[0];
+									})
+									.then(function (expert) {
+										utils.api.get(
+												'/api/v2/list/records?group=events&status=[upcoming,past]' +
+												'&experts~=' + expert.id + '&@sort=event_date:d')
+											.then(function (records) {
+												if (!records) {
+													return;
+												}
+												let curr_timestamp = parseInt(getdate()[0]);
+												records.forEach(function (rec, idx) {
+													if (rec.status === 'past') {
+														page.push('history', rec);
+														return;
+													} else if (idx === 0) {
+														page.set('closest_event', rec);
+													}
+
+													if (rec.event_date !== (new Date()).toLocaleDateString()) {
+														page.push('events.upcoming', rec); /* get actually user next events */
+														return;
+													}
+
+													let event_from_timestamp = utils.timestamp(
+														rec.event_date + ' ' + rec.event_time_start);
+													let event_to_timestamp   = utils.timestamp(
+														rec.event_date + ' ' + rec.event_time_end);
+
+													if (event_from_timestamp < curr_timestamp
+													    && (event_to_timestamp >= curr_timestamp)) {
+														page.push('events.current', rec);
+													} else {
+														page.push('events.upcoming', rec);
+													}
+												});
+											});
+									});
+							},
+							toggleEdit(ev) {
+								console.log(ev, $(ev.node), this);
+								if (!!window.profile_inline_editor) {
+									//$('.profile-editor-inline').toggleClass('d-none');
 									return;
 								}
-								page.set('user', data); /* get actually user data */
-							});
-						utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id)
-							.then(function (data) {
-								page.set('expert', data[0]); /* get actually user data */
-								page.fire('loadRecords');
-								page.set('show_history', true);
-								console.log('data', data[0]);
-							});
-					},
-					loadRecords() {
-						var _expert = this.get('expert');
-						utils.api.get('/api/v2/list/records?group=events&status=upcoming&experts~=' + _expert.id)
-							.then(function (data) {
+								window.profile_inline_editor = new Ractive({
+									el: 'main.page .profile-edit',
+									template: wbapp.tpl('#editorProfile').html,
+									data: {
+										user: this.get('user')
+									},
+									on: {
+										complete() {
+											$('.profile-editor-inline').removeClass('d-none');
+											initPlugins();
+										},
+										submitUserForm(ev) {
+											let $form = $(ev.node);
+											let uid   = this.get('user.id');
+											if ($form.verify() && uid > '') {
+												let data = $form.serializeJSON();
 
-								let curr_timestamp = parseInt(getdate()[0]);
+												data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+												utils.api.post('/api/v2/update/users/' + uid, data)
+													.then(function (res) {
+														console.log(res);
+														page.set('user', res);
+													});
+												$('.user__edit.all').trigger('click');
+											}
+											return false;
+										},
+										submitExpertForm(ev) {
+											let $form = $(ev.node);
+											let uid   = this.get('user.id');
 
-								page.set('closest_event', data[0]);
-								console.log('closest_event:', data[0]);
+											if ($form.verify() && uid > '') {
+												let data = $form.serializeJSON();
 
-								data.forEach(function (rec) {
-									if (rec.event_date !== (new Date()).toLocaleDateString()) {
-										page.push('events.upcoming', rec); /* get actually user next events */
-										//return;
-									}
-
-									let event_from_timestamp = utils.timestamp(
-										rec.event_date + ' ' + rec.event_time_start);
-									let event_to_timestamp   = utils.timestamp(
-										rec.event_date + ' ' + rec.event_time_end);
-
-									if (event_from_timestamp < curr_timestamp
-									    && (event_to_timestamp >= curr_timestamp)) {
-										page.push('events.current', rec);
-									} else {
-										page.push('events.upcoming', rec);
+												utils.api.post('/api/v2/update/users/' + uid, data).then(
+													function (res) {
+														page.set('user', res);
+														console.log('saved', res);
+													});
+												$('.user__edit.all').trigger('click');
+											}
+											return false;
+										}
 									}
 								});
-							});
-						utils.api.get('/api/v2/list/records?group=events&status=past&experts~=' + _expert.id)
-							.then(function (data) {
-								console.log('history', data);
-								page.set('history', data); /* get actually user next events */
-							});
-					},
-					complete(ev) {
-						$('main.page .loading-overlay').remove();
-
-						let profileEditor = new Ractive({
-							el: 'main.page .profile-edit',
-							template: wbapp.tpl('#editorProfile').html,
-							data: {
-								user: page.get('user')
 							},
-							on: {
-								complete() {
-									initPlugins();
-								},
-								submitUserForm(ev) {
-									let $form = $(ev.node);
-									let uid   = profileEditor.get('user.id');
-									if ($form.verify() && uid > '') {
-										let data   = $form.serializeJson();
-										data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-										utils.api.post('/api/v2/update/users/' + uid, data).then(function (res) {
-											console.log(res);
-											page.set('user', res);
-										});
-										$('.user__edit.all').trigger('click');
-									}
-									return false;
-								},
-								submitExpertForm(ev) {
-									let $form = $(ev.node);
-									let uid   = profileEditor.get('user.id');
-									console.log('saved', uid);
+							saveRecommendation(ev) {
+								const _id             = $(ev.node).data('id');
+								const _recommendation = $('#' + _id + '--recommendation').val();
 
-									if ($form.verify() && uid > '') {
-										let data = $form.serializeJSON();
-										utils.api.post('/api/v2/update/users/' + uid, data).then(
-											function (res) {
-												page.set('user', res);
-												console.log('saved', res);
+								utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
+									var prev_recommendation = data.recommendation;
+
+									utils.api.post('/api/v2/update/records/' + _id,
+										{'recommendation': _recommendation}).then(function (res) {
+										toast('Успешно сохранено!');
+									});
+									if (_recommendation !== prev_recommendation) {
+										utils.api.post('/api/v2/create/record-changes/',
+												{
+													record: data.id,
+													experts: data.experts,
+													client: data.client,
+													changes: [{
+														field: 'recommendation',
+														prev_val: prev_recommendation,
+														new_val: _recommendation
+													}]
+												})
+											.then(function (res) {
+
 											});
-										$('.user__edit.all').trigger('click');
 									}
-									return false;
-								},
-								saveRecommendation(ev) {
-									const _id             = $(ev.node).data('id');
-									const _recommendation = $('#' + _id + '--recommendation').val();
-									console.log('CLICKED!');
-
-									utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
-										var prev_recommendation = data.recommendation;
-
-										utils.api.post('/api/v2/update/records/' + _id,
-											{'recommendation': _recommendation}).then(function (res) {
-											toast('Рекомендация сохранена!');
-										});
-										if (_recommendation !== prev_recommendation) {
-											utils.api.post('/api/v2/create/record-changes/',
-													{
-														record: data.id,
-														experts: data.experts,
-														client: data.client,
-														changes: [{
-															field: 'recommendation',
-															prev_val: prev_recommendation,
-															new_val: _recommendation
-														}]
-													})
-												.then(function (res) {
-
-												});
-										}
-									});
-								}
+								});
 							}
-						});
-					},
-					saveRecommendation(ev) {
-						const _id             = $(ev.node).data('id');
-						const _recommendation = $('#' + _id + '--recommendation').val();
-						console.log('CLICKED 2!');
-
-						utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
-							var prev_recommendation = data.recommendation;
-
-							utils.api.post('/api/v2/update/records/' + _id,
-								{'recommendation': _recommendation}).then(function (res) {
-								toast('Рекомендация сохранена!');
-							});
-							if (_recommendation !== prev_recommendation) {
-								utils.api.post('/api/v2/create/record-changes/',
-										{
-											record: data.id,
-											experts: data.experts,
-											client: data.client,
-											changes: [{
-												field: 'recommendation',
-												prev_val: prev_recommendation,
-												new_val: _recommendation
-											}]
-										})
-									.then(function (res) {
-
-									});
-							}
-						});
-					}
-				}
-			});
+						}
+					});
+				});
 		});
 	</script>
 </div>
