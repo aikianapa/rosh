@@ -133,7 +133,8 @@ $(function () {
 		formatTime(date) {
 			return new Date(date).toLocaleTimeString();
 		},
-		formatPhone(phone) {
+		formatPhone(_phone) {
+			var phone = str_replace([' ', '+', '-', '(', ')'], '', _phone)
 			var cleaned = ('' + phone).replace(/\D/g, '');
 			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
 			if (match) {
@@ -328,7 +329,7 @@ $(function () {
 			if (!!window.user_role && window.user_role !== 'client') {
 				getters.push(
 					utils.api.get('/api/v2/list/users?role=client&active=on' +
-					              '&@return=id,fullname,phone,email,birthdate' +
+					              '&@return=id,fullname,phone,email,birthdate,' +
 					              'country,city,street,build,flat,intercom,entrance,level,address' +
 					              '&@sort=fullname:a').then(function (data) {
 						_self.clients = utils.arr.indexBy(data);

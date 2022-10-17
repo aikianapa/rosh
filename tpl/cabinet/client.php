@@ -779,7 +779,7 @@
 								let uid   = page.get('user.id');
 								if ($form.verify() && uid > '') {
 									let data = $form.serializeJSON();
-
+									data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
 									Cabinet.updateProfile(uid, data, function (data) {
 										data.birthdate_fmt = utils.formatDate(data.birthdate);
 										page.set('user', data); /* get actually user data */

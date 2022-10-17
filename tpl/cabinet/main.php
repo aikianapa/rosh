@@ -80,30 +80,34 @@
 </div>
 
 <template id="editProfile">
-	<form class="profile-edit d-block">
-		<input type="hidden" value="{{ id }}">
+	<form class="profile-edit d-block" on-submit="save">
+		<input type="hidden" value="{{ id }}" name="id">
 		<p class="text-bold mb-30">Редактировать профиль</p>
 		<div class="row profile-edit__wrap">
 			<div class="col-md-3">
 				<div class="input input--grey">
-					<input class="input__control datebirthdaypickr" name="birthdate" value="{{ birthdate }}" type="text" placeholder="Дата рождения">
+					<input class="input__control datebirthdaypickr" name="birthdate" required
+						value="{{ .birthdate }}" type="text" placeholder="Дата рождения">
 					<div class="input__placeholder input__placeholder--dark">Дата рождения</div>
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="input input--grey">
-					<input class="input__control" type="tel" name="phone" value="+{{ phone }}" placeholder="Телефон" data-inputmask="'mask': '+7 (999) 999-99-99'">
+					<input class="input__control" type="tel" name="phone" required
+						value="{{ phone }}" placeholder="Телефон"
+						data-inputmask="'mask': '+7 (999) 999-99-99'">
 					<div class="input__placeholder input__placeholder--dark">Телефон</div>
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="input input--grey">
-					<input class="input__control" type="email" name="email" value="{{ email }}" placeholder="E-mail">
+					<input class="input__control" type="email" name="email" required
+						value="{{ email }}" placeholder="E-mail">
 					<div class="input__placeholder input__placeholder--dark">E-mail</div>
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn--white profile-edit__submit" type="button" on-click="save">Сохранить</button>
+				<button class="btn btn--white profile-edit__submit" type="button">Сохранить</button>
 			</div>
 		</div>
 
@@ -113,19 +117,22 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input input--grey">
-							<input class="input__control" type="text" name="country" value="{{ country }}" placeholder="Страна">
+							<input class="input__control" type="text" name="country"
+								value="{{ country }}" placeholder="Страна">
 							<div class="input__placeholder input__placeholder--dark">Страна</div>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="input input--grey">
-							<input class="input__control" type="text" name="city" value="{{ city }}" placeholder="Город">
+							<input class="input__control" type="text" name="city"
+								value="{{ city }}" placeholder="Город">
 							<div class="input__placeholder input__placeholder--dark">Город</div>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="input input--grey">
-							<input class="input__control" type="text" name="address" value="{{ address }}" placeholder="Улица и дом">
+							<input class="input__control" type="text" name="address"
+								value="{{ address }}" placeholder="Улица и дом">
 							<div class="input__placeholder input__placeholder--dark">Улица и дом</div>
 						</div>
 					</div>
@@ -162,11 +169,12 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn--white profile-edit__submit" type="button" on-click="save">Сохранить</button>
+				<button class="btn btn--white profile-edit__submit" type="button" >Сохранить</button>
 			</div>
 		</div>
 	</form>
 </template>
+
 <template id="editStatus">
 	<div class="select-form">
 		<div class="select pay">
@@ -510,7 +518,8 @@
 						<div class="admin-editor__top">
 							<div class="admin-editor__top-info">
 								<div class="lk-title">Редактировать профиль</div>
-								<div class="admin-editor__name user__edit">{{catalog.clients[client].fullname}}
+								<div class="admin-editor__name user__edit">
+									{{ catalog.clients[client].fullname }}
 									<button class="user__edit" on-click="editProfile" data-id="{{client}}">
 										<svg class="svgsprite _edit">
 											<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
@@ -519,10 +528,10 @@
 								</div>
 								<div class="admin-editor__iser-contacts">
 									<p>Дата рождения:
-										<span>{{catalog.clients[client].birthdate}}</span>
+										<span>{{ catalog.clients[client].birthdate }}</span>
 									</p>
 									<p>Телефон:
-										<span>{{catalog.clients[client].phone}}</span>
+										<span>{{ @global.utils.formatPhone(catalog.clients[client].phone) }}</span>
 									</p>
 								</div>
 							</div>
@@ -590,6 +599,7 @@
 												let $form = $(form);
 												if ($form.verify() && profile_id > '') {
 													let data = $form.serializeJSON();
+
 													Cabinet.updateProfile(profile_id, data,
 														function (res) {
 															console.log(res);
