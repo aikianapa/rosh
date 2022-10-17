@@ -265,10 +265,9 @@
 								<p>Время</p>
 								{{this.event_time_start}} - {{this.event_time_end}}
 							</div>
-							<div class="history-item"
-								data-client="{{ this.client }}" data="{{ this.catalog.clients[{{this.client}}] }}">
+							<div class="history-item">
 								<p>Пациент</p>
-								<p>{{ this.catalog.clients[.client]fullname }}</p>
+								<p>{{ this.catalog.clients[.client].fullname }}</p>
 							</div>
 							<div class="history-item">
 								<p>Услуги</p>
