@@ -238,3 +238,14 @@ div.accardeon.active > div.accardeon__list {
 	max-width: initial;
 	margin-right: 0;
 }
+.autocomplete-suggestions.search__drop{
+	background-color: #FBF9F7;
+}
+.autocomplete-suggestions .autocomplete-suggestion:hover {
+	background-color : #FFF;
+	border: 1px solid whitesmoke;
+}
+.admin-editor__patient .search__drop-item {
+	background   : white;
+	padding      : 10px 0 10px 12px;
+}
