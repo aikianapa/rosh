@@ -97,7 +97,7 @@
 
 	<script wbapp>
 		var q = '{{_route.params.q}}';
-		$(document).on('cabinet-js-ready', function () {
+		$(document).on('cabinet-db-ready', function () {
 			var page = new Ractive({
 				el: 'main.page',
 				template: $('main.page').html(),

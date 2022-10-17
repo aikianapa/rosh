@@ -1,8 +1,335 @@
-$(function () {
+window.user_role = wbapp?._session?.user?.role;
 
+$(function () {
 	console.log('>>> cabinet.js loaded ..');
 
-	window.CabinetController = {
+	var isObj      = function (a) {
+		return (!!a) && (a.constructor === Object);
+	};
+	var _st        = function (z, g) {
+		return "" + (g != "" ? "[" : "") + z + (g != "" ? "]" : "");
+	};
+	window.utils   = {
+		urlParams(params, skipobjects, prefix) {
+			if (skipobjects === void 0) {
+				skipobjects = false;
+			}
+			if (prefix === void 0) {
+				prefix = "";
+			}
+			var result = "";
+			if (typeof (params) != "object") {
+				return prefix + "=" + encodeURIComponent(params) + "&";
+			}
+			for (var param in params) {
+				var c = "" + prefix + _st(param, prefix);
+				if (isObj(params[param]) && !skipobjects) {
+					result += utils.urlParams(params[param], false, "" + c);
+				} else if (Array.isArray(params[param]) && !skipobjects) {
+					params[param].forEach(function (item, ind) {
+						result += utils.urlParams(item, false, c + "[" + ind + "]");
+					});
+				} else {
+					result += c + "=" + encodeURIComponent(params[param]) + "&";
+				}
+			}
+			return result;
+		},
+
+		varType(val) {
+			return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+		},
+
+		arr: {
+			search(val, array) {
+				if (!val || !array) {
+					return false;
+				}
+				var _include = false;
+				$(array).each(function (key) {
+					_include = (this == val);
+					return !_include;
+				});
+				return _include;
+			},
+			unique(array) {
+				if (utils.varType(array) !== 'array') {
+					console.warn('value not array: ', array);
+					return array;
+				}
+
+				function onlyUnique(value, index, self) {
+					return self.indexOf(value) === index;
+				}
+
+				return array.filter(onlyUnique);
+			},
+			indexBy(array, index_key /* default "id" */) {
+				let _result = {};
+				if (utils.varType(array) !== 'array') {
+					console.warn('value not array: ', array);
+					return _result;
+				}
+				const _index = index_key || 'id';
+				array.forEach(function (item) {
+					_result[item[_index]] = item;
+				});
+
+				return _result;
+			}
+		},
+		api: {
+			get(path, data) {
+				let _path = path;
+				let parts = path.split('?', 2);
+				if (data !== undefined) {
+					if (parts.length === 2) {
+						parts[1] += '&' + $.param(data);
+					} else {
+						parts[0] += '?' + $.param(data);
+					}
+				}
+				_path = parts.join('?');
+
+				if (!_path.includes('__token')) {
+					parts = _path.split('?', 2);
+
+					if (parts.length === 2) {
+						parts[1] += '&__token=' + wbapp._session.token;
+					} else {
+						parts[0] += '?__token=' + wbapp._session.token;
+					}
+					_path = parts.join('?');
+				}
+
+				const defaultOptions = {Method: 'GET'};
+				return fetch(_path, defaultOptions).then((result) => result.json());
+			},
+			post(path, data) {
+				//return this.request(path, 'post', data, options);
+				if (is_string(data)) {
+					data += '&__token=' + wbapp._session.token;
+				} else {
+					try { data.__token = wbapp._session.token; } catch (error) { null; }
+				}
+				wbapp.loading();
+				return $.post(path, data, function () {
+					wbapp.unloading();
+				});
+			},
+			async request(path, method, data, options) {
+
+			}
+		},
+		timestamp(datetime) {
+			return Math.floor(new Date(datetime).getTime() / 1000);
+		},
+		formatDate(date) {
+			return new Date(date).toLocaleDateString();
+		},
+		formatDateTime(date) {
+			return new Date(date).toLocaleString();
+		},
+		formatTime(date) {
+			return new Date(date).toLocaleTimeString();
+		},
+		formatPhone(phone) {
+			var cleaned = ('' + phone).replace(/\D/g, '');
+			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+			if (match) {
+				var intlCode = (match[1] ? '+7 ' : '');
+				return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
+			}
+			return phone;
+		},
+		formatPrice(val, sufix) {
+			var sign = 1;
+			if (val < 0) {
+				sign = -1;
+				val  = -val;
+			}
+			// trim the number decimal point if it exists
+			let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
+			let len    = num.toString().length;
+			let result = '';
+			let count  = 1;
+
+			for (let i = len - 1; i >= 0; i--) {
+				result = num.toString()[i] + result;
+				if (count % 3 === 0 && count !== 0 && i !== 0) {
+					result = ' ' + result;
+				}
+				count++;
+			}
+
+			// add number after decimal point
+			if (val.toString().includes('.')) {
+				result = result + '.' + val.toString().split('.')[1];
+			}
+			// return result with - sign if negative
+			return (sign < 0 ? '-' + result : result) + (sufix || '');
+		}
+	};
+	window.catalog = {
+		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
+		spec_service: {
+			experts_consultation: {
+				header: 'Общая консультация специалиста',
+				price: 4000
+			},
+			analises_interpretation: {
+				header: 'Расшифровка анализов',
+				price: 2000
+			}
+		},
+		/*dyctionary types*/
+		quoteStatus: {},
+		quoteType: {},
+		quotePay: {},
+
+		services: {},
+		servicePrices: {},
+		servicesList: [], /* for autocomplete */
+		serviceTags: {
+			"face": {
+				"name": "Лицо",
+				"color": "yellow"
+			},
+			"body": {
+				"name": "Тело",
+				"color": "green"
+			},
+			"hair": {
+				"name": "Волосы",
+				"color": "red"
+			},
+			"gyn": {
+				"name": "Гинекология",
+				"color": "blue"
+			},
+			"lab": {
+				"name": "Лаборатория",
+				"color": "purple"
+			}
+		},
+		categories: {},
+		experts: {},
+
+		clients: {},
+		admins: {},
+
+		init() {
+			setTimeout(function () {
+			});
+
+			var _self   = this;
+			var getters = [
+				utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
+					_self.quoteStatus = utils.arr.indexBy(data);
+				}),
+				utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+					_self.quotePay = utils.arr.indexBy(data);
+				}),
+				utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
+					_self.quoteType = utils.arr.indexBy(data);
+				}),
+				utils.api.get('/api/v2/list/services?active=on' +
+				              '&@return=id,header,category,blocks' +
+				              '&@sort=header').then(function (data) {
+					let _services       = {};
+					_self.servicePrices = {};
+
+					data.forEach(function (service, i) {
+						_self.services[service.id] = service;
+						const _cats                = service.category;
+						const _tags                = [];
+
+						_cats.forEach(function (cat) {
+							_tags.push({
+								"id": cat,
+								"color": _self.serviceTags[cat].color,
+								"tag": Array.from(_self.serviceTags[cat].name)[0]
+							});
+						});
+						if (!!service.blocks) {
+							service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
+								if (serv_price.price === 0) {
+									return;
+								}
+								let _item = {
+									value: serv_price.header,
+									id: service.id + '-' + j,
+									data: {
+										service_id: service.id,
+										service_title: service.header,
+										tags: _tags,
+										price: serv_price.price,
+										price_id: j
+									}
+								};
+								_self.servicesList.push(_item);
+								_self.servicePrices[service.id + '-' + j] = {
+									'price': serv_price.price,
+									'header': serv_price.header
+								};
+							});
+						}
+					});
+				}),
+				utils.api.get('/api/v2/list/experts?active=on&' +
+				              '@return=id,name,image,devision,spec,experience,education' +
+				              '@sort=name:a').then(function (data) {
+					let _experts = {};
+					data.forEach(function (expert, i) {
+						_experts[expert.id] = expert;
+						utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
+							.then(function (res) {
+								_self.experts[expert.id].info_uri = res[0]['u'] || '';
+							});
+					});
+					_self.experts = _experts;
+				}),
+
+				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
+					let _serviceCats = {};
+					Object.keys(res.tree.data).forEach(function (_key) {
+						const _cat = res.tree.data[_key];
+						if (_cat.active != 'on') {
+							return;
+						}
+						_serviceCats[_cat.id] = {
+							'id': _cat.id,
+							'name': _cat.name,
+							'color': _cat.data.color
+						};
+					});
+					_self.categories = _serviceCats;
+				}),
+
+				utils.api.get('/api/v2/list/users?role=client&active=on' +
+				              '&@return=id,fullname,phone,email,birthdate' +
+				              'country,city,street,build,flat,intercom,entrance,level,address' +
+				              '&@sort=fullname:a').then(function (data) {
+					_self.clients = utils.arr.indexBy(data);
+				})
+			];
+
+			/* for Admins only */
+			if (window.user_role === 'main') {
+				getters.push(utils.api.get('/api/v2/list/users?role=main&active=on' +
+				                           '&@return=id,fullname&@sort=fullname:a')
+					.then(function (data) {
+						_self.admins = utils.arr.indexBy(data);
+					})
+				);
+			}
+
+			return Promise.allSettled(getters).then(() => {
+				$(document).trigger('cabinet-db-ready');
+			});
+		}
+	};
+	window.Cabinet = {
 		runOnlineChat(record_id) {
 			/*!! check record  exists & status & pay_status & date !!*/
 			/*!! mark record as "online_waiting"=1 !!*/
@@ -152,346 +479,25 @@ $(function () {
 				console.log('???', list);
 			});
 		},
-		listPastEvents(client_id, callback) {
-			return Utils.api.get('/api/v2/list/records?status=past&group=events').then(
+		getHistoryEvents(client_id, callback) {
+			return utils.api.get('/api/v2/list/records?status=past&group=events').then(
 				function (data) {
 					console.log('history.events:', data);
 					page.set('history.events', data); /* get actually user next events */
 				});
 		},
 		listLongterms(client_id) {
-			Utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+			return utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
 				.then(function (data) {
 					console.log('history.longterms:', data);
 					page.set('history.longterms', data); /* get actually user next events */
 				});
 		}
-
-	};
-	var isObj                = function (a) {
-		return (!!a) && (a.constructor === Object);
-	};
-	var _st                  = function (z, g) {
-		return "" + (g != "" ? "[" : "") + z + (g != "" ? "]" : "");
-	};
-	window.utils             = {
-		urlParams(params, skipobjects, prefix) {
-			if (skipobjects === void 0) {
-				skipobjects = false;
-			}
-			if (prefix === void 0) {
-				prefix = "";
-			}
-			var result = "";
-			if (typeof (params) != "object") {
-				return prefix + "=" + encodeURIComponent(params) + "&";
-			}
-			for (var param in params) {
-				var c = "" + prefix + _st(param, prefix);
-				if (isObj(params[param]) && !skipobjects) {
-					result += utils.urlParams(params[param], false, "" + c);
-				} else if (Array.isArray(params[param]) && !skipobjects) {
-					params[param].forEach(function (item, ind) {
-						result += utils.urlParams(item, false, c + "[" + ind + "]");
-					});
-				} else {
-					result += c + "=" + encodeURIComponent(params[param]) + "&";
-				}
-			}
-			return result;
-		},
-
-		varType(val) {
-			return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-		},
-
-		arr: {
-			search(val, array) {
-				if (!val || !array) {
-					return false;
-				}
-				var _include = false;
-				$(array).each(function (key){
-					_include = (this == val);
-					return !_include;
-				});
-				return _include;
-			},
-			unique(array) {
-				if (utils.varType(array) !== 'array') {
-					console.warn('value not array: ', array);
-					return array;
-				}
-
-				function onlyUnique(value, index, self) {
-					return self.indexOf(value) === index;
-				}
-
-				return array.filter(onlyUnique);
-			},
-			indexBy(array, index_key /* default "id" */) {
-				let _result = {};
-				if (utils.varType(array) !== 'array') {
-					console.warn('value not array: ', array);
-					return _result;
-				}
-				const _index = index_key || 'id';
-				array.forEach(function (item) {
-					_result[item[_index]] = item;
-				});
-
-				return _result;
-			}
-		},
-		api: {
-			get(path, data) {
-				let _path = path;
-				let parts = path.split('?', 2);
-				if (data !== undefined) {
-					if (parts.length === 2) {
-						parts[1] += '&' + $.param(data);
-					} else {
-						parts[0] += '?' + $.param(data);
-					}
-				}
-				_path = parts.join('?');
-
-				if (!_path.includes('__token')) {
-					parts = _path.split('?', 2);
-
-					if (parts.length === 2) {
-						parts[1] += '&__token=' + wbapp._session.token;
-					} else {
-						parts[0] += '?__token=' + wbapp._session.token;
-					}
-					_path = parts.join('?');
-				}
-
-				const defaultOptions = {Method: 'GET'};
-				return fetch(_path, defaultOptions).then((result) => result.json());
-			},
-			post(path, data) {
-				//return this.request(path, 'post', data, options);
-				if (is_string(data)) {
-					data += '&__token=' + wbapp._session.token;
-				} else {
-					try { data.__token = wbapp._session.token; } catch (error) { null; }
-				}
-				wbapp.loading();
-				return $.post(path, data, function () {
-					wbapp.unloading();
-				});
-			},
-			async request(path, method, data, options) {
-
-			}
-		},
-		timestamp(datetime) {
-			return Math.floor(new Date(datetime).getTime() / 1000);
-		},
-		formatDate(date) {
-			return new Date(date).toLocaleDateString();
-		},
-		formatDateTime(date) {
-			return new Date(date).toLocaleString();
-		},
-		formatTime(date) {
-			return new Date(date).toLocaleTimeString();
-		},
-		formatPhone(phone) {
-			var cleaned = ('' + phone).replace(/\D/g, '');
-			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
-			if (match) {
-				var intlCode = (match[1] ? '+7 ' : '');
-				return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
-			}
-			return phone;
-		},
-		formatPrice(val, sufix) {
-			var sign = 1;
-			if (val < 0) {
-				sign = -1;
-				val  = -val;
-			}
-			// trim the number decimal point if it exists
-			let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
-			let len    = num.toString().length;
-			let result = '';
-			let count  = 1;
-
-			for (let i = len - 1; i >= 0; i--) {
-				result = num.toString()[i] + result;
-				if (count % 3 === 0 && count !== 0 && i !== 0) {
-					result = ' ' + result;
-				}
-				count++;
-			}
-
-			// add number after decimal point
-			if (val.toString().includes('.')) {
-				result = result + '.' + val.toString().split('.')[1];
-			}
-			// return result with - sign if negative
-			return (sign < 0 ? '-' + result : result) + (sufix || '');
-		}
 	};
 
-	window.catalog = {
-		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
-		spec_service: {
-			experts_consultation: {
-				header: 'Общая консультация специалиста',
-				price: 4000
-			},
-			analises_interpretation: {
-				header: 'Расшифровка анализов',
-				price: 2000
-			}
-		},
-		/*dyctionary types*/
-		quoteStatus: {},
-		quoteType: {},
-		quotePay: {},
-		services: {},
-		servicePrices: {},
-		servicesList: [], /* for autocomplete */
-		serviceTags: {
-			"face": {
-				"name": "Лицо",
-				"color": "yellow"
-			},
-			"body": {
-				"name": "Тело",
-				"color": "green"
-			},
-			"hair": {
-				"name": "Волосы",
-				"color": "red"
-			},
-			"gyn": {
-				"name": "Гинекология",
-				"color": "blue"
-			},
-			"lab": {
-				"name": "Лаборатория",
-				"color": "purple"
-			}
-		},
-		categories: {},
-		experts: {},
-		clients: {},
-		admins: {},
-		init() {
-			var _self   = this;
-			var getters = [
-				utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
-					_self.quoteStatus = utils.arr.indexBy(data);
-				}),
-				utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-					_self.quotePay = utils.arr.indexBy(data);
-				}),
-				utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
-					_self.quoteType = utils.arr.indexBy(data);
-				}),
-				utils.api.get('/api/v2/list/services?active=on' +
-				              '&@return=id,header,category,blocks' +
-				              '&@sort=header').then(function (data) {
-					let _services       = {};
-					_self.servicePrices = {};
-
-					data.forEach(function (service, i) {
-						_self.services[service.id] = service;
-						const _cats                = service.category;
-						const _tags                = [];
-
-						_cats.forEach(function (cat) {
-							_tags.push({
-								"id": cat,
-								"color": _self.serviceTags[cat].color,
-								"tag": Array.from(_self.serviceTags[cat].name)[0]
-							});
-						});
-						if (!!service.blocks) {
-							service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-								if (serv_price.price === 0) {
-									return;
-								}
-								let _item = {
-									value: serv_price.header,
-									id: service.id + '-' + j,
-									data: {
-										service_id: service.id,
-										service_title: service.header,
-										tags: _tags,
-										price: serv_price.price,
-										price_id: j
-									}
-								};
-								_self.servicesList.push(_item);
-								_self.servicePrices[service.id + '-' + j] = {
-									'price': serv_price.price,
-									'header': serv_price.header
-								};
-							});
-						}
-					});
-				}),
-				utils.api.get('/api/v2/list/experts?active=on&' +
-				              '@return=id,name,image,devision,spec,experience,education' +
-				              '@sort=name:a').then(function (data) {
-					let _experts = {};
-					data.forEach(function (expert, i) {
-						_experts[expert.id] = expert;
-						utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
-							.then(function (res) {
-								_self.experts[expert.id].info_uri = res[0]['u'] || '';
-							});
-					});
-					_self.experts = _experts;
-				}),
-
-				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
-					let _serviceCats = {};
-					Object.keys(res.tree.data).forEach(function (_key) {
-						const _cat = res.tree.data[_key];
-						if (_cat.active != 'on') {
-							return;
-						}
-						_serviceCats[_cat.id] = {
-							'id': _cat.id,
-							'name': _cat.name,
-							'color': _cat.data.color
-						};
-					});
-					_self.categories = _serviceCats;
-				}),
-
-				utils.api.get('/api/v2/list/users?role=client&active=on' +
-				              '&@return=id,fullname,phone,email,birthdate' +
-				              'country,city,street,build,flat,intercom,entrance,level,address' +
-				              '&@sort=fullname:a').then(function (data) {
-					_self.clients = utils.arr.indexBy(data);
-				})
-			];
-
-			/* for Admins only */
-			if (window.user_role === 'main') {
-				getters.push(utils.api.get('/api/v2/list/users?role=main&active=on' +
-				                           '&@return=id,fullname&@sort=fullname:a')
-					.then(function (data) {
-						_self.admins = utils.arr.indexBy(data);
-					})
-				);
-			}
-
-			/* for Admins only */
-			Promise.allSettled(getters).then(function () {
-				$(document).trigger('cabinet-js-ready');
-			});
-		}
-	};
-
-	window.catalog.init();
+	window.catalog.init().then(() => {
+		console.log(this);
+	});
 
 	/* common function */
 	//setTimeout(function () {
@@ -512,7 +518,7 @@ $(function () {
 
 		return changes;
 	};
-	window.toast         = function (text, head, icon) {
+	window.toast          = function (text, head, icon) {
 		var bgColor   = '#616161';
 		var textColor = '#FEFEFE';
 		switch (icon) {
@@ -551,20 +557,20 @@ $(function () {
 			afterHidden: function () {}  // will be triggered after the toast has been hidden
 		});
 	};
-	window.toast_success = function (text, head) {
+	window.toast_success  = function (text, head) {
 		toast(text, head, 'success');
 	};
-	window.toast_error   = function (text, head) {
+	window.toast_error    = function (text, head) {
 		toast(text, head, 'error');
 	};
-	window.toast_info    = function (text, head) {
+	window.toast_info     = function (text, head) {
 		toast(text, head, 'info');
 	};
-	window.toast_warning = function (text, head) {
+	window.toast_warning  = function (text, head) {
 		toast(text, head, 'warning');
 	};
 
-	window.initServicesSearch = function ($selector, service_list) {
+	window.initServicesSearch         = function ($selector, service_list) {
 		console.log($selector, service_list);
 
 		var _parent_form = $selector.parents('form');
@@ -696,7 +702,7 @@ $(function () {
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
-	window.initLongtermSearch = function ($form, for_client) {
+	window.initLongtermSearch         = function ($form, for_client) {
 		let client_qry = '';
 		if (!!for_client) {
 			client_qry = '&client=' + $($form).find('[name="client"]').val();
@@ -723,7 +729,7 @@ $(function () {
 			}
 		});
 	};
-	window.initClientSearch   = function ($form) {
+	window.initClientSearch           = function ($form) {
 		$form.find('input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
@@ -747,7 +753,7 @@ $(function () {
 		});
 	};
 
-	window.popupCreateQuote           = function (user_id) {
+	window.popupCreateQuote = function (user_id) {
 		var popup = new Ractive({
 			el: '.popup.--record',
 			template: wbapp.tpl('#popupRecord').html,
@@ -787,7 +793,7 @@ $(function () {
 						data.description    = '';
 
 						data.price = parseInt(data.price);
-						CabinetController.createQuote(data, function (res) {
+						Cabinet.createQuote(data, function (res) {
 							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 							$('.popup.--record .popup__panel.--succed').addClass('d-block');
 						});

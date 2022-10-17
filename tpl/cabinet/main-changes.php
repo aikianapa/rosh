@@ -104,7 +104,7 @@
 	</main>
 
 	<script>
-		$(document).on('cabinet-js-ready', function () {
+		$(document).on('cabinet-db-ready', function () {
 			var page = new Ractive({
 				el: 'main.page',
 				template: $('main.page').html(),

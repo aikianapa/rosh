@@ -583,11 +583,21 @@
 						</svg>
 					</button>
 					<div class="popup__name text-bold">Запись на прием</div>
-					<form class="popup__form" on-submit="submit">
-						<p class="text-bold text-big mb-20">{{client_fullname}}</p>
-						
-						<div class="input" data-hide="service-search">
-							<input class="search__input search-services" type="text" placeholder="Поиск по услугам">
+					<form class="record-edit popup__form" on-submit="submit">
+		<div class="row">
+			<div class="col-md-7">
+				<input type="hidden" value="{{ record.id }}" name="id">
+
+				{{#if record.spec_service}}
+				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
+				<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
+				{{else}}
+				<div class="admin-editor__event mb-20">
+					<div class="search__block --flex --aicn">
+						<div class="input">
+							<input class="popup-services-list"
+								type="text" placeholder="Поиск по услугам"
+								autocomplete="off">
 							<div class="search__drop"></div>
 							<button class="search__btn" type="button">
 								<svg class="svgsprite _search">
@@ -595,76 +605,156 @@
 								</svg>
 							</button>
 						</div>
-						<div class="admin-editor__patient" data-hide="service-search">
-							<div class="text-bold mb-10">Выбраны услуги</div>
-						</div>
-						<div class="admin-editor__summ" data-hide="service-search">
-							<p>Всего</p>
-							<input type="hidden" name="price">
-							<p class="price">0 ₽</p>
-						</div>
+					</div>
+				</div>
+				<div class="admin-editor__event mb-20">
+					<!-- services-select.dropdown -->
+				</div>
+				{{/if}}
 
-						<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-							<input class="checkbox-visible-next-form" type="checkbox"
-								name="for_consultation" value="1">
-							<span></span>
-							<div class="checbox__name">Консультация врача</div>
+				<div class="admin-editor__type-event">
+					<p class="mb-10">Тип события</p>
+					<div class="text-radios">
+						{{#each catalog.quoteType as qt}}
+						<label class="text-radio">
+							{{#if qt.id === record.type }}
+							<input type="radio" name="type" value="{{ qt.id }}" checked>
+							{{else}}
+							<input type="radio" name="type" value="{{ qt.id }}">
+							{{/if}}
+							<span>{{qt.name}}</span>
 						</label>
-						<div class="select-form" style="display: none;" data-show="service">
-							<div class="text-bold mb-20">Тип события</div>
-							<div class="popups__text-chexboxs">
-								<label class="text-radio">
-									<input type="radio" name="type" value="clinic" checked>
-									<span>В клинике</span>
-								</label>
-								<label class="text-radio switch-blocks">
-									<input type="radio" name="type" value="online">
-									<span>Онлайн</span>
-								</label>
-							</div>
-						</div>
-
-						<div class="select-form" data-hide="expert">
-							<div class="select">
-								<div class="select__main">
-									<div class="select__placeholder">Выберите специалиста</div>
-									<div class="select__values"></div>
-								</div>
-								<div class="select__list">
-									{{#each catalog.experts}}
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox" name="experts[]" value="{{id}}">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">{{name}}</div>
-											</div>
-										</label>
+						{{/each}}
+					</div>
+					<div class="row">
+						{{#if record.spec_service}}
+						{{else}}
+						<div class="col-md-6">
+							<div class="select-form select-checkboxes">
+								<div class="select select_experts">
+									<div class="select__main">
+										<div class="select__placeholder">Выберите специалиста</div>
+										<div class="select__values"></div>
 									</div>
-									{{/each}}
+									<div class="select__list">
+										{{#each catalog.experts}}
+										<div class="select__item select__item--checkbox">
+											<label class="checkbox checkbox--record">
+												{{#if @global.utils.arr.search(.id, record.experts)}}
+												<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}">
+												{{else}}
+												<input type="checkbox" name="experts[]" value="{{.id}}">
+												{{/if}}
+												<span></span>
+												<div class="checbox__name">
+													<div class="select__name">{{name}}</div>
+												</div>
+											</label>
+										</div>
+										{{/each}}
+									</div>
 								</div>
 							</div>
 						</div>
+						{{/if}}
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input input-lk-calendar input--grey">
+										<input class="input__control datepickr"
+											name="event_date"
+											value="{{record.event_date}}"
+											type="text" placeholder="Выбрать дату и время">
+										<div class="input__placeholder">Выбрать дату</div>
+									</div>
+								</div>
+							</div>
+							<div class="row event-time">
+								<div class="col-md-6">
+									<div class="calendar input mb-30">
+										<input class="input__control timepickr event-time-start"
+											type="text"
+											name="event_time_start"
+											value="{{record.event_time_start}}"
+											data-min-time="09:00"
+											data-max-time="18:00"
+											pattern="[0-9]{2}:[0-9]{2}" required>
+										<div class="input__placeholder">Время (начало)</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="calendar input mb-30">
+										<input class="input__control timepickr event-time-end" type="text"
+											name="event_time_end"
+											value="{{record.event_time_end}}"
+											data-min-time="09:00"
+											data-max-time="18:00"
+											pattern="[0-9]{2}:[0-9]{2}" required>
+										<div class="input__placeholder">Время (конец)</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="admin-editor__patient">
+					<div class="text-bold mb-10">Выбраны услуги</div>
+					{{#if record.spec_service}}
+					<div class="search__drop-item">
+						<input type="hidden" name="services[]" value="">
+						<div class="search__drop-name">
+							{{catalog.spec_service[this.spec_service].header}}
+						</div>
+						<div class="search__drop-right">
+							<div class="search__drop-summ">{{catalog.spec_service[this.spec_service].price}} ₽</div>
+						</div>
+					</div>
+					{{else}}
+					{{#each record.service_prices: idx, key}}
+					<div class="search__drop-item" data-index="{{idx}}"
+						data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+						<input type="hidden" name="services[]"
+							value="{{service_id}}">
+						<input type="hidden" name="service_prices[{{key}}][service_id]"
+							value="{{service_id}}">
+						<input type="hidden" name="service_prices[{{key}}][price_id]"
+							value="{{price_id}}">
+						<input type="hidden" name="service_prices[{{key}}][name]"
+							value="{{name}}">
+						<input type="hidden" name="service_prices[{{key}}][price]"
+							value="{{price}}">
+						<div class="search__drop-name">
+							{{name}}
+							<div class="search__drop-delete">
+								<svg class="svgsprite _delete">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+								</svg>
+							</div>
+						</div>
+						<div class="search__drop-right">
+							<div class="search__drop-summ">{{ @global.utils.formatPrice(record.price) }} ₽</div>
+						</div>
+					</div>
+					{{/each}}
+					{{/if}}
+				</div>
 
-						<div class="calendar input mb-30">
-							<input class="input__control datepickr" type="text"
-								name="event_date" required
-								placeholder="Выбрать дату и время">
-							<div class="input__placeholder">Выбрать время и дату</div>
-						</div>
-						<div class="calendar input mb-30">
-							<input class="input__control" type="time" name="event_time_start"
-								min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
-							<input class="input__control" type="time" name="event_time_end"
-								min="09:00" max="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
-							<div class="input__placeholder">Выбрать время</div>
-						</div>
-						<input type="hidden" name="client" value="{{client_id}}">
-						<input type="hidden" name="group" value="quotes">
-						<input type="hidden" name="status" value="new">
-						<input type="hidden" name="pay_status" value="unpay">
-						<button class="btn btn--black" type="submit">Продолжить</button>
-					</form>
+				<div class="admin-editor__summ">
+					<p>Всего</p>
+					<input type="hidden" name="price" value="{{record.price}}">
+					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
+				</div>
+				<div class="row">
+				<div class="col-md-4 --jcfe --flex">
+					<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+				</div>
+				</div>
+				<button class="btn btn--white" type=submit>Сохранить</button>
+			</div>
+			<div class="col-md-1"></div>
+			
+		</div>
+	</form>
 				</div>
 			</template>
 		</div>
@@ -765,7 +855,7 @@
 							<p class="price">0 ₽</p>
 						</div>
 
-						<input type="hidden" name="client" value="{{client_id}}">
+						<input type="hidden" name="client" value="{{client.id}}">
 						<input type="hidden" name="group" value="events">
 						<input type="hidden" name="status" value="upcoming">
 						<input type="hidden" name="pay_status" value="unpay">

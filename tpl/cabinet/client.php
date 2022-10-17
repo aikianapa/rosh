@@ -589,7 +589,7 @@
 </template>
 
 <script>
-	$(document).on('cabinet-js-ready', function () {
+	$(document).on('cabinet-db-ready', function () {
 		console.log('>>> cabinet page script.');
 		var page = new Ractive({
 			el: 'main.page .page-content',
@@ -658,7 +658,7 @@
 				},
 				runOnlineChat(ev) {
 					const _rec_id = $(ev.node).data('id');
-					CabinetController.runOnlineChat(_rec_id);
+					Cabinet.runOnlineChat(_rec_id);
 				},
 				showLongtermDetails(ev) {
 					var _parent = $(ev.node).parents('.accardeon');
@@ -775,7 +775,7 @@
 								if ($form.verify() && uid > '') {
 									let data = $form.serializeJSON();
 
-									CabinetController.updateProfile(uid, data, function (data) {
+									Cabinet.updateProfile(uid, data, function (data) {
 										data.birthdate_fmt = utils.formatDate(data.birthdate);
 										data.phone         = utils.formatPhone(data.phone);
 										page.set('user', data); /* get actually user data */

@@ -551,7 +551,7 @@
 
 <script wb-app remove>
 	var tabs = {};
-	$(document).on('cabinet-js-ready', function () {
+	$(document).on('cabinet-db-ready', function () {
 		let editProfile = wbapp.tpl('#editProfile').html;
 		let editStatus  = wbapp.tpl('#editStatus').html;
 
@@ -590,7 +590,7 @@
 												let $form = $(form);
 												if ($form.verify() && profile_id > '') {
 													let data = $form.serializeJSON();
-													CabinetController.updateProfile(profile_id, data,
+													Cabinet.updateProfile(profile_id, data,
 														function (res) {
 															console.log(res);
 															data.birthdate_fmt = utils.formatDate(data.birthdate);
@@ -674,7 +674,7 @@
 												if ($($(ev.node).parents('form')).verify()) {
 
 													let post = $($(ev.node).parents('form')).serializeJSON();
-													CabinetController.updateQuote(_record.id, post,
+													Cabinet.updateQuote(_record.id, post,
 														function (res) {
 															console.log('event data:', post);
 															toast('Успешно сохранено');

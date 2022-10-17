@@ -123,7 +123,7 @@
 		{{/with}}
 	</template>
 	<script wbapp>
-		$(document).on('cabinet-js-ready', function () {
+		$(document).on('cabinet-db-ready', function () {
 			var client_id = '{{_route.client}}';
 			var page      = new Ractive({
 				el: 'main.page .search-result',
