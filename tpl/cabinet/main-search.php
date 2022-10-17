@@ -41,106 +41,110 @@
 					</div>
 				</div>
 			</form>
+
 			<div class="search-result" wb-off>
 				<div class="container">
 					<div class="loading-overlay">
 						<div class="loader"></div>
 					</div>
-					<div class="lk-title">Результаты поиска</div>
-					{{#each results}}
-					<div class="account__panel">
-						<div class="account__info">
-							<div class="user">
-								<div class="user__name">{{this.fullname}}</div>
-								<div class="user__item">Дата рождения:
-									<span>{{this.birthdate}}</span>
-								</div>
-								<a href="callto:+{{this.phone}}" class="user__item">Тел:
-									<span>{{this.phone}}</span>
-								</a>
 
-								<div class="user__item">Почта:
-									<span>{{this.email}}</span>
-								</div>
-								<div class="user__confirm">
-									<svg class="svgsprite _confirm">
-										<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
-									</svg>
-									Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
-								</div>
-								<div class="admin-edit__user-btns d-none">
-									<a class="admin-edit__user-btn btn btn--white --openpopup"
-										data-popup="--create-appoint">Записать пациента на прием</a>
-									<a class="admin-edit__user-btn btn btn--white --openpopup"
-										onclick="popupPhoto(true)"
-										data-popup="--photo">Добавить продолжительное лечение </a>
-									<div class="admin-edit__uploads">
-										<input class="admin-edit__upload" type="file" id="analises-file">
-										<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
-									</div>
-								</div>
-							</div>
-						</div>
-						<a class="account__detail" data-client="[[id]]">
-							Подробнее
-						</a>
-					</div>
-					{{else}}
-					<div class="account__panel">
-						<span>Ничего не найдено. Измените запрос и повторите поиск</span>
-					</div>
-					{{/each}}
 				</div>
 			</div>
 		</div>
 	</main>
+</div>
 
-	<script wbapp>
-		var q = '{{_route.params.q}}';
-		$(document).on('cabinet-db-ready', function () {
-			var page = new Ractive({
-				el: 'main.page',
-				template: $('main.page').html(),
-				data: {
-					q: '{{_route.params.q}}',
-					user: wbapp._session.user,
-					results: {}
-				},
-				on: {
-					init() {
-						wbapp.get('/api/v2/list/users?active=on&role=client&phone~=' + q, function (data) {
-							if (!data) {
-								return;
-							}
-							data.forEach(function (user, i) {
-								page.set('results.' + user.id, user);
-							});
-						});
-						wbapp.get('/api/v2/list/users?active=on&role=client&email~=' + q, function (data) {
-							if (!data) {
-								return;
-							}
-							data.forEach(function (user, i) {
-								page.set('results.' + user.id, user);
-							});
-						});
-						wbapp.get('/api/v2/list/users?active=on&role=client&fullname~=' + q, function (data) {
-							if (!data) {
-								return;
-							}
-							data.forEach(function (user, i) {
-								page.set('results.' + user.id, user);
-							});
-						});
-					},
-					complete(ev) {
-						$('main.page .loading-overlay').remove();
-					}
+<template id="search-result">
+	<div class="lk-title">Результаты поиска</div>
+	{{#each results}}
+	<div class="account__panel">
+		<div class="account__info">
+			<div class="user">
+				<div class="user__name">{{ this.fullname }}</div>
+				<div class="user__item">Дата рождения:
+					<span>{{ this.birthdate }}</span>
+				</div>
+				<a href="callto:+{{this.phone}}" class="user__item">Тел:
+					<span>{{ this.phone }}</span>
+				</a>
+
+				<div class="user__item">Почта:
+					<span>{{this.email}}</span>
+				</div>
+				<div class="user__confirm">
+					<svg class="svgsprite _confirm">
+						<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
+					</svg>
+					Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
+				</div>
+				<div class="admin-edit__user-btns d-none">
+					<a class="admin-edit__user-btn btn btn--white --openpopup"
+						data-popup="--create-appoint">Записать пациента на прием</a>
+					<a class="admin-edit__user-btn btn btn--white --openpopup"
+						onclick="popupPhoto(true)"
+						data-popup="--photo">Добавить продолжительное лечение </a>
+					<div class="admin-edit__uploads">
+						<input class="admin-edit__upload" type="file" id="analises-file">
+						<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a class="account__detail" data-client="[[id]]">
+			Подробнее
+		</a>
+	</div>
+	{{else}}
+	<div class="account__panel">
+		<span>Ничего не найдено. Измените запрос и повторите поиск</span>
+	</div>
+	{{/each}}
+</template>
+
+<script wbapp>
+	var q = '{{_route.params.q}}';
+	$(document).on('cabinet-db-ready', function () {
+		window.page = new Ractive({
+			el: 'main.page .search-result .container',
+			template: wbapp.tpl('#search-result').html,
+			data: {
+				q: '{{_route.params.q}}',
+				user: wbapp._session.user,
+				results: {}
+			},
+			on: {
+				complete(ev) {
+					$('main.page .loading-overlay').remove();
 				}
+			}
+		});
+		utils.api.get('/api/v2/list/users?active=on&role=client&phone~=' + q).then(function (data) {
+			if (!data) {
+				return;
+			}
+			data.forEach(function (user, i) {
+				page.set('results.' + user.id, user);
 			});
 		});
-	</script>
-</div>
+		utils.api.get('/api/v2/list/users?active=on&role=client&email~=' + q).then(function (data) {
+			if (!data) {
+				return;
+			}
+			data.forEach(function (user, i) {
+				page.set('results.' + user.id, user);
+			});
+		});
+		utils.api.get('/api/v2/list/users?active=on&role=client&fullname~=' + q).then(function (data) {
+			if (!data) {
+				return;
+			}
+			data.forEach(function (user, i) {
+				page.set('results.' + user.id, user);
+			});
+		});
+	});
+</script>
+
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
