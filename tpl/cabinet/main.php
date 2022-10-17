@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ru">
 <head>
-	<title seo>Личный кабинет</title>
+	<title seo>Кабинет администратора</title>
 	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
 </head>
 
@@ -12,7 +12,7 @@
 	</div>
 	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="account admin">
-			<form class="search">
+			<form class="search" action="/cabinet/search">
 				<div class="container">
 					<div class="crumbs">
 						<a class="crumbs__arrow" href="#">
@@ -25,7 +25,7 @@
 					</div>
 					<div class="title-flex --flex --jcsb">
 						<div class="title">
-							<h1 class="h1 mb-10">Кабинет администратора </h1>
+							<h1 class="h1 mb-10">Кабинет администратора</h1>
 						</div>
 						<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
 							data-popup="--create-client">
@@ -34,7 +34,7 @@
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
-							<input class="search__input" type="text" placeholder="Поиск">
+							<input class="search__input" type="text" placeholder="Поиск" name="q">
 						</div>
 						<button class="btn btn--white">Найти</button>
 					</div>
@@ -594,6 +594,8 @@
 										el: form,
 										template: editProfile,
 										data: {},
+										lazy: true,
+
 										on: {
 											save(ev) {
 												let $form = $(form);
@@ -672,8 +674,7 @@
 										},
 										on: {
 											complete() {
-												initServicesSearch($('.popup-services-list'),
-													catalog.servicesList);
+												initServicesSearch($('.popup-services-list'), catalog.servicesList);
 
 												initPlugins();
 												if (!!$('.select .select__item input:checked').length) {

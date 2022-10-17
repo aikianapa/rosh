@@ -1021,6 +1021,7 @@ $(function () {
 			_data = $.extend({}, params, _default);
 		}
 		_data.catalog = catalog;
+
 		return new Ractive({
 			el: '.popup.--photo',
 			template: wbapp.tpl('#popupPhoto').html,
