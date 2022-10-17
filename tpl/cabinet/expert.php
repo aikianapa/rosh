@@ -401,7 +401,7 @@
 			<div class="profile-edit__block profile-education">
 				<div class="lk-title">Образование</div>
 				<div class="profile-education__wrap repeater-container" data-repeater="study">
-					{{#each user.expert.stages: idx}}
+					{{#each user.adv.stages: idx}}
 					<div class="profile-education__inner row repeater-item" data-idx="{{idx}}">
 						<div class="col-md-6">
 							<div class="input input--grey">
