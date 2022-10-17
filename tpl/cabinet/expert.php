@@ -46,7 +46,7 @@
 				<div class="user --flex">
 					<div class="user__panel">
 						<div class="user__name">
-							{{expert.name}}
+							{{user.expert.name}}
 							<button class="user__edit all" on-click="toggleEdit">
 								<svg class="svgsprite _edit">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
@@ -55,19 +55,19 @@
 						</div>
 						<div class="user__group --noflex">
 							<div class="user__item">Образование:
-								<span>{{expert.education}}</span>
+								<span>{{user.expert.education}}</span>
 							</div>
 							<div class="user__item">Лицензия:
-								{{#each user.expert.licenses: ixd}}
+								{{#each user.adv.licenses: ixd}}
 								<p>
-									<span>№ {{user.expert.licenses[ixd]}}</span>
+									<span>№ {{.}}</span>
 								</p>
 								{{/each}}
 							</div>
 						</div>
 					</div>
 					<div class="user__panel user__panel--border">
-						<div class="user__item">{{expert.spec}}</div>
+						<div class="user__item">{{user.expert.spec}}</div>
 						{{#if events.upcoming}}
 						<div class="user__notifcation closest-event">
 							<svg class="svgsprite _notification">
@@ -254,22 +254,21 @@
 					<div class="history-item">Анализы</div>
 				</div>
 				<div class="account__table-body">
-					<!-- !!! quote history item !!! -->
-					{{#if this.show_history}}
 					{{#each history}}
 					<div class="acount__table-accardeon accardeon" data-record_id="{{this.id}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="history-item">
 								<p>Дата</p>
-								{{ @global.utils.formatDate(this.event_date) }}
+								{{ @global.utils.formatDate(.event_date) }}
 							</div>
 							<div class="history-item">
 								<p>Время</p>
 								{{this.event_time_start}} - {{this.event_time_end}}
 							</div>
-							<div class="history-item">
+							<div class="history-item"
+								data-client="{{ this.client }}" data="{{ this.catalog.clients[{{this.client}}] }}">
 								<p>Пациент</p>
-								<p>{{ @global.catalog.clients[this.client].fullname }}</p>
+								<p>{{ this.catalog.clients[.client]fullname }}</p>
 							</div>
 							<div class="history-item">
 								<p>Услуги</p>
@@ -310,8 +309,6 @@
 						</div>
 					</div>
 					{{/each}}
-					{{/if}}
-					<!-- !!! / quote history item !!! -->
 				</div>
 			</div>
 		</div>
@@ -531,150 +528,152 @@
 
 	<script wb-app>
 		$(document).on('cabinet-db-ready', function () {
-			utils.api.get('/api/v2/read/users/' + wbapp._session.user.id)
-				.then(function (user) {
-					window.page = new Ractive({
-						el: 'main.page .expert-page',
-						template: wbapp.tpl('#expert-page').html,
-						data: {
-							user: user,
-							expert: {},
-							catalog: catalog,
-							events: {
-								'upcoming': [],
-								'current': []
-							},
-							history: []
+			utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (user) {
+
+				window.page = new Ractive({
+					el: 'main.page .expert-page',
+					template: wbapp.tpl('#expert-page').html,
+					data: {
+						user: user,
+						expert: {},
+						catalog: catalog,
+						events: {
+							'upcoming': [],
+							'current': []
 						},
-						on: {
-							init() {
-								utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id)
-									.then(function (data) {
-										page.set('expert', data[0]); /* get actually user data */
-										page.set('show_history', true);
-										return data[0];
-									})
-									.then(function (expert) {
-										utils.api.get(
-												'/api/v2/list/records?group=events&status=[upcoming,past]' +
-												'&experts~=' + expert.id + '&@sort=event_date:d')
-											.then(function (records) {
-												if (!records) {
+						history: []
+					},
+					on: {
+						init() {
+							utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id)
+								.then(function (data) {
+									page.set('expert', data[0]); /* get actually user data */
+									page.set('show_history', true);
+									return data[0];
+								})
+								.then(function (expert) {
+									utils.api.get(
+											'/api/v2/list/records?group=events&status=[upcoming,past]' +
+											'&experts~=' + expert.id + '&@sort=event_date:d')
+										.then(function (records) {
+											if (!records) {
+												return;
+											}
+											let curr_timestamp = parseInt(getdate()[0]);
+											records.forEach(function (rec, idx) {
+												if (rec.status === 'past') {
+													page.push('history', rec);
+													return;
+												} else if (idx === 0) {
+													page.set('closest_event', rec);
+												}
+
+												if (rec.event_date !== (new Date()).toLocaleDateString()) {
+													page.push('events.upcoming', rec); /* get actually user next events */
 													return;
 												}
-												let curr_timestamp = parseInt(getdate()[0]);
-												records.forEach(function (rec, idx) {
-													if (rec.status === 'past') {
-														page.push('history', rec);
-														return;
-													} else if (idx === 0) {
-														page.set('closest_event', rec);
-													}
 
-													if (rec.event_date !== (new Date()).toLocaleDateString()) {
-														page.push('events.upcoming', rec); /* get actually user next events */
-														return;
-													}
+												let event_from_timestamp = utils.timestamp(
+													rec.event_date + ' ' + rec.event_time_start);
+												let event_to_timestamp   = utils.timestamp(
+													rec.event_date + ' ' + rec.event_time_end);
 
-													let event_from_timestamp = utils.timestamp(
-														rec.event_date + ' ' + rec.event_time_start);
-													let event_to_timestamp   = utils.timestamp(
-														rec.event_date + ' ' + rec.event_time_end);
-
-													if (event_from_timestamp < curr_timestamp
-													    && (event_to_timestamp >= curr_timestamp)) {
-														page.push('events.current', rec);
-													} else {
-														page.push('events.upcoming', rec);
-													}
-												});
+												if (event_from_timestamp < curr_timestamp
+												    && (event_to_timestamp >= curr_timestamp)) {
+													page.push('events.current', rec);
+												} else {
+													page.push('events.upcoming', rec);
+												}
 											});
-									});
-							},
-							toggleEdit(ev) {
-								console.log(ev, $(ev.node), this);
-								if (!!window.profile_inline_editor) {
-									//$('.profile-editor-inline').toggleClass('d-none');
-									return;
-								}
-								window.profile_inline_editor = new Ractive({
-									el: 'main.page .profile-edit',
-									template: wbapp.tpl('#editorProfile').html,
-									data: {
-										user: this.get('user')
-									},
-									on: {
-										complete() {
-											$('.profile-editor-inline').removeClass('d-none');
-											initPlugins();
-										},
-										submitUserForm(ev) {
-											let $form = $(ev.node);
-											let uid   = this.get('user.id');
-											if ($form.verify() && uid > '') {
-												let data = $form.serializeJSON();
-
-												data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-												utils.api.post('/api/v2/update/users/' + uid, data)
-													.then(function (res) {
-														console.log(res);
-														page.set('user', res);
-													});
-												$('.user__edit.all').trigger('click');
-											}
-											return false;
-										},
-										submitExpertForm(ev) {
-											let $form = $(ev.node);
-											let uid   = this.get('user.id');
-
-											if ($form.verify() && uid > '') {
-												let data = $form.serializeJSON();
-
-												utils.api.post('/api/v2/update/users/' + uid, data).then(
-													function (res) {
-														page.set('user', res);
-														console.log('saved', res);
-													});
-												$('.user__edit.all').trigger('click');
-											}
-											return false;
-										}
-									}
+										});
 								});
-							},
-							saveRecommendation(ev) {
-								const _id             = $(ev.node).data('id');
-								const _recommendation = $('#' + _id + '--recommendation').val();
+						},
+						complete() {
+							this.set('catalog', catalog);
+						},
+						toggleEdit(ev) {
+							console.log(ev, $(ev.node), this);
+							if (!!window.profile_inline_editor) {
+								//$('.profile-editor-inline').toggleClass('d-none');
+								return;
+							}
+							window.profile_inline_editor = new Ractive({
+								el: 'main.page .profile-edit',
+								template: wbapp.tpl('#editorProfile').html,
+								data: {
+									user: this.get('user')
+								},
+								on: {
+									complete() {
+										$('.profile-editor-inline').removeClass('d-none');
+										initPlugins();
+									},
+									submitUserForm(ev) {
+										let $form = $(ev.node);
+										let uid   = this.get('user.id');
+										if ($form.verify() && uid > '') {
+											let data = $form.serializeJSON();
 
-								utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
-									var prev_recommendation = data.recommendation;
+											data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+											utils.api.post('/api/v2/update/users/' + uid, data)
+												.then(function (res) {
+													console.log(res);
+													page.set('user', res);
+												});
+											$('.user__edit.all').trigger('click');
+										}
+										return false;
+									},
+									submitExpertForm(ev) {
+										let $form = $(ev.node);
+										let uid   = this.get('user.id');
 
-									utils.api.post('/api/v2/update/records/' + _id,
-										{'recommendation': _recommendation}).then(function (res) {
-										toast('Успешно сохранено!');
-									});
+										if ($form.verify() && uid > '') {
+											let data = $form.serializeJSON();
+
+											utils.api.post('/api/v2/update/users/' + uid, data).then(
+												function (res) {
+													page.set('user', res);
+													console.log('saved', res);
+												});
+											$('.user__edit.all').trigger('click');
+										}
+										return false;
+									}
+								}
+							});
+						},
+						saveRecommendation(ev) {
+							const _id             = $(ev.node).data('id');
+							const _recommendation = $('#' + _id + '--recommendation').val();
+
+							utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
+								var prev_recommendation = data.recommendation;
+
+								utils.api.post('/api/v2/update/records/' + _id,
+									{'recommendation': _recommendation}).then(function (res) {
 									if (_recommendation !== prev_recommendation) {
 										utils.api.post('/api/v2/create/record-changes/',
-												{
-													record: data.id,
-													experts: data.experts,
-													client: data.client,
-													changes: [{
-														field: 'recommendation',
-														prev_val: prev_recommendation,
-														new_val: _recommendation
-													}]
-												})
-											.then(function (res) {
-
+											{
+												record: data.id,
+												experts: data.experts,
+												client: data.client,
+												changes: [{
+													label: 'Рекомендации врача',
+													field: 'recommendation',
+													prev_val: prev_recommendation,
+													new_val: _recommendation
+												}]
 											});
 									}
+									toast('Успешно сохранено!');
 								});
-							}
+							});
+							return false;
 						}
-					});
+					}
 				});
+			});
 		});
 	</script>
 </div>
