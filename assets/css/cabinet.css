@@ -243,7 +243,7 @@ div.accardeon.active > div.accardeon__list {
 }
 .autocomplete-suggestions .autocomplete-suggestion:hover {
 	background-color : #FFF;
-	border: 1px solid whitesmoke;
+	border: 1px solid #f4f3f2;
 }
 .admin-editor__patient .search__drop-item {
 	background   : white;
