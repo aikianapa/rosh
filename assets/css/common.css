@@ -47,9 +47,8 @@ div.account__tab-items div.buttons > label { position: absolute; right: 2em; top
 div.accardeon.active > div.accardeon__list { display: block; }
 div.select.active > div.select__list { display: block; }
 .select-form .select__list{ max-height: 160px; overflow: auto; }
-.autocomplete-suggestions{ background-color: #fff;  max-height: 240px!important; overflow: auto; }
+.autocomplete-suggestions{ max-height: 240px!important; overflow: auto; }
 .autocomplete-suggestions .autocomplete-suggestion{ padding: 6px; z-index: 99999;}
-.autocomplete-suggestions .autocomplete-suggestion:hover{background-color : #eefeff;}
 div.swiper-horizontal { overflow: hidden; }
 
 form.profile-edit.active, div.profile-edit.active {width:100%; display: block; }

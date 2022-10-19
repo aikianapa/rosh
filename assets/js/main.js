@@ -65,7 +65,6 @@ $(function () {
             $(this).closest('.popup').hide();
             $(this).closest('.popup').find('.popup__panel.d-none:not(.--succed)').removeClass('d-none');
             $(this).closest('.popup').find('.--succed.d-block').removeClass('d-block');
-            window.location.reload();
             return false;
         }).on('click', '.popup__close', function () {
             $(this).closest('.popup').hide();
@@ -82,6 +81,7 @@ $(function () {
             } else {
                 $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
             }
+
             return false;
         }).on('___click', '.select .select__main', function () { // ###############
             if ($(this).parent().hasClass('active')) {
@@ -149,17 +149,21 @@ $(function () {
             }
             return false;
         }).on('repeaterAdd', '[data-repeater="license"]', function () {
-            $(this).find('input').attr('name', 'licenses[]');
+            $(this).find('input').attr('name', 'adv[licenses][]');
+            initPlugins();
         }).on('repeaterAdd', '[data-repeater="study"]', function () {
             var _max_idx = $(this).parents('.repeater-container')
                 .find('.profile-education__inner.row[data-idx]:last')
                 .data('idx');
             _max_idx++;
             $(this).attr('data-idx', _max_idx);
-            $(this).find('input[name="stages[][stage]"]').attr('name', 'stages[' + _max_idx + '][stage]');
-            $(this).find('input[name="stages[][year]"]').attr('name', 'stages[' + _max_idx + '][year]');
-            $(this).find('input[name="stages[][year_end]"]').attr('name', 'stages[' + _max_idx + '][year_end]');
-
+            $(this).find('input[name="stages[][stage]"]').attr('name', 'adv[stages][' +
+                                                                       _max_idx + '][stage]');
+            $(this).find('input[name="stages[][year]"]').attr('name', 'adv[stages][' +
+                                                                      _max_idx + '][year]');
+            $(this).find('input[name="stages[][year_end]"]').attr('name', 'adv[stages][' +
+                                                                          _max_idx + '][year_end]');
+            initPlugins();
         }).on('click', '.ddl', function () {
             $(this).toggleClass('active');
             return false;
@@ -186,23 +190,22 @@ $(function () {
         })
 
         initPlugins = function () {
-
-            $('.datebirthdaypickr').each(function () {
+            $('input.datebirthdaypickr').each(function () {
                 new AirDatepicker(this, {
-                    selectedDates: [new Date($(this).val())],
+                    selectedDates: [$(this).val() || (new Date())],
                     autoClose: true,
                     dateFormat: 'dd.MM.yyyy',
                     timepicker: false
                 });
             });
-            $('.daterangepickr').each(function () {
+            $('input.daterangepickr').each(function () {
                 new AirDatepicker(this, {
                     autoClose: true,
                     range: true,
                     multipleDatesSeparator: ' - '
                 });
             });
-            $('.yearpickr').each(function () {
+            $('input.yearpickr').each(function () {
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     view: 'years',
@@ -213,7 +216,7 @@ $(function () {
                 });
             });
 
-            $('.datepickr').each(function () {
+            $('input.datepickr').each(function () {
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     timepicker: false,
@@ -221,7 +224,20 @@ $(function () {
                     autoClose: true
                 });
             });
-            $('.datetimepickr').each(function () {
+
+            $('.input__control.timepickr').each(function (e) {
+                console.log($(this), e);
+                $(this).timepicker({
+                    timeFormat: $(this).data('time-format') || 'HH:mm',
+                    interval: $(this).data('interval') || 15,
+                    minTime: $(this).data('min-time') || '08:00',
+                    maxTime: $(this).data('max-time') || '19:00',
+                    dynamic: false,
+                    dropdown: true,
+                    scrollbar: true
+                });
+            });
+            $('input.datetimepickr').each(function () {
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     minHours: 8,
@@ -237,9 +253,7 @@ $(function () {
             $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
             });
-            $('input[data-inputmask]').each(function () {
-                $(this).inputmask();
-            });
+           
             //
             //$('input.autocomplete').each(function () {
             //    $(this).autocomplete({
@@ -263,7 +277,7 @@ $(function () {
                         // Do Ajax call or lookup locally, when done,
                         // call the callback and pass your results:
                         var _res = [];
-                        _lookup.forEach(function(v, k){
+                        _lookup.forEach(function (v, k) {
                             _res.push({"value": v, "data": k});
                         });
                         var result = {suggestions: _res};
@@ -271,6 +285,7 @@ $(function () {
                     },
                 });
             });
+
         };
 
         $(document).on('wb-verify-false', function (e, el, err) {
@@ -393,7 +408,6 @@ $(function () {
                 $('.to_top_btn').addClass('showed');
             }
         });
-
     });
 
 });

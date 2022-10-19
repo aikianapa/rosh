@@ -1,377 +1,531 @@
-var in_list = function (val, list) {
-	if (!val || !list) {
-		return false;
-	}
-	return list.includes(val);
-};
-var formatPhone = function(phone) {
-	var cleaned = ('' + phone).replace(/\D/g, '');
-	console.log(cleaned);
-	var match = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
-	if (match) {
-		var intlCode = (match[1] ? '+7 ' : '');
-		return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
-	}
-	return phone;
-};
-var catalog = {
-	/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
-	spec_service: {
-		experts_consultation: {
-			header: 'Общая консультация специалиста',
-			price: 4000
-		},
-		analises_interpretation: {
-			header: 'Расшифровка анализов',
-			price: 2000
-		}
-	},
-	/*dyctionary types*/
-	quoteStatus: {},
-	quoteType: {},
-	quotePay: {},
-
-	services: {},
-	servicePrices: {},
-	servicesList: [], /* for autocomplete */
-	serviceTags: {
-		"face": {
-			"name": "Лицо",
-			"color": "yellow"
-		},
-		"body": {
-			"name": "Тело",
-			"color": "green"
-		},
-		"hair": {
-			"name": "Волосы",
-			"color": "red"
-		},
-		"gyn": {
-			"name": "Гинекология",
-			"color": "blue"
-		},
-		"lab": {
-			"name": "Лаборатория",
-			"color": "purple"
-		}
-	},
-	categories: {},
-
-	experts: {},
-	clients: {},
-	admins: {},
-
-	init() {
-		var _self = this;
-
-		Utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
-			_self.quoteStatus = Utils.arrIndexBy(data);
-		});
-
-		Utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-			_self.quotePay = Utils.arrIndexBy(data);
-		});
-		Utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
-			_self.quoteType = Utils.arrIndexBy(data);
-		});
-
-		Utils.api.get('/api/v2/list/services?active=on').then(function (data) {
-
-			let _services       = {};
-			_self.servicePrices = {};
-
-			data.forEach(function (service, i) {
-				_self.services[service.id] = service;
-				const _cats           = service.category;
-				const _tags           = [];
-
-				_cats.forEach(function (cat) {
-					_tags.push({
-						"id": cat,
-						"color": _self.serviceTags[cat].color,
-						"tag": Array.from(_self.serviceTags[cat].name)[0]
-					});
-				});
-				if(!!service.blocks) {
-					service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-						if (serv_price.price === 0) {
-							return;
-						}
-						let _item = {
-							value: serv_price.header,
-							id: service.id + '-' + j,
-							data: {
-								service_id: service.id,
-								service_title: service.header,
-								tags: _tags,
-								price: serv_price.price,
-								price_id: j
-							}
-						};
-						_self.servicesList.push(_item);
-						_self.servicePrices[service.id + '-' + j] = {
-							'price': serv_price.price,
-							'header': serv_price.header
-						};
-					});
-				}
-			});
-
-		});
-		/* for Admins only */
-		if (window.user_role === 'main') {
-			Utils.api.get('/api/v2/list/users?role=main&active=on' +
-			              '&@return=id,fullname&@sort=fullname:a').then(function (data) {
-				_self.admins = Utils.arrIndexBy(data);
-			});
-			Utils.api.get('/api/v2/list/users?role=client&active=on' +
-			              '&@return=id,fullname,phone,email,birthdate&@sort=fullname:a').then(function (data) {
-				_self.clients = Utils.arrIndexBy(data);
-			});
-		}
-
-		Utils.api.get('/api/v2/list/experts?active=on&@sort=name:a').then(function (data) {
-			let _experts = {};
-			data.forEach(function (expert, i) {
-				_experts[expert.id] = expert;
-				Utils.api.get('/api/v2/list/_yonmap?f=experts&i=' + expert.id, function (res) {
-					console.log('-- expert url:', res[0]['u']);
-					_experts[expert.id].info_uri = res[0]['u'] || '';
-				});
-			});
-			_self.experts = _experts;
-		});
-
-		Utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
-			let _serviceCats = {};
-			Object.keys(res.tree.data).forEach(function (_key) {
-				const _cat = res.tree.data[_key];
-				if (_cat.active != 'on') {
-					return;
-				}
-				_serviceCats[_cat.id] = {
-					'id': _cat.id,
-					'name': _cat.name,
-					'color': _cat.data.color
-				};
-			});
-			_self.categories = _serviceCats;
-		});
-
-		console.log('-- start preload catalogs data --');
-	}
-};
-var Utils   = {
-	formatPhone(phone) {
-		var cleaned = ('' + phone).replace(/\D/g, '');
-		console.log(cleaned);
-		var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
-		if (match) {
-			var intlCode = (match[1] ? '+7 ' : '');
-			return [intlCode, '(', match[2], ') ', match[3], '-', match[2], '-', match[2]].join('');
-		}
-		return phone;
-	},
-	formatPrice(price, sufix) {
-		var sign = 1;
-		if (val < 0) {
-			sign = -1;
-			val  = -val;
-		}
-		// trim the number decimal point if it exists
-		let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
-		let len    = num.toString().length;
-		let result = '';
-		let count  = 1;
-
-		for (let i = len - 1; i >= 0; i--) {
-			result = num.toString()[i] + result;
-			if (count % 3 === 0 && count !== 0 && i !== 0) {
-				result = ' ' + result;
-			}
-			count++;
-		}
-
-		// add number after decimal point
-		if (val.toString().includes('.')) {
-			result = result + '.' + val.toString().split('.')[1];
-		}
-		// return result with - sign if negative
-		return (sign < 0 ? '-' + result : result) + (sufix || '');
-	},
-	varType(val) {
-		return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-	},
-	uniqueArray(arr) {
-		if (this.varType(arr) === 'array') {
-			console.warn('value not array: ', arr);
-			return arr;
-		}
-
-		function onlyUnique(value, index, self) {
-			return self.indexOf(value) === index;
-		}
-
-		return arr.filter(onlyUnique);
-	},
-	timestamp(datetime){
-		return Math.floor(new Date(datetime).getTime() / 1000);
-	},
-	api: {
-		get(path, data, options) {
-			const fullPath = (data === undefined) ? path : path + `?${new URLSearchParams(data)}`;
-			return this.request(fullPath, 'get', undefined, options);
-		},
-		post(path, data, options) {
-			return this.request(path, 'post', data, options);
-		},
-		async request(path, method, data, options) {
-			let _path = path;
-			if (!path.includes('__token')) {
-				let parts = path.split('?', 2);
-				if (parts.length === 2) {
-					parts[1] += '&__token=' + wbapp._session.token;
-				} else {
-					parts[0] += '?__token=' + wbapp._session.token;
-				}
-				_path = parts.join('?');
-			}
-			const defaultOptions = {
-				method
-			};
-			if (method !== 'get' && method !== 'head') {
-				defaultOptions.body = new URLSearchParams(data);
-			}
-			return fetch(_path,
-				options === undefined ? defaultOptions : Object.assign(defaultOptions, options))
-				.then((result) => result.json());
-		}
-	},
-	arrIndexBy(array, index_key) {
-		const _index = index_key || 'id';
-		let _result  = {};
-		array.forEach(function (item) {
-			_result[item[_index]] = item;
-		});
-
-		return _result;
-	},
-	formatDate(date) {
-		console.log(date);
-		return new Date(date).toLocaleDateString();
-	},
-	formatDateTime(date) {
-		return new Date(date).toLocaleString();
-	}
-};
-
-var CabinetController = {
-	updateProfile(profile_id, profile_data, callback) {
-		let data       = profile_data;
-		data.phone     = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-
-		Utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
-			if (!!callback) {
-				callback(res);
-			}
-		});
-	},
-	createQuote(record_data, callback) {
-		let data = record_data;
-
-		data.group      = 'quotes';
-		data.status     = 'new';
-		data.pay_status = 'unpay';
-
-		data.priority = 0;
-		data.marked   = false;
-
-		data.event_date        = '';
-		data.event_time        = '';
-		data.longterm_date_end = '';
-
-		data.longterm_title = '';
-		data.analises  = false;
-		data.photos    = {before: [], after: []};
-
-		data.comment        = '';
-		data.recommendation = '';
-		data.description    = '';
-
-		data.price = parseInt(data.price);
-
-		Utils.api.post('/api/v2/create/records/', data).then(function (res) {
-			callback(res);
-		});
-	},
-	updateQuote(record_id, record_data, callback) {
-		let data = record_data;
-
-		//data.event_date        = '';
-		//data.event_time        = '';
-		//data.longterm_date_end = '';
-
-		data.longterm_title = '';
-		//data.analises  = false;
-		//data.photos    = {before: [], after: []};
-
-		//data.comment        = '';
-		//data.recommendation = '';
-		//data.description    = '';
-
-		data.price = parseInt(data.price);
-
-		Utils.api.post('/api/v2/update/records/' + record_id, data).then(function (res) {
-			callback(res);
-		});
-	},
-	listClientUpcoming(client_id, callback) {
-		Utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
-			function (data) {
-				if (!data) {
-					callback([]);
-				}
-				let curr_timestamp = parseInt(getdate()[0]);
-				data.forEach(function (rec) {
-					const event_date = (new Date(rec.event_begin_time * 1000)).toLocaleDateString();
-
-					if (event_date !== (new Date()).toLocaleDateString()) {
-						cabinet.push('events.upcoming', rec); /* get actually user next events */
-					}
-
-					if ((curr_timestamp + 10) > rec.event_begin_time && (rec.event_end_time >= curr_timestamp)) {
-						cabinet.push('events.current', rec);
-					}
-				});
-			});
-
-		wbapp.get('/api/v2/list/records?status=past&client=' + wbapp._session.user.id,
-			function (data) {
-				console.log('history.events:', data);
-				cabinet.set('history.events', data); /* get actually user next events */
-			});
-
-		wbapp.get('/api/v2/list/records?longterm=1&client=' + wbapp._session.user.id,
-			function (data) {
-				console.log('history.longterms:', data);
-				cabinet.set('history.longterms', data); /* get actually user next events */
-			});
-	},
-	listClientPast() {
-
-	},
-	listClientLongterms() {
-
-	}
-
-};
+window.user_role = wbapp?._session?.user?.role;
 
 $(function () {
-	if (!!window.user_role.length) {
-		catalog.init();
-	}
+	console.log('>>> cabinet.js loaded ..');
+
+	var isObj      = function (a) {
+		return (!!a) && (a.constructor === Object);
+	};
+	var _st        = function (z, g) {
+		return "" + (g != "" ? "[" : "") + z + (g != "" ? "]" : "");
+	};
+	window.utils   = {
+		urlParams(params, skipobjects, prefix) {
+			if (skipobjects === void 0) {
+				skipobjects = false;
+			}
+			if (prefix === void 0) {
+				prefix = "";
+			}
+			var result = "";
+			if (typeof (params) != "object") {
+				return prefix + "=" + encodeURIComponent(params) + "&";
+			}
+			for (var param in params) {
+				var c = "" + prefix + _st(param, prefix);
+				if (isObj(params[param]) && !skipobjects) {
+					result += utils.urlParams(params[param], false, "" + c);
+				} else if (Array.isArray(params[param]) && !skipobjects) {
+					params[param].forEach(function (item, ind) {
+						result += utils.urlParams(item, false, c + "[" + ind + "]");
+					});
+				} else {
+					result += c + "=" + encodeURIComponent(params[param]) + "&";
+				}
+			}
+			return result;
+		},
+
+		varType(val) {
+			return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+		},
+
+		arr: {
+			search(val, array) {
+				if (!val || !array) {
+					return false;
+				}
+				var _include = false;
+				$(array).each(function (key) {
+					_include = (this == val);
+					return !_include;
+				});
+				return _include;
+			},
+			unique(array) {
+				if (utils.varType(array) !== 'array') {
+					console.warn('value not array: ', array);
+					return array;
+				}
+
+				function onlyUnique(value, index, self) {
+					return self.indexOf(value) === index;
+				}
+
+				return array.filter(onlyUnique);
+			},
+			indexBy(array, index_key /* default "id" */) {
+				let _result = {};
+				if (utils.varType(array) !== 'array') {
+					console.warn('value not array: ', array);
+					return _result;
+				}
+				const _index = index_key || 'id';
+				array.forEach(function (item) {
+					_result[item[_index]] = item;
+				});
+
+				return _result;
+			}
+		},
+		api: {
+			get(path, data) {
+				let _path = path;
+				let parts = path.split('?', 2);
+				if (data !== undefined) {
+					if (parts.length === 2) {
+						parts[1] += '&' + $.param(data);
+					} else {
+						parts[0] += '?' + $.param(data);
+					}
+				}
+				_path = parts.join('?');
+
+				if (!_path.includes('__token')) {
+					parts = _path.split('?', 2);
+
+					if (parts.length === 2) {
+						parts[1] += '&__token=' + wbapp._session.token;
+					} else {
+						parts[0] += '?__token=' + wbapp._session.token;
+					}
+					_path = parts.join('?');
+				}
+
+				const defaultOptions = {Method: 'GET'};
+				return fetch(_path, defaultOptions).then((result) => result.json());
+			},
+			post(path, data) {
+				//return this.request(path, 'post', data, options);
+				if (is_string(data)) {
+					data += '&__token=' + wbapp._session.token;
+				} else {
+					try { data.__token = wbapp._session.token; } catch (error) { null; }
+				}
+				wbapp.loading();
+				return $.post(path, data, function () {
+					wbapp.unloading();
+				});
+			},
+			async request(path, method, data, options) {
+
+			}
+		},
+		timestamp(datetime) {
+			return Math.floor(new Date(datetime).getTime() / 1000);
+		},
+		formatDate(date) {
+			return new Date(date).toLocaleDateString();
+		},
+		formatDateTime(date) {
+			return new Date(date).toLocaleString();
+		},
+		formatTime(date) {
+			return new Date(date).toLocaleTimeString();
+		},
+		formatPhone(_phone) {
+			var phone = str_replace([' ', '+', '-', '(', ')'], '', _phone)
+			var cleaned = ('' + phone).replace(/\D/g, '');
+			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
+			//console.log('??', phone, match);
+			if (match) {
+				var intlCode = (match[1] ? '+7 ' : '');
+				phone = [intlCode, '(', match[2], ') ', match[3], '-', match[4], '-', match[5]].join('');
+			}
+			//console.log('???', phone);
+
+			return phone;
+		},
+		formatPrice(val, sufix) {
+			var sign = 1;
+			if (val < 0) {
+				sign = -1;
+				val  = -val;
+			}
+			// trim the number decimal point if it exists
+			let num    = val.toString().includes('.') ? val.toString().split('.')[0] : val.toString();
+			let len    = num.toString().length;
+			let result = '';
+			let count  = 1;
+
+			for (let i = len - 1; i >= 0; i--) {
+				result = num.toString()[i] + result;
+				if (count % 3 === 0 && count !== 0 && i !== 0) {
+					result = ' ' + result;
+				}
+				count++;
+			}
+
+			// add number after decimal point
+			if (val.toString().includes('.')) {
+				result = result + '.' + val.toString().split('.')[1];
+			}
+			// return result with - sign if negative
+			return (sign < 0 ? '-' + result : result) + (sufix || '');
+		}
+	};
+	window.catalog = {
+		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
+		spec_service: {
+			experts_consultation: {
+				header: 'Общая консультация специалиста',
+				price: 4000
+			},
+			analises_interpretation: {
+				header: 'Расшифровка анализов',
+				price: 2000
+			}
+		},
+		/*dyctionary types*/
+		quoteStatus: {},
+		quoteType: {},
+		quotePay: {},
+
+		services: {},
+		servicePrices: {},
+		servicesList: [], /* for autocomplete */
+		serviceTags: {
+			"face": {
+				"name": "Лицо",
+				"color": "yellow"
+			},
+			"body": {
+				"name": "Тело",
+				"color": "green"
+			},
+			"hair": {
+				"name": "Волосы",
+				"color": "red"
+			},
+			"gyn": {
+				"name": "Гинекология",
+				"color": "blue"
+			},
+			"lab": {
+				"name": "Лаборатория",
+				"color": "purple"
+			}
+		},
+		categories: {},
+		experts: {},
+
+		clients: {},
+		admins: {},
+
+		init(use_session_cache) {
+			var _self   = this;
+			var getters = [];
+			if (!sessionStorage.getItem('db.quoteStatus')) {
+				getters.push(
+					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
+						_self.quoteStatus = utils.arr.indexBy(data);
+					})
+				);
+			}
+			if (!sessionStorage.getItem('db.quotePay')) {
+				getters.push(
+					utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+						_self.quotePay = utils.arr.indexBy(data);
+					})
+				);
+			}
+			if (!sessionStorage.getItem('db.quoteType')) {
+				getters.push(
+					utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
+						_self.quoteType = utils.arr.indexBy(data);
+					})
+				);
+			}
+
+			if (!sessionStorage.getItem('db.categories')) {
+				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
+					let _serviceCats = {};
+					Object.keys(res.tree.data).forEach(function (_key) {
+						const _cat = res.tree.data[_key];
+						if (_cat.active != 'on') {
+							return;
+						}
+						_serviceCats[_cat.id] = {
+							'id': _cat.id,
+							'name': _cat.name,
+							'color': _cat.data.color
+						};
+					});
+					_self.categories = _serviceCats;
+				});
+			}
+			if (!sessionStorage.getItem('db.services') || !sessionStorage.getItem('db.servicesPrices')) {
+				getters.push(
+					utils.api.get('/api/v2/list/services?active=on' +
+					              '&@return=id,header,category,blocks' +
+					              '&@sort=header').then(function (data) {
+						_self.servicePrices = {};
+
+						data.forEach(function (service, i) {
+							_self.services[service.id] = service;
+							const _cats                = service.category;
+							const _tags                = [];
+
+							_cats.forEach(function (cat) {
+								_tags.push({
+									"id": cat,
+									"color": _self.serviceTags[cat].color,
+									"tag": Array.from(_self.serviceTags[cat].name)[0]
+								});
+							});
+							if (!!service.blocks) {
+								service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
+									if (serv_price.price === 0) {
+										return;
+									}
+									let _item = {
+										value: serv_price.header,
+										id: service.id + '-' + j,
+										data: {
+											service_id: service.id,
+											service_title: service.header,
+											tags: _tags,
+											price: serv_price.price,
+											price_id: j
+										}
+									};
+									_self.servicesList.push(_item);
+									_self.servicePrices[service.id + '-' + j] = {
+										'price': serv_price.price,
+										'header': serv_price.header
+									};
+								});
+							}
+						});
+					})
+				);
+			}
+			if (!sessionStorage.getItem('db.experts')) {
+				getters.push(
+					utils.api.get('/api/v2/list/experts?active=on&' +
+					              '@return=id,name,image,devision,spec,experience,education' +
+					              '@sort=name:a').then(function (data) {
+						let _experts = {};
+						data.forEach(function (expert, i) {
+							_experts[expert.id] = expert;
+							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
+								.then(function (res) {
+									_self.experts[expert.id].info_uri = res[0]['u'] || '';
+									/* save to SS */
+								});
+						});
+						_self.experts = _experts;
+					})
+				);
+			}
+			/* for Admins only */
+			if (!!window.user_role && window.user_role !== 'client') {
+				getters.push(
+					utils.api.get('/api/v2/list/users?role=client&active=on' +
+					              '&@return=id,fullname,phone,email,birthdate,' +
+					              'country,city,street,build,flat,intercom,entrance,level,address' +
+					              '&@sort=fullname:a').then(function (data) {
+						_self.clients = utils.arr.indexBy(data);
+					})
+				);
+				if (window.user_role === 'main') {
+					getters.push(
+						utils.api.get('/api/v2/list/users?role=main&active=on' +
+						              '&@return=id,fullname&@sort=fullname:a')
+							.then(function (data) {
+								_self.admins = utils.arr.indexBy(data);
+							})
+					);
+				}
+			}
+
+			return Promise.allSettled(getters).then(() => {
+				$(document).trigger('cabinet-db-ready');
+			});
+		}
+	};
+	window.Cabinet = {
+		runOnlineChat(record_id) {
+			/*!! check record  exists & status & pay_status & date !!*/
+			/*!! mark record as "online_waiting"=1 !!*/
+			if (!wbapp?._session?.user) {
+				return false;
+			}
+			window.open('/cabinet/online#' + record_id,
+				'_blank', 'width=' + screen.availWidth + ',' +
+				          'height=' + screen.availHeight +
+				          ',location=yes,scrollbars=yes,status=no');
+		},
+		updateProfile(profile_id, profile_data, callback) {
+			let data   = profile_data;
+			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+
+			utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
+				if (!!callback) {
+					callback(res);
+				}
+			});
+		},
+		createLongterm(record_data, callback) {
+			let data = record_data;
+
+			data.group      = 'longterm';
+			data.status     = 'upcoming';
+			data.pay_status = 'free';
+
+			data.priority = 0;
+			data.marked   = 0;
+
+			//data.event_date       = '';
+			//data.event_time       = '';
+			//data.event_time_start = '';
+			//data.event_time_end   = '';
+
+			data.analises = false;
+			data.photos   = {before: [], after: []};
+
+			data.comment        = '';
+			data.recommendation = '';
+			data.description    = '';
+
+			data.price = 0;
+
+			utils.api.post('/api/v2/create/records/', data).then(function (res) {
+				callback(res);
+			});
+		},
+		createQuote(record_data, callback) {
+			let data = record_data;
+
+			data.group      = 'quotes';
+			data.status     = 'new';
+			data.pay_status = 'unpay';
+
+			data.priority = 0;
+			data.marked   = 0;
+
+			data.event_date       = '';
+			data.event_time       = '';
+			data.event_time_start = '';
+			data.event_time_end   = '';
+
+			data.longterm_date_end = '';
+			data.longterm_title    = '';
+
+			data.analises = false;
+			data.photos   = {before: [], after: []};
+
+			data.comment        = '';
+			data.recommendation = '';
+			data.description    = '';
+
+			data.price = parseInt(data.price);
+
+			utils.api.post('/api/v2/create/records/', data).then(function (res) {
+				callback(res);
+			});
+		},
+		updateQuote(record_id, record_data, callback) {
+			let data = record_data;
+
+			//data.event_date        = '';
+			//data.event_time        = '';
+			//data.longterm_date_end = '';
+			if (record_data?.status_type == 'event') {
+				data.group = 'events';
+			} else if (record_data?.status_type == 'quote') {
+				data.group = 'quotes';
+			}
+
+			data.longterm_title = '';
+			//data.analises  = false;
+			//data.photos    = {before: [], after: []};
+
+			//data.comment        = '';
+			//data.recommendation = '';
+			//data.description    = '';
+
+			data.price = parseInt(data.price);
+
+			utils.api.post('/api/v2/update/records/' + record_id, data).then(function (res) {
+				callback(res);
+			});
+		},
+		listUpcomingEvents(options, callback) {
+			var _options  = options || {};
+			var upcomings = [], currents = [];
+
+			var qry_str = '';
+			if (!!_options?.client) {
+				qry_str += '&client=' + _options?.client;
+			}
+			if (!!_options?.expert) {
+				qry_str += '&experts~=' + _options?.expert;
+			}
+
+			const curr_timestamp = parseInt(getdate()[0]);
+
+			utils.api.get('/api/v2/list/records?active=on&status=upcoming').then(
+				function (data) {
+
+					data.forEach(function (rec) {
+						if (rec.event_date !== (new Date()).toLocaleDateString()) {
+							upcomings.push(rec); /* get actually user next events */
+						}
+
+						let times = rec.event_time.split('-');
+
+						let event_from_timestamp = utils.timestamp(rec.event_date + ' ' + rec.event_time_start);
+						let event_to_timestamp   = utils.timestamp(rec.event_date + ' ' + rec.event_time_end);
+
+						if (event_from_timestamp < curr_timestamp
+						    && (event_to_timestamp >= curr_timestamp)) {
+							currents.push(rec);
+						}
+					});
+
+					if (!!callback) {
+						callback({currents: currents, upcomings: upcomings});
+					}
+
+					return {currents: currents, upcomings: upcomings};
+				}).then(function (list) {
+
+				console.log('???', list);
+			});
+		},
+		getHistoryEvents(client_id, callback) {
+			return utils.api.get('/api/v2/list/records?status=past&group=events').then(
+				function (data) {
+					console.log('history.events:', data);
+					page.set('history.events', data); /* get actually user next events */
+				});
+		},
+		listLongterms(client_id) {
+			return utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+				.then(function (data) {
+					console.log('history.longterms:', data);
+					page.set('history.longterms', data); /* get actually user next events */
+				});
+		}
+	};
+
+	window.catalog.init(false);
+	//.then(() => {
+	//});
+
 	/* common function */
+	//setTimeout(function () {
 	window.getChangesJSON = function (prev_data, curr_data, field_to_compare) {
 		var changes    = {};
 		var to_compare = field_to_compare;
@@ -389,7 +543,7 @@ $(function () {
 
 		return changes;
 	};
-	window.toast = function (text, head, icon) {
+	window.toast          = function (text, head, icon) {
 		var bgColor   = '#616161';
 		var textColor = '#FEFEFE';
 		switch (icon) {
@@ -400,7 +554,10 @@ $(function () {
 				bgColor = '#198754';
 				break;
 			case 'warning':
-				bgColor = '#FFC107';
+				bgColor = '#BB9107';
+				break;
+			case 'info':
+				bgColor = '#0A6BB9';
 				break;
 			default:
 				bgColor = '#616161';
@@ -424,6 +581,18 @@ $(function () {
 			beforeHide: function () {}, // will be triggered before the toast gets hidden
 			afterHidden: function () {}  // will be triggered after the toast has been hidden
 		});
+	};
+	window.toast_success  = function (text, head) {
+		toast(text, head, 'success');
+	};
+	window.toast_error    = function (text, head) {
+		toast(text, head, 'error');
+	};
+	window.toast_info     = function (text, head) {
+		toast(text, head, 'info');
+	};
+	window.toast_warning  = function (text, head) {
+		toast(text, head, 'warning');
 	};
 
 	window.initServicesSearch = function ($selector, service_list) {
@@ -490,7 +659,8 @@ $(function () {
 						$('<div></div>').addClass('search__drop-tag --' + this.color).text(this.tag)
 					);
 				});
-				const index = _parent_form.find('.admin-editor__patient .search__drop-item[data-service_id]').length;
+				const index = _parent_form.find(
+					'.admin-editor__patient .search__drop-item[data-service_id]').length;
 				var sum     = 0;
 				_parent_form.find('.admin-editor__patient').append(
 					$('<div></div>').addClass('search__drop-item').attr({
@@ -541,7 +711,7 @@ $(function () {
 					sum += parseInt($(this).data('price'));
 				});
 				console.log(sum);
-				_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
+				_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
@@ -553,7 +723,7 @@ $(function () {
 			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
-			_parent_form.find('.admin-editor__summ .price').text(Utils.formatPrice(sum) + ' ₽');
+			_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
@@ -584,7 +754,7 @@ $(function () {
 			}
 		});
 	};
-	window.initClientSearch = function ($form) {
+	window.initClientSearch   = function ($form) {
 		$form.find('input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
@@ -608,274 +778,339 @@ $(function () {
 		});
 	};
 
-	setTimeout(function () {
-		window.popupCreateQuote    = function (user_id) {
-			console.log(user_id);
-			var popup = new Ractive({
-				el: '.popup.--record',
-				template: wbapp.tpl('#popupRecord').html,
-				data: {
-					user: wbapp._session.user,
-					'experts': catalog.experts,
-					'categories': catalog.categories,
-					'services': catalog.services
+	window.popupCreateQuote = function (user_id) {
+		var popup = new Ractive({
+			el: '.popup.--record',
+			template: wbapp.tpl('#popupRecord').html,
+			data: {
+				user: wbapp._session.user,
+				'experts': catalog.experts,
+				'categories': catalog.categories,
+				'services': catalog.services
+			},
+			on: {
+				complete() {
+					this.set('catalog', catalog);
+
+					initServicesSearch($('.search-services'), catalog.servicesList);
+					initPlugins();
 				},
-				on: {
-					complete() {
-						this.set('catalog', catalog);
+				submit(ev) {
+					let $form = $(ev.node);
+					let uid   = popup.get('user.id');
 
-						initServicesSearch($('.search-services'), catalog.servicesList);
-						initPlugins();
-					},
-					submit(ev) {
-						let $form = $(ev.node);
-						let uid   = popup.get('user.id');
+					if ($form.verify() && uid > '') {
+						let data = $form.serializeJSON();
 
-						if ($form.verify() && uid > '') {
-							let data = $form.serializeJSON();
+						data.group      = 'quotes';
+						data.status     = 'new';
+						data.pay_status = 'unpay';
 
-							data.group      = 'quotes';
-							data.status     = 'new';
-							data.pay_status = 'unpay';
+						data.analises = false;
+						data.photos   = {before: [], after: []};
 
-							data.analises = false;
-							data.photos   = {before: [], after: []};
+						data.client   = uid;
+						data.priority = 0;
+						data.marked   = false;
 
-							data.client   = uid;
-							data.priority = 0;
-							data.marked   = false;
+						data.comment        = '';
+						data.recommendation = '';
+						data.description    = '';
 
-							data.comment        = '';
-							data.recommendation = '';
-							data.description    = '';
-
-							data.price = parseInt(data.price);
-							CabinetController.createQuote(data, function (res) {
-								$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--record .popup__panel.--succed').addClass('d-block');
-							});
-						}
-
-						return false;
-					}
-				}
-			});
-		};
-
-		window.popupPay                   = function (record_id, price, user_id) {
-			const pay_price = Math.floor(parseInt(price) / 5);
-
-			var popup = new Ractive({
-				el: '.popup.--pay',
-				template: wbapp.tpl('#popupPay').html,
-				data: {
-					pay_price: pay_price,
-					price: parseInt(price),
-					client: user_id,
-					id: record_id
-				},
-				on: {
-					complite(ev) {
-						$('.popup.--pay').show();
-					},
-					submit() {
-						$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
-						$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
-					}
-				}
-			});
-		};
-		window.popupAnalizeInterpretation = function () {
-			let popup = new Ractive({
-				el: '.popup.--analize-interpretation',
-				template: wbapp.tpl('#popupAnalizeInterpretation').html,
-				data: {
-					catalog: {},
-					record: {}
-				},
-				on: {
-					init() {
-						setTimeout(function () {
-							popup.set('catalog', catalog);
-						});
-					},
-					submit() {
-						let form = this.find('.popup.--analize-interpretation .popup__form');
-						if ($(form).verify()) {
-							let post = $(form).serializeJSON();
-
-							wbapp.post('/create/records', post, function (data) {
-								if (data.error) {
-									wbapp.trigger('wb-save-error', {'data': data});
-								} else {
-									$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-									$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
-								}
-							});
-						}
-						return false;
-					}
-				}
-			});
-		};
-		window.popupDownloadData          = function () {
-			let popup = new Ractive({
-				el: '.popup.--download-data',
-				template: wbapp.tpl('#popupDownloadData').html,
-				data: {
-					catalog: {},
-					admins: []
-				},
-				on: {
-					init() {
-						wbapp.get('/api/v2/list/users/?role=main', function (data) {
-							popup.set('admins', data);
-							setTimeout(function () {
-								popup.set('catalog', catalog);
-							});
+						data.price = parseInt(data.price);
+						Cabinet.createQuote(data, function (res) {
+							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+							$('.popup.--record .popup__panel.--succed').addClass('d-block');
 						});
 					}
-				}
-			});
-		};
-		window.popupsCreateProfile = function () {
-			let popup = new Ractive({
-				el: '.popup.--create-client',
-				template: wbapp.tpl('#popupCreateClient').html,
-				data: {},
-				on: {
-					submit() {
-						let form = this.find('.popup.--create-client .popup__form');
-						if ($(form).verify()) {
-							let post = $(form).serializeJSON();
-							console.log(post);
 
-							let names = post.fullname.split(' ', 3);
-							let keys  = ['last_name', 'first_name', 'middle_name'];
-							for (var i = 0; i < names.length; i++) {
-								post[keys[i]] = names[i];
+					return false;
+				}
+			}
+		});
+	};
+	window.popupPay                   = function (record_id, price, user_id) {
+		const pay_price = Math.floor(parseInt(price) / 5);
+
+		var popup = new Ractive({
+			el: '.popup.--pay',
+			template: wbapp.tpl('#popupPay').html,
+			data: {
+				pay_price: pay_price,
+				price: parseInt(price),
+				client: user_id,
+				id: record_id
+			},
+			on: {
+				complite() {
+				},
+				submit() {
+					$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+					$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+				}
+			}
+		});
+
+		$('.popup.--pay').show();
+	};
+	window.popupAnalizeInterpretation = function () {
+		let popup = new Ractive({
+			el: '.popup.--analize-interpretation',
+			template: wbapp.tpl('#popupAnalizeInterpretation').html,
+			data: {
+				catalog: {},
+				record: {}
+			},
+			on: {
+				init() {
+					setTimeout(function () {
+						popup.set('catalog', catalog);
+					});
+				},
+				submit() {
+					let form = this.find('.popup.--analize-interpretation .popup__form');
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+
+						wbapp.post('/create/records', post, function (data) {
+							if (data.error) {
+								wbapp.trigger('wb-save-error', {'data': data});
+							} else {
+								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
+								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
 							}
-
-							wbapp.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
-								if (data.length === 0) {
-									wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
-										function (data) {
-											if (data.length == 0) {
-												wbapp.post('/api/v2/create/users/', post, function (data) {
-													if (data.error) {
-														wbapp.trigger('wb-save-error', {'data': data});
-													} else {
-														toast('Карточка клиента успешно создана!');
-														$('.popup.--create-client').fadeOut('fast');
-													}
-												});
-											} else {
-												form.find('[name="phone"]').focus();
-												toast('Этот номер уже используется!', 'Ошибка!', 'error');
-											}
-										});
-								} else {
-									form.find('[name="email"]').focus();
-									toast('E-mail уже используется!', 'Ошибка!', 'error');
-								}
-							});
-
-						}
-						return false;
-					}
-				}
-			});
-		};
-		window.popupsConfirmSmsCode = function () {
-			let popup = new Ractive({
-				el: '.popup.--confirm-sms-code',
-				template: wbapp.tpl('#popupConfirmSmsCode').html,
-				data: {
-					phone: '',
-					client: {}
-				},
-				on: {
-					init(ev) {
-
-					},
-					keyup(ev) {
-						console.log(ev, $(ev.node));
-						const _this  = $(ev.node);
-						const _phone = $(ev.node).find('[name="phone"]').val();
-
-						var sms_code = '';
-						$('.popup.--confirm-sms-code .code__input').each(function (digit, item) {
-							sms_code += $(item).val();
 						});
-
-						if (sms_code.length === 6) {
-							$.ajax({
-								url: '/form/phoneAuth/check_code',
-								method: 'POST',
-								data: {
-									phone: _phone,
-									code: sms_code
-								},
-								success: function (data) {
-									if (data.status === 'ok') {
-										wbapp.post('/create/users/', post, function (data) {
-											if (data.error) {
-												wbapp.trigger('wb-save-error', {'data': data});
-											} else {
-												toast('Карточка клиента создана!');
-												$('.popup.--confirm-sms-code').hide();
-												$('.popup.--confirm-sms-code .code__input').val('');
-											}
-										});
-									}
-								}
-							});
-						} else {
-							_this.next().focus();
-						}
 					}
-				},
-				showPopup: function () {
-					$('.popup.--confirm-sms-code .code__input').mask('9', {placeholder: ''});
-					$('.popup.--confirm-sms-code').show();
+					return false;
 				}
-			});
-		};
-		window.popupPhoto           = function (is_longterm) {
-			let popup = new Ractive({
-				el: '.popup.--photo',
-				template: wbapp.tpl('#popupPhoto').html,
-				data: {
-					catalog: {},
-					record: {},
-					longterm: is_longterm
-				},
-				on: {
-					init() {
+			}
+		});
+	};
+	window.popupDownloadData          = function () {
+		let popup = new Ractive({
+			el: '.popup.--download-data',
+			template: wbapp.tpl('#popupDownloadData').html,
+			data: {
+				catalog: {},
+				admins: []
+			},
+			on: {
+				init() {
+					wbapp.get('/api/v2/list/users/?role=main', function (data) {
+						popup.set('admins', data);
 						setTimeout(function () {
 							popup.set('catalog', catalog);
-							initPlugins();
-							initClientSearch($('.popup.--photo form'));
-							initLongtermSearch($('.popup.--photo form'), true);
 						});
-					},
-					submit() {
-						let form = this.parents('.popup__form').find('form');
+					});
+				}
+			}
+		});
+	};
+	window.popupsCreateProfile        = function () {
+		let popup = new Ractive({
+			el: '.popup.--create-client',
+			template: wbapp.tpl('#popupCreateClient').html,
+			data: {},
+			on: {
+				submit() {
+					let form = this.find('.popup.--create-client .popup__form');
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+						console.log(post);
 
-						if ($(form).verify()) {
-							let post = $(form).serializeJSON();
-							wbapp.post('/update/records/', post, function (data) {
-
-							});
+						let names = post.fullname.split(' ', 3);
+						let keys  = ['last_name', 'first_name', 'middle_name'];
+						for (var i = 0; i < names.length; i++) {
+							post[keys[i]] = names[i];
 						}
-						return false;
+						post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
+
+						//utils.api.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
+						//	if (data.length === 0) {
+						//
+						//	} else {
+						//		form.find('[name="email"]').focus();
+						//		toast('E-mail уже используется!', 'Ошибка!', 'error');
+						//	}
+						//});
+						utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
+							function (data) {
+								if (!data.length) {
+									utils.api.post('/api/v2/create/users/', post).then(function (data) {
+										if (data.error) {
+											wbapp.trigger('wb-save-error', {'data': data});
+										} else {
+											toast('Карточка клиента успешно создана!');
+											$('.popup.--create-client').fadeOut('fast');
+										}
+									});
+								} else {
+									form.find('[name="phone"]').focus();
+									toast('Этот номер уже используется!', 'Ошибка!', 'error');
+								}
+							});
+					}
+					return false;
+				}
+			}
+		});
+	};
+	window.popupsConfirmSmsCode       = function () {
+		return new Ractive({
+			el: '.popup.--confirm-sms-code',
+			template: wbapp.tpl('#popupConfirmSmsCode').html,
+			data: {
+				phone: '',
+				client: {}
+			},
+			on: {
+				init(ev) {
+
+				},
+				keyup(ev) {
+					console.log(ev, $(ev.node));
+					const _this  = $(ev.node);
+					const _phone = $(ev.node).find('[name="phone"]').val();
+
+					var sms_code = '';
+					$('.popup.--confirm-sms-code .code__input').each(function (digit, item) {
+						sms_code += $(item).val();
+					});
+
+					if (sms_code.length === 6) {
+						$.ajax({
+							url: '/form/phoneAuth/check_code',
+							method: 'POST',
+							data: {
+								phone: _phone,
+								code: sms_code
+							},
+							success: function (data) {
+								if (data.status === 'ok') {
+									wbapp.post('/create/users/', post, function (data) {
+										if (data.error) {
+											wbapp.trigger('wb-save-error', {'data': data});
+										} else {
+											toast('Карточка клиента создана!');
+											$('.popup.--confirm-sms-code').hide();
+											$('.popup.--confirm-sms-code .code__input').val('');
+										}
+									});
+								}
+							}
+						});
+					} else {
+						_this.next().focus();
 					}
 				}
-			});
+			},
+			showPopup: function () {
+				$('.popup.--confirm-sms-code .code__input').mask('9', {placeholder: ''});
+				$('.popup.--confirm-sms-code').show();
+			}
+		});
+	};
+	window.popupPhoto                 = function (params) {
+		var _data = {}, _default = {
+			description: '',
+			longterm: 0,
+			client: null,
+			record: null,
+			title: '',
+			type: null,
+			date: (new Date())
 		};
+		if (!!params) {
+			_data = $.extend({}, params, _default);
+		}
+		_data.catalog = catalog;
 
-		initPlugins();
-		$(document).on('change', '#file-photo', function (e, list) {
+		return new Ractive({
+			el: '.popup.--photo',
+			template: wbapp.tpl('#popupPhoto').html,
+			data: _data,
+			on: {
+				init() {
+					setTimeout(function () {
+						initPlugins();
+						initClientSearch($('.popup.--photo form'));
+						initLongtermSearch($('.popup.--photo form'), true);
+					});
+				},
+				complete() {
+					$(this.el).show();
+				},
+				submit(ev) {
+					let form = $(ev.node);
+
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+						wbapp.post('/update/records/', post, function (data) {
+
+						});
+					}
+					return false;
+				}
+			}
+		});
+
+	};
+
+	window.uploadFile = function (file_input, path, callback) {
+		var formData = new FormData();
+
+		formData.append("__token", wbapp._session.token);
+		formData.append("file", file_input.files[0]);
+		formData.append("path", path);
+
+		$.ajax({
+			url: "/api/v2/upload/record-files",
+			type: "POST",
+			data: formData,
+			contentType: false,
+			cache: false,
+			processData: false,
+			beforeSend: function () {
+				return true;
+			},
+			success: function (data) {
+				console.log(data);
+				callback(data);
+			},
+			error: function (e) {
+				callback(e);
+			}
+		});
+	};
+	window.uploader   = function (file_input, upload_url, callback) {
+		var formData = new FormData();
+
+		formData.append("__token", wbapp._session.token);
+		formData.append("files[]", file_input.files[0]);
+		formData.append("upload_url", path);
+
+		$.ajax({
+			url: "/engine/modules/filepicker/uploader/index.php",
+			type: "POST",
+			data: formData,
+			contentType: false,
+			cache: false,
+			processData: false,
+			beforeSend: function () {
+				return true;
+			},
+			success: function (data) {
+				console.log(data);
+				callback(data);
+			},
+			error: function (e) {
+				callback(e);
+			}
+		});
+	};
+
+	$(document)
+		.on('change', '#file-photo', function (e) {
 			e.stopPropagation();
 			var _block   = $(this).parents('.file-photo');
 			var _files   = e.target.files;
@@ -896,6 +1131,11 @@ $(function () {
 						return;
 					}
 
+					uploadFile(this, 'photos', function (data) {
+						toast('uploaded!!!', 'success');
+						console.log(data);
+					});
+
 					if (URL) {
 						_preview.attr('src', URL.createObjectURL(file));
 						_preview.removeClass('d-none');
@@ -909,14 +1149,22 @@ $(function () {
 					}
 				}
 			}
-		}).on('click', 'a.account__detail[data-link]', function (e) {
+		})
+		.on('click', 'a[data-link]', function (e) {
 			e.stopPropagation();
 			e.preventDefault();
 			window.location.href = $(this).data('link');
-		}).on('click', 'a.account__detail[data-client]', function (e) {
+		})
+		.on('click', 'a[data-client]', function (e) {
 			e.stopPropagation();
 			e.preventDefault();
-			window.location.href = "/cabinet/client/" + $(this).data('link');
+			window.location.href = "/cabinet/client/" + $(this).data('client');
+		})
+		.on('wb-ready', function (e) {
+			console.log('Async. JS loaded!');
+			$(document).trigger('plugins-ready');
+		})
+		.on('cabinet-page-ready', function (e) {
+			console.log('Cabinet page ready!');
 		});
-	});
 });
