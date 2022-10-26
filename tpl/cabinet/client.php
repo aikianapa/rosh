@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		<a href="/signout" class="account__exit">Выйти из аккаунта</a>
-		<input class="admin-edit__upload" type="hidden" id="analises-file">
+		<input class="admin-edit__upload" type="hidden" id="analyses-file">
 
 		<div class="profile-editor-inline d-none">
 			<!-- profileEditInline target -->
@@ -139,10 +139,10 @@
 			</div>
 			{{/if}}
 
-			{{#if this.analises}}
+			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="[[this.analises]]" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
@@ -223,10 +223,10 @@
 			</div>
 			{{/if}}
 
-			{{#if this.analises}}
+			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="[[this.analises]]" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
@@ -280,7 +280,7 @@
 							</div>
 							<div class="history-item">
 								<p>Анализы</p>
-								{{#if this.analises}}
+								{{#if this.analyses}}
 								Есть анализы
 								{{else}}
 								Нет анализов
@@ -342,7 +342,7 @@
 	<div class="analysis mb-40">
 		<div class="row">
 			<div class="col-md-6">
-				{{#if .analises}}
+				{{#if .analyses}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
 					<a class="btn btn--white" href="{{.}}"
@@ -358,10 +358,10 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				{{#if this.analises}}
+				{{#if this.analyses}}
 				<a class="btn btn--black mb-20 --openpopup"
 					data-popup="--analize-type"
-					onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analises}}')">
+					onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
 					Получить расшифровку анализов
 				</a>
 				{{/if}}
@@ -441,12 +441,14 @@
 	{{/if}}
 	{{/event}}
 </template>
+
 <template id="longterm-details" wb-off>
 	{{#if photos}}
 	<div class="row">
 		<div class="col-md-4">
 			<div class="text-bold text-big mb-20">Фото до начала лечения</div>
 			{{#each photos.before}} <!--single photo!-->
+
 			<a class="after-healing__item"
 				data-fancybox="images"
 				href="{{.src}}"
@@ -803,10 +805,6 @@
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
-
 </body>
-
-<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
-<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 
 </html>

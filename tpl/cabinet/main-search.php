@@ -60,22 +60,22 @@
 	<div class="account__panel">
 		<div class="account__info">
 			<div class="user">
-				<div class="user__name">{{ this.fullname }}</div>
+				<div class="user__name">{{this.fullname}}</div>
 				<div class="user__item">Дата рождения:
-					<span>{{ this.birthdate }}</span>
+					<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
 				</div>
-				<a href="callto:+{{this.phone}}" class="user__item">Тел:
-					<span>{{ this.phone }}</span>
+				<a href="tel:{{this.phone}}" class="user__item">Тел:
+					<span>{{ @global.utils.formatPhone(this.phone) }}</span>
 				</a>
 
 				<div class="user__item">Почта:
 					<span>{{this.email}}</span>
 				</div>
-				<div class="user__confirm">
+				<div class="user__confirm disabled">
 					<svg class="svgsprite _confirm">
 						<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
 					</svg>
-					Подтвержденный аккаунт<a class="user__notconfirm --openpopup" href="#" data-popup="--email-send">Отправить код восстановления на почту</a>
+					Подтвержденный аккаунт<a class="user__notconfirm --openpopup" data-popup="--email-send">Отправить код восстановления на почту</a>
 				</div>
 				<div class="admin-edit__user-btns d-none">
 					<a class="admin-edit__user-btn btn btn--white --openpopup"
@@ -84,8 +84,8 @@
 						onclick="popupPhoto(true)"
 						data-popup="--photo">Добавить продолжительное лечение </a>
 					<div class="admin-edit__uploads">
-						<input class="admin-edit__upload" type="file" id="analises-file">
-						<label class="admin-edit__upload-btn btn btn--white" for="analises-file">Добавить анализы</label>
+						<input class="admin-edit__upload" type="file" id="analyses-file">
+						<label class="admin-edit__upload-btn btn btn--white" for="analyses-file">Добавить анализы</label>
 					</div>
 				</div>
 			</div>

@@ -163,10 +163,10 @@
 					<textarea class="account-edit__textarea">{{this.recommendation}}</textarea>
 					<button class="btn btn--white">Сохранить</button>
 				</div>
-				{{#if this.analises}}
+				{{#if this.analyses}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="{{this.analises}}"
+					<a class="btn btn--white" href="{{this.analyses}}"
 						download="Анализы({{this.clientData.fullname}}, {{this.event_date}}).pdf">
 						Скачать анализы</a>
 				</div>
@@ -230,10 +230,10 @@
 				</div>
 				{{/if}}
 
-				{{#if this.analises}}
+				{{#if this.analyses}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" data-link="[[this.analises]]" download="Анализы.pdf">
+					<a class="btn btn--white" data-link="[[this.analyses]]" download="Анализы.pdf">
 						Скачать анализы
 					</a>
 				</div>
@@ -277,7 +277,7 @@
 							</div>
 							<div class="history-item">
 								<p>Анализы</p>
-								{{#if this.analises}}
+								{{#if this.analyses}}
 								Есть анализы
 								{{else}}
 								Нет анализов
