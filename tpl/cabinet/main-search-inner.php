@@ -10,6 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
+
 	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
 		<div class="account">
 			<form class="search" action="/cabinet/search">
@@ -41,18 +42,16 @@
 				</div>
 			</form>
 
+
 			<div class="search-result page-content">
 				<div class="container">
 					<div class="loading-overlay">
 						<div class="loader"></div>
 					</div>
-
 				</div>
 			</div>
 		</div>
 	</main>
-
-
 </div>
 
 <div>
@@ -71,50 +70,51 @@
 				<div class="user__item">Дата рождения:
 					<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
 				</div>
-				<a href="callto:{{ this.phone }}" class="user__item">Тел:
+				<a href="tel:{{this.phone}}" class="user__item">Тел:
 					<span>{{ @global.utils.formatPhone(this.phone) }}</span>
 				</a>
 				<div class="user__item">Почта:
 					<span>{{this.email}}</span>
 				</div>
-				<div class="user__confirm">
+				<div class="user__confirm disabled">
 					<svg class="svgsprite _confirm">
-						<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
 					</svg>
 					Подтвержденный аккаунт<a class="user__notconfirm --openpopup"
 						data-popup="--email-send">Отправить код восстановления на почту</a>
 				</div>
 				<div class="admin-edit__user-btns">
 					<a class="admin-edit__user-btn btn btn--white"
-						onclick="popupCreateQuote('{{this.id}}', true)">
+						on-click="['createEvent',this]">
 						Записать пациента на прием
 					</a>
 					<a class="admin-edit__user-btn btn btn--white"
-						onclick="popupPhoto({longterm:1, client:'{{this.id}}'})">
+						on-click="['createLongterm',this]">
 						Добавить продолжительное лечение
 					</a>
 					<div class="admin-edit__uploads" data-client="{{this.id}}">
-						<input type="hidden" name="analises">
-						<input class="admin-edit__upload upload-analises"
-							id="upload-analises-file"
-							type="file"
-							name="files[]"
-							accept="application/pdf">
-						<label class="admin-edit__upload-btn btn btn--white" for="upload-analises-file">
+						<input type="hidden" name="analyses">
+						<input class="admin-edit__upload upload-analyses"
+							id="upload-analyses-file"
+							type="file" name="file"
+							accept="application/pdf"
+							on-change="['addAnalyses', user]">
+						<label class="admin-edit__upload-btn btn btn--white" for="upload-analyses-file">
 							Добавить анализы
 						</label>
 					</div>
 				</div>
 			</div>
 		</div>
-		<input class="admin-edit__upload" type="hidden" id="analises-file" name="analises"
-			value="{{this.analises}}">
+		<input class="admin-edit__upload" type="hidden" id="analyses-file" name="analyses"
+			value="{{this.analyses}}">
 
 		<div class="profile-editor-inline d-none">
 			<!-- profileEditInline target -->
 		</div>
 	</div>
 	{{/user}}
+
 	{{#if events.upcoming}}
 	<div class="lk-title">Предстоящие события</div>
 	<div class="account-events">
@@ -159,7 +159,7 @@
 
 				<a class="account__detail --openpopup"
 					data-popup="--edit-event"
-					on-click="editEvent"
+					on-click="['editEvent', this]"
 					data-record="{{this.id}}">
 					Редактировать
 				</a>
@@ -215,7 +215,7 @@
 							</div>
 							<div class="history-item">
 								<p>Анализы</p>
-								{{#if this.analises}}
+								{{#if this.analyses}}
 								Есть анализы
 								{{else}}
 								Нет анализов
@@ -226,11 +226,15 @@
 
 						</div>
 					</div>
-					{{else}}
+					{{elseif history.events == false}}
 					<div class="acount__table-accardeon accardeon">
 						<div class="acount__table-main accardeon__main">
 							<span>Нет записей о посещении</span>
 						</div>
+					</div>
+					{{else}}
+					<div class="loading-overlay">
+						<div class="loader"></div>
 					</div>
 					{{/each}}
 					<!-- !!! / quote history item !!! -->
@@ -250,21 +254,27 @@
 					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">>
 						<div class="acount__table-main accardeon__main accardeon__click" on-click="showLongtermDetails">
 							<div class="healing-item">
-								<p>Дата</p> {{ @global.utils.formatDate(this.event_date) }} - {{this.longterm_date_end}}
+								<p>Дата</p>
+								{{ @global.utils.formatDate(this.event_date) }} - {{this.longterm_date_end}}
 							</div>
 							<div class="healing-item">
-								<p>Услуги</p> {{this.longterm_title}}
+								<p>Услуги</p>
+								{{this.longterm_title}}
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
 
 						</div>
 					</div>
-					{{else}}
+					{{elseif history.longterms == false}}
 					<div class="acount__table-accardeon accardeon">
 						<div class="acount__table-main accardeon__main">
-							Нет записей о продолжительном лечении
+							<span>Нет записей о продолжительном лечении</span>
 						</div>
+					</div>
+					{{else}}
+					<div class="loading-overlay">
+						<div class="loader"></div>
 					</div>
 					{{/each}}
 				</div>
@@ -272,12 +282,13 @@
 		</div>
 	</div>
 </template>
+
 <template id="event-details" wb-off>
 	{{#event}}
 	<div class="analysis mb-40">
 		<div class="row">
 			<div class="col-md-6">
-				{{#if .analises}}
+				{{#if .analyses}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
 					<a class="btn btn--white" href="{{.}}"
@@ -293,10 +304,10 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				{{#if this.analises}}
+				{{#if this.analyses}}
 				<a class="btn btn--black mb-20 --openpopup"
 					data-popup="--analize-type"
-					onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analises}}')">
+					onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
 					Получить расшифровку анализов
 				</a>
 				{{/if}}
@@ -526,191 +537,328 @@
 <script wb-app>
 	var client_id = '{{_route.client}}';
 	$(document).on('cabinet-db-ready', function () {
-		//console.log('>>> cabinet page script.');
-		var page = new Ractive({
-			el: 'main.page .page-content .container',
-			template: wbapp.tpl('#page-content').html,
-			data: {
-				catalog: {},
-				q: '{{_route.params.q}}',
-				user: {},
-				events: {
-					'upcoming': []
-				},
-				history: {
-					'events': [],
-					'longterms': []
-				}
-			},
-			on: {
-				init() {
-					utils.api.get('/api/v2/read/users/' + client_id).then(function (data) {
-						data.birthdate_fmt = utils.formatDate(data.birthdate);
-						data.phone         = utils.formatPhone(data.phone);
-						page.set('user', data); /* get actually user data */
-					});
-
-					utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
-						function (data) {
-							let curr_timestamp = parseInt(getdate()[0]);
-
-							data.forEach(function (rec) {
-								page.push('events.upcoming', rec); /* get actually user next events */
-							});
-						});
-
-					utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
-						function (data) {
-							console.log('history.events:', data);
-							page.set('history.events', data); /* get actually user next events */
-						});
-
-					utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
-						.then(function (data) {
-							console.log('history.longterms:', data);
-							page.set('history.longterms', data); /* get actually user next events */
-						});
-
-					setTimeout(function () {
-						page.set('catalog', catalog);
-					});
-				},
-				complete() {
-
-				},
-				showEventDetails(ev) {
-					var _parent = $(ev.node).parents('.accardeon');
-					if (!_parent.hasClass('loaded')) {
-						var _record_idx      = _parent.data('idx');
-						var _record          = page.get('history.events.' + _record_idx);
-						var _accardeon__list = new Ractive({
-							el: _parent.find('.accardeon__list'),
-							template: wbapp.tpl('#event-details').html,
-							data: {
-								event: _record,
-								user: page.get('user'),
-								catalog: catalog
-							},
-							on: {
-								init() {
-									var _this = this;
-									if (!!_record.photos?.before || !!_record.photos?.after) {
-										utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
-											function (result) {
-												if (!result) {
-													return;
-												}
-
-												var list = {before: [], after: []};
-												result.forEach(function (photo) {
-													if (_record.photos?.before &&
-													    _record.photos.before.includes(photo.id)) {
-														list.before.push(photo);
-													} else if (_record.photos?.after &&
-													           _record.photos.after.includes(photo.id)) {
-														list.after.push(photo);
-													}
-												});
-												_this.set('photos', list);
-											}
-										);
-									}
-								},
-								complete() {
-									_parent.find("img[data-src]:not([src])").lazyload();
-									_parent.addClass('loaded');
-								}
-							}
-						});
-					}
-				},
-				showLongtermDetails(ev) {
-					var _parent = $(ev.node).parents('.accardeon');
-					if (!_parent.hasClass('loaded')) {
-						var _record_idx      = _parent.data('idx');
-						var _record          = page.get('history.longterms.' + _record_idx);
-						var _accardeon__list = new Ractive({
-							el: _parent.find('.accardeon__list'),
-							template: wbapp.tpl('#longterm-details').html,
-							data: {
-								event: _record,
-								user: page.get('user'),
-								catalog: catalog
-							},
-							on: {
-								init() {
-									var _this = this;
-									if (!!_record.photos?.before || !!_record.photos?.after) {
-										utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
-											function (result) {
-												if (!result) {
-													return;
-												}
-
-												var list = {before: [], after: []};
-												result.forEach(function (photo) {
-													if (_record.photos?.before &&
-													    _record.photos.before.includes(photo.id)) {
-														list.before.push(photo);
-													} else if (_record.photos?.after &&
-													           _record.photos.after.includes(photo.id)) {
-														list.after.push(photo);
-													}
-												});
-												_this.set('photos', list);
-											}
-										);
-									}
-								},
-								complete() {
-									_parent.find("img[data-src]:not([src])").lazyload();
-									_parent.addClass('loaded');
-								}
-							}
-						});
-					}
-				},
-				toggleEdit(ev) {
-					console.log(ev, $(ev.node), this);
-					if (!!window.profile_inline_editor) {
-						$('.profile-editor-inline').toggleClass('d-none');
-						return;
-					}
-					window.profile_inline_editor = new Ractive({
-						el: '.profile-editor-inline',
-						template: wbapp.tpl('#profile-editor-inline').html,
-						data: {
-							user: page.get('user')
+		utils.api.get('/api/v2/read/users/' + client_id).then(
+			function (userData) {
+				var page = new Ractive({
+					el: 'main.page .page-content .container',
+					template: wbapp.tpl('#page-content').html,
+					data: {
+						catalog: catalog,
+						q: '{{_route.params.q}}',
+						user: userData,
+						events: {
+							'upcoming': false
 						},
-						on: {
-							complete() {
-								$('.profile-editor-inline').removeClass('d-none');
-								initPlugins();
-							},
-							submit(ev) {
-								let $form = $(ev.node);
-								let uid   = page.get('user.id');
-								if ($form.verify() && uid > '') {
-									let data = $form.serializeJSON();
+						history: {
+							'events': false,
+							'longterms': false
+						}
+					},
+					on: {
+						init() {
+							utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
+								function (data) {
+									page.set('events.upcoming', data); /* get actually user next events */
+								});
 
-									Cabinet.updateProfile(uid, data, function (data) {
-										data.birthdate_fmt = utils.formatDate(data.birthdate);
-										data.phone         = utils.formatPhone(data.phone);
-										page.set('user', data); /* get actually user data */
-										toast('Профиль успешно обновлён');
-									});
+							utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
+								function (data) {
+									page.set('history.events', data); /* get actually user next events */
+								});
+
+							utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
+								.then(function (data) {
+									page.set('history.longterms', data); /* get actually user next events */
+								});
+						},
+						complete() {
+
+						},
+
+						editEvent(ev, client, record) {
+							console.log('editEvent', client, record);
+						},
+						addEventPhoto(ev, client, record) {
+							console.log('addEventPhoto', client, record);
+						},
+						addLongtermPhoto(ev, client, record) {
+							console.log('addLongtermPhoto', client, record);
+						},
+
+						createEvent(ev, client) {
+							console.log('createEvent', client, this);
+
+							var popup_createEvent = new Ractive({
+								el: '.popup.--event-editor',
+								template: wbapp.tpl('#popupEventEditor').html,
+								data: {
+									client: client,
+									record: {},
+									'experts': catalog.experts,
+									'categories': catalog.categories,
+									'services': catalog.services
+								},
+								on: {
+									complete() {
+										initServicesSearch($('.search-services'), catalog.servicesList);
+										initPlugins();
+									},
+									submit(ev) {
+										let $form = $(ev.node);
+										let uid   = this.get('client.id');
+
+										if ($form.verify() && uid > '') {
+											let data = $form.serializeJSON();
+
+											data.group      = 'quotes';
+											data.status     = 'new';
+											data.pay_status = 'unpay';
+
+											data.analyses = false;
+											data.photos   = {before: [], after: []};
+
+											data.client   = uid;
+											data.priority = 0;
+											data.marked   = false;
+
+											data.comment        = '';
+											data.recommendation = '';
+											data.description    = '';
+
+											data.price = parseInt(data.price);
+											Cabinet.createQuote(data, function (res) {
+												$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+												$('.popup.--record .popup__panel.--succed').addClass('d-block');
+											});
+										}
+
+										return false;
+									}
 								}
-								return false;
+							});
+						},
+						createLongterm(ev, client) {
+							console.log('createLongterm', client);
+
+							var popup_createLongerm = new Ractive({
+								el: '.popup.--longterm',
+								template: wbapp.tpl('#popupLongterm').html,
+								data: {
+									client: client,
+									record: false,
+									'experts': catalog.experts,
+									'categories': catalog.categories,
+									'services': catalog.services
+								},
+								on: {
+									complete() {
+										initServicesSearch($('.search-services'), catalog.servicesList);
+										initPlugins();
+										$('.--popup.--longterm').show();
+									},
+									submit(ev) {
+										let $form = $(ev.node);
+										let uid   = this.get('client.id');
+
+										if ($form.verify() && uid > '') {
+											var form_data = $form.serializeJSON();
+
+											form_data.group      = 'longterms';
+											form_data.status     = '';
+											form_data.pay_status = 'free';
+
+											form_data.analyses = false;
+											form_data.photos   = {before: [], after: []};
+
+											form_data.client   = uid;
+											form_data.priority = 0;
+											form_data.marked   = 0;
+
+											form_data.recommendation = '';
+											form_data.description    = '';
+
+											form_data.price  = 0;
+											var _photo_group = form_data.photo_group || 'before';
+											delete form_data.photo_group;
+
+											uploadFile(
+												$form.find('input[name="file"]')[0],
+												'record-photos/longterms',
+												Date.now() + '_' + utils.getRandomStr(4),
+												function (photo) {
+													if (photo.error) {
+														toast_error(photo.error);
+														return false;
+													}
+
+													var _photo_data   = {
+														src: photo.uri,
+														filename: photo.filename,
+														comment: form_data.comment,
+														date: form_data.event_date,
+														timestamp: utils.timestamp(form_data.event_date),
+														photo_group: _photo_group
+													};
+													form_data.comment = '';
+													form_data.photos[_photo_group].push(_photo_data);
+
+													utils.api.post('/api/v2/create/records/', form_data).then(
+														function (longterm_record) {
+														});
+												});
+
+										}
+										return false;
+
+									}
+								}
+							});
+						},
+						addAnalyses(ev, client, record) {
+							console.log('addAnalyses', client, record);
+						},
+
+						showEventDetails(ev) {
+							var _parent = $(ev.node).parents('.accardeon');
+							if (!_parent.hasClass('loaded')) {
+								var _record_idx      = _parent.data('idx');
+								var _record          = page.get('history.events.' + _record_idx);
+								var _accardeon__list = new Ractive({
+									el: _parent.find('.accardeon__list'),
+									template: wbapp.tpl('#event-details').html,
+									data: {
+										event: _record,
+										user: page.get('user'),
+										catalog: catalog
+									},
+									on: {
+										init() {
+											var _this = this;
+											if (!!_record.photos?.before || !!_record.photos?.after) {
+												utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
+													.then(
+														function (result) {
+															if (!result) {
+																return;
+															}
+
+															var list = {before: [], after: []};
+															result.forEach(function (photo) {
+																if (_record.photos?.before &&
+																    _record.photos.before.includes(photo.id)) {
+																	list.before.push(photo);
+																} else if (_record.photos?.after &&
+																           _record.photos.after.includes(
+																	           photo.id)) {
+																	list.after.push(photo);
+																}
+															});
+															_this.set('photos', list);
+														}
+													);
+											}
+										},
+										complete() {
+											_parent.find("img[data-src]:not([src])").lazyload();
+											_parent.addClass('loaded');
+										}
+									}
+								});
 							}
 						}
-					});
-				},
+						,
+						showLongtermDetails(ev) {
+							var _parent = $(ev.node).parents('.accardeon');
+							if (!_parent.hasClass('loaded')) {
+								var _record_idx      = _parent.data('idx');
+								var _record          = page.get('history.longterms.' + _record_idx);
+								var _accardeon__list = new Ractive({
+									el: _parent.find('.accardeon__list'),
+									template: wbapp.tpl('#longterm-details').html,
+									data: {
+										event: _record,
+										user: page.get('user'),
+										catalog: catalog
+									},
+									on: {
+										init() {
+											var _this = this;
+											if (!!_record.photos?.before || !!_record.photos?.after) {
+												utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
+													.then(
+														function (result) {
+															if (!result) {
+																return;
+															}
 
-				prepay(ev) {
-					popupPay.showPopup($(ev.node).data('record'));
-				}
-			}
-		});
+															var list = {before: [], after: []};
+															result.forEach(function (photo) {
+																if (_record.photos?.before &&
+																    _record.photos.before.includes(photo.id)) {
+																	list.before.push(photo);
+																} else if (_record.photos?.after &&
+																           _record.photos.after.includes(
+																	           photo.id)) {
+																	list.after.push(photo);
+																}
+															});
+															_this.set('photos', list);
+														}
+													);
+											}
+										},
+										complete() {
+											_parent.find("img[data-src]:not([src])").lazyload();
+											_parent.addClass('loaded');
+										}
+									}
+								});
+							}
+						}
+						,
+						toggleEdit(ev) {
+							console.log(ev, $(ev.node), this);
+							if (!!window.profile_inline_editor) {
+								$('.profile-editor-inline').toggleClass('d-none');
+								return;
+							}
+							window.profile_inline_editor = new Ractive({
+								el: '.profile-editor-inline',
+								template: wbapp.tpl('#profile-editor-inline').html,
+								data: {
+									user: page.get('user')
+								},
+								on: {
+									complete() {
+										$('.profile-editor-inline').removeClass('d-none');
+										initPlugins();
+									},
+									submit(ev) {
+										let $form = $(ev.node);
+										let uid   = page.get('user.id');
+										if ($form.verify() && uid > '') {
+											let data = $form.serializeJSON();
+
+											Cabinet.updateProfile(uid, data, function (data) {
+												data.birthdate_fmt = utils.formatDate(data.birthdate);
+												data.phone         = utils.formatPhone(data.phone);
+												page.set('user', data); /* get actually user data */
+												toast('Профиль успешно обновлён');
+											});
+										}
+										return false;
+									}
+								}
+							});
+						}
+						,
+
+						prepay(ev) {
+							popupPay.showPopup($(ev.node).data('record'));
+						}
+					}
+				});
+			});
 	});
 </script>
 

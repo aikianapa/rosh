@@ -121,6 +121,16 @@ $(function () {
 
 			}
 		},
+		getRandomStr(length) {
+			var _length = length || 6;
+			var result           = '';
+			var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			var charactersLength = characters.length;
+			for (var i = 0; i < length; i++) {
+				result += characters.charAt(Math.floor(Math.random() * charactersLength));
+			}
+			return result;
+		},
 		timestamp(datetime) {
 			return Math.floor(new Date(datetime).getTime() / 1000);
 		},
@@ -181,7 +191,7 @@ $(function () {
 				header: 'Общая консультация специалиста',
 				price: 4000
 			},
-			analises_interpretation: {
+			analyses_interpretation: {
 				header: 'Расшифровка анализов',
 				price: 2000
 			}
@@ -391,7 +401,7 @@ $(function () {
 			//data.event_time_start = '';
 			//data.event_time_end   = '';
 
-			data.analises = false;
+			data.analyses = false;
 			data.photos   = {before: [], after: []};
 
 			data.comment        = '';
@@ -422,7 +432,7 @@ $(function () {
 			data.longterm_date_end = '';
 			data.longterm_title    = '';
 
-			data.analises = false;
+			data.analyses = false;
 			data.photos   = {before: [], after: []};
 
 			data.comment        = '';
@@ -448,7 +458,7 @@ $(function () {
 			}
 
 			data.longterm_title = '';
-			//data.analises  = false;
+			//data.analyses  = false;
 			//data.photos    = {before: [], after: []};
 
 			//data.comment        = '';
@@ -750,19 +760,20 @@ $(function () {
 				};
 			},
 			onSelect: function (suggestion) {
+				console.log($(this), suggestion);
 				$form.find('input[name="record"]').val(suggestion.data);
 			}
 		});
 	};
 	window.initClientSearch   = function ($form) {
-		$form.find('input.client-search').autocomplete({
+		$('.--popup form input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
 			deferRequestBy: 300,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'fullname~',
-			serviceUrl: '/api/v2/list/users?role=client',
+			serviceUrl: '/api/v2/list/users?role=client&active=on&__token' + wbapp._session.token,
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			transformResult: function (response) {
 				console.log(response);
@@ -773,7 +784,7 @@ $(function () {
 				};
 			},
 			onSelect: function (suggestion) {
-				$form.find('input[name="client"]').val(suggestion.data);
+				$(this).find('input[name="client"]').val(suggestion.data);
 			}
 		});
 	};
@@ -806,7 +817,7 @@ $(function () {
 						data.status     = 'new';
 						data.pay_status = 'unpay';
 
-						data.analises = false;
+						data.analyses = false;
 						data.photos   = {before: [], after: []};
 
 						data.client   = uid;
@@ -1056,15 +1067,16 @@ $(function () {
 
 	};
 
-	window.uploadFile = function (file_input, path, callback) {
-		var formData = new FormData();
-
+	window.uploadFile = function (file_input, path, filename, callback) {
+		var formData  = new FormData();
+		var _fileext  = file_input.files[0].name.split('.').pop();
+		var _filename = filename ? filename + '.' + _fileext : file_input.files[0].name;
+		console.log(_filename);
 		formData.append("__token", wbapp._session.token);
 		formData.append("file", file_input.files[0]);
-		formData.append("path", path);
-
+		formData.append("path", '/' + path + '/');
 		$.ajax({
-			url: "/api/v2/upload/record-files",
+			url: "/api/v2/upload/",
 			type: "POST",
 			data: formData,
 			contentType: false,
@@ -1110,7 +1122,7 @@ $(function () {
 	};
 
 	$(document)
-		.on('change', '#file-photo', function (e) {
+		.on('change', '[type="file"].client-photo', function (e) {
 			e.stopPropagation();
 			var _block   = $(this).parents('.file-photo');
 			var _files   = e.target.files;
@@ -1130,12 +1142,6 @@ $(function () {
 						$(this).val('');
 						return;
 					}
-
-					uploadFile(this, 'photos', function (data) {
-						toast('uploaded!!!', 'success');
-						console.log(data);
-					});
-
 					if (URL) {
 						_preview.attr('src', URL.createObjectURL(file));
 						_preview.removeClass('d-none');
