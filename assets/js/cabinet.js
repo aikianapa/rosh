@@ -1114,7 +1114,8 @@ $(function () {
 				content: html,
 				title: title,
 				subtitle: subtitle,
-				caption: caption
+				caption: caption,
+				html: html
 			},
 			on: {
 				init() {
