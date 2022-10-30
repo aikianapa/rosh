@@ -55,7 +55,7 @@
 				</div>
 			</div>
 
-			{{#if events.currents}}
+			{{#if events.current}}
 			<div class="lk-title current_event">Текущее событие</div>
 			<div class="account-events current_event">
 				{{#each events.current}}
@@ -68,17 +68,6 @@
 									{{#services}}
 									{{catalog.services[this].header}}<br>
 									{{/services}}
-								</div>
-							</div>
-						</div>
-
-						<div class="account-events__item">
-							<div class="account-event-wrap">
-								<div class="account-events__name">Специалист:</div>
-								<div class="account-event">
-									{{#this.experts}}
-									<p>{{catalog.experts[this].name}}</p>
-									{{/this.experts}}
 								</div>
 							</div>
 						</div>
@@ -104,6 +93,14 @@
 									<p>{{ @global.catalog.clients[this.client].fullname }}</p>
 								</div>
 							</div>
+							<div class="account-event-wrap">
+								<div class="account-events__name">Специалист:</div>
+								<div class="account-event">
+									{{#this.experts}}
+									<p>{{catalog.experts[this].name}}</p>
+									{{/this.experts}}
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -111,29 +108,33 @@
 					<div class="account-events__btns">
 						<div class="account-event-wrap --aicn">
 							<div class="account-events__btn">
-								<a class="btn btn--black"
-									onclick="window.open('/cabinet/online#{{this.id}}', '_blank',
-                                             'width='+screen.availWidth+',height='+screen.availHeight+
-                                             ',location=yes,scrollbars=yes,status=yes');">
+								<a class="btn btn--black" on-click="runOnlineChat">
 									Начать консультацию
 								</a>
 							</div>
+							{{#if this.online_waiting == 'client'}}
 							<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
+							{{/if}}
 						</div>
 					</div>
 					{{/if}}
 					<div class="account-edit pt-30">
 						<div class="account-edit__title">
-							<p>Рекомендации</p>
+							<p>Рекомендация врача</p>
 							<a class="user__edit">
 								<svg class="svgsprite _edit">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 								</svg>
 							</a>
 						</div>
-						<textarea class="account-edit__textarea">{{this.recommendation}}</textarea>
-						<button class="btn btn--white">Сохранить</button>
+						<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
+								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
+									name="recommendation">{{this.recommendation}}</textarea>
+
+							<button class="btn btn--white" type="submit">Сохранить</button>
+						</form>
 					</div>
+
 					{{#if this.analyses}}
 					<div class="account-events__download">
 						<div class="lk-title">Анализы</div>
@@ -184,7 +185,16 @@
 									<p>{{ @global.catalog.clients[this.client].fullname }}</p>
 								</div>
 							</div>
+							<div class="account-event-wrap">
+								<div class="account-events__name">Специалист:</div>
+								<div class="account-event">
+									{{#this.experts}}
+									<p>{{catalog.experts[this].name}}</p>
+									{{/this.experts}}
+								</div>
+							</div>
 						</div>
+
 					</div>
 
 
@@ -225,14 +235,12 @@
 						<div class="history-item">Анализы</div>
 					</div>
 					<div class="account__table-body">
-						<!-- !!! quote history item !!! -->
-
 						{{#each history}}
 						<div class="acount__table-accardeon accardeon" data-record_id="{{this.id}}">
 							<div class="acount__table-main accardeon__main accardeon__click">
 								<div class="history-item">
 									<p>Дата</p>
-									{{ @global.utils.formatDate(this.event_date) }}
+									{{ @global.utils.formatDate(.event_date) }}
 								</div>
 								<div class="history-item">
 									<p>Время</p>
@@ -240,7 +248,7 @@
 								</div>
 								<div class="history-item">
 									<p>Пациент</p>
-									<p>{{ @.catalog.clients[this.client].fullname }}</p>
+									{{catalog.clients[client].fullname}}
 								</div>
 								<div class="history-item">
 									<p>Услуги</p>
@@ -266,7 +274,7 @@
 										</svg>
 									</a>
 								</div>
-								<form on-submit="saveRecommendation" data-id="{{this.id}}">
+								<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
 								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
 									name="recommendation">{{this.recommendation}}</textarea>
 
@@ -274,11 +282,15 @@
 								</form>
 							</div>
 						</div>
-						{{else}}
+						{{elseif ready}}
 						<div class="acount__table-accardeon accardeon">
 							<div class="acount__table-main accardeon__main">
 								Нет записей о посещении
 							</div>
+						</div>
+						{{else}}
+						<div class="acount__table-accardeon accardeon">
+							<div class="loader-dots"></div>
 						</div>
 						{{/each}}
 					</div>
@@ -290,55 +302,54 @@
 	<script wbapp>
 		$(document).on('cabinet-db-ready', function () {
 			var client_id = '{{_route.client}}';
-			var page      = new Ractive({
-				el: 'main.page .search-result',
-				template: wbapp.tpl('#search-result').html,
-				data: {
-					q: '{{_route.params.q}}',
-					user: wbapp._session.user,
-					client: {}
-				},
-				on: {
-					init() {
-						utils.api.get('/api/v2/read/users/' + client_id).then(function (data) {
-							page.set('client', data);
-						});
-					},
-					saveRecommendation(ev) {
-						const _id             = $(ev.node).data('id');
-						const _recommendation = $('#' + _id + '--recommendation').val();
-
-						utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
-							var prev_recommendation = data.recommendation;
-
-							utils.api.post('/api/v2/update/records/' + _id,
-								{'recommendation': _recommendation}).then(function (res) {
-									toast('Рекомендация сохранена!');
-								}
-							);
-							if (_recommendation !== prev_recommendation) {
-								utils.api.post('/api/v2/create/record-changes/',
-									{
-										record: data.id,
-										experts: data.experts,
-										client: data.client,
-										changes: [{
-											field: 'recommendation',
-											prev_val: prev_recommendation,
-											new_val: _recommendation
-										}]
-									}
-								).then(function (res) {});
-							}
-						});
-					}
-				}
-			});
+			//var page      = new Ractive({
+			//
+			//	data: {
+			//		q: '{{_route.params.q}}',
+			//		user: wbapp._session.user,
+			//		client: {}
+			//	},
+			//	on: {
+			//		init() {
+			//			utils.api.get('/api/v2/read/users/' + client_id).then(function (data) {
+			//				page.set('client', data);
+			//			});
+			//		},
+			//		saveRecommendation(ev) {
+			//			const _id             = $(ev.node).data('id');
+			//			const _recommendation = $('#' + _id + '--recommendation').val();
+			//
+			//			utils.api.get('/api/v2/read/records/' + _id).then(function (data) {
+			//				var prev_recommendation = data.recommendation;
+			//
+			//				utils.api.post('/api/v2/update/records/' + _id,
+			//					{'recommendation': _recommendation}).then(function (res) {
+			//						toast('Рекомендация сохранена!');
+			//					}
+			//				);
+			//				if (_recommendation !== prev_recommendation) {
+			//					utils.api.post('/api/v2/create/record-changes/',
+			//						{
+			//							record: data.id,
+			//							experts: data.experts,
+			//							client: data.client,
+			//							changes: [{
+			//								field: 'recommendation',
+			//								prev_val: prev_recommendation,
+			//								new_val: _recommendation
+			//							}]
+			//						}
+			//					).then(function (res) {});
+			//				}
+			//			});
+			//		}
+			//	}
+			//});
 
 			utils.api.get('/api/v2/read/users/' + client_id).then(function (client) {
 				window.page = new Ractive({
-					el: 'main.page .expert-page',
-					template: wbapp.tpl('#expert-page').html,
+					el: 'main.page .search-result',
+					template: wbapp.tpl('#search-result').html,
 					data: {
 						q: '{{_route.params.q}}',
 						user: wbapp._session.user,
@@ -352,48 +363,7 @@
 					},
 					on: {
 						init() {
-							utils.api.get('/api/v2/list/experts/?login=' + wbapp._session.user.id)
-								.then(function (data) {
-									page.set('expert', data[0]); /* get actually user data */
-									page.set('show_history', true);
-									return data[0];
-								})
-								.then(function (expert) {
-									utils.api.get(
-											'/api/v2/list/records?group=events&status=[upcoming,past]' +
-											'&experts~=' + expert.id + '&@sort=event_date:d')
-										.then(function (records) {
-											if (!records) {
-												return;
-											}
-											let curr_timestamp = parseInt(getdate()[0]);
-											records.forEach(function (rec, idx) {
-												if (rec.status === 'past') {
-													page.push('history', rec);
-													return;
-												} else if (idx === 0) {
-													page.set('closest_event', rec);
-												}
 
-												if (rec.event_date !== (new Date()).toLocaleDateString()) {
-													page.push('events.upcoming', rec); /* get actually user next events */
-													return;
-												}
-
-												let event_from_timestamp = utils.timestamp(
-													rec.event_date + ' ' + rec.event_time_start);
-												let event_to_timestamp   = utils.timestamp(
-													rec.event_date + ' ' + rec.event_time_end);
-
-												if (event_from_timestamp < curr_timestamp
-												    && (event_to_timestamp >= curr_timestamp)) {
-													page.push('events.current', rec);
-												} else {
-													page.push('events.upcoming', rec);
-												}
-											});
-										});
-								});
 						},
 						complete(){
 							this.set('catalog', catalog);
@@ -428,6 +398,42 @@
 						}
 					}
 				});
+				utils.api.get(
+						'/api/v2/list/records?group=events&status=[upcoming,past]' +
+						'&client=' + client_id +
+						'&experts~=' + wbapp._session.user.expert.id +
+						'&@sort=event_date:d')
+					.then(function (records) {
+						if (!records) {
+							return;
+						}
+						let curr_timestamp = parseInt(getdate()[0]);
+						records.forEach(function (rec, idx) {
+							if (rec.status === 'past') {
+								page.push('history', rec);
+								return;
+							} else if (idx === 0) {
+								page.set('closest_event', rec);
+							}
+
+							if (rec.event_date !== (new Date()).toLocaleDateString()) {
+								page.push('events.upcoming', rec); /* get actually user next events */
+								return;
+							}
+
+							let event_from_timestamp = utils.timestamp(
+								rec.event_date + ' ' + rec.event_time_start);
+							let event_to_timestamp   = utils.timestamp(
+								rec.event_date + ' ' + rec.event_time_end);
+
+							if (event_from_timestamp < curr_timestamp && event_to_timestamp >= curr_timestamp) {
+								page.push('events.current', rec);
+							} else {
+								page.push('events.upcoming', rec);
+							}
+						});
+					});
+					/*!!! check & sync updates by interval (1-3min) !!!*/
 
 			});
 		});

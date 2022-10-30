@@ -198,7 +198,21 @@
 			</template>
 		</div>
 	</div>
-
+	<div class="popup --message">
+		<template id="popupMessage">
+			<div class="popup__overlay"></div>
+			<div class="popup__panel --succed-pay">
+				<button class="popup__close">
+					<svg class="svgsprite _close">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+					</svg>
+				</button>
+				<div class="popup__name text-bold">{{head}}</div>
+				<h3 class="h3">{{caption}}</h3>
+				<p class="text-grey">{{content}}</p>
+			</div>
+		</template>
+	</div>
 	<div wb-if="'{{_sess.user.role}}'=='main'">
 		<div class="popup --photo">
 			<template id="popupPhoto">
@@ -291,7 +305,9 @@
 
 						{{#if client}}
 						<input type="hidden" name="client" value="{{client.id}}">
-						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
+						<p class="text-bold text-big mb-20">
+							{{@global.catalog.clients[record.client].fullname}}
+						</p>
 						{{else}}
 							<input type="hidden" name="client">
 							<div class="search-form input">

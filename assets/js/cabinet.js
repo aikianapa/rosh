@@ -1,5 +1,9 @@
-window.user_role = wbapp?._session?.user?.role;
-
+window.user_role       = wbapp?._session?.user?.role;
+Date.prototype.isValid = function () {
+	// An invalid date object returns NaN for getTime() and NaN is the only
+	// object not strictly equal to itself.
+	return this.getTime() === this.getTime();
+};
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
@@ -122,7 +126,7 @@ $(function () {
 			}
 		},
 		getRandomStr(length) {
-			var _length = length || 6;
+			var _length          = length || 6;
 			var result           = '';
 			var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 			var charactersLength = characters.length;
@@ -135,16 +139,29 @@ $(function () {
 			return Math.floor(new Date(datetime).getTime() / 1000);
 		},
 		formatDate(date) {
-			return new Date(date).toLocaleDateString();
+			var d = this.getDate(date);
+			if (d.isValid()) {
+				return d.toLocaleDateString();
+			}
+			return date;
+		},
+		getDate(date) {
+			var result = new Date(date);
+			if (result.isValid()) {
+				return result;
+			} else {
+				date = date.split(' ')[0].split('.').reverse().join('-');
+				result = new Date(date);
+			}
 		},
 		formatDateTime(date) {
-			return new Date(date).toLocaleString();
+			return new Date(this.getDate(date)).toLocaleString();
 		},
 		formatTime(date) {
 			return new Date(date).toLocaleTimeString();
 		},
 		formatPhone(_phone) {
-			var phone = str_replace([' ', '+', '-', '(', ')'], '', _phone)
+			var phone   = str_replace([' ', '+', '-', '(', ')'], '', _phone);
 			var cleaned = ('' + phone).replace(/\D/g, '');
 			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
 			//console.log('??', phone, match);
@@ -235,29 +252,42 @@ $(function () {
 		init(use_session_cache) {
 			var _self   = this;
 			var getters = [];
-			if (!sessionStorage.getItem('db.quoteStatus')) {
+
+			if (!localStorage.getItem('db.quoteStatus')) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
 						_self.quoteStatus = utils.arr.indexBy(data);
+						localStorage.setItem('db.quoteStatus', JSON.stringify(_self.quoteStatus));
 					})
 				);
+			} else {
+				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatus'));
 			}
-			if (!sessionStorage.getItem('db.quotePay')) {
+
+			if (!localStorage.getItem('db.quotePay')) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
 						_self.quotePay = utils.arr.indexBy(data);
+						localStorage.setItem('db.quotePay', JSON.stringify(_self.quotePay));
+
 					})
 				);
+			} else {
+				_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay'));
 			}
-			if (!sessionStorage.getItem('db.quoteType')) {
+
+			if (!localStorage.getItem('db.quoteType')) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
 						_self.quoteType = utils.arr.indexBy(data);
+						localStorage.setItem('db.quoteType', JSON.stringify(_self.quoteType));
 					})
 				);
+			} else {
+				_self.quoteType = JSON.parse(localStorage.getItem('db.quoteType'));
 			}
 
-			if (!sessionStorage.getItem('db.categories')) {
+			if (!localStorage.getItem('db.categories')) {
 				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
 					let _serviceCats = {};
 					Object.keys(res.tree.data).forEach(function (_key) {
@@ -272,9 +302,15 @@ $(function () {
 						};
 					});
 					_self.categories = _serviceCats;
+					localStorage.setItem('db.quoteStatus', JSON.stringify(_self.categories));
 				});
+			} else {
+				_self.categories = JSON.parse(localStorage.getItem('db.categories'));
 			}
-			if (!sessionStorage.getItem('db.services') || !sessionStorage.getItem('db.servicesPrices')) {
+
+			if (!sessionStorage.getItem('db.services')
+			    || !sessionStorage.getItem('db.servicesPrices')
+			    || !sessionStorage.getItem('db.servicesList')) {
 				getters.push(
 					utils.api.get('/api/v2/list/services?active=on' +
 					              '&@return=id,header,category,blocks' +
@@ -311,15 +347,28 @@ $(function () {
 									};
 									_self.servicesList.push(_item);
 									_self.servicePrices[service.id + '-' + j] = {
-										'price': serv_price.price,
-										'header': serv_price.header
+										id: service.id + '-' + j,
+										service_id: service.id,
+										service_title: service.header,
+										price: serv_price.price,
+										header: serv_price.header,
+										tags: _tags
 									};
 								});
 							}
 						});
+
+						sessionStorage.setItem('db.services', JSON.stringify(_self.services));
+						sessionStorage.setItem('db.servicesList', JSON.stringify(_self.servicesList));
+						sessionStorage.setItem('db.servicePrices', JSON.stringify(_self.servicePrices));
 					})
 				);
+			} else {
+				_self.services      = JSON.parse(sessionStorage.getItem('db.services'));
+				_self.servicesList  = JSON.parse(sessionStorage.getItem('db.servicesList'));
+				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices'));
 			}
+
 			if (!sessionStorage.getItem('db.experts')) {
 				getters.push(
 					utils.api.get('/api/v2/list/experts?active=on&' +
@@ -335,19 +384,28 @@ $(function () {
 								});
 						});
 						_self.experts = _experts;
+						sessionStorage.setItem('db.experts', JSON.stringify(_self.experts));
 					})
 				);
+			} else {
+				_self.experts = JSON.parse(sessionStorage.getItem('db.experts'));
 			}
 			/* for Admins only */
 			if (!!window.user_role && window.user_role !== 'client') {
-				getters.push(
-					utils.api.get('/api/v2/list/users?role=client&active=on' +
-					              '&@return=id,fullname,phone,email,birthdate,' +
-					              'country,city,street,build,flat,intercom,entrance,level,address' +
-					              '&@sort=fullname:a').then(function (data) {
-						_self.clients = utils.arr.indexBy(data);
-					})
-				);
+				if (!sessionStorage.getItem('db.clients')) {
+					getters.push(
+						utils.api.get('/api/v2/list/users?role=client&active=on' +
+						              '&@return=id,fullname,phone,email,birthdate,' +
+						              'country,city,street,build,flat,intercom,entrance,level,address' +
+						              '&@sort=fullname:a').then(function (data) {
+							_self.clients = utils.arr.indexBy(data);
+							sessionStorage.setItem('db.clients', JSON.stringify(_self.clients));
+						})
+					);
+				} else {
+					_self.clients = JSON.parse(sessionStorage.getItem('db.clients'));
+				}
+
 				if (window.user_role === 'main') {
 					getters.push(
 						utils.api.get('/api/v2/list/users?role=main&active=on' +
@@ -357,6 +415,8 @@ $(function () {
 							})
 					);
 				}
+			} else {
+				sessionStorage.removeItem('db.clients');
 			}
 
 			return Promise.allSettled(getters).then(() => {
@@ -365,6 +425,21 @@ $(function () {
 		}
 	};
 	window.Cabinet = {
+		isCurrentEvent(event) {
+			let curr_timestamp = parseInt(getdate()[0]);
+			var iso_date       = new Date(event.event_date).toISOString().split('T')[0];
+			if (utils.formatDate(event.event_date) !== (new Date()).toLocaleDateString()) {
+				return false;
+			}
+
+			let event_from_timestamp = utils.timestamp(
+				iso_date + 'T' + event.event_time_start);
+			let event_to_timestamp   = utils.timestamp(
+				iso_date + 'T' + event.event_time_end);
+			console.log(event_from_timestamp, event_to_timestamp);
+
+			return (event_from_timestamp < curr_timestamp && event_to_timestamp >= curr_timestamp);
+		},
 		runOnlineChat(record_id) {
 			/*!! check record  exists & status & pay_status & date !!*/
 			/*!! mark record as "online_waiting"=1 !!*/

@@ -66,7 +66,7 @@
 				</div>
 				<div class="user__confirm">
 					<svg class="svgsprite _confirm">
-						<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
 					</svg>
 					Подтвержденный аккаунт
 				</div>
@@ -258,7 +258,7 @@
 					{{#each history.events}}
 					<div class="acount__table-accardeon accardeon"
 						data-idx="{{@index}}">
-						<div class="acount__table-main accardeon__main accardeon__click" on-click="showEventDetails">
+						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="history-item">
 								<p>Дата</p>
 								{{ @global.utils.formatDate(this.event_date) }}
@@ -288,20 +288,123 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
+							<div class="analysis mb-40">
+								<div class="row">
+									<div class="col-md-6">
+										{{#if this.analyses}}
+										<div class="analysis__top --aicn --flex mb-20">
+											<div class="analysis__title">Анализы</div>
+											<a class="btn btn--white" href="{{this.analyses}}"
+												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
+										</div>
+										{{/if}}
 
+										<div class="analysis__description">
+											<p class="text-bold mb-20">Выполнялись процедуры</p>
+											<p class="text-grey">{{.comment}}</p>
+										</div>
+									</div>
+									<div class="col-md-6">
+										{{#if this.analyses}}
+										<a class="btn btn--black mb-20 --openpopup"
+											data-popup="--analize-type"
+											onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
+											Получить расшифровку анализов
+										</a>
+										{{/if}}
+										<div class="analysis__description">
+											<p class="text-bold mb-20">Рекомендация врача</p>
+											<div class="text">
+												{{.recommendation}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="experts__worked">
+								<div class="experts__worked-title">С вами работали</div>
+								<div class="row">
+									{{#each .experts: idx}}
+									<div class="col-md-6">
+										<a class="expert__worked"
+											target="_blank"
+											title="Открыть страницу о специалисте"
+											data-href="{{catalog.experts[this].info_uri}}"
+											data-link="{{catalog.experts[this].info_uri}}">
+											<div class="expert__worked-pic">
+												<img class="lazyload"
+													data-src="{{{catalog.experts[this].image[0].img}}}"
+													alt="{{catalog.experts[this].name}}">
+											</div>
+											<div class="expert__worked-name">
+												{{catalog.experts[this].name}}
+											</div>
+											<div class="expert__worked-work">
+												{{catalog.experts[this].spec}}
+											</div>
+										</a>
+									</div>
+									{{/each}}
+								</div>
+							</div>
+							{{#if this.hasPhoto}}
+							<div class="acount__photos">
+								<div class="row acount__photos-wrap">
+									<div class="col-md-6">
+										<div class="acount__photo">
+											<p>Фото до начала лечения</p>
+											{{#each photos.before}}
+											<div class="col-md-6">
+												<a class="after-healing__item"
+													data-fancybox="images"
+													href="{{.src}}"
+													data-caption="{{.date}}">
+													<div class="healing__date">{{.date}}</div>
+													<div class="after-healing__photo"
+														style="background-image: url({{.src}})">
+													</div>
+												</a>
+											</div>
+											{{else}}
+
+											{{/each}}
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="acount__photo">
+											<p>Фото в процессе лечения</p>
+											{{#each photos.after}}
+											<a class="after-healing__item"
+												data-fancybox="images"
+												href="{{.src}}"
+												data-caption="{{.date}}">
+												<img src="{{.src}}" alt="After visit {{.date}}">
+											</a>
+											{{/each}}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{/if}}
+						</div>
+					</div>
+					{{elseif events_ready}}
+					<div class="acount__table-accardeon accardeon">
+						<div class="acount__table-main accardeon__main">
+							Нет записей о посещении
 						</div>
 					</div>
 					{{else}}
 					<div class="acount__table-accardeon accardeon">
-						<div class="acount__table-main accardeon__main">
-							<span>Нет записей о посещении</span>
-						</div>
+						<div class="loader-dots"></div>
 					</div>
 					{{/each}}
 					<!-- !!! / quote history item !!! -->
 				</div>
 			</div>
 		</div>
+
 		<!-- !!! longterm tab !!! -->
 		<div class="account__tab data-tab-item" data-tab="longterm">
 			<div class="account__table">
@@ -312,183 +415,80 @@
 				<div class="account__table-body">
 					{{#each history.longterms}}
 					<!-- !!! longterm item !!! -->
-					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">>
-						<div class="acount__table-main accardeon__main accardeon__click" on-click="showLongtermDetails">
+					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
+						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="healing-item">
-								<p>Дата</p> {{ @global.utils.formatDate(this.event_date) }} - {{this.longterm_date_end}}
+								<p>Дата</p>
+								{{ @global.utils.formatDate(this.event_date) }} - {{ @global.utils.formatDate(this.longterm_date_end) }}
 							</div>
 							<div class="healing-item">
 								<p>Услуги</p> {{this.longterm_title}}
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-
+							{{#if this.hasPhoto}}
+							<div class="row">
+								<div class="col-md-4">
+									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+									{{#each this.photos.before}} <!--single photo!-->
+									<a class="before-healing"
+										data-fancybox="images-{{this.id}}"
+										href="{{.src}}"
+										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+										<h2 class="h2 healing__date-title">
+											{{ @global.utils.formatDate(.date) }}</h2>
+										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
+										<div class="healing__date">
+											{{ @global.utils.formatDate(.date) }}
+										</div>
+										<div class="healing__description">{{.comment}}</div>
+									</a>
+									{{/each}}
+								</div>
+								<div class="col-md-8">
+									<div class="text-bold text-big mb-20">
+										Фото после начала лечения
+									</div>
+									<div class="after-healing">
+										<h2 class="h2 healing__date-title d-none month-header"></h2>
+										<div class="row">
+											{{#each this.photos.after}}
+											<div class="col-md-6">
+												<a class="after-healing__item"
+													data-fancybox="images-{{this.id}}"
+													href="{{.src}}"
+													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+													<div class="after-healing__photo"
+														style="background-image: url({{.src}});">
+													</div>
+												</a>
+											</div>
+											{{/each}}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{/if}}
 						</div>
 					</div>
-					{{else}}
+					{{elseif longterms_ready}}
 					<div class="acount__table-accardeon accardeon">
 						<div class="acount__table-main accardeon__main">
 							Нет записей о продолжительном лечении
 						</div>
 					</div>
-					{{/each}}
-				</div>
-			</div>
-		</div>
-	</div>
-</template>
-<template id="event-details" wb-off>
-	{{#event}}
-	<div class="analysis mb-40">
-		<div class="row">
-			<div class="col-md-6">
-				{{#if .analyses}}
-				<div class="account-events__download">
-					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="{{.}}"
-						download="Анализы(за {{this.event_date}}).pdf">
-						Скачать анализы
-					</a>
-				</div>
-				{{/if}}
-
-				<div class="analysis__description">
-					<p class="text-bold mb-20">Выполнялись процедуры</p>
-					<p class="text-grey">{{.comment}}</p>
-				</div>
-			</div>
-			<div class="col-md-6">
-				{{#if this.analyses}}
-				<a class="btn btn--black mb-20 --openpopup"
-					data-popup="--analize-type"
-					onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
-					Получить расшифровку анализов
-				</a>
-				{{/if}}
-				<div class="analysis__description">
-					<p class="text-bold mb-20">Рекомендация врача</p>
-					<div class="text">
-						{{.recommendation}}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="experts__worked">
-		<div class="experts__worked-title">С вами работали</div>
-		<div class="row">
-			{{#each .experts: idx}}
-			<div class="col-md-6">
-				<a class="expert__worked"
-					target="_blank"
-					title="Открыть страницу о специалисте"
-					data-href="{{catalog.experts[this].info_uri}}"
-					data-link="{{catalog.experts[this].info_uri}}">
-					<div class="expert__worked-pic">
-						<img class="lazyload"
-							data-src="{{{catalog.experts[this].image[0].img}}}"
-							alt="{{catalog.experts[this].name}}">
-					</div>
-					<div class="expert__worked-name">
-						{{catalog.experts[this].name}}
-					</div>
-					<div class="expert__worked-work">
-						{{catalog.experts[this].spec}}
-					</div>
-				</a>
-			</div>
-			{{/each}}
-		</div>
-	</div>
-	{{#if photos}}
-	<div class="acount__photos">
-		<div class="row acount__photos-wrap">
-			<div class="col-md-6">
-				<div class="acount__photo">
-					<p>Фото до начала лечения</p>
-					{{#each photos.before}}
-					<div class="col-md-6">
-						<a class="after-healing__item"
-							data-fancybox="images"
-							href="{{.src}}"
-							data-caption="{{.date}}">
-							<div class="healing__date">{{.date}}</div>
-							<div class="after-healing__photo"
-								style="background-image: url({{.src}})">
-							</div>
-						</a>
-					</div>
 					{{else}}
-
-					{{/each}}
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="acount__photo">
-					<p>Фото в процессе лечения</p>
-					{{#each photos.after}}
-					<a class="after-healing__item"
-						data-fancybox="images"
-						href="{{.src}}"
-						data-caption="{{.date}}">
-						<img src="{{.src}}" alt="After visit {{.date}}">
-					</a>
-					{{/each}}
-				</div>
-			</div>
-		</div>
-	</div>
-	{{/if}}
-	{{/event}}
-</template>
-
-<template id="longterm-details" wb-off>
-	{{#if photos}}
-	<div class="row">
-		<div class="col-md-4">
-			<div class="text-bold text-big mb-20">Фото до начала лечения</div>
-			{{#each photos.before}} <!--single photo!-->
-
-			<a class="after-healing__item"
-				data-fancybox="images"
-				href="{{.src}}"
-				data-caption="{{.date}}">
-				<h2 class="h2 healing__date-title">{{.date}}</h2>
-				<div class="after-healing__photo"
-					style="background-image: url('{{.src}}')">
-				</div>
-				<div class="healing__description">
-					{{.comment}}
-				</div>
-			</a>
-			{{/each}}
-		</div>
-		<div class="col-md-8">
-			<div class="text-bold text-big mb-20">
-				Фото после начала лечения
-			</div>
-			<div class="after-healing">
-				<h2 class="h2 healing__date-title d-none month-header"></h2>
-				<div class="row">
-					{{#each this.photos.after}}
-					<div class="col-md-6">
-						<a class="after-healing__item"
-							data-fancybox="images"
-							href="{{.src}}"
-							data-caption="{{.date}}">
-							<div class="healing__date">{{.date}}</div>
-							<div class="after-healing__photo"
-								style="background-image: url({{.src}});">
-							</div>
-						</a>
+					<div class="acount__table-accardeon accardeon">
+						<div class="loader-dots"></div>
 					</div>
 					{{/each}}
 				</div>
 			</div>
 		</div>
 	</div>
-	{{/if}}
 </template>
+
 <template id="profile-editor-inline" wb-off>
 	<form on-submit="submit">
 		{{#with user}}
@@ -597,7 +597,7 @@
 
 <script>
 	$(document).on('cabinet-db-ready', function () {
-		var page = new Ractive({
+		window.page = new Ractive({
 			el: 'main.page .page-content',
 			template: wbapp.tpl('#page-content').html,
 			data: {
@@ -614,54 +614,10 @@
 			},
 			on: {
 				init() {
-					utils.api.get('/api/v2/read/users/' + wbapp._session.user.id)
-						.then(function (data) {
-							page.set('user', data);
-						});
 
-					utils.api.get('/api/v2/list/records?status=upcoming&client=' +
-					              wbapp._session.user.id)
-						.then(
-						function (data) {
-							let curr_timestamp = parseInt(getdate()[0]);
-
-							data.forEach(function (rec) {
-								if (rec.event_date !== (new Date()).toLocaleDateString()) {
-									page.push('events.upcoming', rec); /* get actually user next events */
-									return;
-								}
-
-								let event_from_timestamp = utils.timestamp(
-									rec.event_date + ' ' + rec.event_time_start);
-								let event_to_timestamp   = utils.timestamp(
-									rec.event_date + ' ' + rec.event_time_end);
-
-								if (event_from_timestamp < curr_timestamp
-								    && (event_to_timestamp >= curr_timestamp)) {
-									page.push('events.current', rec);
-								}
-							});
-						});
-
-					utils.api.get('/api/v2/list/records?status=past&group=events&client=' +
-					              wbapp._session.user.id).then(
-						function (data) {
-							console.log('history.events:', data);
-							page.set('history.events', data); /* get actually user next events */
-						});
-
-					utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
-						.then(function (data) {
-							console.log('history.longterms:', data);
-							page.set('history.longterms', data); /* get actually user next events */
-						});
-
-					setTimeout(function () {
-						page.set('catalog', catalog);
-					});
 				},
 				complete() {
-
+					this.set('catalog', catalog);
 				},
 				runOnlineChat(ev) {
 					const _rec_id = $(ev.node).data('id');
@@ -780,7 +736,7 @@
 								let $form = $(ev.node);
 								let uid   = page.get('user.id');
 								if ($form.verify() && uid > '') {
-									let data = $form.serializeJSON();
+									let data   = $form.serializeJSON();
 									data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
 									Cabinet.updateProfile(uid, data, function (data) {
 										data.birthdate_fmt = utils.formatDate(data.birthdate);
@@ -798,6 +754,41 @@
 					popupPay.showPopup($(ev.node).data('record'));
 				}
 			}
+		});
+
+		utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
+			page.set('user', data);
+		});
+
+		utils.api.get('/api/v2/list/records?status=[upcoming,past]&group=events&client=' + wbapp._session.user.id)
+			.then(function (records) {
+				console.log('event:', records);
+				if (!!records) {
+					records.forEach(function (rec, idx) {
+						console.log('event:', rec);
+						if (rec.status === 'past') {
+							page.push('history.events', rec);
+							return;
+						}
+
+						if (Cabinet.isCurrentEvent(rec)) {
+							page.push('events.current', rec);
+						} else {
+							page.push('events.upcoming', rec);
+						}
+					});
+				}
+				page.set('events_ready', true);
+			});
+		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+			.then(function (records) {
+				if (!!records) {
+					page.set('history.longterms', records);
+				}
+				page.set('longterms_ready', true);
+			});
+
+		setTimeout(function () {
 		});
 	});
 </script>

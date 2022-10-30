@@ -47,7 +47,6 @@
 					<div class="loading-overlay">
 						<div class="loader"></div>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -67,13 +66,12 @@
 				<a href="tel:{{this.phone}}" class="user__item">Тел:
 					<span>{{ @global.utils.formatPhone(this.phone) }}</span>
 				</a>
-
 				<div class="user__item">Почта:
 					<span>{{this.email}}</span>
 				</div>
 				<div class="user__confirm disabled">
 					<svg class="svgsprite _confirm">
-						<use xlink:href="assets/img/sprites/svgsprites.svg#confirm"></use>
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
 					</svg>
 					Подтвержденный аккаунт<a class="user__notconfirm --openpopup" data-popup="--email-send">Отправить код восстановления на почту</a>
 				</div>
@@ -94,9 +92,13 @@
 			Подробнее
 		</a>
 	</div>
-	{{else}}
+	{{elseif ready}}
 	<div class="account__panel">
 		<span>Ничего не найдено. Измените запрос и повторите поиск</span>
+	</div>
+	{{else}}
+	<div class="account__panel">
+		<span>Подождите, идет поиск..</span>
 	</div>
 	{{/each}}
 </template>
@@ -110,7 +112,8 @@
 			data: {
 				q: '{{_route.params.q}}',
 				user: wbapp._session.user,
-				results: {}
+				results: {},
+				ready: false
 			},
 			on: {
 				complete(ev) {
@@ -118,29 +121,43 @@
 				}
 			}
 		});
+
+		var loaded = 0;
 		utils.api.get('/api/v2/list/users?active=on&role=client&phone~=' + q).then(function (data) {
-			if (!data) {
-				return;
+			if (!!data) {
+				data.forEach(function (user, i) {
+					page.set('results.' + user.id, user);
+				});
 			}
-			data.forEach(function (user, i) {
-				page.set('results.' + user.id, user);
-			});
+
+			loaded++;
+			if (loaded > 2) {
+				page.set('ready', true);
+			}
 		});
 		utils.api.get('/api/v2/list/users?active=on&role=client&email~=' + q).then(function (data) {
-			if (!data) {
-				return;
+			if (!!data) {
+				data.forEach(function (user, i) {
+					page.set('results.' + user.id, user);
+				});
 			}
-			data.forEach(function (user, i) {
-				page.set('results.' + user.id, user);
-			});
+
+			loaded++;
+			if (loaded > 2) {
+				page.set('ready', true);
+			}
 		});
 		utils.api.get('/api/v2/list/users?active=on&role=client&fullname~=' + q).then(function (data) {
-			if (!data) {
-				return;
+			if (!!data) {
+				data.forEach(function (user, i) {
+					page.set('results.' + user.id, user);
+				});
 			}
-			data.forEach(function (user, i) {
-				page.set('results.' + user.id, user);
-			});
+
+			loaded++;
+			if (loaded > 2) {
+				page.set('ready', true);
+			}
 		});
 	});
 </script>

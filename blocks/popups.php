@@ -5,7 +5,6 @@
 		</svg>
 	</a>
 
-
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
 	</div>
@@ -55,29 +54,7 @@
 			</div>
 		</template>
 	</div>
-	<script wbapp remove>
-		let popFast = new Ractive({
-			el: '.popup.--fast',
-			template: document.querySelector('.popup.--fast > template').innerHTML,
-			data: {},
-			on: {
-				submit() {
-					let form = this.find('.popup.--fast .popup__form');
-					if ($(form).verify()) {
-						let post = $(form).serializeJson();
-						wbapp.post('/form/quotes/getQuote', post, function (data) {
-							if (data.error) {
-								wbapp.trigger('wb-save-error', {'data': data});
-							} else {
-								$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--fast .popup__panel.--succed').addClass('d-block');
-							}
-						});
-					}
-				}
-			}
-		});
-	</script>
+
 
 	<div class="popup --form-send">
 		<div class="popup__overlay"></div>

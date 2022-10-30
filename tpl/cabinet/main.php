@@ -477,7 +477,7 @@
 						<div class="admin-events-item col-experts">
 							<p>Специалист</p>
 							{{#if no_experts == '1'}}
-							<span class="link-danger">- уточнить -</span>
+							<div></div>
 							{{else}}
 							{{#experts}}
 							<div>{{catalog.experts[this].name}}</div>
@@ -493,7 +493,7 @@
 						<div class="admin-events-item col-services">
 							<p>Услуга</p>
 							{{#if no_services == '1'}}
-							<span class="link-danger">- уточнить -</span>
+							<div></div>
 							{{else}}
 							{{#services}}
 							<div>{{catalog.services[this].header}}</div>

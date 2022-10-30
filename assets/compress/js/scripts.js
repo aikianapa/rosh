@@ -187,6 +187,9 @@ $(function () {
         }).on('click', '.account button.user__edit:not(.all)', function () {
             $(this).closest('.account').find('.profile-edit:first').toggleClass('active');
             return false;
+        }).on('click', '.accardeon button.user__edit', function () {
+            $(this).closest('.accardeon').find('.profile-edit:first').toggleClass('active');
+            return false;
         }).on('click', '.popup__overlay', function () {
             $(this).closest('.popup').hide();
         }).on('click', '.profile-menu', function (e) {

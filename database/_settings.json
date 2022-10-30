@@ -7,8 +7,8 @@
         "_table": "_settings",
         "_created": "2022-07-12 12:05:57",
         "_creator": "admin",
-        "_lastdate": "2022-09-14 15:37:17",
-        "_lastuser": "id627c0dc909f0",
+        "_lastdate": "2022-10-10 14:31:59",
+        "_lastuser": "id625eb9a80a70",
         "cmsmenu": {
             "data": {
                 "aside": {
@@ -136,7 +136,7 @@
                                     "active": "on",
                                     "data": {
                                         "label": "Заявки",
-                                        "icon": "ico-icon-circle",
+                                        "icon": "укцк",
                                         "ajax": "{'url':'\/cms\/ajax\/form\/quotes\/list','html':'.content-body'}"
                                     },
                                     "__token": "$2y$10$9evNlYqtjhtZEZZg2TZQNe9kkgtppjt.547o4vmtSxxlb4p\/3zRmW"
@@ -257,7 +257,8 @@
                     "\/func\/problems"
                 ],
                 "tokens": [
-                    "123"
+                    "123",
+                    "$2y$10$NHLM7a6RgluGw6vTIwfTlz1zL1yJmSBIvEZYdnxCg3B1Z61hKazUm"
                 ]
             }
         },
