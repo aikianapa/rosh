@@ -418,6 +418,7 @@
 				<div class="acount__table-accardeon accardeon --{{catalog.quoteStatus[this.status].color}} acount__table-accardeon--pmin"
 					data-client="{{.client}}"
 					data-record="{{.id}}"
+					data-id="{{.id}}"
 					data-idx="{{idx}}"
 					data-priority="{{.priority}}"
 					data-group="{{.group}}">
@@ -714,7 +715,7 @@
 			const _id        = _parent.data('id');
 			const _is_marked = $(this).hasClass('checked');
 			console.log('flagged', _id, _is_marked);
-			wbapp.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}, function (res) {
+			utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}, function (res) {
 				toast('Успешно обновлено');
 			});
 		}).on('change', '.flag-date [type="checkbox"]', function (e) {
