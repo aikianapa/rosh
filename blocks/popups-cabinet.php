@@ -781,15 +781,9 @@
 									<input type="hidden" name="price" value="{{record.price}}">
 									<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
 								</div>
-								<div class="row">
-									<div class="col-md-4 --jcfe --flex">
-										<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
-									</div>
-								</div>
+
 								<button class="btn btn--white" type=submit>Сохранить</button>
 							</div>
-							<div class="col-md-1"></div>
-
 						</div>
 					</form>
 				</div>

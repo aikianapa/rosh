@@ -256,7 +256,9 @@ div.accardeon.active > div.accardeon__list {
 	padding-left  : 20px;
 	padding-right : 20px;
 }
-
+.popup__panel.popup__panel-wide {
+	max-width : 620px;
+}
 /* loader 3-dots */
 .loader-dots,
 .loader-dots:before,
