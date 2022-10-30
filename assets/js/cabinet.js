@@ -1,4 +1,4 @@
-window.user_role       = wbapp?._session?.user?.role;
+window.user_role = wbapp?._session?.user?.role;
 
 Date.prototype.isValid = function () {
 	// An invalid date object returns NaN for getTime() and NaN is the only
@@ -152,7 +152,7 @@ $(function () {
 			if (result.isValid()) {
 				return result;
 			} else {
-				date = date.split(' ')[0].split('.').reverse().join('-');
+				date   = date.split(' ')[0].split('.').reverse().join('-');
 				result = new Date(date);
 			}
 		},
@@ -169,7 +169,7 @@ $(function () {
 			//console.log('??', phone, match);
 			if (match) {
 				var intlCode = (match[1] ? '+7 ' : '');
-				phone = [intlCode, '(', match[2], ') ', match[3], '-', match[4], '-', match[5]].join('');
+				phone        = [intlCode, '(', match[2], ') ', match[3], '-', match[4], '-', match[5]].join('');
 			}
 			//console.log('???', phone);
 
@@ -682,7 +682,7 @@ $(function () {
 		toast(text, head, 'warning');
 	};
 
-	document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event)});
+	document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
 
 	window.initServicesSearch = function ($selector, service_list) {
 		console.log($selector, service_list);
@@ -868,7 +868,7 @@ $(function () {
 		});
 	};
 
-	window.popupCreateQuote = function (user_id) {
+	window.popupCreateQuote           = function (user_id) {
 		var popup = new Ractive({
 			el: '.popup.--record',
 			template: wbapp.tpl('#popupRecord').html,
@@ -956,6 +956,12 @@ $(function () {
 					setTimeout(function () {
 						popup.set('catalog', catalog);
 					});
+				},
+				complete() {
+					if (!!onShow) {
+						onShow(this);
+					}
+					$(this.el).show();
 				},
 				submit() {
 					let form = this.find('.popup.--analize-interpretation .popup__form');
@@ -1100,18 +1106,16 @@ $(function () {
 			}
 		});
 	};
-	window.popupMessage    = function (content, caption, onShow, onHide) {
+	window.popupMessage               = function (content, caption, onShow, onHide) {
 		return new Ractive({
 			el: '.popup.--message',
 			template: wbapp.tpl('#popupMessage').html,
-			data: {
-
-			},
+			data: {},
 			on: {
 				init() {
 				},
 				complete() {
-					if (!!onShow){
+					if (!!onShow) {
 						onShow(this);
 					}
 					$(this.el).show();
@@ -1131,7 +1135,7 @@ $(function () {
 		});
 
 	};
-	window.popupPhoto    = function (params) {
+	window.popupPhoto                 = function (params) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 0,
@@ -1176,7 +1180,7 @@ $(function () {
 		});
 
 	};
-	window.popupLongterm = function (params, onSaved, onCancel) {
+	window.popupLongterm              = function (params, onSaved, onCancel) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 1,
@@ -1210,18 +1214,18 @@ $(function () {
 					let form = $(ev.node);
 
 					if ($(form).verify()) {
-						let record_data        = $(form).serializeJSON();
+						let record_data = $(form).serializeJSON();
 						const edit_mode = !!record_data.id;
 
 						record_data.group = 'longterms';
-						if (edit_mode){
+						if (edit_mode) {
 							delete record_data.longterm_title;
 						}
 
+						utils.api.post('/' + (edit_mode ? 'update' : 'create') + '/records/', record_data,
+							function (data) {
 
-						utils.api.post('/' + (edit_mode ? 'update' : 'create') + '/records/', record_data, function (data) {
-
-						});
+							});
 					}
 					return false;
 				}

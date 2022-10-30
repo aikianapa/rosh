@@ -350,41 +350,59 @@
 									{{/each}}
 								</div>
 							</div>
+
 							{{#if this.hasPhoto}}
 							<div class="acount__photos">
-								<div class="row acount__photos-wrap">
-									<div class="col-md-6">
-										<div class="acount__photo">
-											<p>Фото до начала лечения</p>
-											{{#each photos.before}}
-											<div class="col-md-6">
-												<a class="after-healing__item"
-													data-fancybox="images"
-													href="{{.src}}"
-													data-caption="{{.date}}">
-													<div class="healing__date">{{.date}}</div>
-													<div class="after-healing__photo"
-														style="background-image: url({{.src}})">
-													</div>
-												</a>
-											</div>
-											{{else}}
+								<div class="row">
+									<div class="col-md-4">
+										<p>Фото до начала лечения</p>
+										{{#each photos.before}}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="acount__photo">
+													<a class="after-healing__item"
+														data-fancybox="event-{{this.id}}"
+														href="{{.src}}"
+														data-caption="Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
 
-											{{/each}}
+												</div>
+											</div>
 										</div>
+										{{else}}
+
+										{{/each}}
 									</div>
-									<div class="col-md-6">
-										<div class="acount__photo">
-											<p>Фото в процессе лечения</p>
-											{{#each photos.after}}
-											<a class="after-healing__item"
-												data-fancybox="images"
-												href="{{.src}}"
-												data-caption="{{.date}}">
-												<img src="{{.src}}" alt="After visit {{.date}}">
-											</a>
-											{{/each}}
+									<div class="col-md-4">
+										<p>Фото в процессе лечения:</p>
+										{{#each photos.after}}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="acount__photo">
+													<a class="after-healing__item"
+														data-fancybox="event-{{this.id}}"
+														href="{{.src}}"
+														data-caption="Фото в процессе лечения:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">Фото в процессе лечения:
+															{{ @global.utils.formatDate(.date) }}</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
 										</div>
+										{{else}}
+
+										{{/each}}
 									</div>
 								</div>
 							</div>
@@ -435,8 +453,9 @@
 										data-fancybox="images-{{this.id}}"
 										href="{{.src}}"
 										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
-										<h2 class="h2 healing__date-title">
-											{{ @global.utils.formatDate(.date) }}</h2>
+										<h2 class="h2 healing__date-title d-none">
+											{{ @global.utils.formatDate(.date) }}
+										</h2>
 										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
 										<div class="healing__date">
 											{{ @global.utils.formatDate(.date) }}
@@ -450,7 +469,7 @@
 										Фото после начала лечения
 									</div>
 									<div class="after-healing">
-										<h2 class="h2 healing__date-title d-none month-header"></h2>
+										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
 										<div class="row">
 											{{#each this.photos.after}}
 											<div class="col-md-6">
@@ -497,9 +516,6 @@
 					<div class="healing-item">Статус</div>
 				</div>
 				<div class="account__table-body">
-					<div class="acount__table-accardeon accardeon purchases-wrap">
-
-					</div>
 					<div class="acount__table-accardeon accardeon purchases-wrap">
 						<div class="purchases-wrap-row">
 							Нет записей об истории покупок
