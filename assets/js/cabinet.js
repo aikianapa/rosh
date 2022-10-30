@@ -304,7 +304,7 @@ $(function () {
 						};
 					});
 					_self.categories = _serviceCats;
-					localStorage.setItem('db.quoteStatus', JSON.stringify(_self.categories));
+					localStorage.setItem('db.categories', JSON.stringify(_self.categories));
 				});
 			} else {
 				_self.categories = JSON.parse(localStorage.getItem('db.categories'));

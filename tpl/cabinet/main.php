@@ -367,7 +367,7 @@
 							</div>
 						</div>
 						<div class="search__drop-right">
-							<div class="search__drop-summ">{{ @global.utils.formatPrice(.price) }} ₽</div>
+							<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 						</div>
 					</div>
 					{{/each}}
@@ -654,6 +654,7 @@
 												$(copy).html($(form).clone());
 
 												let post = $(copy).serializeJSON();
+												console.log(post);
 												utils.api.post('/api/v2/update/records/' + _record.id, post)
 													.then(function (res) {
 														_tab.set('records.' + _row_idx, res);
