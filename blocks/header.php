@@ -67,27 +67,31 @@
                 </div>
             </div>
 
-            <div class="container --flex --jcsb --aicn" wb-if="'{{_sess.user.role}}'=='main'">
-                <div class="header__admin --flex --aicn">
-                    <span class="lower-deck">
-	                    <button class="btn btn--white loaddata --openpopup"
-		                    onclick="popupDownloadData();"
-		                    data-popup="--download-data">
-                            <svg class="svgsprite _xl">
-                                <use xlink:href="/assets/img/sprites/svgsprites.svg#xl"></use>
-                            </svg>Выгрузить данные
-                        </button>
-	                    <a class="btn btn-link" href="/cabinet/photos">Медиатека</a></span><a class="btn btn-link" href="/cabinet/changes">Журнал изменений</a>
-                </div>
-                <div class="header__right --flex --aicn">
-                    <button class="btn btn-link profile-menu">
-                        Профиль
-                        <svg class="svgsprite _drop">
-                            <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
-                        </svg>
-                        <div class="enter__panel">
-                            <a class="enter__btn text-small" href="/cabinet/profile">Редактировать</a>
-                            <a class="enter__btn text-small" href="/signout">Выйти</a>
+	        <div class="container --flex --jcsb --aicn" wb-if="'{{_sess.user.role}}'=='main'">
+		        <div class="header__admin --flex --aicn">
+			        <span class="lower-deck">
+				        <button class="btn btn--white loaddata --openpopup"
+					        onclick="popupDownloadData();"
+					        data-popup="--download-data">
+					        <svg class="svgsprite _xl">
+						        <use xlink:href="/assets/img/sprites/svgsprites.svg#xl"></use>
+					        </svg>
+					        Выгрузить данные
+				        </button>
+				    </span>
+			        <a class="btn btn-link" href="/cabinets">Медиатека</a>
+			        <a class="btn btn-link" href="/cabinet/photos">Медиатека</a>
+			        <a class="btn btn-link" href="/cabinet/changes">Журнал изменений</a>
+		        </div>
+		        <div class="header__right --flex --aicn">
+			        <button class="btn btn-link profile-menu">
+				        Профиль
+				        <svg class="svgsprite _drop">
+					        <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
+				        </svg>
+				        <div class="enter__panel">
+					        <a class="enter__btn text-small" href="/cabinet/profile">Редактировать</a>
+					        <a class="enter__btn text-small" href="/signout">Выйти</a>
                         </div>
                     </button>
                     <button class="burger"></button>

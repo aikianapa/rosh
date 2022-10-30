@@ -17,7 +17,7 @@
 				<div class="crumbs">
 					<a class="crumbs__arrow">
 						<svg class="svgsprite _crumbs-back">
-							<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
 						</svg>
 					</a>
 					<a class="crumbs__link" href="/">Главная</a>
@@ -52,7 +52,7 @@
 					{{user.fullname}}
 					<button class="user__edit" on-click="toggleEdit">
 						<svg class="svgsprite _edit">
-							<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 						</svg>
 					</button>
 				</div>
