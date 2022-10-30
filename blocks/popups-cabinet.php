@@ -113,7 +113,7 @@
 						</svg>
 					</button>
 					<div class="popup__name text-bold">{{catalog.spec_service.analyses_interpretation.header}}</div>
-					<form class="popup__form" method="post">
+					<form class="popup__form" method="post" on-submit="submit">
 						<input type="hidden" name="pay_status" value="unpay">
 						<input type="hidden" name="spec_service" value="analyses_interpretation">
 						<input type="hidden" name="price"
@@ -134,7 +134,7 @@
 							</label>
 						</div>
 						<p class="text-grey mb-30">Нажмите на способ получения анализа</p>
-						<button class="btn btn--black popup__change form__submit" type="button" on-click="submit">
+						<button class="btn btn--black popup__change form__submit" type="button">
 							Оставить заявку
 						</button>
 					</form>
@@ -203,15 +203,17 @@
 		<template id="popupMessage">
 			<div class="popup__overlay"></div>
 			<div class="popup__panel">
-				<button class="popup__close">
+				<button class="popup__close" on-click="close">
 					<svg class="svgsprite _close">
 						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
 					</svg>
 				</button>
-				<div class="popup__name text-bold">{{head}}</div>
-				<h3 class="h3">{{caption}}</h3>
-				<p class="text-grey">{{content}}</p>
-
+				<div class="popup__name text-bold">{{caption}}</div>
+				<h3 class="h3">{{title}}</h3>
+				<p class="text-grey">{{subtitle}}</p>
+				<div>
+					{{{html}}}
+				</div>
 			</div>
 		</template>
 	</div>

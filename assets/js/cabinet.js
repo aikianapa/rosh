@@ -682,7 +682,7 @@ $(function () {
 		toast(text, head, 'warning');
 	};
 
-	document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
+	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
 
 	window.initServicesSearch = function ($selector, service_list) {
 		console.log($selector, service_list);
@@ -943,7 +943,7 @@ $(function () {
 
 		$('.popup.--pay').show();
 	};
-	window.popupAnalizeInterpretation = function (onShow) {
+	window.popupAnalizeInterpretation = function (client_id, record_id, analyses_file_uri, onShow) {
 		let popup = new Ractive({
 			el: '.popup.--analize-interpretation',
 			template: wbapp.tpl('#popupAnalizeInterpretation').html,
@@ -968,12 +968,12 @@ $(function () {
 					if ($(form).verify()) {
 						let post = $(form).serializeJSON();
 
-						wbapp.post('/create/records', post, function (data) {
+						utils.api.post('/create/records', post, function (data) {
 							if (data.error) {
 								wbapp.trigger('wb-save-error', {'data': data});
 							} else {
-								$('.popup.--analize-type .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--analize-type .popup__panel.--succed').addClass('d-block');
+								$('.popup.--analize-interpretation .popup__panel:not(.--succed)').addClass('d-none');
+								$('.popup.--analize-interpretation .popup__panel.--succed').addClass('d-block');
 							}
 						});
 					}
@@ -1106,11 +1106,16 @@ $(function () {
 			}
 		});
 	};
-	window.popupMessage               = function (content, caption, onShow, onHide) {
+	window.popupMessage               = function (title, subtitle, caption, html, onShow) {
 		return new Ractive({
 			el: '.popup.--message',
 			template: wbapp.tpl('#popupMessage').html,
-			data: {},
+			data: {
+				content: html,
+				title: title,
+				subtitle: subtitle,
+				caption: caption
+			},
 			on: {
 				init() {
 				},
@@ -1120,17 +1125,7 @@ $(function () {
 					}
 					$(this.el).show();
 				},
-				submit(ev) {
-					let form = $(ev.node);
-
-					if ($(form).verify()) {
-						let post = $(form).serializeJSON();
-						wbapp.post('/update/records/', post, function (data) {
-
-						});
-					}
-					return false;
-				}
+				close(e) {}
 			}
 		});
 
