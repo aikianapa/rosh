@@ -507,10 +507,10 @@
 						</div>
 						<div class="admin-events-item">
 							<p>Статус</p>
-							{{catalog.quoteStatus[status].name}}
+							{{catalog.quoteStatus[this.status].name}}
 						</div>
 						<div class="admin-events-item">
-							<p>Комментарии</p>{{comment}}
+							<p>Комментарии</p>{{this.comment}}
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
@@ -548,7 +548,7 @@
 				{{else}}
 				<div class="acount__table-accardeon accardeon">
 					<div class="acount__table-main accardeon__main">
-						Нет записей о продолжительном лечении
+						Нет записей
 					</div>
 				</div>
 				{{/each}}
