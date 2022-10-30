@@ -549,22 +549,24 @@
 						<input type="hidden" name="confirmed" value="0">
 						<div class="input">
 							<input class="input__control" type="text" required
-								placeholder="ФИО" name="fullname">
+								placeholder="ФИО" name="fullname" minlength="5">
 							<div class="input__placeholder">ФИО</div>
 						</div>
 						<div class="input">
 							<input class="input__control datebirthdaypickr" required
-								type="text" placeholder="Дата рождения" name="birthdate">
+								type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
 							<div class="input__placeholder">Дата рождения</div>
 						</div>
 						<div class="input mb-30">
 							<input class="input__control" type="tel" required
 								placeholder="Номер телефона"
+								minlength="7"
 								data-inputmask="'mask': '+7 (999) 999-99-99'"
 								name="phone">
 							<div class="input__placeholder">Номер телефона</div>
 						</div>
-						<button class="btn btn--black form__submit">Создать</button>
+						<button class="btn btn--black form__submit" type="submit">Создать</button>
+
 						<div class="form-bottom">После отправки для пациента будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
 					</form>
 				</div>
