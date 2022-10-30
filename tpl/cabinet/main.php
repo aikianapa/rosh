@@ -340,7 +340,8 @@
 							{{catalog.spec_service[this.spec_service].header}}
 						</div>
 						<div class="search__drop-right">
-							<div class="search__drop-summ">{{catalog.spec_service[this.spec_service].price}} ₽</div>
+							<div class="search__drop-summ">
+								{{catalog.spec_service[this.spec_service].price}} ₽</div>
 						</div>
 					</div>
 					{{else}}
@@ -366,13 +367,12 @@
 							</div>
 						</div>
 						<div class="search__drop-right">
-							<div class="search__drop-summ">{{ @global.utils.formatPrice(record.price) }} ₽</div>
+							<div class="search__drop-summ">{{ @global.utils.formatPrice(.price) }} ₽</div>
 						</div>
 					</div>
 					{{/each}}
 					{{/if}}
 				</div>
-
 				<div class="admin-editor__summ">
 					<p>Всего</p>
 					<input type="hidden" name="price" value="{{record.price}}">
@@ -414,7 +414,6 @@
 				<div class="loading-overlay">
 					<div class="loader"></div>
 				</div>
-
 				{{#each records: idx}}
 				<div class="acount__table-accardeon accardeon --{{catalog.quoteStatus[this.status].color}} acount__table-accardeon--pmin"
 					data-client="{{.client}}"
