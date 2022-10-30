@@ -943,7 +943,7 @@ $(function () {
 
 		$('.popup.--pay').show();
 	};
-	window.popupAnalizeInterpretation = function () {
+	window.popupAnalizeInterpretation = function (onShow) {
 		let popup = new Ractive({
 			el: '.popup.--analize-interpretation',
 			template: wbapp.tpl('#popupAnalizeInterpretation').html,
