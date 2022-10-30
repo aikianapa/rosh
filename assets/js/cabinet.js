@@ -1,9 +1,11 @@
 window.user_role       = wbapp?._session?.user?.role;
+
 Date.prototype.isValid = function () {
 	// An invalid date object returns NaN for getTime() and NaN is the only
 	// object not strictly equal to itself.
 	return this.getTime() === this.getTime();
 };
+
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
@@ -680,6 +682,8 @@ $(function () {
 		toast(text, head, 'warning');
 	};
 
+	document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event)});
+
 	window.initServicesSearch = function ($selector, service_list) {
 		console.log($selector, service_list);
 
@@ -1096,7 +1100,38 @@ $(function () {
 			}
 		});
 	};
-	window.popupPhoto                 = function (params) {
+	window.popupMessage    = function (content, caption, onShow, onHide) {
+		return new Ractive({
+			el: '.popup.--message',
+			template: wbapp.tpl('#popupMessage').html,
+			data: {
+
+			},
+			on: {
+				init() {
+				},
+				complete() {
+					if (!!onShow){
+						onShow(this);
+					}
+					$(this.el).show();
+				},
+				submit(ev) {
+					let form = $(ev.node);
+
+					if ($(form).verify()) {
+						let post = $(form).serializeJSON();
+						wbapp.post('/update/records/', post, function (data) {
+
+						});
+					}
+					return false;
+				}
+			}
+		});
+
+	};
+	window.popupPhoto    = function (params) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 0,
@@ -1132,6 +1167,59 @@ $(function () {
 					if ($(form).verify()) {
 						let post = $(form).serializeJSON();
 						wbapp.post('/update/records/', post, function (data) {
+
+						});
+					}
+					return false;
+				}
+			}
+		});
+
+	};
+	window.popupLongterm = function (params, onSaved, onCancel) {
+		var _data = {}, _default = {
+			description: '',
+			longterm: 1,
+			client: null,
+			record: null,
+			title: '',
+			type: null,
+			date: (new Date())
+		};
+		if (!!params) {
+			_data = $.extend({}, params, _default);
+		}
+		_data.catalog = catalog;
+
+		return new Ractive({
+			el: '.popup.--longterm',
+			template: wbapp.tpl('#popupLongterm').html,
+			data: _data,
+			on: {
+				init() {
+					setTimeout(function () {
+						initPlugins();
+						initClientSearch($('.popup.--longterm form'));
+						initLongtermSearch($('.popup.--longterm form'), true);
+					});
+				},
+				complete() {
+					$(this.el).show();
+				},
+				submit(ev) {
+					let form = $(ev.node);
+
+					if ($(form).verify()) {
+						let record_data        = $(form).serializeJSON();
+						const edit_mode = !!record_data.id;
+
+						record_data.group = 'longterms';
+						if (edit_mode){
+							delete record_data.longterm_title;
+						}
+
+
+						utils.api.post('/' + (edit_mode ? 'update' : 'create') + '/records/', record_data, function (data) {
 
 						});
 					}

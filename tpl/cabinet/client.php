@@ -233,7 +233,7 @@
 		{{/each}}
 	</div>
 	{{/if}}
-
+	<!-- !!! quote history tab !!! -->
 	<div class="account__history data-tab-wrapper" data-tabs="history">
 		<div class="account__tab-items">
 			<div class="account__tab-item data-tab-link active" data-tabs="history" data-tab="visits">
@@ -242,8 +242,10 @@
 			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="longterm">
 				Продолжительное лечение
 			</div>
+			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="history">
+				История покупок
+			</div>
 		</div>
-		<!-- !!! quote history tab !!! -->
 		<div class="account__tab data-tab-item active" data-tab="visits">
 			<div class="account__table">
 				<div class="account__table-head">
@@ -404,8 +406,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- !!! longterm tab !!! -->
 		<div class="account__tab data-tab-item" data-tab="longterm">
 			<div class="account__table">
 				<div class="account__table-head">
@@ -483,6 +483,28 @@
 						<div class="loader-dots"></div>
 					</div>
 					{{/each}}
+				</div>
+			</div>
+		</div>
+		<div class="account__tab data-tab-item purchases" data-tab="history">
+			<div class="account__table account__table-second">
+				<div class="account__table-head">
+					<div class="healing-item">Дата</div>
+					<div class="healing-item">Наименование</div>
+					<div class="healing-item">Кол-во</div>
+					<div class="healing-item">Цена</div>
+					<div class="healing-item">Способ доставки</div>
+					<div class="healing-item">Статус</div>
+				</div>
+				<div class="account__table-body">
+					<div class="acount__table-accardeon accardeon purchases-wrap">
+
+					</div>
+					<div class="acount__table-accardeon accardeon purchases-wrap">
+						<div class="purchases-wrap-row">
+							Нет записей об истории покупок
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -618,102 +640,13 @@
 				},
 				complete() {
 					this.set('catalog', catalog);
+					setTimeout(function (){
+						$(this.el).find("img[data-src]:not([src])").lazyload();
+					});
 				},
 				runOnlineChat(ev) {
 					const _rec_id = $(ev.node).data('id');
 					Cabinet.runOnlineChat(_rec_id);
-				},
-				showLongtermDetails(ev) {
-					var _parent = $(ev.node).parents('.accardeon');
-					if (!_parent.hasClass('loaded')) {
-						var _record_idx      = _parent.data('idx');
-						var _record          = page.get('history.longterms.' + _record_idx);
-						var _accardeon__list = new Ractive({
-							el: _parent.find('.accardeon__list'),
-							template: wbapp.tpl('#longterm-details').html,
-							data: {
-								event: _record,
-								user: page.get('user'),
-								catalog: catalog
-							},
-							on: {
-								init() {
-									var _this = this;
-									if (!!_record.photos?.before || !!_record.photos?.after) {
-										utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
-											function (result) {
-												if (!result) {
-													return;
-												}
-
-												var list = {before: [], after: []};
-												result.forEach(function (photo) {
-													if (_record.photos?.before &&
-													    _record.photos.before.includes(photo.id)) {
-														list.before.push(photo);
-													} else if (_record.photos?.after &&
-													           _record.photos.after.includes(photo.id)) {
-														list.after.push(photo);
-													}
-												});
-												_this.set('photos', list);
-											}
-										);
-									}
-								},
-								complete() {
-									_parent.find("img[data-src]:not([src])").lazyload();
-									_parent.addClass('loaded');
-								}
-							}
-						});
-					}
-				},
-				showEventDetails(ev) {
-					var _parent = $(ev.node).parents('.accardeon');
-					if (!_parent.hasClass('loaded')) {
-						var _record_idx      = _parent.data('idx');
-						var _record          = page.get('history.events.' + _record_idx);
-						var _accardeon__list = new Ractive({
-							el: _parent.find('.accardeon__list'),
-							template: wbapp.tpl('#event-details').html,
-							data: {
-								event: _record,
-								user: page.get('user'),
-								catalog: catalog
-							},
-							on: {
-								init() {
-									var _this = this;
-									if (!!_record.photos?.before || !!_record.photos?.after) {
-										utils.api.get('/api/v2/list/record-photos?record=' + _record.id).then(
-											function (result) {
-												if (!result) {
-													return;
-												}
-
-												var list = {before: [], after: []};
-												result.forEach(function (photo) {
-													if (_record.photos?.before &&
-													    _record.photos.before.includes(photo.id)) {
-														list.before.push(photo);
-													} else if (_record.photos?.after &&
-													           _record.photos.after.includes(photo.id)) {
-														list.after.push(photo);
-													}
-												});
-												_this.set('photos', list);
-											}
-										);
-									}
-								},
-								complete() {
-									_parent.find("img[data-src]:not([src])").lazyload();
-									_parent.addClass('loaded');
-								}
-							}
-						});
-					}
 				},
 				toggleEdit(ev) {
 					console.log(ev, $(ev.node), this);

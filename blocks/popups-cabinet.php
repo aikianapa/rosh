@@ -198,10 +198,11 @@
 			</template>
 		</div>
 	</div>
+
 	<div class="popup --message">
 		<template id="popupMessage">
 			<div class="popup__overlay"></div>
-			<div class="popup__panel --succed-pay">
+			<div class="popup__panel">
 				<button class="popup__close">
 					<svg class="svgsprite _close">
 						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
@@ -210,9 +211,11 @@
 				<div class="popup__name text-bold">{{head}}</div>
 				<h3 class="h3">{{caption}}</h3>
 				<p class="text-grey">{{content}}</p>
+
 			</div>
 		</template>
 	</div>
+
 	<div wb-if="'{{_sess.user.role}}'=='main'">
 		<div class="popup --photo">
 			<template id="popupPhoto">
@@ -265,17 +268,18 @@
 							</label>
 						</div>
 
-						<label class="file-photo" for="file-photo">
+						<label class="file-photo">
 							<div class="file-photo__ico">
 								<svg class="svgsprite _file">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
 								</svg>
 								<img class="preview d-none" alt="upload preview">
 							</div>
-							<input type="file" id="file-photo" name="file" required>
-							<input type="hidden" name="path" value="/records/">
-							<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
-								<br>Фото не должно превышать 10 мб
+							<input type="file" name="file" required>
+							<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id}}/">
+							<div class="file-photo__text text-grey">
+								Для загрузки фото заполните все поля<br>
+								Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
 							</div>
 						</label>
 						<button class="btn btn--white upload-image disabled" on-click="submit">Сохранить</button>
@@ -364,7 +368,9 @@
 								</svg>
 								<img class="preview d-none" alt="upload preview">
 							</div>
-							<input type="file"  accept=".jpg, .jpeg, .png" name="file" class="client-photo">
+							<input type="file" id="file-photo-event" name="file" required>
+							<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id}}/">
+							<input type="file"  accept=".jpg, .jpeg, .png" name="photo" class="client-photo">
 							<div class="file-photo__text text-grey">
 								Для загрузки фото заполните все поля<br>
 								Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
