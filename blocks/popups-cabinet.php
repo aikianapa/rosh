@@ -626,8 +626,8 @@
 								<input type="hidden" value="{{ record.id }}" name="id">
 
 								{{#if record.spec_service}}
-								<input type="hidden" name="spec_service" value="{{this.spec_service}}">
-								<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
+								<input type="hidden" name="spec_service" value="{{record.spec_service}}">
+								<input type="hidden" name="title" value="{{catalog.spec_service[record.spec_service].header}}">
 								{{else}}
 								<div class="admin-editor__event mb-20">
 									<div class="search__block --flex --aicn">
@@ -769,7 +769,7 @@
 											</div>
 										</div>
 										<div class="search__drop-right">
-											<div class="search__drop-summ">{{ @global.utils.formatPrice(record.price) }} ₽</div>
+											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 										</div>
 									</div>
 									{{/each}}
