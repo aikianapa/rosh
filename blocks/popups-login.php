@@ -156,7 +156,7 @@
 		(function() {
 			new Ractive({
 				el: '#popupsLogin',
-				template: document.querySelector('#popupsLogin').innerHTML,
+				template: document.querySelector('#popupsLogin > template').innerHTML,
 				data: {},
 			})
 		})()

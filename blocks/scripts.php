@@ -51,7 +51,7 @@
 
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
-	<link href="/assets/css/new.css" rel="stylesheet">
+	<link href="/assets/css/new.css?v=1.1" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css" rel="stylesheet">
 

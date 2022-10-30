@@ -5,7 +5,7 @@
 		</svg>
 	</a>
 
-	<div>
+	<div wb-if="in_array('{{_sess.user.role}}',['admin',''])">
 		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
 	</div>
 	<div>
@@ -54,7 +54,6 @@
 			</div>
 		</template>
 	</div>
-
 
 	<div class="popup --form-send">
 		<div class="popup__overlay"></div>

@@ -61,6 +61,200 @@
 
 <!--!!! TEMPLATES !!!-->
 <template id="page-content" wb-off>
+	<div class="account__panel">
+		<div class="account__info">
+			<div class="user">
+				<div class="user__name">
+					{{user.fullname}}
+					<button class="user__edit" on-click="toggleEdit">
+						<svg class="svgsprite _edit">
+							<use xlink:href="assets/img/sprites/svgsprites.svg#edit"></use>
+						</svg>
+					</button>
+				</div>
+				<div class="user__group">
+					<div class="user__birthday">Дата рождения:
+						<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
+					</div>
+					<div class="user__phone">Тел:
+						<span>{{ @global.utils.formatPhone(user.phone) }}</span>
+					</div>
+				</div>
+				<div class="user__confirm">
+					<svg class="svgsprite _confirm">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
+					</svg>
+					Подтвержденный аккаунт
+				</div>
+			</div>
+		</div>
+		<a href="/signout" class="account__exit">Выйти из аккаунта</a>
+		<input class="admin-edit__upload" type="hidden" id="analyses-file">
+
+		<div class="profile-editor-inline d-none">
+			<!-- profileEditInline target -->
+		</div>
+	</div>
+
+	{{#if events.current}}
+	<div class="lk-title">Текущее событие</div>
+	<div class="account-events">
+		<!-- multiple: .account-events__block -->
+		{{#each events.current}}
+		<div class="account-events__block">
+			<div class="account-events__block-wrap mb-20">
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Услуги:</div>
+						<div class="account-event">
+							{{#services}}
+							{{catalog.services[this].header}}<br>
+							{{/services}}
+						</div>
+					</div>
+				</div>
+
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Специалист:</div>
+						<div class="account-event">
+							{{#this.experts}}
+							<p>{{catalog.experts[this].name}}</p>
+							{{/this.experts}}
+						</div>
+					</div>
+				</div>
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Дата приема:</div>
+						<div class="account-event">
+							<p>{{ @global.utils.formatDate(this.event_date) }}</p>
+						</div>
+					</div>
+
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Время приема:</div>
+						<div class="account-event">
+							<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{{#if this.type == 'online'}}
+			<div class="account-events__btns">
+				<div class="account-event-wrap --aicn">
+					<div class="account-events__btn">
+						<a class="btn btn--black" on-click="runOnlineChat">
+							Начать консультацию
+						</a>
+					</div>
+					<!-- TODO: add record.expert_waiting for detect online expert status -->
+					<p>Вас ожидает специалист, можете подключиться прямо сейчас</p>
+				</div>
+			</div>
+			{{/if}}
+
+			{{#if this.analyses}}
+			<div class="account-events__download">
+				<div class="lk-title">Анализы</div>
+				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+			</div>
+			{{/if}}
+		</div>
+		{{/each}}
+	</div>
+	{{/if}}
+
+	{{#if events.upcoming}}
+	<div class="lk-title">Предстоящие события</div>
+	<div class="account-events">
+		{{#each events.upcoming}}
+		<div class="account-events__block">
+			<div class="account-events__block-wrap mb-20">
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Услуги:</div>
+						<div class="account-event">
+							{{#services}}
+							{{catalog.services[this].header}}<br>
+							{{/services}}
+						</div>
+					</div>
+				</div>
+
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Специалист:</div>
+						<div class="account-event">
+							{{#this.experts}}
+							<p>{{catalog.experts[this].name}}</p>
+							{{/this.experts}}
+						</div>
+					</div>
+				</div>
+
+				{{#if this.pay_status !== 'unpay'}}
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Дата приема:</div>
+						<div class="account-event">
+							<p>{{ @global.utils.formatDate(this.event_date) }}</p>
+						</div>
+					</div>
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Время приема:</div>
+						<div class="account-event">
+							<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
+						</div>
+					</div>
+				</div>
+				{{else}}
+				<div class="account-events__item event_date"></div>
+				{{/if}}
+			</div>
+
+			{{#if this.pay_status == 'unpay'}}
+			<div class="account-events__btns">
+				<div class="account-event-wrap --aicn">
+					<div class="account-events__btn">
+						<button class="btn btn--black"
+							onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+							Внести предоплату
+						</button>
+					</div>
+					<p>Услуга требует внесения предоплаты</p>
+				</div>
+			</div>
+			{{elseif this.type == 'online'}}
+			<div class="account-events__btns">
+				<div class="account-event-wrap --aicn">
+					<div class="account-events__btn">
+						<button class="btn btn--white disabled" disabled>
+							Онлайн консультация
+						</button>
+					</div>
+					<p>Кнопка станет активной за 5 минут до начала приема</p>
+				</div>
+			</div>
+			{{/if}}
+
+			{{#if this.analyses}}
+			<div class="account-events__download">
+				<div class="lk-title">Анализы</div>
+				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+			</div>
+			{{/if}}
+		</div>
+		{{/each}}
+	</div>
+	{{/if}}
+	<!-- !!! quote history tab !!! -->
+
+</template>
+
+<!--!!! TEMPLATES !!!-->
+<template id="page-content" wb-off>
 	<div class="lk-title">Карточка пациента</div>
 	{{#user}}
 	<div class="account__panel">
@@ -115,55 +309,155 @@
 	</div>
 	{{/user}}
 
-	{{#if events.upcoming}}
-	<div class="lk-title">Предстоящие события</div>
+	{{#if events.current}}
+	<div class="lk-title">Текущее событие</div>
 	<div class="account-events">
-		{{#each events.upcoming}}
-		<div class="account-events__block --flex --jcsb">
-			<div class="account-events__block-wrap">
+		<!-- multiple: .account-events__block -->
+		{{#each events.current}}
+		<div class="account-events__block">
+			<div class="account-events__block-wrap mb-20">
 				<div class="account-events__item">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
-							<p>Услуги</p>
 							{{#services}}
 							{{catalog.services[this].header}}<br>
 							{{/services}}
 						</div>
 					</div>
 				</div>
+
 				<div class="account-events__item">
 					<div class="account-event-wrap">
+						<div class="account-events__name">Специалист:</div>
+						<div class="account-event">
+							{{#this.experts}}
+							<p>{{catalog.experts[this].name}}</p>
+							{{/this.experts}}
+						</div>
+					</div>
+				</div>
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Дата приема:</div>
 						<div class="account-event">
 							<p>{{ @global.utils.formatDate(this.event_date) }}</p>
 						</div>
 					</div>
-					<div class="account-event-wrap">
+
+					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Время приема:</div>
 						<div class="account-event">
-							<p>{{ this.event_time }}</p>
+							<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
 						</div>
 					</div>
 				</div>
+			</div>
+
+			{{#if this.type == 'online'}}
+			<div class="account-events__btns">
+				<div class="account-event-wrap --aicn">
+					<div class="account-events__btn">
+						<a class="btn btn--black" on-click="runOnlineChat">
+							Начать консультацию
+						</a>
+					</div>
+					<!-- TODO: add record.expert_waiting for detect online expert status -->
+					<p>Вас ожидает специалист, можете подключиться прямо сейчас</p>
+				</div>
+			</div>
+			{{/if}}
+
+			{{#if this.analyses}}
+			<div class="account-events__download">
+				<div class="lk-title">Анализы</div>
+				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+			</div>
+			{{/if}}
+		</div>
+		{{/each}}
+	</div>
+	{{/if}}
+
+	{{#if events.upcoming}}
+	<div class="lk-title">Предстоящие события</div>
+	<div class="account-events">
+		{{#each events.upcoming}}
+		<div class="account-events__block">
+			<div class="account-events__block-wrap mb-20">
 				<div class="account-events__item">
 					<div class="account-event-wrap">
-						<div class="account-events__name">Специалист:</div>
+						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
-							{{#experts}}
-							<p>{{catalog.experts[this].name}}</p>
-							{{/experts}}
+							{{#services}}
+							{{catalog.services[this].header}}<br>
+							{{/services}}
 						</div>
 					</div>
 				</div>
 
-				<a class="account__detail --openpopup"
-					data-popup="--edit-event"
-					on-click="['editEvent', this]"
-					data-record="{{this.id}}">
-					Редактировать
-				</a>
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Специалист:</div>
+						<div class="account-event">
+							{{#this.experts}}
+							<p>{{catalog.experts[this].name}}</p>
+							{{/this.experts}}
+						</div>
+					</div>
+				</div>
+
+				{{#if this.pay_status !== 'unpay'}}
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Дата приема:</div>
+						<div class="account-event">
+							<p>{{ @global.utils.formatDate(this.event_date) }}</p>
+						</div>
+					</div>
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Время приема:</div>
+						<div class="account-event">
+							<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
+						</div>
+					</div>
+				</div>
+				{{else}}
+				<div class="account-events__item event_date"></div>
+				{{/if}}
 			</div>
+
+			{{#if this.pay_status == 'unpay'}}
+			<div class="account-events__btns">
+				<div class="account-event-wrap --aicn">
+					<div class="account-events__btn">
+						<button class="btn btn--black"
+							onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+							Внести предоплату
+						</button>
+					</div>
+					<p>Услуга требует внесения предоплаты</p>
+				</div>
+			</div>
+			{{elseif this.type == 'online'}}
+			<div class="account-events__btns">
+				<div class="account-event-wrap --aicn">
+					<div class="account-events__btn">
+						<button class="btn btn--white disabled" disabled>
+							Онлайн консультация
+						</button>
+					</div>
+					<p>Кнопка станет активной за 5 минут до начала приема</p>
+				</div>
+			</div>
+			{{/if}}
+
+			{{#if this.analyses}}
+			<div class="account-events__download">
+				<div class="lk-title">Анализы</div>
+				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+			</div>
+			{{/if}}
 		</div>
 		{{/each}}
 	</div>
@@ -177,8 +471,10 @@
 			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="longterm">
 				Продолжительное лечение
 			</div>
+			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="history">
+				История покупок
+			</div>
 		</div>
-		<!-- !!! quote history tab !!! -->
 		<div class="account__tab data-tab-item active" data-tab="visits">
 			<div class="account__table">
 				<div class="account__table-head">
@@ -193,7 +489,7 @@
 					{{#each history.events}}
 					<div class="acount__table-accardeon accardeon"
 						data-idx="{{@index}}">
-						<div class="acount__table-main accardeon__main accardeon__click" on-click="showEventDetails">
+						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="history-item">
 								<p>Дата</p>
 								{{ @global.utils.formatDate(this.event_date) }}
@@ -223,25 +519,142 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
+							<div class="analysis mb-40">
+								<div class="row">
+									<div class="col-md-6">
+										{{#if this.analyses}}
+										<div class="analysis__top --aicn --flex mb-20">
+											<div class="analysis__title">Анализы</div>
+											<a class="btn btn--white" href="{{this.analyses}}"
+												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
+										</div>
+										{{/if}}
 
+										<div class="analysis__description">
+											<p class="text-bold mb-20">Выполнялись процедуры</p>
+											<p class="text-grey">{{.comment}}</p>
+										</div>
+									</div>
+									<div class="col-md-6">
+										{{#if this.analyses}}
+										<a class="btn btn--black mb-20 --openpopup"
+											data-popup="--analize-type"
+											onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
+											Получить расшифровку анализов
+										</a>
+										{{/if}}
+										<div class="analysis__description">
+											<p class="text-bold mb-20">Рекомендация врача</p>
+											<div class="text">
+												{{.recommendation}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="experts__worked">
+								<div class="experts__worked-title">С вами работали</div>
+								<div class="row">
+									{{#each .experts: idx}}
+									<div class="col-md-6">
+										<a class="expert__worked"
+											target="_blank"
+											title="Открыть страницу о специалисте"
+											data-href="{{catalog.experts[this].info_uri}}"
+											data-link="{{catalog.experts[this].info_uri}}">
+											<div class="expert__worked-pic">
+												<img class="lazyload"
+													data-src="{{{catalog.experts[this].image[0].img}}}"
+													alt="{{catalog.experts[this].name}}">
+											</div>
+											<div class="expert__worked-name">
+												{{catalog.experts[this].name}}
+											</div>
+											<div class="expert__worked-work">
+												{{catalog.experts[this].spec}}
+											</div>
+										</a>
+									</div>
+									{{/each}}
+								</div>
+							</div>
+
+							{{#if this.hasPhoto}}
+							<div class="acount__photos">
+								<div class="row">
+									<div class="col-md-4">
+										<p>Фото до начала лечения</p>
+										{{#each photos.before}}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="acount__photo">
+													<a class="after-healing__item"
+														data-fancybox="event-{{this.id}}"
+														href="{{.src}}"
+														data-caption="Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}
+														</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
+										</div>
+										{{else}}
+
+										{{/each}}
+									</div>
+									<div class="col-md-4">
+										<p>Фото в процессе лечения:</p>
+										{{#each photos.after}}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="acount__photo">
+													<a class="after-healing__item"
+														data-fancybox="event-{{this.id}}"
+														href="{{.src}}"
+														data-caption="Фото в процессе лечения:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">Фото в процессе лечения:
+															{{ @global.utils.formatDate(.date) }}
+														</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
+										</div>
+										{{else}}
+
+										{{/each}}
+									</div>
+								</div>
+							</div>
+							{{/if}}
 						</div>
 					</div>
-					{{elseif history.events == false}}
+					{{elseif events_ready}}
 					<div class="acount__table-accardeon accardeon">
 						<div class="acount__table-main accardeon__main">
-							<span>Нет записей о посещении</span>
+							Нет записей о посещении
 						</div>
 					</div>
 					{{else}}
-					<div class="loading-overlay">
-						<div class="loader"></div>
+					<div class="acount__table-accardeon accardeon">
+						<div class="loader-dots"></div>
 					</div>
 					{{/each}}
 					<!-- !!! / quote history item !!! -->
 				</div>
 			</div>
 		</div>
-		<!-- !!! longterm tab !!! -->
 		<div class="account__tab data-tab-item" data-tab="longterm">
 			<div class="account__table">
 				<div class="account__table-head">
@@ -251,32 +664,94 @@
 				<div class="account__table-body">
 					{{#each history.longterms}}
 					<!-- !!! longterm item !!! -->
-					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">>
-						<div class="acount__table-main accardeon__main accardeon__click" on-click="showLongtermDetails">
+					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
+						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="healing-item">
 								<p>Дата</p>
-								{{ @global.utils.formatDate(this.event_date) }} - {{this.longterm_date_end}}
+								{{ @global.utils.formatDate(this.event_date) }} - {{ @global.utils.formatDate(this.longterm_date_end) }}
 							</div>
 							<div class="healing-item">
-								<p>Услуги</p>
-								{{this.longterm_title}}
+								<p>Услуги</p> {{this.longterm_title}}
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-
+							{{#if this.hasPhoto}}
+							<div class="row">
+								<div class="col-md-4">
+									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+									{{#each this.photos.before}} <!--single photo!-->
+									<a class="before-healing"
+										data-fancybox="images-{{this.id}}"
+										href="{{.src}}"
+										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+										<h2 class="h2 healing__date-title d-none">
+											{{ @global.utils.formatDate(.date) }}
+										</h2>
+										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
+										<div class="healing__date">
+											{{ @global.utils.formatDate(.date) }}
+										</div>
+										<div class="healing__description">{{.comment}}</div>
+									</a>
+									{{/each}}
+								</div>
+								<div class="col-md-8">
+									<div class="text-bold text-big mb-20">
+										Фото после начала лечения
+									</div>
+									<div class="after-healing">
+										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
+										<div class="row">
+											{{#each this.photos.after}}
+											<div class="col-md-6">
+												<a class="after-healing__item"
+													data-fancybox="images-{{this.id}}"
+													href="{{.src}}"
+													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+													<div class="after-healing__photo"
+														style="background-image: url({{.src}});">
+													</div>
+												</a>
+											</div>
+											{{/each}}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{/if}}
 						</div>
 					</div>
-					{{elseif history.longterms == false}}
+					{{elseif longterms_ready}}
 					<div class="acount__table-accardeon accardeon">
 						<div class="acount__table-main accardeon__main">
-							<span>Нет записей о продолжительном лечении</span>
+							Нет записей о продолжительном лечении
 						</div>
 					</div>
 					{{else}}
-					<div class="loading-overlay">
-						<div class="loader"></div>
+					<div class="acount__table-accardeon accardeon">
+						<div class="loader-dots"></div>
 					</div>
 					{{/each}}
+				</div>
+			</div>
+		</div>
+		<div class="account__tab data-tab-item purchases" data-tab="history">
+			<div class="account__table account__table-second">
+				<div class="account__table-head">
+					<div class="healing-item">Дата</div>
+					<div class="healing-item">Наименование</div>
+					<div class="healing-item">Кол-во</div>
+					<div class="healing-item">Цена</div>
+					<div class="healing-item">Способ доставки</div>
+					<div class="healing-item">Статус</div>
+				</div>
+				<div class="account__table-body">
+					<div class="acount__table-accardeon accardeon purchases-wrap">
+						<div class="purchases-wrap-row">
+							Нет записей об истории покупок
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -785,26 +1260,24 @@
 											var _this = this;
 											if (!!_record.photos?.before || !!_record.photos?.after) {
 												utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
-													.then(
-														function (result) {
-															if (!result) {
-																return;
-															}
-
-															var list = {before: [], after: []};
-															result.forEach(function (photo) {
-																if (_record.photos?.before &&
-																    _record.photos.before.includes(photo.id)) {
-																	list.before.push(photo);
-																} else if (_record.photos?.after &&
-																           _record.photos.after.includes(
-																	           photo.id)) {
-																	list.after.push(photo);
-																}
-															});
-															_this.set('photos', list);
+													.then(function (result) {
+														if (!result) {
+															return;
 														}
-													);
+
+														var list = {before: [], after: []};
+														result.forEach(function (photo) {
+															if (_record.photos?.before &&
+															    _record.photos.before.includes(photo.id)) {
+																list.before.push(photo);
+															} else if (_record.photos?.after &&
+															           _record.photos.after.includes(
+																           photo.id)) {
+																list.after.push(photo);
+															}
+														});
+														_this.set('photos', list);
+													});
 											}
 										},
 										complete() {

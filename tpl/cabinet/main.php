@@ -463,7 +463,7 @@
 							{{#if group === 'events'}}
 							<a href="#">{{@global.utils.formatDate(event_date)}}, {{event_time_start}}-{{event_time_end}}</a>
 							{{else}}
-							<span class="link-danger">- уточнить -</span>
+							<span class="link-danger"></span>
 							{{/if}}
 						</div>
 						<div class="admin-events-item">
