@@ -1026,15 +1026,6 @@ $(function () {
 							post[keys[i]] = names[i];
 						}
 						post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
-
-						//utils.api.get('/api/v2/list/users/?role=client&email=' + post.email, function (data) {
-						//	if (data.length === 0) {
-						//
-						//	} else {
-						//		form.find('[name="email"]').focus();
-						//		toast('E-mail уже используется!', 'Ошибка!', 'error');
-						//	}
-						//});
 						utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
 							function (data) {
 								if (!data.length) {
