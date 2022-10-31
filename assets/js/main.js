@@ -237,7 +237,12 @@ $(function () {
                     delete _config.selectedDates;
                 }
 
-                new AirDatepicker(this, _config);
+                new AirDatepicker(this, {
+                    selectedDates: [$(this).val() || (new Date())],
+                    timepicker: false,
+                    dateFormat: 'dd.MM.yyyy',
+                    autoClose: true
+                });
             });
 
             $('.input__control.timepickr').each(function (e) {
