@@ -1029,7 +1029,7 @@ $(function () {
 						utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
 							function (data) {
 								if (!data.length) {
-									post.active="on";
+									post.active = "on";
 									utils.api.post('/api/v2/create/users/', post).then(function (data) {
 										if (data.error) {
 											wbapp.trigger('wb-save-error', {'data': data});

@@ -547,6 +547,7 @@
 					<form class="popup__form" on-submit="submit">
 						<input type="hidden" name="role" value="client">
 						<input type="hidden" name="confirmed" value="0">
+						<input type="hidden" name="active" value="on">
 						<div class="input">
 							<input class="input__control" type="text" required
 								placeholder="ФИО" name="fullname" minlength="5">
