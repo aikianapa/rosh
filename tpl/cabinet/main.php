@@ -718,6 +718,7 @@
 							_tab.fire('loaded');
 							tabs[target_tab] = {ractive: _tab, data: data};
 						});
+					initPlugins();
 				})
 			;
 
