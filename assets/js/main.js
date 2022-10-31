@@ -194,17 +194,12 @@ $(function () {
 
         initPlugins = function () {
             $('input.datebirthdaypickr').each(function () {
-                let _config = {
+                new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     autoClose: true,
                     dateFormat: 'dd.MM.yyyy',
-
                     timepicker: false
-                };
-                if ($(this).hasClass('empty-date'), $(this).val()) {
-                    delete _config.selectedDates;
-                }
-                new AirDatepicker(this, _config);
+                });
             });
             $('input.daterangepickr').each(function () {
                 new AirDatepicker(this, {
