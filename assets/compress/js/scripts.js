@@ -272,6 +272,18 @@ $(function () {
                 });
             });
             $('input.yearpickr').each(function () {
+                let _config = {
+                    selectedDates: [$(this).val() || (new Date())],
+                    timepicker: false,
+                    dateFormat: 'dd.MM.yyyy',
+                    minDate: $(this).data('min-date'),
+                    maxDate: $(this).data('max-date'),
+                    autoClose: true
+                };
+                if ($(this).hasClass('empty-date'), $(this).val()) {
+                    delete _config.selectedDates;
+                }
+
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     view: 'years',
@@ -283,12 +295,19 @@ $(function () {
             });
 
             $('input.datepickr').each(function () {
-                new AirDatepicker(this, {
+                let _config = {
                     selectedDates: [$(this).val() || (new Date())],
                     timepicker: false,
                     dateFormat: 'dd.MM.yyyy',
+                    minDate: $(this).data('min-date'),
+                    maxDate: $(this).data('max-date'),
                     autoClose: true
-                });
+                };
+                if ($(this).hasClass('empty-date'), $(this).val()){
+                    delete _config.selectedDates;
+                }
+
+                new AirDatepicker(this, _config);
             });
 
             $('.input__control.timepickr').each(function (e) {

@@ -295,9 +295,10 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="input input-lk-calendar input--grey">
-										<input class="input__control datepickr"
+										<input class="input__control datepickr empty-date"
 											name="event_date"
 											value="{{record.event_date}}"
+											data-min-date="{{ @global.Date() }}"
 											type="text" placeholder="Выбрать дату и время">
 										<div class="input__placeholder">Выбрать дату</div>
 									</div>
@@ -359,16 +360,21 @@
 						<input type="hidden" name="service_prices[{{key}}][price]"
 							value="{{price}}">
 						<div class="search__drop-name">
-							{{name}}
 							<div class="search__drop-delete">
 								<svg class="svgsprite _delete">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+									<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
 								</svg>
 							</div>
+							<div class="search__drop-tags">
+								{{#each catalog.servicePrices[idx].tags}}
+								<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+								{{/each}}
+							</div>
+							{{name}}
 						</div>
-						<div class="search__drop-right">
+						<label class="search__drop-right">
 							<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-						</div>
+						</label>
 					</div>
 					{{/each}}
 					{{/if}}

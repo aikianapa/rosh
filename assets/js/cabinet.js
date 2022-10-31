@@ -725,8 +725,7 @@ $(function () {
 						}).append(
 							$('<div></div>').addClass('search__drop-name').text(this.value)
 						).append(
-							$('<div></div>').addClass('search__drop-right').append(
-								TAGS).append(
+							$('<div></div>').addClass('search__drop-right').append(TAGS).append(
 								$('<div></div>').addClass('search__drop-summ').text(
 									PRICE + ' ₽')
 							)
