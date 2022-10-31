@@ -459,8 +459,9 @@
 								</button>
 								{{/if}}
 
-								<span class="dt"><strong class="title">Заявка: </strong>{{date}}
-									<br>{{time}}
+								<span class="dt"><strong class="title">Заявка: </strong>
+									{{@global.utils.formatDate(_created)}}<br>
+									{{@global.utils.formatTime(_created)}}
 								</span>
 							</div>
 						</div>
