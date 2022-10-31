@@ -662,7 +662,7 @@
 
 												let post = $(copy).serializeJSON();
 
-												post.groups = (catalog.quoteStatus[post.status].type || 'quote').'s';
+												post.groups = (catalog.quoteStatus[post.status].type || 'quote')+'s';
 												utils.api.post('/api/v2/update/records/' + _record.id, post)
 													.then(function (res) {
 														_tab.set('records.' + _row_idx, res);
