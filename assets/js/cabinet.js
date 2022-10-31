@@ -1050,8 +1050,8 @@ $(function () {
 										}
 									});
 								} else {
-									form.find('[name="phone"]').focus();
 									toast('Этот номер уже используется!', 'Ошибка!', 'error');
+									form.find('[name="phone"]').focus();
 								}
 							});
 					}
