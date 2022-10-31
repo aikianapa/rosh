@@ -1007,6 +1007,9 @@ $(function () {
 			template: wbapp.tpl('#popupCreateClient').html,
 			data: {},
 			on: {
+				complete(){
+					initPlugins();
+				},
 				submit() {
 					let form = this.find('.popup.--create-client .popup__form');
 					if ($(form).verify()) {
