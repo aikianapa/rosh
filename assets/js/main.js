@@ -194,12 +194,17 @@ $(function () {
 
         initPlugins = function () {
             $('input.datebirthdaypickr').each(function () {
-                new AirDatepicker(this, {
+                let _config = {
                     selectedDates: [$(this).val() || (new Date())],
                     autoClose: true,
                     dateFormat: 'dd.MM.yyyy',
+
                     timepicker: false
-                });
+                };
+                if ($(this).hasClass('empty-date'), $(this).val()) {
+                    delete _config.selectedDates;
+                }
+                new AirDatepicker(this, _config);
             });
             $('input.daterangepickr').each(function () {
                 new AirDatepicker(this, {
@@ -221,14 +226,7 @@ $(function () {
                     delete _config.selectedDates;
                 }
 
-                new AirDatepicker(this, {
-                    selectedDates: [$(this).val() || (new Date())],
-                    view: 'years',
-                    timepicker: false,
-                    minView: 'years',
-                    dateFormat: 'yyyy',
-                    autoClose: true
-                });
+                new AirDatepicker(this, _config);
             });
 
             $('input.datepickr').each(function () {

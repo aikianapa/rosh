@@ -176,6 +176,10 @@ $(function () {
 			return phone;
 		},
 		formatPrice(val, sufix) {
+			if (!val){
+				return 0;
+			}
+
 			var sign = 1;
 			if (val < 0) {
 				sign = -1;
@@ -1238,7 +1242,7 @@ $(function () {
 		var _filename = filename ? filename + '.' + _fileext : file_input.files[0].name;
 		console.log(_filename);
 		formData.append("__token", wbapp._session.token);
-		formData.append("file", file_input.files[0]);
+		formData.append("file", file_input.files[0], _filename);
 		formData.append("path", '/' + path + '/');
 		$.ajax({
 			url: "/api/v2/upload/",

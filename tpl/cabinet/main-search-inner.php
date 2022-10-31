@@ -149,6 +149,18 @@
 			</div>
 			<a class="account__detail --openpopup" on-click="['editRecord', this]">Редактировать</a>
 		</div>
+		<div class="admin-edit__user-btns">
+			<form class="admin-edit__uploads analyses">
+				{{#if this.analyses}}
+				<a class="btn btn--white" href="{{this.analyses}}" style="margin-right:20px"
+					download="Анализы.pdf">Скачать анализы</a>
+				{{/if}}
+				<label class="admin-edit__upload-btn btn btn--white">
+					Добавить анализы
+					<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
+				</label>
+			</form>
+		</div>
 		{{/each}}
 	</div>
 	{{/if}}
@@ -799,6 +811,7 @@
 							complete() {
 								initServicesSearch($('.search-services'), catalog.servicesList);
 								initPlugins();
+								$(this.el).show();
 							},
 							submit(ev) {
 								let $form = $(ev.node);
@@ -807,8 +820,8 @@
 								if ($form.verify() && uid > '') {
 									let data = $form.serializeJSON();
 
-									data.group      = 'quotes';
-									data.status     = 'new';
+									data.group      = 'events';
+									data.status     = 'upcomming';
 									data.pay_status = 'unpay';
 
 									data.analyses = false;
@@ -851,7 +864,7 @@
 							complete() {
 								initServicesSearch($('.search-services'), catalog.servicesList);
 								initPlugins();
-								$('.--popup.--longterm').show();
+								$(this.el).show();
 							},
 							submit(ev) {
 								let $form = $(ev.node);
@@ -880,7 +893,7 @@
 
 									uploadFile(
 										$form.find('input[name="file"]')[0],
-										'record-photos/longterms',
+										'records/photos/'+ client.id,
 										Date.now() + '_' + utils.getRandomStr(4),
 										function (photo) {
 											if (photo.error) {
@@ -911,8 +924,20 @@
 						}
 					});
 				},
-				addAnalyses(ev, client, record) {
-					console.log('addAnalyses', client, record);
+				addAnalyses(ev, record, index) {
+					console.log('addAnalyses', ev, index, record);
+					var $form = $(ev.node).parents('form');
+					uploadFile(
+						$form.find('input[name="file"]')[0],
+						'records/analyses/' + record.client,
+						Date.now() + '_' + utils.getRandomStr(4),
+						function (photo) {
+							console.log(photo);
+							utils.api.post('/api/v2/update/records/'+record.id, {'analyses': photo.uri})
+								.then(function (record) {
+									page.set('events.upcoming.'+index, record);
+								});
+						});
 				},
 
 				showEventDetails(ev) {

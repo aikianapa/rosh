@@ -102,7 +102,7 @@
 									_images.push({
 										date: _before_photo.date,
 										comment: _before_photo.comment,
-										image: _before_photo.image.src,
+										image: _before_photo.src,
 
 										client: rec.client,
 										record: rec.id

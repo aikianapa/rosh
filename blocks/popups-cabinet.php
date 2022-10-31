@@ -3,7 +3,7 @@
 		<div class="popup --record">
 			<template id="popupRecord">
 				<div class="popup__overlay"></div>
-				<form class="popup__panel" on-submit="submit">
+				<form class="popup__panel popup__panel-wide" on-submit="submit">
 					<button class="popup__close" on-click="cancel">
 						<svg class="svgsprite _close">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
@@ -222,7 +222,7 @@
 		<div class="popup --photo">
 			<template id="popupPhoto">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
+				<div class="popup__panel popup__panel-wide">
 					<button class="popup__close">
 						<svg class="svgsprite _close">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
@@ -293,7 +293,7 @@
 		<div class="popup --longterm">
 			<template id="popupLongterm">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
+				<div class="popup__panel popup__panel-wide">
 					<button class="popup__close">
 						<svg class="svgsprite _close">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
@@ -612,7 +612,7 @@
 		<div class="popup --record-editor">
 			<template id="popupRecordEditor">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
+				<div class="popup__panel popup__panel-wide">
 					<button class="popup__close">
 						<svg class="svgsprite _close">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
@@ -632,7 +632,7 @@
 								<div class="admin-editor__event mb-20">
 									<div class="search__block --flex --aicn">
 										<div class="input">
-											<input class="popup-services-list"
+											<input class="popup-services-list search__input search-services"
 												type="text" placeholder="Поиск по услугам"
 												autocomplete="off">
 											<div class="search__drop"></div>
@@ -678,7 +678,7 @@
 														<div class="select__item select__item--checkbox">
 															<label class="checkbox checkbox--record">
 																{{#if @global.utils.arr.search(.id, record.experts)}}
-																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}">
+																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
 																{{else}}
 																<input type="checkbox" name="experts[]" value="{{.id}}">
 																{{/if}}
@@ -793,7 +793,7 @@
 		<div class="popup --record-edit">
 			<template id="popupRecordEdit">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
+				<div class="popup__panel popup__panel-wide">
 					<button class="popup__close">
 						<svg class="svgsprite _close">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
@@ -814,7 +814,7 @@
 						<div class="admin-editor__event mb-20">
 							<div class="search__block --flex --aicn">
 								<div class="input">
-									<input class="popup-services-list"
+									<input class="popup-services-list search__input search-services"
 										type="text" placeholder="Поиск по услугам"
 										autocomplete="off">
 									<div class="search__drop"></div>

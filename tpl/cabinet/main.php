@@ -204,7 +204,7 @@
 				<div class="select__item select__item--acc-{{color}}"
 					data-id="{{ id }}"
 					data-group="{{ type }}"
-					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parent('.select__list').children('input.group').val($(this).attr('data-type'))">
+					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parent('.select__list').children('input.group').val($(this).attr('data-group') || 'quotes')">
 					{{name}}
 				</div>
 				{{/if}}
@@ -614,7 +614,6 @@
 															console.log(res);
 															data.birthdate_fmt = utils.formatDate(data.birthdate);
 															data.phone         = utils.formatPhone(data.phone);
-															cabinet.set('user', data); /* get actually user data */
 															$(form).html('');
 															toast('Профиль успешно обновлён');
 														});
@@ -662,7 +661,9 @@
 												$(copy).html($(form).clone());
 
 												let post = $(copy).serializeJSON();
+												if (post.status)
 												console.log(post);
+
 												utils.api.post('/api/v2/update/records/' + _record.id, post)
 													.then(function (res) {
 														_tab.set('records.' + _row_idx, res);
