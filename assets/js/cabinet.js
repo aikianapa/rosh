@@ -1038,12 +1038,15 @@ $(function () {
 						utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
 							function (data) {
 								if (!data.length) {
+									post.active="on";
 									utils.api.post('/api/v2/create/users/', post).then(function (data) {
 										if (data.error) {
 											wbapp.trigger('wb-save-error', {'data': data});
 										} else {
 											toast('Карточка клиента успешно создана!');
 											$('.popup.--create-client').fadeOut('fast');
+											popupMessage('Карточка клиента успешно создана!', '', 'Успешно!',
+												'<a href="/cabinet/client/'+ data.id+'">Перейти на страницу профиля</a>', function (d) {});
 										}
 									});
 								} else {
