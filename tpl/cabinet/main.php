@@ -204,7 +204,7 @@
 				<div class="select__item select__item--acc-{{color}}"
 					data-id="{{ id }}"
 					data-group="{{ type }}"
-					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parent('.select__list').children('input.group').val($(this).attr('data-group') || 'quotes')">
+					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));">
 					{{name}}
 				</div>
 				{{/if}}
@@ -661,8 +661,8 @@
 												$(copy).html($(form).clone());
 
 												let post = $(copy).serializeJSON();
+
 												if (post.status)
-												console.log(post);
 
 												utils.api.post('/api/v2/update/records/' + _record.id, post)
 													.then(function (res) {
