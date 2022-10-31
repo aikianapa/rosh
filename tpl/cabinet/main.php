@@ -481,7 +481,7 @@
 							<p>Телефон</p>
 							{{catalog.clients[client].phone}}
 						</div>
-						<div class="admin-events-item col-experts">
+						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
 							{{#if no_experts == '1'}}
 							<div></div>
@@ -497,7 +497,7 @@
 							{{#if item.id == type }}{{item.name}}{{/if}}
 							{{/each}}
 						</div>
-						<div class="admin-events-item col-services">
+						<div class="admin-events-item col-services flex-column">
 							<p>Услуга</p>
 							{{#if no_services == '1'}}
 							<div></div>
