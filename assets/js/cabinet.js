@@ -1015,7 +1015,7 @@ $(function () {
 					initPlugins();
 				},
 				submit() {
-					let form = this.find('.popup.--create-client .popup__form');
+					var form = this.find('.popup.--create-client .popup__form');
 					if ($(form).verify()) {
 						let post = $(form).serializeJSON();
 						console.log(post);
