@@ -570,7 +570,7 @@
 	$(document).on('cabinet-db-ready', function () {
 		let editProfile = wbapp.tpl('#editProfile').html;
 		let editStatus  = wbapp.tpl('#editStatus').html;
-		var load= function (){
+		window.load= function (){
 
 			['quotes', 'events'].forEach(
 				function (target_tab) {
