@@ -570,152 +570,157 @@
 	$(document).on('cabinet-db-ready', function () {
 		let editProfile = wbapp.tpl('#editProfile').html;
 		let editStatus  = wbapp.tpl('#editStatus').html;
+		var load= function (){
 
-		['quotes', 'events'].forEach(
-			function (target_tab) {
-				utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "priority:d"}).then(
-					function (result) {
-						let data = {
-							group: target_tab,
-							records: result,
-							catalog: catalog
-						};
-						var _tab = new Ractive({
-							el: '.data-tab-item[data-tab="' + target_tab + '"]',
-							template: wbapp.tpl('#listRecords').html,
-							data: {
+			['quotes', 'events'].forEach(
+				function (target_tab) {
+					utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "priority:d"}).then(
+						function (result) {
+							let data = {
 								group: target_tab,
 								records: result,
 								catalog: catalog
-							},
-							on: {
-								loaded() {
-									console.log('>>> loaded', target_tab);
-									this.find('.loading-overlay').remove();
+							};
+							var _tab = new Ractive({
+								el: '.data-tab-item[data-tab="' + target_tab + '"]',
+								template: wbapp.tpl('#listRecords').html,
+								data: {
+									group: target_tab,
+									records: result,
+									catalog: catalog
 								},
-								editProfile(ev) {
-									let profile_id = $(ev.node).data('id');
-									let form       = $(ev.node).parents('.admin-editor')
-										.find('.admin-editor__edit-profile');
-									let editor     = new Ractive({
-										el: form,
-										template: editProfile,
-										data: {},
-										lazy: true,
+								on: {
+									loaded() {
+										console.log('>>> loaded', target_tab);
+										this.find('.loading-overlay').remove();
+									},
+									editProfile(ev) {
+										let profile_id = $(ev.node).data('id');
+										let form       = $(ev.node).parents('.admin-editor')
+											.find('.admin-editor__edit-profile');
+										let editor     = new Ractive({
+											el: form,
+											template: editProfile,
+											data: {},
+											lazy: true,
 
-										on: {
-											save(ev) {
-												let $form = $(form);
-												if ($form.verify() && profile_id > '') {
-													let data = $form.serializeJSON();
+											on: {
+												save(ev) {
+													let $form = $(form);
+													if ($form.verify() && profile_id > '') {
+														let data = $form.serializeJSON();
 
-													Cabinet.updateProfile(profile_id, data,
-														function (res) {
-															console.log(res);
-															data.birthdate_fmt = utils.formatDate(data.birthdate);
-															data.phone         = utils.formatPhone(data.phone);
-															$(form).html('');
-															toast('Профиль успешно обновлён');
-														});
+														Cabinet.updateProfile(profile_id, data,
+															function (res) {
+																console.log(res);
+																data.birthdate_fmt = utils.formatDate(data.birthdate);
+																data.phone         = utils.formatPhone(data.phone);
+																$(form).html('');
+																toast('Профиль успешно обновлён');
+															});
+													}
 												}
 											}
+										});
+										fetch('/form/users/getClient/' + profile_id, {
+											method: 'GET'
+										}).then((response) => {
+											return response.json();
+										}).then(function (data) {
+											editor.set(data);
+											initPlugins();
+										});
+									},
+									editRecord(ev) {
+										const _parent = $(ev.node).parents('.accardeon');
+										var _row_idx  = $(ev.node).data('idx');
+										var _record   = this.get('records.' + _row_idx);
+										console.log('open ', _record);
+										if (!_record.price) {
+											_record.price = 0;
 										}
-									});
-									fetch('/form/users/getClient/' + profile_id, {
-										method: 'GET'
-									}).then((response) => {
-										return response.json();
-									}).then(function (data) {
-										editor.set(data);
-										initPlugins();
-									});
-								},
-								editRecord(ev) {
-									const _parent = $(ev.node).parents('.accardeon');
-									var _row_idx  = $(ev.node).data('idx');
-									var _record   = this.get('records.' + _row_idx);
-									console.log('open ', _record);
-									if (!_record.price) {
-										_record.price = 0;
-									}
 
-									_record.price_text = utils.formatPrice(_record.price);
-									let statusEditor   = new Ractive({
-										el: _parent.find('.admin-editor__top-select'),
-										template: editStatus,
-										data: {
-											catalog: catalog,
-											record: _record
-										},
-										on: {
-											complete() {
-												$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
-													.trigger('click');
-												$(statusEditor.find(`.select.pay [data-id="${_record.pay_status}"]`))
-													.trigger('click');
+										_record.price_text = utils.formatPrice(_record.price);
+										let statusEditor   = new Ractive({
+											el: _parent.find('.admin-editor__top-select'),
+											template: editStatus,
+											data: {
+												catalog: catalog,
+												record: _record
 											},
-											save(ev) {
-												let form = $(ev.node).parents('.admin-editor');
-												$(form).find('.admin-editor__edit-profile').html('');
-												let copy = $('<form></form>');
-												$(copy).html($(form).clone());
+											on: {
+												complete() {
+													$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
+														.trigger('click');
+													$(statusEditor.find(
+														`.select.pay [data-id="${_record.pay_status}"]`))
+														.trigger('click');
+												},
+												save(ev) {
+													let form = $(ev.node).parents('.admin-editor');
+													$(form).find('.admin-editor__edit-profile').html('');
+													let copy = $('<form></form>');
+													$(copy).html($(form).clone());
 
-												let post = $(copy).serializeJSON();
+													let post = $(copy).serializeJSON();
 
-												post.groups = (catalog.quoteStatus[post.status].type || 'quote')+'s';
-												utils.api.post('/api/v2/update/records/' + _record.id, post)
-													.then(function (res) {
-														_tab.set('records.' + _row_idx, res);
-
-														toast('Успешно сохранено');
-													});
-												delete copy;
-											}
-										}
-									});
-									let recordEditor   = new Ractive({
-										el: _parent.find('.admin-editor__events'),
-										template: wbapp.tpl('#editorRecord').html,
-										data: {
-											catalog: catalog,
-											record: _record
-										},
-										on: {
-											complete() {
-												initServicesSearch($('.popup-services-list'), catalog.servicesList);
-
-												initPlugins();
-												if (!!$('.select .select__item input:checked').length) {
-													$('.select.select_experts .select__item').trigger('click');
-												}
-											},
-											save(ev) {
-												if ($($(ev.node).parents('form')).verify()) {
-
-													let post = $($(ev.node).parents('form')).serializeJSON();
-													Cabinet.updateQuote(_record.id, post,
-														function (res) {
-															console.log('event data:', post);
-															toast('Успешно сохранено');
+													post.groups = (catalog.quoteStatus[post.status].type || 'quote') +
+													              's';
+													utils.api.post('/api/v2/update/records/' + _record.id, post)
+														.then(function (res) {
 															_tab.set('records.' + _row_idx, res);
+
+															toast('Успешно сохранено');
 														});
-												} else {
-													toast('Проверьте указанные данные');
+													delete copy;
 												}
-												return false;
 											}
-										}
-									});
+										});
+										let recordEditor   = new Ractive({
+											el: _parent.find('.admin-editor__events'),
+											template: wbapp.tpl('#editorRecord').html,
+											data: {
+												catalog: catalog,
+												record: _record
+											},
+											on: {
+												complete() {
+													initServicesSearch($('.popup-services-list'), catalog.servicesList);
+
+													initPlugins();
+													if (!!$('.select .select__item input:checked').length) {
+														$('.select.select_experts .select__item').trigger('click');
+													}
+												},
+												save(ev) {
+													if ($($(ev.node).parents('form')).verify()) {
+
+														let post = $($(ev.node).parents('form')).serializeJSON();
+														Cabinet.updateQuote(_record.id, post,
+															function (res) {
+																console.log('event data:', post);
+																toast('Успешно сохранено');
+																_tab.set('records.' + _row_idx, res);
+															});
+													} else {
+														toast('Проверьте указанные данные');
+													}
+													return false;
+												}
+											}
+										});
+									}
 								}
-							}
+							});
+
+							_tab.fire('loaded');
+							tabs[target_tab] = {ractive: _tab, data: data};
 						});
+				})
+			;
 
-						_tab.fire('loaded');
-						tabs[target_tab] = {ractive: _tab, data: data};
-					});
-			})
-		;
-
+		};
+		load();
 		$(document).on('click', 'button.flag-date__ico', function (e) {
 			e.stopPropagation();
 			const _parent    = $(this).parents('.acount__table-accardeon');
