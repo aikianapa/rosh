@@ -926,6 +926,9 @@ $(function () {
 						Cabinet.createQuote(data, function (res) {
 							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 							$('.popup.--record .popup__panel.--succed').addClass('d-block');
+							if (typeof window.load == 'function'){
+								window.load();
+							}
 						});
 					}
 

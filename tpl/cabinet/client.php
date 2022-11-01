@@ -708,27 +708,30 @@
 		utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
 			page.set('user', data);
 		});
+		window.load = function () {
+			utils.api.get('/api/v2/list/records?status=[upcoming,new,past]&group=[events,quotes]&client=' +
+			              wbapp._session.user.id)
+				.then(function (records) {
+					console.log('event:', records);
+					if (!!records) {
+						records.forEach(function (rec, idx) {
+							console.log('event:', rec);
+							if (rec.status === 'past') {
+								page.push('history.events', rec);
+								return;
+							}
 
-		utils.api.get('/api/v2/list/records?status=[upcoming,past]&group=events&client=' + wbapp._session.user.id)
-			.then(function (records) {
-				console.log('event:', records);
-				if (!!records) {
-					records.forEach(function (rec, idx) {
-						console.log('event:', rec);
-						if (rec.status === 'past') {
-							page.push('history.events', rec);
-							return;
-						}
-
-						if (Cabinet.isCurrentEvent(rec)) {
-							page.push('events.current', rec);
-						} else {
-							page.push('events.upcoming', rec);
-						}
-					});
-				}
-				page.set('events_ready', true);
-			});
+							if (Cabinet.isCurrentEvent(rec)) {
+								page.push('events.current', rec);
+							} else {
+								page.push('events.upcoming', rec);
+							}
+						});
+					}
+					page.set('events_ready', true);
+				});
+		};
+		load();
 		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
 			.then(function (records) {
 				if (!!records) {
