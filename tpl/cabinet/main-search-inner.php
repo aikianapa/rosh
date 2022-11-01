@@ -66,7 +66,15 @@
 	<div class="account__panel">
 		<div class="account__info">
 			<div class="user">
-				<div class="user__name">{{this.fullname}}</div>
+				<div class="user__name">
+					{{this.fullname}}
+					<button class="user__edit" on-click="toggleEdit">
+						<svg class="svgsprite _edit">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
+						</svg>
+						<span class="crumbs__link mr-10 font-weight-normal">редактировать профиль</span>
+					</button>
+				</div>
 				<div class="user__item">Дата рождения:
 					<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
 				</div>
@@ -97,11 +105,11 @@
 
 				<div class="admin-edit__user-btns">
 					<a class="admin-edit__user-btn btn btn--white"
-						on-click="['createEvent',this]">
+						on-click="['createEvent', this]">
 						Записать пациента на прием
 					</a>
 					<a class="admin-edit__user-btn btn btn--white"
-						on-click="['createLongterm',this]">
+						on-click="['createLongterm', this]">
 						Добавить продолжительное лечение
 					</a>
 
@@ -128,9 +136,9 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
-							{{#services}}
+							{{#each @global.utils.arr.unique(services)}}
 							<p>{{catalog.services[this].header}}</p>
-							{{/services}}
+							{{/each}}
 						</div>
 					</div>
 				</div>
@@ -138,7 +146,7 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Дата приема:</div>
 						<div class="account-event">
-							<p>{{@global.utils.formatDate(this.event_date)}}</p>
+							<p>{{ @global.utils.formatDate(this.event_date) }}</p>
 						</div>
 					</div>
 					<div class="account-event-wrap">
@@ -160,20 +168,6 @@
 				</div>
 			</div>
 			<a class="account__detail" on-click="['editRecord', this]" data-idx="{{@index}}">Редактировать</a>
-		</div>
-		<div class="admin-edit__user-btns">
-			{{#if this.analyses}}
-			<div class="account-events__download">
-				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
-			</div>
-			{{/if}}
-			<form class="admin-edit__uploads analyses">
-				<label class="admin-edit__upload-btn btn btn--white">
-					Добавить анализы
-					<input class="admin-edit__upload analyses" type="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
-				</label>
-			</form>
 		</div>
 		{{/each}}
 	</div>
@@ -409,13 +403,14 @@
 							<div class="row">
 								<div class="col-md-4">
 									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+
 									{{#each this.photos.before}} <!--single photo!-->
 									<a class="before-healing"
 										data-fancybox="images-{{this.id}}"
 										href="{{.src}}"
 										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
-										<h2 class="h2 healing__date-title d-none">
-											{{ @global.utils.formatDate(.date) }}
+										<h2 class="h2 healing__date-title">
+											{{ @global.utils.formatDateAdv(.date) }}
 										</h2>
 										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
 										<div class="healing__date">
@@ -770,17 +765,16 @@
 						dlg.close();
 					});
 				},
-				createEvent(ev) {
-					console.log('createEvent', this, this.data.client);
+				 createEvent(ev, client) {
+					console.log('createEvent', client);
 
-					var dlg = window.popupEvent(this.data.client, null, function (data) {
+					var editor = window.popupEvent(client, null, function (data) {
 						page.push('events.upcoming', data);
-						console.log(this.data.client, data);
+
 						toast('Запись успешно создана!');
 						reloadData();
-						dlg.close();
+						editor.close();
 					});
-
 				},
 				createLongterm(ev, client) {
 					console.log('createLongterm', client);
@@ -903,9 +897,9 @@
 				}
 				,
 				toggleEdit(ev) {
-					console.log(ev, $(ev.node), this);
 					if (!!window.profile_inline_editor) {
 						$('.profile-editor-inline').toggleClass('d-none');
+
 						return;
 					}
 					window.profile_inline_editor = new Ractive({
