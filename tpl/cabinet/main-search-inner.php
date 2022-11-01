@@ -66,7 +66,14 @@
 	<div class="account__panel">
 		<div class="account__info">
 			<div class="user">
-				<div class="user__name">{{this.fullname}}</div>
+				<div class="user__name">
+					{{this.fullname}}
+					<button class="user__edit" on-click="toggleEdit">
+						<svg class="svgsprite _edit">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
+						</svg>
+					</button>
+				</div>
 				<div class="user__item">Дата рождения:
 					<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
 				</div>
@@ -97,11 +104,11 @@
 
 				<div class="admin-edit__user-btns">
 					<a class="admin-edit__user-btn btn btn--white"
-						on-click="['createEvent',this]">
+						on-click="['createEvent', this]">
 						Записать пациента на прием
 					</a>
 					<a class="admin-edit__user-btn btn btn--white"
-						on-click="['createLongterm',this]">
+						on-click="['createLongterm', this]">
 						Добавить продолжительное лечение
 					</a>
 
@@ -757,17 +764,16 @@
 						dlg.close();
 					});
 				},
-				createEvent(ev) {
-					console.log('createEvent', this, this.data.client);
+				 createEvent(ev, client) {
+					console.log('createEvent', client);
 
-					var dlg = window.popupEvent(this.data.client, null, function (data) {
+					var editor = window.popupEvent(client, null, function (data) {
 						page.push('events.upcoming', data);
-						console.log(this.data.client, data);
+
 						toast('Запись успешно создана!');
 						reloadData();
-						dlg.close();
+						editor.close();
 					});
-
 				},
 				createLongterm(ev, client) {
 					console.log('createLongterm', client);
@@ -890,9 +896,9 @@
 				}
 				,
 				toggleEdit(ev) {
-					console.log(ev, $(ev.node), this);
 					if (!!window.profile_inline_editor) {
 						$('.profile-editor-inline').toggleClass('d-none');
+
 						return;
 					}
 					window.profile_inline_editor = new Ractive({
