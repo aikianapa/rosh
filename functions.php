@@ -192,4 +192,20 @@ function regenerate_map()
     file_get_contents($url . '/form/pages/list');
 }
 
+
+function beforeShow(&$out)
+{
+    $app = $_ENV['app'];
+    $map = json_decode(file_get_contents($_ENV['dba'].'/_yonmap.json'), true);
+    $fr = $to = [];
+    foreach ($map as $m) {
+        if ($m['f'] == 'pages') {
+            $fr[] = urlencode('['.$m['n'].']');
+            $to[] = $m['u'];
+        }
+    }
+    $out = str_replace($fr, $to, $out);
+    return $out;
+}
+
 ?>

@@ -5,17 +5,17 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-8">
                     <div class="content-wrap">
-                        <h3 class="h3 mb-40">{{title}}</h3>
+                        <h3 class="h3 mb-40" wb1-if="'{{title}}'>''">{{title}}</h3>
                     </div>
                 </div>
             </div>
-            <div class="row --aicn mb-40">
+            <div class="row --aicn mb-40" wb1-if="'{{left}}'>'' AND '{{right}}'>''">
                 <div class="col-md-4">
-                    <div class="text-right text-bold">{{left}}</div>
+                    <div class="text-right text-bold" wb1-if="'{{left}}'>''">{{left}}</div>
                 </div>
                 <div class="col-md-8">
                     <div class="content-wrap">
-                        <h2 class="big-title">{{right}}</h2>
+                        <h2 class="big-title" wb1-if="'{{right}}'>''">{{right}}</h2>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                 <div class="col-md-6">
                     <div class="content-wrap">
                         <div class="text mb-80">
-                            <p class="text-break">{{text}}</p>
+                            <p class="text-break" wb1-if="'{{text}}'>''">{{text}}</p>
                         </div>
                     </div>
                 </div>
