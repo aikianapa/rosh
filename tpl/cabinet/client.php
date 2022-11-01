@@ -194,6 +194,16 @@
 					</div>
 				</div>
 				{{else}}
+
+				{{/if}}
+				{{#if this.status == 'new'}}
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Заявка на рассмотрении</div>
+
+					</div>
+				</div>
+				{{else}}
 				<div class="account-events__item event_date"></div>
 				{{/if}}
 			</div>
