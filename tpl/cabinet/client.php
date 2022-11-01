@@ -718,6 +718,7 @@
 			              wbapp._session.user.id)
 				.then(function (records) {
 					console.log('event:', records);
+					page.set('events.upcoming', []);
 					if (!!records) {
 						records.forEach(function (rec, idx) {
 							console.log('event:', rec);
