@@ -47,7 +47,7 @@
 								<div class="user__name">{{.fullname}}</div>
 								<div class="user__group">
 									<div class="user__birthday">Дата рождения:
-										<span>{{.birthdate}}</span>
+										<span>{{ @global.utils.formatDate(.birthdate) }}</span>
 									</div>
 								</div>
 							</div>
@@ -56,9 +56,13 @@
 							Подробнее
 						</a>
 					</div>
-					{{else}}
+					{{elseif ready}}
 					<div class="account__panel">
 						<span>Ничего не найдено. Измените запрос и повторите поиск</span>
+					</div>
+					{{else}}
+					<div class="account__panel">
+						<span>Подождите, идет поиск..</span>
 					</div>
 					{{/each}}
 				</div>
@@ -75,14 +79,17 @@
 				data: {
 					q: '{{_route.params.q}}',
 					user: wbapp._session.user,
-					results: []
+					results: [],
+					ready: false
 				},
 				on: {
 					init() {
-						wbapp.get('/api/v2/list/users?role=client&active=on&fullname~=' + q, function (data) {
-							console.log('found:', data);
-							page.set('results', data);
-						});
+						utils.api.get('/api/v2/list/users?role=client&active=on&fullname~=' + q)
+							.then(function (data) {
+								console.log('found:', data);
+								page.set('results', data);
+								page.set('ready', true);
+							});
 					},
 					complete(ev) {
 						$('main.page .loading-overlay').remove();

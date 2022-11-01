@@ -2,6 +2,8 @@
 <html class="no-js" lang="ru">
 <head>
 	<title seo>Кабинет администратора</title>
+
+	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
@@ -60,10 +62,12 @@
 							<div class="acount__table-accardeon accardeon">
 								<div class="acount__table-main accardeon__main accardeon__click">
 									<div class="history-item">
-										<p>Дата / время изменения</p>{{this.date}} {{this.time}}
+										<p>Дата / время изменения</p>
+										{{@global.utils.formatDate(this._created)}} / {{@global.utils.formatTime(this._created)}}
 									</div>
 									<div class="history-item">
-										<p>ФИО</p>{{this.clientData.fullname}}
+										<p>ФИО</p>
+										{{catalog.clients[this.client].fullname}}
 									</div>
 									<div class="history-item">
 										<p>Специалист</p>
@@ -79,9 +83,9 @@
 										<p>Изменения</p>
 										{{#each this.changes}}
 										<p>
-											<span>Поле: {{catalog.labels[this.field]}}</span>
+											<span>Поле: {{catalog.labels[this.label]}}</span>
 											<span>Предыдущее значение: {{this.prev_val}}</span>
-											<span>Новое значение:{{this.curr_val}}</span>
+											<span>Новое значение: {{this.new_val}}</span>
 										</p>
 										{{/each}}
 									</div>
@@ -105,23 +109,25 @@
 
 	<script>
 		$(document).on('cabinet-db-ready', function () {
-			var page = new Ractive({
+			window.page = new Ractive({
 				el: 'main.page',
 				template: $('main.page').html(),
 				data: {
 					user: wbapp._session.user,
-					changes: []
+					changes: [],
+					catalog: catalog
 				},
 				on: {
 					init() {
-						utils.api.get('/api/v2/list/record-changes?@sort=date:d').then(function (data) {
-							page.set('changes', data);
-						});
 					},
 					complete(ev) {
 						$('main.page .loading-overlay').remove();
 					}
 				}
+			});
+
+			utils.api.get('/api/v2/list/record-changes?@sort=date:d').then(function (data) {
+				page.set('changes', data);
 			});
 		});
 	</script>

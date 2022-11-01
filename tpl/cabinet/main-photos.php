@@ -102,7 +102,7 @@
 									_images.push({
 										date: _before_photo.date,
 										comment: _before_photo.comment,
-										image: _before_photo.image.src,
+										image: _before_photo.src,
 
 										client: rec.client,
 										record: rec.id
@@ -113,13 +113,13 @@
 									_images.push({
 										date: photo.date,
 										comment: photo.comment,
-										image: photo.image.src,
+										image: photo.src,
 										client: rec.client,
 										record: rec.id
 									});
 								});
 							});
-							page.set('photos', data); /* get actually user data */
+							page.set('photos', _images); /* get actually user data */
 						});
 					},
 					filter(ev) {

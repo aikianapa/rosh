@@ -204,7 +204,7 @@
 				<div class="select__item select__item--acc-{{color}}"
 					data-id="{{ id }}"
 					data-group="{{ type }}"
-					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parent('.select__list').children('input.group').val($(this).attr('data-type'))">
+					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));">
 					{{name}}
 				</div>
 				{{/if}}
@@ -295,9 +295,10 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="input input-lk-calendar input--grey">
-										<input class="input__control datepickr"
+										<input class="input__control datepickr empty-date"
 											name="event_date"
 											value="{{record.event_date}}"
+											data-min-date="{{ @global.Date() }}"
 											type="text" placeholder="Выбрать дату и время">
 										<div class="input__placeholder">Выбрать дату</div>
 									</div>
@@ -340,7 +341,8 @@
 							{{catalog.spec_service[this.spec_service].header}}
 						</div>
 						<div class="search__drop-right">
-							<div class="search__drop-summ">{{catalog.spec_service[this.spec_service].price}} ₽</div>
+							<div class="search__drop-summ">
+								{{catalog.spec_service[this.spec_service].price}} ₽</div>
 						</div>
 					</div>
 					{{else}}
@@ -358,21 +360,25 @@
 						<input type="hidden" name="service_prices[{{key}}][price]"
 							value="{{price}}">
 						<div class="search__drop-name">
-							{{name}}
 							<div class="search__drop-delete">
 								<svg class="svgsprite _delete">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+									<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
 								</svg>
 							</div>
+							<div class="search__drop-tags">
+								{{#each catalog.servicePrices[idx].tags}}
+								<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+								{{/each}}
+							</div>
+							{{name}}
 						</div>
-						<div class="search__drop-right">
-							<div class="search__drop-summ">{{ @global.utils.formatPrice(record.price) }} ₽</div>
-						</div>
+						<label class="search__drop-right">
+							<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+						</label>
 					</div>
 					{{/each}}
 					{{/if}}
 				</div>
-
 				<div class="admin-editor__summ">
 					<p>Всего</p>
 					<input type="hidden" name="price" value="{{record.price}}">
@@ -414,11 +420,11 @@
 				<div class="loading-overlay">
 					<div class="loader"></div>
 				</div>
-
 				{{#each records: idx}}
 				<div class="acount__table-accardeon accardeon --{{catalog.quoteStatus[this.status].color}} acount__table-accardeon--pmin"
 					data-client="{{.client}}"
 					data-record="{{.id}}"
+					data-id="{{.id}}"
 					data-idx="{{idx}}"
 					data-priority="{{.priority}}"
 					data-group="{{.group}}">
@@ -453,8 +459,9 @@
 								</button>
 								{{/if}}
 
-								<span class="dt"><strong class="title">Заявка: </strong>{{date}}
-									<br>{{time}}
+								<span class="dt"><strong class="title">Заявка: </strong>
+									{{@global.utils.formatDate(_created)}}<br>
+									{{@global.utils.formatTime(_created)}}
 								</span>
 							</div>
 						</div>
@@ -463,7 +470,7 @@
 							{{#if group === 'events'}}
 							<a href="#">{{@global.utils.formatDate(event_date)}}, {{event_time_start}}-{{event_time_end}}</a>
 							{{else}}
-							<span class="link-danger">- уточнить -</span>
+							<span class="link-danger"></span>
 							{{/if}}
 						</div>
 						<div class="admin-events-item">
@@ -474,10 +481,10 @@
 							<p>Телефон</p>
 							{{catalog.clients[client].phone}}
 						</div>
-						<div class="admin-events-item col-experts">
+						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
 							{{#if no_experts == '1'}}
-							<span class="link-danger">- уточнить -</span>
+							<div></div>
 							{{else}}
 							{{#experts}}
 							<div>{{catalog.experts[this].name}}</div>
@@ -490,10 +497,10 @@
 							{{#if item.id == type }}{{item.name}}{{/if}}
 							{{/each}}
 						</div>
-						<div class="admin-events-item col-services">
+						<div class="admin-events-item col-services flex-column">
 							<p>Услуга</p>
 							{{#if no_services == '1'}}
-							<span class="link-danger">- уточнить -</span>
+							<div></div>
 							{{else}}
 							{{#services}}
 							<div>{{catalog.services[this].header}}</div>
@@ -508,10 +515,10 @@
 						</div>
 						<div class="admin-events-item">
 							<p>Статус</p>
-							{{catalog.quoteStatus[status].name}}
+							{{catalog.quoteStatus[this.status].name}}
 						</div>
 						<div class="admin-events-item">
-							<p>Комментарии</p>{{comment}}
+							<p>Комментарии</p>{{this.comment}}
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
@@ -549,7 +556,7 @@
 				{{else}}
 				<div class="acount__table-accardeon accardeon">
 					<div class="acount__table-main accardeon__main">
-						Нет записей о продолжительном лечении
+						Нет записей
 					</div>
 				</div>
 				{{/each}}
@@ -563,158 +570,167 @@
 	$(document).on('cabinet-db-ready', function () {
 		let editProfile = wbapp.tpl('#editProfile').html;
 		let editStatus  = wbapp.tpl('#editStatus').html;
+		window.load= function (){
 
-		['quotes', 'events'].forEach(
-			function (target_tab) {
-				utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "priority:d"}).then(
-					function (result) {
-						let data = {
-							group: target_tab,
-							records: result,
-							catalog: catalog
-						};
-						var _tab = new Ractive({
-							el: '.data-tab-item[data-tab="' + target_tab + '"]',
-							template: wbapp.tpl('#listRecords').html,
-							data: {
+			['quotes', 'events'].forEach(
+				function (target_tab) {
+					utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "priority:d"}).then(
+						function (result) {
+							let data = {
 								group: target_tab,
 								records: result,
 								catalog: catalog
-							},
-							on: {
-								loaded() {
-									console.log('>>> loaded', target_tab);
-									this.find('.loading-overlay').remove();
+							};
+							var _tab = new Ractive({
+								el: '.data-tab-item[data-tab="' + target_tab + '"]',
+								template: wbapp.tpl('#listRecords').html,
+								data: {
+									group: target_tab,
+									records: result,
+									catalog: catalog
 								},
-								editProfile(ev) {
-									let profile_id = $(ev.node).data('id');
-									let form       = $(ev.node).parents('.admin-editor')
-										.find('.admin-editor__edit-profile');
-									let editor     = new Ractive({
-										el: form,
-										template: editProfile,
-										data: {},
-										lazy: true,
+								on: {
+									loaded() {
+										console.log('>>> loaded', target_tab);
+										this.find('.loading-overlay').remove();
+									},
+									editProfile(ev) {
+										let profile_id = $(ev.node).data('id');
+										let form       = $(ev.node).parents('.admin-editor')
+											.find('.admin-editor__edit-profile');
+										let editor     = new Ractive({
+											el: form,
+											template: editProfile,
+											data: {},
+											lazy: true,
 
-										on: {
-											save(ev) {
-												let $form = $(form);
-												if ($form.verify() && profile_id > '') {
-													let data = $form.serializeJSON();
+											on: {
+												save(ev) {
+													let $form = $(form);
+													if ($form.verify() && profile_id > '') {
+														let data = $form.serializeJSON();
 
-													Cabinet.updateProfile(profile_id, data,
-														function (res) {
-															console.log(res);
-															data.birthdate_fmt = utils.formatDate(data.birthdate);
-															data.phone         = utils.formatPhone(data.phone);
-															cabinet.set('user', data); /* get actually user data */
-															$(form).html('');
-															toast('Профиль успешно обновлён');
-														});
+														Cabinet.updateProfile(profile_id, data,
+															function (res) {
+																console.log(res);
+																data.birthdate_fmt = utils.formatDate(data.birthdate);
+																data.phone         = utils.formatPhone(data.phone);
+																$(form).html('');
+																toast('Профиль успешно обновлён');
+															});
+													}
 												}
 											}
+										});
+										fetch('/form/users/getClient/' + profile_id, {
+											method: 'GET'
+										}).then((response) => {
+											return response.json();
+										}).then(function (data) {
+											editor.set(data);
+											initPlugins();
+										});
+									},
+									editRecord(ev) {
+										const _parent = $(ev.node).parents('.accardeon');
+										var _row_idx  = $(ev.node).data('idx');
+										var _record   = this.get('records.' + _row_idx);
+										console.log('open ', _record);
+										if (!_record.price) {
+											_record.price = 0;
 										}
-									});
-									fetch('/form/users/getClient/' + profile_id, {
-										method: 'GET'
-									}).then((response) => {
-										return response.json();
-									}).then(function (data) {
-										editor.set(data);
-										initPlugins();
-									});
-								},
-								editRecord(ev) {
-									const _parent = $(ev.node).parents('.accardeon');
-									var _row_idx  = $(ev.node).data('idx');
-									var _record   = this.get('records.' + _row_idx);
-									console.log('open ', _record);
-									if (!_record.price) {
-										_record.price = 0;
-									}
 
-									_record.price_text = utils.formatPrice(_record.price);
-									let statusEditor   = new Ractive({
-										el: _parent.find('.admin-editor__top-select'),
-										template: editStatus,
-										data: {
-											catalog: catalog,
-											record: _record
-										},
-										on: {
-											complete() {
-												$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
-													.trigger('click');
-												$(statusEditor.find(`.select.pay [data-id="${_record.pay_status}"]`))
-													.trigger('click');
+										_record.price_text = utils.formatPrice(_record.price);
+										let statusEditor   = new Ractive({
+											el: _parent.find('.admin-editor__top-select'),
+											template: editStatus,
+											data: {
+												catalog: catalog,
+												record: _record
 											},
-											save(ev) {
-												let form = $(ev.node).parents('.admin-editor');
-												$(form).find('.admin-editor__edit-profile').html('');
-												let copy = $('<form></form>');
-												$(copy).html($(form).clone());
+											on: {
+												complete() {
+													$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
+														.trigger('click');
+													$(statusEditor.find(
+														`.select.pay [data-id="${_record.pay_status}"]`))
+														.trigger('click');
+												},
+												save(ev) {
+													let form = $(ev.node).parents('.admin-editor');
+													$(form).find('.admin-editor__edit-profile').html('');
+													let copy = $('<form></form>');
+													$(copy).html($(form).clone());
 
-												let post = $(copy).serializeJSON();
-												utils.api.post('/api/v2/update/records/' + _record.id, post)
-													.then(function (res) {
-														_tab.set('records.' + _row_idx, res);
+													let post = $(copy).serializeJSON();
 
-														toast('Успешно сохранено');
-													});
-												delete copy;
-											}
-										}
-									});
-									let recordEditor   = new Ractive({
-										el: _parent.find('.admin-editor__events'),
-										template: wbapp.tpl('#editorRecord').html,
-										data: {
-											catalog: catalog,
-											record: _record
-										},
-										on: {
-											complete() {
-												initServicesSearch($('.popup-services-list'), catalog.servicesList);
-
-												initPlugins();
-												if (!!$('.select .select__item input:checked').length) {
-													$('.select.select_experts .select__item').trigger('click');
-												}
-											},
-											save(ev) {
-												if ($($(ev.node).parents('form')).verify()) {
-
-													let post = $($(ev.node).parents('form')).serializeJSON();
-													Cabinet.updateQuote(_record.id, post,
-														function (res) {
-															console.log('event data:', post);
-															toast('Успешно сохранено');
+													post.group = (catalog.quoteStatus[post.status].type || 'quote') +
+													              's';
+													utils.api.post('/api/v2/update/records/' + _record.id, post)
+														.then(function (res) {
 															_tab.set('records.' + _row_idx, res);
+															window.load();
+															toast('Успешно сохранено');
 														});
-												} else {
-													toast('Проверьте указанные данные');
+													delete copy;
 												}
-												return false;
 											}
-										}
-									});
+										});
+										let recordEditor   = new Ractive({
+											el: _parent.find('.admin-editor__events'),
+											template: wbapp.tpl('#editorRecord').html,
+											data: {
+												catalog: catalog,
+												record: _record
+											},
+											on: {
+												complete() {
+													initServicesSearch($('.popup-services-list'), catalog.servicesList);
+
+													initPlugins();
+													if (!!$('.select .select__item input:checked').length) {
+														$('.select.select_experts .select__item').trigger('click');
+													}
+												},
+												save(ev) {
+													if ($($(ev.node).parents('form')).verify()) {
+
+														let post = $($(ev.node).parents('form')).serializeJSON();
+														Cabinet.updateQuote(_record.id, post,
+															function (res) {
+																console.log('event data:', post);
+																toast('Успешно сохранено');
+																_tab.set('records.' + _row_idx, res);
+																window.load();
+
+															});
+													} else {
+														toast('Проверьте указанные данные');
+													}
+													return false;
+												}
+											}
+										});
+									}
 								}
-							}
+							});
+
+							_tab.fire('loaded');
+							tabs[target_tab] = {ractive: _tab, data: data};
 						});
+					initPlugins();
+				})
+			;
 
-						_tab.fire('loaded');
-						tabs[target_tab] = {ractive: _tab, data: data};
-					});
-			})
-		;
-
+		};
+		load();
 		$(document).on('click', 'button.flag-date__ico', function (e) {
 			e.stopPropagation();
 			const _parent    = $(this).parents('.acount__table-accardeon');
 			const _id        = _parent.data('id');
 			const _is_marked = $(this).hasClass('checked');
 			console.log('flagged', _id, _is_marked);
-			wbapp.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}, function (res) {
+			utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}, function (res) {
 				toast('Успешно обновлено');
 			});
 		}).on('change', '.flag-date [type="checkbox"]', function (e) {

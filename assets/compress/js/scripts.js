@@ -187,6 +187,9 @@ $(function () {
         }).on('click', '.account button.user__edit:not(.all)', function () {
             $(this).closest('.account').find('.profile-edit:first').toggleClass('active');
             return false;
+        }).on('click', '.accardeon button.user__edit', function () {
+            $(this).closest('.accardeon').find('.profile-edit:first').toggleClass('active');
+            return false;
         }).on('click', '.popup__overlay', function () {
             $(this).closest('.popup').hide();
         }).on('click', '.profile-menu', function (e) {
@@ -254,12 +257,17 @@ $(function () {
 
         initPlugins = function () {
             $('input.datebirthdaypickr').each(function () {
-                new AirDatepicker(this, {
+                let _config = {
                     selectedDates: [$(this).val() || (new Date())],
                     autoClose: true,
                     dateFormat: 'dd.MM.yyyy',
+
                     timepicker: false
-                });
+                };
+                if ($(this).hasClass('empty-date'), $(this).val()) {
+                    delete _config.selectedDates;
+                }
+                new AirDatepicker(this, _config);
             });
             $('input.daterangepickr').each(function () {
                 new AirDatepicker(this, {
@@ -269,23 +277,35 @@ $(function () {
                 });
             });
             $('input.yearpickr').each(function () {
-                new AirDatepicker(this, {
-                    selectedDates: [$(this).val() || (new Date())],
-                    view: 'years',
-                    timepicker: false,
-                    minView: 'years',
-                    dateFormat: 'yyyy',
-                    autoClose: true
-                });
-            });
-
-            $('input.datepickr').each(function () {
-                new AirDatepicker(this, {
+                let _config = {
                     selectedDates: [$(this).val() || (new Date())],
                     timepicker: false,
                     dateFormat: 'dd.MM.yyyy',
+                    minDate: $(this).data('min-date'),
+                    maxDate: $(this).data('max-date'),
                     autoClose: true
-                });
+                };
+                if ($(this).hasClass('empty-date'), $(this).val()) {
+                    delete _config.selectedDates;
+                }
+
+                new AirDatepicker(this, _config);
+            });
+
+            $('input.datepickr').each(function () {
+                let _config = {
+                    selectedDates: [$(this).val() || (new Date())],
+                    timepicker: false,
+                    dateFormat: 'dd.MM.yyyy',
+                    minDate: $(this).data('min-date'),
+                    maxDate: $(this).data('max-date'),
+                    autoClose: true
+                };
+                if ($(this).hasClass('empty-date'), $(this).val()){
+                    delete _config.selectedDates;
+                }
+
+                new AirDatepicker(this, _config);
             });
 
             $('.input__control.timepickr').each(function (e) {

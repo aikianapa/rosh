@@ -17,7 +17,7 @@
 				<div class="container">
 					<div class="crumbs"><a class="crumbs__arrow" href="#">
 							<svg class="svgsprite _crumbs-back">
-								<use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
 							</svg>
 						</a>
 						<a class="crumbs__link" href="/">Главная</a>
@@ -92,17 +92,7 @@
 						on-click="['createLongterm',this]">
 						Добавить продолжительное лечение
 					</a>
-					<div class="admin-edit__uploads" data-client="{{this.id}}">
-						<input type="hidden" name="analyses">
-						<input class="admin-edit__upload upload-analyses"
-							id="upload-analyses-file"
-							type="file" name="file"
-							accept="application/pdf"
-							on-change="['addAnalyses', user]">
-						<label class="admin-edit__upload-btn btn btn--white" for="upload-analyses-file">
-							Добавить анализы
-						</label>
-					</div>
+
 				</div>
 			</div>
 		</div>
@@ -118,16 +108,16 @@
 	{{#if events.upcoming}}
 	<div class="lk-title">Предстоящие события</div>
 	<div class="account-events">
+		<!-- multiple: .account-events__block -->
 		{{#each events.upcoming}}
 		<div class="account-events__block --flex --jcsb">
 			<div class="account-events__block-wrap">
-				<div class="account-events__item">
+				<div class="account-events__item --flex">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
-							<p>Услуги</p>
 							{{#services}}
-							{{catalog.services[this].header}}<br>
+							<p>{{catalog.services[this].header}}</p>
 							{{/services}}
 						</div>
 					</div>
@@ -142,7 +132,7 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Время приема:</div>
 						<div class="account-event">
-							<p>{{ this.event_time }}</p>
+							<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
 						</div>
 					</div>
 				</div>
@@ -150,20 +140,26 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Специалист:</div>
 						<div class="account-event">
-							{{#experts}}
+							{{#this.experts}}
 							<p>{{catalog.experts[this].name}}</p>
-							{{/experts}}
+							{{/this.experts}}
 						</div>
 					</div>
 				</div>
-
-				<a class="account__detail --openpopup"
-					data-popup="--edit-event"
-					on-click="['editEvent', this]"
-					data-record="{{this.id}}">
-					Редактировать
-				</a>
 			</div>
+			<a class="account__detail --openpopup" on-click="['editRecord', this]">Редактировать</a>
+		</div>
+		<div class="admin-edit__user-btns">
+			<form class="admin-edit__uploads analyses">
+				{{#if this.analyses}}
+				<a class="btn btn--white" href="{{this.analyses}}" style="margin-right:20px"
+					download="Анализы.pdf">Скачать анализы</a>
+				{{/if}}
+				<label class="admin-edit__upload-btn btn btn--white">
+					Добавить анализы
+					<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
+				</label>
+			</form>
 		</div>
 		{{/each}}
 	</div>
@@ -177,8 +173,10 @@
 			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="longterm">
 				Продолжительное лечение
 			</div>
+			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="history">
+				История покупок
+			</div>
 		</div>
-		<!-- !!! quote history tab !!! -->
 		<div class="account__tab data-tab-item active" data-tab="visits">
 			<div class="account__table">
 				<div class="account__table-head">
@@ -193,7 +191,7 @@
 					{{#each history.events}}
 					<div class="acount__table-accardeon accardeon"
 						data-idx="{{@index}}">
-						<div class="acount__table-main accardeon__main accardeon__click" on-click="showEventDetails">
+						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="history-item">
 								<p>Дата</p>
 								{{ @global.utils.formatDate(this.event_date) }}
@@ -223,25 +221,142 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
+							<div class="analysis mb-40">
+								<div class="row">
+									<div class="col-md-6">
+										{{#if this.analyses}}
+										<div class="analysis__top --aicn --flex mb-20">
+											<div class="analysis__title">Анализы</div>
+											<a class="btn btn--white" href="{{this.analyses}}"
+												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
+										</div>
+										{{/if}}
 
+										<div class="analysis__description">
+											<p class="text-bold mb-20">Выполнялись процедуры</p>
+											<p class="text-grey">{{.comment}}</p>
+										</div>
+									</div>
+									<div class="col-md-6">
+										{{#if this.analyses}}
+										<a class="btn btn--black mb-20 --openpopup"
+											data-popup="--analize-type"
+											onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
+											Получить расшифровку анализов
+										</a>
+										{{/if}}
+										<div class="analysis__description">
+											<p class="text-bold mb-20">Рекомендация врача</p>
+											<div class="text">
+												{{.recommendation}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="experts__worked">
+								<div class="experts__worked-title">С вами работали</div>
+								<div class="row">
+									{{#each .experts: idx}}
+									<div class="col-md-6">
+										<a class="expert__worked"
+											target="_blank"
+											title="Открыть страницу о специалисте"
+											data-href="{{catalog.experts[this].info_uri}}"
+											data-link="{{catalog.experts[this].info_uri}}">
+											<div class="expert__worked-pic">
+												<img class="lazyload"
+													data-src="{{{catalog.experts[this].image[0].img}}}"
+													alt="{{catalog.experts[this].name}}">
+											</div>
+											<div class="expert__worked-name">
+												{{catalog.experts[this].name}}
+											</div>
+											<div class="expert__worked-work">
+												{{catalog.experts[this].spec}}
+											</div>
+										</a>
+									</div>
+									{{/each}}
+								</div>
+							</div>
+
+							{{#if this.hasPhoto}}
+							<div class="acount__photos">
+								<div class="row">
+									<div class="col-md-4">
+										<p>Фото до начала лечения</p>
+										{{#each photos.before}}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="acount__photo">
+													<a class="after-healing__item"
+														data-fancybox="event-{{this.id}}"
+														href="{{.src}}"
+														data-caption="Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}
+														</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
+										</div>
+										{{else}}
+
+										{{/each}}
+									</div>
+									<div class="col-md-4">
+										<p>Фото в процессе лечения:</p>
+										{{#each photos.after}}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="acount__photo">
+													<a class="after-healing__item"
+														data-fancybox="event-{{this.id}}"
+														href="{{.src}}"
+														data-caption="Фото в процессе лечения:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">Фото в процессе лечения:
+															{{ @global.utils.formatDate(.date) }}
+														</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
+										</div>
+										{{else}}
+
+										{{/each}}
+									</div>
+								</div>
+							</div>
+							{{/if}}
 						</div>
 					</div>
-					{{elseif history.events == false}}
+					{{elseif events_ready}}
 					<div class="acount__table-accardeon accardeon">
 						<div class="acount__table-main accardeon__main">
-							<span>Нет записей о посещении</span>
+							Нет записей о посещении
 						</div>
 					</div>
 					{{else}}
-					<div class="loading-overlay">
-						<div class="loader"></div>
+					<div class="acount__table-accardeon accardeon">
+						<div class="loader-dots"></div>
 					</div>
 					{{/each}}
 					<!-- !!! / quote history item !!! -->
 				</div>
 			</div>
 		</div>
-		<!-- !!! longterm tab !!! -->
 		<div class="account__tab data-tab-item" data-tab="longterm">
 			<div class="account__table">
 				<div class="account__table-head">
@@ -251,32 +366,94 @@
 				<div class="account__table-body">
 					{{#each history.longterms}}
 					<!-- !!! longterm item !!! -->
-					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">>
-						<div class="acount__table-main accardeon__main accardeon__click" on-click="showLongtermDetails">
+					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
+						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="healing-item">
 								<p>Дата</p>
-								{{ @global.utils.formatDate(this.event_date) }} - {{this.longterm_date_end}}
+								{{ @global.utils.formatDate(this.event_date) }} - {{ @global.utils.formatDate(this.longterm_date_end) }}
 							</div>
 							<div class="healing-item">
-								<p>Услуги</p>
-								{{this.longterm_title}}
+								<p>Услуги</p> {{this.longterm_title}}
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-
+							{{#if this.hasPhoto}}
+							<div class="row">
+								<div class="col-md-4">
+									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+									{{#each this.photos.before}} <!--single photo!-->
+									<a class="before-healing"
+										data-fancybox="images-{{this.id}}"
+										href="{{.src}}"
+										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+										<h2 class="h2 healing__date-title d-none">
+											{{ @global.utils.formatDate(.date) }}
+										</h2>
+										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
+										<div class="healing__date">
+											{{ @global.utils.formatDate(.date) }}
+										</div>
+										<div class="healing__description">{{.comment}}</div>
+									</a>
+									{{/each}}
+								</div>
+								<div class="col-md-8">
+									<div class="text-bold text-big mb-20">
+										Фото после начала лечения
+									</div>
+									<div class="after-healing">
+										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
+										<div class="row">
+											{{#each this.photos.after}}
+											<div class="col-md-6">
+												<a class="after-healing__item"
+													data-fancybox="images-{{this.id}}"
+													href="{{.src}}"
+													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+													<div class="after-healing__photo"
+														style="background-image: url({{.src}});">
+													</div>
+												</a>
+											</div>
+											{{/each}}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{/if}}
 						</div>
 					</div>
-					{{elseif history.longterms == false}}
+					{{elseif longterms_ready}}
 					<div class="acount__table-accardeon accardeon">
 						<div class="acount__table-main accardeon__main">
-							<span>Нет записей о продолжительном лечении</span>
+							Нет записей о продолжительном лечении
 						</div>
 					</div>
 					{{else}}
-					<div class="loading-overlay">
-						<div class="loader"></div>
+					<div class="acount__table-accardeon accardeon">
+						<div class="loader-dots"></div>
 					</div>
 					{{/each}}
+				</div>
+			</div>
+		</div>
+		<div class="account__tab data-tab-item purchases" data-tab="history">
+			<div class="account__table account__table-second">
+				<div class="account__table-head">
+					<div class="healing-item">Дата</div>
+					<div class="healing-item">Наименование</div>
+					<div class="healing-item">Кол-во</div>
+					<div class="healing-item">Цена</div>
+					<div class="healing-item">Способ доставки</div>
+					<div class="healing-item">Статус</div>
+				</div>
+				<div class="account__table-body">
+					<div class="acount__table-accardeon accardeon purchases-wrap">
+						<div class="purchases-wrap-row">
+							Нет записей об истории покупок
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -537,327 +714,387 @@
 <script wb-app>
 	var client_id = '{{_route.client}}';
 	$(document).on('cabinet-db-ready', function () {
-		utils.api.get('/api/v2/read/users/' + client_id).then(
-			function (userData) {
-				var page = new Ractive({
-					el: 'main.page .page-content .container',
-					template: wbapp.tpl('#page-content').html,
-					data: {
-						catalog: catalog,
-						q: '{{_route.params.q}}',
-						user: userData,
-						events: {
-							'upcoming': false
+		window.page = new Ractive({
+			el: 'main.page .page-content .container',
+			template: wbapp.tpl('#page-content').html,
+			data: {
+				catalog: catalog,
+				q: '{{_route.params.q}}',
+				user: null,
+				events: {
+					'upcoming': false
+				},
+				history: {
+					'events': false,
+					'longterms': false
+				}
+			},
+			on: {
+				init() {
+
+				},
+				addEventPhoto(ev, client, record) {
+					console.log('addEventPhoto', client, record);
+				},
+				addLongtermPhoto(ev, client, record) {
+					console.log('addLongtermPhoto', client, record);
+				},
+
+				editRecord(ev, record) {
+					console.log('editRecord', record);
+
+					var popup_createEvent = new Ractive({
+						el: '.popup.--record-editor',
+						template: wbapp.tpl('#popupRecordEditor').html,
+						data: {
+							client: this.data.client,
+							record: record,
+							'experts': catalog.experts,
+							'categories': catalog.categories,
+							'services': catalog.services
 						},
-						history: {
-							'events': false,
-							'longterms': false
-						}
-					},
-					on: {
-						init() {
-							utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
-								function (data) {
-									page.set('events.upcoming', data); /* get actually user next events */
-								});
+						on: {
+							complete() {
+								initPlugins();
+								initServicesSearch($('.search-services'), catalog.servicesList);
+								$(this.el).show();
+							},
+							submit(ev) {
+								let $form = $(ev.node);
+								let uid   = this.get('client.id');
 
-							utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
-								function (data) {
-									page.set('history.events', data); /* get actually user next events */
-								});
+								if ($form.verify() && uid > '') {
+									let data = $form.serializeJSON();
 
-							utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
-								.then(function (data) {
-									page.set('history.longterms', data); /* get actually user next events */
-								});
-						},
-						complete() {
+									data.group      = 'quotes';
+									data.status     = 'new';
+									data.pay_status = 'unpay';
 
-						},
+									data.analyses  = null;
+									data.hasPhotos = false;
+									data.photos    = {before: [], after: []};
 
-						editEvent(ev, client, record) {
-							console.log('editEvent', client, record);
-						},
-						addEventPhoto(ev, client, record) {
-							console.log('addEventPhoto', client, record);
-						},
-						addLongtermPhoto(ev, client, record) {
-							console.log('addLongtermPhoto', client, record);
-						},
+									data.client   = uid;
+									data.priority = 0;
+									data.marked   = false;
+									//
+									//data.comment        = '';
+									//data.recommendation = '';
+									//data.description    = '';
 
-						createEvent(ev, client) {
-							console.log('createEvent', client, this);
-
-							var popup_createEvent = new Ractive({
-								el: '.popup.--event-editor',
-								template: wbapp.tpl('#popupEventEditor').html,
-								data: {
-									client: client,
-									record: {},
-									'experts': catalog.experts,
-									'categories': catalog.categories,
-									'services': catalog.services
-								},
-								on: {
-									complete() {
-										initServicesSearch($('.search-services'), catalog.servicesList);
-										initPlugins();
-									},
-									submit(ev) {
-										let $form = $(ev.node);
-										let uid   = this.get('client.id');
-
-										if ($form.verify() && uid > '') {
-											let data = $form.serializeJSON();
-
-											data.group      = 'quotes';
-											data.status     = 'new';
-											data.pay_status = 'unpay';
-
-											data.analyses = false;
-											data.photos   = {before: [], after: []};
-
-											data.client   = uid;
-											data.priority = 0;
-											data.marked   = false;
-
-											data.comment        = '';
-											data.recommendation = '';
-											data.description    = '';
-
-											data.price = parseInt(data.price);
-											Cabinet.createQuote(data, function (res) {
-												$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-												$('.popup.--record .popup__panel.--succed').addClass('d-block');
-											});
-										}
-
-										return false;
-									}
+									data.price = parseInt(data.price);
+									Cabinet.createQuote(data, function (res) {
+										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+										$('.popup.--record .popup__panel.--succed').addClass('d-block');
+									});
 								}
-							});
+
+								return false;
+							}
+						}
+					});
+				},
+				createEvent(ev) {
+					console.log('createEvent', this);
+
+					var popup_createEvent = new Ractive({
+						el: '.popup.--record-editor',
+						template: wbapp.tpl('#popupRecordEditor').html,
+						data: {
+							client: this.data.client,
+							record: {},
+							'experts': catalog.experts,
+							'categories': catalog.categories,
+							'services': catalog.services
 						},
-						createLongterm(ev, client) {
-							console.log('createLongterm', client);
+						on: {
+							complete() {
+								initServicesSearch($('.search-services'), catalog.servicesList);
+								initPlugins();
+								$(this.el).show();
+							},
+							submit(ev) {
+								let $form = $(ev.node);
+								let uid   = this.get('client.id');
 
-							var popup_createLongerm = new Ractive({
-								el: '.popup.--longterm',
-								template: wbapp.tpl('#popupLongterm').html,
-								data: {
-									client: client,
-									record: false,
-									'experts': catalog.experts,
-									'categories': catalog.categories,
-									'services': catalog.services
-								},
-								on: {
-									complete() {
-										initServicesSearch($('.search-services'), catalog.servicesList);
-										initPlugins();
-										$('.--popup.--longterm').show();
-									},
-									submit(ev) {
-										let $form = $(ev.node);
-										let uid   = this.get('client.id');
+								if ($form.verify() && uid > '') {
+									let data = $form.serializeJSON();
 
-										if ($form.verify() && uid > '') {
-											var form_data = $form.serializeJSON();
+									data.group      = 'events';
+									data.status     = 'upcomming';
+									data.pay_status = 'unpay';
 
-											form_data.group      = 'longterms';
-											form_data.status     = '';
-											form_data.pay_status = 'free';
+									data.analyses = false;
+									data.photos   = {before: [], after: []};
 
-											form_data.analyses = false;
-											form_data.photos   = {before: [], after: []};
+									data.client   = uid;
+									data.priority = 0;
+									data.marked   = false;
 
-											form_data.client   = uid;
-											form_data.priority = 0;
-											form_data.marked   = 0;
+									data.comment        = '';
+									data.recommendation = '';
+									data.description    = '';
 
-											form_data.recommendation = '';
-											form_data.description    = '';
+									data.price = parseInt(data.price);
+									Cabinet.createQuote(data, function (res) {
+										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+										$('.popup.--record .popup__panel.--succed').addClass('d-block');
+									});
+								}
 
-											form_data.price  = 0;
-											var _photo_group = form_data.photo_group || 'before';
-											delete form_data.photo_group;
+								return false;
+							}
+						}
+					});
+				},
+				createLongterm(ev, client) {
+					console.log('createLongterm', client);
 
-											uploadFile(
-												$form.find('input[name="file"]')[0],
-												'record-photos/longterms',
-												Date.now() + '_' + utils.getRandomStr(4),
-												function (photo) {
-													if (photo.error) {
-														toast_error(photo.error);
-														return false;
+					var popup_createLongerm = new Ractive({
+						el: '.popup.--longterm',
+						template: wbapp.tpl('#popupLongterm').html,
+						data: {
+							client: client,
+							record: false,
+							'experts': catalog.experts,
+							'categories': catalog.categories,
+							'services': catalog.services
+						},
+						on: {
+							complete() {
+								initServicesSearch($('.search-services'), catalog.servicesList);
+								initPlugins();
+								$(this.el).show();
+							},
+							submit(ev) {
+								let $form = $(ev.node);
+								let uid   = this.get('client.id');
+
+								if ($form.verify() && uid > '') {
+									var form_data = $form.serializeJSON();
+
+									form_data.group      = 'longterms';
+									form_data.status     = '';
+									form_data.pay_status = 'free';
+
+									form_data.analyses = false;
+									form_data.photos   = {before: [], after: []};
+
+									form_data.client   = uid;
+									form_data.priority = 0;
+									form_data.marked   = 0;
+
+									form_data.recommendation = '';
+									form_data.description    = '';
+
+									form_data.price  = 0;
+									var _photo_group = form_data.photo_group || 'before';
+									delete form_data.photo_group;
+
+									uploadFile(
+										$form.find('input[name="file"]')[0],
+										'records/photos/'+ client.id,
+										Date.now() + '_' + utils.getRandomStr(4),
+										function (photo) {
+											if (photo.error) {
+												toast_error(photo.error);
+												return false;
+											}
+
+											var _photo_data   = {
+												src: photo.uri,
+												filename: photo.filename,
+												comment: form_data.comment,
+												date: form_data.event_date,
+												timestamp: utils.timestamp(form_data.event_date),
+												photo_group: _photo_group
+											};
+											form_data.comment = '';
+											form_data.photos[_photo_group].push(_photo_data);
+
+											utils.api.post('/api/v2/create/records/', form_data).then(
+												function (longterm_record) {
+												});
+										});
+
+								}
+								return false;
+
+							}
+						}
+					});
+				},
+				addAnalyses(ev, record, index) {
+					console.log('addAnalyses', ev, index, record);
+					var $form = $(ev.node).parents('form');
+					uploadFile(
+						$form.find('input[name="file"]')[0],
+						'records/analyses/' + record.client,
+						Date.now() + '_' + utils.getRandomStr(4),
+						function (photo) {
+							console.log(photo);
+							utils.api.post('/api/v2/update/records/'+record.id, {'analyses': photo.uri})
+								.then(function (record) {
+									page.set('events.upcoming.'+index, record);
+								});
+						});
+				},
+
+				showEventDetails(ev) {
+					var _parent = $(ev.node).parents('.accardeon');
+					if (!_parent.hasClass('loaded')) {
+						var _record_idx      = _parent.data('idx');
+						var _record          = page.get('history.events.' + _record_idx);
+						var _accardeon__list = new Ractive({
+							el: _parent.find('.accardeon__list'),
+							template: wbapp.tpl('#event-details').html,
+							data: {
+								event: _record,
+								user: page.get('user'),
+								catalog: catalog
+							},
+							on: {
+								init() {
+									var _this = this;
+									if (!!_record.photos?.before || !!_record.photos?.after) {
+										utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
+											.then(
+												function (result) {
+													if (!result) {
+														return;
 													}
 
-													var _photo_data   = {
-														src: photo.uri,
-														filename: photo.filename,
-														comment: form_data.comment,
-														date: form_data.event_date,
-														timestamp: utils.timestamp(form_data.event_date),
-														photo_group: _photo_group
-													};
-													form_data.comment = '';
-													form_data.photos[_photo_group].push(_photo_data);
-
-													utils.api.post('/api/v2/create/records/', form_data).then(
-														function (longterm_record) {
-														});
-												});
-
-										}
-										return false;
-
-									}
-								}
-							});
-						},
-						addAnalyses(ev, client, record) {
-							console.log('addAnalyses', client, record);
-						},
-
-						showEventDetails(ev) {
-							var _parent = $(ev.node).parents('.accardeon');
-							if (!_parent.hasClass('loaded')) {
-								var _record_idx      = _parent.data('idx');
-								var _record          = page.get('history.events.' + _record_idx);
-								var _accardeon__list = new Ractive({
-									el: _parent.find('.accardeon__list'),
-									template: wbapp.tpl('#event-details').html,
-									data: {
-										event: _record,
-										user: page.get('user'),
-										catalog: catalog
-									},
-									on: {
-										init() {
-											var _this = this;
-											if (!!_record.photos?.before || !!_record.photos?.after) {
-												utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
-													.then(
-														function (result) {
-															if (!result) {
-																return;
-															}
-
-															var list = {before: [], after: []};
-															result.forEach(function (photo) {
-																if (_record.photos?.before &&
-																    _record.photos.before.includes(photo.id)) {
-																	list.before.push(photo);
-																} else if (_record.photos?.after &&
-																           _record.photos.after.includes(
-																	           photo.id)) {
-																	list.after.push(photo);
-																}
-															});
-															_this.set('photos', list);
+													var list = {before: [], after: []};
+													result.forEach(function (photo) {
+														if (_record.photos?.before &&
+														    _record.photos.before.includes(photo.id)) {
+															list.before.push(photo);
+														} else if (_record.photos?.after &&
+														           _record.photos.after.includes(
+															           photo.id)) {
+															list.after.push(photo);
 														}
-													);
-											}
-										},
-										complete() {
-											_parent.find("img[data-src]:not([src])").lazyload();
-											_parent.addClass('loaded');
-										}
+													});
+													_this.set('photos', list);
+												}
+											);
 									}
-								});
-							}
-						}
-						,
-						showLongtermDetails(ev) {
-							var _parent = $(ev.node).parents('.accardeon');
-							if (!_parent.hasClass('loaded')) {
-								var _record_idx      = _parent.data('idx');
-								var _record          = page.get('history.longterms.' + _record_idx);
-								var _accardeon__list = new Ractive({
-									el: _parent.find('.accardeon__list'),
-									template: wbapp.tpl('#longterm-details').html,
-									data: {
-										event: _record,
-										user: page.get('user'),
-										catalog: catalog
-									},
-									on: {
-										init() {
-											var _this = this;
-											if (!!_record.photos?.before || !!_record.photos?.after) {
-												utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
-													.then(
-														function (result) {
-															if (!result) {
-																return;
-															}
-
-															var list = {before: [], after: []};
-															result.forEach(function (photo) {
-																if (_record.photos?.before &&
-																    _record.photos.before.includes(photo.id)) {
-																	list.before.push(photo);
-																} else if (_record.photos?.after &&
-																           _record.photos.after.includes(
-																	           photo.id)) {
-																	list.after.push(photo);
-																}
-															});
-															_this.set('photos', list);
-														}
-													);
-											}
-										},
-										complete() {
-											_parent.find("img[data-src]:not([src])").lazyload();
-											_parent.addClass('loaded');
-										}
-									}
-								});
-							}
-						}
-						,
-						toggleEdit(ev) {
-							console.log(ev, $(ev.node), this);
-							if (!!window.profile_inline_editor) {
-								$('.profile-editor-inline').toggleClass('d-none');
-								return;
-							}
-							window.profile_inline_editor = new Ractive({
-								el: '.profile-editor-inline',
-								template: wbapp.tpl('#profile-editor-inline').html,
-								data: {
-									user: page.get('user')
 								},
-								on: {
-									complete() {
-										$('.profile-editor-inline').removeClass('d-none');
-										initPlugins();
-									},
-									submit(ev) {
-										let $form = $(ev.node);
-										let uid   = page.get('user.id');
-										if ($form.verify() && uid > '') {
-											let data = $form.serializeJSON();
-
-											Cabinet.updateProfile(uid, data, function (data) {
-												data.birthdate_fmt = utils.formatDate(data.birthdate);
-												data.phone         = utils.formatPhone(data.phone);
-												page.set('user', data); /* get actually user data */
-												toast('Профиль успешно обновлён');
-											});
-										}
-										return false;
-									}
+								complete() {
+									_parent.find("img[data-src]:not([src])").lazyload();
+									_parent.addClass('loaded');
 								}
-							});
-						}
-						,
-
-						prepay(ev) {
-							popupPay.showPopup($(ev.node).data('record'));
-						}
+							}
+						});
 					}
-				});
+				}
+				,
+				showLongtermDetails(ev) {
+					var _parent = $(ev.node).parents('.accardeon');
+					if (!_parent.hasClass('loaded')) {
+						var _record_idx      = _parent.data('idx');
+						var _record          = page.get('history.longterms.' + _record_idx);
+						var _accardeon__list = new Ractive({
+							el: _parent.find('.accardeon__list'),
+							template: wbapp.tpl('#longterm-details').html,
+							data: {
+								event: _record,
+								user: page.get('user'),
+								catalog: catalog
+							},
+							on: {
+								init() {
+									var _this = this;
+									if (!!_record.photos?.before || !!_record.photos?.after) {
+										utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
+											.then(function (result) {
+												if (!result) {
+													return;
+												}
+
+												var list = {before: [], after: []};
+												result.forEach(function (photo) {
+													if (_record.photos?.before &&
+													    _record.photos.before.includes(photo.id)) {
+														list.before.push(photo);
+													} else if (_record.photos?.after &&
+													           _record.photos.after.includes(
+														           photo.id)) {
+														list.after.push(photo);
+													}
+												});
+												_this.set('photos', list);
+											});
+									}
+								},
+								complete() {
+									_parent.find("img[data-src]:not([src])").lazyload();
+									_parent.addClass('loaded');
+								}
+							}
+						});
+					}
+				}
+				,
+				toggleEdit(ev) {
+					console.log(ev, $(ev.node), this);
+					if (!!window.profile_inline_editor) {
+						$('.profile-editor-inline').toggleClass('d-none');
+						return;
+					}
+					window.profile_inline_editor = new Ractive({
+						el: '.profile-editor-inline',
+						template: wbapp.tpl('#profile-editor-inline').html,
+						data: {
+							user: page.get('user')
+						},
+						on: {
+							complete() {
+								$('.profile-editor-inline').removeClass('d-none');
+								initPlugins();
+							},
+							submit(ev) {
+								let $form = $(ev.node);
+								let uid   = page.get('user.id');
+								if ($form.verify() && uid > '') {
+									let data = $form.serializeJSON();
+
+									Cabinet.updateProfile(uid, data, function (data) {
+										data.birthdate_fmt = utils.formatDate(data.birthdate);
+										data.phone         = utils.formatPhone(data.phone);
+										page.set('user', data); /* get actually user data */
+										toast('Профиль успешно обновлён');
+									});
+								}
+								return false;
+							}
+						}
+					});
+				}
+				,
+
+				prepay(ev) {
+					popupPay.showPopup($(ev.node).data('record'));
+				}
+			}
+		});
+		utils.api.get('/api/v2/read/users/' + client_id).then(function (client) {
+			window.page.set('user', client);
+		});
+
+		utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
+			function (data) {
+				page.set('events.upcoming', data); /* get actually user next events */
+			});
+
+		utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
+			function (data) {
+				page.set('history.events', data); /* get actually user next events */
+			});
+
+		utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
+			.then(function (data) {
+				page.set('history.longterms', data); /* get actually user next events */
 			});
 	});
 </script>
