@@ -637,7 +637,9 @@
 						<input type="hidden" name="client" value="{{client.id}}">
 
 						{{#if client}}
-						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
+						<p class="text-bold text-big mb-20">
+							{{ @global.catalog.clients[client.id].fullname }}
+						</p>
 						{{else}}
 						<input type="hidden" name="client">
 						<div class="search-form input">
@@ -653,7 +655,7 @@
 								name="event_date" placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Дата посещения</div>
 						</div>
-						<div class="popup-title__checkbox">
+						<div class="popup-title__checkbox disabled">
 							<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
 								<input type="checkbox" name="group" value="longterms" checked>
 								<span></span>
@@ -686,7 +688,6 @@
 								</svg>
 								<img class="preview d-none" alt="upload preview">
 							</div>
-							<input type="file" id="file-photo-event" name="file" required>
 							<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id}}/">
 							<input type="file" accept=".jpg, .jpeg, .png" name="file" class="client-photo" required>
 							<div class="file-photo__text text-grey">
