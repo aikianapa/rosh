@@ -128,9 +128,9 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
-							{{#services}}
+							{{#each @global.utils.arr.unique(services)}}
 							<p>{{catalog.services[this].header}}</p>
-							{{/services}}
+							{{/each}}
 						</div>
 					</div>
 				</div>
@@ -160,20 +160,6 @@
 				</div>
 			</div>
 			<a class="account__detail" on-click="['editRecord', this]" data-idx="{{@index}}">Редактировать</a>
-		</div>
-		<div class="admin-edit__user-btns">
-			{{#if this.analyses}}
-			<div class="account-events__download">
-				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
-			</div>
-			{{/if}}
-			<form class="admin-edit__uploads analyses">
-				<label class="admin-edit__upload-btn btn btn--white">
-					Добавить анализы
-					<input class="admin-edit__upload analyses" type="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
-				</label>
-			</form>
 		</div>
 		{{/each}}
 	</div>
@@ -409,13 +395,14 @@
 							<div class="row">
 								<div class="col-md-4">
 									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+
 									{{#each this.photos.before}} <!--single photo!-->
 									<a class="before-healing"
 										data-fancybox="images-{{this.id}}"
 										href="{{.src}}"
 										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
-										<h2 class="h2 healing__date-title d-none">
-											{{ @global.utils.formatDate(.date) }}
+										<h2 class="h2 healing__date-title">
+											{{ @global.utils.formatDateAdv(.date) }}
 										</h2>
 										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
 										<div class="healing__date">

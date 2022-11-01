@@ -101,8 +101,6 @@
 										<span>{{this.changes[0].new_val}}</span>
 									</div>
 								</div>
-
-								</div>
 							</div>
 							{{else}}
 							<div class="acount__table-accardeon accardeon">
