@@ -1375,6 +1375,9 @@ blockquote cite{
     font-weight: normal;
     color: #545454;
 }
+.slider-content__info .slider-content__title{
+    width: auto;
+}
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{
         min-width: 300px;
