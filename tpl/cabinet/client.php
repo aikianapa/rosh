@@ -142,7 +142,7 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" data-href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
@@ -417,7 +417,7 @@
 					</div>
 					{{else}}
 					<div class="acount__table-accardeon accardeon">
-						<div class="loader-dots"></div>
+
 					</div>
 					{{/each}}
 					<!-- !!! / quote history item !!! -->
@@ -499,7 +499,7 @@
 					</div>
 					{{else}}
 					<div class="acount__table-accardeon accardeon">
-						<div class="loader-dots"></div>
+
 					</div>
 					{{/each}}
 				</div>

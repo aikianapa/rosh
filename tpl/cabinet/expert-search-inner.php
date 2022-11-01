@@ -290,7 +290,7 @@
 						</div>
 						{{else}}
 						<div class="acount__table-accardeon accardeon">
-							<div class="loader-dots"></div>
+
 						</div>
 						{{/each}}
 					</div>

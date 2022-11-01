@@ -76,13 +76,25 @@
 				<div class="user__item">Почта:
 					<span>{{this.email}}</span>
 				</div>
+
+				{{#if this.confirmed == '0'}}
+				<div class="user__confirm disabled">
+					<svg class="svgsprite _confirm">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#alert-grey"></use>
+					</svg>
+					Неподтвержденный адрес электронной почты <a class="user__notconfirm --openpopup"
+						data-popup="--email-send">Отправить код восстановления на почту</a>
+				</div>
+				{{else}}
 				<div class="user__confirm disabled">
 					<svg class="svgsprite _confirm">
 						<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
 					</svg>
-					Подтвержденный аккаунт<a class="user__notconfirm --openpopup"
+					Подтвержденный аккаунт <a class="user__notconfirm --openpopup"
 						data-popup="--email-send">Отправить код восстановления на почту</a>
 				</div>
+				{{/if}}
+
 				<div class="admin-edit__user-btns">
 					<a class="admin-edit__user-btn btn btn--white"
 						on-click="['createEvent',this]">
@@ -126,7 +138,7 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Дата приема:</div>
 						<div class="account-event">
-							<p>{{ @global.utils.formatDate(this.event_date) }}</p>
+							<p>{{@global.utils.formatDate(this.event_date)}}</p>
 						</div>
 					</div>
 					<div class="account-event-wrap">
@@ -147,20 +159,9 @@
 					</div>
 				</div>
 			</div>
-			<a class="account__detail --openpopup" on-click="['editRecord', this]">Редактировать</a>
+			<a class="account__detail" on-click="['editRecord', this]" data-idx="{{@index}}">Редактировать</a>
 		</div>
-		<div class="admin-edit__user-btns">
-			<form class="admin-edit__uploads analyses">
-				{{#if this.analyses}}
-				<a class="btn btn--white" href="{{this.analyses}}" style="margin-right:20px"
-					download="Анализы.pdf">Скачать анализы</a>
-				{{/if}}
-				<label class="admin-edit__upload-btn btn btn--white">
-					Добавить анализы
-					<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
-				</label>
-			</form>
-		</div>
+
 		{{/each}}
 	</div>
 	{{/if}}
@@ -223,33 +224,47 @@
 						<div class="acount__table-list accardeon__list">
 							<div class="analysis mb-40">
 								<div class="row">
-									<div class="col-md-6">
-										{{#if this.analyses}}
+									<div class="col-md-12">
 										<div class="analysis__top --aicn --flex mb-20">
 											<div class="analysis__title">Анализы</div>
-											<a class="btn btn--white" href="{{this.analyses}}"
-												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
-										</div>
-										{{/if}}
 
+											{{#if this.analyses}}
+											<a class="btn btn--white" href="{{this.analyses}}"
+												style="margin-right: 20px;"
+												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
+											{{/if}}
+
+											<form class="analyses">
+												<label class="admin-edit__upload-btn btn btn--white">
+													Загрузить анализы
+													<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
+												</label>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mb-40">
+								<div class="row">
+									<div class="col-md-4">
 										<div class="analysis__description">
 											<p class="text-bold mb-20">Выполнялись процедуры</p>
 											<p class="text-grey">{{.comment}}</p>
 										</div>
 									</div>
-									<div class="col-md-6">
-										{{#if this.analyses}}
-										<a class="btn btn--black mb-20 --openpopup"
-											data-popup="--analize-type"
-											onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
-											Получить расшифровку анализов
-										</a>
-										{{/if}}
+									<div class="col-md-4">
 										<div class="analysis__description">
 											<p class="text-bold mb-20">Рекомендация врача</p>
 											<div class="text">
 												{{.recommendation}}
 											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="analysis__description">
+											<p class="text-grey text-small mb-20">
+												Ред.: {{@global.utils.formatDateAdv(._lastdate)}} - {{catalog.users[._lastuser].fullname}}
+											</p>
 										</div>
 									</div>
 								</div>
@@ -350,7 +365,7 @@
 					</div>
 					{{else}}
 					<div class="acount__table-accardeon accardeon">
-						<div class="loader-dots"></div>
+						<span>Подождите, идет загрузка..</span>
 					</div>
 					{{/each}}
 					<!-- !!! / quote history item !!! -->
@@ -432,7 +447,7 @@
 					</div>
 					{{else}}
 					<div class="acount__table-accardeon accardeon">
-						<div class="loader-dots"></div>
+						<span>Подождите, идет загрузка..</span>
 					</div>
 					{{/each}}
 				</div>
@@ -481,13 +496,6 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				{{#if this.analyses}}
-				<a class="btn btn--black mb-20 --openpopup"
-					data-popup="--analize-type"
-					onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
-					Получить расшифровку анализов
-				</a>
-				{{/if}}
 				<div class="analysis__description">
 					<p class="text-bold mb-20">Рекомендация врача</p>
 					<div class="text">
@@ -741,111 +749,25 @@
 				},
 
 				editRecord(ev, record) {
-					console.log('editRecord', record);
+					console.log('editRecord', record, $(ev.node).data('idx'));
 
-					var popup_createEvent = new Ractive({
-						el: '.popup.--record-editor',
-						template: wbapp.tpl('#popupRecordEditor').html,
-						data: {
-							client: this.data.client,
-							record: record,
-							'experts': catalog.experts,
-							'categories': catalog.categories,
-							'services': catalog.services
-						},
-						on: {
-							complete() {
-								initPlugins();
-								initServicesSearch($('.search-services'), catalog.servicesList);
-								$(this.el).show();
-							},
-							submit(ev) {
-								let $form = $(ev.node);
-								let uid   = this.get('client.id');
-
-								if ($form.verify() && uid > '') {
-									let data = $form.serializeJSON();
-
-									data.group      = 'quotes';
-									data.status     = 'new';
-									data.pay_status = 'unpay';
-
-									data.analyses  = null;
-									data.hasPhotos = false;
-									data.photos    = {before: [], after: []};
-
-									data.client   = uid;
-									data.priority = 0;
-									data.marked   = false;
-									//
-									//data.comment        = '';
-									//data.recommendation = '';
-									//data.description    = '';
-
-									data.price = parseInt(data.price);
-									Cabinet.createQuote(data, function (res) {
-										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-										$('.popup.--record .popup__panel.--succed').addClass('d-block');
-									});
-								}
-
-								return false;
-							}
-						}
+					var dlg = window.popupEvent(this.data.client, record, function (data) {
+						page.set('events.upcoming.' + $(ev.node).data('idx'), data);
+						toast('Запись успешно обновлена!');
+						dlg.close();
 					});
 				},
 				createEvent(ev) {
-					console.log('createEvent', this);
+					console.log('createEvent', this, this.data.client);
 
-					var popup_createEvent = new Ractive({
-						el: '.popup.--record-editor',
-						template: wbapp.tpl('#popupRecordEditor').html,
-						data: {
-							client: this.data.client,
-							record: {},
-							'experts': catalog.experts,
-							'categories': catalog.categories,
-							'services': catalog.services
-						},
-						on: {
-							complete() {
-								initServicesSearch($('.search-services'), catalog.servicesList);
-								initPlugins();
-								$(this.el).show();
-							},
-							submit(ev) {
-								let $form = $(ev.node);
-								let uid   = this.get('client.id');
-
-								if ($form.verify() && uid > '') {
-									let data = $form.serializeJSON();
-
-									data.group      = 'events';
-									data.status     = 'upcomming';
-									data.pay_status = 'unpay';
-
-									data.analyses = false;
-									data.photos   = {before: [], after: []};
-
-									data.client   = uid;
-									data.priority = 0;
-									data.marked   = false;
-
-									data.comment        = '';
-									data.recommendation = '';
-									data.description    = '';
-
-									data.price = parseInt(data.price);
-									Cabinet.createQuote(data, function (res) {
-										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-										$('.popup.--record .popup__panel.--succed').addClass('d-block');
-									});
-								}
-
-								return false;
-							}
-						}
+					var dlg = window.popupEvent(this.data.client, null, function (data) {
+						page.push('events.upcoming', data);
+						console.log(this.data.client, data);
+						toast('Запись успешно создана!');
+						reloadData();
+						dlg.close();
 					});
+
 				},
 				createLongterm(ev, client) {
 					console.log('createLongterm', client);
@@ -914,6 +836,7 @@
 
 											utils.api.post('/api/v2/create/records/', form_data).then(
 												function (longterm_record) {
+													reloadData();
 												});
 										});
 
@@ -935,6 +858,8 @@
 							console.log(photo);
 							utils.api.post('/api/v2/update/records/'+record.id, {'analyses': photo.uri})
 								.then(function (record) {
+									toast('Анализы добавлены!');
+									reloadData();
 									page.set('events.upcoming.'+index, record);
 								});
 						});
@@ -1079,23 +1004,31 @@
 			}
 		});
 		utils.api.get('/api/v2/read/users/' + client_id).then(function (client) {
+			window.page.set('client', client);
 			window.page.set('user', client);
 		});
+		window.reloadData = function() {
+			page.set('longterms_ready', false);
+			page.set('events_ready', false);
 
-		utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
-			function (data) {
-				page.set('events.upcoming', data); /* get actually user next events */
-			});
+			utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
+				function (data) {
+					page.set('events.upcoming', data); /* get actually user next events */
+				});
 
-		utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
-			function (data) {
-				page.set('history.events', data); /* get actually user next events */
-			});
+			utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
+				function (data) {
+					page.set('history.events', data); /* get actually user next events */
+					page.set('events_ready', true); /* get actually user next events */
+				});
 
-		utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
-			.then(function (data) {
-				page.set('history.longterms', data); /* get actually user next events */
-			});
+			utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
+				.then(function (data) {
+					page.set('history.longterms', data); /* get actually user next events */
+					page.set('longterms_ready', true); /* get actually user next events */
+				});
+		};
+		reloadData();
 	});
 </script>
 

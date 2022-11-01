@@ -69,12 +69,24 @@
 				<div class="user__item">Почта:
 					<span>{{this.email}}</span>
 				</div>
+				{{#if this.confirmed == '0'}}
+				<div class="user__confirm disabled">
+					<svg class="svgsprite _confirm">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#alert-grey"></use>
+					</svg>
+					Неподтвержденный адрес электронной почты <a class="user__notconfirm --openpopup"
+						data-popup="--email-send">Отправить код восстановления на почту</a>
+				</div>
+				{{else}}
 				<div class="user__confirm disabled">
 					<svg class="svgsprite _confirm">
 						<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
 					</svg>
-					Подтвержденный аккаунт<a class="user__notconfirm --openpopup" data-popup="--email-send">Отправить код восстановления на почту</a>
+					Подтвержденный аккаунт <a class="user__notconfirm --openpopup"
+						data-popup="--email-send">Отправить код восстановления на почту</a>
 				</div>
+				{{/if}}
+
 				<div class="admin-edit__user-btns">
 					<a class="admin-edit__user-btn btn btn--white"
 						on-click="['createEvent', this]">
@@ -85,14 +97,7 @@
 						Добавить продолжительное лечение
 					</a>
 				</div>
-				<div class="admin-edit__user-btns d-none">
-					<a class="admin-edit__user-btn btn btn--white --openpopup"
-						data-popup="--create-appoint">Записать пациента на прием</a>
-					<a class="admin-edit__user-btn btn btn--white --openpopup"
-						onclick="popupPhoto(true)"
-						data-popup="--photo">Добавить продолжительное лечение </a>
 
-				</div>
 			</div>
 		</div>
 		<a class="account__detail" data-client="[[id]]">
@@ -109,7 +114,6 @@
 	</div>
 	{{/each}}
 </template>
-
 <script wbapp>
 	var q = '{{_route.params.q}}';
 	$(document).on('cabinet-db-ready', function () {
@@ -127,56 +131,11 @@
 					$('main.page .loading-overlay').remove();
 				},
 				createEvent(ev, client) {
-					console.log('createEvent', this);
+					console.log('createEvent', client);
 
-					var popup_createEvent = new Ractive({
-						el: '.popup.--record-editor',
-						template: wbapp.tpl('#popupRecordEditor').html,
-						data: {
-							client: client,
-							record: {},
-							'experts': catalog.experts,
-							'categories': catalog.categories,
-							'services': catalog.services
-						},
-						on: {
-							complete() {
-								initServicesSearch($('.search-services'), catalog.servicesList);
-								initPlugins();
-								$(this.el).show();
-							},
-							submit(ev) {
-								let $form = $(ev.node);
-								let uid   = this.get('client.id');
-
-								if ($form.verify() && uid > '') {
-									let data = $form.serializeJSON();
-
-									data.group      = 'events';
-									data.status     = 'upcomming';
-									data.pay_status = 'unpay';
-
-									data.analyses = false;
-									data.photos   = {before: [], after: []};
-
-									data.client   = uid;
-									data.priority = 0;
-									data.marked   = false;
-
-									data.comment        = '';
-									data.recommendation = '';
-									data.description    = '';
-
-									data.price = parseInt(data.price);
-									Cabinet.createQuote(data, function (res) {
-										$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-										$('.popup.--record .popup__panel.--succed').addClass('d-block');
-									});
-								}
-
-								return false;
-							}
-						}
+					window.popupEvent(client, null, function(data){
+						console.log(client, data);
+						toast('Запись на успешно прием создана!');
 					});
 				},
 				createLongterm(ev, client) {

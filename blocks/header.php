@@ -82,6 +82,7 @@
 			        <a class="btn btn-link" href="/cabinet">Заявки и события</a>
 			        <a class="btn btn-link" href="/cabinet/photos">Медиатека</a>
 			        <a class="btn btn-link" href="/cabinet/changes">Журнал изменений</a>
+			        <a class="btn btn-link" href="/cabinet/search">Пациенты</a>
 		        </div>
 		        <div class="header__right --flex --aicn">
 			        <button class="btn btn-link profile-menu">

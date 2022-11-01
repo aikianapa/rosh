@@ -213,7 +213,7 @@
 		</div>
 	</div>
 
-	<button class="btn btn--white" on-click="save">Сохранить</button>
+	<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 </template>
 <template id="editorRecord">
 	<form class="record-edit">
@@ -298,16 +298,16 @@
 										<input class="input__control datepickr empty-date"
 											name="event_date"
 											value="{{record.event_date}}"
-											data-min-date="{{ @global.Date() }}"
+
 											type="text" placeholder="Выбрать дату и время">
 										<div class="input__placeholder">Выбрать дату</div>
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row event-time">
 								<div class="col-md-6">
 									<div class="calendar input mb-30">
-										<input class="input__control timepickr"
+										<input class="input__control timepickr event-time-start"
 											type="text"
 											name="event_time_start"
 											value="{{record.event_time_start}}"
@@ -319,7 +319,8 @@
 								</div>
 								<div class="col-md-6">
 									<div class="calendar input mb-30">
-										<input class="input__control timepickr" type="text"
+										<input class="input__control timepickr event-time-end"
+											type="text"
 											name="event_time_end"
 											value="{{record.event_time_end}}"
 											data-min-time="09:00"
@@ -384,7 +385,68 @@
 					<input type="hidden" name="price" value="{{record.price}}">
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
 				</div>
+				{{#if record.group == 'events'}}
+				{{#if record.hasPhoto}}
+				<div class="admin-editor__patient mb-40">
+					<div class="row acount__photos-wrap mb-20">
+						<div class="col-md-6">
+							<div class="acount__photo">
+								<p>Фото до начала лечения</p>
+								{{#each record.photos.before}}
+								<div class="row">
+									<div class="col-md-12">
+										<div class="acount__photo">
+											<a class="after-healing__item"
+												data-fancybox="event-{{this.id}}"
+												href="{{.src}}"
+												data-caption="Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}">
+												<img src="{{.src}}" alt="">
+											</a>
 
+										</div>
+									</div>
+								</div>
+								{{else}}
+
+								{{/each}}
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="acount__photo">
+								<p>Фото в процессе лечения</p>
+								{{#each record.photos.after}}
+								<div class="row">
+									<div class="col-md-12">
+										<div class="acount__photo">
+											<a class="after-healing__item"
+												data-fancybox="event-{{this.id}}"
+												href="{{.src}}"
+												data-caption="Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}">
+												<img src="{{.src}}" alt="">
+											</a>
+
+										</div>
+									</div>
+								</div>
+								{{else}}
+
+								{{/each}}
+							</div>
+						</div>
+					</div>
+					<div class="row acount__photos-wrap">
+						<div class="col-md-2">
+							<a class="btn btn--white" on-click="['addPhoto',record]">
+								Добавить фото
+							</a>
+						</div>
+					</div>
+				</div>
+				{{/if}}
+
+				{{/if}}
 				<button class="btn btn--white" on-click="save">Сохранить</button>
 			</div>
 			<div class="col-md-1"></div>
@@ -574,7 +636,7 @@
 
 			['quotes', 'events'].forEach(
 				function (target_tab) {
-					utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "priority:d"}).then(
+					utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "_created:d"}).then(
 						function (result) {
 							let data = {
 								group: target_tab,
@@ -622,18 +684,15 @@
 												}
 											}
 										});
-										fetch('/form/users/getClient/' + profile_id, {
-											method: 'GET'
-										}).then((response) => {
-											return response.json();
-										}).then(function (data) {
-											editor.set(data);
-											initPlugins();
-										});
+										utils.api.get('/api/v2/read/users/' + profile_id).then(
+											function (data) {
+												editor.set(data);
+												initPlugins();
+											});
 									},
 									editRecord(ev) {
-										const _parent = $(ev.node).parents('.accardeon');
 										var _row_idx  = $(ev.node).data('idx');
+										const _parent = $(ev.node).closest('.accardeon');
 										var _record   = this.get('records.' + _row_idx);
 										console.log('open ', _record);
 										if (!_record.price) {
@@ -641,7 +700,7 @@
 										}
 
 										_record.price_text = utils.formatPrice(_record.price);
-										let statusEditor   = new Ractive({
+										var statusEditor   = new Ractive({
 											el: _parent.find('.admin-editor__top-select'),
 											template: editStatus,
 											data: {
@@ -685,7 +744,10 @@
 											},
 											on: {
 												complete() {
-													initServicesSearch($('.popup-services-list'), catalog.servicesList);
+													initServicesSearch(
+														_parent.find('.admin-editor__events .popup-services-list'),
+														catalog.servicesList
+													);
 
 													initPlugins();
 													if (!!$('.select .select__item input:checked').length) {
@@ -693,21 +755,136 @@
 													}
 												},
 												save(ev) {
-													if ($($(ev.node).parents('form')).verify()) {
+													if ($($(ev.node).parents('form')).length) {
+														let form = $(ev.node).parents('.admin-editor');
+														$(form).find('.admin-editor__edit-profile').html('');
+														let copy = $('<form></form>');
+														$(copy).html($(form).clone());
 
-														let post = $($(ev.node).parents('form')).serializeJSON();
-														Cabinet.updateQuote(_record.id, post,
-															function (res) {
+														let post_statuses = $(copy).serializeJSON();
+														post_statuses.group =
+															(catalog.quoteStatus[post_statuses.status].type ||
+															   'quote') + 's';
+														var post = $($(ev.node).parents('form')).serializeJSON();
+														post.status = post_statuses.status;
+														post.pay_status = post_statuses.pay_status;
+														post.group = post_statuses.group;
+
+														if (post.group === 'events' && !post.event_date){
+															toast_error('Выберите дату и время события');
+															$($(ev.node).parents('form')).find('[name="event_date"]')
+																.focus();
+															return false;
+														}
+														if (post.group === 'events' && !post.experts) {
+															toast_error('Выберите специалиста');
+															$($(ev.node).parents('form'))
+																.find('.select_experts')
+																.focus();
+															return false;
+														}
+														if (post.group === 'events' && !post.services){
+															toast_error('Выберите услуги');
+															$($(ev.node).parents('form'))
+																.find('.popup-services-list')
+																.focus();
+															return false;
+														}
+														post.price = parseInt(post.price);
+
+														utils.api.post(
+															'/api/v2/update/records/' + _record.id, post)
+															.then(function (res) {
+
 																console.log('event data:', post);
 																toast('Успешно сохранено');
 																_tab.set('records.' + _row_idx, res);
 																window.load();
-
 															});
 													} else {
 														toast('Проверьте указанные данные');
 													}
 													return false;
+												}
+											}
+										});
+									},
+									addPhoto(ev, record){
+										popupPhoto(catalog.clients[record.client], record, function(rec){
+
+										});
+										var popup_createLongerm = new Ractive({
+											el: '.popup.--longterm',
+											template: wbapp.tpl('#popupLongterm').html,
+											data: {
+												client: client,
+												record: false,
+												'experts': catalog.experts,
+												'categories': catalog.categories,
+												'services': catalog.services
+											},
+											on: {
+												complete() {
+													initServicesSearch($('.search-services'), catalog.servicesList);
+													initPlugins();
+													$(this.el).show();
+												},
+												submit(ev) {
+													let $form = $(ev.node);
+													let uid   = this.get('client.id');
+
+													if ($form.verify() && uid > '') {
+														var form_data = $form.serializeJSON();
+
+														form_data.group      = 'longterms';
+														form_data.status     = '';
+														form_data.pay_status = 'free';
+
+														form_data.analyses = false;
+														form_data.photos   = {before: [], after: []};
+
+														form_data.client   = uid;
+														form_data.priority = 0;
+														form_data.marked   = 0;
+
+														form_data.recommendation = '';
+														form_data.description    = '';
+
+														form_data.price  = 0;
+														var _photo_group = form_data.photo_group || 'before';
+														delete form_data.photo_group;
+
+														uploadFile(
+															$form.find('input[name="file"]')[0],
+															'records/photos/' + client.id,
+															Date.now() + '_' + utils.getRandomStr(4),
+															function (photo) {
+																if (photo.error) {
+																	toast_error(photo.error);
+																	return false;
+																}
+
+																var _photo_data   = {
+																	src: photo.uri,
+																	filename: photo.filename,
+																	comment: form_data.comment,
+																	date: form_data.event_date,
+																	timestamp: utils.timestamp(form_data.event_date),
+																	photo_group: _photo_group
+																};
+																form_data.comment = '';
+																form_data.photos[_photo_group].push(_photo_data);
+
+																utils.api.post('/api/v2/create/records/', form_data)
+																	.then(
+																		function (longterm_record) {
+																			reloadData();
+																		});
+															});
+
+													}
+													return false;
+
 												}
 											}
 										});
@@ -718,10 +895,14 @@
 							_tab.fire('loaded');
 							tabs[target_tab] = {ractive: _tab, data: data};
 						});
-					initPlugins();
-				})
-			;
-
+					/* sort by prior */
+					const _list = $('.account__tab.data-tab-item[data-tab="' + target_tab + '"] .account__table-body');
+					_list.find(".acount__table-accardeon").sort(function (a, b) {
+						const _a = parseInt($(a).attr('data-priority'));
+						const _b = parseInt($(b).attr('data-priority'));
+						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+					}).appendTo(_list);
+				});
 		};
 		load();
 		$(document).on('click', 'button.flag-date__ico', function (e) {
@@ -730,8 +911,8 @@
 			const _id        = _parent.data('id');
 			const _is_marked = $(this).hasClass('checked');
 			console.log('flagged', _id, _is_marked);
-			utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}, function (res) {
-				toast('Успешно обновлено');
+			utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}).then(function (res) {
+				//toast('Список обновлен');
 			});
 		}).on('change', '.flag-date [type="checkbox"]', function (e) {
 			e.stopPropagation();

@@ -7,53 +7,76 @@
 
 	<div wb-if="in_array('{{_sess.user.role}}',['admin',''])">
 		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
+		<div class="popup --fast">
+			<template>
+				<div class="popup__overlay"></div>
+				<div class="popup__panel">
+					<button class="popup__close">
+						<svg class="svgsprite _close">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+						</svg>
+					</button>
+					<div class="popup__name text-bold">Обратная связь</div>
+					<form class="popup__form" method="post">
+						<div class="input input--grey">
+							<input class="input__control" name="fullname" type="text" placeholder="ФИО"
+								required>
+							<div class="input__placeholder">ФИО</div>
+						</div>
+						<div class="input input--grey">
+							<input class="input__control" name="phone" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'" required>
+							<div class="input__placeholder">Номер телефона</div>
+						</div>
+						<div class="input input--grey">
+							<textarea class="input__control" name="comment" placeholder="Причина обращения" required></textarea>
+							<div class="input__placeholder">Причина обращения</div>
+						</div>
+						<div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании
+							<a href="/policy">Политики конфиденциальности</a></div>
+						<button class="btn btn--black form__submit" type="button" on-click="submit">Перезвонить мне</button>
+						<div class="form-bottom">После отправки заявки для Вас будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
+					</form>
+				</div>
+				<div class="popup__panel --succed">
+					<button class="popup__close">
+						<svg class="svgsprite _close">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+						</svg>
+					</button>
+					<div class="popup__name text-bold">Быстрая запись</div>
+					<h3 class="h3">Успешно !</h3>
+					<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+				</div>
+			</template>
+		</div>
+		<script wbapp>
+			let popFast2 = new Ractive({
+				el: '.popup.--fast',
+				template: document.querySelector('.popup.--fast > template').innerHTML,
+				data: {},
+				on: {
+					submit() {
+						let form = this.find('.popup.--fast .popup__form');
+						if ($(form).verify()) {
+							let post = $(form).serializeJson();
+							wbapp.post('/form/quotes/getQuote', post, function (data) {
+								if (data.error) {
+									wbapp.trigger('wb-save-error', {'data': data});
+								} else {
+									$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
+									$('.popup.--fast .popup__panel.--succed').addClass('d-block');
+								}
+							});
+						}
+					}
+				}
+			});
+		</script>
 	</div>
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=popups-cabinet"/>
 	</div>
 
-	<div class="popup --fast">
-		<template>
-			<div class="popup__overlay"></div>
-			<div class="popup__panel">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Обратная связь</div>
-				<form class="popup__form" method="post">
-					<div class="input input--grey">
-						<input class="input__control" name="fullname" type="text" placeholder="ФИО"
-							required>
-						<div class="input__placeholder">ФИО</div>
-					</div>
-					<div class="input input--grey">
-						<input class="input__control" name="phone" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'" required>
-						<div class="input__placeholder">Номер телефона</div>
-					</div>
-					<div class="input input--grey">
-						<textarea class="input__control" name="comment" placeholder="Причина обращения" required></textarea>
-						<div class="input__placeholder">Причина обращения</div>
-					</div>
-					<div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании
-						<a href="/policy">Политики конфиденциальности</a></div>
-					<button class="btn btn--black form__submit" type="button" on-click="submit">Перезвонить мне</button>
-					<div class="form-bottom">После отправки заявки для Вас будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
-				</form>
-			</div>
-			<div class="popup__panel --succed">
-				<button class="popup__close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">Быстрая запись</div>
-				<h3 class="h3">Успешно !</h3>
-				<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
-			</div>
-		</template>
-	</div>
 
 	<div class="popup --form-send">
 		<div class="popup__overlay"></div>

@@ -15,6 +15,8 @@ $(function () {
 	var _st        = function (z, g) {
 		return "" + (g != "" ? "[" : "") + z + (g != "" ? "]" : "");
 	};
+	var months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+
 	window.utils   = {
 		urlParams(params, skipobjects, prefix) {
 			if (skipobjects === void 0) {
@@ -140,6 +142,12 @@ $(function () {
 		timestamp(datetime) {
 			return Math.floor(new Date(datetime).getTime() / 1000);
 		},
+		monthYearDate(date) {
+			var datetime = this.getDate(date);
+			var year = datetime.getFullYear();
+			var month = datetime.getMonth();
+			return months[month] + ', ' + year;
+		},
 		formatDate(date) {
 			var d = this.getDate(date);
 			if (d.isValid()) {
@@ -147,14 +155,20 @@ $(function () {
 			}
 			return date;
 		},
+		formatDateAdv(date) {
+			var d = this.getDate(date);
+			if (d.isValid()) {
+				return d.toLocaleDateString('ru-RU', {year: 'numeric', month: 'short', day: 'numeric'});
+			}
+			return date;
+		},
 		getDate(date) {
 			var result = new Date(date);
-			if (result.isValid()) {
-				return result;
-			} else {
+			if (!result.isValid()) {
 				date   = date.split(' ')[0].split('.').reverse().join('-');
 				result = new Date(date);
 			}
+			return result;
 		},
 		formatDateTime(date) {
 			return new Date(this.getDate(date)).toLocaleString();
@@ -398,19 +412,15 @@ $(function () {
 			}
 			/* for Admins only */
 			if (!!window.user_role && window.user_role !== 'client') {
-				if (!sessionStorage.getItem('db.clients')) {
-					getters.push(
-						utils.api.get('/api/v2/list/users?role=client&active=on' +
-						              '&@return=id,fullname,phone,email,birthdate,' +
-						              'country,city,street,build,flat,intercom,entrance,level,address' +
-						              '&@sort=fullname:a').then(function (data) {
-							_self.clients = utils.arr.indexBy(data);
-							sessionStorage.setItem('db.clients', JSON.stringify(_self.clients));
-						})
-					);
-				} else {
-					_self.clients = JSON.parse(sessionStorage.getItem('db.clients'));
-				}
+				getters.push(
+					utils.api.get('/api/v2/list/users?role=client&active=on' +
+					              '&@return=id,fullname,phone,email,birthdate,' +
+					              'country,city,street,build,flat,intercom,entrance,level,address' +
+					              '&@sort=fullname:a').then(function (data) {
+						_self.clients = utils.arr.indexBy(data);
+						//sessionStorage.setItem('db.clients', JSON.stringify(_self.clients));
+					})
+				);
 
 				if (window.user_role === 'main') {
 					getters.push(
@@ -421,6 +431,13 @@ $(function () {
 							})
 					);
 				}
+				getters.push(
+					utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
+					              '&@return=id,fullname&@sort=fullname:a')
+						.then(function (data) {
+							_self.users = utils.arr.indexBy(data);
+						})
+				);
 			} else {
 				sessionStorage.removeItem('db.clients');
 			}
@@ -432,9 +449,10 @@ $(function () {
 	};
 	window.Cabinet = {
 		isCurrentEvent(event) {
+			var event_date = utils.getDate(event.event_date);
 			let curr_timestamp = parseInt(getdate()[0]);
-			var iso_date       = new Date(event.event_date).toISOString().split('T')[0];
-			if (utils.formatDate(event.event_date) !== (new Date()).toLocaleDateString()) {
+			var iso_date       = new Date(event_date).toISOString().split('T')[0];
+			if (utils.formatDate(event_date) !== (new Date()).toLocaleDateString()) {
 				return false;
 			}
 
@@ -529,7 +547,7 @@ $(function () {
 		updateQuote(record_id, record_data, callback) {
 			let data = record_data;
 
-			//data.event_date        = '';
+			//data.event_date        = '';onSaved
 			//data.event_time        = '';
 			//data.longterm_date_end = '';
 			if (record_data?.status_type == 'event') {
@@ -691,14 +709,12 @@ $(function () {
 	window.initServicesSearch = function ($selector, service_list) {
 		console.log($selector, service_list);
 
-		var _parent_form = $selector.parents('form');
+		var _parent_form = $selector.closest('form');
 		$selector.autocomplete({
 			noCache: true,
 			minChars: 1,
 			lookup: service_list,
 			beforeRender: function (container, suggestions) {
-				console.log(suggestions);
-
 				var CNT = $(container);
 				$(container).addClass('search__drop').html('');
 				var _catSelector = $(this).parents('form').find('[name="service_category"]:checked');
@@ -786,23 +802,22 @@ $(function () {
 							"value": suggestion.data.price
 						}).val(suggestion.data.price)
 					).append(
-						$('<div></div>').addClass('search__drop-name').text(suggestion.value).append(
+						$('<div></div>').addClass('search__drop-name').append(
 							$('<div class="search__drop-delete">' +
 							  '<svg class="svgsprite _delete">' +
 							  '	<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>' +
 							  '</svg>' +
 							  '</div>')
-						)
+						).append(TAGS).append(suggestion.value)
 					).append(
 						$('<div></div>').addClass('search__drop-right')
-							.append(TAGS)
 							.append($('<div></div>').addClass('search__drop-summ').text(PRICE + ' ₽'))
 					)
 				);
 				_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 					sum += parseInt($(this).data('price'));
 				});
-				console.log(sum);
+				console.log(_parent_form, sum);
 				_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
@@ -848,6 +863,7 @@ $(function () {
 		});
 	};
 	window.initClientSearch   = function ($form) {
+		console.log($('.--popup form input.client-search'));
 		$('.--popup form input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
@@ -898,10 +914,6 @@ $(function () {
 						data.group      = 'quotes';
 						data.status     = 'new';
 						data.pay_status = 'unpay';
-
-						data.analyses = false;
-						data.photos   = {before: [], after: []};
-
 						data.client   = uid;
 						data.priority = 0;
 						data.marked   = false;
@@ -985,72 +997,8 @@ $(function () {
 			}
 		});
 	};
-	window.popupDownloadData          = function () {
-		let popup = new Ractive({
-			el: '.popup.--download-data',
-			template: wbapp.tpl('#popupDownloadData').html,
-			data: {
-				catalog: {},
-				admins: []
-			},
-			on: {
-				init() {
-					wbapp.get('/api/v2/list/users/?role=main', function (data) {
-						popup.set('admins', data);
-						setTimeout(function () {
-							popup.set('catalog', catalog);
-						});
-					});
-				}
-			}
-		});
-	};
-	window.popupsCreateProfile        = function () {
-		let popup = new Ractive({
-			el: '.popup.--create-client',
-			template: wbapp.tpl('#popupCreateClient').html,
-			data: {},
-			on: {
-				complete(){
-					initPlugins();
-				},
-				submit() {
-					var form = this.find('.popup.--create-client .popup__form');
-					if ($(form).verify()) {
-						let post = $(form).serializeJSON();
-						console.log(post);
 
-						let names = post.fullname.split(' ', 3);
-						let keys  = ['last_name', 'first_name', 'middle_name'];
-						for (var i = 0; i < names.length; i++) {
-							post[keys[i]] = names[i];
-						}
-						post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
-						utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
-							function (data) {
-								if (!data.length) {
-									post.active = "on";
-									utils.api.post('/api/v2/create/users/', post).then(function (data) {
-										if (data.error) {
-											wbapp.trigger('wb-save-error', {'data': data});
-										} else {
-											toast('Карточка клиента успешно создана!');
-											$('.popup.--create-client').fadeOut('fast');
-											popupMessage('Карточка клиента успешно создана!', '', 'Успешно!',
-												'<a href="/cabinet/client/'+ data.id+'">Перейти на страницу профиля</a>', function (d) {});
-										}
-									});
-								} else {
-									toast('Этот номер уже используется!', 'Ошибка!', 'error');
-									form.find('[name="phone"]').focus();
-								}
-							});
-					}
-					return false;
-				}
-			}
-		});
-	};
+
 	window.popupsConfirmSmsCode       = function () {
 		return new Ractive({
 			el: '.popup.--confirm-sms-code',
@@ -1131,7 +1079,7 @@ $(function () {
 		});
 
 	};
-	window.popupPhoto                 = function (params) {
+	window.popupPhoto2                 = function (params) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 0,
@@ -1176,7 +1124,7 @@ $(function () {
 		});
 
 	};
-	window.popupLongterm              = function (params, onSaved, onCancel) {
+	window.popupLongterm2          = function (params, onSaved, onCancel) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 1,
@@ -1207,7 +1155,7 @@ $(function () {
 					$(this.el).show();
 				},
 				submit(ev) {
-					let form = $(ev.node);
+					var form = $(ev.node);
 
 					if ($(form).verify()) {
 						let record_data = $(form).serializeJSON();
@@ -1218,9 +1166,12 @@ $(function () {
 							delete record_data.longterm_title;
 						}
 
-						utils.api.post('/' + (edit_mode ? 'update' : 'create') + '/records/', record_data,
+						utils.api.post('/api/v2/' + (edit_mode ? 'update' : 'create') + '/records/', record_data,
 							function (data) {
-
+								if (typeof onSaved == 'function') {
+									onSaved(data);
+								}
+								toast('Успешно сохранено!');
 							});
 					}
 					return false;
@@ -1285,6 +1236,16 @@ $(function () {
 	};
 
 	$(document)
+		.on('change blur', '.event-time-start', function (e) {
+			var end_time = $(this).parents('.row.event-time').find('.event-time-end');
+			var start_time_val = $(this).val();
+			var end_time_val = end_time.val();
+			console.log(end_time_val, start_time_val);
+			end_time.attr('data-min-time', start_time_val);
+			if (!end_time_val) {
+				end_time.val(start_time_val);
+			}
+		})
 		.on('change', '[type="file"].client-photo', function (e) {
 			e.stopPropagation();
 			var _block   = $(this).parents('.file-photo');

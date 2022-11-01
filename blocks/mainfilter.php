@@ -226,7 +226,7 @@
         </template>
     </div>
     <script wbapp>
-        if (wbapp.data('choice') == undefined) wbapp.data('choice', {})
+        //if (wbapp.data('choice') == undefined) wbapp.data('choice', {})
         var mainFilter = new Ractive({
             el: '#mainfilter',
             template: $('#mainfilter template').html(),
