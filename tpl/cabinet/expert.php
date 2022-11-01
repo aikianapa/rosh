@@ -243,7 +243,7 @@
 				{{#if this.analyses}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" data-link="[[this.analyses]]" download="Анализы.pdf">
+					<a class="btn btn--white" href="[[this.analyses]]" download="Анализы.pdf">
 						Скачать анализы
 					</a>
 				</div>
@@ -319,7 +319,7 @@
 					</div>
 					{{else}}
 					<div class="acount__table-accardeon accardeon">
-						<div class="loader-dots"></div>
+						<span>Подождите, идет поиск..</span>
 					</div>
 					{{/each}}
 				</div>

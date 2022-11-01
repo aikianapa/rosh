@@ -196,6 +196,7 @@ $(function () {
             $('input.datebirthdaypickr').each(function () {
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
+                    maxDate: (new Date()),
                     autoClose: true,
                     dateFormat: 'dd.MM.yyyy',
                     timepicker: false
@@ -211,13 +212,14 @@ $(function () {
             $('input.yearpickr').each(function () {
                 let _config = {
                     selectedDates: [$(this).val() || (new Date())],
+                    dateFormat: 'yyyy',
+                    maxDate: (new Date()),
+                    view: 'years',
                     timepicker: false,
-                    dateFormat: 'dd.MM.yyyy',
-                    minDate: $(this).data('min-date'),
-                    maxDate: $(this).data('max-date'),
+                    minView: 'years',
                     autoClose: true
                 };
-                if ($(this).hasClass('empty-date'), $(this).val()) {
+                if ($(this).hasClass('empty-date') || $(this).val() == '') {
                     delete _config.selectedDates;
                 }
 
@@ -226,23 +228,21 @@ $(function () {
 
             $('input.datepickr').each(function () {
                 let _config = {
-                    selectedDates: [$(this).val() || (new Date())],
                     timepicker: false,
                     dateFormat: 'dd.MM.yyyy',
-                    minDate: $(this).data('min-date'),
-                    maxDate: $(this).data('max-date'),
                     autoClose: true
                 };
-                if ($(this).hasClass('empty-date'), $(this).val()){
-                    delete _config.selectedDates;
+
+                if ($(this).val() != '') {
+                    _config.selectedDates = [$(this).val()],
+
+                        _config.minDate = $(this).data('min-date') || '';
+                    if ($(this).data('max-date')) {
+                        _config.maxDate = $(this).data('max-date');
+                    }
                 }
 
-                new AirDatepicker(this, {
-                    selectedDates: [$(this).val() || (new Date())],
-                    timepicker: false,
-                    dateFormat: 'dd.MM.yyyy',
-                    autoClose: true
-                });
+                new AirDatepicker(this, _config);
             });
 
             $('.input__control.timepickr').each(function (e) {

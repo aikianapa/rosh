@@ -142,7 +142,7 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" data-href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
@@ -178,7 +178,14 @@
 					</div>
 				</div>
 
-				{{#if this.pay_status !== 'unpay'}}
+
+				{{#if this.status == 'new'}}
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Заявка на рассмотрении</div>
+					</div>
+				</div>
+				{{elseif this.pay_status !== 'unpay'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Дата приема:</div>
@@ -193,40 +200,38 @@
 						</div>
 					</div>
 				</div>
+				{{elseif this.pay_status == 'unpay'}}
+				<div class="account-events__btns">
+					<div class="account-event-wrap --aicn">
+						<div class="account-events__btn">
+							<button class="btn btn--black"
+								onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+								Внести предоплату
+							</button>
+						</div>
+						<p>Услуга требует внесения предоплаты</p>
+					</div>
+				</div>
+				{{elseif this.type == 'online'}}
+				<div class="account-events__btns">
+					<div class="account-event-wrap --aicn">
+						<div class="account-events__btn">
+							<button class="btn btn--white disabled" disabled>
+								Онлайн консультация
+							</button>
+						</div>
+						<p>Кнопка станет активной за 5 минут до начала приема</p>
+					</div>
+				</div>
 				{{else}}
 				<div class="account-events__item event_date"></div>
 				{{/if}}
 			</div>
 
-			{{#if this.pay_status == 'unpay'}}
-			<div class="account-events__btns">
-				<div class="account-event-wrap --aicn">
-					<div class="account-events__btn">
-						<button class="btn btn--black"
-							onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
-							Внести предоплату
-						</button>
-					</div>
-					<p>Услуга требует внесения предоплаты</p>
-				</div>
-			</div>
-			{{elseif this.type == 'online'}}
-			<div class="account-events__btns">
-				<div class="account-event-wrap --aicn">
-					<div class="account-events__btn">
-						<button class="btn btn--white disabled" disabled>
-							Онлайн консультация
-						</button>
-					</div>
-					<p>Кнопка станет активной за 5 минут до начала приема</p>
-				</div>
-			</div>
-			{{/if}}
-
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
@@ -417,7 +422,7 @@
 					</div>
 					{{else}}
 					<div class="acount__table-accardeon accardeon">
-						<div class="loader-dots"></div>
+
 					</div>
 					{{/each}}
 					<!-- !!! / quote history item !!! -->
@@ -499,7 +504,7 @@
 					</div>
 					{{else}}
 					<div class="acount__table-accardeon accardeon">
-						<div class="loader-dots"></div>
+
 					</div>
 					{{/each}}
 				</div>
@@ -708,27 +713,37 @@
 		utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
 			page.set('user', data);
 		});
+		window.load = function () {
+			utils.api.get('/api/v2/list/records?status=[upcoming,new,past]&group=[events,quotes]&client=' +
+			              wbapp._session.user.id)
+				.then(function (records) {
+					console.log('event:', records);
+					page.set('events.upcoming', []);
+					page.set('events.current', []);
+					page.set('history.events', []);
+					if (!!records) {
+						records.forEach(function (rec, idx) {
+							console.log('event:', rec);
+							if (rec.status === 'past') {
+								page.push('history.events', rec);
+								return;
+							}
+							if (rec.status === 'new') {
+								page.push('events.upcoming', rec);
+								return;
+							}
 
-		utils.api.get('/api/v2/list/records?status=[upcoming,past]&group=events&client=' + wbapp._session.user.id)
-			.then(function (records) {
-				console.log('event:', records);
-				if (!!records) {
-					records.forEach(function (rec, idx) {
-						console.log('event:', rec);
-						if (rec.status === 'past') {
-							page.push('history.events', rec);
-							return;
-						}
-
-						if (Cabinet.isCurrentEvent(rec)) {
-							page.push('events.current', rec);
-						} else {
-							page.push('events.upcoming', rec);
-						}
-					});
-				}
-				page.set('events_ready', true);
-			});
+							if (Cabinet.isCurrentEvent(rec)) {
+								page.push('events.current', rec);
+							} else {
+								page.push('events.upcoming', rec);
+							}
+						});
+					}
+					page.set('events_ready', true);
+				});
+		};
+		load();
 		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
 			.then(function (records) {
 				if (!!records) {

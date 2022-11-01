@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
 		<div class="account admin">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -22,7 +22,7 @@
 						</a>
 						<a class="crumbs__link" href="/">Главная</a>
 						<a class="crumbs__link" href="/cabinet">Кабинет администратора</a>
-						<span class="crumbs__link">Медиатека</span>
+						<span class="crumbs__link">Поиск</span>
 					</div>
 					<div class="title-flex --flex --jcsb">
 						<div class="title">
@@ -35,107 +35,131 @@
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
-							<input class="search__input" type="text" placeholder="Поиск">
+							<input class="search__input" type="text" name="q" placeholder="Поиск" value="{{_route.params.q}}">
 						</div>
-						<button class="btn btn--white">Найти</button>
+						<button class="btn btn--black">Найти</button>
 					</div>
 				</div>
 			</form>
-			<div class="container">
-				<div class="title-flex --flex --jcsb photos-title">
-					<div class="add-photo">
-						<div class="lk-title mb-0 mr-20">Библиотека фотографий</div>
-						<a class="btn btn--black --openpopup" data-popup="--photo" onclick="popupPhoto()">Добавить фото</a>
+
+			<div class="search-result" wb-off>
+				<div class="container">
+					<div class="loading-overlay">
+						<div class="loader"></div>
 					</div>
-					<div class="filter__item">
-						<a class="filter__name text-bold" href="#">Удалить фильтры</a>
-						<div class="filter__select">
-							<div class="filter-select select">
-								<div class="filter-select__main select__main">Фильтр</div>
-								<div class="filter-select__list select__list">
-									<div class="filter-select__item select__item">Все</div>
-									<div class="filter-select__item select__item" data-filter="1">За текущий месяц</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="admin-photos">
-					{{#each photos: idx}}
-					<a class="admin-photo" data-idx="{{idx}}"
-						data-filter-client="{{this.client}}"
-						data-filter-date="{{this.date}}"
-						data-fancybox="gallery" href="{{this.image.src}}"
-						style="background-image: url('{{this.image.src}}')">
-						<div class="admin-photo__date">{{this.date}}</div>
-						<div class="admin-photo__info">
-							<p class="text-bold mb-10 admin-photo__name">{{this.clientData.fullname}}</p>
-							<div class="admin-photo__description">{{this.title}}</div>
-						</div>
-					</a>
-					{{else}}
-					<div class="account__panel">
-						<span>Нет записей с фото пациентов</span>
-					</div>
-					{{/each}}
 				</div>
 			</div>
 		</div>
 	</main>
-
-	<script>
-		$(document).on('cabinet-db-ready', function () {
-			var page = new Ractive({
-				el: 'main.page',
-				template: $('main.page').html(),
-				data: {
-					user: wbapp._session.user,
-					photos: []
-				},
-				on: {
-					init() {
-						wbapp.get('/api/v2/list/records/?group=[events,longterm]', function (data) {
-							let _images = [];
-							data.forEach(function (rec) {
-								_before_photo = rec.photos.before[0];
-								if (!!_before_photo) {
-									_images.push({
-										date: _before_photo.date,
-										comment: _before_photo.comment,
-										image: _before_photo.src,
-
-										client: rec.client,
-										record: rec.id
-
-									});
-								}
-								rec.photos.after.forEach(function (photo) {
-									_images.push({
-										date: photo.date,
-										comment: photo.comment,
-										image: photo.src,
-										client: rec.client,
-										record: rec.id
-									});
-								});
-							});
-							page.set('photos', _images); /* get actually user data */
-						});
-					},
-					filter(ev) {
-						page.set('photos', clientPhotos.filterBy($(ev.node)));
-					}
-				}
-			});
-		});
-	</script>
 </div>
+<template id="gallery">
+	<div class="title-flex --flex --jcsb photos-title">
+		<div class="add-photo">
+			<div class="lk-title mb-0 mr-20">Библиотека фотографий</div>
+			<a class="btn btn--black" onclick="popupPhoto()">Добавить фото</a>
+		</div>
+		<div class="filter__item">
+			<a class="filter__name text-bold" href="#">Удалить фильтры</a>
+			<div class="filter__select">
+				<div class="filter-select select">
+					<div class="filter-select__main select__main">Фильтр</div>
+					<div class="filter-select__list select__list">
+						<div class="filter-select__item select__item">Все</div>
+						<div class="filter-select__item select__item" data-filter="1">За текущий месяц</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="admin-photos">
+		{{#each photos: idx}}
+		<a class="admin-photo" data-idx="{{idx}}"
+			data-filter-client="{{this.client}}"
+			data-filter-date="{{this.date}}"
+			data-fancybox="gallery"
+			data-caption="{{ this.title }}"
+			href="{{this.image}}"
+			style="background-image: url('{{this.image}}')">
+			<div class="admin-photo__date">{{ this.date }}</div>
+			<div class="admin-photo__info">
+				<p class="text-bold mb-10 admin-photo__name">
+					{{ @global.catalog.clients[this.client].fullname }}</p>
+				<div class="admin-photo__description">{{ this.title }}</div>
+			</div>
+		</a>
+		{{else}}
+		<div class="account__panel">
+			<span>Нет записей с фото пациентов</span>
+		</div>
+		{{/each}}
+	</div>
+</template>
+<script wbapp>
+	$(document).on('cabinet-db-ready', function () {
+		window.page = new Ractive({
+			el: 'main.page .search-result .container',
+			template: wbapp.tpl('#gallery').html,
+			data: {
+				user: wbapp._session.user,
+				photos: [],
+				groups: {}
+			},
+			on: {
+				complete() {
+					initClientSearch();
+				},
+				filter(ev) {
+					//page.set('photos', clientPhotos.filterBy($(ev.node)));
+				}
+			}
+		});
+
+		utils.api.get('/api/v2/list/records/?group=[events,longterm]').then(function (data) {
+			console.log(data);
+			let _images        = [];
+			var _images_groups = {};
+			data.forEach(function (rec) {
+				_before_photo = rec.photos?.before[0];
+				if (!!_before_photo) {
+					var img                                                 = {
+						date: utils.formatDate(_before_photo.date),
+						title: (rec.groups === 'longterms' ? 'Продолжительное лечение: ' + rec.longterm_title
+							: ''),
+						type: 'before',
+						type_text: 'До начала лечения',
+						image: _before_photo.src,
+						client: rec.client,
+						record: rec.id
+					};
+					_images_groups[utils.monthYearDate(_before_photo.date)] = img;
+					_images.push(img);
+				}
+				rec.photos?.after.forEach(function (photo) {
+					var img                                         = {
+						date: utils.formatDate(photo.date),
+						title: (rec.groups === 'longterms'
+							? 'Продолжительное лечение: ' + rec.longterm_title
+							: ''),
+						type: 'after',
+						type_text: 'В процессе лечения',
+						image: photo.src,
+						client: rec.client,
+						record: rec.id
+					};
+					_images_groups[utils.monthYearDate(photo.date)] = img;
+					_images.push(img);
+				});
+			});
+			console.log(_images_groups);
+			page.set('photos', _images); /* get actually user data */
+			page.set('groups', _images_groups); /* get actually user data */
+		});
+	});
+</script>
 <div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
 
 </body>
-<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
-<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 
 </html>
