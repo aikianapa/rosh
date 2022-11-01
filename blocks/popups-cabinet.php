@@ -625,7 +625,7 @@
 						</svg>
 					</button>
 					<div class="popup__name text-bold">Продолжительное лечение</div>
-					<form class="popup__form" on-submit="submit">
+					<form class="popup__form" on-submit="['submit']">
 						{{#if record}}
 						<input type="hidden" name="id" value="{{record.id}}">
 						{{else}}
@@ -688,8 +688,11 @@
 								</svg>
 								<img class="preview d-none" alt="upload preview">
 							</div>
-							<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id}}/">
-							<input type="file" accept=".jpg, .jpeg, .png" name="file" class="client-photo" required>
+
+							<input type="hidden" name="path" value="/records/photos/longterms/">
+							<input type="file" accept=".jpg, .jpeg, .png" name="file"
+								class="client-photo" required>
+
 							<div class="file-photo__text text-grey">
 								Для загрузки фото заполните все поля<br>
 								Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
