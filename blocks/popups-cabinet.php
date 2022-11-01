@@ -455,6 +455,7 @@
 										.focus();
 									return false;
 								}
+
 								if (data.group === 'events' && !data.services) {
 									toast_error('Выберите услуги');
 									$($(ev.node).parents('form'))

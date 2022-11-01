@@ -758,7 +758,7 @@
 													popupPhoto(catalog.clients[record.client], record, function (rec) {
 
 													});
-												}
+												},
 												save(ev) {
 													if ($($(ev.node).parents('form')).length) {
 														let form = $(ev.node).parents('.admin-editor');
