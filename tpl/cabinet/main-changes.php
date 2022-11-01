@@ -53,9 +53,9 @@
 						<div class="account__table-head">
 							<div class="changes-item">Дата / время изменения</div>
 							<div class="changes-item">ФИО</div>
-							<div class="changes-item">Специалист</div>
-							<div class="changes-item">Услуга</div>
-							<div class="changes-item">Изменения</div>
+							<div class="changes-item">Запись пациента</div>
+							<div class="changes-item">Изменено</div>
+							<div class="changes-item">Значения</div>
 						</div>
 						<div class="account__table-body">
 							{{#each changes}}
@@ -67,26 +67,23 @@
 									</div>
 									<div class="history-item">
 										<p>ФИО</p>
-										{{catalog.clients[this.client].fullname}}
+										{{this.author.fullname}}
 									</div>
 									<div class="history-item">
-										<p>Специалист</p>
-										{{catalog.experts[this.expert].head}}
+										<p>Запись пациента</p>
+										{{catalog.users[this.client].fullname}}
 									</div>
 									<div class="history-item">
-										<p>Услуги</p>
-										{{#services}}
-										{{catalog.services[this].header}}<br>
-										{{/services}}
+										<p>Изменения в полях</p>
+										{{#each this.changes}}
+										<span>{{this.label}}</span><br>
+										{{/each}}
 									</div>
 									<div class="history-item">
 										<p>Изменения</p>
 										{{#each this.changes}}
-										<p>
-											<span>Поле: {{catalog.labels[this.label]}}</span>
-											<span>Предыдущее значение: {{this.prev_val}}</span>
-											<span>Новое значение: {{this.new_val}}</span>
-										</p>
+										<span>Предыдущее: {{this.prev_val}}</span>
+										<span>Новое: {{this.new_val}}</span>
 										{{/each}}
 									</div>
 								</div>
