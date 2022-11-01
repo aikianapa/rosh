@@ -531,7 +531,6 @@ $(function () {
 			data.longterm_date_end = '';
 			data.longterm_title    = '';
 
-			data.analyses = false;
 			data.photos   = {before: [], after: []};
 
 			data.comment        = '';
