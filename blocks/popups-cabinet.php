@@ -84,10 +84,10 @@
 					</div>
 					<div class="admin-editor__summ" data-hide="service-search">
 						<p>Всего</p>
-						<input type="hidden" name="price">
+						<input type="hidden" name="price" value="0">
 						<p class="price">0 ₽</p>
 					</div>
-					<button class="btn btn--black form__submit" type="submit"> Записаться</button>
+					<button class="btn btn--black form__submit" type="submit"> Записаться </button>
 				</form>
 
 				<div class="popup__panel --succed">

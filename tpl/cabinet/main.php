@@ -298,7 +298,7 @@
 										<input class="input__control datepickr empty-date"
 											name="event_date"
 											value="{{record.event_date}}"
-
+											autocomplete="off"
 											type="text" placeholder="Выбрать дату и время">
 										<div class="input__placeholder">Выбрать дату</div>
 									</div>
@@ -312,7 +312,7 @@
 											name="event_time_start"
 											value="{{record.event_time_start}}"
 											data-min-time="09:00"
-											data-max-time="18:00"
+											data-max-time="18:00" autocomplete="off"
 											pattern="[0-9]{2}:[0-9]{2}" required>
 										<div class="input__placeholder">Время (начало)</div>
 									</div>
@@ -324,7 +324,7 @@
 											name="event_time_end"
 											value="{{record.event_time_end}}"
 											data-min-time="09:00"
-											data-max-time="18:00"
+											data-max-time="18:00" autocomplete="off"
 											pattern="[0-9]{2}:[0-9]{2}" required>
 										<div class="input__placeholder">Время (конец)</div>
 									</div>

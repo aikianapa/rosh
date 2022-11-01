@@ -175,7 +175,7 @@ $(function () {
 			return date;
 		},
 		getDate(date) {
-			var result = new Date(date);
+			var result = new Date(this.dateForce(date));
 			if (!result.isValid()) {
 				date   = date.split(' ')[0].split('.').reverse().join('-');
 				result = new Date(date);
