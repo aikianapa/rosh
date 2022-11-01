@@ -178,7 +178,15 @@
 					</div>
 				</div>
 
-				{{#if this.pay_status !== 'unpay'}}
+
+				{{#if this.status == 'new'}}
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name">Заявка на рассмотрении</div>
+
+					</div>
+				</div>
+				{{elseif this.pay_status !== 'unpay'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Дата приема:</div>
@@ -191,16 +199,6 @@
 						<div class="account-event">
 							<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
 						</div>
-					</div>
-				</div>
-				{{else}}
-
-				{{/if}}
-				{{#if this.status == 'new'}}
-				<div class="account-events__item event_date">
-					<div class="account-event-wrap --jcsb">
-						<div class="account-events__name">Заявка на рассмотрении</div>
-
 					</div>
 				</div>
 				{{else}}
