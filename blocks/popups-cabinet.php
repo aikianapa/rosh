@@ -670,7 +670,7 @@
 								<input type="radio" name="photo_group" value="before" checked="checked">
 								<span>До начала лечения</span>
 							</label>
-							<label class="text-radio disabled">
+							<label class="text-radio">
 								<input type="radio" name="photo_group" value="after">
 								<span>В процессе лечения</span>
 							</label>
