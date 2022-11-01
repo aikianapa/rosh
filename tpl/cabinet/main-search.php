@@ -133,9 +133,10 @@
 				createEvent(ev, client) {
 					console.log('createEvent', client);
 
-					window.popupEvent(client, null, function(data){
+					var editor = window.popupEvent(client, null, function(data){
 						console.log(client, data);
-						toast('Запись на успешно прием создана!');
+						toast('Запись на прием успешно создана!');
+						editor.close();
 					});
 				},
 				createLongterm(ev, client) {
