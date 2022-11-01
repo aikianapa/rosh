@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header row">
                 <div class="col-5">
-                    <h5>Редактирование прайса</h5>
+                    <h5>Редактирование карточки товара</h5>
                 </div>
                 <div class="col-7">
                     <h3 class="header"></h3>
@@ -29,7 +29,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-sm-4">Категория</label>
                                     <div class="col">
-                                        <select class="form-control" wb-tree="dict=shop_category&branch=lab&children=false" placeholder="Категория" name="category" >
+                                        <select class="form-control" wb-tree="dict=shop_category&children=false" placeholder="Категория" name="category" >
                                             <option value="{{id}}">{{name}}</option>
                                         </select>
                                     </div>
