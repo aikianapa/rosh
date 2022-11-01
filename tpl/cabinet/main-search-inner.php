@@ -161,7 +161,20 @@
 			</div>
 			<a class="account__detail" on-click="['editRecord', this]" data-idx="{{@index}}">Редактировать</a>
 		</div>
-
+		<div class="admin-edit__user-btns">
+			{{#if this.analyses}}
+			<div class="account-events__download">
+				<div class="lk-title">Анализы</div>
+				<a class="btn btn--white" data-href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
+			</div>
+			{{/if}}
+			<form class="admin-edit__uploads analyses">
+				<label class="admin-edit__upload-btn btn btn--white">
+					Добавить анализы
+					<input class="admin-edit__upload analyses" type="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
+				</label>
+			</form>
+		</div>
 		{{/each}}
 	</div>
 	{{/if}}

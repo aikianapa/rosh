@@ -628,6 +628,7 @@
 											record: data.id,
 											experts: data.experts,
 											client: data.client,
+											author: wbapp._session.user,
 											changes: [{
 												label: 'Рекомендации врача',
 												field: 'recommendation',
