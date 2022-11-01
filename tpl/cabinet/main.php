@@ -798,49 +798,63 @@
 															return false;
 														}
 														post.price = parseInt(post.price);
-														var changes = [];
 														if (post.status != _record.status){
-															changes.push({
-																label: 'Статус',
-																field: 'status',
-																prev_val: _record.status,
-																new_val: post.status
-															});
-														}
-														if (post.event_date != _record.event_date) {
-															changes.push({
-																label: 'Дата/время приёма',
-																field: 'event_date',
-																prev_val: _record.event_date,
-																new_val: post.event_date
-															});
-														}
-														if (post.services.join('') != _record.services.join('')) {
-															changes.push({
-																label: 'Услуга',
-																field: 'services',
-																prev_val: _record.services,
-																new_val: post.services
-															});
-														}
-														if (post.experts.join('') != _record.experts.join('')) {
-															changes.push({
-																label: 'Специалист',
-																field: 'experts',
-																prev_val: _record.experts,
-																new_val: post.experts
-															});
-														}
-														if(changes.length){
 															utils.api.post('/api/v2/create/record-changes/',
 																{
 																	record: _record.id,
 																	experts: _record.experts,
 																	client: _record.client,
-																	author: wbapp._session.user,
-																	changes: changes
+																	changes: [{
+																		label: 'Статус',
+																		field: 'status',
+																		prev_val: _record.status,
+																		new_val: post.status
+																	}]
 																});
 														}
+														if (post.event_date != _record.event_date) {
+															utils.api.post('/api/v2/create/record-changes/',
+																{
+																	record: _record.id,
+																	experts: _record.experts,
+																	client: _record.client,
+																	changes: [{
+																		label: 'Дата/время приёма',
+																		field: 'event_date',
+																		prev_val: _record.event_date,
+																		new_val: post.event_date
+																	}]
+																});
+														}
+														if (post.services.join('') != _record.services.join('')) {
+															utils.api.post('/api/v2/create/record-changes/',
+																{
+																	record: _record.id,
+																	experts: _record.experts,
+																	client: _record.client,
+																	changes: [{
+																		label: 'Услуга',
+																		field: 'services',
+																		prev_val: _record.services,
+																		new_val: post.services
+																	}]
+																});
+														}
+														if (post.experts.join('') != _record.experts.join('')) {
+															utils.api.post('/api/v2/create/record-changes/',
+																{
+																	record: _record.id,
+																	experts: _record.experts,
+																	client: _record.client,
+																	changes: [{
+																		label: 'Специалист',
+																		field: 'experts',
+																		prev_val: _record.experts,
+																		new_val: post.experts
+																	}]
+																});
+														}
+
 														utils.api.post(
 															'/api/v2/update/records/' + _record.id, post)
 															.then(function (res) {

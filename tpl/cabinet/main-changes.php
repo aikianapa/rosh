@@ -49,46 +49,44 @@
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
-
 						<div class="account__table-head">
 							<div class="changes-item">Дата / время изменения</div>
 							<div class="changes-item">ФИО</div>
-							<div class="changes-item">Запись пациента</div>
-							<div class="changes-item">Изменено</div>
-							<div class="changes-item">Значения</div>
+							<div class="changes-item">Запись</div>
+							<div class="changes-item">Изменено поле</div>
+							<div class="changes-item">Пред. значение</div>
+							<div class="changes-item">Новое значение</div>
 						</div>
 						<div class="account__table-body">
 							{{#each changes}}
 							<div class="acount__table-accardeon accardeon">
-								<div class="acount__table-main accardeon__main accardeon__click">
-									<div class="history-item">
+								<div class="acount__table-main accardeon__main acount__table-auto">
+									<div class="changes-item">
 										<p>Дата / время изменения</p>
 										{{@global.utils.formatDate(this._created)}} / {{@global.utils.formatTime(this._created)}}
 									</div>
-									<div class="history-item">
+									<div class="changes-item">
 										<p>ФИО</p>
-										{{this.author.fullname}}
+										<span>{{@global.catalog.users[this._creator].fullname}} ({{@global.catalog.roles[@global.catalog.users[this._creator].role]}})</span>
 									</div>
-									<div class="history-item">
-										<p>Запись пациента</p>
-										{{catalog.users[this.client].fullname}}
+									<div class="changes-item">
+										<p>Запись</p>
+										<span>-</span>
 									</div>
-									<div class="history-item">
-										<p>Изменения в полях</p>
-										{{#each this.changes}}
-										<span>{{this.label}}</span><br>
-										{{/each}}
+									<div class="changes-item">
+										<p>Изменено поле</p>
+										<span>{{this.changes[0].label}}</span>
 									</div>
-									<div class="history-item">
-										<p>Изменения</p>
-										{{#each this.changes}}
-										<span>Предыдущее: {{this.prev_val}}</span>
-										<span>Новое: {{this.new_val}}</span>
-										{{/each}}
+									<div class="changes-item">
+										<p>Рекомендация</p>
+										<span>{{this.changes[0].prev_val}}</span>
+									</div>
+									<div class="changes-item">
+										<p>Новая Рекомендация </p>
+										<span>{{this.changes[0].new_val}}</span>
 									</div>
 								</div>
-								<div class="acount__table-list accardeon__list">
-								</div>
+								<div class="acount__table-list accardeon__list"></div>
 							</div>
 							{{else}}
 							<div class="acount__table-accardeon accardeon">
@@ -98,6 +96,7 @@
 							</div>
 							{{/each}}
 						</div>
+
 					</div>
 				</div>
 			</div>

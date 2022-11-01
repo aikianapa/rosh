@@ -248,6 +248,11 @@ $(function () {
 		services: {},
 		servicePrices: {},
 		servicesList: [], /* for autocomplete */
+		roles:{
+			"main":"Aдминистратор",
+			"expert":"Специалист",
+			"client":"Пациент",
+		},
 		serviceTags: {
 			"face": {
 				"name": "Лицо",
@@ -440,7 +445,7 @@ $(function () {
 				}
 				getters.push(
 					utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
-					              '&@return=id,fullname&@sort=fullname:a')
+					              '&@return=id,fullname,role&@sort=fullname:a')
 						.then(function (data) {
 							_self.users = utils.arr.indexBy(data);
 						})
