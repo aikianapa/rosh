@@ -141,79 +141,8 @@
 				},
 				createLongterm(ev, client) {
 					console.log('createLongterm', client);
-
-					var popup_createLongerm = new Ractive({
-						el: '.popup.--longterm',
-						template: wbapp.tpl('#popupLongterm').html,
-						data: {
-							client: client,
-							record: false,
-							'experts': catalog.experts,
-							'categories': catalog.categories,
-							'services': catalog.services
-						},
-						on: {
-							complete() {
-								initServicesSearch($('.search-services'), catalog.servicesList);
-								initPlugins();
-								$(this.el).show();
-							},
-							submit(ev) {
-								let $form = $(ev.node);
-								let uid   = this.get('client.id');
-
-								if ($form.verify() && uid > '') {
-									var form_data = $form.serializeJSON();
-
-									form_data.group      = 'longterms';
-									form_data.status     = '';
-									form_data.pay_status = 'free';
-
-									form_data.analyses = false;
-									form_data.photos   = {before: [], after: []};
-
-									form_data.client   = uid;
-									form_data.priority = 0;
-									form_data.marked   = 0;
-
-									form_data.recommendation = '';
-									form_data.description    = '';
-
-									form_data.price  = 0;
-									var _photo_group = form_data.photo_group || 'before';
-									delete form_data.photo_group;
-
-									uploadFile(
-										$form.find('input[name="file"]')[0],
-										'record/photos/longterms',
-										Date.now() + '_' + utils.getRandomStr(4),
-										function (photo) {
-											if (photo.error) {
-												toast_error(photo.error);
-												return false;
-											}
-
-											var _photo_data   = {
-												src: photo.uri,
-												filename: photo.filename,
-												comment: form_data.comment,
-												date: form_data.event_date,
-												timestamp: utils.timestamp(form_data.event_date),
-												photo_group: _photo_group
-											};
-											form_data.comment = '';
-											form_data.photos[_photo_group].push(_photo_data);
-
-											utils.api.post('/api/v2/create/records/', form_data).then(
-												function (longterm_record) {
-												});
-										});
-
-								}
-								return false;
-
-							}
-						}
+					popupLongterm(client, null, function(rec){
+						toast('Запись успешно создана!');
 					});
 				}
 			}

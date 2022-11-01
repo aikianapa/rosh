@@ -632,13 +632,12 @@
 						<!-- new record -->
 						{{/if}}
 
+
 						<input type="hidden" name="group" value="longterms">
 						<input type="hidden" name="client" value="{{client.id}}">
 
 						{{#if client}}
-						<p class="text-bold text-big mb-20">
-							{{ @global.catalog.clients[record.client].fullname }}
-						</p>
+						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
 						{{else}}
 						<input type="hidden" name="client">
 						<div class="search-form input">
@@ -663,7 +662,7 @@
 						</div>
 
 						<div class="input calendar mb-20" data-filter="longterms">
-							<input class="input__control longterm-search"
+							<input class="input__control event-search longterm-search"
 								type="text" name="longterm_title"
 								placeholder="Название продолжительного лечения"
 								required>
@@ -719,8 +718,9 @@
 							$(this.el).show();
 						},
 						submit(ev) {
-							let $form = $(ev.node);
-							let uid   = this.get('client.id');
+							var self = this;
+							var $form = $(ev.node);
+							var uid   = this.get('client.id');
 
 							if ($form.verify() && uid > '') {
 								var form_data = $form.serializeJSON();
@@ -733,9 +733,16 @@
 								form_data.client   = uid;
 								form_data.priority = 0;
 								form_data.marked   = 0;
-
+								if (!form_data.event_date) {
+									toast_error('Выберите дату и время события');
+									$($(ev.node).parents('form')).find('[name="event_date"]')
+										.focus();
+									return false;
+								}
+								data.event_date = utils.dateForce(data.event_date);
 								form_data.recommendation = '';
 								form_data.description    = '';
+								form_data.event_date = utils.dateForce(form_data.event_date);
 
 								form_data.price  = 0;
 								var _photo_group = form_data.photo_group || 'before';
@@ -754,19 +761,22 @@
 										var _photo_data   = {
 											src: photo.uri,
 											filename: photo.filename,
-											comment: form_data.comment,
 											date: form_data.event_date,
 											timestamp: utils.timestamp(form_data.event_date),
 											photo_group: _photo_group
 										};
-										form_data.comment = '';
 										form_data.photos[_photo_group].push(_photo_data);
 
 										utils.api.post('/api/v2/create/records/', form_data).then(
 											function (longterm_record) {
+												if (typeof onSaved == 'function'){
+													onSaved(longterm_record);
+
+
+												}
+												$(self.el).hide();
 											});
 									});
-
 							}
 							return false;
 
@@ -839,87 +849,6 @@
 							<input type="file" id="file-photo" name="file">
 							<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
 								<br>Фото не должно превышать 10 мб
-							</div>
-						</label>
-						<button class="btn btn--white">Сохранить</button>
-					</div>
-				</div>
-			</template>
-		</div>
-
-		<div class="popup --analyses">
-			<template id="popupanalyses">
-				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Добавить фото к событию</div>
-					<div class="popup__form">
-						<div class="search-form input disabled">
-							<input class="input__control autocomplete client-search"
-								type="text" placeholder="Выбрать пациента">
-							<div class="input__placeholder">Выбрать пациента</div>
-						</div>
-						<div class="input calendar mb-20">
-							<input class="input__control datepickr" type="text"
-								name="event_date" placeholder="Выбрать дату посещения">
-							<div class="input__placeholder">Выбрать дату посещения</div>
-						</div>
-						<input type="hidden" name="group" value="event">
-						<input type="hidden" name="id" value="{{this.id}}">
-						<div class="popup-title__checkbox">
-							<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
-								<input type="checkbox" name="group" value="longterm"
-									{{#if this.group== 'longterm' }}checked{{/if}}>
-								<span></span>
-								<div class="checbox__name">Продолжительное лечение</div>
-							</label>
-						</div>
-						<div class="input calendar mb-20" data-show="longterm">
-							<input class="input__control longterm-search"
-								type="text" name="title"
-								placeholder="Название продолжительного лечения"
-								value="">
-							<div class="input__placeholder">Название продолжительного лечения</div>
-						</div>
-						<div class="radios --flex">
-							<label class="text-radio">
-								<input type="radio" name="photo_group" value="before" checked="checked">
-								<span>До начала лечения</span>
-							</label>
-							<label class="text-radio disabled">
-								<input type="radio" name="photo_group" value="after">
-								<span>В процессе лечения</span>
-							</label>
-						</div>
-						<label class="file-photo" for="image-selector">
-							<div class="filepicker">
-								<textarea type="json" name="image" class="d-none filepicker-data"></textarea>
-								<!-- Button Bar -->
-								<div class="button-bar">
-									<button class="btn btn-success fileinput" style="height:70px;">
-										<div class="file-photo__ico">
-											<img class="preview" alt="upload preview" src="">
-											<svg class="svgsprite _file">
-												<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-											</svg>
-										</div>
-										<input type="file" id="image-selector" name="files[]" class="wb-unsaved">
-										<input type="hidden" name="upload_url" value="/uploads/records/"
-											class="wb-unsaved">
-										<input type="hidden" name="prevent_img" class="wb-unsaved">
-									</button>
-								</div>
-								<script type="text/javascript">
-									wbapp.loadScripts(["/engine/modules/filepicker/filepicker.js"], "filepicker-js");
-								</script>
-							</div>
-							<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
-								<br>Фото не должно
-								превышать 10 мб
 							</div>
 						</label>
 						<button class="btn btn--white">Сохранить</button>
