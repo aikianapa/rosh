@@ -233,7 +233,7 @@ $(function () {
                     autoClose: true
                 };
 
-                if ($(this).val() !== '') {
+                if ($(this).val() != '') {
                     _config.selectedDates = [$(this).val()],
 
                         _config.minDate = $(this).data('min-date') || '';

@@ -781,6 +781,8 @@
 																.focus();
 															return false;
 														}
+
+														post.event_date = utils.dateForce(post.event_date);
 														if (post.group === 'events' && !post.experts) {
 															toast_error('Выберите специалиста');
 															$($(ev.node).parents('form'))

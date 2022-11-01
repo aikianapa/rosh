@@ -440,9 +440,28 @@
 
 								data.client = uid;
 
-								data.comment        = '';
-								data.recommendation = '';
-								data.description    = '';
+								if (!data.event_date) {
+									toast_error('Выберите дату и время события');
+									$($(ev.node).parents('form')).find('[name="event_date"]')
+										.focus();
+									return false;
+								}
+								data.event_date = utils.dateForce(data.event_date);
+
+								if (data.group === 'events' && !data.experts) {
+									toast_error('Выберите специалиста');
+									$($(ev.node).parents('form'))
+										.find('.select_experts')
+										.focus();
+									return false;
+								}
+								if (data.group === 'events' && !data.services) {
+									toast_error('Выберите услуги');
+									$($(ev.node).parents('form'))
+										.find('.popup-services-list')
+										.focus();
+									return false;
+								}
 
 								data.price = parseInt(data.price);
 								console.log('saving...', data);

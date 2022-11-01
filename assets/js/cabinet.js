@@ -162,6 +162,13 @@ $(function () {
 			}
 			return date;
 		},
+		dateForce(date) {
+			if (!!date && !!date.length){
+				var p = date.split('.');
+				return p[2] + '-' + p[1] + '-' + p[0] + ' 00:00:00';
+			}
+			return date;
+		},
 		getDate(date) {
 			var result = new Date(date);
 			if (!result.isValid()) {
