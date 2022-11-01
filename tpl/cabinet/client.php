@@ -719,6 +719,8 @@
 				.then(function (records) {
 					console.log('event:', records);
 					page.set('events.upcoming', []);
+					page.set('events.current', []);
+					page.set('history.events', []);
 					if (!!records) {
 						records.forEach(function (rec, idx) {
 							console.log('event:', rec);
