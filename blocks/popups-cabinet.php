@@ -695,15 +695,6 @@
 								Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
 							</div>
 						</label>
-
-						<div class="row">
-							<div class="col-md-12 --jcfe --flex">
-								<textarea class="admin__editor-textarea" name="comment"
-									placeholder="Комментарий">
-									{{record.comment}}
-								</textarea>
-							</div>
-						</div>
 						<button class="btn btn--white" type="submit">Сохранить</button>
 					</form>
 				</div>
@@ -737,8 +728,6 @@
 								form_data.group      = 'longterms';
 								form_data.status     = '';
 								form_data.pay_status = 'free';
-
-								form_data.analyses = false;
 								form_data.photos   = {before: [], after: []};
 
 								form_data.client   = uid;
