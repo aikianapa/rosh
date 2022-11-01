@@ -72,6 +72,7 @@
 						<svg class="svgsprite _edit">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 						</svg>
+						<span class="crumbs__link mr-10 font-weight-normal">редактировать профиль</span>
 					</button>
 				</div>
 				<div class="user__item">Дата рождения:

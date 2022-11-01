@@ -88,18 +88,7 @@
 									</div>
 								</div>
 								<div class="acount__table-list accardeon__list">
-									<div class="changes-item">
-										<p>Изменено поле</p>
-										<span>{{this.changes[0].label}}</span>
-									</div>
-									<div class="changes-item">
-										<p>Рекомендация</p>
-										<span>{{this.changes[0].prev_val}}</span>
-									</div>
-									<div class="changes-item">
-										<p>Новая Рекомендация </p>
-										<span>{{this.changes[0].new_val}}</span>
-									</div>
+
 								</div>
 							</div>
 							{{else}}
