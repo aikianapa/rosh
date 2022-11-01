@@ -720,6 +720,10 @@
 								page.push('history.events', rec);
 								return;
 							}
+							if (rec.status === 'new') {
+								page.push('events.upcoming', rec);
+								return;
+							}
 
 							if (Cabinet.isCurrentEvent(rec)) {
 								page.push('events.current', rec);
