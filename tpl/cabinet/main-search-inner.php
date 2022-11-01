@@ -138,7 +138,7 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Дата приема:</div>
 						<div class="account-event">
-							<p>{{@global.utils.formatDate(this.event_date)}}</p>
+							<p>{{ @global.utils.formatDate(this.event_date) }}</p>
 						</div>
 					</div>
 					<div class="account-event-wrap">

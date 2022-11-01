@@ -60,7 +60,8 @@
 						<div class="account__table-body">
 							{{#each changes}}
 							<div class="acount__table-accardeon accardeon">
-								<div class="acount__table-main accardeon__main acount__table-auto">
+								<div class="acount__table-main accardeon__main accardeon__click acount__table-auto"
+									title="Скрыть / Посмотреть полную информацию">
 									<div class="changes-item">
 										<p>Дата / время изменения</p>
 										{{@global.utils.formatDate(this._created)}} / {{@global.utils.formatTime(this._created)}}
@@ -86,7 +87,22 @@
 										<span>{{this.changes[0].new_val}}</span>
 									</div>
 								</div>
-								<div class="acount__table-list accardeon__list"></div>
+								<div class="acount__table-list accardeon__list">
+									<div class="changes-item">
+										<p>Изменено поле</p>
+										<span>{{this.changes[0].label}}</span>
+									</div>
+									<div class="changes-item">
+										<p>Рекомендация</p>
+										<span>{{this.changes[0].prev_val}}</span>
+									</div>
+									<div class="changes-item">
+										<p>Новая Рекомендация </p>
+										<span>{{this.changes[0].new_val}}</span>
+									</div>
+								</div>
+
+								</div>
 							</div>
 							{{else}}
 							<div class="acount__table-accardeon accardeon">
@@ -122,7 +138,7 @@
 				}
 			});
 
-			utils.api.get('/api/v2/list/record-changes?@sort=date:d').then(function (data) {
+			utils.api.get('/api/v2/list/record-changes?@sort=_created:d').then(function (data) {
 				page.set('changes', data);
 			});
 		});

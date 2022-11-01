@@ -400,13 +400,13 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupEvent = function (client, record, onSaved) {
+			window.popupEvent = function (client, _record, onSaved) {
 				return new Ractive({
 					el: '.popup.--record-editor',
 					template: wbapp.tpl('#popupRecordEditor').html,
 					data: {
 						client: client,
-						record: record || {},
+						record: _record || {},
 						'experts': catalog.experts,
 						'categories': catalog.categories,
 						'services': catalog.services
@@ -423,58 +423,55 @@
 						},
 						submit(ev) {
 							console.log('saving...', ev);
-
-							let $form = $(ev.node);
-							let uid   = this.get('client.id');
+							var edit_mode = (!!_record.id);
+							let $form     = $(ev.node);
+							let uid       = this.get('client.id');
 							if ($form.verify()) {
-								let data   = $form.serializeJSON();
-								data.group = 'events';
-								if (!data.id) {
-									data.status     = 'upcoming';
-									data.pay_status = 'unpay';
+								let new_data   = $form.serializeJSON();
+								new_data.group = 'events';
+								if (!edit_mode) {
+									new_data.status     = 'upcoming';
+									new_data.pay_status = 'unpay';
 
-									data.priority = 0;
-									data.marked   = false;
-									data.photos   = {before: [], after: []};
+									new_data.priority = 0;
+									new_data.marked   = false;
+									new_data.photos   = {before: [], after: []};
+									new_data.client   = uid;
 								}
 
-								data.client = uid;
-
-								if (!data.event_date) {
-									toast_error('Выберите дату и время события');
+								if (new_data.group === 'events' && !new_data.event_date) {
+									toast_error('Необходимо выбрать дату/время события');
 									$($(ev.node).parents('form')).find('[name="event_date"]')
 										.focus();
 									return false;
 								}
-								data.event_date = utils.dateForce(data.event_date);
-
-								if (data.group === 'events' && !data.experts) {
-									toast_error('Выберите специалиста');
+								if (new_data.group === 'events' && !new_data.experts) {
+									toast_error('Необходимо выбрать специалиста');
 									$($(ev.node).parents('form'))
 										.find('.select_experts')
 										.focus();
 									return false;
 								}
-
-								if (data.group === 'events' && !data.services) {
-									toast_error('Выберите услуги');
+								if (new_data.group === 'events' && !new_data.services) {
+									toast_error('Необходимо выбрать услугу');
 									$($(ev.node).parents('form'))
 										.find('.popup-services-list')
 										.focus();
 									return false;
 								}
+								new_data.event_date = utils.dateForce(new_data.event_date);
+								new_data.price      = parseInt(new_data.price);
 
-								data.price = parseInt(data.price);
-								console.log('saving...', data);
-								utils.api.post('/api/v2/' + ((!!data.id) ? 'update' : 'create')
+								console.log('saving...', new_data);
+
+								utils.api.post('/api/v2/' + (edit_mode ? 'update' : 'create')
 								               + '/records/'
-								               + ((!!data.id) ? data.id : ''),
-									data).then(function (res) {
-										if (!!onSaved) {
-											onSaved(res);
-										}
-									}
-								);
+								               + (edit_mode ? _record.id : ''), new_data)
+									.then(function (res) {
+											if (!!onSaved) {
+												onSaved(res);
+											}
+										});
 
 							}
 
@@ -625,14 +622,12 @@
 						</svg>
 					</button>
 					<div class="popup__name text-bold">Продолжительное лечение</div>
-					<form class="popup__form" on-submit="['submit']">
+					<form class="popup__form" on-submit="longtermSave" autocomplete="off">
 						{{#if record}}
 						<input type="hidden" name="id" value="{{record.id}}">
 						{{else}}
 						<!-- new record -->
 						{{/if}}
-
-
 						<input type="hidden" name="group" value="longterms">
 						<input type="hidden" name="client" value="{{client.id}}">
 
@@ -641,7 +636,6 @@
 							{{ @global.catalog.clients[client.id].fullname }}
 						</p>
 						{{else}}
-						<input type="hidden" name="client">
 						<div class="search-form input">
 							<input class="input__control autocomplete client-search"
 								type="text" placeholder="Выбрать пациента" required>
@@ -651,7 +645,7 @@
 
 						<div class="input calendar mb-20">
 							<input class="input__control datepickr" type="text"
-								required
+								required autocomplete="off"
 								name="event_date" placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Дата посещения</div>
 						</div>
@@ -710,10 +704,7 @@
 					template: wbapp.tpl('#popupLongterm').html,
 					data: {
 						client: client,
-						record: false,
-						'experts': catalog.experts,
-						'categories': catalog.categories,
-						'services': catalog.services
+						record: false
 					},
 					on: {
 						complete() {
@@ -721,8 +712,8 @@
 							initPlugins();
 							$(this.el).show();
 						},
-						submit(ev) {
-							var self = this;
+						longtermSave(ev) {
+							var self  = this;
 							var $form = $(ev.node);
 							var uid   = this.get('client.id');
 
@@ -732,29 +723,28 @@
 								form_data.group      = 'longterms';
 								form_data.status     = '';
 								form_data.pay_status = 'free';
-								form_data.photos   = {before: [], after: []};
+								form_data.photos     = {before: [], after: []};
 
 								form_data.client   = uid;
 								form_data.priority = 0;
 								form_data.marked   = 0;
 								if (!form_data.event_date) {
 									toast_error('Выберите дату и время события');
-									$($(ev.node).parents('form')).find('[name="event_date"]')
+									$($(ev.node).parents('form'))
+										.find('[name="event_date"]')
 										.focus();
 									return false;
 								}
-								data.event_date = utils.dateForce(data.event_date);
+								form_data.event_date = utils.dateForce(form_data.event_date);
 								form_data.recommendation = '';
 								form_data.description    = '';
-								form_data.event_date = utils.dateForce(form_data.event_date);
-
 								form_data.price  = 0;
 								var _photo_group = form_data.photo_group || 'before';
 								delete form_data.photo_group;
 
 								uploadFile(
 									$form.find('input[name="file"]')[0],
-									'record/photos/longterms',
+									'records/photos/longterms',
 									Date.now() + '_' + utils.getRandomStr(4),
 									function (photo) {
 										if (photo.error) {
@@ -770,7 +760,7 @@
 											photo_group: _photo_group
 										};
 										form_data.photos[_photo_group].push(_photo_data);
-
+										form_data.hasPhoto = 1;
 										utils.api.post('/api/v2/create/records/', form_data).then(
 											function (longterm_record) {
 												if (typeof onSaved == 'function'){
@@ -782,8 +772,8 @@
 											});
 									});
 							}
-							return false;
 
+							return false;
 						}
 					}
 				});

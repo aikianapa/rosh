@@ -456,6 +456,7 @@
 		</div>
 	</form>
 </template>
+
 <template id="listRecords">
 	<div class="account-scroll">
 		<div class="account__table" data-records-group="{{group}}">
@@ -770,96 +771,43 @@
 														post_statuses.group =
 															(catalog.quoteStatus[post_statuses.status].type ||
 															   'quote') + 's';
-														var post = $($(ev.node).parents('form')).serializeJSON();
-														post.status = post_statuses.status;
-														post.pay_status = post_statuses.pay_status;
-														post.group = post_statuses.group;
+														var new_data = $($(ev.node).parents('form')).serializeJSON();
+														new_data.status = post_statuses.status;
+														new_data.pay_status = post_statuses.pay_status;
+														new_data.group = post_statuses.group;
 
-														if (post.group === 'events' && !post.event_date){
-															toast_error('Выберите дату и время события');
+														if (new_data.group === 'events' && !new_data.event_date){
+															toast_error('Необходимо выбрать дату/время события');
 															$($(ev.node).parents('form')).find('[name="event_date"]')
 																.focus();
 															return false;
 														}
-
-														post.event_date = utils.dateForce(post.event_date);
-														if (post.group === 'events' && !post.experts) {
-															toast_error('Выберите специалиста');
+														if (new_data.group === 'events' && !new_data.experts) {
+															toast_error('Необходимо выбрать специалиста');
 															$($(ev.node).parents('form'))
 																.find('.select_experts')
 																.focus();
 															return false;
 														}
-														if (post.group === 'events' && !post.services){
-															toast_error('Выберите услуги');
+														if (new_data.group === 'events' && !new_data.services){
+															toast_error('Необходимо выбрать услугу');
 															$($(ev.node).parents('form'))
 																.find('.popup-services-list')
 																.focus();
 															return false;
 														}
-														post.price = parseInt(post.price);
-														if (post.status != _record.status){
-															utils.api.post('/api/v2/create/record-changes/',
-																{
-																	record: _record.id,
-																	experts: _record.experts,
-																	client: _record.client,
-																	changes: [{
-																		label: 'Статус',
-																		field: 'status',
-																		prev_val: _record.status,
-																		new_val: post.status
-																	}]
-																});
-														}
-														if (post.event_date != _record.event_date) {
-															utils.api.post('/api/v2/create/record-changes/',
-																{
-																	record: _record.id,
-																	experts: _record.experts,
-																	client: _record.client,
-																	changes: [{
-																		label: 'Дата/время приёма',
-																		field: 'event_date',
-																		prev_val: _record.event_date,
-																		new_val: post.event_date
-																	}]
-																});
-														}
-														if (post.services.join('') != _record.services.join('')) {
-															utils.api.post('/api/v2/create/record-changes/',
-																{
-																	record: _record.id,
-																	experts: _record.experts,
-																	client: _record.client,
-																	changes: [{
-																		label: 'Услуга',
-																		field: 'services',
-																		prev_val: _record.services,
-																		new_val: post.services
-																	}]
-																});
-														}
-														if (post.experts.join('') != _record.experts.join('')) {
-															utils.api.post('/api/v2/create/record-changes/',
-																{
-																	record: _record.id,
-																	experts: _record.experts,
-																	client: _record.client,
-																	changes: [{
-																		label: 'Специалист',
-																		field: 'experts',
-																		prev_val: _record.experts,
-																		new_val: post.experts
-																	}]
-																});
-														}
+
+														new_data.event_date = utils.dateForce(new_data.event_date);
+														new_data.price = parseInt(new_data.price);
+														new_data.services = utils.arr.unique(new_data.services);
+
+														changeLogSave(new_data, _record);
 
 														utils.api.post(
-															'/api/v2/update/records/' + _record.id, post)
+															'/api/v2/update/records/' + _record.id, new_data)
 															.then(function (res) {
 
-																console.log('event data:', post);
+																console.log('event data:', new_data);
 																toast('Успешно сохранено');
 																_tab.set('records.' + _row_idx, res);
 																window.load();

@@ -162,10 +162,15 @@ $(function () {
 			}
 			return date;
 		},
+		getISODate(date){
+
+		},
 		dateForce(date) {
 			if (!!date && !!date.length){
-				var p = date.split('.');
-				return p[2] + '-' + p[1] + '-' + p[0] + ' 00:00:00';
+				var parts = date.match(/(\d+)\.(\d+)\.(\d+)/);
+				if (parts){
+					return parts[3] + '-' + parts[2] + '-' + parts[1] + ' 00:00:00';
+				}
 			}
 			return date;
 		},
@@ -1248,7 +1253,52 @@ $(function () {
 			}
 		});
 	};
+	window.changeLogSave = function (new_record_data, prev_record_data) {
+		var changelog = [];
+		if (new_record_data.status != prev_record_data.status) {
+			changelog.push({
+				label: 'Статус',
+				field: 'status',
+				prev_val: prev_record_data.status,
+				new_val: new_record_data.status
+			});
+		}
+		if (new_record_data.event_date != prev_record_data.event_date) {
+			changelog.push({
+				label: 'Дата/время приёма',
+				field: 'event_date',
+				prev_val: utils.formatDate(prev_record_data.event_date),
+				new_val: utils.formatDate(new_record_data.event_date)
+			});
+		}
+		if (new_record_data.services.join('') != prev_record_data.services.join('')) {
+			changelog.push({
+				label: 'Услуга',
+				field: 'services',
+				prev_val: prev_record_data.services,
+				new_val: new_record_data.services
+			});
+		}
+		if (new_record_data.experts.join('') != prev_record_data.experts.join('')) {
+			changelog.push({
+				label: 'Специалисты',
+				field: 'experts',
+				prev_val: prev_record_data.experts,
+				new_val: new_record_data.experts
+			});
+		}
+		if (changelog.length) {
+			utils.api.post('/api/v2/create/record-changes/',
+				{
+					record: prev_record_data.id,
+					record_group: prev_record_data.group,
+					experts: prev_record_data.experts,
+					client: prev_record_data.client,
+					changes: changelog
+				});
+		}
 
+	};
 	$(document)
 		.on('change blur', '.event-time-start', function (e) {
 			var end_time = $(this).parents('.row.event-time').find('.event-time-end');
