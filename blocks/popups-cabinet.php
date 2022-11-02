@@ -35,7 +35,7 @@
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
 						<input class="checkbox-visible-next-form" type="checkbox"
-							name="for_consultation" value="1">
+							name="for_consultation" value="1" on-click="checkConsultation">
 						<span></span>
 						<div class="checbox__name">Консультация врача</div>
 					</label>

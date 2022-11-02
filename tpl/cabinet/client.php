@@ -143,7 +143,7 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
