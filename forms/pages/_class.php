@@ -50,13 +50,14 @@ class pagesClass extends cmsFormsClass
 
     function beforeItemSave(&$item)
     {
+        $item['path'] == '/home' ? $item['path'] = '' : null;
         @$item['url'] = $item['path'] . '/' . $item['name'];
     }
 
     function afterItemSave(&$item)
     {
         $this->beforeItemShow($item);
-        $this->app->shadow($item['url']);
+        $this->app->shadow($this->app->houte->host.'/module/yonger/yonmap');
     }
 
     function list()
@@ -65,7 +66,6 @@ class pagesClass extends cmsFormsClass
         $this->tables = $app->tableList();
         $this->jq = new Jsonq();
         $this->count = 0;
-        $this->map = [];
         $out = $app->fromFile(__DIR__ . '/list.php');
         $this->tpl = $out->find('#pagesList');
         $this->list = $this->app->itemList('pages', ['return' => 'id,name,_form,header,active,attach,attach_filter,url,path,_sort']);
@@ -74,82 +74,10 @@ class pagesClass extends cmsFormsClass
             isset($item['header']) and isset($item['header'][$_SESSION['lang']]) ? $item['header'] = $item['header'][$_SESSION['lang']] : null;
         }
         $res = $this->listNested();
-        $app->putContents($app->vars('_env.dba') . '/_yonmap.json', json_encode($this->map));
+        $this->app->shadow($this->app->houte->host.'/module/yonger/yonmap');
         $out->find('#pagesList')->replaceWith($res);
         echo $out;
     }
-
-    public function yonmap() {
-        $app = &$this->app;
-        $this->tables = $app->tableList();
-        $this->count = 0;
-        $this->map = [];
-        $this->list = $this->app->itemList('pages', ['return' => 'id,name,_form,header,active,attach,attach_filter,url,path,_sort']);
-        $this->list = $this->list['list'];
-        $this->yonmapnest();
-        $app->putContents($app->vars('_env.dba') . '/_yonmap.json', json_encode($this->map));
-        header("Content-type:application/json");
-        echo json_encode(['count'=>count($this->map)]);
-    }
-
-    private function yonmapnest($path = '') {
-
-        $this->count++;
-        if ($this->count > 1000) {
-            return;
-        }
-        $level = $this->app->json($this->list)->where('path', '=', $path)->sortBy('_sort')->get();
-        $count = count($level);
-        if (!$count) {
-            return '';
-        }
-        foreach ($level as $item) {
-            in_array($item['url'], ['/', '']) ? $url = '/'.$item['name'] : $url = $item['url'].'/'.$item['name'];
-            $md5 = md5($url);
-            unset($this->list[$item['id']]);
-            $attach = (isset($item['attach']) and $item['attach'] > ' ') ? true : false;
-            $res1 = $res2 = null;
-            $res1 = $this->yonmapnest($url);
-            $res2 = $attach ? $this->yonmaptable($item, $url) : null;
-            substr($item['id'], 0, 1) == '_' or isset($this->map[$md5]) ? null : $this->map[$md5] = ['f' => $item['_form'], 'i' => $item['id'], 'u' => $url, 'n' => $item['name']];
-        }
-    }
-
-
-    private function yonmaptable($item, $path = '')
-    {
-        $table = $item['attach'];
-        $filter = (isset($item['attach_filter']) && $item['attach_filter'] > '') ? $item['attach_filter'] : [];
-        if (is_string($filter)) {
-            $filter = str_replace("'", '"', $filter);
-            $filter = json_decode($filter, true);
-        }
-        $options = [
-            'return' => 'id,name,_form,header,active,tags',
-            'filter' => $filter
-        ];
-        $level = $this->app->itemList($table, $options);
-        $level = $level['list'];
-        foreach ($level as $key => $item) {
-            isset($item['name']) ? null : $item['name'] = null;
-            isset($item['header']) ? null : $item['header'] = $item['name'];
-            $item['_form'] = $table;
-            if ($item['header']) {
-                $item['path'] = $path;
-                $item['name'] = wbFurlGenerate($item['header']);
-                $item['url'] = $item['path'] . '/' . $item['name'];
-                $level[$key] = $item;
-                $md5 = md5($item['url']);
-                if (!isset($this->map[$md5])) {
-                    $this->map[$md5] = ['f' => $item['_form'], 'i' => $item['id'], 'u' => $item['url']];
-                }
-            } else {
-                unset($level[$key]);
-            }
-        }
-    }
-
-
     private function listNested($path = '')
     {
         $this->count++;
@@ -173,7 +101,6 @@ class pagesClass extends cmsFormsClass
             $res2 = $attach ? $this->listTable($item, $url) : null;
 
             $li = ($url == '/home') ? $out->find('li[data-path="/"]') : $out->find('li[data-path="' . $url . '"]');
-            substr($item['id'], 0, 1) == '_' or isset($this->map[$md5]) ? null : $this->map[$md5] = ['f' => $item['_form'], 'i' => $item['id'], 'u' => $url, 'n' => $item['name']];
             if ($res2 !== null) $li->append($res2);
             $li->find('template')->remove();
             ($url == '/home') ? $li->find('.dd-handle')->addClass('dd-home')->removeClass('dd-handle')->inner(' ') : null;
@@ -203,10 +130,16 @@ class pagesClass extends cmsFormsClass
             'filter' => $filter
         ];
         $out = $this->tpl->clone();
+        $class = $this->app->formClass($table);
         $level = $this->app->itemList($table, $options);
         $level = array_chunk($level['list'], 100);
         $level = $level[0];
         foreach ($level as $key => $item) {
+
+            if (method_exists($class, 'beforeItemShow')) {
+                $class->beforeItemShow($item);
+            }
+
             isset($item['name']) ? null : $item['name'] = null;
             isset($item['header']) ? null : $item['header'] = $item['name'];
             $item['_form'] = $table;
@@ -215,10 +148,6 @@ class pagesClass extends cmsFormsClass
                 $item['name'] = wbFurlGenerate($item['header']);
                 $item['url'] = $item['path'] . '/' . $item['name'];
                 $level[$key] = $item;
-                $md5 = md5($item['url']);
-                if (!isset($this->map[$md5])) {
-                    $this->map[$md5] = ['f' => $item['_form'], 'i' => $item['id'], 'u' => $item['url']];
-                }
             } else {
                 unset($level[$key]);
             }
