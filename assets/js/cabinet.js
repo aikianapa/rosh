@@ -175,7 +175,7 @@ $(function () {
 			return date;
 		},
 		getDate(date) {
-			var result = new Date(date);
+			var result = new Date(this.dateForce(date));
 			if (!result.isValid()) {
 				date   = date.split(' ')[0].split('.').reverse().join('-');
 				result = new Date(date);
@@ -239,6 +239,10 @@ $(function () {
 			experts_consultation: {
 				header: 'Общая консультация специалиста',
 				price: 4000
+			},
+			consultation:{
+				header: 'Консультация врача',
+
 			},
 			analyses_interpretation: {
 				header: 'Расшифровка анализов',
@@ -458,7 +462,10 @@ $(function () {
 			} else {
 				sessionStorage.removeItem('db.clients');
 			}
-
+			utils.api.get('/api/v2/read/price/id63619e811c69')
+				.then(function (data) {
+					_self.spec_service.consultation = data;
+				})
 			return Promise.allSettled(getters).then(() => {
 				$(document).trigger('cabinet-db-ready');
 			});
@@ -938,7 +945,7 @@ $(function () {
 						data.recommendation = '';
 						data.description    = '';
 
-						data.price = parseInt(data.price);
+						data.price = parseInt(data.price || 0);
 						Cabinet.createQuote(data, function (res) {
 							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 							$('.popup.--record .popup__panel.--succed').addClass('d-block');
@@ -949,6 +956,18 @@ $(function () {
 					}
 
 					return false;
+				},
+				checkConsultation(ev){
+					var ght = 0;
+					var lv = 0;
+					console.log(ev);
+					if ($(ev.node).is(':checked')){
+						ght = catalog.spec_service.consultation.price;
+					} else {
+						ght = 0;
+					}
+					$(ev.node).parents('form').find('[name="price"]').val(ght);
+					$(ev.node).parents('form').find('.price').text(utils.formatPrice(ght) + ' ₽');
 				}
 			}
 		});

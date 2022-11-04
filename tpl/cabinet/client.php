@@ -54,6 +54,7 @@
 						<svg class="svgsprite _edit">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 						</svg>
+						<span class="crumbs__link mr-10 font-weight-normal">редактировать профиль</span>
 					</button>
 				</div>
 				<div class="user__group">
@@ -142,7 +143,7 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" data-href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
