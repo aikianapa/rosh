@@ -836,7 +836,9 @@
 					}).appendTo(_list);
 				});
 		};
+
 		load();
+
 		$(document).on('click', 'button.flag-date__ico', function (e) {
 			e.stopPropagation();
 			const _parent    = $(this).parents('.acount__table-accardeon');

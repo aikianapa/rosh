@@ -729,7 +729,7 @@ $(function () {
 
 	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
 
-	window.initServicesSearch = function ($selector, service_list) {
+	window.initServicesSearch         = function ($selector, service_list) {
 		console.log($selector, service_list);
 
 		var _parent_form = $selector.closest('form');
@@ -857,37 +857,81 @@ $(function () {
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
-	window.initLongtermSearch = function ($form, for_client) {
+	window.initLongtermSearch         = function ($form, for_client) {
+		var form       = $form || $('.popup .popup__form');
 		let client_qry = '';
 		if (!!for_client) {
-			client_qry = '&client=' + $($form).find('[name="client"]').val();
+			client_qry = '&client=' + form.find('[name="client"]').val();
 		}
-
-		$form.find('.event-search.longterm-search').autocomplete({
-			noCache: true,
+		form.find('.event-search.longterm-search').autocomplete({
+			noCache: false,
 			minChars: 1,
 			deferRequestBy: 350,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'title~',
-			serviceUrl: '/api/v2/list/records?group=longterm' + client_qry,
+			serviceUrl: '/api/v2/list/records?group=longterms' + client_qry,
 			transformResult: function (response) {
 				console.log(response);
 				return {
 					suggestions: $.map(response, function (dataItem) {
-						return {value: dataItem.fullname, data: dataItem.id};
+						return {
+							value: dataItem.longterm_title + ', ' +
+							       utils.formatDate(dataItem.event_date) + ' ' +
+							       dataItem.event_time_start + '-' + dataItem.event_time_end,
+							data: dataItem.id
+						};
 					})
 				};
 			},
 			onSelect: function (suggestion) {
 				console.log($(this), suggestion);
-				$form.find('input[name="record"]').val(suggestion.data);
+				form.find('input[name="record"]').val(suggestion.data);
 			}
 		});
 	};
-	window.initClientSearch   = function ($form) {
-		console.log($('.--popup form input.client-search'));
-		$('.--popup form input.client-search').autocomplete({
+	window.initEventSearch            = function ($form, for_client) {
+		var form       = $form || $('.popup .popup__form');
+		let client_qry = '';
+		if (!!for_client) {
+			client_qry = '&client=' + form.find('[name="client"]').val();
+		}
+		form.find('.event-search.record-search').autocomplete({
+			noCache: false,
+			minChars: 0,
+			deferRequestBy: 350,
+			dataType: 'json',
+			type: 'GET',
+			paramName: '',
+			serviceUrl: '/api/v2/list/records?group=[longterms,events]' + client_qry,
+			noSuggestionNotice: '<p>Не найдено событий..</p>',
+			showNoSuggestionNotice: 1,
+			transformResult: function (response) {
+				console.log(response);
+				return {
+					suggestions: $.map(response, function (dataItem) {
+						var title = (dataItem.group === 'longterms')
+							? dataItem.longterm_title
+							: catalog.services[dataItem.services[0]].header;
+
+						return {
+							value: title + ', ' +
+							       utils.formatDate(dataItem.event_date) + ' ' +
+							       dataItem.event_time_start + '-' + dataItem.event_time_end,
+							data: dataItem.id
+						};
+					})
+				};
+			},
+			onSelect: function (suggestion) {
+				console.log($(this), suggestion);
+				form.find('input[name="id"]').val(suggestion.data);
+			}
+		});
+	};
+	window.initClientSearch           = function ($form) {
+		var form = $form || $('.popup .popup__form');
+		form.find('input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
 			deferRequestBy: 300,
@@ -896,6 +940,7 @@ $(function () {
 			paramName: 'fullname~',
 			serviceUrl: '/api/v2/list/users?role=client&active=on&__token' + wbapp._session.token,
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
+			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
 				console.log(response);
 				return {
@@ -905,7 +950,8 @@ $(function () {
 				};
 			},
 			onSelect: function (suggestion) {
-				$(this).find('input[name="client"]').val(suggestion.data);
+				form.find('input[name="client"]').val(suggestion.data);
+				form.find('.search-form.event.disabled').removeClass('disabled');
 			}
 		});
 	};
@@ -1001,7 +1047,7 @@ $(function () {
 			el: '.popup.--analize-interpretation',
 			template: wbapp.tpl('#popupAnalizeInterpretation').html,
 			data: {
-				catalog: {},
+				catalog: catalog,
 				record: {}
 			},
 			on: {
@@ -1011,10 +1057,11 @@ $(function () {
 					});
 				},
 				complete() {
+					$(this.el).show();
 					if (!!onShow) {
 						onShow(this);
 					}
-					$(this.el).show();
+
 				},
 				submit() {
 					let form = this.find('.popup.--analize-interpretation .popup__form');
@@ -1035,7 +1082,6 @@ $(function () {
 			}
 		});
 	};
-
 
 	window.popupsConfirmSmsCode       = function () {
 		return new Ractive({

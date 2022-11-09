@@ -772,7 +772,7 @@
 						page.push('events.upcoming', data);
 
 						toast('Запись успешно создана!');
-						reloadData();
+						content_load();
 						editor.close();
 					});
 				},
@@ -794,61 +794,11 @@
 							utils.api.post('/api/v2/update/records/'+record.id, {'analyses': photo.uri})
 								.then(function (record) {
 									toast('Анализы добавлены!');
-									reloadData();
+									content_load();
 									page.set('events.upcoming.'+index, record);
 								});
 						});
 				},
-
-				showEventDetails(ev) {
-					var _parent = $(ev.node).parents('.accardeon');
-					if (!_parent.hasClass('loaded')) {
-						var _record_idx      = _parent.data('idx');
-						var _record          = page.get('history.events.' + _record_idx);
-						var _accardeon__list = new Ractive({
-							el: _parent.find('.accardeon__list'),
-							template: wbapp.tpl('#event-details').html,
-							data: {
-								event: _record,
-								user: page.get('user'),
-								catalog: catalog
-							},
-							on: {
-								init() {
-									var _this = this;
-									if (!!_record.photos?.before || !!_record.photos?.after) {
-										utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
-											.then(
-												function (result) {
-													if (!result) {
-														return;
-													}
-
-													var list = {before: [], after: []};
-													result.forEach(function (photo) {
-														if (_record.photos?.before &&
-														    _record.photos.before.includes(photo.id)) {
-															list.before.push(photo);
-														} else if (_record.photos?.after &&
-														           _record.photos.after.includes(
-															           photo.id)) {
-															list.after.push(photo);
-														}
-													});
-													_this.set('photos', list);
-												}
-											);
-									}
-								},
-								complete() {
-									_parent.find("img[data-src]:not([src])").lazyload();
-									_parent.addClass('loaded');
-								}
-							}
-						});
-					}
-				}
-				,
 				showLongtermDetails(ev) {
 					var _parent = $(ev.node).parents('.accardeon');
 					if (!_parent.hasClass('loaded')) {
@@ -942,7 +892,7 @@
 			window.page.set('client', client);
 			window.page.set('user', client);
 		});
-		window.reloadData = function() {
+		window.content_load = function() {
 			page.set('longterms_ready', false);
 			page.set('events_ready', false);
 
@@ -963,7 +913,7 @@
 					page.set('longterms_ready', true); /* get actually user next events */
 				});
 		};
-		reloadData();
+		content_load();
 	});
 </script>
 

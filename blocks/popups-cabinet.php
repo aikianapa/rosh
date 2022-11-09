@@ -501,19 +501,27 @@
 					</button>
 					<div class="popup__name text-bold">Добавить фото</div>
 					<form class="popup__form" on-submit="submit">
+						{{#if record}}
+						<input type="hidden" name="id" value="{{record.id}}">
+						<input type="hidden" name="client" value="{{record.client}}">
 
-						{{#if record.client}}
 						<p class="text-bold text-big mb-20">
 							{{ @global.catalog.clients[record.client].fullname }}
 						</p>
-						<input type="hidden" name="client" value="{{record.client}}">
 						{{else}}
 						<div class="search-form input">
 							<input class="input__control autocomplete client-search"
 								type="text" placeholder="Выбрать пациента" required>
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
-						<input type="hidden" name="client" value="{{record.client}}">
+						<input type="hidden" name="client" value="">
+						<input type="hidden" name="id" value="">
+
+						<div class="search-form event disabled input">
+							<input class="input__control autocomplete event-search record-search"
+								type="text" placeholder="Выбрать пациента" required>
+							<div class="input__placeholder">Выбрать событие/посещение</div>
+						</div>
 						{{/if}}
 
 						<div class="input calendar mb-20">
@@ -531,12 +539,6 @@
 								<span>В процессе лечения</span>
 							</label>
 						</div>
-						{{#if record}}
-
-						{{else}}
-
-						{{/if}}
-
 
 						<label class="file-photo">
 							<div class="file-photo__ico">
@@ -570,44 +572,67 @@
 					on: {
 						complete() {
 							initClientSearch();
+							initEventSearch();
 							initPlugins();
 							$(this.el).show();
 						},
 						submit(ev) {
-							let $form = $(ev.node);
-							let uid   = this.get('client.id');
+							console.log('Submit form...');
+							var _form = $(ev.node);
 
-							if ($form.verify() && uid > '') {
-								var form_data = $form.serializeJSON();
-								var _photo_group = form_data.target || 'before';
-								delete form_data.photo_group;
+							if (_form.verify()) {
+								var form_data = _form.serializeJSON();
+								if (!form_data.client) {
+									toast_error('Необходимо выбрать пациента');
+									$($(ev.node).parents('form')).find('.client-search')
+										.focus();
+									return false;
+								}
 
-								uploadFile(
-									$form.find('input[name="file"]')[0],
-									'record/photos/' + record.id,
-									Date.now() + '_' + utils.getRandomStr(4),
-									function (photo) {
-										if (photo.error) {
-											toast_error(photo.error);
-											return false;
-										}
+								if (!form_data.id) {
+									toast_error('Необходимо выбрать посещение');
+									$($(ev.node).parents('form'))
+										.find('.event-search')
+										.focus();
+									return false;
+								}
+								console.log('form data', form_data);
+								utils.api.get('/api/v2/read/records/' + form_data.id).then(function (record) {
 
-										var _photo_data   = {
-											src: photo.uri,
-											filename: photo.filename,
-											comment: record.comment,
-											date: record.event_date,
-											photo_group: _photo_group
-										};
-										record.photos[_photo_group].push(_photo_data);
+									var _photo_group = form_data.target || 'before';
+									delete form_data.photo_group;
 
-										utils.api.post('/api/v2/update/records/' + record.id, {
-											'photos':record.photos
-										}).then(function (rec) {
-											onSaved(rec);
+									uploadFile(
+										_form.find('input[name="file"]')[0],
+										'record/photos/' + record.id,
+										Date.now() + '_' + utils.getRandomStr(4),
+										function (photo) {
+											if (photo.error) {
+												toast_error(photo.error);
+												return false;
+											}
+
+											var _photo_data = {
+												src: photo.uri,
+												filename: photo.filename,
+												comment: record.comment,
+												date: form_data.date,
+												photo_group: _photo_group
+											};
+											if (_photo_group == 'before'){
+												record.photos['before'] = [];
+											}
+											record.hasPhoto = 1;
+											record.photos['before'].push(_photo_data);
+
+											utils.api.post('/api/v2/update/records/' + record.id, {
+												'photos': record.photos,
+												'hasPhoto': 1
+											}).then(function (rec) {
+												onSaved(rec);
+											});
 										});
-									});
-
+								});
 							}
 							return false;
 
