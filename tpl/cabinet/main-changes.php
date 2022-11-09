@@ -120,10 +120,30 @@
 											<p class="text-primary">{{this.label}}</p>
 										</div>
 										<div class="col-lg-4">
-											<p class="">{{this.prev_val}}</p>
+											<p class="">
+												{{#if this.field == 'experts'}}
+												{{#each this.prev_val.split(',')}}
+													{{this}}
+												{{/each}}
+												{{elseif this.field == 'services'}}
+												{{elseif this.field == 'status'}}
+												{{catalog.quoteStatus[this.prev_val].name}}
+												{{else}}
+													{{this.prev_val}}
+												{{/if}}
+											</p>
 										</div>
 										<div class="col-lg-4">
-											<p class="">{{this.new_val}}</p>
+											<p class="">
+												{{#if this.field == 'experts'}}
+												{{elseif this.field == 'services'}}
+												{{elseif this.field == 'status'}}
+												{{catalog.quoteStatus[this.new_val].name}}
+												{{else}}
+												{{this.new_val}}
+												{{/if}}
+
+											</p>
 										</div>
 									</div>
 									{{/each}}
