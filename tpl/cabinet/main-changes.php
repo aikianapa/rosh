@@ -53,9 +53,9 @@
 							<div class="changes-item">Дата / время изменения</div>
 							<div class="changes-item">ФИО</div>
 							<div class="changes-item">Запись</div>
-							<div class="changes-item">Изменено поле</div>
-							<div class="changes-item">Пред. значение</div>
-							<div class="changes-item">Новое значение</div>
+							<div class="changes-item">Пациент</div>
+							<div class="changes-item">Изменены поля</div>
+							<div class="changes-item">К-ство изменений</div>
 						</div>
 						<div class="account__table-body">
 							{{#each changes}}
@@ -72,23 +72,61 @@
 									</div>
 									<div class="changes-item">
 										<p>Запись</p>
-										<span>-</span>
+										<span>
+											{{#if this.record_group == 'quotes'}}
+											Заявка
+											{{elseif this.record_group == 'longterms'}}
+											Продолжительное лечение
+											{{else}}
+											Событие
+											{{/if}}
+										</span>
 									</div>
 									<div class="changes-item">
-										<p>Изменено поле</p>
-										<span>{{this.changes[0].label}}</span>
+										<p>Пациент</p>
+										<span>{{ @global.catalog.users[this.client].fullname }}</span>
 									</div>
 									<div class="changes-item">
-										<p>Рекомендация</p>
-										<span>{{this.changes[0].prev_val}}</span>
+										<p>Изменены поля</p>
+										<span>
+											{{#each this.changes}}
+											{{this.label}}<br>
+											{{/each}}
+										</span>
 									</div>
 									<div class="changes-item">
-										<p>Новая Рекомендация </p>
-										<span>{{this.changes[0].new_val}}</span>
+										<p>К-ство изменений</p>
+										<span>{{this.changes.length}}</span>
 									</div>
 								</div>
 								<div class="acount__table-list accardeon__list">
 
+									<div class="row">
+										<div class="col-lg-4">
+											<h5 class="h5 expert__category">Поле</h5>
+										</div>
+										<div class="col-lg-4">
+											<h5 class="h5 expert__category">Пред. значение</h5>
+										</div>
+										<div class="col-lg-4">
+											<h5 class="h5 expert__category">Новое значение</h5>
+										</div>
+									</div>
+									<hr>
+									{{#each this.changes}}
+
+									<div class="row">
+										<div class="col-lg-4">
+											<h5 class="text-blue">{{this.label}}</h5>
+										</div>
+										<div class="col-lg-4">
+											<p class="">{{this.prev_val}}</p>
+										</div>
+										<div class="col-lg-4">
+											<p class="">{{this.new_val}}</p>
+										</div>
+									</div>
+									{{/each}}
 								</div>
 							</div>
 							{{else}}
