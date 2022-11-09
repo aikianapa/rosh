@@ -117,7 +117,7 @@
 
 									<div class="row">
 										<div class="col-lg-4">
-											<h5 class="text-blue">{{this.label}}</h5>
+											<p class="text-primary">{{this.label}}</p>
 										</div>
 										<div class="col-lg-4">
 											<p class="">{{this.prev_val}}</p>
