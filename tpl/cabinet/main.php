@@ -412,7 +412,7 @@
 								</svg>
 							</div>
 							<div class="search__drop-tags">
-								{{#each catalog.servicePrices[idx].tags}}
+								{{#each catalog.servicePrices[key].tags}}
 								<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
 								{{/each}}
 							</div>
@@ -425,10 +425,13 @@
 					{{/each}}
 					{{/if}}
 				</div>
-				<div class="admin-editor__summ">
+				<div class="admin-editor__summ mb-3">
 					<p>Всего</p>
 					<input type="hidden" name="price" value="{{record.price}}">
-					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
+					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
+				</div>
+				<div class="mb-4 text-right" data-hide="service-search">
+					<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
 				{{#if record.group == 'events'}}
 				<div class="admin-editor__patient mb-40">
@@ -808,6 +811,35 @@
 
 													});
 												},
+												checkConsultation(ev) {
+													var ght = 0;
+													var lv  = 0;
+													console.log(ev);
+													if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
+														ght = parseInt(catalog.spec_service.consultation.price);
+													} else {
+														ght = 0;
+													}
+													var price = parseInt(
+														$(ev.node).parents('form').find('[name="price"]').val());
+													if (ght === 0) {
+														if ($(ev.node).parents('form').find('[name="price"]')
+															.hasClass('consultation')) {
+															price -= catalog.spec_service.consultation.price;
+														}
+														$(ev.node).parents('form').find('[name="price"]')
+															.removeClass('consultation');
+													} else {
+														price += ght;
+														$(ev.node).parents('form').find('[name="price"]')
+															.addClass('consultation');
+													}
+
+													$(ev.node).parents('form').find('[name="price"]').val(price);
+													$(ev.node).parents('form').find('.price')
+														.html(utils.formatPrice(price) +
+														      ' ₽<sup><b>*</b></sup>');
+												},
 												save(ev) {
 													if ($($(ev.node).parents('form')).length) {
 														let form = $(ev.node).parents('.admin-editor');
@@ -821,6 +853,8 @@
 															 'quote') + 's';
 														var new_data        = $($(ev.node).parents('form'))
 															.serializeJSON();
+
+														new_data.price      = parseInt(new_data.price);
 														new_data.status     = post_statuses.status;
 														new_data.pay_status = post_statuses.pay_status;
 														new_data.group      = post_statuses.group;
@@ -838,7 +872,7 @@
 																.focus();
 															return false;
 														}
-														if (new_data.group === 'events' && !new_data.services) {
+														if (new_data.group === 'events' && !new_data.price) {
 															toast_error('Необходимо выбрать услугу');
 															$($(ev.node).parents('form'))
 																.find('.popup-services-list')
@@ -847,7 +881,6 @@
 														}
 
 														new_data.event_date = utils.dateForce(new_data.event_date);
-														new_data.price      = parseInt(new_data.price);
 														new_data.services   = utils.arr.unique(new_data.services);
 
 														changeLogSave(new_data, _record);

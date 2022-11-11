@@ -502,10 +502,11 @@ $(function () {
 		updateProfile(profile_id, profile_data, callback) {
 			let data   = profile_data;
 			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-			names            = data.fullname.split(' ');
+			data.fullname = data.fullname.replaceAll('  ', ' ')
+			var names            = data.fullname.split(' ');
 			data.first_name  = names[0];
-			data.middle_name = names[2] || '';
-			data.last_name   = names[1] || '';
+			data.middle_name = names[1] || '';
+			data.last_name   = names[2] || '';
 
 			utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
 				if (!!callback) {
@@ -838,14 +839,14 @@ $(function () {
 						).append(TAGS).append(suggestion.value)
 					).append(
 						$('<div></div>').addClass('search__drop-right')
-							.append($('<div></div>').addClass('search__drop-summ').text(PRICE + ' ₽'))
+							.append($('<div></div>').addClass('search__drop-summ').html(PRICE + ' ₽<sup><b>*</b></sup>'))
 					)
 				);
 				_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 					sum += parseInt($(this).data('price'));
 				});
 				console.log(_parent_form, sum);
-				_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
+				_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
@@ -857,7 +858,7 @@ $(function () {
 			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
-			_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
+			_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
@@ -1011,13 +1012,25 @@ $(function () {
 					var ght = 0;
 					var lv  = 0;
 					console.log(ev);
-					if ($(ev.node).is(':checked')) {
-						ght = catalog.spec_service.consultation.price;
+					if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
+						ght = parseInt(catalog.spec_service.consultation.price);
 					} else {
 						ght = 0;
 					}
-					$(ev.node).parents('form').find('[name="price"]').val(ght);
-					$(ev.node).parents('form').find('.price').text(utils.formatPrice(ght) + ' ₽');
+					var price = parseInt($(ev.node).parents('form').find('[name="price"]').val());
+					if (ght === 0){
+						if ($(ev.node).parents('form').find('[name="price"]').hasClass('consultation')){
+							price -= catalog.spec_service.consultation.price;
+						}
+						$(ev.node).parents('form').find('[name="price"]').removeClass('consultation');
+					} else {
+						price += ght;
+						$(ev.node).parents('form').find('[name="price"]').addClass('consultation');
+					}
+
+					$(ev.node).parents('form').find('[name="price"]').val(price);
+					$(ev.node).parents('form').find('.price').html(utils.formatPrice(price) +
+					                                               ' ₽<sup><b>*</b></sup>');
 				}
 			}
 		});

@@ -35,7 +35,7 @@
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
 						<input class="checkbox-visible-next-form" type="checkbox"
-							name="for_consultation" value="1" on-click="checkConsultation">
+							name="for_consultation" value="1">
 						<span></span>
 						<div class="checbox__name">Консультация врача</div>
 					</label>
@@ -43,11 +43,11 @@
 						<div class="text-bold mb-20">Тип события</div>
 						<div class="popups__text-chexboxs">
 							<label class="text-radio">
-								<input type="radio" name="type" value="clinic" checked>
+								<input type="radio" name="type" value="clinic" checked on-click="checkConsultation">
 								<span>В клинике</span>
 							</label>
 							<label class="text-radio switch-blocks">
-								<input type="radio" name="type" value="online">
+								<input type="radio" name="type" value="online" on-click="checkConsultation">
 								<span>Онлайн</span>
 							</label>
 						</div>
@@ -82,10 +82,13 @@
 					<div class="admin-editor__patient" data-hide="service-search">
 						<div class="text-bold mb-10">Выбраны услуги</div>
 					</div>
-					<div class="admin-editor__summ" data-hide="service-search">
+					<div class="admin-editor__summ mb-3" data-hide="service-search">
 						<p>Всего</p>
 						<input type="hidden" name="price" value="0">
-						<p class="price">0 ₽</p>
+						<p class="price">0 ₽<sup><b>*</b></sup></p>
+					</div>
+					<div class="mb-4 text-right" data-hide="service-search">
+						<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 					</div>
 					<button class="btn btn--black form__submit" type="submit"> Записаться </button>
 				</form>
@@ -265,9 +268,10 @@
 										{{#each @global.catalog.quoteType as qt}}
 										<label class="text-radio">
 											{{#if qt.id === record.type }}
-											<input type="radio" name="type" value="{{ qt.id }}" checked>
+											<input type="radio" name="type" value="{{ qt.id }}" checked
+												on-click="checkConsultation">
 											{{else}}
-											<input type="radio" name="type" value="{{ qt.id }}">
+											<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
 											{{/if}}
 											<span>{{qt.name}}</span>
 										</label>
@@ -434,9 +438,10 @@
 							if ($form.verify()) {
 								let new_data   = $form.serializeJSON();
 								new_data.group = 'events';
+								new_data.price = parseInt(new_data.price);
 								if (!edit_mode) {
 									new_data.status     = 'upcoming';
-									new_data.pay_status = 'unpay';
+									new_data.pay_status = new_data.price ? 'unpay' : 'free';
 
 									new_data.priority = 0;
 									new_data.marked   = false;
@@ -457,7 +462,7 @@
 										.focus();
 									return false;
 								}
-								if (new_data.group === 'events' && !new_data.services) {
+								if (new_data.group === 'events' && !new_data.price) {
 									toast_error('Необходимо выбрать услугу');
 									$($(ev.node).parents('form'))
 										.find('.popup-services-list')

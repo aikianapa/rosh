@@ -673,6 +673,12 @@
 					this.set('catalog', catalog);
 					setTimeout(function (){
 						$(this.el).find("img[data-src]:not([src])").lazyload();
+						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id+'?active=on').then(function (data) {
+							data.fullname = data.fullname.replaceAll('  ', ' ')
+
+							page.set('user', data);
+							console.log(data);
+						});
 					});
 				},
 				runOnlineChat(ev) {
@@ -720,9 +726,6 @@
 			}
 		});
 
-		utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
-			page.set('user', data);
-		});
 		window.load = function () {
 			utils.api.get('/api/v2/list/records?status=[upcoming,new,past]&group=[events,quotes]&client=' +
 			              wbapp._session.user.id)
