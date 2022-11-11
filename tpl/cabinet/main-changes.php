@@ -115,7 +115,7 @@
 									<hr>
 									{{#each this.changes}}
 
-									<div class="row">
+									<div class="row mb-2">
 										<div class="col-lg-4">
 											<p class="text-primary">{{this.label}}</p>
 										</div>
