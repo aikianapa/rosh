@@ -394,16 +394,16 @@
 					{{else}}
 					{{#each record.service_prices: idx, key}}
 					<div class="search__drop-item" data-index="{{idx}}"
-						data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+						data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 						<input type="hidden" name="services[]"
 							value="{{service_id}}">
-						<input type="hidden" name="service_prices[{{key}}][service_id]"
+						<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]"
 							value="{{service_id}}">
-						<input type="hidden" name="service_prices[{{key}}][price_id]"
+						<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]"
 							value="{{price_id}}">
-						<input type="hidden" name="service_prices[{{key}}][name]"
+						<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]"
 							value="{{name}}">
-						<input type="hidden" name="service_prices[{{key}}][price]"
+						<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]"
 							value="{{price}}">
 						<div class="search__drop-name">
 							<div class="search__drop-delete">
@@ -412,7 +412,7 @@
 								</svg>
 							</div>
 							<div class="search__drop-tags">
-								{{#each catalog.servicePrices[key].tags}}
+								{{#each catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
 								<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
 								{{/each}}
 							</div>

@@ -310,6 +310,9 @@ autocomplete-suggestions .autocomplete-suggestion:hover {
 .loader-dots:after {
 	left : 2em;
 }
+small {
+	font-size: smaller!important;
+}
 @-webkit-keyframes three-dots {
 	0%,
 	80%,
