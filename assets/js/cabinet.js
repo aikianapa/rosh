@@ -9,10 +9,10 @@ Date.prototype.isValid = function () {
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
-	var isObj      = function (a) {
+	var isObj  = function (a) {
 		return (!!a) && (a.constructor === Object);
 	};
-	var _st        = function (z, g) {
+	var _st    = function (z, g) {
 		return "" + (g != "" ? "[" : "") + z + (g != "" ? "]" : "");
 	};
 	var months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
@@ -144,8 +144,8 @@ $(function () {
 		},
 		monthYearDate(date) {
 			var datetime = this.getDate(date);
-			var year = datetime.getFullYear();
-			var month = datetime.getMonth();
+			var year     = datetime.getFullYear();
+			var month    = datetime.getMonth();
 			return months[month] + ', ' + year;
 		},
 		formatDate(date) {
@@ -162,13 +162,13 @@ $(function () {
 			}
 			return date;
 		},
-		getISODate(date){
+		getISODate(date) {
 
 		},
 		dateForce(date) {
-			if (!!date && !!date.length){
+			if (!!date && !!date.length) {
 				var parts = date.match(/(\d+)\.(\d+)\.(\d+)/);
-				if (parts){
+				if (parts) {
 					return parts[3] + '-' + parts[2] + '-' + parts[1] + ' 00:00:00';
 				}
 			}
@@ -202,7 +202,7 @@ $(function () {
 			return phone;
 		},
 		formatPrice(val, sufix) {
-			if (!val){
+			if (!val) {
 				return 0;
 			}
 
@@ -240,8 +240,8 @@ $(function () {
 				header: 'Общая консультация специалиста',
 				price: 4000
 			},
-			consultation:{
-				header: 'Консультация врача',
+			consultation: {
+				header: 'Консультация врача'
 
 			},
 			analyses_interpretation: {
@@ -257,10 +257,10 @@ $(function () {
 		services: {},
 		servicePrices: {},
 		servicesList: [], /* for autocomplete */
-		roles:{
-			"main":"Aдминистратор",
-			"expert":"Специалист",
-			"client":"Пациент",
+		roles: {
+			"main": "Aдминистратор",
+			"expert": "Специалист",
+			"client": "Пациент"
 		},
 		serviceTags: {
 			"face": {
@@ -465,7 +465,7 @@ $(function () {
 			utils.api.get('/api/v2/read/price/id63619e811c69')
 				.then(function (data) {
 					_self.spec_service.consultation = data;
-				})
+				});
 			return Promise.allSettled(getters).then(() => {
 				$(document).trigger('cabinet-db-ready');
 			});
@@ -473,7 +473,7 @@ $(function () {
 	};
 	window.Cabinet = {
 		isCurrentEvent(event) {
-			var event_date = utils.getDate(event.event_date);
+			var event_date     = utils.getDate(event.event_date);
 			let curr_timestamp = parseInt(getdate()[0]);
 			var iso_date       = new Date(event_date).toISOString().split('T')[0];
 			if (utils.formatDate(event_date) !== (new Date()).toLocaleDateString()) {
@@ -502,6 +502,10 @@ $(function () {
 		updateProfile(profile_id, profile_data, callback) {
 			let data   = profile_data;
 			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+			names            = data.fullname.split(' ');
+			data.first_name  = names[0];
+			data.middle_name = names[2] || '';
+			data.last_name   = names[1] || '';
 
 			utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
 				if (!!callback) {
@@ -555,7 +559,7 @@ $(function () {
 			data.longterm_date_end = '';
 			data.longterm_title    = '';
 
-			data.photos   = {before: [], after: []};
+			data.photos = {before: [], after: []};
 
 			data.comment        = '';
 			data.recommendation = '';
@@ -729,7 +733,7 @@ $(function () {
 
 	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
 
-	window.initServicesSearch         = function ($selector, service_list) {
+	window.initServicesSearch = function ($selector, service_list) {
 		console.log($selector, service_list);
 
 		var _parent_form = $selector.closest('form');
@@ -857,7 +861,7 @@ $(function () {
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
-	window.initLongtermSearch         = function ($form, for_client) {
+	window.initLongtermSearch = function ($form, for_client) {
 		var form       = $form || $('.popup .popup__form');
 		let client_qry = '';
 		if (!!for_client) {
@@ -890,7 +894,7 @@ $(function () {
 			}
 		});
 	};
-	window.initEventSearch            = function ($form, for_client) {
+	window.initEventSearch    = function ($form, for_client) {
 		var form       = $form || $('.popup .popup__form');
 		let client_qry = '';
 		if (!!for_client) {
@@ -929,7 +933,7 @@ $(function () {
 			}
 		});
 	};
-	window.initClientSearch           = function ($form) {
+	window.initClientSearch   = function ($form) {
 		var form = $form || $('.popup .popup__form');
 		form.find('input.client-search').autocomplete({
 			noCache: true,
@@ -983,9 +987,9 @@ $(function () {
 						data.group      = 'quotes';
 						data.status     = 'new';
 						data.pay_status = 'unpay';
-						data.client   = uid;
-						data.priority = 0;
-						data.marked   = false;
+						data.client     = uid;
+						data.priority   = 0;
+						data.marked     = false;
 
 						data.comment        = '';
 						data.recommendation = '';
@@ -995,7 +999,7 @@ $(function () {
 						Cabinet.createQuote(data, function (res) {
 							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 							$('.popup.--record .popup__panel.--succed').addClass('d-block');
-							if (typeof window.load == 'function'){
+							if (typeof window.load == 'function') {
 								window.load();
 							}
 						});
@@ -1003,11 +1007,11 @@ $(function () {
 
 					return false;
 				},
-				checkConsultation(ev){
+				checkConsultation(ev) {
 					var ght = 0;
-					var lv = 0;
+					var lv  = 0;
 					console.log(ev);
-					if ($(ev.node).is(':checked')){
+					if ($(ev.node).is(':checked')) {
 						ght = catalog.spec_service.consultation.price;
 					} else {
 						ght = 0;
@@ -1083,7 +1087,7 @@ $(function () {
 		});
 	};
 
-	window.popupsConfirmSmsCode       = function () {
+	window.popupsConfirmSmsCode = function () {
 		return new Ractive({
 			el: '.popup.--confirm-sms-code',
 			template: wbapp.tpl('#popupConfirmSmsCode').html,
@@ -1138,7 +1142,7 @@ $(function () {
 			}
 		});
 	};
-	window.popupMessage               = function (title, subtitle, caption, html, onShow) {
+	window.popupMessage         = function (title, subtitle, caption, html, onShow) {
 		return new Ractive({
 			el: '.popup.--message',
 			template: wbapp.tpl('#popupMessage').html,
@@ -1163,7 +1167,7 @@ $(function () {
 		});
 
 	};
-	window.popupPhoto2                 = function (params) {
+	window.popupPhoto2          = function (params) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 0,
@@ -1208,7 +1212,7 @@ $(function () {
 		});
 
 	};
-	window.popupLongterm2          = function (params, onSaved, onCancel) {
+	window.popupLongterm2       = function (params, onSaved, onCancel) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 1,
@@ -1265,7 +1269,7 @@ $(function () {
 
 	};
 
-	window.uploadFile = function (file_input, path, filename, callback) {
+	window.uploadFile    = function (file_input, path, filename, callback) {
 		var formData  = new FormData();
 		var _fileext  = file_input.files[0].name.split('.').pop();
 		var _filename = filename ? filename + '.' + _fileext : file_input.files[0].name;
@@ -1292,7 +1296,7 @@ $(function () {
 			}
 		});
 	};
-	window.uploader   = function (file_input, upload_url, callback) {
+	window.uploader      = function (file_input, upload_url, callback) {
 		var formData = new FormData();
 
 		formData.append("__token", wbapp._session.token);
@@ -1366,9 +1370,9 @@ $(function () {
 	};
 	$(document)
 		.on('change blur', '.event-time-start', function (e) {
-			var end_time = $(this).parents('.row.event-time').find('.event-time-end');
+			var end_time       = $(this).parents('.row.event-time').find('.event-time-end');
 			var start_time_val = $(this).val();
-			var end_time_val = end_time.val();
+			var end_time_val   = end_time.val();
 			console.log(end_time_val, start_time_val);
 			end_time.attr('data-min-time', start_time_val);
 			if (!end_time_val) {

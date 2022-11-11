@@ -365,7 +365,7 @@
 						init() {
 
 						},
-						complete(){
+						complete() {
 							this.set('catalog', catalog);
 						},
 						saveRecommendation(ev) {
@@ -433,7 +433,7 @@
 							}
 						});
 					});
-					/*!!! check & sync updates by interval (1-3min) !!!*/
+				/*!!! check & sync updates by interval (1-3min) !!!*/
 
 			});
 		});

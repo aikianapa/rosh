@@ -123,13 +123,13 @@
 											<p class="">
 												{{#if this.field == 'experts'}}
 												{{#each this.prev_val.split(',')}}
-													{{this}}
+												{{this}}
 												{{/each}}
 												{{elseif this.field == 'services'}}
 												{{elseif this.field == 'status'}}
 												{{catalog.quoteStatus[this.prev_val].name}}
 												{{else}}
-													{{this.prev_val}}
+												{{this.prev_val}}
 												{{/if}}
 											</p>
 										</div>
