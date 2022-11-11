@@ -55,7 +55,7 @@
 							<div class="changes-item">Запись</div>
 							<div class="changes-item">Пациент</div>
 							<div class="changes-item">Изменены поля</div>
-							<div class="changes-item">К-ство изменений</div>
+							<div class="changes-item">К-ство измененых полей</div>
 						</div>
 						<div class="account__table-body">
 							{{#each changes}}
@@ -95,7 +95,7 @@
 										</span>
 									</div>
 									<div class="changes-item">
-										<p>К-ство изменений</p>
+										<p>К-ство измененых полей</p>
 										<span>{{this.changes.length}}</span>
 									</div>
 								</div>
@@ -122,12 +122,17 @@
 										<div class="col-lg-4">
 											<p class="">
 												{{#if this.field == 'experts'}}
-												{{#each this.prev_val.split(',')}}
-												{{this}}
+												{{#each this.prev_val}}
+												{{catalog.experts[this].name}}<br>
 												{{/each}}
 												{{elseif this.field == 'services'}}
+												{{#each this.prev_val}}
+												{{catalog.services[this].header}}<br>
+												{{/each}}
 												{{elseif this.field == 'status'}}
 												{{catalog.quoteStatus[this.prev_val].name}}
+												{{elseif this.field == 'event_date'}}
+												{{@global.utils.formatDate(this.prev_val)}}
 												{{else}}
 												{{this.prev_val}}
 												{{/if}}
@@ -136,9 +141,17 @@
 										<div class="col-lg-4">
 											<p class="">
 												{{#if this.field == 'experts'}}
+												{{#each this.new_val}}
+												{{catalog.experts[this].name}}
+												{{/each}}
 												{{elseif this.field == 'services'}}
+												{{#each this.new_val}}
+												{{catalog.services[this].header}}<br>
+												{{/each}}
 												{{elseif this.field == 'status'}}
 												{{catalog.quoteStatus[this.new_val].name}}
+												{{elseif this.field == 'event_date'}}
+												{{@global.utils.formatDate(this.new_val)}}
 												{{else}}
 												{{this.new_val}}
 												{{/if}}
