@@ -149,8 +149,10 @@
 		});
 		var search = function() {
 			var loaded = 0;
+			var phone_query = str_replace([' ', '+', '-', '(', ')'], '', q);
 			page.set('ready', false);
-			utils.api.get('/api/v2/list/users?active=on&role=client&phone~=' + q).then(function (data) {
+			
+			utils.api.get('/api/v2/list/users?active=on&role=client&phone~=' + phone_query).then(function (data) {
 				if (!!data) {
 					data.forEach(function (user, i) {
 						page.set('results.' + user.id, user);
@@ -189,6 +191,14 @@
 		};
 
 		setTimeout(function () {
+			search();
+		});
+		
+		$('form.search').on('submit', function(e){
+			$(e).preventDefault();
+			window.q = $(this).find('[name="q"]').val();
+			page.set('results', {});
+			$('.search-result .container').html('<div class="loading-overlay"><div class="loader"></div></div>');
 			search();
 		});
 	});
