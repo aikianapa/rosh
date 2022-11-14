@@ -147,6 +147,12 @@
 				}
 			}
 		});
+		var result_ready = function(resolved_count){
+			if (resolved_count > 2) {
+				page.set('ready', true);
+				$('.loading-overlay').length && $('.loading-overlay').remove()
+			}
+		};
 		var search = function() {
 			var loaded = 0;
 			var phone_query = str_replace([' ', '+', '-', '(', ')'], '', q);
@@ -160,9 +166,7 @@
 				}
 
 				loaded++;
-				if (loaded > 2) {
-					page.set('ready', true);
-				}
+				result_ready(loaded);
 			});
 			utils.api.get('/api/v2/list/users?active=on&role=client&email~=' + q).then(function (data) {
 				if (!!data) {
@@ -172,9 +176,7 @@
 				}
 
 				loaded++;
-				if (loaded > 2) {
-					page.set('ready', true);
-				}
+				result_ready(loaded);
 			});
 			utils.api.get('/api/v2/list/users?active=on&role=client&fullname~=' + q).then(function (data) {
 				if (!!data) {
@@ -184,10 +186,7 @@
 				}
 
 				loaded++;
-				if (loaded > 2) {
-					page.set('ready', true);
-					$('.loading-overlay').length && $('.loading-overlay').remove()
-				}
+				result_ready(loaded);
 			});
 		};
 
