@@ -186,6 +186,7 @@
 				loaded++;
 				if (loaded > 2) {
 					page.set('ready', true);
+					$('.loading-overlay').length && $('.loading-overlay').remove()
 				}
 			});
 		};
@@ -194,12 +195,15 @@
 			search();
 		});
 		
-		$('form.search').on('submit', function(e){
-			$(e).preventDefault();
+		$('form.search').on('submit', function(e) {
+			console.log(e);
+			
 			window.q = $(this).find('[name="q"]').val();
 			page.set('results', {});
-			$('.search-result .container').html('<div class="loading-overlay"><div class="loader"></div></div>');
+			
+			$('<div class="loading-overlay"><div class="loader"></div></div>').appendTo($('.search-result .container'));
 			search();
+			return false;
 		});
 	});
 </script>
