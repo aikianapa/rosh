@@ -504,15 +504,17 @@ $(function () {
 			var event_date     = utils.getDate(event.event_date);
 			let curr_timestamp = parseInt(getdate()[0]);
 			var iso_date       = new Date(event_date).toISOString().split('T')[0];
+
 			if (utils.formatDate(event_date) !== (new Date()).toLocaleDateString()) {
 				return false;
 			}
+			console.log(utils.formatDate(event_date), (new Date()).toLocaleDateString());
 
 			let event_from_timestamp = utils.timestamp(
 				iso_date + 'T' + event.event_time_start);
 			let event_to_timestamp   = utils.timestamp(
 				iso_date + 'T' + event.event_time_end);
-			console.log(event_from_timestamp, event_to_timestamp);
+			console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
 
 			return (event_from_timestamp < curr_timestamp && event_to_timestamp >= curr_timestamp);
 		},
