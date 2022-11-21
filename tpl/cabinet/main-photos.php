@@ -82,8 +82,7 @@
 			data-filter-date="{{this.date}}"
 			data-fancybox="gallery"
 			data-caption="{{ @global.catalog.clients[this.client].fullname }}<br>{{ this.date }}, {{ this.title }} {{ this.type_text }}"
-			href="{{ this.image }}"
-			style="background-image: url('{{this.image}}')">
+			href="{{.image}}" style="background-image: url('{{.image}}')">
 			<div class="admin-photo__date">{{ this.date }}</div>
 			<div class="admin-photo__info">
 				<p class="text-bold mb-10 admin-photo__name">{{ @global.catalog.clients[this.client].fullname }}</p>
