@@ -632,6 +632,15 @@
 		{{#user}}
 		<p class="text-bold mb-30">Редактировать профиль</p>
 		<div class="row profile-edit__wrap">
+			<div class="col-md-9">
+				<div class="input input--grey">
+					<input class="input__control datebirthdaypickr" name="fullname" required
+						value="{{ .fullname }}" type="text" placeholder="ФИО">
+					<div class="input__placeholder input__placeholder--dark">ФИО</div>
+				</div>
+			</div>
+		</div>
+		<div class="row profile-edit__wrap">
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control datebirthdaypickr"
