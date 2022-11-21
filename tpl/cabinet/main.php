@@ -285,9 +285,9 @@
 						{{#each catalog.quoteType as qt}}
 						<label class="text-radio">
 							{{#if qt.id === record.type }}
-							<input type="radio" name="type" value="{{ qt.id }}" checked>
+							<input type="radio" name="type" value="{{ qt.id }}" checked on-click="checkConsultation">
 							{{else}}
-							<input type="radio" name="type" value="{{ qt.id }}">
+							<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
 							{{/if}}
 							<span>{{qt.name}}</span>
 						</label>
@@ -830,7 +830,7 @@
 												checkConsultation(ev) {
 													var ght = 0;
 													var lv  = 0;
-													console.log(ev);
+													console.log(ev, $(ev.node).parents('form'));
 													if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
 														ght = parseInt(catalog.spec_service.consultation.price);
 													} else {
