@@ -276,9 +276,9 @@
 										</div>
 										<div class="col-md-6">
 											<p class="mb-10">Тип события</p>
-											<div class="popups__text-chexboxs text-radios">
+											<div class="popups__text-chexboxs">
 												{{#each @global.catalog.quoteType as qt}}
-												<label class="text-radio">
+												<label class="text-radio" name="type" value="{{ qt.id }}">
 													{{#if qt.id === record.type }}
 													<input type="radio" name="type" value="{{ qt.id }}" checked
 														on-click="checkConsultation">
@@ -578,12 +578,12 @@
 							<div class="input__placeholder">Выбрать дату посещения</div>
 						</div>
 						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
-							<label class="text-radio">
-								<input type="radio" name="photo_target" value="before">
+							<label class="text-radio" name="target" value="before">
+								<input type="radio" name="target" value="before">
 								<span>До начала лечения</span>
 							</label>
-							<label class="text-radio">
-								<input type="radio" name="photo_target" value="after">
+							<label class="text-radio switch-blocks" name="target" value="after">
+								<input type="radio" name="target" value="after">
 								<span>В процессе лечения</span>
 							</label>
 						</div>
@@ -647,9 +647,8 @@
 								}
 								console.log('form data', form_data);
 								utils.api.get('/api/v2/read/records/' + form_data.id).then(function (record) {
-
 									var _photo_group = form_data.target || 'before';
-									delete form_data.photo_group;
+									delete form_data.target;
 
 									uploadFile(
 										_form.find('input[name="file"]')[0],
@@ -750,11 +749,11 @@
 
 						<div class="radios --flex">
 							<label class="text-radio">
-								<input type="radio" name="photo_group" value="before" checked="checked">
+								<input type="radio" name="target" value="before" checked="checked">
 								<span>До начала лечения</span>
 							</label>
 							<label class="text-radio">
-								<input type="radio" name="photo_group" value="after">
+								<input type="radio" name="target" value="after">
 								<span>В процессе лечения</span>
 							</label>
 						</div>
@@ -822,7 +821,7 @@
 								form_data.recommendation = '';
 								form_data.description    = '';
 								form_data.price  = 0;
-								var _photo_group = form_data.photo_group || 'before';
+								var _photo_group = form_data.target || 'before';
 								delete form_data.photo_group;
 
 								uploadFile(
@@ -906,11 +905,11 @@
 						</div>
 						<div class="radios --flex">
 							<label class="text-radio">
-								<input type="radio" name="photo_group" value="before" checked="checked">
+								<input type="radio" name="target" value="before" checked="checked">
 								<span>До начала лечения</span>
 							</label>
 							<label class="text-radio disabled">
-								<input type="radio" name="photo_group" value="after">
+								<input type="radio" name="target" value="after">
 								<span>В процессе лечения</span>
 							</label>
 						</div>
