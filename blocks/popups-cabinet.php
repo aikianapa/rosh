@@ -1036,6 +1036,90 @@
 			};
 		</script>
 
+		<div class="popup --edit-profile">
+			<template id="popupEditProfile">
+				<div class="popup__overlay"></div>
+				<div class="popup__panel">
+					<button class="popup__close" on-click="close">
+						<svg class="svgsprite _close">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+						</svg>
+					</button>
+					<div class="popup__name text-bold">Редактировать профиль</div>
+					<form class="popup__form" on-submit="submit">
+						{{#user}}
+						<input type="hidden" name="id" value="{{user.id}}">
+						<div class="input">
+							<input class="input__control" type="text" required value="{{.fullname}}"
+								placeholder="ФИО" name="fullname" minlength="5">
+							<div class="input__placeholder">ФИО</div>
+						</div>
+						<div class="input">
+							<input class="input__control datebirthdaypickr" required value="{{.birthdate}}"
+								type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
+							<div class="input__placeholder">Дата рождения</div>
+						</div>
+						<div class="input mb-30">
+							<input class="input__control" type="tel" required
+								placeholder="Номер телефона"
+								minlength="7" value="{{.phone}}"
+								data-inputmask="'mask': '+7 (999) 999-99-99'"
+								name="phone">
+							<div class="input__placeholder">Номер телефона</div>
+						</div>
+						<div class="input input--grey">
+							<input class="input__control" type="email" name="email" value="{{.email}}"
+								required placeholder="E-mail">
+							<div class="input__placeholder input__placeholder--dark">E-mail</div>
+						</div>
+
+						<button class="btn btn--black form__submit" type="submit">Сохранить</button>
+						{{/user}}
+					</form>
+				</div>
+			</template>
+		</div>
+		<script wbapp>
+			window.popupEditProfile = function () {
+				return new Ractive({
+					el: '.popup.--edit-profile',
+					template: wbapp.tpl('#popupEditProfile').html,
+					data: {
+						user: wbapp._session.user
+					},
+					on: {
+						complete() {
+							var self = this;
+							utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
+								.then(function (data) {
+									data.fullname = data.fullname.replaceAll('  ', ' ')
+									self.set('user', data);
+									console.log(data);
+
+									$(this.el).show();
+								});
+							initPlugins();
+							$(this.el).show();
+						},
+						submit(ev) {
+							var self = this;
+							var $form = $(ev.node);
+							if ($form.verify()) {
+								var data   = $form.serializeJSON();
+								data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+								Cabinet.updateProfile(wbapp._session.user.id, data, function (data) {
+									data.birthdate_fmt = utils.formatDate(data.birthdate);
+									self.set('user', data); /* get actually user data */
+									toast_success('Профиль обновлён!');
+									$(self.el).hide();
+								});
+							}
+							return false;
+						}
+					}
+				});
+			};
+		</script>
 
 		<div class="popup --confirm-sms-code">
 			<template id="popupConfirmSmsCode">
