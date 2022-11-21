@@ -209,7 +209,7 @@ $(function () {
 			return phone;
 		},
 		formatPrice(val, sufix) {
-			if (!val) {
+			if (!val || isNaN(val)) {
 				return 0;
 			}
 
