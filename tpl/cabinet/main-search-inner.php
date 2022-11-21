@@ -634,7 +634,7 @@
 		<div class="row profile-edit__wrap">
 			<div class="col-md-9">
 				<div class="input input--grey">
-					<input class="input__control datebirthdaypickr" name="fullname" required
+					<input class="input__control" name="fullname" required
 						value="{{ .fullname }}" type="text" placeholder="ФИО">
 					<div class="input__placeholder input__placeholder--dark">ФИО</div>
 				</div>
