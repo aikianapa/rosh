@@ -453,8 +453,11 @@
 							} else {
 								ght = 0;
 							}
-							var price = parseInt(
-								$(ev.node).parents('form').find('[name="price"]').val());
+							var price = 0;
+							var prev_price = $(ev.node).parents('form').find('[name="price"]').val();
+							if (!!prev_price){
+								price = parseInt(prev_price);
+							}
 							if (ght === 0) {
 								if ($(ev.node).parents('form').find('[name="price"]')
 									.hasClass('consultation')) {
@@ -467,7 +470,7 @@
 								$(ev.node).parents('form').find('[name="price"]')
 									.addClass('consultation');
 							}
-
+							console.log(ght, price);
 							$(ev.node).parents('form').find('[name="price"]').val(price);
 							$(ev.node).parents('form').find('.price')
 								.html(utils.formatPrice(price) +
