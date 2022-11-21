@@ -324,6 +324,13 @@ small {
 	height : auto!important;
 	min-height : 60px;
 }
+.user__edit.all{
+	white-space    : nowrap;
+	letter-spacing : 0;
+}
+.user__panel--border {
+	padding-left: 28px;
+}
 @-webkit-keyframes three-dots {
 	0%,
 	80%,

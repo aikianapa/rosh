@@ -108,7 +108,7 @@
 					<div class="account-events__btns">
 						<div class="account-event-wrap --aicn">
 							<div class="account-events__btn">
-								<a class="btn btn--black" on-click="runOnlineChat">
+								<a class="btn btn--black" data-id="{{this.id}}" on-click="runOnlineChat">
 									Начать консультацию
 								</a>
 							</div>
@@ -368,6 +368,10 @@
 						},
 						complete() {
 							this.set('catalog', catalog);
+						},
+						runOnlineChat(ev) {
+							const _rec_id = $(ev.node).data('id');
+							Cabinet.runOnlineChat(_rec_id);
 						},
 						saveRecommendation(ev) {
 							const _id             = $(ev.node).data('id');
