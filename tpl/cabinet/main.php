@@ -341,7 +341,7 @@
 									<div class="input input-lk-calendar input--grey">
 										<input class="input__control datepickr empty-date"
 											name="event_date"
-											value="{{record.event_date}}"
+											value="{{ @global.utils.getDate(record.event_date) }}"
 											autocomplete="off"
 											type="text" placeholder="Выбрать дату и время">
 										<div class="input__placeholder">Выбрать дату</div>
@@ -738,6 +738,7 @@
 																data.phone         = utils.formatPhone(data.phone);
 																_tab.set('catalog.clients.'+ profile_id, data);
 																catalog.clients[profile_id] = data;
+
 																$(form).html('');
 																toast('Профиль успешно обновлён');
 															});
@@ -819,9 +820,9 @@
 												addPhoto(ev, record) {
 													popupPhoto(catalog.clients[record.client], record,
 														function (rec) {
-															target_tab.set('records.' + _row_idx, rec);
-
-
+															_tab.set('records.' + _row_idx, rec);
+															toast('Фото добавлено!');
+															//window.load();
 														});
 												},
 												checkConsultation(ev) {

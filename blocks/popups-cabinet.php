@@ -276,7 +276,7 @@
 										</div>
 										<div class="col-md-6">
 											<p class="mb-10">Тип события</p>
-											<div class="text-radios">
+											<div class="popups__text-chexboxs text-radios">
 												{{#each @global.catalog.quoteType as qt}}
 												<label class="text-radio">
 													{{#if qt.id === record.type }}
@@ -577,7 +577,7 @@
 								placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Выбрать дату посещения</div>
 						</div>
-						<div class="radios --flex" data-show="longterm">
+						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
 							<label class="text-radio">
 								<input type="radio" name="photo_target" value="before">
 								<span>До начала лечения</span>
