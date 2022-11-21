@@ -279,7 +279,7 @@
 												<div class="checbox__name">Консультация врача</div>
 											</label>
 										</div>
-										<div class="col-md-6" style="display:none" data-show="service">
+										<div class="col-md-6" data-show="service">
 											<p class="mb-10">Тип события</p>
 											<div class="popups__text-chexboxs">
 												{{#each @global.catalog.quoteType as qt}}
