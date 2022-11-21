@@ -475,7 +475,7 @@
 						},
 						submit(ev) {
 							console.log('saving...', ev);
-							var edit_mode = (!!_record.id);
+							var edit_mode = (!!_record && !!_record.id);
 							let $form     = $(ev.node);
 							let uid       = this.get('client.id');
 							if ($form.verify()) {
