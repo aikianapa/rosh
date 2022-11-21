@@ -396,11 +396,11 @@
 										<div class="search__drop-name">
 											<div class="search__drop-delete">
 												<svg class="svgsprite _delete">
-													<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+													<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 												</svg>
 											</div>
 											<div class="search__drop-tags">
-												{{#each catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+												{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
 												<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
 												{{/each}}
 											</div>

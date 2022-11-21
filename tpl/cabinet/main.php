@@ -434,8 +434,9 @@
 				<div class="mb-4 text-right" data-hide="service-search">
 					<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
+
 				{{#if record.group == 'events'}}
-				<div class="admin-editor__patient mb-40">
+				<div class="admin-editor__images mb-40">
 					{{#if record.hasPhoto}}
 					<div class="row acount__photos-wrap mb-20">
 						<div class="col-md-6">

@@ -319,7 +319,7 @@
 														href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">Фото до начала лечения:
+														<div class="healing__date">
 															{{ @global.utils.formatDate(.date) }}
 														</div>
 														<div class="after-healing__photo"
@@ -345,7 +345,7 @@
 														href="{{.src}}"
 														data-caption="Фото в процессе лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">Фото в процессе лечения:
+														<div class="healing__date">
 															{{ @global.utils.formatDate(.date) }}
 														</div>
 														<div class="after-healing__photo"
@@ -540,39 +540,42 @@
 			{{/each}}
 		</div>
 	</div>
-	{{#if photos}}
+	{{#if .hasPhoto}}
 	<div class="acount__photos">
 		<div class="row acount__photos-wrap">
 			<div class="col-md-6">
 				<div class="acount__photo">
 					<p>Фото до начала лечения</p>
-					{{#each photos.before}}
+					{{#each this.photos.before}}
 					<div class="col-md-6">
 						<a class="after-healing__item"
-							data-fancybox="images"
+							data-fancybox="images-{{this.id}}"
 							href="{{.src}}"
-							data-caption="{{.date}}">
-							<div class="healing__date">{{.date}}</div>
+							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 							<div class="after-healing__photo"
-								style="background-image: url({{.src}})">
+								style="background-image: url({{.src}});">
 							</div>
 						</a>
 					</div>
-					{{else}}
-
 					{{/each}}
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="acount__photo">
 					<p>Фото в процессе лечения</p>
-					{{#each photos.after}}
-					<a class="after-healing__item"
-						data-fancybox="images"
-						href="{{.src}}"
-						data-caption="{{.date}}">
-						<img src="{{.src}}" alt="After visit {{.date}}">
-					</a>
+					{{#each this.photos.after}}
+					<div class="col-md-6">
+						<a class="after-healing__item"
+							data-fancybox="images-{{this.id}}"
+							href="{{.src}}"
+							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+							<div class="after-healing__photo"
+								style="background-image: url({{.src}});">
+							</div>
+						</a>
+					</div>
 					{{/each}}
 				</div>
 			</div>
@@ -611,10 +614,10 @@
 					{{#each this.photos.after}}
 					<div class="col-md-6">
 						<a class="after-healing__item"
-							data-fancybox="images"
+							data-fancybox="images-{{this.id}}"
 							href="{{.src}}"
-							data-caption="{{.date}}">
-							<div class="healing__date">{{.date}}</div>
+							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 							<div class="after-healing__photo"
 								style="background-image: url({{.src}});">
 							</div>
@@ -909,19 +912,26 @@
 			utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
 				function (data) {
 					page.set('events.upcoming', data); /* get actually user next events */
+					$("img[data-src]:not([src])").lazyload();
+
 				});
 
 			utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
 				function (data) {
 					page.set('history.events', data); /* get actually user next events */
 					page.set('events_ready', true); /* get actually user next events */
+					$("img[data-src]:not([src])").lazyload();
+
 				});
 
 			utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
 				.then(function (data) {
 					page.set('history.longterms', data); /* get actually user next events */
 					page.set('longterms_ready', true); /* get actually user next events */
+					$("img[data-src]:not([src])").lazyload();
+
 				});
+
 		};
 		content_load();
 	});
