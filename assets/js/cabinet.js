@@ -906,7 +906,7 @@ $(function () {
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'title~',
-			serviceUrl: '/api/v2/list/records?group=longterms' + client_qry,
+			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +'&group=longterms' + client_qry,
 			transformResult: function (response) {
 				console.log(response);
 				return {
@@ -939,7 +939,8 @@ $(function () {
 			dataType: 'json',
 			type: 'GET',
 			paramName: '',
-			serviceUrl: '/api/v2/list/records?group=[longterms,events]' + client_qry,
+			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +
+			            '&group=[longterms,events]' + client_qry,
 			noSuggestionNotice: '<p>Не найдено событий..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
