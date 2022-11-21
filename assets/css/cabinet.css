@@ -206,6 +206,9 @@
 	height : auto;
 	min-height : 62px;
 }
+.account-events__block{
+	border-bottom-color: #e2e2e2;
+}
 .account-events__block .account-events__block-wrap {
 	max-width : 1100px;
 	width: 100%;
@@ -227,8 +230,8 @@
 .admin-events-item.col-experts{
 	flex-direction: column;
 }
-.admin-events-item.col-experts div{
-	line-height: 1.1em;
+.admin-events-item > div, .admin-events-item > a{
+	line-height: 1.2em;
 }
 div.accardeon.active > div.accardeon__list {
 	border-top : 1px solid #E0E0EA;

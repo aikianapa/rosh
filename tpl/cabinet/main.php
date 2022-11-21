@@ -587,11 +587,11 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<a href="/search/client/{{.client}}">{{catalog.clients[.client].fullname}}</a>
+							<div><a href="/search/client/{{.client}}">{{catalog.clients[.client].fullname}}</a></div>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
-							{{catalog.clients[client].phone}}
+							<div>{{catalog.clients[client].phone}}</div>
 						</div>
 						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
@@ -606,7 +606,9 @@
 						<div class="admin-events-item">
 							<p>Тип</p>
 							{{#each catalog.quoteType as item}}
-							{{#if item.id == type }}{{item.name}}{{/if}}
+							{{#if item.id == type }}
+							<div>{{item.name}}</div>
+							{{/if}}
 							{{/each}}
 						</div>
 						<div class="admin-events-item col-services flex-column">
@@ -622,15 +624,18 @@
 						<div class="admin-events-item">
 							<p>Оплата</p>
 							{{#each catalog.quotePay as item}}
-							{{#if item.id == pay_status }}{{item.name}}{{/if}}
+							{{#if item.id == pay_status }}
+							<div>{{item.name}}</div>
+							{{/if}}
 							{{/each}}
 						</div>
 						<div class="admin-events-item">
 							<p>Статус</p>
-							{{catalog.quoteStatus[this.status].name}}
+							<div>{{catalog.quoteStatus[this.status].name}}</div>
 						</div>
 						<div class="admin-events-item">
-							<p>Комментарии</p>{{this.comment}}
+							<p>Комментарии</p>
+							<div>{{this.comment}}</div>
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">

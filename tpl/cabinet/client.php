@@ -73,7 +73,7 @@
 				</div>
 			</div>
 		</div>
-		<a href="/signout" class="account__exit">Выйти из аккаунта</a>
+		<a href="/signout" class="account__exit signout">Выйти из аккаунта</a>
 		<input class="admin-edit__upload" type="hidden" id="analyses-file">
 
 		<div class="profile-editor-inline d-none">
@@ -183,7 +183,7 @@
 				{{#if this.status == 'new'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
-						<div class="account-events__name">Заявка на рассмотрении</div>
+						<div class="account-events__name" style="color:#393">Заявка на рассмотрении</div>
 					</div>
 				</div>
 				{{elseif this.pay_status !== 'unpay'}}
@@ -232,7 +232,10 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" href="{{this.analyses}}"
+					download="Анализы ({{@global.utils.formatDate(this.event_date)}}).pdf">
+					Скачать анализы
+				</a>
 			</div>
 			{{/if}}
 		</div>
@@ -303,7 +306,9 @@
 										<div class="analysis__top --aicn --flex mb-20">
 											<div class="analysis__title">Анализы</div>
 											<a class="btn btn--white" href="{{this.analyses}}"
-												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
+												download="Анализы ({{@global.utils.formatDate(this.event_date)}}).pdf">
+												Скачать анализы
+											</a>
 										</div>
 										{{/if}}
 

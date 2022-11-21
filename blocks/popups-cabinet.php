@@ -263,19 +263,33 @@
 								{{/if}}
 
 								<div class="admin-editor__type-event">
-									<p class="mb-10">Тип события</p>
-									<div class="text-radios">
-										{{#each @global.catalog.quoteType as qt}}
-										<label class="text-radio">
-											{{#if qt.id === record.type }}
-											<input type="radio" name="type" value="{{ qt.id }}" checked
-												on-click="checkConsultation">
-											{{else}}
-											<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
-											{{/if}}
-											<span>{{qt.name}}</span>
-										</label>
-										{{/each}}
+
+									<div class="row">
+										<div class="col-md-6">
+
+											<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+												<input class="checkbox-visible-next-form" type="checkbox"
+													name="for_consultation" value="1">
+												<span></span>
+												<div class="checbox__name">Консультация врача</div>
+											</label>
+										</div>
+										<div class="col-md-6">
+											<p class="mb-10">Тип события</p>
+											<div class="text-radios">
+												{{#each @global.catalog.quoteType as qt}}
+												<label class="text-radio">
+													{{#if qt.id === record.type }}
+													<input type="radio" name="type" value="{{ qt.id }}" checked
+														on-click="checkConsultation">
+													{{else}}
+													<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
+													{{/if}}
+													<span>{{qt.name}}</span>
+												</label>
+												{{/each}}
+											</div>
+										</div>
 									</div>
 									<div class="row">
 										{{#if record.spec_service}}
@@ -429,6 +443,35 @@
 							}
 							$(this.el).show();
 							console.log('show');
+						},
+						checkConsultation(ev) {
+							var ght = 0;
+							var lv  = 0;
+							console.log(ev);
+							if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
+								ght = parseInt(catalog.spec_service.consultation.price);
+							} else {
+								ght = 0;
+							}
+							var price = parseInt(
+								$(ev.node).parents('form').find('[name="price"]').val());
+							if (ght === 0) {
+								if ($(ev.node).parents('form').find('[name="price"]')
+									.hasClass('consultation')) {
+									price -= catalog.spec_service.consultation.price;
+								}
+								$(ev.node).parents('form').find('[name="price"]')
+									.removeClass('consultation');
+							} else {
+								price += ght;
+								$(ev.node).parents('form').find('[name="price"]')
+									.addClass('consultation');
+							}
+
+							$(ev.node).parents('form').find('[name="price"]').val(price);
+							$(ev.node).parents('form').find('.price')
+								.html(utils.formatPrice(price) +
+								      ' ₽<sup><b>*</b></sup>');
 						},
 						submit(ev) {
 							console.log('saving...', ev);
@@ -616,7 +659,10 @@
 												toast_error(photo.error);
 												return false;
 											}
-
+											console.log('record: ',record, _photo_group);
+											if (!record.photos){
+												record.photos = {'before':[], 'after':[]};
+											}
 											var _photo_data = {
 												src: photo.uri,
 												filename: photo.filename,
@@ -628,7 +674,7 @@
 												record.photos['before'] = [];
 											}
 											record.hasPhoto = 1;
-											record.photos['before'].push(_photo_data);
+											record.photos[_photo_group].push(_photo_data);
 
 											utils.api.post('/api/v2/update/records/' + record.id, {
 												'photos': record.photos,

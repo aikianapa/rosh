@@ -371,6 +371,18 @@ $(function () {
 
         };
 
+        $(document).on('click', 'a.login, a.signout', function (e) {
+            console.log('Clear cached data...');
+            sessionStorage.removeItem('db.quoteStatus');
+            sessionStorage.removeItem('db.quotePay');
+            sessionStorage.removeItem('db.quoteType');
+            sessionStorage.removeItem('db.categories');
+            sessionStorage.removeItem('db.services');
+            sessionStorage.removeItem('db.servicesList');
+            sessionStorage.removeItem('db.servicePrices');
+            sessionStorage.removeItem('db.experts');
+        });
+
         $(document).on('wb-verify-false', function (e, el, err) {
             if (err !== undefined) {
                 alert(err)

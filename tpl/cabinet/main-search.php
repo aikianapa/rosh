@@ -117,7 +117,7 @@
 <script wbapp>
 	var q = '{{_route.params.q}}';
 	$(document).on('cabinet-db-ready', function () {
-		window.page = new Ractive({
+		window.page      = new Ractive({
 			el: 'main.page .search-result .container',
 			template: wbapp.tpl('#search-result').html,
 			data: {
@@ -147,17 +147,21 @@
 				}
 			}
 		});
-		var result_ready = function(resolved_count){
+		var result_ready = function (resolved_count) {
 			if (resolved_count > 2) {
 				page.set('ready', true);
-				$('.loading-overlay').length && $('.loading-overlay').remove()
+				$('.loading-overlay').length && $('.loading-overlay').remove();
 			}
 		};
-		var search = function() {
-			var loaded = 0;
+		var search       = function () {
+			var loaded      = 0;
 			var phone_query = str_replace([' ', '+', '-', '(', ')'], '', q);
 			page.set('ready', false);
-			
+
+			if (phone_query.length > 1 && phone_query[0] == '8') {
+				phone_query = '7' + phone_query.substring(1);
+			}
+
 			utils.api.get('/api/v2/list/users?active=on&role=client&phone~=' + phone_query).then(function (data) {
 				if (!!data) {
 					data.forEach(function (user, i) {
@@ -193,14 +197,15 @@
 		setTimeout(function () {
 			search();
 		});
-		
-		$('form.search').on('submit', function(e) {
+
+		$('form.search').on('submit', function (e) {
 			console.log(e);
-			
+
 			window.q = $(this).find('[name="q"]').val();
 			page.set('results', {});
-			
+
 			$('<div class="loading-overlay"><div class="loader"></div></div>').appendTo($('.search-result .container'));
+			utils.changeUrl(false, window.location.origin + window.location.pathname + '?q=' + window.q);
 			search();
 			return false;
 		});

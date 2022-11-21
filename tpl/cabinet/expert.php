@@ -81,7 +81,7 @@
 					</div>
 				</div>
 			</div>
-			<a class="account__exit" href="/signout">Выйти из аккаунта</a>
+			<a class="account__exit signout" href="/signout">Выйти из аккаунта</a>
 			<div class="profile-editor-inline profile-edit" data-template="editorProfile"></div>
 		</div>
 
@@ -169,8 +169,9 @@
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
 					<a class="btn btn--white" href="{{this.analyses}}"
-						download="Анализы({{this.clientData.fullname}}, {{this.event_date}}).pdf">
-						Скачать анализы</a>
+						download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+						Скачать анализы
+					</a>
 				</div>
 				{{/if}}
 			</div>
@@ -182,7 +183,7 @@
 		<div class="lk-title">Предстоящие события</div>
 		<div class="account-events">
 			{{#each events.upcoming}}
-			<div class="account-events__block">
+			<div class="account-events__block" >
 				<div class="account-events__block-wrap mb-20">
 					<div class="account-events__item">
 						<div class="account-event-wrap">
@@ -224,10 +225,7 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
-
-
 				{{#if this.type == 'online'}}
 				<div class="account-events__btns">
 					<div class="account-event-wrap --aicn">
@@ -244,7 +242,8 @@
 				{{#if this.analyses}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="[[this.analyses]]" download="Анализы.pdf">
+					<a class="btn btn--white" href="{{this.analyses}}"
+						download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
 						Скачать анализы
 					</a>
 				</div>
@@ -612,12 +611,13 @@
 											'name': data.fullname,
 											'fullname': data.fullname,
 											'header': data.fullname
-										})
-											.then(function (res) {
-												console.log('expert', res);
-												page.set('expert', res);
-												toast('Профиль успешно обновлён');
-											});
+										}).then(function (res) {
+											console.log('expert', res);
+											page.set('expert', res);
+
+											window.catalog.reload('experts');
+											toast('Профиль успешно обновлён');
+										});
 										$('.user__edit.all').trigger('click');
 									}
 									return false;
@@ -632,6 +632,7 @@
 										utils.api.post('/api/v2/update/users/' + uid, data).then(
 											function (res) {
 												page.set('user', res);
+												toast('Профиль успешно обновлён');
 												console.log('saved', res);
 											});
 										$('.user__edit.all').trigger('click');
@@ -654,6 +655,7 @@
 									utils.api.post('/api/v2/create/record-changes/',
 										{
 											record: data.id,
+											record_group: data.group,
 											experts: data.experts,
 											client: data.client,
 											changes: [{
@@ -664,7 +666,7 @@
 											}]
 										});
 								}
-								toast('Успешно сохранено!');
+								toast('Рекомендации сохранены!');
 							});
 						});
 						return false;

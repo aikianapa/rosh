@@ -43,7 +43,14 @@ $(function () {
 			}
 			return result;
 		},
-
+		changeUrl(title, url) {
+			if (typeof (history.pushState) != "undefined") {
+				var obj = {Title: title || document.title, Url: url};
+				history.pushState(obj, obj.Title, obj.Url);
+			} else {
+				alert("Browser does not support HTML5.");
+			}
+		},
 		varType(val) {
 			return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 		},
@@ -289,7 +296,25 @@ $(function () {
 
 		clients: {},
 		admins: {},
-
+		reload(only_key) {
+			var _key = only_key;
+			if (!!_key) {
+				sessionStorage.removeItem('db.' + _key);
+			} else {
+				sessionStorage.removeItem('db.quoteStatus');
+				sessionStorage.removeItem('db.quotePay');
+				sessionStorage.removeItem('db.quoteType');
+				sessionStorage.removeItem('db.categories');
+				sessionStorage.removeItem('db.services');
+				sessionStorage.removeItem('db.servicesList');
+				sessionStorage.removeItem('db.servicePrices');
+				sessionStorage.removeItem('db.experts');
+			}
+			console.log('Clear cached!');
+			if (_key !== false) {
+				this.init();
+			}
+		},
 		init(use_session_cache) {
 			var _self   = this;
 			var getters = [];
@@ -1435,6 +1460,16 @@ $(function () {
 			e.stopPropagation();
 			e.preventDefault();
 			window.location.href = "/cabinet/client/" + $(this).data('client');
+		})
+		.on('click', 'a.signout', function (e) {
+			e.stopPropagation();
+			console.log('Logout clicked..');
+			window.catalog.reload();
+		})
+		.on('click', 'a.btn.btn--black.login', function (e) {
+			e.stopPropagation();
+			console.log('Login clicked..');
+			window.catalog.reload();
 		})
 		.on('wb-ready', function (e) {
 			console.log('Async. JS loaded!');
