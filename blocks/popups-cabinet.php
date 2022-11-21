@@ -332,8 +332,8 @@
 												<div class="col-md-12">
 													<div class="input input-lk-calendar input--grey">
 														<input class="input__control datepickr"
-															name="event_date"
-															value="{{record.event_date}}"
+															name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
+															autocomplete="off"
 															type="text" placeholder="Выбрать дату и время">
 														<div class="input__placeholder">Выбрать дату</div>
 													</div>
@@ -347,7 +347,7 @@
 															name="event_time_start"
 															value="{{record.event_time_start}}"
 															data-min-time="09:00"
-															data-max-time="18:00"
+															data-max-time="18:00" autocomplete="off"
 															pattern="[0-9]{2}:[0-9]{2}" required>
 														<div class="input__placeholder">Время (начало)</div>
 													</div>
@@ -357,7 +357,7 @@
 														<input class="input__control timepickr event-time-end" type="text"
 															name="event_time_end"
 															value="{{record.event_time_end}}"
-															data-min-time="09:00"
+															data-min-time="09:00" autocomplete="off"
 															data-max-time="18:00"
 															pattern="[0-9]{2}:[0-9]{2}" required>
 														<div class="input__placeholder">Время (конец)</div>
@@ -382,33 +382,33 @@
 									{{else}}
 									{{#each record.service_prices: idx, key}}
 									<div class="search__drop-item" data-index="{{idx}}"
-										data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+										data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 										<input type="hidden" name="services[]"
 											value="{{service_id}}">
-										<input type="hidden" name="service_prices[{{key}}][service_id]"
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]"
 											value="{{service_id}}">
-										<input type="hidden" name="service_prices[{{key}}][price_id]"
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]"
 											value="{{price_id}}">
-										<input type="hidden" name="service_prices[{{key}}][name]"
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]"
 											value="{{name}}">
-										<input type="hidden" name="service_prices[{{key}}][price]"
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]"
 											value="{{price}}">
 										<div class="search__drop-name">
 											<div class="search__drop-delete">
 												<svg class="svgsprite _delete">
-													<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+													<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
 												</svg>
 											</div>
 											<div class="search__drop-tags">
-												{{#each @global.catalog.servicePrices[idx].tags}}
+												{{#each catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
 												<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
 												{{/each}}
 											</div>
 											{{name}}
 										</div>
-										<div class="search__drop-right">
+										<label class="search__drop-right">
 											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-										</div>
+										</label>
 									</div>
 									{{/each}}
 									{{/if}}
@@ -567,6 +567,7 @@
 						{{else}}
 						<div class="search-form input">
 							<input class="input__control autocomplete client-search"
+								autocomplete="off"
 								type="text" placeholder="Выбрать пациента" required>
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
@@ -575,15 +576,15 @@
 
 						<div class="search-form event disabled input">
 							<input class="input__control autocomplete event-search record-search"
-								type="text" placeholder="Выбрать пациента" required>
+								type="text" placeholder="Выбрать пациента" required autocomplete="off">
 							<div class="input__placeholder">Выбрать событие/посещение</div>
 						</div>
 						{{/if}}
 
 						<div class="input calendar mb-20">
 							<input class="input__control datepickr" type="text" name="date"
-								placeholder="Выбрать дату посещения">
-							<div class="input__placeholder">Выбрать дату посещения</div>
+								placeholder="Выбрать дату посещения" autocomplete="off">
+							<div class="input__placeholder">Укажите дату фото</div>
 						</div>
 						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
 							<label class="text-radio" name="target" value="before">
@@ -727,7 +728,7 @@
 						</p>
 						{{else}}
 						<div class="search-form input">
-							<input class="input__control autocomplete client-search"
+							<input class="input__control autocomplete client-search" autocomplete="off"
 								type="text" placeholder="Выбрать пациента" required>
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
@@ -736,7 +737,9 @@
 						<div class="input calendar mb-20">
 							<input class="input__control datepickr" type="text"
 								required autocomplete="off"
-								name="event_date" placeholder="Выбрать дату посещения">
+								name="event_date"
+								value="{{ @global.utils.dateForce(record.event_date) }}"
+								placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Дата посещения</div>
 						</div>
 						<div class="popup-title__checkbox disabled">
@@ -749,7 +752,7 @@
 
 						<div class="input calendar mb-20" data-filter="longterms">
 							<input class="input__control event-search longterm-search"
-								type="text" name="longterm_title"
+								type="text" name="longterm_title" autocomplete="off"
 								placeholder="Название продолжительного лечения"
 								required>
 							<div class="input__placeholder">Название продолжительного лечения</div>
@@ -1163,8 +1166,7 @@
 										<div class="col-md-12">
 											<div class="input input-lk-calendar input--grey">
 												<input class="input__control datepickr"
-													name="event_date"
-													value="{{record.event_date}}"
+													name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
 													type="text" placeholder="Выбрать дату и время">
 												<div class="input__placeholder">Выбрать дату</div>
 											</div>

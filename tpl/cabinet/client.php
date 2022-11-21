@@ -338,7 +338,7 @@
 							<div class="experts__worked">
 								<div class="experts__worked-title">С вами работали</div>
 								<div class="row">
-									{{#each .experts: idx}}
+									{{#each .experts}}
 									<div class="col-md-6">
 										<a class="expert__worked"
 											target="_blank"
@@ -376,7 +376,7 @@
 														href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">Фото до начала лечения:
+														<div class="healing__date">
 															{{ @global.utils.formatDate(.date) }}</div>
 														<div class="after-healing__photo"
 															style="background-image: url({{.src}})">
@@ -401,8 +401,7 @@
 														href="{{.src}}"
 														data-caption="Фото в процессе лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">Фото в процессе лечения:
-															{{ @global.utils.formatDate(.date) }}</div>
+														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 														<div class="after-healing__photo"
 															style="background-image: url({{.src}})">
 														</div>
@@ -680,7 +679,6 @@
 						$(this.el).find("img[data-src]:not([src])").lazyload();
 						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id+'?active=on').then(function (data) {
 							data.fullname = data.fullname.replaceAll('  ', ' ')
-
 							page.set('user', data);
 							console.log(data);
 						});
@@ -706,6 +704,7 @@
 							complete() {
 								$('.profile-editor-inline').removeClass('d-none');
 								initPlugins();
+
 							},
 							submit(ev) {
 								let $form = $(ev.node);
@@ -759,6 +758,7 @@
 						});
 					}
 					page.set('events_ready', true);
+					$("img[data-src]:not([src])").lazyload();
 				});
 		};
 		load();

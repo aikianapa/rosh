@@ -213,7 +213,7 @@
 				<div class="select__item select__item--acc-{{color}}"
 					data-id="{{ id }}"
 					data-group="{{ type }}"
-					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));">
+					onclick="$(this).parents('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parents('.select__list').children('input.group').val($(this).attr('data-group'));">
 					{{name}}
 				</div>
 				{{/if}}
@@ -341,7 +341,8 @@
 									<div class="input input-lk-calendar input--grey">
 										<input class="input__control datepickr empty-date"
 											name="event_date"
-											value="{{ @global.utils.getDate(record.event_date) }}"
+											data-date="{{record.event_date}}"
+											value="{{ @global.utils.dateForce(record.event_date) }}"
 											autocomplete="off"
 											type="text" placeholder="Выбрать дату и время">
 										<div class="input__placeholder">Выбрать дату</div>
@@ -786,8 +787,8 @@
 
 													let post = $(copy).serializeJSON();
 
-													post.group = (catalog.quoteStatus[post.status].type || 'quote') +
-													             's';
+													post.group = (catalog.quoteStatus[post.status].type || _record.group.substring(0, _record.group.length - 1)) + 's';
+
 													utils.api.post('/api/v2/update/records/' + _record.id, post)
 														.then(function (res) {
 															_tab.set('records.' + _row_idx, res);
@@ -835,15 +836,15 @@
 														ght = 0;
 													}
 													var price      = 0;
-													var prev_price = $(ev.node).parents('form').find('[name="price"]')
-														.val();
-													if (!!prev_price) {
+													var prev_price = $(ev.node).closest('form')
+														.find('[name="price"]').val();
+													if (!isNaN(prev_price)) {
 														price = parseInt(prev_price);
 													}
 													if (ght === 0) {
 														if ($(ev.node).parents('form').find('[name="price"]')
 															.hasClass('consultation')) {
-															price -= catalog.spec_service.consultation.price;
+															price -= parseInt(catalog.spec_service.consultation.price);
 														}
 														$(ev.node).parents('form').find('[name="price"]')
 															.removeClass('consultation');

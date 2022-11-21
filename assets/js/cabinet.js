@@ -299,12 +299,14 @@ $(function () {
 		reload(only_key) {
 			var _key = only_key;
 			if (!!_key) {
+				localStorage.removeItem('db.' + _key);
 				sessionStorage.removeItem('db.' + _key);
 			} else {
-				sessionStorage.removeItem('db.quoteStatus');
-				sessionStorage.removeItem('db.quotePay');
-				sessionStorage.removeItem('db.quoteType');
-				sessionStorage.removeItem('db.categories');
+				localStorage.removeItem('db.quoteStatus');
+				localStorage.removeItem('db.quotePay');
+				localStorage.removeItem('db.quoteType');
+				localStorage.removeItem('db.categories');
+
 				sessionStorage.removeItem('db.services');
 				sessionStorage.removeItem('db.servicesList');
 				sessionStorage.removeItem('db.servicePrices');
@@ -323,6 +325,7 @@ $(function () {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
 						_self.quoteStatus = utils.arr.indexBy(data);
+						_self.quoteStatus['past']['type'] = 'event';
 						localStorage.setItem('db.quoteStatus', JSON.stringify(_self.quoteStatus));
 					})
 				);
@@ -968,7 +971,7 @@ $(function () {
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'fullname~',
-			serviceUrl: '/api/v2/list/users?role=client&active=on&__token' + wbapp._session.token,
+			serviceUrl: '/api/v2/list/users?role=client&active=on&__token=' + wbapp._session.token,
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
@@ -1376,13 +1379,23 @@ $(function () {
 		}
 		if (new_record_data.event_date != prev_record_data.event_date) {
 			changelog.push({
-				label: 'Дата/время приёма',
+				label: 'Датa приёма',
 				field: 'event_date',
 				prev_val: utils.formatDate(prev_record_data.event_date),
 				new_val: utils.formatDate(new_record_data.event_date)
 			});
 		}
-		if (new_record_data.services.join('') != prev_record_data.services.join('')) {
+		if ((new_record_data.event_time_start != prev_record_data.event_time_start)
+			|| (new_record_data.event_time_end != prev_record_data.event_time_end)) {
+			changelog.push({
+				label: 'Время приёма',
+				field: 'event_time',
+				prev_val: prev_record_data.event_time_start + '-' + prev_record_data.event_time_end,
+				new_val: new_record_data.event_time_start + '-' + new_record_data.event_time_endevent_
+			});
+		}
+
+		if (new_record_data?.services?.join('') != prev_record_data?.services?.join('')) {
 			changelog.push({
 				label: 'Услуга',
 				field: 'services',
@@ -1390,7 +1403,7 @@ $(function () {
 				new_val: new_record_data.services
 			});
 		}
-		if (new_record_data.experts.join('') != prev_record_data.experts.join('')) {
+		if (new_record_data?.experts?.join('') != prev_record_data?.experts?.join('')) {
 			changelog.push({
 				label: 'Специалисты',
 				field: 'experts',
