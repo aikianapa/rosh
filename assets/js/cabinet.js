@@ -1042,7 +1042,11 @@ $(function () {
 					} else {
 						ght = 0;
 					}
-					var price = parseInt($(ev.node).parents('form').find('[name="price"]').val());
+					var price      = 0;
+					var prev_price = $(ev.node).parents('form').find('[name="price"]').val();
+					if (!!prev_price) {
+						price = parseInt(prev_price);
+					}
 					if (ght === 0){
 						if ($(ev.node).parents('form').find('[name="price"]').hasClass('consultation')){
 							price -= catalog.spec_service.consultation.price;

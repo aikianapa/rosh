@@ -237,8 +237,9 @@
 
 											{{#if this.analyses}}
 											<a class="btn btn--white" href="{{this.analyses}}"
-												style="margin-right: 20px;"
-												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
+												download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+												Скачать анализы
+											</a>
 											{{/if}}
 
 											<form class="analyses">
@@ -492,7 +493,7 @@
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
 					<a class="btn btn--white" href="{{.}}"
-						download="Анализы(за {{this.event_date}}).pdf">
+						download="Анализы (за {{@global.utils.formatDate(this.event_date)}}).pdf">
 						Скачать анализы
 					</a>
 				</div>
