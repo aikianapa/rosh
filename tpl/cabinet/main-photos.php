@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet">
+	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
 		<div class="account admin">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -82,7 +82,7 @@
 			data-filter-date="{{this.date}}"
 			data-fancybox="gallery"
 			data-caption="{{@global.catalog.clients[this.client].fullname}}<br>{{ this.date }}, {{ this.title }} {{ this.type_text }}"
-			style="background-image: url('{{.image}}');" href="{{.image}}">
+			style="background-image: url('{{.image}}');" data-href="{{.image}}">
 			<div class="admin-photo__date">{{ this.date }}</div>
 			<div class="admin-photo__info">
 				<p class="text-bold mb-10 admin-photo__name">{{ @global.catalog.clients[this.client].fullname }}</p>
@@ -194,6 +194,12 @@
 				page.set('groups', _images_groups); /* get actually user data */
 				page.set('filters', _filters); /* get actually user data */
 				page.set('content_loaded', true); /* get actually user data */
+
+				setTimeout(function (){
+					$(page.el).find('a[data-href]').each(function (i){
+						$(this).attr('href', $(this).data('href'));
+					})
+				});
 			});
 		};
 		content_load();
