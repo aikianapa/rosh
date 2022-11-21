@@ -266,15 +266,20 @@
 
 									<div class="row">
 										<div class="col-md-6">
-
 											<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+												{{#if record.for_consultation=== '1' }}
+												<input class="checkbox-visible-next-form" type="checkbox"
+													checked
+													name="for_consultation" value="1">
+												{{else}}
 												<input class="checkbox-visible-next-form" type="checkbox"
 													name="for_consultation" value="1">
+												{{/if}}
 												<span></span>
 												<div class="checbox__name">Консультация врача</div>
 											</label>
 										</div>
-										<div class="col-md-6">
+										<div class="col-md-6" style="display:none" data-show="service">
 											<p class="mb-10">Тип события</p>
 											<div class="popups__text-chexboxs">
 												{{#each @global.catalog.quoteType as qt}}
