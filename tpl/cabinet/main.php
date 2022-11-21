@@ -438,6 +438,7 @@
 					{{#if record.hasPhoto}}
 					<div class="row acount__photos-wrap mb-20">
 						<div class="col-md-6">
+							{{#if record.photos.before}}
 							<div class="acount__photo">
 								<p>Фото до начала лечения</p>
 								{{#each record.photos.before}}
@@ -459,8 +460,10 @@
 
 								{{/each}}
 							</div>
+							{{/if}}
 						</div>
 						<div class="col-md-6">
+							{{#if record.photos.before}}
 							<div class="acount__photo">
 								<p>Фото в процессе лечения</p>
 								{{#each record.photos.after}}
@@ -482,6 +485,7 @@
 
 								{{/each}}
 							</div>
+							{{/if}}
 						</div>
 					</div>
 					{{/if}}
@@ -748,6 +752,7 @@
 											});
 									},
 									editRecord(ev) {
+										var target_tab = this;
 										var _row_idx  = $(ev.node).data('idx');
 										const _parent = $(ev.node).closest('.accardeon');
 										var _record   = this.get('records.' + _row_idx);
@@ -812,9 +817,12 @@
 													}
 												},
 												addPhoto(ev, record) {
-													popupPhoto(catalog.clients[record.client], record, function (rec) {
+													popupPhoto(catalog.clients[record.client], record,
+														function (rec) {
+															target_tab.set('records.' + _row_idx, rec);
 
-													});
+
+														});
 												},
 												checkConsultation(ev) {
 													var ght = 0;

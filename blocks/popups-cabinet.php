@@ -627,6 +627,7 @@
 						submit(ev) {
 							console.log('Submit form...');
 							var _form = $(ev.node);
+							var self  = this;
 
 							if (_form.verify()) {
 								var form_data = _form.serializeJSON();
@@ -681,6 +682,7 @@
 												'hasPhoto': 1
 											}).then(function (rec) {
 												onSaved(rec);
+												$(self.el).hide();
 											});
 										});
 								});
