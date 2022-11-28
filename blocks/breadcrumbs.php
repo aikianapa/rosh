@@ -7,9 +7,12 @@
                 </svg>
             </a>
             <a class="crumbs__link" href="/">Главная</a>
-            <wb-var midcrumb='{{headerByPath({{_parent.path}})}}' wb-if="'{{_parent.path}}'>'/'" else='' />
-
-            <a class="crumbs__link" href="{{_parent.path}}" wb-if="'{{_var.midcrumb}}'>''">
+            <wb-var formpath="/{{_route.form}}" wb-if="'{{_route.form}}'!=='pages'" else='' />
+            <wb-var midcrumb='{{headerByPath({{_parent.path}})}}' wb-if="'{{_parent.path}}'>'/'" else='{{headerByPath({{_var.formpath}})}}' />
+            <a class="crumbs__link" href="{{_parent.path}}" wb-if="'{{_var.midcrumb}}'>'' && '{{_var.formpath}}'==''">
+                {{_var.midcrumb}}
+            </a>
+            <a class="crumbs__link" href="/{{_route.form}}" wb-if="'{{_var.midcrumb}}'>'' && '{{_var.formpath}}'>''">
                 {{_var.midcrumb}}
             </a>
             <span class="crumbs__link">{{_parent.header}}</span>
