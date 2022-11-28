@@ -4,7 +4,7 @@
 
         <header class="header header--transparent header--fixed --unfilter">
             <!---div class="container --flex --jcsb --aicn"  wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='admin' OR '{{_sess.user.role}}'=='client'"-->
-            <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','client','expert'])">
+            <div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','client','expert','admin'])">
 
                 <wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
 
@@ -21,7 +21,7 @@
                 </a>
 
 
-                <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['','client'])">
+                <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['','client','admin'])">
                     <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
                     <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
                     <div class="header__contacts"> <a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
@@ -41,7 +41,7 @@
                     <button class="burger"></button>
                 </div>
                 
-                <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
+                <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main','admin'])">
                     <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
                     <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
                     <div class="header__contacts"> <a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
@@ -52,7 +52,7 @@
                         </wb-data>
                     </div>
                 </div>
-                <div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','client'])">
+                <div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','client','admin'])">
                     <button class="btn btn-link profile-menu">
                         Профиль
                         <svg class="svgsprite _drop">
