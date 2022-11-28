@@ -1,7 +1,7 @@
 <view>
     <div class="container">
         <div class="contacts">
-            <h1 class="h1">{{_parent.header}}</h1>
+            <h1 class="h1" wb-if="'{{_parent.header}}'>''">{{_parent.header}}</h1>
             <div class="row">
                 <div class="col-lg-4 contacts__left">
                     <div class="contacts__socials">
@@ -28,27 +28,27 @@
                 <div class="col-lg-8">
                     <div class="contacts__info">
                         <div class="contacts__address">
-                            <p class="text-small text-grey">{{city}}</p>
-                            <p class="text-bold">{{address}}
+                            <p class="text-small text-grey" wb-if="'{{city}}'>''">{{city}}</p>
+                            <p class="text-bold" wb-if="'{{address}}'>''">{{address}}
                             </p>
-                            <p class="text-grey">{{addressComment}}</p>
+                            <p class="text-grey" wb-if="'{{addressComment}}'>''">{{addressComment}}</p>
                         </div>
                         <div class="contacts__phones">
-                            <div class="contacts__time text-grey">{{worktime}}</div>
-                            <a class="contacts__phone" href="tel:+{{text2tel({{_var.tel}})}}">{{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
+                            <div class="contacts__time text-grey" wb-if="'{{worktime}}'>''">{{worktime}}</div>
+                            <a class="contacts__phone" wb-if="'{{_var.cityPhone}}'>''" href="tel:+{{text2tel({{_var.tel}})}}">{{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
                             <div class="contacts__small-phones --flex --jcsb">
                                 <wb-var phlen="{{count(phone)}}" />
                                 <wb-foreach wb="from=phone&tpl=false">
                                     <wb-var phone="{{_val}}" />
                                     <wb-var phone="{{_var.phone}}," wb-if="'{{_ndx}}'<'{{_var.phlen}}'" />
-                                    <a class="text-grey" href="tel:+79154563407">
+                                    <a class="text-grey" href="tel:+{{text2tel({{_var.phone}})}}">
                                         {{_var.phone}}
                                     </a>
                                 </wb-foreach>
                             </div>
                         </div>
                         <div class="contacts__emails">
-                            <p class="text-grey">Email:</p><a class="contacts__email text-bold text-big" href="mailto:{{_var.contactEmail}}">{{_var.contactEmail}} </a>
+                            <p class="text-grey" wb-if="'{{_var.contactEmail}}'>''">Email:</p><a class="contacts__email text-bold text-big" href="mailto:{{_var.contactEmail}}">{{_var.contactEmail}} </a>
                         </div>
                     </div>
                 </div>

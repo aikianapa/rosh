@@ -1,6 +1,6 @@
 <view>
     <wb-var sliderid="sl{{wbNewId}}" />
-    <div class="gallery">
+    <div class="gallery" wb-if="'{{count({{images}})}}'>'0'">
         <div class="gallery__slider" id="{{_var.sliderid}}">
             <div class="swiper-wrapper">
                 <wb-foreach wb="from=images&tpl=false">

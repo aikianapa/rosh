@@ -54,7 +54,7 @@
 <view>
     <div class="landing">
         <div class="container">
-            <div class="row">
+            <div class="row" wb-if="'{{title}}'>''">
                 <div class="col-md-4"></div>
                 <div class="col-md-8">
                     <div class="content-wrap">
@@ -64,10 +64,10 @@
             </div>
             <div class="ingredients">
                 <wb-foreach wb="from=list&tpl=false">
-                    <div class="ingredients__item">{{_val}}</div>
+                    <div class="ingredients__item" wb-if="'{{_val}}'>''">{{_val}}</div>
                 </wb-foreach>
             </div>
-            <div class="row mb-40">
+            <div class="row mb-40" wb-if="'{{}}'>'text'">
                 <div class="col-md-4"> </div>
                 <div class="col-md-8">
                     <div class="content-wrap">
@@ -77,17 +77,17 @@
                     </div>
                 </div>
             </div>
-            <h3 class="h3 mb-40">{{subtitle}}</h3>
+            <h3 class="h3 mb-40" wb-if="'{{subtitle}}'>''">{{subtitle}}</h3>
             <div class="row mb-40">
                 <div class="col-md-3">
-                    <div class="text-bold text-break mt-10">{{right}}</div>
+                    <div class="text-bold text-break mt-10" wb-if="'{{right}}'>''">{{right}}</div>
                 </div>
                 <div class="col-md-9">
                     <div class="chat">
                         <wb-foreach wb="from=left&tpl=false">
                             <div class="row">
                                 <div class="offset-md-{{offset}} col-auto">
-                                    <div class="chat__item"> <span>{{name}}</span></div>
+                                    <div class="chat__item" wb-if="'{{name}}'>''"> <span>{{name}}</span></div>
                                 </div>
                             </div>
                         </wb-foreach>

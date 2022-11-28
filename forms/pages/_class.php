@@ -7,18 +7,29 @@ class pagesClass extends cmsFormsClass
 
     function beforeItemShow(&$item)
     {
-        isset($item['lang']) ? $lang = $item['lang'][$this->app->vars('_sess.lang')] : $lang = [];
-        $item = (array)$lang + (array)$item;
-        isset($item['header']) ? null : $item['header'] = '';
-        isset($item['header']) and isset($item['header'][$_SESSION['lang']]) ? $item['header'] = $item['header'][$_SESSION['lang']] : null;
-        $item['menu_title'] = isset($item['menu_title']) && isset($item['menu_title'][$_SESSION['lang']]) ? $item['menu_title'][$_SESSION['lang']] : $item['header'];
-        $item['menu_title'] == '' ? $item['menu_title'] = $item['header'] : null;
+        $item = (array)$item;
         $data = $this->app->dot($item);
-        if ($data->get('blocks.seo.active') == 'on') {
-            $item['seo'] = 'on';
-            $item['meta_title'] = $data->get("blocks.seo.lang.{$_SESSION['lang']}.title");
-            $item['meta_keywords'] = $data->get("blocks.seo.lang.{$_SESSION['lang']}.keywords");
-            $item['meta_description'] = $data->get("blocks.seo.lang.{$_SESSION['lang']}.descr");
+        @$header = $item['header'];
+        if ($this->app->vars('_route.mode')=='show') {
+            isset($item['lang']) ? $lang = $item['lang'][$this->app->vars('_sess.lang')] : $lang = [];
+            $item = (array)$lang + $item;
+            $item['header'] == '' ? $item['header'] = $header : null;
+        }
+        if ((array)$item['header'] === $item['header']) {
+            @$item['header'] = isset($item['header'][$_SESSION['lang']]) ? $item['header'][$_SESSION['lang']] : $item['header']['ru'];
+        }
+        @$item['menu_title'] = isset($item['menu_title']) && isset($item['menu_title'][$_SESSION['lang']]) ? $item['menu_title'][$_SESSION['lang']] :  $item['menu_title']['ru'];
+        $item['menu_title'] == '' ? $item['menu_title'] = $item['header'] : null;
+        $blocks = (array)$data->get('blocks');
+        $tmp = array_column($blocks, "name");
+        if (in_array("seo", $tmp)) {
+            $seo = $this->app->dot($blocks[array_search("seo", $tmp)]);
+            if ($seo->get('active') == 'on') {
+                $item['seo'] = 'on';
+                $item['meta_title'] = $seo->get("lang.{$_SESSION['lang']}.title");
+                $item['meta_keywords'] = $seo->get("lang.{$_SESSION['lang']}.keywords");
+                $item['meta_description'] = $seo->get("lang.{$_SESSION['lang']}.descr");
+            }
         }
     }
 
@@ -46,6 +57,9 @@ class pagesClass extends cmsFormsClass
         if (isset($item['blocks'])) $item['template'] = '';
         $item['url'] == '/home' ? $item['url'] = '/' : null;
         $item['url'] = $item['path'] . '/' . $item['name'];
+        
+        $this->app->vars('_route.action') == 'list' ? $this->beforeItemShow($item) : null;
+
     }
 
     function beforeItemSave(&$item)
@@ -57,10 +71,10 @@ class pagesClass extends cmsFormsClass
     function afterItemSave(&$item)
     {
         $this->beforeItemShow($item);
-        $this->app->shadow($this->app->houte->host.'/module/yonger/yonmap');
+        $this->app->vars('_route.mode') == 'save' ? $this->app->shadow('/module/yonger/yonmap') : null;
     }
 
-    function list()
+    function list1()
     {
         $app = &$this->app;
         $this->tables = $app->tableList();
@@ -70,11 +84,7 @@ class pagesClass extends cmsFormsClass
         $this->tpl = $out->find('#pagesList');
         $this->list = $this->app->itemList('pages', ['return' => 'id,name,_form,header,active,attach,attach_filter,url,path,_sort']);
         $this->list = $this->list['list'];
-        foreach ($this->list as &$item) {
-            isset($item['header']) and isset($item['header'][$_SESSION['lang']]) ? $item['header'] = $item['header'][$_SESSION['lang']] : null;
-        }
         $res = $this->listNested();
-        $this->app->shadow($this->app->houte->host.'/module/yonger/yonmap');
         $out->find('#pagesList')->replaceWith($res);
         echo $out;
     }
@@ -166,11 +176,12 @@ class pagesClass extends cmsFormsClass
         foreach ($list['list'] as $item) {
             $id = $item['id'];
             $vals = &$items[$id];
-            $item['_sort'] = $vals['i'];
+            $item['_sort'] = wbSortIndex($vals['i']);
             $form == 'pages' ? $item['path'] = $vals['p'] : null;
             $app->itemSave($form, $item, false);
         }
         $app->tableFlush($form);
         echo json_encode('true');
+        exit;
     }
 }

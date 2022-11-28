@@ -79,7 +79,7 @@
                         <wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
                         <a class="all-services__item" href="/services/{{wbFurlGenerate({{header}})}}" data-category="{{category}}">
                             <div class="all-services__pic" style="background-image: url(/thumbc/255x157/src{{_var.image}})"></div>
-                            <div class="all-services__name">{{header}}</div>
+                            <div class="all-services__name" wb-if="'{{header}}'>''">{{header}}</div>
                         </a>
                     </wb-foreach>
                 </div>
@@ -89,16 +89,16 @@
                         <div class="col-lg-8">
                             <div class="service" wb-tree="dict=shop_category&branch=lab&parent=false">
                                 <div class="service__accardeon accardeon">
-                                    <div class="accardeon__main service__main accardeon__click">{{name}}</div>
+                                    <div class="accardeon__main service__main accardeon__click" wb-if="'{{name}}'>''">{{name}}</div>
                                     <div class="accardeon__list service__drop">
                                         <wb-foreach wb="table=price&tpl=false" wb-filter="active=on&category={{id}}">
                                         <div class="service__item">
-                                            <div class="service__name">{{header}}</div>
+                                            <div class="service__name" wb-if="'{{header}}'>''">{{header}}</div>
                                             <label class="service__right">
-                                                <div class="service__price">{{price}} ₽</div>
+                                                <div class="service__price" wb-if="'{{price}}'>''">{{price}} ₽</div>
                                                 <div class="service__checkbox">
                                                     <div class="checkbox">
-                                                        <input type="checkbox" data-id="{{id}}" data-price="{{price}}" data-name="{{header}}" on-click="cartAdd">
+                                                        <input type="checkbox" data-id="{{id}}"  wb-if="'{{price}}'>''" data-price="{{price}}" data-name="{{header}}" on-click="cartAdd">
                                                         <span> </span>
                                                     </div>
                                                 </div>

@@ -35,7 +35,7 @@
                         </div>
                         <div class="content-price__body">
                             <wb-foreach wb="from=price&tpl=false">
-                            <div class="content-price__item">
+                            <div class="content-price__item" wb-if="'{{header}}'>''">
                                 <div class="content-price__name">{{header}}</div>
                                 <div class="content-price__summ">{{fmtPrice(price)}}₽</div>
                             </div>

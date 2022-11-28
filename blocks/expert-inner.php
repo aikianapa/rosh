@@ -54,14 +54,14 @@
                 <div class="col-md-8">
                     <h2 class="h2 expert__name">{{_parent.name}}</h2>
                     <div class="expert__work">
-                        <p>{{_parent.spec}}</p>
-                        <p>Образование: {{education}}</p>
-                        <p>Сертификат: {{certificate}}</p>
+                        <p wb-if="'{{_parent.spec}}'>''">{{_parent.spec}}</p>
+                        <p wb-if="'{{education}}'>''">Образование: {{education}}</p>
+                        <p wb-if="'{{certificate}}'>''">Сертификат: {{certificate}}</p>
                     </div>
                     <button class="btn btn--black --openpopup" data-popup="--fast" href="#">Записаться на прием</button>
                 </div>
             </div>
-            <div class="expert__information">
+            <div class="expert__information" wb-if="'{{text}}'>''">
                 <div class="row">
                     <div class="col-lg-4">
                         <h5 class="h5">Общая информация</h5>
@@ -75,7 +75,7 @@
             </div>
             <div class="education">
                 <wb-foreach wb="from=stages&tpl=false">
-                <div class="education__item row">
+                <div class="education__item row" wb-if="'{{stage}}'>'' OR '{{year}}'>''">
                     <div class="col-lg-2">
                         <h5 class="h5" wb-if="_idx == '0'">Образование</h5>
                     </div>

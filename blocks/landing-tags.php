@@ -23,10 +23,10 @@
             <div class="row">
                 <div class="offset-md-4 col-md-8">
                     <div class="symptoms">
-                        <h3 class="h3 mb-40">{{title}}</h3>
+                        <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
                         <div class="tags">
                         <wb-foreach wb='json={{explode(",",{{tags}})}}&tpl=false'>
-                            <div class="tag">{{_val}}</div>
+                            <div class="tag" wb-if="'{{_val}}'>''">{{_val}}</div>
                         </wb-foreach>
                         </div>
                     </div>

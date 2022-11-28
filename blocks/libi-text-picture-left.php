@@ -2,10 +2,10 @@
     <div class="container post_block">
         <div class="post__block left">
             <div class="post__block-info post">
-                <span class="post__block-title">{{title}}</span>
+                <span class="post__block-title" wb-if="'{{title}}'>''">{{title}}</span>
                 <p wb-if="'{{text}}'>''">{{text}}</p>
             </div>
-            <div class="post__block-img"><img src="{{image.0.img}}" alt=""></div>
+            <div class="post__block-img" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt=""></div>
         </div>
     </div>
 </view>

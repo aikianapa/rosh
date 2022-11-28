@@ -1,5 +1,5 @@
 <view>
-    <div class="row container">
+    <div class="row container" wb-if="'{{image.0.img}}'>''">
         <div class="col-md-4"></div>
         <div class="col-md-8">
             <div class="blog-inner__text">

@@ -15,7 +15,8 @@
                     <div class="reports-slider">
                         <wb-var fbc="0" />
                         <div class="swiper-wrapper" wb-tree="item=feedback">
-                            <div class="swiper-slide">
+                            <div class="swiper-slide" wb-if="'{{name}}'>'' OR '{{data.text}}'>''">
+                                <wb-var fbc="{{_var.fbc + 1}}"/>
                                 <div class="report">
                                     <div class="report__text">«{{data.text}}»</div>
                                     <div class="report__info">
@@ -25,7 +26,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="report__navigation">
+                        <div class="report__navigation" wb-if="'{{_var.fbc}}'>'0'">
                             <div class="report__prev">
                                 <svg class="svgsprite _prev">
                                     <use xlink:href="/assets/img/sprites/svgsprites.svg#prev"></use>

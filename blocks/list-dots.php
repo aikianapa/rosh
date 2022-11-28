@@ -16,7 +16,7 @@
     <div class="info container">
     <ul>
         <wb-foreach wb="from=list&tpl=false">
-        <li>{{_val}}</li>
+        <li wb-if="'{{_val}}'>''">{{_val}}</li>
         </wb-foreach>
     </ul>
     </div>

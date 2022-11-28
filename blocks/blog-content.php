@@ -7,7 +7,7 @@
             <div class="content-wrap">
                 <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
                 <div class="blog-inner__text">
-                    <div class="text">
+                    <div class="text" wb-if="'{{text}}'>''">
                         {{text}}
                     </div>
                     <wb-jq wb="$dom->find('p')->addClass('mb-10');
@@ -50,11 +50,11 @@
                         </div>
                         <div class="blog-panel__info">
                             <div class="blog-panel__top">
-                                <div class="blog-panel__date">{{dateform({{date}})}}</div>
-                                <div class="blog-panel__title">{{header}}</div>
+                                <div class="blog-panel__date" wb-if="'{{date}}'>''">{{dateform({{date}})}}</div>
+                                <div class="blog-panel__title" wb-if="'{{header}}'>''">{{header}}</div>
                             </div>
                             <div class="blog-panel__bottom">
-                                <div class="blog-panel__text">
+                                <div class="blog-panel__text" wb-if="'{{}}'>''">
                                     {{wbGetWords({{blocks.blog_content.text}},15)}}
                                 </div>
                                 <div class="blog-panel__link">Читать далее</div>

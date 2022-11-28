@@ -15,20 +15,20 @@
             <div class="container-fluid">
                 <div class="expert row" wb-tree="item=divisions&children=false&active=on">
                     <div class="col-lg-3">
-                        <h5 class="h5 expert__category">{{name}}</h5>
+                        <h5 class="h5 expert__category" wb-if="'{{name}}'>''">{{name}}</h5>
                     </div>
                     <div class="col-lg-9">
                         <wb-foreach wb="table=experts&tpl=false" wb-filter="division={{id}}&active=on">
                         <a class="expert__info" href="/about/experts/{{wbFurlGenerate({{name}})}}">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <div class="expert__img">
+                                    <div class="expert__img" wb-if="'{{image.0.img}}'>''">
                                         <img src="/thumbc/315x175/src{{image.0.img}}" alt="{{fullname}} - {{spec}}">
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    <p class="expert__name">{{name}}</p>
-                                    <div class="expert__description">
+                                    <p class="expert__name" wb-if="'{{name}}'>''">{{name}}</p>
+                                    <div class="expert__description" wb-if="'{{spec}}'>''">
                                         <p>{{spec}}</p>
                                     </div>
                                 </div>

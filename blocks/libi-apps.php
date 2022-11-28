@@ -4,17 +4,17 @@
         <div class="post__wrap">
             <div class="post__wrap-block"></div>
             <div class="post__wrap-info">
-                <span class="post-title">{{title_up}}</span>
+                <span class="post-title" wb-if="'{{title_up}}'>''">{{title_up}}</span>
                 <ul class="post-links">
-                    <li><a href="{{appstore_link}}">AppStore</a></li>
-                    <li><a href="{{goole_play_link}}">Google Play</a></li>
+                    <li wb-if="'{{appstore_link}}'>''"><a href="{{appstore_link}}">AppStore</a></li>
+                    <li wb-if="'{{google_play_link}}'>''"><a href="{{goole_play_link}}">Google Play</a></li>
                 </ul>
-                <div class="post-bl">
+                <div class="post-bl" wb-if="'{{mark}}'>''">
                     <b>Марка</b>
                     <div class="post-sb">{{mark}}</div>
                 </div>
-                <span class="post-title">{{title_bottom}}</span>
-                <p>{{text}}</p>
+                <span class="post-title" wb-if="'{{title_bottom}}'>''">{{title_bottom}}</span>
+                <p wb-if="'{{text}}'>''">{{text}}</p>
             </div>
         </div>
     </div>

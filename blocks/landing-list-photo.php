@@ -4,18 +4,18 @@
             <div class="row --aicn mb-80">
                 <div class="col-md-4">
                     <div class="aside">
-                        <h2 class="h2">{{subheader}}</h2>
+                        <h2 class="h2" wb-if="'{{subheader}}'>''">{{subheader}}</h2>
                         <div class="text">
                             <ul>
                                 <wb-foreach wb="from=list&tpl=false">
-                                <li>{{_val}}</li>
+                                <li wb-if="'{{_val}}'>''">{{_val}}</li>
                                 </wb-foreach>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="content-pic"><img src="/thimbc/807x629/src{{image.0.img}}" alt=""></div>
+                    <div class="content-pic" wb-if="'{{image.0.img}}'>''"><img src="/thimbc/807x629/src{{image.0.img}}" alt=""></div>
                 </div>
             </div>
         </div>

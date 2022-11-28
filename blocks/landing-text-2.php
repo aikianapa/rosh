@@ -8,7 +8,7 @@
                 <div class="col-md-8">
                     <div class="content-wrap">
                         <h3 class="h3 mb-40" wb-if="'{{subtitle}}'>''">{{subtitle}}</h3>
-                        <div class="text mb-80">
+                        <div class="text mb-80" wb-if="'{{text}}'>''">
                             <div class="text">
                                 <p class="text-break">{{text}}</p>
                             </div>

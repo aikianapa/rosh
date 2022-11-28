@@ -1,5 +1,5 @@
 <view>
-    <div class="gallery gallery-blog">
+    <div class="gallery gallery-blog"  wb-if="'count({{image}})'>'0'">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-2"></div>

@@ -22,10 +22,10 @@
         <div class="container">
             <div class="row mb-80">
                 <div class="col-md-6">
-                    <div class="content-pic"><img src="/thumbc/525x409/src{{left.0.img}}" alt=""></div>
+                    <div class="content-pic" wb-if="'{{left.0.img}}'>''"><img src="/thumbc/525x409/src{{left.0.img}}" alt=""></div>
                 </div>
                 <div class="col-md-6">
-                    <div class="content-pic"><img src="/thumbc/525x409/src{{right.0.img}}" alt=""></div>
+                    <div class="content-pic" wb-if="'{{right.0.img}}'>''"><img src="/thumbc/525x409/src{{right.0.img}}" alt=""></div>
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@
             <div class="content-wrap">
                 <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
             </div>
-            <div class="slider-content">
+            <div class="slider-content" wb-if="'count({{images}})'>'0'">
                 <div class="slider-content-overflow">
                     <div class="slider-content__wrap" id="{{_var.sliderid}}">
                         <div class="swiper-wrapper">
@@ -33,8 +33,8 @@
                     </div>
                 </div>
                 <div class="slider-content__info">
-                    <h2 class="h2 slider-content__title">Современная аппаратура</h2>
-                    <p class="slider-content__text text-grey">Медицинский центр Rosh предлагает своим пациентам комфортное безболезненное лечение и обследования на современном сертифицированном оборудовании ведущих американских, немецких,французских,японских производителей.</p>
+                    <h2 class="h2 slider-content__title"  wb-if="'{{subtitle}}'>''">{{subtitle}}</h2>
+                    <p class="slider-content__text text-grey" wb-if="'{{text}}'>''">{{text}}</p>
                 </div>
             </div>
 

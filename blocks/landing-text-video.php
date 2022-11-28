@@ -22,10 +22,10 @@
             <div class="row">
                 <div class="offset-md-4 col-md-8">
                     <div class="content-wrap">
-                        <div class="text">
+                        <div class="text" wb-if="'{{text}}'>''">
                             <p class="text-break">{{text}}</p>
                         </div>
-                        <div class="video mb-80">
+                        <div class="video mb-80" wb-if="'{{video}}'>''">
                             <iframe width="560" height="315" src="{{video}}" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>

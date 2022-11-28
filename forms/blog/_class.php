@@ -31,8 +31,8 @@ class blogClass extends cmsFormsClass {
         $idx[$url] = $item['_id'];
         $index[$item['_table']] = $idx;
         $index = json_encode($index);
-        file_put_contents($app->vars('_env.dba').'/url.idx',$index,  LOCK_EX);
-
+        //file_put_contents($app->vars('_env.dba').'/url.idx',$index,  LOCK_EX);
+        $this->app->vars('_route.mode') == 'save' ? $this->app->shadow('/module/yonger/yonmap') : null;
         regenerate_map();
     }
 

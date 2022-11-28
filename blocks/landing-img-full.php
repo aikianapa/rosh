@@ -10,7 +10,7 @@
 </edit>
 
 <view>
-    <div class="full-pic"><img src="{{image.0.img}}" alt="{{alt}}"></div>
+    <div class="full-pic" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt="{{alt}}"></div>
 </view>
 
 <preview>

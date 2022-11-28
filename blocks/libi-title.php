@@ -1,5 +1,5 @@
 <view>
-    <div class="container">
+    <div class="container" wb-if="'{{title}}'>''">
         <div class="container-wrap">
             <span class="libi-title">{{title}}</span>
         </div>

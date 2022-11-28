@@ -28,7 +28,7 @@
                             {{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
                         <div wb-if="'{{_route.uri}}' !=='/english'" class="header__contact header__contact--small">{{_var.worktime}}</div>
                         <wb-data wb="table=pages&item={{_route.item}}&field=blocks.contacts_english" wb-if="'{{_route.uri}}' =='/english'">
-                            <div class="header__contact header__contact--small">{{worktime}}</div>
+                            <div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>
                         </wb-data>
                     </div>
 	                <a class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
@@ -48,7 +48,7 @@
                             {{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
                         <div wb-if="'{{_route.uri}}' !=='/english'" class="header__contact header__contact--small">{{_var.worktime}}</div>
                         <wb-data wb="table=pages&item={{_route.item}}&field=blocks.contacts_english" wb-if="'{{_route.uri}}' =='/english'">
-                            <div class="header__contact header__contact--small">{{worktime}}</div>
+                            <div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>
                         </wb-data>
                     </div>
                 </div>

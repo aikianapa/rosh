@@ -41,17 +41,23 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="recomendation" wb-if="'{{newslink}}'>''">
+                    <wb-var nid=''/>
+                    <wb-foreach wb="table=_yonmap" wb-filter="f=blog&u={{newslink}}">
+                        <wb-var nid="{{i}}" />
+                    </wb-foreach>
+                    <div class="recomendation" wb-if="'{{newslink}}'>'' AND '{{_var.nid}}'>''">
                         <a class="recomendation" href="{{newslink}}">
+                            <wb-data wb="table=blog&item={{_var.nid}}">
                             <div class="recomendation__title">Рекомендованная новость</div>
-                            <div class="recomendation__pic"> <img src="/assets/img/blogs/2.jpg" alt=""></div>
-                            <h4 class="h4 recomendation__title">Mini FX</h4>
-                            <p class="recomendation__text text-small text-grey">Безоперационное удаление локальных жировых отложений на лице, подбородке, шее, на спине (холка), внутренней поверхности плеча и бёдрах⠀</p>
+                            <div class="recomendation__pic"> <img src="/thumbc/260x140/src{{cover.0.img}}" alt=""></div>
+                            <!--h4 class="h4 recomendation__title">Mini FX</h4-->
+                            <p class="recomendation__text text-small text-grey">{{header}}</p>
+                            </wb-data>
                         </a></div>
                 </div>
                 <div class="col-md-8">
                     <div class="content-wrap">
-                        <div class="text">
+                        <div class="text" wb-if="'{{text}}'>''">
                             {{text}}
                         </div>
                         <wb-jq wb="$dom->find('p')->addClass('mb-10');;$dom->find('p:eq(1)')->addClass('pl-65');"/>

@@ -1,5 +1,5 @@
 <view>
-    <div>
+    <div wb-if="'{{image.0.img}}'>''">
         <div class=" container">
             <img class="mb-40 radius-20 w-100p" src="{{image.0.img}}" alt="">
         </div>
