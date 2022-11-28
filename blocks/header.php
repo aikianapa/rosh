@@ -41,7 +41,7 @@
                     <button class="burger"></button>
                 </div>
                 
-                <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main','admin'])">
+                <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
                     <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
                     <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
                     <div class="header__contacts"> <a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
