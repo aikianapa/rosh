@@ -24,6 +24,7 @@
 </edit>
 
 <view>
+    <wb-var cnt='0' />
     <div class="landing">
         <div class="container">
             <div class="row">
@@ -36,6 +37,7 @@
                         <div class="content-price__body">
                             <wb-foreach wb="from=price&tpl=false">
                             <div class="content-price__item" wb-if="'{{header}}'>''">
+                                <wb-var cnt='{{_var.cnt + 1}}' />
                                 <div class="content-price__name">{{header}}</div>
                                 <div class="content-price__summ">{{fmtPrice(price)}}₽</div>
                             </div>
@@ -47,6 +49,7 @@
             </div>
         </div>
     </div>
+    <wb-jq wb="$dom->find('.landing')->remove()" wb-if="'{{_var.cnt}}'=='0'"/>
 </view>
 
 <preview>
