@@ -1,10 +1,12 @@
 <view>
     <wb-var sliderid="sl{{wbNewId}}" />
-    <div class="gallery" wb-if="'{{count({{images}})}}'>'0'">
+    <wb-var cnt='0' />
+    <div class="gallery">
         <div class="gallery__slider" id="{{_var.sliderid}}">
             <div class="swiper-wrapper">
                 <wb-foreach wb="from=images&tpl=false">
-                    <div class="swiper-slide">
+                    <div class="swiper-slide" wb-if="'{{img}}'>''">
+                        <wb-var cnt='{{_var.cnt + 1}}' />
                         <div class="gallery__pic" style="background-image: url({{img}})" alt="{{alt}}"></div>
                         <div class="gallery__description text-small" wb-if="'{{title}}'>''">{{title}}</div>
                     </div>
@@ -24,6 +26,7 @@
             </div>
         </div>
     </div>
+    <wb-jq wb="$dom->find('.gallery')->remove()" wb-if="'{{_var.cnt}}'=='0'"/>
 </view>
 
 <edit header="Контент слайдер">

@@ -8,12 +8,15 @@
             <div class="content-wrap">
                 <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
             </div>
+            <wb-var cnt='0' />
             <div class="slider-content" wb-if="'count({{images}})'>'0'">
                 <div class="slider-content-overflow">
                     <div class="slider-content__wrap" id="{{_var.sliderid}}">
                         <div class="swiper-wrapper">
                             <wb-foreach wb="from=images&tpl=false">
-                            <div class="swiper-slide slider-content__slide" style="background-image: url({{img}}); background-size: cover;"></div>
+                            <div class="swiper-slide slider-content__slide" style="background-image: url({{img}}); background-size: cover;" wb-if="'{{img}}'>''">
+                                <wb-var cnt='{{_var.cnt + 1}}' />
+                            </div>
                             </wb-foreach>
                         </div>
                     </div>
@@ -37,7 +40,7 @@
                     <p class="slider-content__text text-grey" wb-if="'{{text}}'>''">{{text}}</p>
                 </div>
             </div>
-
+            <wb-jq wb="$dom->find('.slider-content')->remove()" wb-if="'{{_var.cnt}}'=='0'"/>
         </div>
     </div>
     <script type="text/javascript">
