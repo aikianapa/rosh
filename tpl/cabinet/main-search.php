@@ -117,7 +117,7 @@
 <script wbapp>
 	var q = '{{_route.params.q}}';
 	$(document).on('cabinet-db-ready', function () {
-		window.page = new Ractive({
+		window.page      = new Ractive({
 			el: 'main.page .search-result .container',
 			template: wbapp.tpl('#search-result').html,
 			data: {
@@ -147,10 +147,22 @@
 				}
 			}
 		});
-		var search = function() {
-			var loaded = 0;
+		var result_ready = function (resolved_count) {
+			if (resolved_count > 2) {
+				page.set('ready', true);
+				$('.loading-overlay').length && $('.loading-overlay').remove();
+			}
+		};
+		var search       = function () {
+			var loaded      = 0;
+			var phone_query = str_replace([' ', '+', '-', '(', ')'], '', q);
 			page.set('ready', false);
-			utils.api.get('/api/v2/list/users?active=on&role=client&phone~=' + q).then(function (data) {
+
+			if (phone_query.length > 1 && phone_query[0] == '8') {
+				phone_query = '7' + phone_query.substring(1);
+			}
+
+			utils.api.get('/api/v2/list/users?active=on&role=client&phone~=' + phone_query).then(function (data) {
 				if (!!data) {
 					data.forEach(function (user, i) {
 						page.set('results.' + user.id, user);
@@ -158,9 +170,7 @@
 				}
 
 				loaded++;
-				if (loaded > 2) {
-					page.set('ready', true);
-				}
+				result_ready(loaded);
 			});
 			utils.api.get('/api/v2/list/users?active=on&role=client&email~=' + q).then(function (data) {
 				if (!!data) {
@@ -170,9 +180,7 @@
 				}
 
 				loaded++;
-				if (loaded > 2) {
-					page.set('ready', true);
-				}
+				result_ready(loaded);
 			});
 			utils.api.get('/api/v2/list/users?active=on&role=client&fullname~=' + q).then(function (data) {
 				if (!!data) {
@@ -182,14 +190,24 @@
 				}
 
 				loaded++;
-				if (loaded > 2) {
-					page.set('ready', true);
-				}
+				result_ready(loaded);
 			});
 		};
 
 		setTimeout(function () {
 			search();
+		});
+
+		$('form.search').on('submit', function (e) {
+			console.log(e);
+
+			window.q = $(this).find('[name="q"]').val();
+			page.set('results', {});
+
+			$('<div class="loading-overlay"><div class="loader"></div></div>').appendTo($('.search-result .container'));
+			utils.changeUrl(false, window.location.origin + window.location.pathname + '?q=' + window.q);
+			search();
+			return false;
 		});
 	});
 </script>

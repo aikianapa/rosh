@@ -60,7 +60,7 @@
                         </svg>
                         <div class="enter__panel">
                             <a class="enter__btn text-small" href="/cabinet">Мой кабинет</a>
-                            <a class="enter__btn text-small" href="/signout">Выйти</a>
+                            <a class="enter__btn text-small signout" href="/signout">Выйти</a>
                         </div>
                     </button>
                     <button class="burger"></button>
@@ -91,8 +91,8 @@
 					        <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
 				        </svg>
 				        <div class="enter__panel">
-					        <a class="enter__btn text-small" href="/cabinet/profile">Редактировать</a>
-					        <a class="enter__btn text-small" href="/signout">Выйти</a>
+					        <a class="enter__btn text-small" onclick="popupEditProfile();">Редактировать</a>
+					        <a class="enter__btn text-small signout" href="/signout">Выйти</a>
                         </div>
                     </button>
                     <button class="burger"></button>

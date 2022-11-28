@@ -84,6 +84,15 @@
 		<input type="hidden" value="{{ id }}" name="id">
 		<p class="text-bold mb-30">Редактировать профиль</p>
 		<div class="row profile-edit__wrap">
+			<div class="col-md-9">
+				<div class="input input--grey">
+					<input class="input__control" name="fullname" required
+						value="{{ .fullname }}" type="text" placeholder="ФИО">
+					<div class="input__placeholder input__placeholder--dark">ФИО</div>
+				</div>
+			</div>
+		</div>
+		<div class="row profile-edit__wrap">
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control datebirthdaypickr" name="birthdate" required
@@ -169,7 +178,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn--white profile-edit__submit" type="button" >Сохранить</button>
+				<button class="btn btn--white profile-edit__submit" type="button">Сохранить</button>
 			</div>
 		</div>
 	</form>
@@ -204,7 +213,7 @@
 				<div class="select__item select__item--acc-{{color}}"
 					data-id="{{ id }}"
 					data-group="{{ type }}"
-					onclick="$(this).parent('.select__list').children('input.status').val($(this).attr('data-id'));">
+					onclick="$(this).parents('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parents('.select__list').children('input.group').val($(this).attr('data-group'));">
 					{{name}}
 				</div>
 				{{/if}}
@@ -247,19 +256,54 @@
 				{{/if}}
 
 				<div class="admin-editor__type-event">
+					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
+						{{#if record.no_services=== '1' }}
+						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services"
+							checked
+							value="1">
+						{{else}}
+						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services"
+							value="1">
+						{{/if}}
+						<span></span>
+						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
+					</label>
+					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+						{{#if record.for_consultation=== '1' }}
+						<input class="checkbox-visible-next-form" type="checkbox"
+							checked
+							name="for_consultation" value="1">
+						{{else}}
+						<input class="checkbox-visible-next-form" type="checkbox"
+							name="for_consultation" value="1">
+						{{/if}}
+						<span></span>
+						<div class="checbox__name">Консультация врача</div>
+					</label>
 					<p class="mb-10">Тип события</p>
 					<div class="text-radios">
 						{{#each catalog.quoteType as qt}}
 						<label class="text-radio">
 							{{#if qt.id === record.type }}
-							<input type="radio" name="type" value="{{ qt.id }}" checked>
+							<input type="radio" name="type" value="{{ qt.id }}" checked on-click="checkConsultation">
 							{{else}}
-							<input type="radio" name="type" value="{{ qt.id }}">
+							<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
 							{{/if}}
 							<span>{{qt.name}}</span>
 						</label>
 						{{/each}}
 					</div>
+					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
+						{{#if record.no_experts === '1' }}
+						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts"
+							checked
+							value="1">
+						{{else}}
+						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
+						{{/if}}
+						<span></span>
+						<div class="checbox__name">Я не знаю, кого выбрать</div>
+					</label>
 					<div class="row">
 						{{#if record.spec_service}}
 						{{else}}
@@ -297,7 +341,8 @@
 									<div class="input input-lk-calendar input--grey">
 										<input class="input__control datepickr empty-date"
 											name="event_date"
-											value="{{record.event_date}}"
+											data-date="{{record.event_date}}"
+											value="{{ @global.utils.dateForce(record.event_date) }}"
 											autocomplete="off"
 											type="text" placeholder="Выбрать дату и время">
 										<div class="input__placeholder">Выбрать дату</div>
@@ -343,22 +388,23 @@
 						</div>
 						<div class="search__drop-right">
 							<div class="search__drop-summ">
-								{{catalog.spec_service[this.spec_service].price}} ₽</div>
+								{{catalog.spec_service[this.spec_service].price}} ₽
+							</div>
 						</div>
 					</div>
 					{{else}}
 					{{#each record.service_prices: idx, key}}
 					<div class="search__drop-item" data-index="{{idx}}"
-						data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+						data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 						<input type="hidden" name="services[]"
 							value="{{service_id}}">
-						<input type="hidden" name="service_prices[{{key}}][service_id]"
+						<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]"
 							value="{{service_id}}">
-						<input type="hidden" name="service_prices[{{key}}][price_id]"
+						<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]"
 							value="{{price_id}}">
-						<input type="hidden" name="service_prices[{{key}}][name]"
+						<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]"
 							value="{{name}}">
-						<input type="hidden" name="service_prices[{{key}}][price]"
+						<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]"
 							value="{{price}}">
 						<div class="search__drop-name">
 							<div class="search__drop-delete">
@@ -367,7 +413,7 @@
 								</svg>
 							</div>
 							<div class="search__drop-tags">
-								{{#each catalog.servicePrices[idx].tags}}
+								{{#each catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
 								<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
 								{{/each}}
 							</div>
@@ -380,16 +426,21 @@
 					{{/each}}
 					{{/if}}
 				</div>
-				<div class="admin-editor__summ">
+				<div class="admin-editor__summ mb-3">
 					<p>Всего</p>
 					<input type="hidden" name="price" value="{{record.price}}">
-					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
+					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
+				<div class="mb-4 text-right" data-hide="service-search">
+					<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
+				</div>
+
 				{{#if record.group == 'events'}}
-				{{#if record.hasPhoto}}
-				<div class="admin-editor__patient mb-40">
+				<div class="admin-editor__images mb-40">
+					{{#if record.hasPhoto}}
 					<div class="row acount__photos-wrap mb-20">
 						<div class="col-md-6">
+							{{#if record.photos.before}}
 							<div class="acount__photo">
 								<p>Фото до начала лечения</p>
 								{{#each record.photos.before}}
@@ -411,8 +462,10 @@
 
 								{{/each}}
 							</div>
+							{{/if}}
 						</div>
 						<div class="col-md-6">
+							{{#if record.photos.before}}
 							<div class="acount__photo">
 								<p>Фото в процессе лечения</p>
 								{{#each record.photos.after}}
@@ -434,8 +487,11 @@
 
 								{{/each}}
 							</div>
+							{{/if}}
 						</div>
 					</div>
+					{{/if}}
+
 					<div class="row acount__photos-wrap">
 						<div class="col-md-2">
 							<a class="btn btn--white" on-click="['addPhoto',record]">
@@ -444,7 +500,6 @@
 						</div>
 					</div>
 				</div>
-				{{/if}}
 
 				{{/if}}
 				<button class="btn btn--white" on-click="save">Сохранить</button>
@@ -538,11 +593,11 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<a href="/search/client/{{.client}}">{{catalog.clients[.client].fullname}}</a>
+							<div><a href="/search/client/{{.client}}">{{catalog.clients[.client].fullname}}</a></div>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
-							{{catalog.clients[client].phone}}
+							<div>{{catalog.clients[client].phone}}</div>
 						</div>
 						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
@@ -557,7 +612,9 @@
 						<div class="admin-events-item">
 							<p>Тип</p>
 							{{#each catalog.quoteType as item}}
-							{{#if item.id == type }}{{item.name}}{{/if}}
+							{{#if item.id == type }}
+							<div>{{item.name}}</div>
+							{{/if}}
 							{{/each}}
 						</div>
 						<div class="admin-events-item col-services flex-column">
@@ -573,15 +630,18 @@
 						<div class="admin-events-item">
 							<p>Оплата</p>
 							{{#each catalog.quotePay as item}}
-							{{#if item.id == pay_status }}{{item.name}}{{/if}}
+							{{#if item.id == pay_status }}
+							<div>{{item.name}}</div>
+							{{/if}}
 							{{/each}}
 						</div>
 						<div class="admin-events-item">
 							<p>Статус</p>
-							{{catalog.quoteStatus[this.status].name}}
+							<div>{{catalog.quoteStatus[this.status].name}}</div>
 						</div>
 						<div class="admin-events-item">
-							<p>Комментарии</p>{{this.comment}}
+							<p>Комментарии</p>
+							<div>{{this.comment}}</div>
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
@@ -633,7 +693,7 @@
 	$(document).on('cabinet-db-ready', function () {
 		let editProfile = wbapp.tpl('#editProfile').html;
 		let editStatus  = wbapp.tpl('#editStatus').html;
-		window.load= function (){
+		window.load     = function () {
 
 			['quotes', 'events'].forEach(
 				function (target_tab) {
@@ -658,7 +718,7 @@
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
-										let profile_id = $(ev.node).data('id');
+										var profile_id = $(ev.node).data('id');
 										let form       = $(ev.node).parents('.admin-editor')
 											.find('.admin-editor__edit-profile');
 										let editor     = new Ractive({
@@ -671,13 +731,16 @@
 												save(ev) {
 													let $form = $(form);
 													if ($form.verify() && profile_id > '') {
-														let data = $form.serializeJSON();
+														var data = $form.serializeJSON();
 
 														Cabinet.updateProfile(profile_id, data,
 															function (res) {
 																console.log(res);
 																data.birthdate_fmt = utils.formatDate(data.birthdate);
 																data.phone         = utils.formatPhone(data.phone);
+																_tab.set('catalog.clients.'+ profile_id, data);
+																catalog.clients[profile_id] = data;
+
 																$(form).html('');
 																toast('Профиль успешно обновлён');
 															});
@@ -692,6 +755,7 @@
 											});
 									},
 									editRecord(ev) {
+										var target_tab = this;
 										var _row_idx  = $(ev.node).data('idx');
 										const _parent = $(ev.node).closest('.accardeon');
 										var _record   = this.get('records.' + _row_idx);
@@ -724,8 +788,8 @@
 
 													let post = $(copy).serializeJSON();
 
-													post.group = (catalog.quoteStatus[post.status].type || 'quote') +
-													              's';
+													post.group = (catalog.quoteStatus[post.status].type || _record.group.substring(0, _record.group.length - 1)) + 's';
+
 													utils.api.post('/api/v2/update/records/' + _record.id, post)
 														.then(function (res) {
 															_tab.set('records.' + _row_idx, res);
@@ -756,9 +820,45 @@
 													}
 												},
 												addPhoto(ev, record) {
-													popupPhoto(catalog.clients[record.client], record, function (rec) {
+													popupPhoto(catalog.clients[record.client], record,
+														function (rec) {
+															_tab.set('records.' + _row_idx, rec);
+															toast('Фото добавлено!');
+															//window.load();
+														});
+												},
+												checkConsultation(ev) {
+													var ght = 0;
+													var lv  = 0;
+													console.log(ev, $(ev.node).parents('form'));
+													if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
+														ght = parseInt(catalog.spec_service.consultation.price);
+													} else {
+														ght = 0;
+													}
+													var price      = 0;
+													var prev_price = $(ev.node).closest('form')
+														.find('[name="price"]').val();
+													if (!isNaN(prev_price)) {
+														price = parseInt(prev_price);
+													}
+													if (ght === 0) {
+														if ($(ev.node).parents('form').find('[name="price"]')
+															.hasClass('consultation')) {
+															price -= parseInt(catalog.spec_service.consultation.price);
+														}
+														$(ev.node).parents('form').find('[name="price"]')
+															.removeClass('consultation');
+													} else {
+														price += ght;
+														$(ev.node).parents('form').find('[name="price"]')
+															.addClass('consultation');
+													}
 
-													});
+													$(ev.node).parents('form').find('[name="price"]').val(price);
+													$(ev.node).parents('form').find('.price')
+														.html(utils.formatPrice(price) +
+														      ' ₽<sup><b>*</b></sup>');
 												},
 												save(ev) {
 													if ($($(ev.node).parents('form')).length) {
@@ -767,16 +867,19 @@
 														let copy = $('<form></form>');
 														$(copy).html($(form).clone());
 
-														let post_statuses = $(copy).serializeJSON();
+														let post_statuses   = $(copy).serializeJSON();
 														post_statuses.group =
 															(catalog.quoteStatus[post_statuses.status].type ||
-															   'quote') + 's';
-														var new_data = $($(ev.node).parents('form')).serializeJSON();
-														new_data.status = post_statuses.status;
-														new_data.pay_status = post_statuses.pay_status;
-														new_data.group = post_statuses.group;
+															 'quote') + 's';
+														var new_data        = $($(ev.node).parents('form'))
+															.serializeJSON();
 
-														if (new_data.group === 'events' && !new_data.event_date){
+														new_data.price      = parseInt(new_data.price);
+														new_data.status     = post_statuses.status;
+														new_data.pay_status = post_statuses.pay_status;
+														new_data.group      = post_statuses.group;
+
+														if (new_data.group === 'events' && !new_data.event_date) {
 															toast_error('Необходимо выбрать дату/время события');
 															$($(ev.node).parents('form')).find('[name="event_date"]')
 																.focus();
@@ -789,7 +892,7 @@
 																.focus();
 															return false;
 														}
-														if (new_data.group === 'events' && !new_data.services){
+														if (new_data.group === 'events' && !new_data.price) {
 															toast_error('Необходимо выбрать услугу');
 															$($(ev.node).parents('form'))
 																.find('.popup-services-list')
@@ -798,13 +901,12 @@
 														}
 
 														new_data.event_date = utils.dateForce(new_data.event_date);
-														new_data.price = parseInt(new_data.price);
-														new_data.services = utils.arr.unique(new_data.services);
+														new_data.services   = utils.arr.unique(new_data.services);
 
 														changeLogSave(new_data, _record);
 
 														utils.api.post(
-															'/api/v2/update/records/' + _record.id, new_data)
+																'/api/v2/update/records/' + _record.id, new_data)
 															.then(function (res) {
 
 																console.log('event data:', new_data);
@@ -819,7 +921,7 @@
 												}
 											}
 										});
-									},
+									}
 
 								}
 							});
@@ -836,7 +938,9 @@
 					}).appendTo(_list);
 				});
 		};
+
 		load();
+
 		$(document).on('click', 'button.flag-date__ico', function (e) {
 			e.stopPropagation();
 			const _parent    = $(this).parents('.acount__table-accardeon');

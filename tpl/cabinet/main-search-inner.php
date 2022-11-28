@@ -237,8 +237,9 @@
 
 											{{#if this.analyses}}
 											<a class="btn btn--white" href="{{this.analyses}}"
-												style="margin-right: 20px;"
-												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
+												download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+												Скачать анализы
+											</a>
 											{{/if}}
 
 											<form class="analyses">
@@ -318,7 +319,7 @@
 														href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">Фото до начала лечения:
+														<div class="healing__date">
 															{{ @global.utils.formatDate(.date) }}
 														</div>
 														<div class="after-healing__photo"
@@ -344,7 +345,7 @@
 														href="{{.src}}"
 														data-caption="Фото в процессе лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">Фото в процессе лечения:
+														<div class="healing__date">
 															{{ @global.utils.formatDate(.date) }}
 														</div>
 														<div class="after-healing__photo"
@@ -492,7 +493,7 @@
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
 					<a class="btn btn--white" href="{{.}}"
-						download="Анализы(за {{this.event_date}}).pdf">
+						download="Анализы (за {{@global.utils.formatDate(this.event_date)}}).pdf">
 						Скачать анализы
 					</a>
 				</div>
@@ -539,39 +540,42 @@
 			{{/each}}
 		</div>
 	</div>
-	{{#if photos}}
+	{{#if .hasPhoto}}
 	<div class="acount__photos">
 		<div class="row acount__photos-wrap">
 			<div class="col-md-6">
 				<div class="acount__photo">
 					<p>Фото до начала лечения</p>
-					{{#each photos.before}}
+					{{#each this.photos.before}}
 					<div class="col-md-6">
 						<a class="after-healing__item"
-							data-fancybox="images"
+							data-fancybox="images-{{this.id}}"
 							href="{{.src}}"
-							data-caption="{{.date}}">
-							<div class="healing__date">{{.date}}</div>
+							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 							<div class="after-healing__photo"
-								style="background-image: url({{.src}})">
+								style="background-image: url({{.src}});">
 							</div>
 						</a>
 					</div>
-					{{else}}
-
 					{{/each}}
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="acount__photo">
 					<p>Фото в процессе лечения</p>
-					{{#each photos.after}}
-					<a class="after-healing__item"
-						data-fancybox="images"
-						href="{{.src}}"
-						data-caption="{{.date}}">
-						<img src="{{.src}}" alt="After visit {{.date}}">
-					</a>
+					{{#each this.photos.after}}
+					<div class="col-md-6">
+						<a class="after-healing__item"
+							data-fancybox="images-{{this.id}}"
+							href="{{.src}}"
+							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+							<div class="after-healing__photo"
+								style="background-image: url({{.src}});">
+							</div>
+						</a>
+					</div>
 					{{/each}}
 				</div>
 			</div>
@@ -610,10 +614,10 @@
 					{{#each this.photos.after}}
 					<div class="col-md-6">
 						<a class="after-healing__item"
-							data-fancybox="images"
+							data-fancybox="images-{{this.id}}"
 							href="{{.src}}"
-							data-caption="{{.date}}">
-							<div class="healing__date">{{.date}}</div>
+							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 							<div class="after-healing__photo"
 								style="background-image: url({{.src}});">
 							</div>
@@ -630,6 +634,15 @@
 	<form on-submit="submit">
 		{{#user}}
 		<p class="text-bold mb-30">Редактировать профиль</p>
+		<div class="row profile-edit__wrap">
+			<div class="col-md-9">
+				<div class="input input--grey">
+					<input class="input__control" name="fullname" required
+						value="{{ .fullname }}" type="text" placeholder="ФИО">
+					<div class="input__placeholder input__placeholder--dark">ФИО</div>
+				</div>
+			</div>
+		</div>
 		<div class="row profile-edit__wrap">
 			<div class="col-md-3">
 				<div class="input input--grey">
@@ -772,7 +785,7 @@
 						page.push('events.upcoming', data);
 
 						toast('Запись успешно создана!');
-						reloadData();
+						content_load();
 						editor.close();
 					});
 				},
@@ -794,61 +807,11 @@
 							utils.api.post('/api/v2/update/records/'+record.id, {'analyses': photo.uri})
 								.then(function (record) {
 									toast('Анализы добавлены!');
-									reloadData();
+									content_load();
 									page.set('events.upcoming.'+index, record);
 								});
 						});
 				},
-
-				showEventDetails(ev) {
-					var _parent = $(ev.node).parents('.accardeon');
-					if (!_parent.hasClass('loaded')) {
-						var _record_idx      = _parent.data('idx');
-						var _record          = page.get('history.events.' + _record_idx);
-						var _accardeon__list = new Ractive({
-							el: _parent.find('.accardeon__list'),
-							template: wbapp.tpl('#event-details').html,
-							data: {
-								event: _record,
-								user: page.get('user'),
-								catalog: catalog
-							},
-							on: {
-								init() {
-									var _this = this;
-									if (!!_record.photos?.before || !!_record.photos?.after) {
-										utils.api.get('/api/v2/list/record-photos?record=' + _record.id)
-											.then(
-												function (result) {
-													if (!result) {
-														return;
-													}
-
-													var list = {before: [], after: []};
-													result.forEach(function (photo) {
-														if (_record.photos?.before &&
-														    _record.photos.before.includes(photo.id)) {
-															list.before.push(photo);
-														} else if (_record.photos?.after &&
-														           _record.photos.after.includes(
-															           photo.id)) {
-															list.after.push(photo);
-														}
-													});
-													_this.set('photos', list);
-												}
-											);
-									}
-								},
-								complete() {
-									_parent.find("img[data-src]:not([src])").lazyload();
-									_parent.addClass('loaded');
-								}
-							}
-						});
-					}
-				}
-				,
 				showLongtermDetails(ev) {
 					var _parent = $(ev.node).parents('.accardeon');
 					if (!_parent.hasClass('loaded')) {
@@ -942,28 +905,35 @@
 			window.page.set('client', client);
 			window.page.set('user', client);
 		});
-		window.reloadData = function() {
+		window.content_load = function() {
 			page.set('longterms_ready', false);
 			page.set('events_ready', false);
 
 			utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
 				function (data) {
 					page.set('events.upcoming', data); /* get actually user next events */
+					$("img[data-src]:not([src])").lazyload();
+
 				});
 
 			utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
 				function (data) {
 					page.set('history.events', data); /* get actually user next events */
 					page.set('events_ready', true); /* get actually user next events */
+					$("img[data-src]:not([src])").lazyload();
+
 				});
 
 			utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
 				.then(function (data) {
 					page.set('history.longterms', data); /* get actually user next events */
 					page.set('longterms_ready', true); /* get actually user next events */
+					$("img[data-src]:not([src])").lazyload();
+
 				});
+
 		};
-		reloadData();
+		content_load();
 	});
 </script>
 

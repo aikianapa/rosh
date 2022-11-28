@@ -73,7 +73,7 @@
 				</div>
 			</div>
 		</div>
-		<a href="/signout" class="account__exit">Выйти из аккаунта</a>
+		<a href="/signout" class="account__exit signout">Выйти из аккаунта</a>
 		<input class="admin-edit__upload" type="hidden" id="analyses-file">
 
 		<div class="profile-editor-inline d-none">
@@ -130,7 +130,7 @@
 			<div class="account-events__btns">
 				<div class="account-event-wrap --aicn">
 					<div class="account-events__btn">
-						<a class="btn btn--black" on-click="runOnlineChat">
+						<a class="btn btn--black" data-id="{{this.id}}" on-click="runOnlineChat">
 							Начать консультацию
 						</a>
 					</div>
@@ -183,7 +183,7 @@
 				{{#if this.status == 'new'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
-						<div class="account-events__name">Заявка на рассмотрении</div>
+						<div class="account-events__name" style="color:#393">Заявка на рассмотрении</div>
 					</div>
 				</div>
 				{{elseif this.pay_status !== 'unpay'}}
@@ -232,7 +232,10 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" href="[[this.analyses]]" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" href="{{this.analyses}}"
+					download="Анализы ({{@global.utils.formatDate(this.event_date)}}).pdf">
+					Скачать анализы
+				</a>
 			</div>
 			{{/if}}
 		</div>
@@ -303,7 +306,9 @@
 										<div class="analysis__top --aicn --flex mb-20">
 											<div class="analysis__title">Анализы</div>
 											<a class="btn btn--white" href="{{this.analyses}}"
-												download="Анализы(за {{this.event_date}}).pdf">Скачать анализы</a>
+												download="Анализы ({{@global.utils.formatDate(this.event_date)}}).pdf">
+												Скачать анализы
+											</a>
 										</div>
 										{{/if}}
 
@@ -333,7 +338,7 @@
 							<div class="experts__worked">
 								<div class="experts__worked-title">С вами работали</div>
 								<div class="row">
-									{{#each .experts: idx}}
+									{{#each .experts}}
 									<div class="col-md-6">
 										<a class="expert__worked"
 											target="_blank"
@@ -371,7 +376,7 @@
 														href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">Фото до начала лечения:
+														<div class="healing__date">
 															{{ @global.utils.formatDate(.date) }}</div>
 														<div class="after-healing__photo"
 															style="background-image: url({{.src}})">
@@ -396,8 +401,7 @@
 														href="{{.src}}"
 														data-caption="Фото в процессе лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">Фото в процессе лечения:
-															{{ @global.utils.formatDate(.date) }}</div>
+														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 														<div class="after-healing__photo"
 															style="background-image: url({{.src}})">
 														</div>
@@ -538,6 +542,15 @@
 		{{#with user}}
 		<p class="text-bold mb-30">Редактировать профиль</p>
 		<div class="row profile-edit__wrap">
+			<div class="col-md-9">
+				<div class="input input--grey">
+					<input class="input__control" name="fullname" required
+						value="{{ .fullname }}" type="text" placeholder="ФИО">
+					<div class="input__placeholder input__placeholder--dark">ФИО</div>
+				</div>
+			</div>
+		</div>
+		<div class="row profile-edit__wrap">
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control datebirthdaypickr"
@@ -664,6 +677,11 @@
 					this.set('catalog', catalog);
 					setTimeout(function (){
 						$(this.el).find("img[data-src]:not([src])").lazyload();
+						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id+'?active=on').then(function (data) {
+							data.fullname = data.fullname.replaceAll('  ', ' ')
+							page.set('user', data);
+							console.log(data);
+						});
 					});
 				},
 				runOnlineChat(ev) {
@@ -686,6 +704,7 @@
 							complete() {
 								$('.profile-editor-inline').removeClass('d-none');
 								initPlugins();
+
 							},
 							submit(ev) {
 								let $form = $(ev.node);
@@ -711,9 +730,6 @@
 			}
 		});
 
-		utils.api.get('/api/v2/read/users/' + wbapp._session.user.id).then(function (data) {
-			page.set('user', data);
-		});
 		window.load = function () {
 			utils.api.get('/api/v2/list/records?status=[upcoming,new,past]&group=[events,quotes]&client=' +
 			              wbapp._session.user.id)
@@ -742,6 +758,7 @@
 						});
 					}
 					page.set('events_ready', true);
+					$("img[data-src]:not([src])").lazyload();
 				});
 		};
 		load();

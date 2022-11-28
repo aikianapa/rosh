@@ -42,11 +42,11 @@
 
 	<template id="expert-page">
 		<div class="account__panel">
-			<div class="account__info" style="max-width: 85%;">
+			<div class="account__info" style="max-width: 88%;">
 				<div class="user --flex">
-					<div class="user__panel">
+					<div class="user__panel" style="width: 60%; margin-right: 10px;">
 						<div class="user__name">
-							{{user.expert.name}}
+							{{expert.name}}
 							<button class="user__edit all" on-click="toggleEdit">
 								<svg class="svgsprite _edit">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
@@ -67,7 +67,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="user__panel user__panel--border">
+					<div class="user__panel user__panel--border" style="margin-right: 10px">
 						<div class="user__item">{{user.expert.spec}}</div>
 						{{#if events.upcoming}}
 						<div class="user__notifcation closest-event">
@@ -81,7 +81,7 @@
 					</div>
 				</div>
 			</div>
-			<a class="account__exit" href="/signout">Выйти из аккаунта</a>
+			<a class="account__exit signout" href="/signout">Выйти из аккаунта</a>
 			<div class="profile-editor-inline profile-edit" data-template="editorProfile"></div>
 		</div>
 
@@ -138,7 +138,7 @@
 				<div class="account-events__btns">
 					<div class="account-event-wrap --aicn">
 						<div class="account-events__btn">
-							<a class="btn btn--black" on-click="runOnlineChat">
+							<a class="btn btn--black" data-id="{{this.id}}" on-click="runOnlineChat">
 								Начать консультацию
 							</a>
 						</div>
@@ -169,8 +169,9 @@
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
 					<a class="btn btn--white" href="{{this.analyses}}"
-						download="Анализы({{this.clientData.fullname}}, {{this.event_date}}).pdf">
-						Скачать анализы</a>
+						download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+						Скачать анализы
+					</a>
 				</div>
 				{{/if}}
 			</div>
@@ -182,7 +183,7 @@
 		<div class="lk-title">Предстоящие события</div>
 		<div class="account-events">
 			{{#each events.upcoming}}
-			<div class="account-events__block">
+			<div class="account-events__block" >
 				<div class="account-events__block-wrap mb-20">
 					<div class="account-events__item">
 						<div class="account-event-wrap">
@@ -224,10 +225,7 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
-
-
 				{{#if this.type == 'online'}}
 				<div class="account-events__btns">
 					<div class="account-event-wrap --aicn">
@@ -244,7 +242,8 @@
 				{{#if this.analyses}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="[[this.analyses]]" download="Анализы.pdf">
+					<a class="btn btn--white" href="{{this.analyses}}"
+						download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
 						Скачать анализы
 					</a>
 				</div>
@@ -333,6 +332,15 @@
 			{{#user}}
 			<div class="profile-edit__block">
 				<div class="lk-title">Редактировать профиль</div>
+				<div class="row profile-edit__wrap">
+					<div class="col-md-9">
+						<div class="input input--grey">
+							<input class="input__control" name="fullname" required
+								value="{{ expert.name }}" type="text" placeholder="ФИО">
+							<div class="input__placeholder input__placeholder--dark">ФИО</div>
+						</div>
+					</div>
+				</div>
 				<div class="row profile-edit__wrap">
 					<div class="col-md-3">
 						<div class="input input--grey">
@@ -559,7 +567,7 @@
 				on: {
 					init() {},
 					runOnlineChat(ev) {
-						const _rec_id = $(ev.node).data('id');
+						var _rec_id = $(ev.node).data('id');
 						Cabinet.runOnlineChat(_rec_id);
 					},
 					toggleEdit(ev) {
@@ -572,7 +580,8 @@
 							el: 'main.page .profile-edit',
 							template: wbapp.tpl('#editorProfile').html,
 							data: {
-								user: this.get('user')
+								user: this.get('user'),
+								expert: this.get('expert')
 							},
 							on: {
 								complete() {
@@ -582,15 +591,33 @@
 								submitUserForm(ev) {
 									let $form = $(ev.node);
 									let uid   = this.get('user.id');
+									var expert_id = this.get('expert.id');
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
 
 										data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+										data.fullname    = data.fullname.replaceAll('  ', ' ')
+										var names        = data.fullname.split(' ');
+										data.first_name  = names[0];
+										data.middle_name = names[1] || '';
+										data.last_name   = names[2] || '';
+
 										utils.api.post('/api/v2/update/users/' + uid, data)
 											.then(function (res) {
 												console.log(res);
 												page.set('user', res);
 											});
+										utils.api.post('/api/v2/update/experts/' + expert_id, {
+											'name': data.fullname,
+											'fullname': data.fullname,
+											'header': data.fullname
+										}).then(function (res) {
+											console.log('expert', res);
+											page.set('expert', res);
+
+											window.catalog.reload('experts');
+											toast('Профиль успешно обновлён');
+										});
 										$('.user__edit.all').trigger('click');
 									}
 									return false;
@@ -605,6 +632,7 @@
 										utils.api.post('/api/v2/update/users/' + uid, data).then(
 											function (res) {
 												page.set('user', res);
+												toast('Профиль успешно обновлён');
 												console.log('saved', res);
 											});
 										$('.user__edit.all').trigger('click');
@@ -627,6 +655,7 @@
 									utils.api.post('/api/v2/create/record-changes/',
 										{
 											record: data.id,
+											record_group: data.group,
 											experts: data.experts,
 											client: data.client,
 											changes: [{
@@ -637,7 +666,7 @@
 											}]
 										});
 								}
-								toast('Успешно сохранено!');
+								toast('Рекомендации сохранены!');
 							});
 						});
 						return false;
@@ -645,7 +674,7 @@
 				}
 			});
 
-			utils.api.get('/api/v2/list/records?group=events&status=[upcoming,past]' +
+			utils.api.get('/api/v2/list/records?group=events' +
 					'&experts~=' + wbapp._session.user.expert.id +
 					'&@sort=event_date:d')
 				.then(function (records) {

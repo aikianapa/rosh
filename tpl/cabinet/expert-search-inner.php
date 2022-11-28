@@ -108,7 +108,7 @@
 					<div class="account-events__btns">
 						<div class="account-event-wrap --aicn">
 							<div class="account-events__btn">
-								<a class="btn btn--black" on-click="runOnlineChat">
+								<a class="btn btn--black" data-id="{{this.id}}" on-click="runOnlineChat">
 									Начать консультацию
 								</a>
 							</div>
@@ -214,7 +214,8 @@
 					{{#if this.analyses}}
 					<div class="account-events__download">
 						<div class="lk-title">Анализы</div>
-						<a class="btn btn--white" data-link="[[this.analyses]]" download="Анализы.pdf">
+						<a class="btn btn--white" href="{{this.analyses}}"
+							download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
 							Скачать анализы
 						</a>
 					</div>
@@ -365,8 +366,12 @@
 						init() {
 
 						},
-						complete(){
+						complete() {
 							this.set('catalog', catalog);
+						},
+						runOnlineChat(ev) {
+							const _rec_id = $(ev.node).data('id');
+							Cabinet.runOnlineChat(_rec_id);
 						},
 						saveRecommendation(ev) {
 							const _id             = $(ev.node).data('id');
@@ -433,7 +438,7 @@
 							}
 						});
 					});
-					/*!!! check & sync updates by interval (1-3min) !!!*/
+				/*!!! check & sync updates by interval (1-3min) !!!*/
 
 			});
 		});

@@ -35,7 +35,7 @@
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
 						<input class="checkbox-visible-next-form" type="checkbox"
-							name="for_consultation" value="1" on-click="checkConsultation">
+							name="for_consultation" value="1">
 						<span></span>
 						<div class="checbox__name">Консультация врача</div>
 					</label>
@@ -43,11 +43,11 @@
 						<div class="text-bold mb-20">Тип события</div>
 						<div class="popups__text-chexboxs">
 							<label class="text-radio">
-								<input type="radio" name="type" value="clinic" checked>
+								<input type="radio" name="type" value="clinic" checked on-click="checkConsultation">
 								<span>В клинике</span>
 							</label>
 							<label class="text-radio switch-blocks">
-								<input type="radio" name="type" value="online">
+								<input type="radio" name="type" value="online" on-click="checkConsultation">
 								<span>Онлайн</span>
 							</label>
 						</div>
@@ -82,10 +82,13 @@
 					<div class="admin-editor__patient" data-hide="service-search">
 						<div class="text-bold mb-10">Выбраны услуги</div>
 					</div>
-					<div class="admin-editor__summ" data-hide="service-search">
+					<div class="admin-editor__summ mb-3" data-hide="service-search">
 						<p>Всего</p>
 						<input type="hidden" name="price" value="0">
-						<p class="price">0 ₽</p>
+						<p class="price">0 ₽<sup><b>*</b></sup></p>
+					</div>
+					<div class="mb-4 text-right" data-hide="service-search">
+						<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 					</div>
 					<button class="btn btn--black form__submit" type="submit"> Записаться </button>
 				</form>
@@ -260,18 +263,38 @@
 								{{/if}}
 
 								<div class="admin-editor__type-event">
-									<p class="mb-10">Тип события</p>
-									<div class="text-radios">
-										{{#each @global.catalog.quoteType as qt}}
-										<label class="text-radio">
-											{{#if qt.id === record.type }}
-											<input type="radio" name="type" value="{{ qt.id }}" checked>
-											{{else}}
-											<input type="radio" name="type" value="{{ qt.id }}">
-											{{/if}}
-											<span>{{qt.name}}</span>
-										</label>
-										{{/each}}
+
+									<div class="row">
+										<div class="col-md-6">
+											<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+												{{#if record.for_consultation=== '1' }}
+												<input class="checkbox-visible-next-form" type="checkbox"
+													checked
+													name="for_consultation" value="1">
+												{{else}}
+												<input class="checkbox-visible-next-form" type="checkbox"
+													name="for_consultation" value="1">
+												{{/if}}
+												<span></span>
+												<div class="checbox__name">Консультация врача</div>
+											</label>
+										</div>
+										<div class="col-md-6" data-show="service">
+											<p class="mb-10">Тип события</p>
+											<div class="popups__text-chexboxs">
+												{{#each @global.catalog.quoteType as qt}}
+												<label class="text-radio" name="type" value="{{ qt.id }}">
+													{{#if qt.id === record.type }}
+													<input type="radio" name="type" value="{{ qt.id }}" checked
+														on-click="checkConsultation">
+													{{else}}
+													<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
+													{{/if}}
+													<span>{{qt.name}}</span>
+												</label>
+												{{/each}}
+											</div>
+										</div>
 									</div>
 									<div class="row">
 										{{#if record.spec_service}}
@@ -309,8 +332,8 @@
 												<div class="col-md-12">
 													<div class="input input-lk-calendar input--grey">
 														<input class="input__control datepickr"
-															name="event_date"
-															value="{{record.event_date}}"
+															name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
+															autocomplete="off"
 															type="text" placeholder="Выбрать дату и время">
 														<div class="input__placeholder">Выбрать дату</div>
 													</div>
@@ -324,7 +347,7 @@
 															name="event_time_start"
 															value="{{record.event_time_start}}"
 															data-min-time="09:00"
-															data-max-time="18:00"
+															data-max-time="18:00" autocomplete="off"
 															pattern="[0-9]{2}:[0-9]{2}" required>
 														<div class="input__placeholder">Время (начало)</div>
 													</div>
@@ -334,7 +357,7 @@
 														<input class="input__control timepickr event-time-end" type="text"
 															name="event_time_end"
 															value="{{record.event_time_end}}"
-															data-min-time="09:00"
+															data-min-time="09:00" autocomplete="off"
 															data-max-time="18:00"
 															pattern="[0-9]{2}:[0-9]{2}" required>
 														<div class="input__placeholder">Время (конец)</div>
@@ -359,16 +382,16 @@
 									{{else}}
 									{{#each record.service_prices: idx, key}}
 									<div class="search__drop-item" data-index="{{idx}}"
-										data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+										data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 										<input type="hidden" name="services[]"
 											value="{{service_id}}">
-										<input type="hidden" name="service_prices[{{key}}][service_id]"
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]"
 											value="{{service_id}}">
-										<input type="hidden" name="service_prices[{{key}}][price_id]"
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]"
 											value="{{price_id}}">
-										<input type="hidden" name="service_prices[{{key}}][name]"
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]"
 											value="{{name}}">
-										<input type="hidden" name="service_prices[{{key}}][price]"
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]"
 											value="{{price}}">
 										<div class="search__drop-name">
 											<div class="search__drop-delete">
@@ -377,15 +400,15 @@
 												</svg>
 											</div>
 											<div class="search__drop-tags">
-												{{#each @global.catalog.servicePrices[idx].tags}}
+												{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
 												<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
 												{{/each}}
 											</div>
 											{{name}}
 										</div>
-										<div class="search__drop-right">
+										<label class="search__drop-right">
 											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-										</div>
+										</label>
 									</div>
 									{{/each}}
 									{{/if}}
@@ -426,17 +449,50 @@
 							$(this.el).show();
 							console.log('show');
 						},
+						checkConsultation(ev) {
+							var ght = 0;
+							var lv  = 0;
+							console.log(ev);
+							if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
+								ght = parseInt(catalog.spec_service.consultation.price);
+							} else {
+								ght = 0;
+							}
+							var price = 0;
+							var prev_price = $(ev.node).parents('form').find('[name="price"]').val();
+							if (!!prev_price){
+								price = parseInt(prev_price);
+							}
+							if (ght === 0) {
+								if ($(ev.node).parents('form').find('[name="price"]')
+									.hasClass('consultation')) {
+									price -= catalog.spec_service.consultation.price;
+								}
+								$(ev.node).parents('form').find('[name="price"]')
+									.removeClass('consultation');
+							} else {
+								price += ght;
+								$(ev.node).parents('form').find('[name="price"]')
+									.addClass('consultation');
+							}
+							console.log(ght, price);
+							$(ev.node).parents('form').find('[name="price"]').val(price);
+							$(ev.node).parents('form').find('.price')
+								.html(utils.formatPrice(price) +
+								      ' ₽<sup><b>*</b></sup>');
+						},
 						submit(ev) {
 							console.log('saving...', ev);
-							var edit_mode = (!!_record.id);
+							var edit_mode = (!!_record && !!_record.id);
 							let $form     = $(ev.node);
 							let uid       = this.get('client.id');
 							if ($form.verify()) {
 								let new_data   = $form.serializeJSON();
 								new_data.group = 'events';
+								new_data.price = parseInt(new_data.price);
 								if (!edit_mode) {
 									new_data.status     = 'upcoming';
-									new_data.pay_status = 'unpay';
+									new_data.pay_status = new_data.price ? 'unpay' : 'free';
 
 									new_data.priority = 0;
 									new_data.marked   = false;
@@ -457,7 +513,7 @@
 										.focus();
 									return false;
 								}
-								if (new_data.group === 'events' && !new_data.services) {
+								if (new_data.group === 'events' && !new_data.price) {
 									toast_error('Необходимо выбрать услугу');
 									$($(ev.node).parents('form'))
 										.find('.popup-services-list')
@@ -501,42 +557,45 @@
 					</button>
 					<div class="popup__name text-bold">Добавить фото</div>
 					<form class="popup__form" on-submit="submit">
+						{{#if record}}
+						<input type="hidden" name="id" value="{{record.id}}">
+						<input type="hidden" name="client" value="{{record.client}}">
 
-						{{#if record.client}}
 						<p class="text-bold text-big mb-20">
 							{{ @global.catalog.clients[record.client].fullname }}
 						</p>
-						<input type="hidden" name="client" value="{{record.client}}">
 						{{else}}
 						<div class="search-form input">
 							<input class="input__control autocomplete client-search"
+								autocomplete="off"
 								type="text" placeholder="Выбрать пациента" required>
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
-						<input type="hidden" name="client" value="{{record.client}}">
+						<input type="hidden" name="client" value="">
+						<input type="hidden" name="id" value="">
+
+						<div class="search-form event disabled input">
+							<input class="input__control autocomplete event-search record-search"
+								type="text" placeholder="Выбрать пациента" required autocomplete="off">
+							<div class="input__placeholder">Выбрать событие/посещение</div>
+						</div>
 						{{/if}}
 
 						<div class="input calendar mb-20">
 							<input class="input__control datepickr" type="text" name="date"
-								placeholder="Выбрать дату посещения">
-							<div class="input__placeholder">Выбрать дату посещения</div>
+								placeholder="Выбрать дату посещения" autocomplete="off">
+							<div class="input__placeholder">Укажите дату фото</div>
 						</div>
-						<div class="radios --flex" data-show="longterm">
-							<label class="text-radio">
-								<input type="radio" name="photo_target" value="before">
+						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
+							<label class="text-radio" name="target" value="before">
+								<input type="radio" name="target" value="before">
 								<span>До начала лечения</span>
 							</label>
-							<label class="text-radio">
-								<input type="radio" name="photo_target" value="after">
+							<label class="text-radio switch-blocks" name="target" value="after">
+								<input type="radio" name="target" value="after">
 								<span>В процессе лечения</span>
 							</label>
 						</div>
-						{{#if record}}
-
-						{{else}}
-
-						{{/if}}
-
 
 						<label class="file-photo">
 							<div class="file-photo__ico">
@@ -570,44 +629,71 @@
 					on: {
 						complete() {
 							initClientSearch();
+							initEventSearch();
 							initPlugins();
 							$(this.el).show();
 						},
 						submit(ev) {
-							let $form = $(ev.node);
-							let uid   = this.get('client.id');
+							console.log('Submit form...');
+							var _form = $(ev.node);
+							var self  = this;
 
-							if ($form.verify() && uid > '') {
-								var form_data = $form.serializeJSON();
-								var _photo_group = form_data.target || 'before';
-								delete form_data.photo_group;
+							if (_form.verify()) {
+								var form_data = _form.serializeJSON();
+								if (!form_data.client) {
+									toast_error('Необходимо выбрать пациента');
+									$($(ev.node).parents('form')).find('.client-search')
+										.focus();
+									return false;
+								}
 
-								uploadFile(
-									$form.find('input[name="file"]')[0],
-									'record/photos/' + record.id,
-									Date.now() + '_' + utils.getRandomStr(4),
-									function (photo) {
-										if (photo.error) {
-											toast_error(photo.error);
-											return false;
-										}
+								if (!form_data.id) {
+									toast_error('Необходимо выбрать посещение');
+									$($(ev.node).parents('form'))
+										.find('.event-search')
+										.focus();
+									return false;
+								}
+								console.log('form data', form_data);
+								utils.api.get('/api/v2/read/records/' + form_data.id).then(function (record) {
+									var _photo_group = form_data.target || 'before';
+									delete form_data.target;
 
-										var _photo_data   = {
-											src: photo.uri,
-											filename: photo.filename,
-											comment: record.comment,
-											date: record.event_date,
-											photo_group: _photo_group
-										};
-										record.photos[_photo_group].push(_photo_data);
+									uploadFile(
+										_form.find('input[name="file"]')[0],
+										'record/photos/' + record.id,
+										Date.now() + '_' + utils.getRandomStr(4),
+										function (photo) {
+											if (photo.error) {
+												toast_error(photo.error);
+												return false;
+											}
+											console.log('record: ',record, _photo_group);
+											if (!record.photos){
+												record.photos = {'before':[], 'after':[]};
+											}
+											var _photo_data = {
+												src: photo.uri,
+												filename: photo.filename,
+												comment: record.comment,
+												date: form_data.date,
+												photo_group: _photo_group
+											};
+											if (_photo_group == 'before'){
+												record.photos['before'] = [];
+											}
+											record.hasPhoto = 1;
+											record.photos[_photo_group].push(_photo_data);
 
-										utils.api.post('/api/v2/update/records/' + record.id, {
-											'photos':record.photos
-										}).then(function (rec) {
-											onSaved(rec);
+											utils.api.post('/api/v2/update/records/' + record.id, {
+												'photos': record.photos,
+												'hasPhoto': 1
+											}).then(function (rec) {
+												onSaved(rec);
+												$(self.el).hide();
+											});
 										});
-									});
-
+								});
 							}
 							return false;
 
@@ -642,7 +728,7 @@
 						</p>
 						{{else}}
 						<div class="search-form input">
-							<input class="input__control autocomplete client-search"
+							<input class="input__control autocomplete client-search" autocomplete="off"
 								type="text" placeholder="Выбрать пациента" required>
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
@@ -651,7 +737,9 @@
 						<div class="input calendar mb-20">
 							<input class="input__control datepickr" type="text"
 								required autocomplete="off"
-								name="event_date" placeholder="Выбрать дату посещения">
+								name="event_date"
+								value="{{ @global.utils.dateForce(record.event_date) }}"
+								placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Дата посещения</div>
 						</div>
 						<div class="popup-title__checkbox disabled">
@@ -664,7 +752,7 @@
 
 						<div class="input calendar mb-20" data-filter="longterms">
 							<input class="input__control event-search longterm-search"
-								type="text" name="longterm_title"
+								type="text" name="longterm_title" autocomplete="off"
 								placeholder="Название продолжительного лечения"
 								required>
 							<div class="input__placeholder">Название продолжительного лечения</div>
@@ -672,11 +760,11 @@
 
 						<div class="radios --flex">
 							<label class="text-radio">
-								<input type="radio" name="photo_group" value="before" checked="checked">
+								<input type="radio" name="target" value="before" checked="checked">
 								<span>До начала лечения</span>
 							</label>
 							<label class="text-radio">
-								<input type="radio" name="photo_group" value="after">
+								<input type="radio" name="target" value="after">
 								<span>В процессе лечения</span>
 							</label>
 						</div>
@@ -744,7 +832,7 @@
 								form_data.recommendation = '';
 								form_data.description    = '';
 								form_data.price  = 0;
-								var _photo_group = form_data.photo_group || 'before';
+								var _photo_group = form_data.target || 'before';
 								delete form_data.photo_group;
 
 								uploadFile(
@@ -828,11 +916,11 @@
 						</div>
 						<div class="radios --flex">
 							<label class="text-radio">
-								<input type="radio" name="photo_group" value="before" checked="checked">
+								<input type="radio" name="target" value="before" checked="checked">
 								<span>До начала лечения</span>
 							</label>
 							<label class="text-radio disabled">
-								<input type="radio" name="photo_group" value="after">
+								<input type="radio" name="target" value="after">
 								<span>В процессе лечения</span>
 							</label>
 						</div>
@@ -948,6 +1036,90 @@
 			};
 		</script>
 
+		<div class="popup --edit-profile">
+			<template id="popupEditProfile">
+				<div class="popup__overlay"></div>
+				<div class="popup__panel">
+					<button class="popup__close" on-click="close">
+						<svg class="svgsprite _close">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+						</svg>
+					</button>
+					<div class="popup__name text-bold">Редактировать профиль</div>
+					<form class="popup__form" on-submit="submit">
+						{{#user}}
+						<input type="hidden" name="id" value="{{user.id}}">
+						<div class="input">
+							<input class="input__control" type="text" required value="{{.fullname}}"
+								placeholder="ФИО" name="fullname" minlength="5">
+							<div class="input__placeholder">ФИО</div>
+						</div>
+						<div class="input">
+							<input class="input__control datebirthdaypickr" required value="{{.birthdate}}"
+								type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
+							<div class="input__placeholder">Дата рождения</div>
+						</div>
+						<div class="input mb-30">
+							<input class="input__control" type="tel" required
+								placeholder="Номер телефона"
+								minlength="7" value="{{.phone}}"
+								data-inputmask="'mask': '+7 (999) 999-99-99'"
+								name="phone">
+							<div class="input__placeholder">Номер телефона</div>
+						</div>
+						<div class="input input--grey">
+							<input class="input__control" type="email" name="email" value="{{.email}}"
+								required placeholder="E-mail">
+							<div class="input__placeholder input__placeholder--dark">E-mail</div>
+						</div>
+
+						<button class="btn btn--black form__submit" type="submit">Сохранить</button>
+						{{/user}}
+					</form>
+				</div>
+			</template>
+		</div>
+		<script wbapp>
+			window.popupEditProfile = function () {
+				return new Ractive({
+					el: '.popup.--edit-profile',
+					template: wbapp.tpl('#popupEditProfile').html,
+					data: {
+						user: wbapp._session.user
+					},
+					on: {
+						complete() {
+							var self = this;
+							utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
+								.then(function (data) {
+									data.fullname = data.fullname.replaceAll('  ', ' ')
+									self.set('user', data);
+									console.log(data);
+
+									$(this.el).show();
+								});
+							initPlugins();
+							$(this.el).show();
+						},
+						submit(ev) {
+							var self = this;
+							var $form = $(ev.node);
+							if ($form.verify()) {
+								var data   = $form.serializeJSON();
+								data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+								Cabinet.updateProfile(wbapp._session.user.id, data, function (data) {
+									data.birthdate_fmt = utils.formatDate(data.birthdate);
+									self.set('user', data); /* get actually user data */
+									toast_success('Профиль обновлён!');
+									$(self.el).hide();
+								});
+							}
+							return false;
+						}
+					}
+				});
+			};
+		</script>
 
 		<div class="popup --confirm-sms-code">
 			<template id="popupConfirmSmsCode">
@@ -1078,8 +1250,7 @@
 										<div class="col-md-12">
 											<div class="input input-lk-calendar input--grey">
 												<input class="input__control datepickr"
-													name="event_date"
-													value="{{record.event_date}}"
+													name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
 													type="text" placeholder="Выбрать дату и время">
 												<div class="input__placeholder">Выбрать дату</div>
 											</div>

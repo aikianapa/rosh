@@ -9,10 +9,10 @@ Date.prototype.isValid = function () {
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
-	var isObj      = function (a) {
+	var isObj  = function (a) {
 		return (!!a) && (a.constructor === Object);
 	};
-	var _st        = function (z, g) {
+	var _st    = function (z, g) {
 		return "" + (g != "" ? "[" : "") + z + (g != "" ? "]" : "");
 	};
 	var months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
@@ -43,7 +43,14 @@ $(function () {
 			}
 			return result;
 		},
-
+		changeUrl(title, url) {
+			if (typeof (history.pushState) != "undefined") {
+				var obj = {Title: title || document.title, Url: url};
+				history.pushState(obj, obj.Title, obj.Url);
+			} else {
+				alert("Browser does not support HTML5.");
+			}
+		},
 		varType(val) {
 			return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 		},
@@ -144,8 +151,8 @@ $(function () {
 		},
 		monthYearDate(date) {
 			var datetime = this.getDate(date);
-			var year = datetime.getFullYear();
-			var month = datetime.getMonth();
+			var year     = datetime.getFullYear();
+			var month    = datetime.getMonth();
 			return months[month] + ', ' + year;
 		},
 		formatDate(date) {
@@ -162,13 +169,13 @@ $(function () {
 			}
 			return date;
 		},
-		getISODate(date){
+		getISODate(date) {
 
 		},
 		dateForce(date) {
-			if (!!date && !!date.length){
+			if (!!date && !!date.length) {
 				var parts = date.match(/(\d+)\.(\d+)\.(\d+)/);
-				if (parts){
+				if (parts) {
 					return parts[3] + '-' + parts[2] + '-' + parts[1] + ' 00:00:00';
 				}
 			}
@@ -202,7 +209,7 @@ $(function () {
 			return phone;
 		},
 		formatPrice(val, sufix) {
-			if (!val){
+			if (!val || isNaN(val)) {
 				return 0;
 			}
 
@@ -240,8 +247,8 @@ $(function () {
 				header: 'Общая консультация специалиста',
 				price: 4000
 			},
-			consultation:{
-				header: 'Консультация врача',
+			consultation: {
+				header: 'Консультация врача'
 
 			},
 			analyses_interpretation: {
@@ -257,10 +264,10 @@ $(function () {
 		services: {},
 		servicePrices: {},
 		servicesList: [], /* for autocomplete */
-		roles:{
-			"main":"Aдминистратор",
-			"expert":"Специалист",
-			"client":"Пациент",
+		roles: {
+			"main": "Aдминистратор",
+			"expert": "Специалист",
+			"client": "Пациент"
 		},
 		serviceTags: {
 			"face": {
@@ -289,7 +296,27 @@ $(function () {
 
 		clients: {},
 		admins: {},
+		reload(only_key) {
+			var _key = only_key;
+			if (!!_key) {
+				localStorage.removeItem('db.' + _key);
+				sessionStorage.removeItem('db.' + _key);
+			} else {
+				localStorage.removeItem('db.quoteStatus');
+				localStorage.removeItem('db.quotePay');
+				localStorage.removeItem('db.quoteType');
+				localStorage.removeItem('db.categories');
 
+				sessionStorage.removeItem('db.services');
+				sessionStorage.removeItem('db.servicesList');
+				sessionStorage.removeItem('db.servicePrices');
+				sessionStorage.removeItem('db.experts');
+			}
+			console.log('Clear cached!');
+			if (_key !== false) {
+				this.init();
+			}
+		},
 		init(use_session_cache) {
 			var _self   = this;
 			var getters = [];
@@ -298,6 +325,7 @@ $(function () {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
 						_self.quoteStatus = utils.arr.indexBy(data);
+						_self.quoteStatus['past']['type'] = 'event';
 						localStorage.setItem('db.quoteStatus', JSON.stringify(_self.quoteStatus));
 					})
 				);
@@ -465,7 +493,7 @@ $(function () {
 			utils.api.get('/api/v2/read/price/id63619e811c69')
 				.then(function (data) {
 					_self.spec_service.consultation = data;
-				})
+				});
 			return Promise.allSettled(getters).then(() => {
 				$(document).trigger('cabinet-db-ready');
 			});
@@ -473,18 +501,21 @@ $(function () {
 	};
 	window.Cabinet = {
 		isCurrentEvent(event) {
-			var event_date = utils.getDate(event.event_date);
-			let curr_timestamp = parseInt(getdate()[0]);
-			var iso_date       = new Date(event_date).toISOString().split('T')[0];
+			var event_date     = utils.getDate(event.event_date);
+			let curr_timestamp = utils.timestamp(new Date());
+
 			if (utils.formatDate(event_date) !== (new Date()).toLocaleDateString()) {
 				return false;
 			}
 
 			let event_from_timestamp = utils.timestamp(
-				iso_date + 'T' + event.event_time_start);
+				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
+					parseInt(event.event_time_start.split(':')[1])));
 			let event_to_timestamp   = utils.timestamp(
-				iso_date + 'T' + event.event_time_end);
-			console.log(event_from_timestamp, event_to_timestamp);
+				event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
+					parseInt(event.event_time_end.split(':')[1])));
+
+			console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
 
 			return (event_from_timestamp < curr_timestamp && event_to_timestamp >= curr_timestamp);
 		},
@@ -502,6 +533,11 @@ $(function () {
 		updateProfile(profile_id, profile_data, callback) {
 			let data   = profile_data;
 			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+			data.fullname = data.fullname.replaceAll('  ', ' ')
+			var names            = data.fullname.split(' ');
+			data.first_name  = names[0];
+			data.middle_name = names[1] || '';
+			data.last_name   = names[2] || '';
 
 			utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
 				if (!!callback) {
@@ -555,7 +591,7 @@ $(function () {
 			data.longterm_date_end = '';
 			data.longterm_title    = '';
 
-			data.photos   = {before: [], after: []};
+			data.photos = {before: [], after: []};
 
 			data.comment        = '';
 			data.recommendation = '';
@@ -834,14 +870,14 @@ $(function () {
 						).append(TAGS).append(suggestion.value)
 					).append(
 						$('<div></div>').addClass('search__drop-right')
-							.append($('<div></div>').addClass('search__drop-summ').text(PRICE + ' ₽'))
+							.append($('<div></div>').addClass('search__drop-summ').html(PRICE + ' ₽<sup><b>*</b></sup>'))
 					)
 				);
 				_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 					sum += parseInt($(this).data('price'));
 				});
 				console.log(_parent_form, sum);
-				_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
+				_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
@@ -853,49 +889,95 @@ $(function () {
 			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
-			_parent_form.find('.admin-editor__summ .price').text(utils.formatPrice(sum) + ' ₽');
+			_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 	};
 	window.initLongtermSearch = function ($form, for_client) {
+		var form       = $form || $('.popup .popup__form');
 		let client_qry = '';
 		if (!!for_client) {
-			client_qry = '&client=' + $($form).find('[name="client"]').val();
+			client_qry = '&client=' + form.find('[name="client"]').val();
 		}
-
-		$form.find('.event-search.longterm-search').autocomplete({
-			noCache: true,
+		form.find('.event-search.longterm-search').autocomplete({
+			noCache: false,
 			minChars: 1,
 			deferRequestBy: 350,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'title~',
-			serviceUrl: '/api/v2/list/records?group=longterm' + client_qry,
+			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +'&group=longterms' + client_qry,
 			transformResult: function (response) {
 				console.log(response);
 				return {
 					suggestions: $.map(response, function (dataItem) {
-						return {value: dataItem.fullname, data: dataItem.id};
+						return {
+							value: dataItem.longterm_title + ', ' +
+							       utils.formatDate(dataItem.event_date) + ' ' +
+							       dataItem.event_time_start + '-' + dataItem.event_time_end,
+							data: dataItem.id
+						};
 					})
 				};
 			},
 			onSelect: function (suggestion) {
 				console.log($(this), suggestion);
-				$form.find('input[name="record"]').val(suggestion.data);
+				form.find('input[name="record"]').val(suggestion.data);
+			}
+		});
+	};
+	window.initEventSearch    = function ($form, for_client) {
+		var form       = $form || $('.popup .popup__form');
+		let client_qry = '';
+		if (!!for_client) {
+			client_qry = '&client=' + form.find('[name="client"]').val();
+		}
+		form.find('.event-search.record-search').autocomplete({
+			noCache: false,
+			minChars: 0,
+			deferRequestBy: 350,
+			dataType: 'json',
+			type: 'GET',
+			paramName: '',
+			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +
+			            '&group=[longterms,events]' + client_qry,
+			noSuggestionNotice: '<p>Не найдено событий..</p>',
+			showNoSuggestionNotice: 1,
+			transformResult: function (response) {
+				console.log(response);
+				return {
+					suggestions: $.map(response, function (dataItem) {
+						var title = (dataItem.group === 'longterms')
+							? dataItem.longterm_title
+							: catalog.services[dataItem.services[0]].header;
+
+						return {
+							value: title + ', ' +
+							       utils.formatDate(dataItem.event_date) + ' ' +
+							       dataItem.event_time_start + '-' + dataItem.event_time_end,
+							data: dataItem.id
+						};
+					})
+				};
+			},
+			onSelect: function (suggestion) {
+				console.log($(this), suggestion);
+				form.find('input[name="id"]').val(suggestion.data);
 			}
 		});
 	};
 	window.initClientSearch   = function ($form) {
-		console.log($('.--popup form input.client-search'));
-		$('.--popup form input.client-search').autocomplete({
+		var form = $form || $('.popup .popup__form');
+		form.find('input.client-search').autocomplete({
 			noCache: true,
 			minChars: 1,
 			deferRequestBy: 300,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'fullname~',
-			serviceUrl: '/api/v2/list/users?role=client&active=on&__token' + wbapp._session.token,
+			serviceUrl: '/api/v2/list/users?role=client&active=on&__token=' + wbapp._session.token,
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
+			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
 				console.log(response);
 				return {
@@ -905,7 +987,8 @@ $(function () {
 				};
 			},
 			onSelect: function (suggestion) {
-				$(this).find('input[name="client"]').val(suggestion.data);
+				form.find('input[name="client"]').val(suggestion.data);
+				form.find('.search-form.event.disabled').removeClass('disabled');
 			}
 		});
 	};
@@ -937,9 +1020,9 @@ $(function () {
 						data.group      = 'quotes';
 						data.status     = 'new';
 						data.pay_status = 'unpay';
-						data.client   = uid;
-						data.priority = 0;
-						data.marked   = false;
+						data.client     = uid;
+						data.priority   = 0;
+						data.marked     = false;
 
 						data.comment        = '';
 						data.recommendation = '';
@@ -949,7 +1032,7 @@ $(function () {
 						Cabinet.createQuote(data, function (res) {
 							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 							$('.popup.--record .popup__panel.--succed').addClass('d-block');
-							if (typeof window.load == 'function'){
+							if (typeof window.load == 'function') {
 								window.load();
 							}
 						});
@@ -957,17 +1040,33 @@ $(function () {
 
 					return false;
 				},
-				checkConsultation(ev){
+				checkConsultation(ev) {
 					var ght = 0;
-					var lv = 0;
+					var lv  = 0;
 					console.log(ev);
-					if ($(ev.node).is(':checked')){
-						ght = catalog.spec_service.consultation.price;
+					if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
+						ght = parseInt(catalog.spec_service.consultation.price);
 					} else {
 						ght = 0;
 					}
-					$(ev.node).parents('form').find('[name="price"]').val(ght);
-					$(ev.node).parents('form').find('.price').text(utils.formatPrice(ght) + ' ₽');
+					var price      = 0;
+					var prev_price = $(ev.node).parents('form').find('[name="price"]').val();
+					if (!!prev_price) {
+						price = parseInt(prev_price);
+					}
+					if (ght === 0){
+						if ($(ev.node).parents('form').find('[name="price"]').hasClass('consultation')){
+							price -= catalog.spec_service.consultation.price;
+						}
+						$(ev.node).parents('form').find('[name="price"]').removeClass('consultation');
+					} else {
+						price += ght;
+						$(ev.node).parents('form').find('[name="price"]').addClass('consultation');
+					}
+
+					$(ev.node).parents('form').find('[name="price"]').val(price);
+					$(ev.node).parents('form').find('.price').html(utils.formatPrice(price) +
+					                                               ' ₽<sup><b>*</b></sup>');
 				}
 			}
 		});
@@ -1001,7 +1100,7 @@ $(function () {
 			el: '.popup.--analize-interpretation',
 			template: wbapp.tpl('#popupAnalizeInterpretation').html,
 			data: {
-				catalog: {},
+				catalog: catalog,
 				record: {}
 			},
 			on: {
@@ -1011,10 +1110,11 @@ $(function () {
 					});
 				},
 				complete() {
+					$(this.el).show();
 					if (!!onShow) {
 						onShow(this);
 					}
-					$(this.el).show();
+
 				},
 				submit() {
 					let form = this.find('.popup.--analize-interpretation .popup__form');
@@ -1036,8 +1136,7 @@ $(function () {
 		});
 	};
 
-
-	window.popupsConfirmSmsCode       = function () {
+	window.popupsConfirmSmsCode = function () {
 		return new Ractive({
 			el: '.popup.--confirm-sms-code',
 			template: wbapp.tpl('#popupConfirmSmsCode').html,
@@ -1092,7 +1191,7 @@ $(function () {
 			}
 		});
 	};
-	window.popupMessage               = function (title, subtitle, caption, html, onShow) {
+	window.popupMessage         = function (title, subtitle, caption, html, onShow) {
 		return new Ractive({
 			el: '.popup.--message',
 			template: wbapp.tpl('#popupMessage').html,
@@ -1117,7 +1216,7 @@ $(function () {
 		});
 
 	};
-	window.popupPhoto2                 = function (params) {
+	window.popupPhoto2          = function (params) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 0,
@@ -1162,7 +1261,7 @@ $(function () {
 		});
 
 	};
-	window.popupLongterm2          = function (params, onSaved, onCancel) {
+	window.popupLongterm2       = function (params, onSaved, onCancel) {
 		var _data = {}, _default = {
 			description: '',
 			longterm: 1,
@@ -1219,7 +1318,7 @@ $(function () {
 
 	};
 
-	window.uploadFile = function (file_input, path, filename, callback) {
+	window.uploadFile    = function (file_input, path, filename, callback) {
 		var formData  = new FormData();
 		var _fileext  = file_input.files[0].name.split('.').pop();
 		var _filename = filename ? filename + '.' + _fileext : file_input.files[0].name;
@@ -1246,7 +1345,7 @@ $(function () {
 			}
 		});
 	};
-	window.uploader   = function (file_input, upload_url, callback) {
+	window.uploader      = function (file_input, upload_url, callback) {
 		var formData = new FormData();
 
 		formData.append("__token", wbapp._session.token);
@@ -1284,13 +1383,23 @@ $(function () {
 		}
 		if (new_record_data.event_date != prev_record_data.event_date) {
 			changelog.push({
-				label: 'Дата/время приёма',
+				label: 'Датa приёма',
 				field: 'event_date',
 				prev_val: utils.formatDate(prev_record_data.event_date),
 				new_val: utils.formatDate(new_record_data.event_date)
 			});
 		}
-		if (new_record_data.services.join('') != prev_record_data.services.join('')) {
+		if ((new_record_data.event_time_start != prev_record_data.event_time_start)
+			|| (new_record_data.event_time_end != prev_record_data.event_time_end)) {
+			changelog.push({
+				label: 'Время приёма',
+				field: 'event_time',
+				prev_val: prev_record_data.event_time_start + '-' + prev_record_data.event_time_end,
+				new_val: new_record_data.event_time_start + '-' + new_record_data.event_time_endevent_
+			});
+		}
+
+		if (new_record_data?.services?.join('') != prev_record_data?.services?.join('')) {
 			changelog.push({
 				label: 'Услуга',
 				field: 'services',
@@ -1298,7 +1407,7 @@ $(function () {
 				new_val: new_record_data.services
 			});
 		}
-		if (new_record_data.experts.join('') != prev_record_data.experts.join('')) {
+		if (new_record_data?.experts?.join('') != prev_record_data?.experts?.join('')) {
 			changelog.push({
 				label: 'Специалисты',
 				field: 'experts',
@@ -1320,9 +1429,9 @@ $(function () {
 	};
 	$(document)
 		.on('change blur', '.event-time-start', function (e) {
-			var end_time = $(this).parents('.row.event-time').find('.event-time-end');
+			var end_time       = $(this).parents('.row.event-time').find('.event-time-end');
 			var start_time_val = $(this).val();
-			var end_time_val = end_time.val();
+			var end_time_val   = end_time.val();
 			console.log(end_time_val, start_time_val);
 			end_time.attr('data-min-time', start_time_val);
 			if (!end_time_val) {
@@ -1372,6 +1481,16 @@ $(function () {
 			e.stopPropagation();
 			e.preventDefault();
 			window.location.href = "/cabinet/client/" + $(this).data('client');
+		})
+		.on('click', 'a.signout', function (e) {
+			e.stopPropagation();
+			console.log('Logout clicked..');
+			window.catalog.reload();
+		})
+		.on('click', 'a.btn.btn--black.login', function (e) {
+			e.stopPropagation();
+			console.log('Login clicked..');
+			window.catalog.reload();
 		})
 		.on('wb-ready', function (e) {
 			console.log('Async. JS loaded!');
