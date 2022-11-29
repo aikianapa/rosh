@@ -13,5 +13,5 @@ uploads/_cache
 
 uploads/
 .docs
-/assets/compress/
-/database/users.json
+
+forms/pages
