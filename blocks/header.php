@@ -34,9 +34,9 @@
 	                <a class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
                 </div>
 
-                <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'==''">
+                <div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['','client','admin'])">
                     <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
-                    <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
+                    <button wb-if="'{{_route.uri}}' !=='/english' AND '{{_sess.user.role}}'==''" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
                     <a href="#" class="hb-ico basket-ico header-basket"><i>0</i></a>
                     <button class="burger"></button>
                 </div>
