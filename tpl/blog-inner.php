@@ -100,9 +100,6 @@
     </div>
     <div>
         <div>
-            <wb-module wb="module=yonger&mode=render&view=mainfilter" />
-        </div>
-        <div>
             <wb-module wb="module=yonger&mode=render&view=footer" />
         </div>
         </main>
