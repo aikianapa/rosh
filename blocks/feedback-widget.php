@@ -11,7 +11,7 @@
                 <div class="col-md-4">
                     <h5 class="h5">Отзывы пациентов</h5>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="reports-slider">
                         <wb-var fbc="0" />
                         <div class="swiper-wrapper" wb-tree="item=feedback">
