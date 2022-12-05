@@ -7,7 +7,7 @@
                         <h2 class="h2" wb-if="'{{subheader}}'>''">{{subheader}}</h2>
                     </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-6">
                         <ol>
                             <wb-foreach wb="from=list&tpl=false">
                             <li wb-if="'{{_val}}'>''">{{_val}}</li>
