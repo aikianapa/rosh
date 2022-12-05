@@ -38,7 +38,7 @@
                         <h2 class="h2" wb-if="'{{subheader}}'>''">{{subheader}}</h2>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <blockquote>
                         <p wb-if="'{{text}}'>''">«{{text}}»</p>
                         <figcaption>
