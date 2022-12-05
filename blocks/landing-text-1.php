@@ -2,26 +2,26 @@
     <div class="landing">
         <div class="container">
             <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-8">
                     <div class="content-wrap">
                         <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
                     </div>
                 </div>
             </div>
             <div class="row --aicn mb-40" wb-if="'{{left}}'>'' AND '{{right}}'>''">
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <div class="text-right text-bold" wb-if="'{{left}}'>''">{{left}}</div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-lg-8">
                     <div class="content-wrap">
                         <h2 class="big-title" wb-if="'{{right}}'>''">{{right}}</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4"> </div>
-                <div class="col-md-6">
+                <div class="col-lg-4"> </div>
+                <div class="col-lg-6">
                     <div class="content-wrap">
                         <div class="text mb-80">
                             <p class="text-break" wb-if="'{{text}}'>''">{{text}}</p>
@@ -63,26 +63,26 @@
     <div class="landing page">
         <div class="container">
             <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-8">
                     <div class="content-wrap">
                         <h3 class="h3 mb-40">Наиболее часто аллергическая реакция вырабатывается на различные продукты.</h3>
                     </div>
                 </div>
             </div>
             <div class="row --aicn mb-40">
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <div class="text-right text-bold">Это называется</div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-lg-8">
                     <div class="content-wrap">
                         <h2 class="big-title">Пищевой аллергией.</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4"> </div>
-                <div class="col-md-6">
+                <div class="col-lg-4"> </div>
+                <div class="col-lg-6">
                     <div class="content-wrap">
                         <div class="text mb-80">
                             <p>Хотя, в большинстве случаев,виновником является не какой-то конкретный природный компонент продукта, а химические добавки: красители, консерванты, подсластители, усилители вкуса и т.д. Так как с каждым годом растет потребление подобных продуктов, врачи именно с этим, в первую очередь, и связывают высокий рост аллергических реакций в последнее время.</p>

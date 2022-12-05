@@ -2,12 +2,12 @@
     <div class="landing">
         <div class="info container">
             <div class="row --aicn mb-80">
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <div class="aside">
                         <h3 class="h3 mb-40" wb-if="'{{subheader}}'>''">{{subheader}}</h3>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                         <ol>
                             <wb-foreach wb="from=list&tpl=false">
                             <li wb-if="'{{_val}}'>''">{{_val}}</li>
