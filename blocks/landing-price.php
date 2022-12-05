@@ -28,8 +28,8 @@
     <div class="landing">
         <div class="container">
             <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-9">
+                <div class="col-md-4"></div>
+                <div class="col-md-6">
                     <div class="content-price">
                         <div class="content-price__head">
                             <p>Прайс-лист</p>
