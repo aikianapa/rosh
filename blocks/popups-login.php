@@ -102,7 +102,7 @@
                     <div class="form-title__description form-title__description--small">Для восстановления пароля введите email, который Вы указывали при регистрации</div>
                     <form class="popup__form">
                         <div class="input input--grey">
-                            <input class="input__control" type="email" placeholder="Ваш е-мейл">
+                            <input class="input__control" type="email" name="email" placeholder="Ваш е-мейл">
                             <div class="input__placeholder">Ваш е-мейл</div>
                         </div>
 
