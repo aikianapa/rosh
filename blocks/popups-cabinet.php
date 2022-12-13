@@ -34,8 +34,7 @@
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-						<input class="checkbox-visible-next-form" type="checkbox"
-							name="for_consultation" value="1">
+						<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1">
 						<span></span>
 						<div class="checbox__name">Консультация врача</div>
 					</label>
@@ -85,10 +84,15 @@
 					<div class="admin-editor__summ mb-3" data-hide="service-search">
 						<p>Всего</p>
 						<input type="hidden" name="price" value="0">
-						<p class="price">0 ₽<sup><b>*</b></sup></p>
+						<p class="price">0 ₽
+							<sup>
+								<b>*</b>
+							</sup>
+						</p>
 					</div>
 					<div class="mb-4 text-right" data-hide="service-search">
-						<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
+						<b>*</b>&nbsp;
+						<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 					</div>
 					<button class="btn btn--black form__submit" type="submit"> Записаться </button>
 				</form>
@@ -119,8 +123,7 @@
 					<form class="popup__form" method="post" on-submit="submit">
 						<input type="hidden" name="pay_status" value="unpay">
 						<input type="hidden" name="spec_service" value="analyses_interpretation">
-						<input type="hidden" name="price"
-							value="{{catalog.spec_service.analyses_interpretation.price}}">
+						<input type="hidden" name="price" value="{{catalog.spec_service.analyses_interpretation.price}}">
 						<input type="hidden" name="group" value="quotes">
 						<input type="hidden" name="status" value="new">
 						<input type="hidden" name="title" value="Расшифровка анализов">
@@ -175,14 +178,10 @@
 						Для подтверждения необходимо произвести оплату в размере 20% от стоимости
 					</div>
 					<!--!!! change `action` address on PROD. !!!-->
-					<form
-						on-submit="submit"
-						action="https://demo.paykeeper.ru/create/"
-						method="POST"
-						target="_blank">
-						<input type='hidden' name='sum' value='{{this.pay_price}}'/>
-						<input type='hidden' name='orderid' value='{{this.id}}'/>
-						<input type='hidden' name='clientid' value='{{this.client}}'/>
+					<form on-submit="submit" action="https://demo.paykeeper.ru/create/" method="POST" target="_blank">
+						<input type='hidden' name='sum' value='{{this.pay_price}}' />
+						<input type='hidden' name='orderid' value='{{this.id}}' />
+						<input type='hidden' name='clientid' value='{{this.client}}' />
 						<button class="btn btn--black form__submit" type="submit">
 							Внести предоплату
 						</button>
@@ -236,18 +235,13 @@
 						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
 						<div class="row">
 							<div class="col-md-12">
-								<input type="hidden" value="{{ record.id }}" name="id">
-
-								{{#if record.spec_service}}
+								<input type="hidden" value="{{ record.id }}" name="id"> {{#if record.spec_service}}
 								<input type="hidden" name="spec_service" value="{{record.spec_service}}">
-								<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}">
-								{{else}}
+								<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}"> {{else}}
 								<div class="admin-editor__event mb-20">
 									<div class="search__block --flex --aicn">
 										<div class="input">
-											<input class="popup-services-list search__input search-services"
-												type="text" placeholder="Поиск по услугам"
-												autocomplete="off">
+											<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
 											<div class="search__drop"></div>
 											<button class="search__btn" type="button">
 												<svg class="svgsprite _search">
@@ -268,13 +262,8 @@
 										<div class="col-md-6">
 											<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
 												{{#if record.for_consultation=== '1' }}
-												<input class="checkbox-visible-next-form" type="checkbox"
-													checked
-													name="for_consultation" value="1">
-												{{else}}
-												<input class="checkbox-visible-next-form" type="checkbox"
-													name="for_consultation" value="1">
-												{{/if}}
+												<input class="checkbox-visible-next-form" type="checkbox" checked name="for_consultation" value="1"> {{else}}
+												<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1"> {{/if}}
 												<span></span>
 												<div class="checbox__name">Консультация врача</div>
 											</label>
@@ -285,11 +274,8 @@
 												{{#each @global.catalog.quoteType as qt}}
 												<label class="text-radio" name="type" value="{{ qt.id }}">
 													{{#if qt.id === record.type }}
-													<input type="radio" name="type" value="{{ qt.id }}" checked
-														on-click="checkConsultation">
-													{{else}}
-													<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
-													{{/if}}
+													<input type="radio" name="type" value="{{ qt.id }}" checked on-click="checkConsultation"> {{else}}
+													<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation"> {{/if}}
 													<span>{{qt.name}}</span>
 												</label>
 												{{/each}}
@@ -297,8 +283,7 @@
 										</div>
 									</div>
 									<div class="row">
-										{{#if record.spec_service}}
-										{{else}}
+										{{#if record.spec_service}} {{else}}
 										<div class="col-md-6">
 											<div class="select-form select-checkboxes">
 												<div class="select select_experts">
@@ -311,10 +296,8 @@
 														<div class="select__item select__item--checkbox">
 															<label class="checkbox checkbox--record">
 																{{#if @global.utils.arr.search(.id, record.experts)}}
-																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
-																{{else}}
-																<input type="checkbox" name="experts[]" value="{{.id}}">
-																{{/if}}
+																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required> {{else}}
+																<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
 																<span></span>
 																<div class="checbox__name">
 																	<div class="select__name">{{name}}</div>
@@ -331,10 +314,8 @@
 											<div class="row">
 												<div class="col-md-12">
 													<div class="input input-lk-calendar input--grey">
-														<input class="input__control datepickr"
-															name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
-															autocomplete="off"
-															type="text" placeholder="Выбрать дату и время">
+														<input class="input__control datepickr" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" autocomplete="off"
+														 type="text" placeholder="Выбрать дату и время">
 														<div class="input__placeholder">Выбрать дату</div>
 													</div>
 												</div>
@@ -342,24 +323,15 @@
 											<div class="row event-time">
 												<div class="col-md-6">
 													<div class="calendar input mb-30">
-														<input class="input__control timepickr event-time-start"
-															type="text"
-															name="event_time_start"
-															value="{{record.event_time_start}}"
-															data-min-time="09:00"
-															data-max-time="18:00" autocomplete="off"
-															pattern="[0-9]{2}:[0-9]{2}" required>
+														<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}"
+														 data-min-time="09:00" data-max-time="18:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
 														<div class="input__placeholder">Время (начало)</div>
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="calendar input mb-30">
-														<input class="input__control timepickr event-time-end" type="text"
-															name="event_time_end"
-															value="{{record.event_time_end}}"
-															data-min-time="09:00" autocomplete="off"
-															data-max-time="18:00"
-															pattern="[0-9]{2}:[0-9]{2}" required>
+														<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}"
+														 data-min-time="09:00" autocomplete="off" data-max-time="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
 														<div class="input__placeholder">Время (конец)</div>
 													</div>
 												</div>
@@ -379,20 +351,14 @@
 											<div class="search__drop-summ">{{@global.catalog.spec_service[this.spec_service].price}} ₽</div>
 										</div>
 									</div>
-									{{else}}
-									{{#each record.service_prices: idx, key}}
-									<div class="search__drop-item" data-index="{{idx}}"
-										data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
-										<input type="hidden" name="services[]"
-											value="{{service_id}}">
-										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]"
-											value="{{service_id}}">
-										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]"
-											value="{{price_id}}">
-										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]"
-											value="{{name}}">
-										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]"
-											value="{{price}}">
+									{{else}} {{#each record.service_prices: idx, key}}
+									<div class="search__drop-item" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
+									 data-price="{{price}}">
+										<input type="hidden" name="services[]" value="{{service_id}}">
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
+										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
 										<div class="search__drop-name">
 											<div class="search__drop-delete">
 												<svg class="svgsprite _delete">
@@ -410,8 +376,7 @@
 											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 										</label>
 									</div>
-									{{/each}}
-									{{/if}}
+									{{/each}} {{/if}}
 								</div>
 
 								<div class="admin-editor__summ">
@@ -428,7 +393,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupEvent = function (client, _record, onSaved) {
+			window.popupEvent = function(client, _record, onSaved) {
 				return new Ractive({
 					el: '.popup.--record-editor',
 					template: wbapp.tpl('#popupRecordEditor').html,
@@ -451,7 +416,7 @@
 						},
 						checkConsultation(ev) {
 							var ght = 0;
-							var lv  = 0;
+							var lv = 0;
 							console.log(ev);
 							if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
 								ght = parseInt(catalog.spec_service.consultation.price);
@@ -460,7 +425,7 @@
 							}
 							var price = 0;
 							var prev_price = $(ev.node).parents('form').find('[name="price"]').val();
-							if (!!prev_price){
+							if (!!prev_price) {
 								price = parseInt(prev_price);
 							}
 							if (ght === 0) {
@@ -479,25 +444,28 @@
 							$(ev.node).parents('form').find('[name="price"]').val(price);
 							$(ev.node).parents('form').find('.price')
 								.html(utils.formatPrice(price) +
-								      ' ₽<sup><b>*</b></sup>');
+									' ₽<sup><b>*</b></sup>');
 						},
 						submit(ev) {
 							console.log('saving...', ev);
 							var edit_mode = (!!_record && !!_record.id);
-							let $form     = $(ev.node);
-							let uid       = this.get('client.id');
+							let $form = $(ev.node);
+							let uid = this.get('client.id');
 							if ($form.verify()) {
-								let new_data   = $form.serializeJSON();
+								let new_data = $form.serializeJSON();
 								new_data.group = 'events';
 								new_data.price = parseInt(new_data.price);
 								if (!edit_mode) {
-									new_data.status     = 'upcoming';
+									new_data.status = 'upcoming';
 									new_data.pay_status = new_data.price ? 'unpay' : 'free';
 
 									new_data.priority = 0;
-									new_data.marked   = false;
-									new_data.photos   = {before: [], after: []};
-									new_data.client   = uid;
+									new_data.marked = false;
+									new_data.photos = {
+										before: [],
+										after: []
+									};
+									new_data.client = uid;
 								}
 
 								if (new_data.group === 'events' && !new_data.event_date) {
@@ -521,25 +489,25 @@
 									return false;
 								}
 								new_data.event_date = utils.dateForce(new_data.event_date);
-								new_data.price      = parseInt(new_data.price);
+								new_data.price = parseInt(new_data.price);
 
 								console.log('saving...', new_data);
 
-								utils.api.post('/api/v2/' + (edit_mode ? 'update' : 'create')
-								               + '/records/'
-								               + (edit_mode ? _record.id : ''), new_data)
-									.then(function (res) {
-											if (!!onSaved) {
-												onSaved(res);
-											}
-										});
+								utils.api.post('/api/v2/' + (edit_mode ? 'update' : 'create') +
+										'/records/' +
+										(edit_mode ? _record.id : ''), new_data)
+									.then(function(res) {
+										if (!!onSaved) {
+											onSaved(res);
+										}
+									});
 
 							}
 
 							return false;
 						}
 					},
-					close(){
+					close() {
 						$(this.el).hide();
 					}
 				});
@@ -566,24 +534,21 @@
 						</p>
 						{{else}}
 						<div class="search-form input">
-							<input class="input__control autocomplete client-search"
-								autocomplete="off"
-								type="text" placeholder="Выбрать пациента" required>
+							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
 						<input type="hidden" name="client" value="">
 						<input type="hidden" name="id" value="">
 
 						<div class="search-form event disabled input">
-							<input class="input__control autocomplete event-search record-search"
-								type="text" placeholder="Выбрать пациента" required autocomplete="off">
+							<input class="input__control autocomplete event-search record-search" type="text" placeholder="Выбрать пациента" required
+							 autocomplete="off">
 							<div class="input__placeholder">Выбрать событие/посещение</div>
 						</div>
 						{{/if}}
 
 						<div class="input calendar mb-20">
-							<input class="input__control datepickr" type="text" name="date"
-								placeholder="Выбрать дату посещения" autocomplete="off">
+							<input class="input__control datepickr" type="text" name="date" placeholder="Выбрать дату посещения" autocomplete="off">
 							<div class="input__placeholder">Укажите дату фото</div>
 						</div>
 						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
@@ -605,11 +570,10 @@
 								<img class="preview d-none" alt="upload preview">
 							</div>
 							<input type="file" name="file" accept=".jpg, .jpeg, .png" class="client-photo" required>
-							<input type="hidden" name="path"
-								value="/records/photos/{{ @global.wbapp._session.user.id }}/">
+							<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id }}/">
 							<div class="file-photo__text text-grey">
-								Для загрузки фото заполните все поля<br>
-								Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
+								Для загрузки фото заполните все поля
+								<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
 							</div>
 						</label>
 						<button class="btn btn--white upload-image" type="submit">Сохранить</button>
@@ -618,7 +582,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupPhoto = function (client, record, onSaved) {
+			window.popupPhoto = function(client, record, onSaved) {
 				return new Ractive({
 					el: '.popup.--photo',
 					template: wbapp.tpl('#popupPhoto').html,
@@ -636,7 +600,7 @@
 						submit(ev) {
 							console.log('Submit form...');
 							var _form = $(ev.node);
-							var self  = this;
+							var self = this;
 
 							if (_form.verify()) {
 								var form_data = _form.serializeJSON();
@@ -655,7 +619,7 @@
 									return false;
 								}
 								console.log('form data', form_data);
-								utils.api.get('/api/v2/read/records/' + form_data.id).then(function (record) {
+								utils.api.get('/api/v2/read/records/' + form_data.id).then(function(record) {
 									var _photo_group = form_data.target || 'before';
 									delete form_data.target;
 
@@ -663,14 +627,17 @@
 										_form.find('input[name="file"]')[0],
 										'record/photos/' + record.id,
 										Date.now() + '_' + utils.getRandomStr(4),
-										function (photo) {
+										function(photo) {
 											if (photo.error) {
 												toast_error(photo.error);
 												return false;
 											}
-											console.log('record: ',record, _photo_group);
-											if (!record.photos){
-												record.photos = {'before':[], 'after':[]};
+											console.log('record: ', record, _photo_group);
+											if (!record.photos) {
+												record.photos = {
+													'before': [],
+													'after': []
+												};
 											}
 											var _photo_data = {
 												src: photo.uri,
@@ -679,7 +646,7 @@
 												date: form_data.date,
 												photo_group: _photo_group
 											};
-											if (_photo_group == 'before'){
+											if (_photo_group == 'before') {
 												record.photos['before'] = [];
 											}
 											record.hasPhoto = 1;
@@ -688,7 +655,7 @@
 											utils.api.post('/api/v2/update/records/' + record.id, {
 												'photos': record.photos,
 												'hasPhoto': 1
-											}).then(function (rec) {
+											}).then(function(rec) {
 												onSaved(rec);
 												$(self.el).hide();
 											});
@@ -715,31 +682,24 @@
 					<div class="popup__name text-bold">Продолжительное лечение</div>
 					<form class="popup__form" on-submit="longtermSave" autocomplete="off">
 						{{#if record}}
-						<input type="hidden" name="id" value="{{record.id}}">
-						{{else}}
+						<input type="hidden" name="id" value="{{record.id}}"> {{else}}
 						<!-- new record -->
 						{{/if}}
 						<input type="hidden" name="group" value="longterms">
-						<input type="hidden" name="client" value="{{client.id}}">
-
-						{{#if client}}
+						<input type="hidden" name="client" value="{{client.id}}"> {{#if client}}
 						<p class="text-bold text-big mb-20">
 							{{ @global.catalog.clients[client.id].fullname }}
 						</p>
 						{{else}}
 						<div class="search-form input">
-							<input class="input__control autocomplete client-search" autocomplete="off"
-								type="text" placeholder="Выбрать пациента" required>
+							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
 						{{/if}}
 
 						<div class="input calendar mb-20">
-							<input class="input__control datepickr" type="text"
-								required autocomplete="off"
-								name="event_date"
-								value="{{ @global.utils.dateForce(record.event_date) }}"
-								placeholder="Выбрать дату посещения">
+							<input class="input__control datepickr" type="text" required autocomplete="off" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
+							 placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Дата посещения</div>
 						</div>
 						<div class="popup-title__checkbox disabled">
@@ -751,10 +711,8 @@
 						</div>
 
 						<div class="input calendar mb-20" data-filter="longterms">
-							<input class="input__control event-search longterm-search"
-								type="text" name="longterm_title" autocomplete="off"
-								placeholder="Название продолжительного лечения"
-								required>
+							<input class="input__control event-search longterm-search" type="text" name="longterm_title" autocomplete="off" placeholder="Название продолжительного лечения"
+							 required>
 							<div class="input__placeholder">Название продолжительного лечения</div>
 						</div>
 
@@ -777,12 +735,11 @@
 							</div>
 
 							<input type="hidden" name="path" value="/records/photos/longterms/">
-							<input type="file" accept=".jpg, .jpeg, .png" name="file"
-								class="client-photo" required>
+							<input type="file" accept=".jpg, .jpeg, .png" name="file" class="client-photo" required>
 
 							<div class="file-photo__text text-grey">
-								Для загрузки фото заполните все поля<br>
-								Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
+								Для загрузки фото заполните все поля
+								<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
 							</div>
 						</label>
 						<button class="btn btn--white" type="submit">Сохранить</button>
@@ -791,7 +748,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupLongterm = function (client, record, onSaved) {
+			window.popupLongterm = function(client, record, onSaved) {
 				return new Ractive({
 					el: '.popup.--longterm',
 					template: wbapp.tpl('#popupLongterm').html,
@@ -806,21 +763,24 @@
 							$(this.el).show();
 						},
 						longtermSave(ev) {
-							var self  = this;
+							var self = this;
 							var $form = $(ev.node);
-							var uid   = this.get('client.id');
+							var uid = this.get('client.id');
 
 							if ($form.verify() && uid > '') {
 								var form_data = $form.serializeJSON();
 
-								form_data.group      = 'longterms';
-								form_data.status     = '';
+								form_data.group = 'longterms';
+								form_data.status = '';
 								form_data.pay_status = 'free';
-								form_data.photos     = {before: [], after: []};
+								form_data.photos = {
+									before: [],
+									after: []
+								};
 
-								form_data.client   = uid;
+								form_data.client = uid;
 								form_data.priority = 0;
-								form_data.marked   = 0;
+								form_data.marked = 0;
 								if (!form_data.event_date) {
 									toast_error('Выберите дату и время события');
 									$($(ev.node).parents('form'))
@@ -830,8 +790,8 @@
 								}
 								form_data.event_date = utils.dateForce(form_data.event_date);
 								form_data.recommendation = '';
-								form_data.description    = '';
-								form_data.price  = 0;
+								form_data.description = '';
+								form_data.price = 0;
 								var _photo_group = form_data.target || 'before';
 								delete form_data.photo_group;
 
@@ -839,13 +799,13 @@
 									$form.find('input[name="file"]')[0],
 									'records/photos/longterms',
 									Date.now() + '_' + utils.getRandomStr(4),
-									function (photo) {
+									function(photo) {
 										if (photo.error) {
 											toast_error(photo.error);
 											return false;
 										}
 
-										var _photo_data   = {
+										var _photo_data = {
 											src: photo.uri,
 											filename: photo.filename,
 											date: form_data.event_date,
@@ -855,8 +815,8 @@
 										form_data.photos[_photo_group].push(_photo_data);
 										form_data.hasPhoto = 1;
 										utils.api.post('/api/v2/create/records/', form_data).then(
-											function (longterm_record) {
-												if (typeof onSaved == 'function'){
+											function(longterm_record) {
+												if (typeof onSaved == 'function') {
 													onSaved(longterm_record);
 
 
@@ -889,13 +849,11 @@
 						<input type="hidden" name="id" value="{{this.id}}">
 
 						<div class="search-form input disabled">
-							<input class="input__control autocomplete client-search"
-								type="text" placeholder="Выбрать пациента">
+							<input class="input__control autocomplete client-search" type="text" placeholder="Выбрать пациента">
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
 						<div class="input calendar mb-20">
-							<input class="input__control datepickr" type="text"
-								name="event_date" placeholder="Выбрать дату посещения">
+							<input class="input__control datepickr" type="text" name="event_date" placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Выбрать дату посещения</div>
 						</div>
 						<input type="hidden" name="group" value="event">
@@ -908,10 +866,7 @@
 							</label>
 						</div>
 						<div class="input calendar mb-20" data-show="longterm">
-							<input class="input__control longterm-search"
-								type="text" name="title"
-								placeholder="Название продолжительного лечения"
-								value="">
+							<input class="input__control longterm-search" type="text" name="title" placeholder="Название продолжительного лечения" value="">
 							<div class="input__placeholder">Название продолжительного лечения</div>
 						</div>
 						<div class="radios --flex">
@@ -959,32 +914,28 @@
 						<input type="hidden" name="confirmed" value="0">
 						<input type="hidden" name="active" value="on">
 						<div class="input">
-							<input class="input__control" type="text" required
-								placeholder="ФИО" name="fullname" minlength="5">
+							<input class="input__control" type="text" required placeholder="ФИО" name="fullname" minlength="5">
 							<div class="input__placeholder">ФИО</div>
 						</div>
 						<div class="input">
-							<input class="input__control datebirthdaypickr" required
-								type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
+							<input class="input__control datebirthdaypickr" required type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
 							<div class="input__placeholder">Дата рождения</div>
 						</div>
 						<div class="input mb-30">
-							<input class="input__control" type="tel" required
-								placeholder="Номер телефона"
-								minlength="7"
-								data-inputmask="'mask': '+7 (999) 999-99-99'"
-								name="phone">
+							<input class="input__control" type="tel" required placeholder="Номер телефона" minlength="7" data-inputmask="'mask': '+7 (999) 999-99-99'"
+							 name="phone">
 							<div class="input__placeholder">Номер телефона</div>
 						</div>
 						<button class="btn btn--black form__submit" type="submit">Создать</button>
 
-						<div class="form-bottom">После отправки для пациента будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo; в&nbsp;верхнем меню сайта</div>
+						<div class="form-bottom">После отправки для пациента будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo;
+							в&nbsp;верхнем меню сайта</div>
 					</form>
 				</div>
 			</template>
 		</div>
 		<script wbapp>
-			window.popupsCreateProfile = function () {
+			window.popupsCreateProfile = function() {
 				return new Ractive({
 					el: '.popup.--create-client',
 					template: wbapp.tpl('#popupCreateClient').html,
@@ -1001,26 +952,29 @@
 								console.log('popupsCreateProfile: ', post);
 
 								let names = post.fullname.split(' ', 3);
-								let keys  = ['last_name', 'first_name', 'middle_name'];
+								let keys = ['last_name', 'first_name', 'middle_name'];
 								for (var i = 0; i < names.length; i++) {
 									post[keys[i]] = names[i];
 								}
 								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
 								utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
-									function (data) {
+									function(data) {
 										if (!data.length) {
-											post.role   = "client";
-											post.role   = "client";
+											post.role = "client";
+											post.role = "client";
 											post.active = "on";
-											utils.api.post('/api/v2/create/users/', post).then(function (data) {
+											utils.api.post('/api/v2/create/users/', post).then(function(data) {
 												if (data.error) {
-													wbapp.trigger('wb-save-error', {'data': data});
+													wbapp.trigger('wb-save-error', {
+														'data': data
+													});
 												} else {
 													toast('Карточка клиента успешно создана!');
 													$('.popup.--create-client').fadeOut('fast');
 													popupMessage('Карточка пациента создана!', '', 'Успешно',
 														'<a href="/cabinet/client/' + data.id +
-														'"> Перейти на страницу профиля </a>', function (d) {});
+														'"> Перейти на страницу профиля </a>',
+														function(d) {});
 												}
 											});
 										} else {
@@ -1050,26 +1004,21 @@
 						{{#user}}
 						<input type="hidden" name="id" value="{{user.id}}">
 						<div class="input">
-							<input class="input__control" type="text" required value="{{.fullname}}"
-								placeholder="ФИО" name="fullname" minlength="5">
+							<input class="input__control" type="text" required value="{{.fullname}}" placeholder="ФИО" name="fullname" minlength="5">
 							<div class="input__placeholder">ФИО</div>
 						</div>
 						<div class="input">
-							<input class="input__control datebirthdaypickr" required value="{{.birthdate}}"
-								type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
+							<input class="input__control datebirthdaypickr" required value="{{.birthdate}}" type="text" placeholder="Дата рождения" name="birthdate"
+							 minlength="5">
 							<div class="input__placeholder">Дата рождения</div>
 						</div>
 						<div class="input mb-30">
-							<input class="input__control" type="tel" required
-								placeholder="Номер телефона"
-								minlength="7" value="{{.phone}}"
-								data-inputmask="'mask': '+7 (999) 999-99-99'"
-								name="phone">
+							<input class="input__control" type="tel" required placeholder="Номер телефона" minlength="7" value="{{.phone}}" data-inputmask="'mask': '+7 (999) 999-99-99'"
+							 name="phone">
 							<div class="input__placeholder">Номер телефона</div>
 						</div>
 						<div class="input input--grey">
-							<input class="input__control" type="email" name="email" value="{{.email}}"
-								required placeholder="E-mail">
+							<input class="input__control" type="email" name="email" value="{{.email}}" required placeholder="E-mail">
 							<div class="input__placeholder input__placeholder--dark">E-mail</div>
 						</div>
 
@@ -1080,7 +1029,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupEditProfile = function () {
+			window.popupEditProfile = function() {
 				return new Ractive({
 					el: '.popup.--edit-profile',
 					template: wbapp.tpl('#popupEditProfile').html,
@@ -1091,7 +1040,7 @@
 						complete() {
 							var self = this;
 							utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
-								.then(function (data) {
+								.then(function(data) {
 									data.fullname = data.fullname.replaceAll('  ', ' ')
 									self.set('user', data);
 									console.log(data);
@@ -1105,9 +1054,9 @@
 							var self = this;
 							var $form = $(ev.node);
 							if ($form.verify()) {
-								var data   = $form.serializeJSON();
+								var data = $form.serializeJSON();
 								data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
-								Cabinet.updateProfile(wbapp._session.user.id, data, function (data) {
+								Cabinet.updateProfile(wbapp._session.user.id, data, function(data) {
 									data.birthdate_fmt = utils.formatDate(data.birthdate);
 									self.set('user', data); /* get actually user data */
 									toast_success('Профиль обновлён!');
@@ -1136,9 +1085,10 @@
 						<div class="form-title__description">
 							Мы отправили код подтверждения на номер
 							<span class="current_phone">{{phone}}</span>
-							.<br>
-							Время жизни кода 30 секунд.<br>
-							Осталось <strong>
+							.
+							<br> Время жизни кода 30 секунд.
+							<br> Осталось
+							<strong>
 								<span class="sms_code_lifetime"></span>
 							</strong>
 						</div>
@@ -1174,18 +1124,13 @@
 						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
 
 
-						<input type="hidden" value="{{ record.id }}" name="id">
-
-						{{#if this.spec_service}}
+						<input type="hidden" value="{{ record.id }}" name="id"> {{#if this.spec_service}}
 						<input type="hidden" name="spec_service" value="{{this.spec_service}}">
-						<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
-						{{else}}
+						<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}"> {{else}}
 						<div class="admin-editor__event mb-20">
 							<div class="search__block --flex --aicn">
 								<div class="input">
-									<input class="popup-services-list search__input search-services"
-										type="text" placeholder="Поиск по услугам"
-										autocomplete="off">
+									<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
 									<div class="search__drop"></div>
 									<button class="search__btn" type="button">
 										<svg class="svgsprite _search">
@@ -1206,17 +1151,14 @@
 								{{#each catalog.quoteType as qt}}
 								<label class="text-radio">
 									{{#if qt.id === record.type }}
-									<input type="radio" name="type" value="{{ qt.id }}" checked>
-									{{else}}
-									<input type="radio" name="type" value="{{ qt.id }}">
-									{{/if}}
+									<input type="radio" name="type" value="{{ qt.id }}" checked> {{else}}
+									<input type="radio" name="type" value="{{ qt.id }}"> {{/if}}
 									<span>{{qt.name}}</span>
 								</label>
 								{{/each}}
 							</div>
 							<div class="row">
-								{{#if record.spec_service}}
-								{{else}}
+								{{#if record.spec_service}} {{else}}
 								<div class="col-md-6">
 									<div class="select-form select-checkboxes">
 										<div class="select select_experts">
@@ -1229,10 +1171,8 @@
 												<div class="select__item select__item--checkbox">
 													<label class="checkbox checkbox--record">
 														{{#if @global.utils.arr.search(.id, record.experts)}}
-														<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}">
-														{{else}}
-														<input type="checkbox" name="experts[]" value="{{.id}}">
-														{{/if}}
+														<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}"> {{else}}
+														<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
 														<span></span>
 														<div class="checbox__name">
 															<div class="select__name">{{name}}</div>
@@ -1249,9 +1189,8 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="input input-lk-calendar input--grey">
-												<input class="input__control datepickr"
-													name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
-													type="text" placeholder="Выбрать дату и время">
+												<input class="input__control datepickr" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" type="text"
+												 placeholder="Выбрать дату и время">
 												<div class="input__placeholder">Выбрать дату</div>
 											</div>
 										</div>
@@ -1259,24 +1198,15 @@
 									<div class="row">
 										<div class="col-md-6">
 											<div class="calendar input mb-30">
-												<input class="input__control timepickr"
-													type="text"
-													name="event_time_start"
-													value="{{record.event_time_start}}"
-													data-min-time="09:00"
-													data-max-time="18:00"
-													pattern="[0-9]{2}:[0-9]{2}" required>
+												<input class="input__control timepickr" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00"
+												 data-max-time="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
 												<div class="input__placeholder">Время (начало)</div>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="calendar input mb-30">
-												<input class="input__control timepickr" type="text"
-													name="event_time_end"
-													value="{{record.event_time_end}}"
-													data-min-time="09:00"
-													data-max-time="18:00"
-													pattern="[0-9]{2}:[0-9]{2}" required>
+												<input class="input__control timepickr" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00"
+												 data-max-time="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
 												<div class="input__placeholder">Время (конец)</div>
 											</div>
 										</div>
@@ -1298,20 +1228,13 @@
 									</div>
 								</div>
 							</div>
-							{{else}}
-							{{#each record.service_prices: idx, key}}
-							<div class="search__drop-item" data-index="{{idx}}"
-								data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
-								<input type="hidden" name="services[]"
-									value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{key}}][service_id]"
-									value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{key}}][price_id]"
-									value="{{price_id}}">
-								<input type="hidden" name="service_prices[{{key}}][name]"
-									value="{{name}}">
-								<input type="hidden" name="service_prices[{{key}}][price]"
-									value="{{price}}">
+							{{else}} {{#each record.service_prices: idx, key}}
+							<div class="search__drop-item" data-index="{{idx}}" data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+								<input type="hidden" name="services[]" value="{{service_id}}">
+								<input type="hidden" name="service_prices[{{key}}][service_id]" value="{{service_id}}">
+								<input type="hidden" name="service_prices[{{key}}][price_id]" value="{{price_id}}">
+								<input type="hidden" name="service_prices[{{key}}][name]" value="{{name}}">
+								<input type="hidden" name="service_prices[{{key}}][price]" value="{{price}}">
 								<div class="search__drop-name">
 									{{name}}
 									<div class="search__drop-delete">
@@ -1324,8 +1247,7 @@
 									<div class="search__drop-summ">{{ @global.utils.formatPrice(.price) }} ₽</div>
 								</div>
 							</div>
-							{{/each}}
-							{{/if}}
+							{{/each}} {{/if}}
 						</div>
 						<div class="admin-editor__summ">
 							<p>Всего</p>
@@ -1355,7 +1277,7 @@
 					</button>
 					<div class="popup__name text-bold">Выгрузить данные</div>
 
-					<form class="popup__form" method="GET" action="/cabinet/download-data/">
+					<form class="popup__form" method="GET" action="/form/records/download" on-submit="submit">
 						<div class="select-form">
 							<div class="select">
 								<div class="select__main">
@@ -1417,28 +1339,28 @@
 							</div>
 						</div>
 						<div class="calendar input">
-							<input class="input__control daterangepickr" type="text" placeholder="За весь период">
+							<input class="input__control daterangepickr" type="text" name="period" placeholder="За весь период">
 							<div class="input__placeholder">За весь период</div>
 						</div>
 						<div class="select-form">
 							<label class="checkbox mainfilter__checkbox mb-10">
-								<input type="checkbox">
+								<input type="checkbox" name="only_phones">
 								<span></span>
 								<div class="checbox__name text-grey">Выгрузить только список номеров</div>
 							</label>
 							<div class="calendar input">
-								<input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
+								<input class="input__control" type="tel" name="phone" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
 								<div class="input__placeholder">Номер телефона</div>
 							</div>
 						</div>
 						<div class="select-form mb-30">
 							<label class="checkbox mainfilter__checkbox mb-10">
-								<input type="checkbox">
+								<input type="checkbox" name="only_emails">
 								<span></span>
 								<div class="checbox__name text-grey">Введите только список е-мейлов</div>
 							</label>
 							<div class="calendar input">
-								<input class="input__control" type="email" placeholder="Введите е-мейл">
+								<input class="input__control" type="email" name="email" placeholder="Введите е-мейл">
 								<div class="input__placeholder">Введите е-мейл</div>
 							</div>
 						</div>
@@ -1448,7 +1370,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupDownloadData = function () {
+			window.popupDownloadData = function() {
 				return new Ractive({
 					el: '.popup.--download-data',
 					template: wbapp.tpl('#popupDownloadData').html,
@@ -1460,6 +1382,66 @@
 						complete() {
 							initPlugins();
 							$(this.el).show();
+						},
+						submit(ev) {
+							let form = ev.node;
+							let data = $(form).serializeJSON()
+							let action = $(form).attr('action')
+
+/*
+							$.post(action,data,function(res){
+								console.log(res);
+							})
+							return false;
+*/
+
+							var xhr = new XMLHttpRequest();
+							xhr.open('POST', action, true);
+							xhr.responseType = 'blob';
+							xhr.onload = function() {
+								if (this.status === 200) {
+									var blob = this.response;
+									var filename = "";
+									var disposition = xhr.getResponseHeader('Content-Disposition');
+									if (disposition && disposition.indexOf('attachment') !== -1) {
+										var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+										var matches = filenameRegex.exec(disposition);
+										if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+									}
+
+									if (typeof window.navigator.msSaveBlob !== 'undefined') {
+										// IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+										window.navigator.msSaveBlob(blob, filename);
+									} else {
+										var URL = window.URL || window.webkitURL;
+										var downloadUrl = URL.createObjectURL(blob);
+
+										if (filename) {
+											// use HTML5 a[download] attribute to specify filename
+											var a = document.createElement("a");
+											// safari doesn't support this yet
+											if (typeof a.download === 'undefined') {
+												window.location.href = downloadUrl;
+											} else {
+												a.href = downloadUrl;
+												a.download = filename;
+												document.body.appendChild(a);
+												a.click();
+											}
+										} else {
+											window.location.href = downloadUrl;
+										}
+
+										setTimeout(function() {
+											URL.revokeObjectURL(downloadUrl);
+										}, 100); // cleanup
+									}
+								}
+							};
+							xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+							xhr.send($.param(params, true));
+							return false;
+
 						}
 					}
 				});
@@ -1469,6 +1451,6 @@
 </view>
 <edit header="Все попапы для ЛК">
 	<div>
-		<wb-module wb="module=yonger&mode=edit&block=common.inc"/>
+		<wb-module wb="module=yonger&mode=edit&block=common.inc" />
 	</div>
 </edit>
