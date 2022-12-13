@@ -400,7 +400,7 @@ $(function () {
 							});
 							if (!!service.blocks) {
 								service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-									if (serv_price.price === 0) {
+									if (parseInt(serv_price.price) === 0) {
 										return;
 									}
 									let _item = {
@@ -770,8 +770,8 @@ $(function () {
 
 		var _parent_form = $selector.closest('form');
 		$selector.autocomplete({
-			noCache: true,
-			minChars: 1,
+			noCache: false,
+			minChars: 0,
 			lookup: service_list,
 			beforeRender: function (container, suggestions) {
 				var CNT = $(container);
@@ -940,7 +940,7 @@ $(function () {
 			type: 'GET',
 			paramName: '',
 			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +
-			            '&group=[longterms,events]' + client_qry,
+			            '&group=[longterms,events]' + client_qry + '&@sort=_lastdate:d',
 			noSuggestionNotice: '<p>Не найдено событий..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
