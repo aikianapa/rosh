@@ -221,10 +221,21 @@
                 el: '#Basket',
                 template: $('#Basket').html(),
                 data: {
-                    cart: wbapp.storage("shop.cart")
+                    cart: {}
                 },
                 on: {
-                    init() {
+                    complete() {
+                        let cart = wbapp.storage("shop.cart")
+                        if (!cart) {
+                            cart = {
+                                list: {},
+                                total: {
+                                    sum: 0,
+                                    qty: 0
+                                }
+                            }
+                            wbapp.storage("shop.cart", cart)
+                        }
                         this.fire('calc')
                     },
                     setQty(ev) {
@@ -248,6 +259,8 @@
                             cart.total.qty = cart.total.qty + item.qty*1
                         })
                         this.set('cart',cart)
+                        $(document).find('.cart-total-qty').text(cart.total.qty)
+                        $(document).find('.cart-total-sum').text(cart.total.sum)
                     },
                     set(cart) {
                         wbapp.storage("shop.cart", cart)

@@ -29,8 +29,8 @@
                             </div>
                             <p>{{short}}</p>
                             <div class="card-bottom">
-                                <button wb-if="'{{office}}'=='on' OR '{{delivery}}'=='on'" class="btn btn--black cart-add">В корзину</button>
-                                <button wb-if="'{{office}}'=='' && '{{delivery}}'==''" class="btn btn--black" disabled>Нет в наличии</button>
+                                <button wb-if="'{{office}}'=='on' OR '{{delivery}}'=='on'" class="btn btn--black cart-add" type="button">В корзину</button>
+                                <button wb-if="'{{office}}'=='' && '{{delivery}}'==''" class="btn btn--black" disabled  type="button">Нет в наличии</button>
                                 <div class="amount">
                                     <span class="amount-minus cart-dec"></span>
                                     <span class="amount-txt"><span class="amount-qty">1</span> шт</span>
@@ -47,54 +47,6 @@
             </div>
         </div>
     </div>
-    <script wb-app>
-        let cart = wbapp.storage("shop.cart");
-        if (cart == undefined) {
-            cart = {
-                'list': {},
-                'total': {}
-            }
-            wbapp.storage("shop.cart", cart)
-        }
-        $.each(cart.list, function(key, item) {
-            $('#Shop').find(`[data-id=${item.id}]`).addClass('active')
-        })
-        $('#Shop').delegate('.cart-add', wbapp.evClick, function(e) {
-            let cart = wbapp.storage("shop.cart");
-            $(this).parents('.card-bottom').toggleClass('active');
-            let pid = $(this).parents('[data-id]').data('id')
-            let name =  $(this).parents('[data-id]').find('.card-name').text()
-            cart.list[pid] = $(this).parents('[data-id]').data()
-            cart.list[pid].qty = 1
-            cart.list[pid].name = name
-            wbapp.storage("shop.cart", cart)
-        })
-
-        $('#Shop').delegate('.cart-inc', wbapp.evClick, function(e) {
-            let cart = wbapp.storage("shop.cart");
-            let pid = $(this).parents('[data-id]').data('id')
-            let price = $(this).parents('[data-id]').data('price')
-            cart.list[pid].qty++
-            cart.list[pid].price = price
-            $(this).parents('.amount').find('.amount-qty').text(cart.list[pid].qty)
-            wbapp.storage("shop.cart", cart)
-        })
-
-        $('#Shop').delegate('.cart-dec', wbapp.evClick, function(e) {
-            let cart = wbapp.storage("shop.cart");
-            let pid = $(this).parents('[data-id]').data('id')
-            let price = $(this).parents('[data-id]').data('price')
-            if (cart.list[pid].qty > 1) {
-                cart.list[pid].qty--
-                cart.list[pid].price = price
-                $(this).parents('.amount').find('.amount-qty').text(cart.list[pid].qty)
-                wbapp.storage("shop.cart", cart)
-            } else {
-                delete cart.list[pid]
-                $(this).parents('.card-bottom').toggleClass('active');
-            }
-        })
-    </script>
 </view>
 
 <preview>
