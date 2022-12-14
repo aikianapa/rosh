@@ -805,7 +805,7 @@
 		};
 		window.sort_events = function (){
 			$(".account-events.upcoming .account-events__block")
-				.sort((a, b) => $(a).data("sort") - $(b).data("sort"))
+				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
 				.appendTo(".account-events.upcoming");
 		};
 		load();

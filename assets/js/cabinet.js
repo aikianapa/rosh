@@ -505,7 +505,7 @@ $(function () {
 			let event_from_timestamp = utils.timestamp(
 				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
 					parseInt(event.event_time_start.split(':')[1])));
-			return event_from_timestamp;
+			return event_from_timestamp || 1;
 		},
 		isCurrentDayEvent(event) {
 			return utils.formatDate(event.event_date) !== utils.formatDate(new Date());
@@ -525,7 +525,7 @@ $(function () {
 				event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
 					parseInt(event.event_time_end.split(':')[1])));
 
-			console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
+			//console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
 
 			return (event_from_timestamp < curr_timestamp && event_to_timestamp >= curr_timestamp);
 		},
