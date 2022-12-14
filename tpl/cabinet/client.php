@@ -775,10 +775,13 @@
 								page.push('events.upcoming', rec);
 							}
 						});
+
+						window.sort_events();
 					}
 					page.set('events_ready', true);
 					if (!!window.current_day_events.length) {
 						current_day_events_checker = setInterval(function () {
+							console.log('check!');
 							var _upc = page.get('events.upcoming');
 							var _cur = page.get('events.current');
 							if (!!_cur && _cur.length){
@@ -797,6 +800,7 @@
 									}
 								});
 							}
+							window.sort_events();
 
 						}, 10000);
 					}
@@ -805,7 +809,7 @@
 		};
 		window.sort_events = function (){
 			$(".account-events.upcoming .account-events__block")
-				.sort((a, b) => $(a).data("sort") - $(b).data("sort"))
+				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
 				.appendTo(".account-events.upcoming");
 		};
 		load();
