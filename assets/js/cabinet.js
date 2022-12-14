@@ -970,12 +970,21 @@ $(function () {
 				return {
 					suggestions: $.map(response, function (dataItem) {
 						console.log(dataItem);
-						var title = (dataItem.group === 'longterms')
-							? dataItem.longterm_title
-							: catalog.services[dataItem.services[0]].header;
+
+						var title = '';
+						if (!!dataItem.for_consultation){
+							title = 'Консультация';
+						} else {
+							title = (dataItem.group === 'longterms')
+								? dataItem.longterm_title
+								: catalog.services[dataItem.services[0]].header;
+
+						}
 
 						return {
-							value: title + ', ' +
+							value: title
+							       + (dataItem.type == 'online' ? ' (онлайн)':'')+
+							       ', ' +
 							       utils.formatDate(dataItem.event_date) + ' ' +
 							       dataItem.event_time_start + '-' + dataItem.event_time_end,
 							data: dataItem.id
