@@ -619,6 +619,8 @@
 									return false;
 								}
 								console.log('form data', form_data);
+								_form.addClass('disabled');
+
 								utils.api.get('/api/v2/read/records/' + form_data.id).then(function(record) {
 									var _photo_group = form_data.target || 'before';
 									delete form_data.target;
@@ -628,6 +630,8 @@
 										'record/photos/' + record.id,
 										Date.now() + '_' + utils.getRandomStr(4),
 										function(photo) {
+											_form.removeClass('disabled');
+
 											if (photo.error) {
 												toast_error(photo.error);
 												return false;

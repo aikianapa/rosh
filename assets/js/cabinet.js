@@ -986,7 +986,7 @@ $(function () {
 							       ', ' +
 							       utils.formatDate(dataItem.event_date) + ' ' +
 							       (dataItem.group === 'longterms'
-								       ? '&emsp; (продолжительное лечение)'
+								       ? '    (продолжительное лечение)'
 								       : (dataItem.event_time_start + '-' + dataItem.event_time_end)),
 							data: dataItem.id
 						};
