@@ -757,7 +757,9 @@
 
 											on: {
 												save(ev) {
-													var $form = $(form);
+
+													var $form = $(ev.node);
+													console.log(form);
 													if ($form.verify() && profile_id > '') {
 														var data = $form.serializeJSON();
 
@@ -773,12 +775,15 @@
 																toast('Профиль успешно обновлён');
 															});
 													}
+
+													return false;
 												}
 											}
 										});
 										utils.api.get('/api/v2/read/users/' + profile_id).then(
 											function (data) {
 												editor.set(data);
+												console.log(data);
 												initPlugins();
 											});
 									},
@@ -825,6 +830,8 @@
 															toast('Успешно сохранено');
 														});
 													delete copy;
+
+													return false;
 												}
 											}
 										});
