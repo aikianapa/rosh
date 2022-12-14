@@ -508,7 +508,7 @@ $(function () {
 			return event_from_timestamp || 1;
 		},
 		isCurrentDayEvent(event) {
-			return utils.formatDate(event.event_date) !== utils.formatDate(new Date());
+			return utils.formatDate(event.event_date) === utils.formatDate(new Date());
 		},
 		isCurrentEvent(event) {
 			var event_date     = utils.getDate(event.event_date);
@@ -527,7 +527,7 @@ $(function () {
 
 			//console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
 
-			return (event_from_timestamp < curr_timestamp && event_to_timestamp >= curr_timestamp);
+			return (event_from_timestamp < (curr_timestamp + 300) && event_to_timestamp >= curr_timestamp);
 		},
 		runOnlineChat(record_id) {
 			/*!! check record  exists & status & pay_status & date !!*/
