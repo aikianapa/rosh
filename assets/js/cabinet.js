@@ -544,7 +544,7 @@ $(function () {
 			let data   = profile_data;
 			//console.log(data);
 
-			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+			data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
 			data.fullname = data.fullname.replaceAll('  ', ' ')
 			var names            = data.fullname.split(' ');
 			data.first_name  = names[0];
