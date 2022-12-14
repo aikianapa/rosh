@@ -603,7 +603,7 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<div><a class="client-card" data-href="/cabinet/search/client/{{this.client}}">{{catalog.clients[.client].fullname}}</a></div>
+							<div><a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a></div>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
