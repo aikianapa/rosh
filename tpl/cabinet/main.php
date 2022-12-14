@@ -603,7 +603,7 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<div><a href="/search/client/{{.client}}">{{catalog.clients[.client].fullname}}</a></div>
+							<div><a class="client-card" data-href="/search/client/{{this.client}}">{{catalog.clients[.client].fullname}}</a></div>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
@@ -736,6 +736,11 @@
 
 									},
 									complete(){
+										setTimeout(function () {
+											$(this.el).find('a.client-card[data-href]').each(function (i) {
+												$(this).attr('href', $(this).data('href'));
+											})
+										}, 750);
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
@@ -972,7 +977,18 @@
 						const _b = parseInt($(b).attr('data-priority'));
 						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 					}).appendTo(_list);
+					setTimeout(function () {
+						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
+							$(this).attr('href', $(this).data('href'));
+						})
+					}, 550);
 				});
+
+			setTimeout(function () {
+				$('a.account__table').find('a.client-card[data-href]').each(function (i) {
+					$(this).attr('href', $(this).data('href'));
+				})
+			}, 750);
 		};
 
 		load();

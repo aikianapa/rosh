@@ -976,8 +976,8 @@ $(function () {
 							title = 'Консультация';
 						} else {
 							title = (dataItem.group === 'longterms')
-								? dataItem.longterm_title
-								: catalog.services[dataItem.services[0]].header;
+								? (dataItem.longterm_title + ' <small>(продолжительное лечение)</small> <br>')
+								: catalog.services[dataItem.services[0]].header + '<br>';
 
 						}
 
