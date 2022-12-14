@@ -112,7 +112,7 @@
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control" type="tel" name="phone" required
-						value="{{ phone }}" placeholder="Телефон"
+						value="{{ .phone }}" placeholder="Телефон"
 						data-inputmask="'mask': '+7 (999) 999-99-99'">
 					<div class="input__placeholder input__placeholder--dark">Телефон</div>
 				</div>
@@ -783,6 +783,7 @@
 										utils.api.get('/api/v2/read/users/' + profile_id).then(
 											function (data) {
 												editor.set(data);
+												data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
 												console.log(data);
 												initPlugins();
 											});
