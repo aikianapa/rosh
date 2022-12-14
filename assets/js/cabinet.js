@@ -542,7 +542,8 @@ $(function () {
 		},
 		updateProfile(profile_id, profile_data, callback) {
 			let data   = profile_data;
-			console.log(data);
+			//console.log(data);
+
 			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
 			data.fullname = data.fullname.replaceAll('  ', ' ')
 			var names            = data.fullname.split(' ');

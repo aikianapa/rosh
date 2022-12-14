@@ -739,7 +739,7 @@
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
-										let form = $(ev.node).parents('.admin-editor')
+										var form = $(ev.node).parents('.admin-editor')
 											.find('.admin-editor__edit-profile');
 										if ($(ev.node).hasClass('open')){
 											$(ev.node).removeClass('open');
