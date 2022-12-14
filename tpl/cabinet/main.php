@@ -719,9 +719,17 @@
 		let editStatus  = wbapp.tpl('#editStatus').html;
 		window.load     = function () {
 
-			['group=quotes', 'group=events&status=upcoming', 'group=events&status=past'].forEach(
-				function (target_tab) {
-					utils.api.get('/api/v2/list/records?'+ target_tab, {'@sort': "_created:d"}).then(
+			['group=quotes',
+			 'group=events&status=upcoming',
+			 'group=events&status=past'
+			].forEach(
+				function (target_tab, i) {
+					var _sorts = [
+						'_lastdate:d',
+						'event_date:d',
+						'event_date:d'
+					]
+					utils.api.get('/api/v2/list/records?'+ target_tab, {'@sort': _sorts[i]}).then(
 						function (result) {
 							let data = {
 								group: target_tab,
