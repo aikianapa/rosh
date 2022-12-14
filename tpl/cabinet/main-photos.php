@@ -138,7 +138,7 @@
 			}
 		});
 		window.content_load = function () {
-			utils.api.get('/api/v2/list/records/?group=[events,longterm]').then(function (data) {
+			utils.api.get('/api/v2/list/records/?group=[events,longterms]').then(function (data) {
 				console.log(data);
 				let _images        = [];
 				var _filters       = {};
