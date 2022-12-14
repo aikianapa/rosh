@@ -198,7 +198,7 @@ $(function () {
 		formatPhone(_phone) {
 			var phone   = str_replace([' ', '+', '-', '(', ')'], '', _phone);
 			var cleaned = ('' + phone).replace(/\D/g, '');
-			if (phone.length = 10) {
+			if (phone.length === 10) {
 				phone = '7'+phone;
 			}
 			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
