@@ -1375,8 +1375,16 @@ blockquote cite{
     font-weight: normal;
     color: #545454;
 }
-.slider-content__info .slider-content__title{
-    width: auto;
+.slider-content__info .slider-content__title {
+    width : auto;
+}
+#popupsLogin .alert.alert-success {
+    color            : #FFF;
+    background-color : #10B759;
+    border-color     : #10B759;
+    padding          : 15px 20px;
+    border-radius    : 10px;
+    display          : none
 }
 @media (max-width: 1130px) {
     .orders-sidebar,.basket-sidebar{

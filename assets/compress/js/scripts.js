@@ -989,7 +989,10 @@ function Auth()
 		this.email_enter_window.hide();
 	}
 
-	this.email_enter_window_show_alert = function(message){
+	this.email_enter_window_show_alert = function(message, alert_type){
+		if (!!alert_type){
+			this.email_enter_window_alert.removeClass('alert-warning').addClass('alert-'+ alert_type);
+		}
 		this.email_enter_window_alert.text(message).show();
 	}
 
@@ -1176,7 +1179,7 @@ $(document).ready(function(){
 			},
 			success: function(data){
 				if(data.status === 'ok'){
-					auth.email_enter_window_show_alert(data.message);
+					auth.email_enter_window_show_alert(data.message, 'success');
 					location.replace(data.user.group.url_login);
 				}else{
 					auth.email_enter_window_clear_fields();
@@ -1210,7 +1213,7 @@ $(document).ready(function(){
 							break;
 						case 'ok':
 							auth.registration_window_email_busy_alert_hide();
-							auth.registration_window_show_alert(data.message);
+							auth.registration_window_show_alert(data.message, '');
 							location.replace(data.user.group.url_login);
 							break;
 						case 'error':
