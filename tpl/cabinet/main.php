@@ -388,6 +388,21 @@
 					</div>
 				</div>
 				<div class="admin-editor__patient">
+					<div class="admin-editor__event mb-20">
+						<div class="search__block --flex --aicn">
+							<div class="input">
+								<input class="popup-services-list"
+									type="text" placeholder="Поиск по услугам"
+									autocomplete="off">
+								<div class="search__drop"></div>
+								<button class="search__btn" type="button">
+									<svg class="svgsprite _search">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+									</svg>
+								</button>
+							</div>
+						</div>
+					</div>
 					<div class="text-bold mb-10">Выбраны услуги</div>
 					{{#if this.spec_service}}
 					<div class="search__drop-item">
@@ -730,9 +745,16 @@
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
-										var profile_id = $(ev.node).data('id');
-										let form       = $(ev.node).parents('.admin-editor')
+										let form = $(ev.node).parents('.admin-editor')
 											.find('.admin-editor__edit-profile');
+										if ($(ev.node).hasClass('open')){
+											$(ev.node).removeClass('open');
+											$(form).html('');
+											return;
+										}
+										$(ev.node).addClass('open');
+										var profile_id = $(ev.node).data('id');
+
 										let editor     = new Ractive({
 											el: form,
 											template: editProfile,
@@ -741,13 +763,13 @@
 
 											on: {
 												save(ev) {
-													let $form = $(form);
+													var $form = $(form);
 													if ($form.verify() && profile_id > '') {
 														var data = $form.serializeJSON();
 
 														Cabinet.updateProfile(profile_id, data,
 															function (res) {
-																console.log(res);
+																console.log('client saved', res);
 																data.birthdate_fmt = utils.formatDate(data.birthdate);
 																data.phone         = utils.formatPhone(data.phone);
 																_tab.set('catalog.clients.'+ profile_id, data);
