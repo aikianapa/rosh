@@ -1439,7 +1439,7 @@
 								}
 							};
 							xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-							xhr.send($.param(params, true));
+							xhr.send($.param(data, true));
 							return false;
 
 						}

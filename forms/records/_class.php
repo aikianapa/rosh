@@ -79,6 +79,7 @@ class recordsClass extends cmsFormsClass
                         'Приём'     => date('d.m.Y H:i', strtotime(date('Y-m-d',strtotime($item['event_date'])). ' '.$item['event_time_start'])),
                         'Ф.И.О.'    => $client['fullname'],
                         'Телефон'   => wbPhoneFormat($clients[$item['client']]['phone']),
+                        'Эл.почта'  => $client['email'],
                         'Специалист'=> implode(",\r\n", $item['experts']),
                         'Тип'       => $types[$item['type']]['name'],
                         'Услуги'    => implode(",\r\n", $item['services']),
@@ -99,11 +100,10 @@ class recordsClass extends cmsFormsClass
 
                 if ($this->app->vars('_post.only_emails') == 'on') {
                     foreach ($res as $key => $val) {
-                        if (!in_array($key, ['Ф.И.О.'])) {
+                        if (!in_array($key, ['Ф.И.О.','Эл.почта'])) {
                             unset($res[$key]);
                         }
                     }
-                    $res['Эл.почта'] = $client['email'];
                 }
 
                 if ($item['group'] == 'events') {
@@ -134,22 +134,23 @@ class recordsClass extends cmsFormsClass
 
             $sheet->getStyle('E1:E999')->getAlignment()->setWrapText(true);
             $sheet->getStyle('G1:G999')->getAlignment()->setWrapText(true);
-            $sheet->getStyle('A1:J1')->getFont()->setBold(true);
+            $sheet->getStyle('A1:Z1')->getFont()->setBold(true);
 
             $sheet->getColumnDimension('A')->setWidth('17');
             $sheet->getColumnDimension('B')->setWidth('17');
             $sheet->getColumnDimension('C')->setWidth('30');
             $sheet->getColumnDimension('D')->setWidth('16');
-            $sheet->getColumnDimension('E')->setWidth('30');
-            $sheet->getColumnDimension('G')->setWidth('40');
-            $sheet->getColumnDimension('I')->setWidth('20');
-            $sheet->getColumnDimension('J')->setWidth('30');
+            $sheet->getColumnDimension('E')->setWidth('20');
+            $sheet->getColumnDimension('F')->setWidth('30');
+            $sheet->getColumnDimension('G')->setWidth('15');
+            $sheet->getColumnDimension('H')->setWidth('40');
+            $sheet->getColumnDimension('I')->setWidth('15');
+            $sheet->getColumnDimension('J')->setWidth('20');
+            $sheet->getColumnDimension('K')->setWidth('30');
             $idx++;
         }
     }
 
-
-    
     // redirect output to client browser
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="export.xlsx"');
