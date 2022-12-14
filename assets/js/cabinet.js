@@ -443,7 +443,7 @@ $(function () {
 				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices'));
 			}
 
-			if (!sessionStorage.getItem('db.experts')) {
+			if (!sessionStorage.getItem('db.experts_alt')) {
 				getters.push(
 					utils.api.get('/api/v2/list/experts?active=on&' +
 					              '@return=id,name,image,devision,spec,experience,education' +
@@ -455,17 +455,17 @@ $(function () {
 							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
 								.then(function (res) {
 									catalog.experts[expert.id].info_uri = res[0]['u'] || '';
-									sessionStorage.setItem('db.experts', JSON.stringify(catalog.experts));
+									sessionStorage.setItem('db.experts_alt', JSON.stringify(catalog.experts));
 									/* save to SS */
 								});
 						});
 						_self.experts = _experts;
-						sessionStorage.setItem('db.experts', JSON.stringify(_self.experts));
+						sessionStorage.setItem('db.experts_alt', JSON.stringify(_self.experts));
 
 					})
 				);
 			} else {
-				_self.experts = JSON.parse(sessionStorage.getItem('db.experts'));
+				_self.experts = JSON.parse(sessionStorage.getItem('db.experts_alt'));
 			}
 			/* for Admins only */
 			if (!!window.user_role && window.user_role !== 'client') {
