@@ -125,7 +125,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn--white profile-edit__submit" type="button">Сохранить</button>
+				<button class="btn btn--white profile-edit__submit" type="submit">Сохранить</button>
 			</div>
 		</div>
 
@@ -187,7 +187,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn--white profile-edit__submit" type="button">Сохранить</button>
+				<button class="btn btn--white profile-edit__submit" type="submit">Сохранить</button>
 			</div>
 		</div>
 	</form>
@@ -244,24 +244,7 @@
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
 				<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
 				{{else}}
-				<div class="admin-editor__event mb-20">
-					<div class="search__block --flex --aicn">
-						<div class="input">
-							<input class="popup-services-list"
-								type="text" placeholder="Поиск по услугам"
-								autocomplete="off">
-							<div class="search__drop"></div>
-							<button class="search__btn" type="button">
-								<svg class="svgsprite _search">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-								</svg>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="admin-editor__event mb-20">
-					<!-- services-select.dropdown -->
-				</div>
+
 				{{/if}}
 
 				<div class="admin-editor__type-event">
@@ -402,6 +385,9 @@
 								</button>
 							</div>
 						</div>
+					</div>
+					<div class="admin-editor__event mb-20">
+						<!-- services-select.dropdown -->
 					</div>
 					<div class="text-bold mb-10">Выбраны услуги</div>
 					{{#if this.spec_service}}
