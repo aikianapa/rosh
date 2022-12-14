@@ -603,7 +603,7 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<div><a href="/search/client/{{.client}}">{{catalog.clients[.client].fullname}}</a></div>
+							<div><a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a></div>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
@@ -736,6 +736,7 @@
 
 									},
 									complete(){
+
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
@@ -972,21 +973,33 @@
 						const _b = parseInt($(b).attr('data-priority'));
 						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 					}).appendTo(_list);
+					setTimeout(function () {
+						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
+							$(this).attr('href', $(this).data('href'));
+						});
+					}, 550);
 				});
+
+			setTimeout(function () {
+				$('.account__table').find('a.client-card[data-href]').each(function (i) {
+					$(this).attr('href', $(this).data('href'));
+				});
+			}, 750);
 		};
 
 		load();
 
-		$(document).on('click', 'button.flag-date__ico', function (e) {
-			e.stopPropagation();
-			const _parent    = $(this).parents('.acount__table-accardeon');
-			const _id        = _parent.data('id');
-			const _is_marked = $(this).hasClass('checked');
-			console.log('flagged', _id, _is_marked);
-			utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}).then(function (res) {
-				//toast('Список обновлен');
-			});
-		}).on('change', '.flag-date [type="checkbox"]', function (e) {
+		$(document)
+			.on('click', 'button.flag-date__ico', function (e) {
+				e.stopPropagation();
+				const _parent    = $(this).parents('.acount__table-accardeon');
+				const _id        = _parent.data('id');
+				const _is_marked = $(this).hasClass('checked');
+				console.log('flagged', _id, _is_marked);
+				utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}).then(function (res) {
+					//toast('Список обновлен');
+				});
+			}).on('change', '.flag-date [type="checkbox"]', function (e) {
 			e.stopPropagation();
 			const _list      = $(this).parents('.account__table-body');
 			const _parent    = $(this).parents('.acount__table-accardeon');
