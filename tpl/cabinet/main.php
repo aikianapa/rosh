@@ -51,7 +51,7 @@
 							data-tab="events" data-tabs="records">События
 						</div>
 						<div class="account__tab-item data-tab-link"
-							data-tab="past" data-tabs="records">События
+							data-tab="past" data-tabs="records">Завершенные
 						</div>
 						<div class="buttons disabled">
 							<label class="checkbox">
@@ -66,7 +66,7 @@
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item active" data-tab="quotes" data-type="quotes">
+					<div class="account__tab data-tab-item active" data-tab="quotes" data-type="group=quotes">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
