@@ -500,11 +500,27 @@ $(function () {
 		}
 	};
 	window.Cabinet = {
+		eventTimestamp(event) {
+			var event_date           = utils.getDate(event.event_date);
+			let event_from_timestamp = utils.timestamp(
+				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
+					parseInt(event.event_time_start.split(':')[1])));
+			let event_to_timestamp   = utils.timestamp(
+				event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
+					parseInt(event.event_time_end.split(':')[1])));
+			return {
+				'from_timestamp': event_from_timestamp,
+				'to_timestamp': event_to_timestamp
+			};
+		},
+		isCurrentDayEvent(event) {
+			return utils.formatDate(utils.getDate(event.event_date)) !== utils.formatDate(new Date());
+		},
 		isCurrentEvent(event) {
 			var event_date     = utils.getDate(event.event_date);
 			let curr_timestamp = utils.timestamp(new Date());
 
-			if (utils.formatDate(event_date) !== (new Date()).toLocaleDateString()) {
+			if (!this.isCurrentDayEvent(event)) {
 				return false;
 			}
 
