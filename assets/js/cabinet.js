@@ -527,7 +527,7 @@ $(function () {
 
 			console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
 
-			return (event_from_timestamp < (curr_timestamp + 300) && event_to_timestamp >= curr_timestamp);
+			return (event_from_timestamp < (curr_timestamp + 301) && event_to_timestamp >= curr_timestamp);
 		},
 		runOnlineChat(record_id) {
 			/*!! check record  exists & status & pay_status & date !!*/
@@ -542,6 +542,8 @@ $(function () {
 		},
 		updateProfile(profile_id, profile_data, callback) {
 			let data   = profile_data;
+			//console.log(data);
+
 			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
 			data.fullname = data.fullname.replaceAll('  ', ' ')
 			var names            = data.fullname.split(' ');
