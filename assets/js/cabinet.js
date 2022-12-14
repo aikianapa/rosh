@@ -451,14 +451,17 @@ $(function () {
 						let _experts = {};
 						data.forEach(function (expert, i) {
 							_experts[expert.id] = expert;
+
 							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
 								.then(function (res) {
-									_self.experts[expert.id].info_uri = res[0]['u'] || '';
+									catalog.experts[expert.id].info_uri = res[0]['u'] || '';
+									sessionStorage.setItem('db.experts', JSON.stringify(catalog.experts));
 									/* save to SS */
 								});
 						});
 						_self.experts = _experts;
 						sessionStorage.setItem('db.experts', JSON.stringify(_self.experts));
+
 					})
 				);
 			} else {
@@ -964,9 +967,9 @@ $(function () {
 			noSuggestionNotice: '<p>Не найдено событий..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
-				console.log(response);
 				return {
 					suggestions: $.map(response, function (dataItem) {
+						console.log(dataItem);
 						var title = (dataItem.group === 'longterms')
 							? dataItem.longterm_title
 							: catalog.services[dataItem.services[0]].header;
@@ -990,12 +993,12 @@ $(function () {
 		var form = $form || $('.popup .popup__form');
 		form.find('input.client-search').autocomplete({
 			noCache: true,
-			minChars: 1,
+			minChars: 0,
 			deferRequestBy: 300,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'fullname~',
-			serviceUrl: '/api/v2/list/users?role=client&active=on&__token=' + wbapp._session.token,
+			serviceUrl: '/api/v2/list/users?role=client&active=on&@sort=fullname&__token=' + wbapp._session.token,
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
