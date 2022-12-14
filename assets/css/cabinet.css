@@ -345,7 +345,6 @@ small {
 }
 a.client-card {
 	z-index: 9999;
-	padding: 8px;
 }
 @media (max-width : 768px) {
 	.search__drop-item .search__drop-delete {opacity: 1}
