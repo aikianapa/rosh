@@ -340,6 +340,15 @@ small {
 .acount__table-list.accardeon__list.admin-editor .admin-editor__top {
 	padding: 28px 40px 0;
 }
+.lk-main .page{
+	padding-top:100px;
+}
+@media (max-width : 768px) {
+	.search__drop-item .search__drop-delete {opacity: 1}
+	.search__drop-item .search__drop-name{
+		padding-left: 20px;
+	}
+}
 @-webkit-keyframes three-dots {
 	0%,
 	80%,
