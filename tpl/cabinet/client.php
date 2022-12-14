@@ -155,9 +155,9 @@
 
 	{{#if events.upcoming}}
 	<div class="lk-title">Предстоящие события</div>
-	<div class="account-events">
+	<div class="account-events upcoming">
 		{{#each events.upcoming}}
-		<div class="account-events__block">
+		<div class="account-events__block" data-sort="{{this.event_timestamp}}">
 			<div class="account-events__block-wrap mb-20">
 				<div class="account-events__item">
 					<div class="account-event-wrap">
@@ -733,12 +733,20 @@
 				}
 			}
 		});
-
+		window.current_day_events = [];
+		var current_day_events_checker = null;
 		window.load = function () {
+			if (!!current_day_events_checker) {
+				clearInterval(current_day_events_checker);
+			}
 			utils.api.get('/api/v2/list/records?status=[upcoming,new,past]&group=[events,quotes]&client=' +
-			              wbapp._session.user.id)
+			              wbapp._session.user.id + '&@sort=_lastdate:d')
 				.then(function (records) {
+					if (!!current_day_events_checker) {
+						clearInterval(current_day_events_checker);
+					}
 					console.log('event:', records);
+					window.current_day_events = [];
 					page.set('events.upcoming', []);
 					page.set('events.current', []);
 					page.set('history.events', []);
@@ -750,8 +758,15 @@
 								return;
 							}
 							if (rec.status === 'new') {
+								rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
 								page.push('events.upcoming', rec);
 								return;
+							}
+
+							rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
+
+							if (Cabinet.isCurrentDayEvent(rec)) {
+								window.current_day_events.push(rec);
 							}
 
 							if (Cabinet.isCurrentEvent(rec)) {
@@ -762,10 +777,36 @@
 						});
 					}
 					page.set('events_ready', true);
+					if (!!window.current_day_events.length) {
+						current_day_events_checker = setInterval(function () {
+							var _upc = page.get('events.upcoming');
+							var _cur = page.get('events.current');
+							if (!!_cur && _cur.length){
+								_cur.forEach(function (ev, i) {
+									if (!Cabinet.isCurrentEvent(ev)) {
+										page.splice('events.current', i, 1);
+										page.push('events.upcoming', ev);
+									}
+								});
+							}
+							if (!!_upc && _upc.length) {
+								_upc.forEach(function (ev, i) {
+									if (Cabinet.isCurrentEvent(ev)) {
+										page.splice('events.upcoming', i, 1);
+										page.push('events.current', ev);
+									}
+								});
+							}
 
+						}, 10000);
+					}
 					$("img[data-src]:not([src])").lazyload();
 				});
-
+		};
+		window.sort_events = function (){
+			$(".account-events.upcoming .account-events__block")
+				.sort((a, b) => $(a).data("sort") - $(b).data("sort"))
+				.appendTo(".account-events.upcoming");
 		};
 		load();
 		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
