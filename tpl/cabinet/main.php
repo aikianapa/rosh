@@ -728,7 +728,7 @@
 									},
 									complete(){
 										this.find('.loading-overlay').remove();
-									}
+									},
 									editProfile(ev) {
 										var profile_id = $(ev.node).data('id');
 										let form       = $(ev.node).parents('.admin-editor')
