@@ -50,6 +50,9 @@
 						<div class="account__tab-item data-tab-link"
 							data-tab="events" data-tabs="records">События
 						</div>
+						<div class="account__tab-item data-tab-link"
+							data-tab="past" data-tabs="records">Завершенные
+						</div>
 						<div class="buttons disabled">
 							<label class="checkbox">
 								<input type="checkbox">
@@ -63,12 +66,18 @@
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item active" data-tab="quotes">
+					<div class="account__tab data-tab-item active" data-tab="quotes" data-type="group=quotes">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
 					</div>
-					<div class="account__tab data-tab-item" data-tab="events">
+					<div class="account__tab data-tab-item" data-tab="events" data-type="group=events&status=upcoming">
+						<div class="loading-overlay">
+							<div class="loader"></div>
+						</div>
+					</div>
+
+					<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=past">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
@@ -695,9 +704,9 @@
 		let editStatus  = wbapp.tpl('#editStatus').html;
 		window.load     = function () {
 
-			['quotes', 'events'].forEach(
+			['group=quotes', 'group=events&status=upcoming', 'group=events&status=past'].forEach(
 				function (target_tab) {
-					utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "_created:d"}).then(
+					utils.api.get('/api/v2/list/records?'+ target_tab, {'@sort': "_created:d"}).then(
 						function (result) {
 							let data = {
 								group: target_tab,
@@ -705,7 +714,7 @@
 								catalog: catalog
 							};
 							var _tab = new Ractive({
-								el: '.data-tab-item[data-tab="' + target_tab + '"]',
+								el: '.data-tab-item[data-type="' + target_tab + '"]',
 								template: wbapp.tpl('#listRecords').html,
 								data: {
 									group: target_tab,
@@ -715,8 +724,11 @@
 								on: {
 									loaded() {
 										console.log('>>> loaded', target_tab);
-										this.find('.loading-overlay').remove();
+
 									},
+									complete(){
+										this.find('.loading-overlay').remove();
+									}
 									editProfile(ev) {
 										var profile_id = $(ev.node).data('id');
 										let form       = $(ev.node).parents('.admin-editor')

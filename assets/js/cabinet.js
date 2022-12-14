@@ -525,7 +525,7 @@ $(function () {
 				event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
 					parseInt(event.event_time_end.split(':')[1])));
 
-			//console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
+			console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
 
 			return (event_from_timestamp < (curr_timestamp + 300) && event_to_timestamp >= curr_timestamp);
 		},

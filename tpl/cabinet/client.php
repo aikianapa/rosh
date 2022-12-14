@@ -188,7 +188,6 @@
 						<div class="account-events__name" style="color:#393">Заявка на рассмотрении</div>
 					</div>
 				</div>
-				{{elseif this.pay_status !== 'unpay'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Дата приема:</div>
@@ -203,29 +202,30 @@
 						</div>
 					</div>
 				</div>
+				{{elseif this.type == 'clinic'}}
 				{{elseif this.pay_status == 'unpay'}}
-				<div class="account-events__btns">
-					<div class="account-event-wrap --aicn">
-						<div class="account-events__btn">
-							<button class="btn btn--black"
-								onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
-								Внести предоплату
-							</button>
+					<div class="account-events__btns">
+						<div class="account-event-wrap --aicn">
+							<div class="account-events__btn">
+								<button class="btn btn--black"
+									onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+									Внести предоплату
+								</button>
+							</div>
+							<p>Услуга требует внесения предоплаты</p>
 						</div>
-						<p>Услуга требует внесения предоплаты</p>
 					</div>
-				</div>
 				{{elseif this.type == 'online'}}
-				<div class="account-events__btns">
-					<div class="account-event-wrap --aicn">
-						<div class="account-events__btn">
-							<button class="btn btn--white disabled" disabled>
-								Онлайн консультация
-							</button>
+					<div class="account-events__btns">
+						<div class="account-event-wrap --aicn">
+							<div class="account-events__btn">
+								<button class="btn btn--white disabled" disabled>
+									Онлайн консультация
+								</button>
+							</div>
+							<p>Кнопка станет активной за 5 минут до начала приема</p>
 						</div>
-						<p>Кнопка станет активной за 5 минут до начала приема</p>
 					</div>
-				</div>
 				{{else}}
 				<div class="account-events__item event_date"></div>
 				{{/if}}
