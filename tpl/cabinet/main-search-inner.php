@@ -6,7 +6,7 @@
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
-<div class="scroll-container" data-scroll-container>
+<div class="scroll-container lk-main" data-scroll-container>
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
