@@ -5,7 +5,7 @@
 		</svg>
 	</a>
 
-	<div wb-if="in_array('{{_sess.user.role}}',['admin',''])">
+	<div wb-if="in_array('{{_sess.user.role}}',['admin','','client'])">
 		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
 		<div class="popup --fast">
 			<template>

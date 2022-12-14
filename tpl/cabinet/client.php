@@ -11,17 +11,18 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
-		<div class="container">
-			<div class="account">
-				<div class="crumbs">
-					<a class="crumbs__arrow">
-						<svg class="svgsprite _crumbs-back">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-						</svg>
-					</a>
-					<a class="crumbs__link" href="/">Главная</a>
-					<span class="crumbs__link">Личный кабинет</span>
+	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
+		<div class="main-wrapper">
+			<div class="container">
+				<div class="account">
+					<div class="crumbs">
+						<a class="crumbs__arrow">
+							<svg class="svgsprite _crumbs-back">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+							</svg>
+						</a>
+						<a class="crumbs__link" href="/">Главная</a>
+						<span class="crumbs__link">Личный кабинет</span>
 				</div>
 				<div class="title-flex --flex --jcsb">
 					<div class="title">
@@ -33,9 +34,10 @@
 					</button>
 				</div>
 
-				<div class="page-content">
-					<div class="loading-overlay">
-						<div class="loader"></div>
+					<div class="page-content">
+						<div class="loading-overlay">
+							<div class="loader"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -377,7 +379,8 @@
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">
-															{{ @global.utils.formatDate(.date) }}</div>
+															{{ @global.utils.formatDate(.date) }}
+														</div>
 														<div class="after-healing__photo"
 															style="background-image: url({{.src}})">
 														</div>
@@ -675,13 +678,14 @@
 				},
 				complete() {
 					this.set('catalog', catalog);
-					setTimeout(function (){
+					setTimeout(function () {
 						$(this.el).find("img[data-src]:not([src])").lazyload();
-						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id+'?active=on').then(function (data) {
-							data.fullname = data.fullname.replaceAll('  ', ' ')
-							page.set('user', data);
-							console.log(data);
-						});
+						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
+							.then(function (data) {
+								data.fullname = data.fullname.replaceAll('  ', ' ');
+								page.set('user', data);
+								console.log(data);
+							});
 					});
 				},
 				runOnlineChat(ev) {
@@ -758,8 +762,10 @@
 						});
 					}
 					page.set('events_ready', true);
+
 					$("img[data-src]:not([src])").lazyload();
 				});
+
 		};
 		load();
 		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
@@ -776,8 +782,12 @@
 </script>
 
 <div>
+	<wb-module wb="module=yonger&mode=render&view=mainfilter"/>
+</div>
+<div>
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
 </body>
-
+<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
+<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 </html>
