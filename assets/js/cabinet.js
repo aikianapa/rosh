@@ -976,17 +976,18 @@ $(function () {
 							title = 'Консультация';
 						} else {
 							title = (dataItem.group === 'longterms')
-								? (dataItem.longterm_title + ' <small>(продолжительное лечение)</small> <br>')
-								: catalog.services[dataItem.services[0]].header + '<br>';
+								? (dataItem.longterm_title)
+								: catalog.services[dataItem.services[0]].header;
 
 						}
 
 						return {
-							value: title
-							       + (dataItem.type == 'online' ? ' (онлайн)':'')+
+							value: title + (dataItem.type == 'online' ? ' (онлайн)' : '') +
 							       ', ' +
 							       utils.formatDate(dataItem.event_date) + ' ' +
-							       dataItem.event_time_start + '-' + dataItem.event_time_end,
+							       (dataItem.group === 'longterms'
+								       ? '&emsp; (продолжительное лечение)'
+								       : (dataItem.event_time_start + '-' + dataItem.event_time_end)),
 							data: dataItem.id
 						};
 					})
