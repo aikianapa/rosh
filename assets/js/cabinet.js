@@ -198,12 +198,17 @@ $(function () {
 		formatPhone(_phone) {
 			var phone   = str_replace([' ', '+', '-', '(', ')'], '', _phone);
 			var cleaned = ('' + phone).replace(/\D/g, '');
+			if (phone.length = 10) {
+				phone = '7'+phone;
+			}
 			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
 			//console.log('??', phone, match);
+
 			if (match) {
 				var intlCode = (match[1] ? '+7 ' : '');
 				phone        = [intlCode, '(', match[2], ') ', match[3], '-', match[4], '-', match[5]].join('');
 			}
+
 			//console.log('???', phone);
 
 			return phone;
