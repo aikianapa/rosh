@@ -619,6 +619,8 @@
 									return false;
 								}
 								console.log('form data', form_data);
+								_form.addClass('disabled');
+
 								utils.api.get('/api/v2/read/records/' + form_data.id).then(function(record) {
 									var _photo_group = form_data.target || 'before';
 									delete form_data.target;
@@ -628,6 +630,8 @@
 										'record/photos/' + record.id,
 										Date.now() + '_' + utils.getRandomStr(4),
 										function(photo) {
+											_form.removeClass('disabled');
+
 											if (photo.error) {
 												toast_error(photo.error);
 												return false;
@@ -952,31 +956,42 @@
 								console.log('popupsCreateProfile: ', post);
 
 								let names = post.fullname.split(' ', 3);
-								let keys = ['last_name', 'first_name', 'middle_name'];
+								let keys  = ['last_name', 'first_name', 'middle_name'];
 								for (var i = 0; i < names.length; i++) {
 									post[keys[i]] = names[i];
 								}
 								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
 								utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
-									function(data) {
+									function (data) {
 										if (!data.length) {
-											post.role = "client";
-											post.role = "client";
-											post.active = "on";
-											utils.api.post('/api/v2/create/users/', post).then(function(data) {
-												if (data.error) {
-													wbapp.trigger('wb-save-error', {
-														'data': data
-													});
-												} else {
-													toast('Карточка клиента успешно создана!');
-													$('.popup.--create-client').fadeOut('fast');
-													popupMessage('Карточка пациента создана!', '', 'Успешно',
-														'<a href="/cabinet/client/' + data.id +
-														'"> Перейти на страницу профиля </a>',
-														function(d) {});
-												}
-											});
+											utils.api.get('/api/v2/list/users/?email=' + post.email).then(
+												function (data) {
+													if (!data.length) {
+														post.role   = "client";
+														post.role   = "client";
+														post.active = "on";
+														utils.api.post('/api/v2/create/users/', post)
+															.then(function (data) {
+																if (data.error) {
+																	wbapp.trigger('wb-save-error', {
+																		'data': data
+																	});
+																} else {
+																	toast('Карточка клиента успешно создана!');
+																	$('.popup.--create-client').fadeOut('fast');
+																	popupMessage('Карточка пациента создана!', '',
+																		'Успешно',
+																		'<a href="/cabinet/client/' + data.id +
+																		'"> Перейти на страницу профиля </a>',
+																		function (d) {});
+																}
+															});
+
+													} else {
+														toast('Этот e-mail уже используется!', 'Ошибка!', 'error');
+														form.find('[name="email"]').focus();
+													}
+												});
 										} else {
 											toast('Этот номер уже используется!', 'Ошибка!', 'error');
 											form.find('[name="phone"]').focus();

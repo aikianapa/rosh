@@ -6,7 +6,7 @@
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
-<div class="scroll-container" data-scroll-container>
+<div class="scroll-container lk-main" data-scroll-container>
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
@@ -50,6 +50,9 @@
 						<div class="account__tab-item data-tab-link"
 							data-tab="events" data-tabs="records">События
 						</div>
+						<div class="account__tab-item data-tab-link"
+							data-tab="past" data-tabs="records">Завершенные
+						</div>
 						<div class="buttons disabled">
 							<label class="checkbox">
 								<input type="checkbox">
@@ -63,12 +66,18 @@
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item active" data-tab="quotes">
+					<div class="account__tab data-tab-item active" data-tab="quotes" data-type="group=quotes">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
 					</div>
-					<div class="account__tab data-tab-item" data-tab="events">
+					<div class="account__tab data-tab-item" data-tab="events" data-type="group=events&status=upcoming">
+						<div class="loading-overlay">
+							<div class="loader"></div>
+						</div>
+					</div>
+
+					<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=past">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
@@ -103,7 +112,7 @@
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control" type="tel" name="phone" required
-						value="{{ phone }}" placeholder="Телефон"
+						value="{{ .phone }}" placeholder="Телефон"
 						data-inputmask="'mask': '+7 (999) 999-99-99'">
 					<div class="input__placeholder input__placeholder--dark">Телефон</div>
 				</div>
@@ -116,7 +125,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn--white profile-edit__submit" type="button">Сохранить</button>
+				<button class="btn btn--white profile-edit__submit" type="submit">Сохранить</button>
 			</div>
 		</div>
 
@@ -178,7 +187,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn--white profile-edit__submit" type="button">Сохранить</button>
+				<button class="btn btn--white profile-edit__submit" type="submit">Сохранить</button>
 			</div>
 		</div>
 	</form>
@@ -235,24 +244,7 @@
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
 				<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
 				{{else}}
-				<div class="admin-editor__event mb-20">
-					<div class="search__block --flex --aicn">
-						<div class="input">
-							<input class="popup-services-list"
-								type="text" placeholder="Поиск по услугам"
-								autocomplete="off">
-							<div class="search__drop"></div>
-							<button class="search__btn" type="button">
-								<svg class="svgsprite _search">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-								</svg>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="admin-editor__event mb-20">
-					<!-- services-select.dropdown -->
-				</div>
+
 				{{/if}}
 
 				<div class="admin-editor__type-event">
@@ -379,6 +371,24 @@
 					</div>
 				</div>
 				<div class="admin-editor__patient">
+					<div class="admin-editor__event mb-20">
+						<div class="search__block --flex --aicn">
+							<div class="input">
+								<input class="popup-services-list"
+									type="text" placeholder="Поиск по услугам"
+									autocomplete="off">
+								<div class="search__drop"></div>
+								<button class="search__btn" type="button">
+									<svg class="svgsprite _search">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+									</svg>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="admin-editor__event mb-20">
+						<!-- services-select.dropdown -->
+					</div>
 					<div class="text-bold mb-10">Выбраны услуги</div>
 					{{#if this.spec_service}}
 					<div class="search__drop-item">
@@ -593,7 +603,7 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<div><a href="/search/client/{{.client}}">{{catalog.clients[.client].fullname}}</a></div>
+							<div><a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a></div>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
@@ -695,9 +705,17 @@
 		let editStatus  = wbapp.tpl('#editStatus').html;
 		window.load     = function () {
 
-			['quotes', 'events'].forEach(
-				function (target_tab) {
-					utils.api.get('/api/v2/list/records', {group: target_tab, '@sort': "_created:d"}).then(
+			['group=quotes',
+			 'group=events&status=upcoming',
+			 'group=events&status=past'
+			].forEach(
+				function (target_tab, i) {
+					var _sorts = [
+						'_lastdate:d',
+						'event_date:d',
+						'event_date:d'
+					]
+					utils.api.get('/api/v2/list/records?'+ target_tab, {'@sort': _sorts[i]}).then(
 						function (result) {
 							let data = {
 								group: target_tab,
@@ -705,7 +723,7 @@
 								catalog: catalog
 							};
 							var _tab = new Ractive({
-								el: '.data-tab-item[data-tab="' + target_tab + '"]',
+								el: '.data-tab-item[data-type="' + target_tab + '"]',
 								template: wbapp.tpl('#listRecords').html,
 								data: {
 									group: target_tab,
@@ -715,12 +733,23 @@
 								on: {
 									loaded() {
 										console.log('>>> loaded', target_tab);
+
+									},
+									complete(){
+
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
-										var profile_id = $(ev.node).data('id');
-										let form       = $(ev.node).parents('.admin-editor')
+										var form = $(ev.node).parents('.admin-editor')
 											.find('.admin-editor__edit-profile');
+										if ($(ev.node).hasClass('open')){
+											$(ev.node).removeClass('open');
+											$(form).html('');
+											return;
+										}
+										$(ev.node).addClass('open');
+										var profile_id = $(ev.node).data('id');
+
 										let editor     = new Ractive({
 											el: form,
 											template: editProfile,
@@ -729,13 +758,15 @@
 
 											on: {
 												save(ev) {
-													let $form = $(form);
+
+													var $form = $(ev.node);
+													console.log(form);
 													if ($form.verify() && profile_id > '') {
 														var data = $form.serializeJSON();
 
 														Cabinet.updateProfile(profile_id, data,
 															function (res) {
-																console.log(res);
+																console.log('client saved', res);
 																data.birthdate_fmt = utils.formatDate(data.birthdate);
 																data.phone         = utils.formatPhone(data.phone);
 																_tab.set('catalog.clients.'+ profile_id, data);
@@ -745,12 +776,16 @@
 																toast('Профиль успешно обновлён');
 															});
 													}
+
+													return false;
 												}
 											}
 										});
 										utils.api.get('/api/v2/read/users/' + profile_id).then(
 											function (data) {
 												editor.set(data);
+												data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
+												console.log(data);
 												initPlugins();
 											});
 									},
@@ -797,6 +832,8 @@
 															toast('Успешно сохранено');
 														});
 													delete copy;
+
+													return false;
 												}
 											}
 										});
@@ -936,21 +973,33 @@
 						const _b = parseInt($(b).attr('data-priority'));
 						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 					}).appendTo(_list);
+					setTimeout(function () {
+						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
+							$(this).attr('href', $(this).data('href'));
+						});
+					}, 550);
 				});
+
+			setTimeout(function () {
+				$('.account__table').find('a.client-card[data-href]').each(function (i) {
+					$(this).attr('href', $(this).data('href'));
+				});
+			}, 750);
 		};
 
 		load();
 
-		$(document).on('click', 'button.flag-date__ico', function (e) {
-			e.stopPropagation();
-			const _parent    = $(this).parents('.acount__table-accardeon');
-			const _id        = _parent.data('id');
-			const _is_marked = $(this).hasClass('checked');
-			console.log('flagged', _id, _is_marked);
-			utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}).then(function (res) {
-				//toast('Список обновлен');
-			});
-		}).on('change', '.flag-date [type="checkbox"]', function (e) {
+		$(document)
+			.on('click', 'button.flag-date__ico', function (e) {
+				e.stopPropagation();
+				const _parent    = $(this).parents('.acount__table-accardeon');
+				const _id        = _parent.data('id');
+				const _is_marked = $(this).hasClass('checked');
+				console.log('flagged', _id, _is_marked);
+				utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}).then(function (res) {
+					//toast('Список обновлен');
+				});
+			}).on('change', '.flag-date [type="checkbox"]', function (e) {
 			e.stopPropagation();
 			const _list      = $(this).parents('.account__table-body');
 			const _parent    = $(this).parents('.acount__table-accardeon');

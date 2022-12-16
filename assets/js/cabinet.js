@@ -198,12 +198,17 @@ $(function () {
 		formatPhone(_phone) {
 			var phone   = str_replace([' ', '+', '-', '(', ')'], '', _phone);
 			var cleaned = ('' + phone).replace(/\D/g, '');
+			if (phone.length === 10) {
+				phone = '7'+phone;
+			}
 			var match   = cleaned.match(/^(7|)?(\d{3})(\d{3})(\d{2})(\d{2})$/); //(XXX) XXX XX XX
 			//console.log('??', phone, match);
+
 			if (match) {
 				var intlCode = (match[1] ? '+7 ' : '');
 				phone        = [intlCode, '(', match[2], ') ', match[3], '-', match[4], '-', match[5]].join('');
 			}
+
 			//console.log('???', phone);
 
 			return phone;
@@ -438,7 +443,7 @@ $(function () {
 				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices'));
 			}
 
-			if (!sessionStorage.getItem('db.experts')) {
+			if (!sessionStorage.getItem('db.experts_alt')) {
 				getters.push(
 					utils.api.get('/api/v2/list/experts?active=on&' +
 					              '@return=id,name,image,devision,spec,experience,education' +
@@ -446,18 +451,21 @@ $(function () {
 						let _experts = {};
 						data.forEach(function (expert, i) {
 							_experts[expert.id] = expert;
+
 							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
 								.then(function (res) {
-									_self.experts[expert.id].info_uri = res[0]['u'] || '';
+									catalog.experts[expert.id].info_uri = res[0]['u'] || '';
+									sessionStorage.setItem('db.experts_alt', JSON.stringify(catalog.experts));
 									/* save to SS */
 								});
 						});
 						_self.experts = _experts;
-						sessionStorage.setItem('db.experts', JSON.stringify(_self.experts));
+						sessionStorage.setItem('db.experts_alt', JSON.stringify(_self.experts));
+
 					})
 				);
 			} else {
-				_self.experts = JSON.parse(sessionStorage.getItem('db.experts'));
+				_self.experts = JSON.parse(sessionStorage.getItem('db.experts_alt'));
 			}
 			/* for Admins only */
 			if (!!window.user_role && window.user_role !== 'client') {
@@ -500,11 +508,21 @@ $(function () {
 		}
 	};
 	window.Cabinet = {
+		eventTimestamp(event) {
+			var event_date           = utils.getDate(event.event_date);
+			let event_from_timestamp = utils.timestamp(
+				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
+					parseInt(event.event_time_start.split(':')[1])));
+			return event_from_timestamp || 1;
+		},
+		isCurrentDayEvent(event) {
+			return utils.formatDate(event.event_date) === utils.formatDate(new Date());
+		},
 		isCurrentEvent(event) {
 			var event_date     = utils.getDate(event.event_date);
 			let curr_timestamp = utils.timestamp(new Date());
 
-			if (utils.formatDate(event_date) !== (new Date()).toLocaleDateString()) {
+			if (!this.isCurrentDayEvent(event)) {
 				return false;
 			}
 
@@ -517,7 +535,7 @@ $(function () {
 
 			console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
 
-			return (event_from_timestamp < curr_timestamp && event_to_timestamp >= curr_timestamp);
+			return (event_from_timestamp < (curr_timestamp + 301) && event_to_timestamp >= curr_timestamp);
 		},
 		runOnlineChat(record_id) {
 			/*!! check record  exists & status & pay_status & date !!*/
@@ -532,7 +550,12 @@ $(function () {
 		},
 		updateProfile(profile_id, profile_data, callback) {
 			let data   = profile_data;
-			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+			//console.log(data);
+
+			data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
+			if (data.phone.length === 10) {
+				data.phone = '7'+ data.phone;
+			}
 			data.fullname = data.fullname.replaceAll('  ', ' ')
 			var names            = data.fullname.split(' ');
 			data.first_name  = names[0];
@@ -944,17 +967,27 @@ $(function () {
 			noSuggestionNotice: '<p>Не найдено событий..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
-				console.log(response);
 				return {
 					suggestions: $.map(response, function (dataItem) {
-						var title = (dataItem.group === 'longterms')
-							? dataItem.longterm_title
-							: catalog.services[dataItem.services[0]].header;
+						console.log(dataItem);
+
+						var title = '';
+						if (!!dataItem.for_consultation){
+							title = 'Консультация';
+						} else {
+							title = (dataItem.group === 'longterms')
+								? (dataItem.longterm_title)
+								: catalog.services[dataItem.services[0]].header;
+
+						}
 
 						return {
-							value: title + ', ' +
+							value: title + (dataItem.type == 'online' ? ' (онлайн)' : '') +
+							       ', ' +
 							       utils.formatDate(dataItem.event_date) + ' ' +
-							       dataItem.event_time_start + '-' + dataItem.event_time_end,
+							       (dataItem.group === 'longterms'
+								       ? '    (продолжительное лечение)'
+								       : (dataItem.event_time_start + '-' + dataItem.event_time_end)),
 							data: dataItem.id
 						};
 					})
@@ -970,12 +1003,12 @@ $(function () {
 		var form = $form || $('.popup .popup__form');
 		form.find('input.client-search').autocomplete({
 			noCache: true,
-			minChars: 1,
+			minChars: 0,
 			deferRequestBy: 300,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'fullname~',
-			serviceUrl: '/api/v2/list/users?role=client&active=on&__token=' + wbapp._session.token,
+			serviceUrl: '/api/v2/list/users?role=client&active=on&@sort=fullname&__token=' + wbapp._session.token,
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {

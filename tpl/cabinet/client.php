@@ -67,12 +67,21 @@
 						<span>{{ @global.utils.formatPhone(user.phone) }}</span>
 					</div>
 				</div>
+				{{#if this.confirmed == '0'}}
+				<div class="user__confirm">
+					<svg class="svgsprite _confirm">
+						<use xlink:href="/assets/img/sprites/svgsprites.svg#alert-grey"></use>
+					</svg>
+					Неподтвержденный аккаунт
+				</div>
+				{{else}}
 				<div class="user__confirm">
 					<svg class="svgsprite _confirm">
 						<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
 					</svg>
 					Подтвержденный аккаунт
 				</div>
+				{{/if}}
 			</div>
 		</div>
 		<a href="/signout" class="account__exit signout">Выйти из аккаунта</a>
@@ -155,9 +164,9 @@
 
 	{{#if events.upcoming}}
 	<div class="lk-title">Предстоящие события</div>
-	<div class="account-events">
+	<div class="account-events upcoming">
 		{{#each events.upcoming}}
-		<div class="account-events__block">
+		<div class="account-events__block" data-sort="{{this.event_timestamp}}">
 			<div class="account-events__block-wrap mb-20">
 				<div class="account-events__item">
 					<div class="account-event-wrap">
@@ -188,7 +197,6 @@
 						<div class="account-events__name" style="color:#393">Заявка на рассмотрении</div>
 					</div>
 				</div>
-				{{elseif this.pay_status !== 'unpay'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Дата приема:</div>
@@ -203,29 +211,30 @@
 						</div>
 					</div>
 				</div>
+				{{elseif this.type == 'clinic'}}
 				{{elseif this.pay_status == 'unpay'}}
-				<div class="account-events__btns">
-					<div class="account-event-wrap --aicn">
-						<div class="account-events__btn">
-							<button class="btn btn--black"
-								onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
-								Внести предоплату
-							</button>
+					<div class="account-events__btns">
+						<div class="account-event-wrap --aicn">
+							<div class="account-events__btn">
+								<button class="btn btn--black"
+									onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+									Внести предоплату
+								</button>
+							</div>
+							<p>Услуга требует внесения предоплаты</p>
 						</div>
-						<p>Услуга требует внесения предоплаты</p>
 					</div>
-				</div>
 				{{elseif this.type == 'online'}}
-				<div class="account-events__btns">
-					<div class="account-event-wrap --aicn">
-						<div class="account-events__btn">
-							<button class="btn btn--white disabled" disabled>
-								Онлайн консультация
-							</button>
+					<div class="account-events__btns">
+						<div class="account-event-wrap --aicn">
+							<div class="account-events__btn">
+								<button class="btn btn--white disabled" disabled>
+									Онлайн консультация
+								</button>
+							</div>
+							<p>Кнопка станет активной за 5 минут до начала приема</p>
 						</div>
-						<p>Кнопка станет активной за 5 минут до начала приема</p>
 					</div>
-				</div>
 				{{else}}
 				<div class="account-events__item event_date"></div>
 				{{/if}}
@@ -733,12 +742,20 @@
 				}
 			}
 		});
-
+		window.current_day_events = [];
+		var current_day_events_checker = null;
 		window.load = function () {
+			if (!!current_day_events_checker) {
+				clearInterval(current_day_events_checker);
+			}
 			utils.api.get('/api/v2/list/records?status=[upcoming,new,past]&group=[events,quotes]&client=' +
-			              wbapp._session.user.id)
+			              wbapp._session.user.id + '&@sort=_lastdate:d')
 				.then(function (records) {
+					if (!!current_day_events_checker) {
+						clearInterval(current_day_events_checker);
+					}
 					console.log('event:', records);
+					window.current_day_events = [];
 					page.set('events.upcoming', []);
 					page.set('events.current', []);
 					page.set('history.events', []);
@@ -750,8 +767,15 @@
 								return;
 							}
 							if (rec.status === 'new') {
+								rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
 								page.push('events.upcoming', rec);
 								return;
+							}
+
+							rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
+
+							if (Cabinet.isCurrentDayEvent(rec)) {
+								window.current_day_events.push(rec);
 							}
 
 							if (Cabinet.isCurrentEvent(rec)) {
@@ -760,12 +784,42 @@
 								page.push('events.upcoming', rec);
 							}
 						});
+
+						window.sort_events();
 					}
 					page.set('events_ready', true);
+					if (!!window.current_day_events.length) {
+						current_day_events_checker = setInterval(function () {
+							console.log('check!');
+							var _upc = page.get('events.upcoming');
+							var _cur = page.get('events.current');
+							if (!!_cur && _cur.length){
+								_cur.forEach(function (ev, i) {
+									if (!Cabinet.isCurrentEvent(ev)) {
+										page.splice('events.current', i, 1);
+										page.push('events.upcoming', ev);
+									}
+								});
+							}
+							if (!!_upc && _upc.length) {
+								_upc.forEach(function (ev, i) {
+									if (Cabinet.isCurrentEvent(ev)) {
+										page.splice('events.upcoming', i, 1);
+										page.push('events.current', ev);
+									}
+								});
+							}
+							window.sort_events();
 
+						}, 10000);
+					}
 					$("img[data-src]:not([src])").lazyload();
 				});
-
+		};
+		window.sort_events = function (){
+			$(".account-events.upcoming .account-events__block")
+				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
+				.appendTo(".account-events.upcoming");
 		};
 		load();
 		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
