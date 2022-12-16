@@ -909,14 +909,14 @@
 			page.set('longterms_ready', false);
 			page.set('events_ready', false);
 
-			utils.api.get('/api/v2/list/records?status=upcoming&client=' + client_id).then(
+			utils.api.get('/api/v2/list/records?status=upcoming&@sort=event_date:d&client=' + client_id).then(
 				function (data) {
 					page.set('events.upcoming', data); /* get actually user next events */
 					$("img[data-src]:not([src])").lazyload();
 
 				});
 
-			utils.api.get('/api/v2/list/records?status=past&group=events&client=' + client_id).then(
+			utils.api.get('/api/v2/list/records?status=past&group=events&@sort=event_date:d&client=' + client_id).then(
 				function (data) {
 					page.set('history.events', data); /* get actually user next events */
 					page.set('events_ready', true); /* get actually user next events */
@@ -924,7 +924,7 @@
 
 				});
 
-			utils.api.get('/api/v2/list/records?group=longterms&client=' + client_id)
+			utils.api.get('/api/v2/list/records?group=longterms&@sort=_created:d&client=' + client_id)
 				.then(function (data) {
 					page.set('history.longterms', data); /* get actually user next events */
 					page.set('longterms_ready', true); /* get actually user next events */
