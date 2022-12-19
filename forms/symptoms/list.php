@@ -1,6 +1,11 @@
 <html>
 <div class="m-3" id="yongerSpace">
-    <nav class="nav navbar navbar-expand-md col">
+
+
+
+
+    <div id="{{_form}}List">
+<nav class="nav navbar navbar-expand-md col">
         <h3 class="tx-bold tx-spacing--2 order-1">Симптомы</h3>
         <div class="ml-auto order-2 float-right" wb-disallow="content">
             <a href="#" data-ajax="{'url':'/cms/ajax/form/{{_form}}/edit/_new','html':'modals'}" class="btn btn-primary">
@@ -8,100 +13,78 @@
             </a>
         </div>
     </nav>
-
-    <div>
-        <span class="bg-light">
-            <div class="header py-2">
-                <span clsss="row">
-                    <div class="col-6">
-                        <input type="search" class="form-control" placeholder="Поиск" data-ajax="{'target':'#{{_form}}List','filter_add':{'$or':[{ 'header': {'$like' : '$value'} } ]} }">
+        <div class="yonger-nested m-2 p-2">
+                <div class="bg-light p-3 mb-2 rounded search">
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="search" class="form-control" name="filter" placeholder="Поиск" on-change="filter">
+                        </div>
                     </div>
-                </span>
-            </div>
+                </div>
 
-        </span>
-
-        <ul class="list-group" id="{{_form}}List">
-            <wb-foreach wb="{'table':'{{_form}}',
-                            'render':'server',
-                            'bind':'cms.list.{{_form}}',
-                            'sort':'header',
-                            'size':'{{_sett.page_size}}',
-                            'filter': {'_site' : {'$in': [null,'{{_sett.site}}']}}
-            }">
-                <li class="list-group-item d-flex align-items-center">
-                    <img src="/thumbc/30x30/src{{cover.0.img}}" class="wd-30 rounded-circle mg-r-15" alt="">
-                    <div class="flex-grow-1">
-                        <h6 class="tx-13 tx-inverse tx-semibold mg-b-0">{{header}}</h6>
-                        <span class="d-block tx-11 text-muted" wb-if="'{{category}}' > ''" wb-tree="dict=srvcat&branch={{category}}">{{name}}</span>
+                <ul class="list-group">
+                    {{#each result}}
+                    <li class="list-group-item d-flex align-items-center" data-id="{{.id}}">
+                        <!--img src="/thumbc/30x30/src{{.cover.0.img}}" class="wd-30 ht-30 rounded-circle mg-r-15" alt=""-->
+                        <div class="wd-80p">{{.header}}</div>
+                        <div class="text-right wd-20p">
+                            <div class="custom-control custom-switch d-inline">
+                    {{#if .active == "on"}}
+                    <span class="cursor-pointer d-inline"  on-click="switch">
+                        <svg class="mi mi-power-turn-on-square.1" size="24" stroke="82C43C" wb-on wb-module="myicons"></svg>
+                    </span>
+                    {{/if}}
+                    {{#if .active == ""}}
+                    <span class="cursor-pointer d-inline" on-click="switch">
+                        <svg class="mi mi-power-turn-on-square" size="24" stroke="FC5A5A" wb-on wb-module="myicons"></svg>
+                    </span>
+                    {{/if}}
+                            </div>
+                            <a href="javascript:" data-ajax="{'url':'/cms/ajax/form/symptoms/edit/{{.id}}','html':'modals'}"
+                                class="d-inline">
+                                <img src="/module/myicons/content-edit-pen.svg?size=24&stroke=323232">
+                            </a>
+                    <div class="dropdown dropright d-inline">
+                        <a class="cursor-pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg class="mi mi-trash-delete-bin.2 d-inline" size="24" stroke="dc3545" wb-on wb-module="myicons"></svg>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" on-click="remove">
+                                <span class="fa fa-trash tx-danger"></span> Удалить</a>
+                            <a class="dropdown-item" href="#">
+                                <span class="fa fa-close tx-primary"></span> Отмена</a>
+                        </div>
                     </div>
-                    <div class="mg-l-auto wd-150">
-                        <form method="post" class="text-right m-0 cursor-pointer" data-item="{{id}}" data-form="{{_form}}">
-                            <wb-var wb-if='"{{active}}" == ""' stroke="FC5A5A" else="82C43C" />
-                            <input type="checkbox" name="active" class="d-none">
-                            <img src="/module/myicons/24/7987a1/copy-paste-select-add-plus.svg" width="24" height="24" class="dd-copy" wb-allow="admin">
-                            <img src="/module/myicons/24/7987a1/content-edit-pen.svg" width="24" height="24" class="dd-edit">
-                            <img src="/module/myicons/24/{{_var.stroke}}/power-turn-on-square.1.svg" class="dd-active cursor-pointer" wb-allow="admin">
-                            <img src="/module/myicons/24/FC5A5A/trash-delete-bin.2.svg" width="24" height="24" class="dd-remove" wb-allow="admin">
-                        </form>
-                    </div>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+                
+        {{#~/pages }} {{#if ~/pages != 1 }}
+        <nav>
+            <ul class="pagination justify-content-center mg-b-0 mg-t-10">
+                {{#each pagination}} {{#if ~/page == .page}}
+                <li class="page-item active">
+                    <a class="page-link" data-page="{{.page}}" on-click="setPage" href="#">
+                        {{.label}}
+                    </a>
                 </li>
-            </wb-foreach>
-        </ul>
+                {{/if}} {{#if ~/page != .page}}
+                <li class="page-item">
+                    <a class="page-link" data-page="{{.page}}" on-click="setPage" href="#">
+                        {{#if .label == "prev"}}
+                        <img src="/module/myicons/interface-essential-181.svg?size=18&stroke=0168fa"
+                            class="d-inline">{{/if}} {{#if .label == "next"}}
+                        <img src="/module/myicons/interface-essential-35.svg?size=18&stroke=0168fa"
+                            class="d-inline">{{/if}} {{#if .label != "prev"}}{{#if .label != "next"}}{{.label}}{{/if}}{{/if}}
+                    </a>
+                </li>
+                {{/if}} {{/each}}
+            </ul>
+        </nav>
+        {{/if}} {{/pages}}
+
+        </div>
     </div>
 </div>
-
-<script wb-app>
-    $(document).undelegate('#{{_form}}List .dd-remove', wbapp.evClick);
-    $(document).delegate('#{{_form}}List .dd-remove', wbapp.evClick, function(e) {
-        let data = $(this).parents('form').data();
-        wbapp.confirm('Удаление', `Удалить запись ${data.item} из таблицы ${data.form} ?`, {
-                'bgcolor': 'danger'
-            })
-            .on('confirm', function() {
-                wbapp.ajax({
-                    'url': '/ajax/rmitem/' + data.form + '/' + data.item +
-                        '?_confirm',
-                    'update': 'cms.list.{{_form}}',
-                    'html': 'modals'
-                });
-            });
-        e.stopPropagation();
-    });
-
-    $(document).undelegate('#{{_form}}List .dd-active', wbapp.evClick);
-    $(document).delegate('#{{_form}}List .dd-active', wbapp.evClick, function(e) {
-        e.stopPropagation();
-        let id = $(e.currentTarget).parents('form').attr('data-item');
-        let form = $(e.currentTarget).parents('form').attr('data-form');
-        $(e.currentTarget).parent('form').find('[name=active]').trigger('click');
-        wbapp.save($(e.currentTarget), {
-            'table': form,
-            'id': id,
-            'update': 'cms.list.{{_form}}',
-            'silent': 'true'
-        })
-    });
-
-    $(document).undelegate('#{{_form}}List [data-item] .dd-edit', wbapp.evClick);
-    $(document).delegate('#{{_form}}List [data-item] .dd-edit', wbapp.evClick, function(e) {
-        e.stopPropagation();
-        let data = $(this).parents('[data-item]').data();
-        wbapp.ajax({
-            'url': '/cms/ajax/form/' + data.form + '/edit/' + data.item,
-            'append': 'modals'
-        });
-    });
-
-    $(document).undelegate('#{{_form}}List [data-item] .dd-copy', wbapp.evClick);
-    $(document).delegate('#{{_form}}List [data-item] .dd-copy', wbapp.evClick, function(e) {
-        e.stopPropagation();
-        let data = $(this).parents('[data-item]').data();
-        url = '/ajax/copy/' + data.form + '/' + data.item + '/';
-        wbapp.ajax({
-            'url': url,
-            'item': data.item,
-            'update': 'cms.list.{{_form}}'
-        });
-    });
-</script>
+<script language="javascript" src="/forms/symptoms/list.js"></script>

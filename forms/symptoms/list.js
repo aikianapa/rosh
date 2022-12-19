@@ -1,8 +1,8 @@
 (() => {
     var api = "/api/v2"
-    var form = "services"
-    var size = 99999
-    var base = api + `/list/${form}?&@size=${size}&@sort=_sort`
+    var form = "symptoms"
+    var size = 30
+    var base = api + `/list/${form}?&@size=${size}&@sort=header`
     var list = new Ractive({
         el: `#${form}List`,
         template: $(`#${form}List`).html(),
@@ -26,19 +26,21 @@
                 list.set("page", data.page);
                 list.set("pages", data.pages);
                 document.getElementById(`${form}List`).scrollIntoView()
-                if (list.get('filter') == false) {
-                    $(`#${form}List .list-group`).sortable({
-                        update: function(ev, line) {
-                            let data = {}
-                            $(ev.target).children().each(function(i, li) {
-                                data[i] = $(li).data('id')
-                            })
-                            wbapp.post(`/api/v2/func/${form}/sort`, data)
-                        }
-                    });
-                } else {
-                    $(`#${form}List .list-group`).sortable("destroy");
-                }
+                    /*
+                    if (list.get('filter') == false) {
+                        $(`#${form}List .list-group`).sortable({
+                            update: function(ev, line) {
+                                let data = {}
+                                $(ev.target).children().each(function(i, li) {
+                                    data[i] = $(li).data('id')
+                                })
+                                wbapp.post(`/api/v2/func/${form}/sort`, data)
+                            }
+                        });
+                    } else {
+                        $(`#${form}List .list-group`).sortable("destroy");
+                    }
+                    */
             },
             setPage(ev) {
                 let page = $(ev.node).attr("data-page");
