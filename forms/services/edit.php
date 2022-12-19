@@ -45,7 +45,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-sm-4">Направление</label>
                                     <div class="col">
-                                        <select class="form-control" wb-tree="dict=srvtype&children=false" placeholder="" name="type" >
+                                        <select class="form-control" wb-tree="dict=srvtype&children=false" multiple wb-select2 placeholder="" name="type" >
                                             <option value="{{id}}">{{name}}</option>
                                         </select>
                                     </div>
