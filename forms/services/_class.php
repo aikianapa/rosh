@@ -11,6 +11,12 @@ class servicesClass extends cmsFormsClass
         }
     }
 
+
+    function afterItemRemove(&$item)
+    {
+        $this->app->shadow('/module/yonger/yonmap');
+    }
+
     function sort()
     {
         $data = $this->app->vars('_post');
