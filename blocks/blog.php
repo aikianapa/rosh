@@ -53,7 +53,9 @@
                     'bind': 'site.list.blog',
                     'filter':{
                         'active':'on'
-                    }
+                    },
+                    'size':'6',
+                    'more':'true:ещё'
                 }">
                     <wb-var width="33" />
                     <wb-var width="50" wb-if="'{{_ndx}}'>'3'" />
