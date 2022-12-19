@@ -1,7 +1,7 @@
 (() => {
     var api = "/api/v2"
     var form = "symptoms"
-    var size = 30
+    var size = 50
     var base = api + `/list/${form}?&@size=${size}&@sort=header`
     var list = new Ractive({
         el: `#${form}List`,
@@ -11,7 +11,7 @@
             result: [],
             pagination: [],
             user: wbapp._session.user,
-            filter: false
+            filter: {}
         },
         on: {
             init() {
@@ -27,7 +27,7 @@
                 list.set("pages", data.pages);
                 document.getElementById(`${form}List`).scrollIntoView()
                     /*
-                    if (list.get('filter') == false) {
+                    if (Object.keys().length == 0) {
                         $(`#${form}List .list-group`).sortable({
                             update: function(ev, line) {
                                 let data = {}
@@ -76,7 +76,7 @@
                         category == '*' ? null : filter.category = { '$like': category }
                     }
                 })
-                Object.keys(filter).length == 0 ? list.set('filter', false) : list.set('filter', true)
+                list.set('filter', filter)
                 wbapp.post(`${base}`, { filter: filter }, function(data) {
                     list.fire("setData", null, data)
                 })
@@ -88,14 +88,14 @@
                 let pages = list.get("pages") * 1
                 delete result[id]
                 if (Object.keys(result).length == 0 && pages > 0 && page >= pages) page--
-                    wbapp.post(`${api}/delete/${form}/${id}`, {}, function(data) {
+                    wbapp.post(`${api}/delete/${form}/${id}`, { filter: list.get('filter') }, function(data) {
                         if (data.error == false) {
                             list.fire("loadPage", page)
                         }
                     });
             },
             loadPage(ev, page) {
-                wbapp.post(`${base}&@page=${page}`, {}, function(data) {
+                wbapp.post(`${base}&@page=${page}`, { filter: list.get('filter') }, function(data) {
                     list.fire("setData", null, data)
                 })
             }
