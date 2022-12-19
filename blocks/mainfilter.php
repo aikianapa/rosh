@@ -145,7 +145,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 mainfilter__right">
+                <div class="col-lg-3 col-md-4 mainfilter__right" id="mainfilterRight">
                     <div class="mainfilter__choice">
                         <div class="mainfilter__choice-main">
                             <h5 class="h5">Выбранные услуги или существующие проблемы</h5>
@@ -216,6 +216,10 @@
                             </a>
                         </div>
                     </div>
+
+                    <div id="mainfilterCounter" on-click="toTop">
+                        {{~/checked}}
+                    </div>
                     <div class="mainfilter__bottom">
                         <form class="mainfilter__form">
                             <div class="mainfilter__form-top">
@@ -262,8 +266,9 @@
         el: '#mainfilter',
         template: $('#mainfilter template').html(),
         data: {
-            'choice': wbapp.data('choice'),
-            'filter': {}
+            choice: wbapp.data('choice'),
+            filter: {},
+            checked: 0
         },
         on: {
             init() {
@@ -281,6 +286,10 @@
                 mainFilter.set('choice.symptoms', {})
                 wbapp.data('choice.symprbms', {})
                 wbapp.data('choice.symptoms', {})
+                mainFilter.countChoice()
+            },
+            toTop() {
+                document.getElementById(`mainfilterRight`).scrollIntoView()
             },
             clearProblems() {
                 $(document).find('.mainfilter__tab[data-tab="services"] input[type="checkbox"]:checked').prop(
@@ -289,11 +298,13 @@
                     'checked', false)
                 mainFilter.set('choice.problems', {})
                 wbapp.data('choice.problems', {})
+                mainFilter.countChoice()
             },
             delete(ev) {
                 did = $(ev.node).data('id')
                 $(document).find('#mainfilter label[data-id="' + did + '"]').trigger('click')
                 //console.log(did, $(document).find('#mainfilter label[data-id="' + did + '"]'));
+                mainFilter.countChoice()
             },
             deleteSymPrb(ev) {
                 let data = $(ev.node).data()
@@ -312,6 +323,7 @@
                 }
                 mainFilter.set('choice', choice)
                 wbapp.data('choice', choice)
+                mainFilter.countChoice()
             },
             toggleService(ev) {
                 let input = $(ev.node)
@@ -337,6 +349,7 @@
                 }
                 mainFilter.set('choice.services', choice)
                 wbapp.data('choice', this.get('choice'))
+                mainFilter.countChoice()
                 return false
             },
             toggleProblem(ev) {
@@ -381,6 +394,7 @@
                 }
                 mainFilter.set('choice.problems', choice)
                 wbapp.data('choice', this.get('choice'))
+                mainFilter.countChoice()
                 return false
             },
             toggleSymptom(ev) {
@@ -462,6 +476,7 @@
                 mainFilter.set('choice.symptoms', choice)
                 mainFilter.set('choice.symprbms', symprbms)
                 wbapp.data('choice', this.get('choice'))
+                mainFilter.countChoice()
                 return false
             },
             checkChoose() {
@@ -480,7 +495,9 @@
                                 `[data-tab=sympthoms] label[data-id=${item.id}] input`
                             )).prop('checked', true)
                         })
+                        mainFilter.countChoice()
                     }, 300)
+                    mainFilter.countChoice()
                 }, 300)
             },
             viewService(ev) {
@@ -528,9 +545,32 @@
                     $(form).show()
                 })
             }
+        },
+        countChoice() {
+            let checked = $(this.el).find('.mainfilter__tabs input:checked').length
+            this.set('checked',checked)
         }
     })
     </script>
+    <style>
+        #mainfilterCounter {
+            color:#fff;
+            background:#000;
+            padding:5px;
+            display:none;
+            position:fixed;
+            bottom:20px;
+            right:20px;
+            z-index:10;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+        @media (max-width: 767px) {
+            #mainfilterCounter {
+                display:inline;
+            }
+        }
+    </style>
 </view>
 <edit header="Основной фильтр">
     <div>
