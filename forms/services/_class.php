@@ -12,11 +12,26 @@ class servicesClass extends cmsFormsClass
     }
 
 
-    function afterItemSave($item)
+    function afterItemRemove(&$item)
     {
-        if ($this->app->route->mode == 'save') {
-            $this->app->shadow('/cms/ajax/form/pages/list');
+        $this->app->shadow('/module/yonger/yonmap');
+    }
+
+    function sort()
+    {
+        $data = $this->app->vars('_post');
+        $res = ['error'=>true];
+        foreach ($data as $sort => $item) {
+            $this->app->itemSave($this->app->route->form, [
+                    'id'=>$item,
+                    '_sort' => wbSortIndex($sort)
+                ], false);
+            $res = ['error'=>false];
         }
+        $this->app->tableFlush($this->app->route->form);
+        header("Content-type:application/json");
+        echo json_encode($res);
+        exit;
     }
 
 
