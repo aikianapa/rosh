@@ -1043,6 +1043,9 @@ $(function () {
 					initServicesSearch($('.search-services'), catalog.servicesList);
 					initPlugins();
 				},
+				selectCategory(ev) {
+					$(ev.node).parents('form').find('.search-services').trigger('focus');
+				},
 				submit(ev) {
 					let $form = $(ev.node);
 					let uid   = popup.get('user.id');
