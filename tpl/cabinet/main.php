@@ -707,7 +707,7 @@
 
 			['group=quotes',
 			 'group=events&status=upcoming',
-			 'group=events&status=past'
+			 'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]'
 			].forEach(
 				function (target_tab, i) {
 					var _sorts = [
