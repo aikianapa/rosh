@@ -28,6 +28,6 @@
         </svg>
     </div>
 </body>
-<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
-<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
+<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');$dom->find('.content-wrap ul')->addClass('ul-line');"/>
+<wb-jq wb="$dom->find('.crumbs + h1')->remove();" wb-if="'{{_route.form}}'=='services' AND '{{_route.mode}}'=='show'"/>
 </html>
