@@ -14,7 +14,7 @@
 					<div class="popups__text-chexboxs">
 						{{#each categories}}
 						<label class="text-radio">
-							<input type="radio" name="service_category" value="{{id}}">
+							<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
 							<span>{{name}}</span>
 						</label>
 						{{/each}}
@@ -414,6 +414,7 @@
 							$(this.el).show();
 							console.log('show');
 						},
+
 						checkConsultation(ev) {
 							var ght = 0;
 							var lv = 0;

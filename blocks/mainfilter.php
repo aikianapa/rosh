@@ -221,11 +221,13 @@
                         {{~/checked}}
                     </div>
                     <div class="mainfilter__bottom">
-                        <form class="mainfilter__form">
+                        <form class="mainfilter__form" on-submit="createQuote">
+                            <input type="hidden" value="{{_sess.user.id}}">
+                                
                             <div class="mainfilter__form-top">
                                 <h5 class="h5">Запись на прием</h5>
                                 <div class="input input--grey">
-                                    <input class="input__control" type="text" placeholder="ФИО">
+                                    <input class="input__control" type="text" name="user[name]" value="{{_sess.user.fullname}}" placeholder="ФИО">
                                     <div class="input__placeholder">ФИО</div>
                                 </div>
                                 <div class="input input--grey">
@@ -544,6 +546,15 @@
                         '.popup__content [data-category]').data('category'))
                     $(form).show()
                 })
+            },
+            createQuote: function (ev){
+                console.log('checked', mainFilter.get('choice.services'));
+                // check is LOGGED IN ?
+                // create USER IF NOT 
+                //     & auth current user 
+                // ...
+                // create new record.quote 
+                return false;
             }
         },
         countChoice() {
