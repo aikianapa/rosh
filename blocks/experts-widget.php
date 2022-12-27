@@ -11,7 +11,7 @@
             <div class="inner-experts__list">
                 <wb-foreach wb="table=experts&limit=5" wb-filter="active=on">
                 <div class="inner-experts__item">
-                    <div class="inner-experts__pic" style="background-image: url(/thumbc/350x194/src{{image.0.img}})" wb-if="'{{image.0.img}}'>''"></div>
+                    <div class="inner-experts__pic" style="background-image: url(/thumbc/700x388/src{{image.0.img}})" wb-if="'{{image.0.img}}'>''"></div>
                     <div class="inner-experts__info">
                         <div class="inner-experts__name" wb-if="'{{name}}'>''"><a href="/about/experts/{{wbFurlGenerate({{name}})}}">{{name}}</a></div>
                         <div class="inner-experts__experience" wb-if="'{{experience}}'>''">

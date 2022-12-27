@@ -48,7 +48,7 @@
             <div class="expert__top row">
                 <div class="col-md-4">
                     <div class="expert__photo">
-                        <img src="/thumbc/338x187/src{{_parent.image.0.img}}" alt="{{_parent.name}}">
+                        <img src="/thumbc/630x350/src{{_parent.image.0.img}}" alt="{{_parent.name}}">
                     </div>
                 </div>
                 <div class="col-md-8">

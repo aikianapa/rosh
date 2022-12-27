@@ -9,7 +9,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row --aicn mb-40" wb-if="'{{left}}'>'' AND '{{right}}'>''">
+            <div class="row --aicn mb-40" wb-if="'{{left}}'>'' OR '{{right}}'>''">
                 <div class="col-lg-4">
                     <div class="text-right text-bold" wb-if="'{{left}}'>''">{{left}}</div>
                 </div>
