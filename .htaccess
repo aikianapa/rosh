@@ -61,6 +61,8 @@ RewriteRule ^konturnaya-plastika-gub.html$ /services/fillery [L,R=301]
 RewriteRule ^dermatologiya/akne/lechenie_akne_v_klinike_rosh.html$ /problems/akne-i-postakne [L,R=301]
 RewriteRule ^dermatologiya/akne/pitanie_pri_akne.html$ /problems/akne-i-postakne [L,R=301]
 
+RewriteRule ^(.*).html$ /  [L,R=301]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [L,QSA]
 
