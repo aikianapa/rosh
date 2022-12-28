@@ -66,18 +66,21 @@
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item active" data-tab="quotes" data-type="group=quotes">
+					<div class="account__tab data-tab-item active" data-tab="quotes"
+						data-type="group=quotes">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
 					</div>
-					<div class="account__tab data-tab-item" data-tab="events" data-type="group=events&status=upcoming">
+					<div class="account__tab data-tab-item" data-tab="events"
+						data-type="group=events&status=upcoming">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=past">
+					<div class="account__tab data-tab-item" data-tab="past"
+						data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
@@ -198,10 +201,10 @@
 		<div class="select pay">
 			<div class="select__main">Статус оплаты</div>
 			<div class="select__list">
-				<input type="hidden" name="pay_status" value="{{ record.pay_status }}">
+				<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 				{{#each catalog.quotePay}}
-				<div class="select__item" data-id="{{ id }}"
-					onclick="$(this).parent('.select__list').children('input').val($(this).attr('data-id'))">
+				<div class="select__item" data-id="{{id}}"
+					onclick="$(this).parents('.select .pay').find('input.pay_status').val($(this).attr('data-id'));">
 					{{name}}
 				</div>
 				{{/each}}
@@ -220,9 +223,9 @@
 				<div class="select__delimiter" disabled></div>
 				{{else}}
 				<div class="select__item select__item--acc-{{color}}"
-					data-id="{{ id }}"
-					data-group="{{ type }}"
-					onclick="$(this).parents('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parents('.select__list').children('input.group').val($(this).attr('data-group'));">
+					data-id="{{id}}"
+					data-group="{{type}}"
+					onclick="$(this).parents('.select.status').find('input.status').val($(this).attr('data-id'));$(this).parents('.select.status').find('input.group').val($(this).attr('data-group'));">
 					{{name}}
 				</div>
 				{{/if}}
@@ -286,6 +289,7 @@
 						{{/each}}
 					</div>
 					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
+						<input type="hidden" name="no_experts" value="0">
 						{{#if record.no_experts === '1' }}
 						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts"
 							checked
@@ -404,7 +408,7 @@
 					</div>
 					{{else}}
 					{{#each record.service_prices: idx, key}}
-					<div class="search__drop-item" data-index="{{idx}}"
+					<div class="search__drop-item services" data-index="{{idx}}"
 						data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 						<input type="hidden" name="services[]"
 							value="{{service_id}}">
@@ -701,10 +705,15 @@
 <script wb-app remove>
 	var tabs = {};
 	$(document).on('cabinet-db-ready', function () {
+		var getGroupByStatus = function (status){
+			if (['new', 'uncall', 'delay'].includes(status)){
+				return 'quote'
+			}
+			return 'event';
+		};
 		let editProfile = wbapp.tpl('#editProfile').html;
 		let editStatus  = wbapp.tpl('#editStatus').html;
 		window.load     = function () {
-
 			['group=quotes',
 			 'group=events&status=upcoming',
 			 'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]'
@@ -733,10 +742,9 @@
 								on: {
 									loaded() {
 										console.log('>>> loaded', target_tab);
-
+										$(this.el).find('.loading-overlay').remove();
 									},
 									complete(){
-
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
@@ -850,11 +858,20 @@
 														_parent.find('.admin-editor__events .popup-services-list'),
 														catalog.servicesList
 													);
-
+													console.log('true: ', $(this.el).find('.search__drop-item.services').length);
 													initPlugins();
-													if (!!$('.select .select__item input:checked').length) {
-														$('.select.select_experts .select__item').trigger('click');
+													if (!!$(this.el).find('.select .select__item input:checked').length) {
+														$(this.el).find('.select.select_experts .select__item').trigger('click');
 													}
+													console.log($('.search__drop-item.services').length);
+													var _price = 0;
+													$(this.el).find('.search__drop-item.services').each(function (){
+														_price += parseInt($(this).data('price'));
+													});
+													console.log(_price);
+													$(this.el).find('.admin-editor__summ input[name="price"]').val(_price);
+													$(this.el).find('.admin-editor__summ p.price').html(
+														utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
 												},
 												addPhoto(ev, record) {
 													popupPhoto(catalog.clients[record.client], record,
@@ -905,11 +922,17 @@
 														$(copy).html($(form).clone());
 
 														let post_statuses   = $(copy).serializeJSON();
-														post_statuses.group =
-															(catalog.quoteStatus[post_statuses.status].type ||
-															 'quote') + 's';
+
+														post_statuses.group = (
+															catalog.quoteStatus[post_statuses.status].type || ''
+														);
+														if (!post_statuses.group){
+															post_statuses.group = getGroupByStatus(post_statuses.status);
+														}
+														post_statuses.group += 's';
 														var new_data        = $($(ev.node).parents('form'))
 															.serializeJSON();
+														console.log(post_statuses.group);
 
 														new_data.price      = parseInt(new_data.price);
 														new_data.status     = post_statuses.status;

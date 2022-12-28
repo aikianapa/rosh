@@ -23,7 +23,7 @@ $(function() {
                 $(this).addClass('active').siblings('.select__item').removeClass('active');
                 $(this).closest('.select').removeClass('active').find('.select__main:first').html(value);
                 if ($(this).data('id') !== undefined) value = $(this).data('id');
-                $(this).closest('.select').find('input[type=hidden]').each(function() {
+                $(this).closest('.select').find('input[type=hidden]:not(.group):not(.status):not(.pay_status)').each(function() {
                     $(this).val(value);
                 });
             }
