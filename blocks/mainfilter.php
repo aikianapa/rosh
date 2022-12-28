@@ -287,7 +287,7 @@
                         mainFilter.set('filter', data);
                         mainFilter.fire('checkChoose')
                     })
-                }, 3000)
+                }, 500)
             },
             clearSymptoms() {
                 $(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(
