@@ -193,6 +193,8 @@ $(function() {
                 loop: true,
                 slidesPerView: 1,
                 speed: 1000,
+                loop: true,
+                loopFillGroupWithBlank: true,
                 spaceBetween: 30,
                 navigation: { nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev' },
             });
