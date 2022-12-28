@@ -282,12 +282,10 @@
         },
         on: {
             init() {
-                setTimeout(function() {
-                    wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
-                        mainFilter.set('filter', data);
-                        mainFilter.fire('checkChoose')
-                    })
-                }, 500)
+                wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
+                    mainFilter.set('filter', data);
+                    mainFilter.fire('checkChoose')
+                })
             },
             clearSymptoms() {
                 $(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(

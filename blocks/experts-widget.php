@@ -2,14 +2,21 @@
     <div>
         <wb-module wb="module=yonger&mode=edit&block=common.inc" />
     </div>
+    <p class="alert alert-info">
+        В разделе Услуг отображаются только те специалисты, у которых указано направление соответствующее услуге
+    </p>
 </edit>
 
 <view>
     <div class="inner-experts">
+        <wb-var count="0" />
         <div class="container">
             <h3 class="h3 mb-40">Специалисты</h3>
             <div class="inner-experts__list">
-                <wb-foreach wb="table=experts&limit=5" wb-filter="active=on">
+                <wb-var filter="active=on&srvtype~={{_parent.type}}"
+                        wb-if="'{{_route.form}}' == 'services' && '{{_route.mode}}' == 'show' " else="active=on" />
+                <wb-foreach wb="table=experts&limit=5" wb-filter="{{_var.filter}}">
+                <wb-var count="{{_var.count*1 + 1}}" />
                 <div class="inner-experts__item">
                     <div class="inner-experts__pic" style="background-image: url(/thumbc/700x388/src{{image.0.img}})" wb-if="'{{image.0.img}}'>''"></div>
                     <div class="inner-experts__info">
@@ -31,6 +38,7 @@
                 </div>
             </div>
         </div>
+        <wb-jq wb="$dom->find('.container')->remove()" wb-if="'{{_var.count}}'=='0'" />
     </div>
 </view>
 
