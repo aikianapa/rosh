@@ -100,7 +100,13 @@
                                 </div>
                                 {{/if}} {{/if}} {{/each}}
                                 <div class="accardeon-group no-border">
-                                    <div class="accrdeon__title">Гинекология</div>
+                                    
+                                    <div class="accardeon">
+<div class="accardeon__main accardeon__click" data-category="{{id}}"
+                                            on-click="getProblems">
+                                            <div class="accrdeon__title">Гинекология</div>
+                                        </div>
+                                        <div class="accardeon__list">
                                     <div class="row">
                                         {{#each problems.gyn.cats.gyn.items}}
                                         <div class="col-lg-4">
@@ -115,6 +121,8 @@
                                             </label>
                                         </div>
                                         {{/each}}
+                                    </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -274,12 +282,10 @@
         },
         on: {
             init() {
-                setTimeout(function() {
-                    wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
-                        mainFilter.set('filter', data);
-                        mainFilter.fire('checkChoose')
-                    })
-                }, 3000)
+                wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
+                    mainFilter.set('filter', data);
+                    mainFilter.fire('checkChoose')
+                })
             },
             clearSymptoms() {
                 $(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(

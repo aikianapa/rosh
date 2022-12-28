@@ -38,9 +38,17 @@
                                 </select>
                             </div>
                             <div class="form-group row">
+                                <label class="col-form-label col-sm-3">Направление</label>
+                                <div class="col">
+                                    <select class="form-control" wb-tree="dict=srvtype&children=false" multiple wb-select2 placeholder="" name="srvtype" >
+                                        <option value="{{id}}">{{name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-form-label col-sm-3">Специализация</label>
                                 <div class="col-sm-9">
-                                    <input name="spec" class="form-control">
+                                    <textarea name="spec" rows="auto" class="form-control"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">

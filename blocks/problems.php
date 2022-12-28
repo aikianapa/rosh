@@ -6,48 +6,53 @@
         </div>
         `)
         $(".crumbs + div.title-flex + h1").prependTo($(".crumbs + div.title-flex"))
+
         $(".problems-filter__list .problems-filter__item").on('click', function(ev) {
-            $(".search.search--service .search__input").trigger("keyup")
             $(".problems-filter__list .problems-filter__item").removeClass('active')
-            $(ev.target).addClass('active')
-            let srvtype = $('.all-tabs-items .data-tab-link.active[data-tab][data-tabs=all-problems]').data('tab')
+            $(this).addClass('active')
             let category = $(this).data('category')
-            wbapp.storage('problems.list.srvtype', srvtype)
             wbapp.storage('problems.list.category', category)
-            if (category == undefined || category == '') {
-                $(".all-services .all-services__item[data-category]").show()
-            } else {
-                $(".all-services .all-services__item").hide()
-                $(".all-services .all-services__item[data-category*='" + category + "']").show()
-            }
+            $(".search.search--service .search__input").trigger("keyup")
         })
 
-        $(".all-tabs-item.data-tab-link[data-tab]").on('click', function() {
-            $(".all-tabs-item.data-tab-link[data-tab]").removeClass("active")
+        $(".all-tabs-item.data-tab-link").on('click', function() {
+            $(".all-tabs-item.data-tab-link").removeClass("active")
             $(this).addClass('active')
-            let srvtype = $('.all-tabs-items .data-tab-link.active[data-tab][data-tabs=all-problems]').data('tab')
+            let srvtype = $('.all-tabs-items .data-tab-link.active').data('srvtype')
             wbapp.storage('problems.list.srvtype', srvtype)
+            console.log(srvtype);
+            srvtype == 'gyn' ? $('.problems-filter').addClass('d-none') : $('.problems-filter').removeClass('d-none')
+            $(".problems-filter__list .problems-filter__item:first").trigger('click')
         })
 
         $(".search.search--service .search__input").on("keyup",function(){
+            let srvtype = wbapp.storage('problems.list.srvtype')
+            let category = wbapp.storage('problems.list.category')
             let regex = $(this).val();
-            if (regex > ' ') {
+            $(".all-services .all-services__item").hide()
+            $(".all-services .all-services__item[data-srvtype='" + srvtype + "']").show()
+            if (category > '') {
+                $(".all-services .all-services__item[data-category]").each(function(){
+                    $(this).is("[data-category*='"+category+"']") ? null : $(this).hide()
+                })
+            }
+            srvtype=='gyn' ? $(".all-services .all-services__item[data-category*='gyn']").show() : null
+            if (regex > '') {
                 regex = new RegExp(regex, "gi");
                 $(".all-services .all-services__item").each(function(){
                     let str = $(this).text()
-                    str.match(regex) ? $(this).show() : $(this).hide();
+                    str.match(regex) ? null : $(this).hide();
                 })
-            } else {
-                $(".all-services .all-services__item").show()
             }
         })
 
         setTimeout(() => {
             let srvtype = wbapp.storage('problems.list.srvtype')
             let category = wbapp.storage('problems.list.category')
-            if (srvtype) $(".all-tabs-item.data-tab-link[data-tab=" + srvtype + "]").trigger('click')
-            if (category) $(".problems-filter__list .problems-filter__item[data-category=" + category + "]").trigger('click')
-
+            srvtype ? null : srvtype = $(".all-tabs-items .data-tab-link[data-srvtype]:first").data('srvtype')
+            category ? null : category = ''
+            $(".all-tabs-item.data-tab-link[data-srvtype=" + srvtype + "]").trigger('click')
+            category > '' ? $(".problems-filter__list .problems-filter__item[data-category=" + category + "]").trigger('click') : null
         }, 500)
     </script>
     <div class="container">
@@ -61,7 +66,7 @@
         </div>
         <wb-var active="active" />
         <div class="all-tabs-items" wb-tree="dict=srvtype&children=false">
-            <div class="cursor-pointer all-tabs-item data-tab-link {{_var.active}}" data-tab="{{id}}" data-tabs="all-problems">{{name}}</div>
+            <div class="cursor-pointer all-tabs-item data-tab-link {{_var.active}}" data-srvtype="{{id}}" data-tabs="all-problems">{{name}}</div>
             <wb-var active="" />
         </div>
     </div>
@@ -77,14 +82,14 @@
         </div>
     </div>
     <wb-var active="active" />
-    <div class="all-tabs data-tab-wrapper" data-tabs="all-problems" wb-tree="dict=srvtype&children=false">
-        <div class="all-tab data-tab-item {{_var.active}}" data-tab="{{id}}">
+    <div class="all-tabs data-tab-wrapper" data-tabs="all-problems">
+        <div class="all-tab data-tab-item {{_var.active}}" >
             <div class="container">
                 <div class="all-services">
-                    <wb-foreach wb="table=problems&size=999999" wb-filter="active=on&srvtype={{id}}">
+                    <wb-foreach wb="table=problems&size=999999&tpl=false" wb-filter="active=on">
                         <wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
-                        <a class="all-services__item" href="/{{_table}}/{{wbFurlGenerate({{header}})}}" data-category='{{implode(" ",category)}}'>
-                            <div class="all-services__pic" style="background-image: url(/thumbc/255x157/src{{_var.image}})"></div>
+                        <a class="all-services__item" href="/{{_table}}/{{wbFurlGenerate({{header}})}}" data-srvtype="{{srvtype}}" data-category='{{implode(" ",category)}}'>
+                            <div class="all-services__pic" style="background-image: url(/thumbc/610x314/src{{_var.image}})"></div>
                             <div class="all-services__name">{{header}}</div>
                         </a>
                     </wb-foreach>

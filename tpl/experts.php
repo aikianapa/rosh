@@ -7,17 +7,11 @@
 
 <body class="body" data-barba="wrapper">
 	<div class="scroll-container" data-scroll-container>
-		<div>
-			<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
-		</div>
+		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 		<main class="page" data-barba="container" data-barba-namespace="{{_route.name}}">
-			<div>
-				<wb-module wb="module=yonger&mode=render"/>
-			</div>
-			<div>
-				<wb-module wb="module=yonger&mode=render&view=footer"/>
-			</div>
+			<wb-module wb="module=yonger&mode=render"/>
 		</main>
+		<wb-module wb="module=yonger&mode=render&view=footer"/>
 	</div>
 	<div class="to_top_btn">
 		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="29px" viewBox="0 0 20 29" enable-background="new 0 0 20 29" xml:space="preserve">

@@ -23,7 +23,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="expert__img" wb-if="'{{image.0.img}}'>''">
-                                        <img src="/thumbc/315x175/src{{image.0.img}}" alt="{{fullname}} - {{spec}}">
+                                        <img src="/thumbc/630x350/src{{image.0.img}}" alt="{{fullname}} - {{spec}}">
                                     </div>
                                 </div>
                                 <div class="col-md-7">

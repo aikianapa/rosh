@@ -2,9 +2,10 @@
 
     <div class="menu" id="mainmenu">
         <nav class="nav">
-            <wb-foreach wb="table=pages&sort=_sort" wb-filter="active=on&menu=on&path=">
+            <wb-var menu wb-api="/api/v2/list/pages?active=on&menu=on&@sort=_sort"/>
+            <wb-foreach wb="from=_var.menu&tpl=false" wb-filter="path=">
                 <wb-var child="0" />
-                <wb-foreach wb="table=pages&limit=1" wb-filter="active=on&menu=on&path={{url}}">
+                <wb-foreach wb="from=_var.menu&limit=1&tpl=false" wb-filter="path={{url}}">
                     <wb-var child="1" />
                 </wb-foreach>
                 <wb-var option="{{menu_title}}" wb-if="'{{menu_title}}'>''" else="{{header}}" />
@@ -17,7 +18,7 @@
                 </div>
                 <div class="nav__group ddm" wb-if="_var.child == 1">
                     <div class="nav__link-inner"><a href="{{url}}">{{_var.option}}</a></div>
-                    <wb-foreach wb="table=pages&sort=_sort" wb-filter="active=on&menu=on&path={{url}}">
+                    <wb-foreach wb="from=_var.menu&tpl=false" wb-filter="path={{url}}">
                         <wb-var option="{{menu_title}}" wb-if="'{{menu_title}}'>''" else="{{header}}" />
                         <div class="nav__link-inner"><a href="{{url}}">{{_var.option}}</a></div>
                     </wb-foreach>
@@ -35,18 +36,18 @@
         <div class="socials socials-menu">
             <a class="socials__link" href="{{_var.facebook}}" wb-if="'{{_var.facebook}}'>''">
                 <svg class="svgsprite _socials-1">
-                    <use xlink:href="assets/img/sprites/svgsprites.svg#socials-1"></use>
+                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-1"></use>
                 </svg></a>
             <a class="socials__link" href="{{_var.instagram}}" wb-if="'{{_var.instagram}}'>''">
                 <svg class="svgsprite _socials-2">
-                    <use xlink:href="assets/img/sprites/svgsprites.svg#socials-2"></use>
+                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-2"></use>
                 </svg></a>
             <a class="socials__link" href="{{_var.vkontakte}}" wb-if="'{{_var.vkontakte}}'>''">
                 <svg class="svgsprite _socials-4">
-                    <use xlink:href="assets/img/sprites/svgsprites.svg#socials-4"></use>
+                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-4"></use>
                 </svg></a><a class="socials__link" href="{{_var.youtube}}" wb-if="'{{_var.youtube}}'>''">
                 <svg class="svgsprite _socials-3">
-                    <use xlink:href="assets/img/sprites/svgsprites.svg#socials-3"></use>
+                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-3"></use>
                 </svg></a>
         </div>
 

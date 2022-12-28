@@ -33,10 +33,6 @@
             </div>
         </div>
     </div>
-    <script>
-        let h1 = document.querySelector('.crumbs + h1')
-        if (h1) h1.remove()
-    </script>
 </view>
 
 <edit header="Лендинг - основной блок">
