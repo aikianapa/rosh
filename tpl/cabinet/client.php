@@ -382,8 +382,8 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="acount__photo">
-													<a class="after-healing__item"
-														data-fancybox="event-{{this.id}}"
+													<a class="after-healing__item photo"
+														data-fancybox="event-{{.id}}"
 														data-href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
@@ -408,8 +408,8 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="acount__photo">
-													<a class="after-healing__item"
-														data-fancybox="event-{{this.id}}"
+													<a class="after-healing__item photo"
+														data-fancybox="event-{{.id}}"
 														href="{{.src}}"
 														data-caption="Фото в процессе лечения:
 															{{ @global.utils.formatDate(.date) }}">
@@ -471,14 +471,16 @@
 								<div class="col-md-4">
 									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
 									{{#each this.photos.before}} <!--single photo!-->
-									<a class="before-healing"
-										data-fancybox="images-{{this.id}}"
+									<a class="before-healing photo"
+										data-fancybox="images-{{.id}}"
 										href="{{.src}}"
+										data-href="{{.src}}"
 										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
 										<h2 class="h2 healing__date-title d-none">
 											{{ @global.utils.formatDate(.date) }}
 										</h2>
-										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
+										<div class="before-healing__photo" style="background-image: url('{{.src}}')">
+										</div>
 										<div class="healing__date">
 											{{ @global.utils.formatDate(.date) }}
 										</div>
@@ -495,9 +497,9 @@
 										<div class="row">
 											{{#each this.photos.after}}
 											<div class="col-md-6">
-												<a class="after-healing__item"
-													data-fancybox="images-{{this.id}}"
-													data-href="{{ this.image }}"
+												<a class="after-healing__item photo"
+													data-fancybox="images-{{.id}}"
+													data-href="{{.src}}"
 													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
 													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 													<div class="after-healing__photo"
@@ -689,6 +691,7 @@
 					this.set('catalog', catalog);
 					setTimeout(function () {
 						$(this.el).find("img[data-src]:not([src])").lazyload();
+
 						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
 							.then(function (data) {
 								data.fullname = data.fullname.replaceAll('  ', ' ');
@@ -696,6 +699,8 @@
 								console.log(data);
 							});
 					});
+
+					console.log('READY!!!');
 				},
 				runOnlineChat(ev) {
 					const _rec_id = $(ev.node).data('id');
@@ -788,15 +793,8 @@
 						window.sort_events();
 					}
 					page.set('events_ready', true);
-					setTimeout(function () {
-						$(page.el).find('a.after-healing__item[data-href]').each(function (i) {
-							var _img = $(this);
-							_img.attr('href', '');// $(this).data('href'));
-							setTimeout(function () {
-								_img.attr('href', $(this).data('href'));
-							});
-						});
-					}, 150);
+
+
 					if (!!window.current_day_events.length) {
 						current_day_events_checker = setInterval(function () {
 							console.log('check!');
@@ -823,6 +821,14 @@
 						}, 10000);
 					}
 					$("img[data-src]:not([src])").lazyload();
+
+					setTimeout(function () {
+						$('a.photo[data-href]').each(function (i) {
+							var _img = $(this);
+							console.log('-->', $(this).data('href'));
+							_img.attr('href', $(this).data('href'));
+						});
+					}, 150);
 				});
 		};
 		window.sort_events = function (){
@@ -830,6 +836,7 @@
 				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
 				.appendTo(".account-events.upcoming");
 		};
+
 		load();
 		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
 			.then(function (records) {
