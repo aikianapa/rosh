@@ -1071,7 +1071,7 @@ $(function () {
 					console.log(_el);
 					//_el.find('.search-services').trigger('blur');
 					setTimeout(function (){
-						_el.find('.search-services').trigger('focus');
+						//_el.find('.search-services').trigger('focus');
 					});
 				},
 				submit(ev) {
