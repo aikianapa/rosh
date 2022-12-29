@@ -788,12 +788,22 @@
 						window.sort_events();
 					}
 					page.set('events_ready', true);
+					setTimeout(function () {
+						$(page.el).find('a[data-href]').each(function (i) {
+							console.log($(this).data('href'));
+							var _img = $(this);
+							_img.attr('href', '');// $(this).data('href'));
+							setTimeout(function () {
+								_img.attr('href', $(this).data('href'));
+							});
+						});
+					}, 150);
 					if (!!window.current_day_events.length) {
 						current_day_events_checker = setInterval(function () {
 							console.log('check!');
 							var _upc = page.get('events.upcoming');
 							var _cur = page.get('events.current');
-							if (!!_cur && _cur.length){
+							if (!!_cur && _cur.length) {
 								_cur.forEach(function (ev, i) {
 									if (!Cabinet.isCurrentEvent(ev)) {
 										page.splice('events.current', i, 1);

@@ -204,9 +204,11 @@
 						console.log($(this).data('href'));
 						var _img = $(this);
 						_img.attr('href', '');// $(this).data('href'));
+
 						setTimeout(function () {
-							_img.attr('href', $(this).data('href'));
+							_img.attr('href', _img.attr('data-href'));
 						});
+					});
 				}, 150);
 			});
 		};
