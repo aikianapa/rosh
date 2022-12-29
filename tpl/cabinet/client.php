@@ -326,7 +326,11 @@
 
 										<div class="analysis__description">
 											<p class="text-bold mb-20">Выполнялись процедуры</p>
-											<p class="text-grey">{{.comment}}</p>
+											<p class="text-grey">
+												{{#services}}
+												{{catalog.services[this].header}}<br>
+												{{/services}}
+											</p>
 										</div>
 									</div>
 									<div class="col-md-6">
