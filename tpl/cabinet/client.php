@@ -197,6 +197,7 @@
 						<div class="account-events__name" style="color:#393">Заявка на рассмотрении</div>
 					</div>
 				</div>
+				{{elseif this.status == 'upcoming'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Дата приема:</div>
@@ -703,7 +704,6 @@
 								setTimeout(function () {
 									$('a.photo[data-href]').each(function (i) {
 										var _img = $(this);
-										console.log('-->', $(this).data('href'));
 										_img.attr('href', $(this).data('href'));
 									});
 								}, 150);

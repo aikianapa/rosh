@@ -452,60 +452,51 @@
 				{{#if record.group == 'events'}}
 				<div class="admin-editor__images mb-40">
 					{{#if record.hasPhoto}}
-					<div class="row acount__photos-wrap mb-20">
+					<div class="row">
 						<div class="col-md-6">
-							{{#if record.photos.before}}
-							<div class="acount__photo">
-								<p>Фото до начала лечения</p>
-								{{#each record.photos.before}}
-								<div class="row">
-									<div class="col-md-12">
-										<div class="acount__photo">
-											<a class="after-healing__item"
-												data-fancybox="event-{{this.id}}"
-												href="{{.src}}"
-												data-caption="Фото до начала лечения:
-															{{ @global.utils.formatDate(.date) }}">
-												<img src="{{.src}}" alt="">
-											</a>
-
-										</div>
-									</div>
+							<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+							{{#each record.photos.before}} <!--single photo!-->
+							<a class="before-healing photo"
+								data-fancybox="images-{{record.id}}"
+								href="{{.src}}"
+								data-href="{{.src}}"
+								data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+								<h2 class="h2 healing__date-title d-none">
+									{{ @global.utils.formatDate(.date) }}
+								</h2>
+								<div class="before-healing__photo" style="background-image: url('{{.src}}')">
 								</div>
-								{{else}}
-
-								{{/each}}
-							</div>
-							{{/if}}
+								<div class="healing__date">
+									{{ @global.utils.formatDate(.date) }}
+								</div>
+								<div class="healing__description">{{.comment}}</div>
+							</a>
+							{{/each}}
 						</div>
 						<div class="col-md-6">
-							{{#if record.photos.before}}
-							<div class="acount__photo">
-								<p>Фото в процессе лечения</p>
-								{{#each record.photos.after}}
-								<div class="row">
-									<div class="col-md-12">
-										<div class="acount__photo">
-											<a class="after-healing__item"
-												data-fancybox="event-{{this.id}}"
-												href="{{.src}}"
-												data-caption="Фото до начала лечения:
-															{{ @global.utils.formatDate(.date) }}">
-												<img src="{{.src}}" alt="">
-											</a>
-
-										</div>
-									</div>
-								</div>
-								{{else}}
-
-								{{/each}}
+							<div class="text-bold text-big mb-20">
+								Фото после начала лечения
 							</div>
-							{{/if}}
+							<div class="after-healing">
+								<div class="row">
+									{{#each record.photos.after}}
+									<div class="col-md-6">
+										<a class="after-healing__item photo"
+											data-fancybox="images-{{record.id}}"
+											data-href="{{.src}}"
+											data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+											<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+											<div class="after-healing__photo"
+												style="background-image: url({{.src}});">
+											</div>
+										</a>
+									</div>
+									{{/each}}
+								</div>
+							</div>
 						</div>
 					</div>
 					{{/if}}
-
 					<div class="row acount__photos-wrap">
 						<div class="col-md-2">
 							<a class="btn btn--white" on-click="['addPhoto',record]">
@@ -872,6 +863,13 @@
 													$(this.el).find('.admin-editor__summ input[name="price"]').val(_price);
 													$(this.el).find('.admin-editor__summ p.price').html(
 														utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
+
+													setTimeout(function () {
+														$('a.photo[data-href]').each(function (i) {
+															var _img = $(this);
+															_img.attr('href', $(this).data('href'));
+														});
+													}, 150);
 												},
 												addPhoto(ev, record) {
 													popupPhoto(catalog.clients[record.client], record,
