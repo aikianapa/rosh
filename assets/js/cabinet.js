@@ -1067,7 +1067,12 @@ $(function () {
 					initPlugins();
 				},
 				selectCategory(ev) {
-					$(ev.node).parents('form').find('.search-services').trigger('focus');
+					var _el = $(this.el);
+					console.log(_el);
+					//_el.find('.search-services').trigger('blur');
+					setTimeout(function (){
+						_el.find('.search-services').trigger('focus');
+					});
 				},
 				submit(ev) {
 					let $form = $(ev.node);
