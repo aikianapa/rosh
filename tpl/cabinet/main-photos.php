@@ -201,9 +201,13 @@
 
 				setTimeout(function () {
 					$(page.el).find('a[data-href]').each(function (i) {
-						$(this).attr('href', $(this).data('href'));
-					});
-				}, 100);
+						console.log($(this).data('href'));
+						var _img = $(this);
+						_img.attr('href', '');// $(this).data('href'));
+						setTimeout(function () {
+							_img.attr('href', $(this).data('href'));
+						});
+				}, 150);
 			});
 		};
 		content_load();
