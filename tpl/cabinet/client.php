@@ -277,7 +277,7 @@
 				</div>
 				<div class="account__table-body">
 					<!-- !!! quote history item !!! -->
-					{{#each history.events}}
+					{{#each history.events as event}}
 					<div class="acount__table-accardeon accardeon"
 						data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
@@ -383,8 +383,9 @@
 											<div class="col-md-12">
 												<div class="acount__photo">
 													<a class="after-healing__item photo"
-														data-fancybox="event-{{.id}}"
+														data-fancybox="event-{{event.id}}"
 														data-href="{{.src}}"
+														href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">
@@ -409,8 +410,9 @@
 											<div class="col-md-12">
 												<div class="acount__photo">
 													<a class="after-healing__item photo"
-														data-fancybox="event-{{.id}}"
+														data-fancybox="event-{{event.id}}"
 														href="{{.src}}"
+														data-href="{{.src}}"
 														data-caption="Фото в процессе лечения:
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
@@ -453,7 +455,7 @@
 					<div class="healing-item">Услуги</div>
 				</div>
 				<div class="account__table-body">
-					{{#each history.longterms}}
+					{{#each history.longterms as event}}
 					<!-- !!! longterm item !!! -->
 					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
@@ -472,7 +474,7 @@
 									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
 									{{#each this.photos.before}} <!--single photo!-->
 									<a class="before-healing photo"
-										data-fancybox="images-{{.id}}"
+										data-fancybox="images-{{event.id}}"
 										href="{{.src}}"
 										data-href="{{.src}}"
 										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
@@ -498,7 +500,7 @@
 											{{#each this.photos.after}}
 											<div class="col-md-6">
 												<a class="after-healing__item photo"
-													data-fancybox="images-{{.id}}"
+													data-fancybox="images-{{event.id}}"
 													data-href="{{.src}}"
 													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
 													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
@@ -697,6 +699,14 @@
 								data.fullname = data.fullname.replaceAll('  ', ' ');
 								page.set('user', data);
 								console.log(data);
+
+								setTimeout(function () {
+									$('a.photo[data-href]').each(function (i) {
+										var _img = $(this);
+										console.log('-->', $(this).data('href'));
+										_img.attr('href', $(this).data('href'));
+									});
+								}, 150);
 							});
 					});
 
@@ -822,13 +832,7 @@
 					}
 					$("img[data-src]:not([src])").lazyload();
 
-					setTimeout(function () {
-						$('a.photo[data-href]').each(function (i) {
-							var _img = $(this);
-							console.log('-->', $(this).data('href'));
-							_img.attr('href', $(this).data('href'));
-						});
-					}, 150);
+
 				});
 		};
 		window.sort_events = function (){
