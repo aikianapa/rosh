@@ -250,6 +250,9 @@ div.accardeon.active > div.accardeon__list {
 	padding          : 12px;
 	background-color : #FBF9F7;
 }
+.autocomplete-suggestion.search__drop-item {
+	margin-bottom : 8px;
+}
 .autocomplete-suggestions {
 	background-color : #FEFEFE;
 	cursor           : pointer;

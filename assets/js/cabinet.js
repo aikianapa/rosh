@@ -734,57 +734,6 @@ $(function () {
 
 		return changes;
 	};
-	window.toast          = function (text, head, icon) {
-		var bgColor   = '#616161';
-		var textColor = '#FEFEFE';
-		switch (icon) {
-			case 'error':
-				bgColor = '#DC3545';
-				break;
-			case 'success':
-				bgColor = '#198754';
-				break;
-			case 'warning':
-				bgColor = '#BB9107';
-				break;
-			case 'info':
-				bgColor = '#0A6BB9';
-				break;
-			default:
-				bgColor = '#616161';
-		}
-
-		$.toast({
-			text: text, // Text that is to be shown in the toast
-			heading: head || '', // Optional heading to be shown on the toast
-			showHideTransition: 'slide', // fade, slide or plain
-			allowToastClose: true, // Boolean value true or false
-			hideAfter: 4000,
-			stack: 5,
-			position: 'top-right',
-			bgColor: bgColor,  // Background color of the toast
-			textColor: textColor,  // Text color of the toast
-			textAlign: 'left',  // Text alignment i.e. left, right or center
-			loader: false,  // Whether to show loader or not. True by default
-			icon: false,
-			beforeShow: function () {}, // will be triggered before the toast is shown
-			afterShown: function () {}, // will be triggered after the toat has been shown
-			beforeHide: function () {}, // will be triggered before the toast gets hidden
-			afterHidden: function () {}  // will be triggered after the toast has been hidden
-		});
-	};
-	window.toast_success  = function (text, head) {
-		toast(text, head, 'success');
-	};
-	window.toast_error    = function (text, head) {
-		toast(text, head, 'error');
-	};
-	window.toast_info     = function (text, head) {
-		toast(text, head, 'info');
-	};
-	window.toast_warning  = function (text, head) {
-		toast(text, head, 'warning');
-	};
 
 	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
 
@@ -1068,11 +1017,10 @@ $(function () {
 				},
 				selectCategory(ev) {
 					var _el = $(this.el);
-					console.log(_el);
-					//_el.find('.search-services').trigger('blur');
+					console.log(_el, _el.find('.search-services'));
 					setTimeout(function (){
-						//_el.find('.search-services').trigger('focus');
-					});
+						_el.find('.search-services').trigger('focus');
+					}, 250);
 				},
 				submit(ev) {
 					let $form = $(ev.node);
@@ -1091,6 +1039,7 @@ $(function () {
 						data.comment        = '';
 						data.recommendation = '';
 						data.description    = '';
+						data.client_comment = '';
 
 						data.price = parseInt(data.price || 0);
 						Cabinet.createQuote(data, function (res) {

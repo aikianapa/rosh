@@ -980,15 +980,15 @@
 													if (!data.length) {
 														post.role   = "client";
 														post.role   = "client";
+														post.confirmed = "0";
 														post.active = "on";
-														utils.api.post('/api/v2/create/users/', post)
+														wbapp.post('/api/v2/create/users/', post)
 															.then(function (data) {
 																if (data.error) {
 																	wbapp.trigger('wb-save-error', {
 																		'data': data
 																	});
 																} else {
-																	toast('Карточка клиента успешно создана!');
 																	$('.popup.--create-client').fadeOut('fast');
 																	popupMessage('Карточка пациента создана!', '',
 																		'Успешно',
@@ -997,7 +997,6 @@
 																		function (d) {});
 																}
 															});
-
 													} else {
 														toast('Этот e-mail уже используется!', 'Ошибка!', 'error');
 														form.find('[name="email"]').focus();

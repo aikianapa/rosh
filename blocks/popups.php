@@ -18,6 +18,8 @@
 					</button>
 					<div class="popup__name text-bold">Обратная связь</div>
 					<form class="popup__form" method="post">
+						<input type="hidden" name="client" value="{{user.id}}">
+
 						<div class="input input--grey">
 							<input class="input__control" name="fullname"
 								value="{{user.fullname}}"
@@ -34,7 +36,7 @@
 						</div>
 						<div class="input input--grey">
 							<textarea class="input__control"
-								name="comment" placeholder="Причина обращения" required></textarea>
+								name="client_comment" placeholder="Причина обращения" required></textarea>
 							<div class="input__placeholder">Причина обращения</div>
 						</div>
 						<div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании
@@ -60,7 +62,52 @@
 			</template>
 		</div>
 		<script wbapp>
-			let popFast2 = new Ractive({
+			var createFastQuote = function (client_id, client_comment) {
+				var quote        = {};
+				quote.group      = 'quotes';
+				quote.status     = 'new';
+				quote.pay_status = 'free';
+				quote.client     = client_id;
+				quote.priority   = 0;
+				quote.marked     = false;
+
+				quote.comment        = '';
+				quote.recommendation = '';
+				quote.description    = '';
+				quote.client_comment = '';
+				quote.price          = 0;
+
+				toast_success('Мы перезвоним Вам в ближайшее время!');
+				quote.event_date       = '';
+				quote.event_time       = '';
+				quote.event_time_start = '';
+				quote.event_time_end   = '';
+
+				quote.longterm_date_end = '';
+				quote.longterm_title    = '';
+
+				quote.photos = {before: [], after: []};
+
+				quote.comment        = '';
+				quote.recommendation = '';
+				quote.description    = '';
+				quote.client_comment = client_comment;
+
+				wbapp.post(
+					'/api/v2/create/records/', quote,
+					function (data) {
+						if (data.error) {
+							wbapp.trigger('wb-save-error',
+								{'data': data});
+						} else {
+							$('.popup.--fast .popup__panel:not(.--succed)')
+								.addClass('d-none');
+							$('.popup.--fast .popup__panel.--succed')
+								.addClass('d-block');
+						}
+					});
+			};
+			let popFast2        = new Ractive({
 				el: '.popup.--fast',
 				template: document.querySelector('.popup.--fast > template').innerHTML,
 				data: {
@@ -68,27 +115,66 @@
 				},
 				on: {
 					submit() {
-						let form = this.find('.popup.--fast .popup__form');
+						var form = this.find('.popup.--fast .popup__form');
 						if ($(form).verify()) {
-							let post = $(form).serializeJson();
-							wbapp.post('/form/quotes/getQuote', post, function (data) {
-								if (data.error) {
-									wbapp.trigger('wb-save-error', {'data': data});
-								} else {
-									$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
-									$('.popup.--fast .popup__panel.--succed').addClass('d-block');
-								}
-							});
+							//wbapp.post('/form/quotes/getQuote', post, function (data) {
+							//	if (data.error) {
+							//		wbapp.trigger('wb-save-error', {'data': data});
+							//	} else {
+							//		console.log('resp:', data);
+							//
+							//
+							//		$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
+							//		$('.popup.--fast .popup__panel.--succed').addClass('d-block');
+							//	}
+							//});
 
-							wbapp.post('/form/quotes/getQuote', post, function (data) {
-								if (data.error) {
-									wbapp.trigger('wb-save-error', {'data': data});
-								} else {
-									$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
-									$('.popup.--fast .popup__panel.--succed').addClass('d-block');
+							var post = $(form).serializeJSON();
+							if (!post.client) {
+								console.log('try to createProfile: ', post);
+
+								let names = post.fullname.split(' ', 3);
+								let keys  = ['last_name', 'first_name', 'middle_name'];
+								for (var i = 0; i < names.length; i++) {
+									post[keys[i]] = names[i];
 								}
-							});
+								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
+								wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
+									function (data) {
+										if (!data.length) {
+											wbapp.get('/api/v2/list/users/?email=' + post.email,
+												function (data) {
+													if (!data.length) {
+														post.role      = "client";
+														post.role      = "client";
+														post.confirmed = 0;
+														post.active    = "on";
+														wbapp.post('/api/v2/create/users/', post,
+															function (data) {
+																if (data.error) {
+																	wbapp.trigger('wb-save-error', {
+																		'data': data
+																	});
+																} else {
+																	createFastQuote(data.id, post.client_comment);
+																}
+															});
+
+													} else {
+														toast('Этот e-mail уже используется!', 'Ошибка!', 'error');
+														form.find('[name="email"]').focus();
+													}
+												});
+										} else {
+											toast('Этот номер уже используется!', 'Ошибка!', 'error');
+											form.find('[name="phone"]').focus();
+										}
+									});
+							} else {
+								createFastQuote(post.client, post.client_comment);
+							}
 						}
+
 					}
 				}
 			});
