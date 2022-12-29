@@ -384,7 +384,7 @@
 												<div class="acount__photo">
 													<a class="after-healing__item"
 														data-fancybox="event-{{this.id}}"
-														href="{{.src}}"
+														data-href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">
@@ -497,7 +497,7 @@
 											<div class="col-md-6">
 												<a class="after-healing__item"
 													data-fancybox="images-{{this.id}}"
-													href="{{ this.image }}"
+													data-href="{{ this.image }}"
 													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
 													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 													<div class="after-healing__photo"
@@ -789,8 +789,7 @@
 					}
 					page.set('events_ready', true);
 					setTimeout(function () {
-						$(page.el).find('a[data-href]').each(function (i) {
-							console.log($(this).data('href'));
+						$(page.el).find('a.after-healing__item[data-href]').each(function (i) {
 							var _img = $(this);
 							_img.attr('href', '');// $(this).data('href'));
 							setTimeout(function () {
