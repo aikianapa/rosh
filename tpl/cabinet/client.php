@@ -497,7 +497,7 @@
 											<div class="col-md-6">
 												<a class="after-healing__item"
 													data-fancybox="images-{{this.id}}"
-													href="{{.src}}"
+													href="{{ this.image }}"
 													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
 													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 													<div class="after-healing__photo"

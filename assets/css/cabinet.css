@@ -43,7 +43,7 @@
 }
 [type=button]:disabled, .disabled, button.disabled, button:disabled {
 	pointer-events : none !important;
-	opacity        : .75;
+	opacity        : .6;
 }
 .clearfix::after {
 	display : block;
@@ -259,6 +259,14 @@ div.accardeon.active > div.accardeon__list {
 	background-color : #D0DFF3;
 	outline          : 1px solid #EFEFEF;
 }
+.photos .autocomplete-suggestions .autocomplete-suggestion{
+	padding       : 4px 4px;
+	z-index       : 99999;
+	font-size     : 15px;
+	margin-bottom : 4px;
+	line-height   : 1.2;
+}
+
 .admin-editor__patient .search__drop-item {
 	background : white;
 	padding    : 10px 0 10px 12px;

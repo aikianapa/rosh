@@ -5,7 +5,7 @@
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 
-<body class="body lk-cabinet" data-barba="wrapper">
+<body class="body lk-cabinet photos" data-barba="wrapper">
 <div class="scroll-container lk-main" data-scroll-container>
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
@@ -52,7 +52,7 @@
 		</div>
 	</main>
 </div>
-<template id="gallery">
+<template id="gallery" wb-off>
 	<div class="title-flex --flex --jcsb photos-title">
 		<div class="add-photo">
 			<div class="lk-title mb-0 mr-20">Библиотека фотографий</div>
@@ -64,7 +64,7 @@
 				<div class="filter-select select">
 					<div class="filter-select__main select__main">Фильтр</div>
 					<div class="filter-select__list select__list">
-						<div class="filter-select__item select__item all">Все</div>
+						<div class="filter-select__item select__item all" on-click="filterClear">Все</div>
 						{{#each filters}}
 						<div class="filter-select__item select__item" data-filter="{{@key}}" on-click="['filter', @key]">{{ @key }}</div>
 						{{/each}}
@@ -81,8 +81,10 @@
 			data-filter-type="{{this.type}}"
 			data-filter-date="{{this.date}}"
 			data-fancybox="gallery"
+			href="{{.image}}"
 			data-caption="{{@global.catalog.clients[this.client].fullname}}<br>{{ this.date }}, {{ this.title }} {{ this.type_text }}"
-			style="background-image: url('{{.image}}');" data-href="{{.image}}">
+			style="background-image: url('{{.image}}');"
+			data-href="{{this.image}}">
 			<div class="admin-photo__date">{{ this.date }}</div>
 			<div class="admin-photo__info">
 				<p class="text-bold mb-10 admin-photo__name">{{ @global.catalog.clients[this.client].fullname }}</p>
@@ -131,7 +133,8 @@
 				addPhoto(ev) {
 					console.log('addPhoto');
 					popupPhoto(null, null, function (rec) {
-						toast('Фото успешно добавлено!');
+						toast_success('Фото успешно добавлено!');
+
 						content_load();
 					});
 				}
@@ -189,17 +192,18 @@
 						});
 					}
 				});
+
 				console.log(_images_groups, _images);
 				page.set('photos', _images); /* get actually user data */
 				page.set('groups', _images_groups); /* get actually user data */
 				page.set('filters', _filters); /* get actually user data */
 				page.set('content_loaded', true); /* get actually user data */
 
-				setTimeout(function (){
-					$(page.el).find('a[data-href]').each(function (i){
+				setTimeout(function () {
+					$(page.el).find('a[data-href]').each(function (i) {
 						$(this).attr('href', $(this).data('href'));
-					})
-				});
+					});
+				}, 100);
 			});
 		};
 		content_load();
@@ -209,6 +213,8 @@
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
 
+<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
+<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 </body>
 
 </html>

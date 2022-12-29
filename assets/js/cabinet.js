@@ -405,7 +405,7 @@ $(function () {
 							});
 							if (!!service.blocks) {
 								service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-									if (parseInt(serv_price.price) === 0) {
+									if (!serv_price.price || parseInt(serv_price.price) < 1) {
 										return;
 									}
 									let _item = {
@@ -923,13 +923,21 @@ $(function () {
 			client_qry = '&client=' + form.find('[name="client"]').val();
 		}
 		form.find('.event-search.longterm-search').autocomplete({
-			noCache: false,
+			noCache: true,
 			minChars: 1,
 			deferRequestBy: 350,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'title~',
-			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +'&group=longterms' + client_qry,
+			serviceUrl: function () {
+				var client_qry = '';
+				if (!!for_client) {
+					client_qry = '&client=' + form.find('input[name="client"]').val();
+				}
+
+				return '/api/v2/list/records?__token=' + wbapp._session.token +
+					            '&group=longterms' + client_qry;
+			},
 			transformResult: function (response) {
 				console.log(response);
 				return {
@@ -953,26 +961,32 @@ $(function () {
 		var form       = $form || $('.popup .popup__form');
 		let client_qry = '';
 		if (!!for_client) {
-			client_qry = '&client=' + form.find('[name="client"]').val();
+			client_qry = '&client=' + form.find('input[name="client"]').val();
 		}
 		form.find('.event-search.record-search').autocomplete({
-			noCache: false,
+			noCache: true,
 			minChars: 0,
-			deferRequestBy: 350,
+			deferRequestBy: 250,
 			dataType: 'json',
 			type: 'GET',
 			paramName: '',
-			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +
-			            '&group=[longterms,events]' + client_qry + '&@sort=_lastdate:d',
 			noSuggestionNotice: '<p>Не найдено событий..</p>',
 			showNoSuggestionNotice: 1,
+			serviceUrl: function () {
+				var client_qry = '';
+				if (!!for_client) {
+					client_qry = '&client=' + form.find('input[name="client"]').val();
+				}
+				return '/api/v2/list/records?__token=' + wbapp._session.token +
+					            '&group=[longterms,events]' + client_qry + '&@sort=_lastdate:d';
+			},
 			transformResult: function (response) {
 				return {
 					suggestions: $.map(response, function (dataItem) {
 						console.log(dataItem);
 
 						var title = '';
-						if (!!dataItem.for_consultation){
+						if (!!dataItem.for_consultation) {
 							title = 'Консультация';
 						} else {
 							title = (dataItem.group === 'longterms')
@@ -980,14 +994,23 @@ $(function () {
 								: catalog.services[dataItem.services[0]].header;
 
 						}
+						var _sufix = '';
+						if (dataItem.group === 'longterms') {
+							_sufix = '    (продолжительное лечение)';
+						} else {
+							if (!!dataItem.event_time_start) {
+								_sufix += dataItem.event_time_start;
+
+								if (!!dataItem.event_time_end) {
+									_sufix += ' - ' + dataItem.event_time_end;
+								}
+							}
+						}
 
 						return {
 							value: title + (dataItem.type == 'online' ? ' (онлайн)' : '') +
 							       ', ' +
-							       utils.formatDate(dataItem.event_date) + ' ' +
-							       (dataItem.group === 'longterms'
-								       ? '    (продолжительное лечение)'
-								       : (dataItem.event_time_start + '-' + dataItem.event_time_end)),
+							       utils.formatDate(dataItem.event_date) + ' ' + _sufix,
 							data: dataItem.id
 						};
 					})
