@@ -104,6 +104,9 @@
 								.addClass('d-none');
 							$('.popup.--fast .popup__panel.--succed')
 								.addClass('d-block');
+							if (typeof window.load == 'function') {
+								window.load();
+							}
 						}
 					});
 			};

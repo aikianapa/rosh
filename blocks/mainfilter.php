@@ -327,6 +327,9 @@
 						$('.mainfilter__close.--closefilter').trigger('click');
 						popupMessage('Заявка создана!', 'Мы перезвоним Вам в ближайшее время!',
 							'', '', function (d) {});
+						if (typeof window.load == 'function') {
+							window.load();
+						}
 					}
 				});
 		};
