@@ -887,6 +887,12 @@
 															_tab.set('records.' + _row_idx, rec);
 															toast('Фото добавлено!');
 															self.set('record', rec);
+															setTimeout(function () {
+																$('a.photo[data-href]').each(function (i) {
+																	var _img = $(this);
+																	_img.attr('href', $(this).data('href'));
+																});
+															}, 150);
 														});
 												},
 												checkConsultation(ev) {
