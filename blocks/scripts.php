@@ -58,7 +58,7 @@
 	<link href="/assets/css/additional/frontend.css" rel="stylesheet">
 
 	<link wb-if="in_array('{{_sess.user.role}}', ['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=D2506E39CF3A4C2B932381A62A700D54" rel="stylesheet">
+		href="/assets/css/cabinet.css?v=5400BCC7FE9F41439F29364816AEC243" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">
