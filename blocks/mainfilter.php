@@ -323,8 +323,10 @@
 						wbapp.trigger('wb-save-error',
 							{'data': data});
 					} else {
+						$('.mainfilter-tag__delete').each(function () {$(this).trigger('click');});
 						$('.mainfilter__symptoms-link').trigger('click');
 						$('.mainfilter__close.--closefilter').trigger('click');
+
 						popupMessage('Заявка создана!', 'Мы перезвоним Вам в ближайшее время!',
 							'', '', function (d) {});
 						if (typeof window.load == 'function') {
