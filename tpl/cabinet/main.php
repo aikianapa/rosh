@@ -152,9 +152,17 @@
 					</div>
 					<div class="col-md-4">
 						<div class="input input--grey">
-							<input class="input__control" type="text" name="address"
-								value="{{ address }}" placeholder="Улица и дом">
-							<div class="input__placeholder input__placeholder--dark">Улица и дом</div>
+							<input class="input__control" type="text" name="street"
+								value="{{street}}" placeholder="Улица">
+							<div class="input__placeholder input__placeholder--dark">Улица
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input input--grey">
+							<input class="input__control" type="text" name="build"
+								value="{{build}}" placeholder="Дом">
+							<div class="input__placeholder input__placeholder--dark">Дом</div>
 						</div>
 					</div>
 				</div>
@@ -864,7 +872,9 @@
 														$(this.el).find('.select.select_experts .select__item').trigger('click');
 													}
 													console.log($('.search__drop-item.services').length);
-													var _price = 0;
+
+													var _price = _record.type == 'online'
+														? parseInt(catalog.spec_service.consultation.price) : 0;
 													$(this.el).find('.search__drop-item.services').each(function (){
 														_price += parseInt($(this).data('price'));
 													});
