@@ -367,8 +367,11 @@ a.client-card {
 	}
 }
 @media (min-width : 768px) {
+	h2.healing__date-title {
+		text-transform : lowercase !important;
+	}
 	.account-events__item.wide .account-event {
-		line-height : 1.2;
+		line-height : 1.12;
 		margin-top  : 3px;
 	}
 	.account-events__item.wide {
@@ -384,8 +387,18 @@ a.client-card {
 	.record-edit .account-events__item.wide {
 		width         : auto;
 		margin-right  : 20px;
-		margin-top    : 10px;
-		margin-bottom : 10px;
+		margin-top    : 0;
+		margin-bottom : 20px;
+	}
+	.admin-editor__images .after-healing__photo,
+	.admin-editor__images .before-healing__photo {
+		max-width           : initial;
+		height              : 171px;
+		background-size     : cover;
+		background-repeat   : no-repeat;
+		background-position : top center;
+		border-radius       : 20px;
+		margin-bottom       : 14px;
 	}
 }
 @-webkit-keyframes three-dots {

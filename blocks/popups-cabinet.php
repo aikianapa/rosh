@@ -1253,24 +1253,30 @@
 									</div>
 								</div>
 							</div>
-							{{else}} {{#each record.service_prices: idx, key}}
-							<div class="search__drop-item" data-index="{{idx}}" data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+							{{else}}{{#each record.service_prices: idx, key}}
+							<div class="search__drop-item" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
+								data-price="{{price}}">
 								<input type="hidden" name="services[]" value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{key}}][service_id]" value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{key}}][price_id]" value="{{price_id}}">
-								<input type="hidden" name="service_prices[{{key}}][name]" value="{{name}}">
-								<input type="hidden" name="service_prices[{{key}}][price]" value="{{price}}">
+								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
+								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
+								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
+								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
 								<div class="search__drop-name">
-									{{name}}
 									<div class="search__drop-delete">
 										<svg class="svgsprite _delete">
 											<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 										</svg>
 									</div>
+									<div class="search__drop-tags">
+										{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+										<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+										{{/each}}
+									</div>
+									{{name}}
 								</div>
-								<div class="search__drop-right">
-									<div class="search__drop-summ">{{ @global.utils.formatPrice(.price) }} ₽</div>
-								</div>
+								<label class="search__drop-right">
+									<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+								</label>
 							</div>
 							{{/each}} {{/if}}
 						</div>

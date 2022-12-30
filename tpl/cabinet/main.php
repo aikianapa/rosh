@@ -240,18 +240,19 @@
 	<form class="record-edit">
 		<div class="row">
 			<div class="col-md-7">
-				<div class="lk-title">Редактировать заявку</div>
-				<input type="hidden" value="{{ record.id }}" name="id">
 				{{#if record.client_comment}}
 				<div class="account-events__item wide">
 					<div class="account-event-wrap">
-						<div class="account-events__name">Причина обращения</div>
+						<div class="account-events__name">Причина обращения:</div>
 						<div class="account-event">
 							{{{@global.nl2br(record.client_comment)}}}
 						</div>
 					</div>
 				</div>
 				{{/if}}
+				<div class="lk-title">Редактировать заявку</div>
+				<input type="hidden" value="{{ record.id }}" name="id">
+
 				{{#if record.spec_service}}
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
 				<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
@@ -473,11 +474,10 @@
 								<h2 class="h2 healing__date-title d-none">
 									{{ @global.utils.formatDate(.date) }}
 								</h2>
-								<div class="before-healing__photo" style="background-image: url('{{.src}}')">
-								</div>
 								<div class="healing__date">
 									{{ @global.utils.formatDate(.date) }}
 								</div>
+								<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
 								<div class="healing__description">{{.comment}}</div>
 							</a>
 							{{/each}}
@@ -489,7 +489,7 @@
 							<div class="after-healing">
 								<div class="row">
 									{{#each record.photos.after}}
-									<div class="col-md-6">
+									<div class="col-md-12">
 										<a class="after-healing__item photo"
 											data-fancybox="images-{{record.id}}"
 											data-href="{{.src}}"
