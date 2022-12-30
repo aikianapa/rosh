@@ -363,6 +363,16 @@ a.client-card {
 		padding-left: 20px;
 	}
 }
+@media (min-width : 768px) {
+	.account-events__item.wide .account-event{
+		line-height : 1.2;
+		margin-top  : 3px;
+	}
+	.account-events__item.wide{
+		width        : calc(65% - 40px);
+		margin-right : 40px;
+	}
+}
 @-webkit-keyframes three-dots {
 	0%,
 	80%,

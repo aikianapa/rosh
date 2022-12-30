@@ -168,6 +168,7 @@
 		{{#each events.upcoming}}
 		<div class="account-events__block" data-sort="{{this.event_timestamp}}">
 			<div class="account-events__block-wrap mb-20">
+				{{#if this.services}}
 				<div class="account-events__item">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
@@ -178,17 +179,30 @@
 						</div>
 					</div>
 				</div>
+				{{elseif this.group == 'events'}}
+				{{elseif this.client_comment}}
+				<div class="account-events__item wide">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Причина обращения</div>
+						<div class="account-event">
+							{{{@global.nl2br(client_comment)}}}
+						</div>
+					</div>
+				</div>
+				{{/if}}
 
+				{{#if this.experts}}
 				<div class="account-events__item">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Специалист:</div>
 						<div class="account-event">
-							{{#this.experts}}
+							{{#experts}}
 							<p>{{catalog.experts[this].name}}</p>
-							{{/this.experts}}
+							{{/experts}}
 						</div>
 					</div>
 				</div>
+				{{/if}}
 
 
 				{{#if this.status == 'new'}}
@@ -212,7 +226,12 @@
 						</div>
 					</div>
 				</div>
+				{{/if}}
+
+				{{#if this.status == 'new'}}
+				<!--nothing..-->
 				{{elseif this.type == 'clinic'}}
+				<!--nothing..-->
 				{{elseif this.pay_status == 'unpay'}}
 					<div class="account-events__btns">
 						<div class="account-event-wrap --aicn">
@@ -236,9 +255,9 @@
 							<p>Кнопка станет активной за 5 минут до начала приема</p>
 						</div>
 					</div>
-				{{else}}
-				<div class="account-events__item event_date"></div>
 				{{/if}}
+
+
 			</div>
 
 			{{#if this.analyses}}
