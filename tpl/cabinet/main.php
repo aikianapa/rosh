@@ -136,14 +136,14 @@
 		<div class="row profile-edit__wrap">
 			<div class="col-md-9">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="input input--grey">
 							<input class="input__control" type="text" name="country"
 								value="{{ country }}" placeholder="Страна">
 							<div class="input__placeholder input__placeholder--dark">Страна</div>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="input input--grey">
 							<input class="input__control" type="text" name="city"
 								value="{{ city }}" placeholder="Город">
@@ -479,9 +479,6 @@
 								href="{{.src}}"
 								data-href="{{.src}}"
 								data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
-								<h2 class="h2 healing__date-title d-none">
-									{{ @global.utils.formatDate(.date) }}
-								</h2>
 								<div class="healing__date">
 									{{ @global.utils.formatDate(.date) }}
 								</div>
@@ -679,9 +676,13 @@
 									</button>
 								</div>
 								<div class="admin-editor__iser-contacts">
+									{{#if catalog.clients[client].birthdate}}
 									<p>Дата рождения:
-										<span>{{ catalog.clients[client].birthdate }}</span>
+										<span>{{ @global.utils.formatDate(catalog.clients[client].birthdate) }}</span>
 									</p>
+									{{else}}
+									{{/if}}
+
 									<p>Телефон:
 										<span>{{ @global.utils.formatPhone(catalog.clients[client].phone) }}</span>
 									</p>

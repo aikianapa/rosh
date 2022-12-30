@@ -318,6 +318,7 @@ $(function() {
 
         initPlugins = function() {
             $('input.datebirthdaypickr').each(function() {
+                console.log($(this).val());
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     maxDate: (new Date()),

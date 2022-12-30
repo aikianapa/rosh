@@ -60,8 +60,13 @@
 					</button>
 				</div>
 				<div class="user__group">
-					<div class="user__birthday">Дата рождения:
-						<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
+					<div class="user__birthday">
+						{{#if user.birthdate}}
+							Дата рождения:
+							<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
+						{elseif user.birthdate === '01.01.1970' }}
+						{{else}}
+						{{/if}}
 					</div>
 					<div class="user__phone">Тел:
 						<span>{{ @global.utils.formatPhone(user.phone) }}</span>
@@ -428,7 +433,7 @@
 										{{/each}}
 									</div>
 									<div class="col-md-7">
-										<p> Фото после начала лечения</p>
+										<p> Фото в процессе лечения</p>
 										{{#each photos.after}}
 										<div class="row">
 											<div class="col-md-12">

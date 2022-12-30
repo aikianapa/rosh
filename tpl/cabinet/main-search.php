@@ -60,9 +60,14 @@
 		<div class="account__info">
 			<div class="user">
 				<div class="user__name">{{this.fullname}}</div>
-				<div class="user__item">Дата рождения:
+				<div class="user__item">
+					{{#if this.birthdate}}
+					Дата рождения:
 					<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
+					{{else}}
+					{{/if}}
 				</div>
+
 				<a href="tel:{{this.phone}}" class="user__item">Тел:
 					<span>{{ @global.utils.formatPhone(this.phone) }}</span>
 				</a>

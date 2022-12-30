@@ -471,8 +471,7 @@ $(function () {
 			if (!!window.user_role && window.user_role !== 'client') {
 				getters.push(
 					utils.api.get('/api/v2/list/users?role=client&active=on' +
-					              '&@return=id,fullname,phone,email,birthdate,' +
-					              'country,city,street,build,flat,intercom,entrance,level,address' +
+					              '' +
 					              '&@sort=fullname:a').then(function (data) {
 						_self.clients = utils.arr.indexBy(data);
 						//sessionStorage.setItem('db.clients', JSON.stringify(_self.clients));
@@ -908,10 +907,6 @@ $(function () {
 	};
 	window.initEventSearch    = function ($form, for_client) {
 		var form       = $form || $('.popup .popup__form');
-		let client_qry = '';
-		if (!!for_client) {
-			client_qry = '&client=' + form.find('input[name="client"]').val();
-		}
 		form.find('.event-search.record-search').autocomplete({
 			noCache: true,
 			minChars: 0,
@@ -957,9 +952,9 @@ $(function () {
 						}
 
 						return {
-							value: title + (dataItem.type == 'online' ? ' (онлайн)' : '') +
+							value: (title + (dataItem.type == 'online' ? ' (онлайн)' : '') +
 							       ', ' +
-							       utils.formatDate(dataItem.event_date) + ' ' + _sufix,
+							       utils.formatDate(dataItem.event_date) + ' ' + _sufix).trim(),
 							data: dataItem.id
 						};
 					})
@@ -984,7 +979,13 @@ $(function () {
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
-				console.log(response);
+				console.log(response, response.length);
+				if (!!response){
+					response = response.filter(function (item){
+						console.log('--',item, item.fullname);
+						return !!item.fullname;
+					});
+				}
 				return {
 					suggestions: $.map(response, function (dataItem) {
 						return {value: dataItem.fullname, data: dataItem.id};
