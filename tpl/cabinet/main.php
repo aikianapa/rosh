@@ -881,11 +881,12 @@
 													}, 150);
 												},
 												addPhoto(ev, record) {
+													var self = this;
 													popupPhoto(catalog.clients[record.client], record,
 														function (rec) {
 															_tab.set('records.' + _row_idx, rec);
 															toast('Фото добавлено!');
-															//window.load();
+															self.set('record', rec);
 														});
 												},
 												checkConsultation(ev) {
