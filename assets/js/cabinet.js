@@ -122,9 +122,9 @@ $(function () {
 			},
 			post(path, data) {
 				//return this.request(path, 'post', data, options);
-				if (is_string(data)) {
+				if (is_string(data) && (data.indexOf('__token') == -1)) {
 					data += '&__token=' + wbapp._session.token;
-				} else {
+				} else if(!data.hasOwnProperty('__token')) {
 					try { data.__token = wbapp._session.token; } catch (error) { null; }
 				}
 				wbapp.loading();
@@ -1204,31 +1204,31 @@ $(function () {
 			}
 		});
 	};
-	window.popupMessage         = function (title, subtitle, caption, html, onShow) {
-		return new Ractive({
-			el: '.popup.--message',
-			template: wbapp.tpl('#popupMessage').html,
-			data: {
-				content: html,
-				title: title,
-				subtitle: subtitle,
-				caption: caption,
-				html: html
-			},
-			on: {
-				init() {
-				},
-				complete() {
-					if (!!onShow) {
-						onShow(this);
-					}
-					$(this.el).show();
-				},
-				close(e) {}
-			}
-		});
-
-	};
+	//window.popupMessage         = function (title, subtitle, caption, html, onShow) {
+	//	return new Ractive({
+	//		el: '.popup.--message',
+	//		template: wbapp.tpl('#popupMessage').html,
+	//		data: {
+	//			content: html,
+	//			title: title,
+	//			subtitle: subtitle,
+	//			caption: caption,
+	//			html: html
+	//		},
+	//		on: {
+	//			init() {
+	//			},
+	//			complete() {
+	//				if (!!onShow) {
+	//					onShow(this);
+	//				}
+	//				$(this.el).show();
+	//			},
+	//			close(e) {}
+	//		}
+	//	});
+	//
+	//};
 	window.popupPhoto2          = function (params) {
 		var _data = {}, _default = {
 			description: '',

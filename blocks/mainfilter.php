@@ -315,9 +315,9 @@
 			quote.recommendation = '';
 			quote.description    = '';
 			quote.client_comment = client_comment;
-			quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-			wbapp.post(
-				'/api/v2/create/records/', quote,
+			quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+			window.api.post(
+				'/api/v2/create/records/', quote).then(
 				function (data) {
 					if (data.error) {
 						wbapp.trigger('wb-save-error',
@@ -666,12 +666,12 @@
 							}
 							var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 							post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
-							wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone +
-							          '&__token=' + _token,
+							window.api.get('/api/v2/list/users/?role=client&phone=' + post.phone +
+							               '&__token=' + _token).then(
 								function (data) {
 									if (!data.length) {
-										wbapp.get('/api/v2/list/users/?email=' + post.email +
-										          '&__token=' + _token,
+										window.api.get('/api/v2/list/users/?email=' + post.email +
+										               '&__token=' + _token).then(
 											function (data) {
 												if (!data.length) {
 													post.role      = "client";
@@ -679,15 +679,16 @@
 													post.confirmed = 0;
 													post.active    = "on";
 													post.__token   = _token;
-													wbapp.post('/api/v2/create/users/', post, function (data) {
-														if (data.error) {
-															wbapp.trigger('wb-save-error', {
-																'data': data
-															});
-														} else {
-															createMainfilterQuote(data.id, comment);
-														}
-													});
+													window.api.post('/api/v2/create/users/', post).then(
+														function (data) {
+															if (data.error) {
+																wbapp.trigger('wb-save-error', {
+																	'data': data
+																});
+															} else {
+																createMainfilterQuote(data.id, comment);
+															}
+														});
 
 												} else {
 													toast('Этот e-mail уже используется!', 'Ошибка!', 'error');

@@ -93,8 +93,8 @@
 				quote.description    = '';
 				quote.client_comment = client_comment;
 
-				wbapp.post(
-					'/api/v2/create/records/', quote,
+				window.api.post(
+					'/api/v2/create/records/', quote).then(
 					function (data) {
 						if (data.error) {
 							wbapp.trigger('wb-save-error',
@@ -143,12 +143,12 @@
 								}
 								var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
-								wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone +
-								          '&__token=' + _token,
+								window.api.get('/api/v2/list/users/?role=client&phone=' + post.phone +
+								          '&__token=' + _token).then(
 									function (data) {
 										if (!data.length) {
-											wbapp.get('/api/v2/list/users/?email=' + post.email +
-											          '&__token=' + _token,
+											window.api.get('/api/v2/list/users/?email=' + post.email +
+											          '&__token=' + _token).then(
 												function (data) {
 													if (!data.length) {
 														post.role      = "client";
@@ -156,7 +156,7 @@
 														post.confirmed = 0;
 														post.active    = "on";
 														post.__token   = _token;
-														wbapp.post('/api/v2/create/users/', post,
+														window.api.post('/api/v2/create/users/', post).then(
 															function (data) {
 																if (data.error) {
 																	wbapp.trigger('wb-save-error', {
