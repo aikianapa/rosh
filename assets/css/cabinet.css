@@ -394,6 +394,7 @@ a.client-card {
 	}
 	.before-healing__photo {
 		height : 171px;
+		max-width : 260px;
 	}
 	.admin-editor__images .after-healing__photo,
 	.admin-editor__images .before-healing__photo {

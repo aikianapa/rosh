@@ -499,7 +499,6 @@
 									{{#each this.photos.before}} <!--single photo!-->
 									<a class="before-healing photo"
 										data-fancybox="images-{{event.id}}"
-										href="{{.src}}"
 										data-href="{{.src}}"
 										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
 										<h2 class="h2 healing__date-title">
