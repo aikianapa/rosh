@@ -142,10 +142,12 @@
 									post[keys[i]] = names[i];
 								}
 								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
-								wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
+								wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone +
+									'&__token='+ wbapp._session.token,
 									function (data) {
 										if (!data.length) {
-											wbapp.get('/api/v2/list/users/?email=' + post.email,
+											wbapp.get('/api/v2/list/users/?email=' + post.email +
+											          '&__token=' + wbapp._session.token,
 												function (data) {
 													if (!data.length) {
 														post.role      = "client";
