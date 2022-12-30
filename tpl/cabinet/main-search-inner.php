@@ -923,7 +923,12 @@
 				function (data) {
 					page.set('events.upcoming', data); /* get actually user next events */
 					$("img[data-src]:not([src])").lazyload();
-
+					setTimeout(function () {
+						$('a.photo[data-href]').each(function (i) {
+							var _img = $(this);
+							_img.attr('href', $(this).data('href'));
+						});
+					}, 350);
 				});
 
 			utils.api.get('/api/v2/list/records?status=past&group=events&@sort=event_date:d&client=' + client_id).then(
@@ -932,6 +937,12 @@
 					page.set('events_ready', true); /* get actually user next events */
 					$("img[data-src]:not([src])").lazyload();
 
+					setTimeout(function () {
+						$('a.photo[data-href]').each(function (i) {
+							var _img = $(this);
+							_img.attr('href', $(this).data('href'));
+						});
+					}, 350);
 				});
 
 			utils.api.get('/api/v2/list/records?group=longterms&@sort=_created:d&client=' + client_id)
@@ -940,13 +951,14 @@
 					page.set('longterms_ready', true); /* get actually user next events */
 					$("img[data-src]:not([src])").lazyload();
 
+					setTimeout(function () {
+						$('a.photo[data-href]').each(function (i) {
+							var _img = $(this);
+							_img.attr('href', $(this).data('href'));
+						});
+					}, 350);
+
 				});
-			setTimeout(function () {
-				$('a.photo[data-href]').each(function (i) {
-					var _img = $(this);
-					_img.attr('href', $(this).data('href'));
-				});
-			}, 150);
 		};
 		content_load();
 	});
