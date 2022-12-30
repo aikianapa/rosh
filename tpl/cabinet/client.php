@@ -64,7 +64,6 @@
 						{{#if user.birthdate}}
 							Дата рождения:
 							<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
-						{elseif user.birthdate === '01.01.1970' }}
 						{{else}}
 						{{/if}}
 					</div>
