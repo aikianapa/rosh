@@ -315,7 +315,7 @@
 			quote.recommendation = '';
 			quote.description    = '';
 			quote.client_comment = client_comment;
-
+			quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 			wbapp.post(
 				'/api/v2/create/records/', quote,
 				function (data) {
@@ -664,25 +664,28 @@
 							for (var i = 0; i < names.length; i++) {
 								post[keys[i]] = names[i];
 							}
+							var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 							post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
-							wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone,
+							wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone +
+							          '&__token=' + _token,
 								function (data) {
 									if (!data.length) {
-										wbapp.get('/api/v2/list/users/?email=' + post.email,
+										wbapp.get('/api/v2/list/users/?email=' + post.email +
+										          '&__token=' + _token,
 											function (data) {
 												if (!data.length) {
 													post.role      = "client";
 													post.role      = "client";
 													post.confirmed = 0;
 													post.active    = "on";
+													post.__token   = _token;
 													wbapp.post('/api/v2/create/users/', post, function (data) {
 														if (data.error) {
 															wbapp.trigger('wb-save-error', {
 																'data': data
 															});
 														} else {
-															createMainfilterQuote(data.id,
-																post.client_comment);
+															createMainfilterQuote(data.id, comment);
 														}
 													});
 

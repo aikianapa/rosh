@@ -141,19 +141,21 @@
 								for (var i = 0; i < names.length; i++) {
 									post[keys[i]] = names[i];
 								}
+								var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
 								wbapp.get('/api/v2/list/users/?role=client&phone=' + post.phone +
-									'&__token='+ wbapp._session.token,
+								          '&__token=' + _token,
 									function (data) {
 										if (!data.length) {
 											wbapp.get('/api/v2/list/users/?email=' + post.email +
-											          '&__token=' + wbapp._session.token,
+											          '&__token=' + _token,
 												function (data) {
 													if (!data.length) {
 														post.role      = "client";
 														post.role      = "client";
 														post.confirmed = 0;
 														post.active    = "on";
+														post.__token   = _token;
 														wbapp.post('/api/v2/create/users/', post,
 															function (data) {
 																if (data.error) {
