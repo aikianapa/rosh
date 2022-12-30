@@ -519,12 +519,14 @@
 										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
 										<div class="row">
 											{{#each this.photos.after}}
-											<div class="col-md-12">
+											<div class="col-md-6">
 												<a class="after-healing__item photo"
 													data-fancybox="images-{{event.id}}"
 													data-href="{{.src}}"
 													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
-													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+													<h2 class="h2 healing__date-title">
+														{{ @global.utils.formatDateAdv(.date) }}
+													</h2>
 													<div class="after-healing__photo"
 														style="background-image: url({{.src}});">
 													</div>

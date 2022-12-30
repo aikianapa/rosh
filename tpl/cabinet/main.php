@@ -437,7 +437,7 @@
 								</svg>
 							</div>
 							<div class="search__drop-tags">
-								{{#each catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+								{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
 								<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
 								{{/each}}
 							</div>

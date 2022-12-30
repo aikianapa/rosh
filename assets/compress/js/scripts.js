@@ -113,7 +113,71 @@ $(function() {
     window.toast_warning = function (text, head) {
         toast(text, head, 'warning');
     };
+    window.api ={
+        get(path, data) {
+            let _path = path;
+            let parts = path.split('?', 2);
+            if (data !== undefined) {
+                if (parts.length === 2) {
+                    parts[1] += '&' + $.param(data);
+                } else {
+                    parts[0] += '?' + $.param(data);
+                }
+            }
+            _path = parts.join('?');
 
+            if (!_path.includes('__token')) {
+                parts = _path.split('?', 2);
+
+                if (parts.length === 2) {
+                    parts[1] += '&__token=' + wbapp._session.token;
+                } else {
+                    parts[0] += '?__token=' + wbapp._session.token;
+                }
+                _path = parts.join('?');
+            }
+
+            const defaultOptions = {Method: 'GET'};
+            return fetch(_path, defaultOptions).then((result) => result.json());
+        },
+        post(path, data) {
+            //return this.request(path, 'post', data, options);
+            if (is_string(data) && (data.indexOf('__token') == -1)) {
+                data += '&__token=' + wbapp._session.token;
+            } else if (!data.hasOwnProperty('__token')) {
+                try { data.__token = wbapp._session.token; } catch (error) { null; }
+            }
+            wbapp.loading();
+            return $.post(path, data, function () {
+                wbapp.unloading();
+            });
+        }
+    };
+    window.popupMessage = function (title, subtitle, caption, html, onShow) {
+        return new Ractive({
+            el: '.popup.--message',
+            template: wbapp.tpl('#popupMessage').html,
+            data: {
+                content: html,
+                title: title,
+                subtitle: subtitle,
+                caption: caption,
+                html: html
+            },
+            on: {
+                init() {
+                },
+                complete() {
+                    if (!!onShow) {
+                        onShow(this);
+                    }
+                    $(this.el).show();
+                },
+                close(e) {}
+            }
+        });
+
+    };
     $(document).ready(function() {
         $(document).delegate('.select .select__main', 'click', function() {
             $(this).parent().toggleClass('active');

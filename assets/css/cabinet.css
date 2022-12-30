@@ -369,6 +369,8 @@ a.client-card {
 @media (min-width : 768px) {
 	h2.healing__date-title {
 		text-transform : lowercase !important;
+		margin-bottom: 20px;
+		font-size: 32px;
 	}
 	.account-events__item.wide .account-event {
 		line-height : 1.12;
@@ -393,10 +395,10 @@ a.client-card {
 	.admin-editor__images .after-healing__photo,
 	.admin-editor__images .before-healing__photo {
 		max-width           : initial;
-		height              : 171px;
+		height              : 214px;
 		background-size     : cover;
 		background-repeat   : no-repeat;
-		background-position : top center;
+		background-position : center;
 		border-radius       : 20px;
 		margin-bottom       : 14px;
 	}
