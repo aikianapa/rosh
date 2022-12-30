@@ -375,6 +375,10 @@ a.client-card {
 		width        : calc(65% - 40px);
 		margin-right : 40px;
 	}
+	.record-edit .account-events__item.wide {
+		width        : auto;
+		margin-right : 20px;
+	}
 }
 @-webkit-keyframes three-dots {
 	0%,
