@@ -656,7 +656,10 @@
 											};
 											if (_photo_group == 'before') {
 												record.photos['before'] = [];
+											} else if(!record.photos[_photo_group]){
+												record.photos[_photo_group] = [];
 											}
+
 											record.hasPhoto = 1;
 											record.photos[_photo_group].push(_photo_data);
 											wbapp.loading();
