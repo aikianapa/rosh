@@ -392,10 +392,13 @@ a.client-card {
 		margin-top    : 0;
 		margin-bottom : 20px;
 	}
+	.before-healing__photo {
+		height : 171px;
+	}
 	.admin-editor__images .after-healing__photo,
 	.admin-editor__images .before-healing__photo {
 		max-width           : initial;
-		height              : 214px;
+		height              : 171px;
 		background-size     : cover;
 		background-repeat   : no-repeat;
 		background-position : center;
