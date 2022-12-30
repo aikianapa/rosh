@@ -242,8 +242,17 @@
 			<div class="col-md-7">
 				<div class="lk-title">Редактировать заявку</div>
 				<input type="hidden" value="{{ record.id }}" name="id">
-
-				{{#if this.spec_service}}
+				{{#if record.client_comment}}
+				<div class="account-events__item wide">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Причина обращения</div>
+						<div class="account-event">
+							{{{@global.nl2br(record.client_comment)}}}
+						</div>
+					</div>
+				</div>
+				{{/if}}
+				{{#if record.spec_service}}
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
 				<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
 				{{else}}

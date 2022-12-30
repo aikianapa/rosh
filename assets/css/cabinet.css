@@ -358,17 +358,20 @@ a.client-card {
 	z-index: 9999;
 }
 @media (max-width : 768px) {
-	.search__drop-item .search__drop-delete {opacity: 1}
-	.search__drop-item .search__drop-name{
-		padding-left: 20px;
+	.search__drop-item .search__drop-delete {opacity : 1}
+	.search__drop-item .search__drop-name {
+		padding-left : 20px;
+	}
+	.user__name svg {
+		margin-left : 10px;
 	}
 }
 @media (min-width : 768px) {
-	.account-events__item.wide .account-event{
+	.account-events__item.wide .account-event {
 		line-height : 1.2;
 		margin-top  : 3px;
 	}
-	.account-events__item.wide{
+	.account-events__item.wide {
 		width        : calc(65% - 40px);
 		margin-right : 40px;
 	}
