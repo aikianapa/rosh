@@ -463,7 +463,7 @@
 				</div>
 				<div class="admin-editor__summ mb-3">
 					<p>Всего</p>
-					{{#if this.for_consultation == '1'}}
+					{{#if record.for_consultation == '1'}}
 					<input type="hidden" name="price" class="consultation" value="{{record.price}}">
 					{{else}}
 					<input type="hidden" name="price" value="{{record.price}}">
