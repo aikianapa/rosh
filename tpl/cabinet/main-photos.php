@@ -144,7 +144,7 @@
 
 		window.sortElems    = function (selector, attrName) {
 			return $($(selector).toArray().sort(function (a, b) {
-				console.log(a, b)
+				//console.log(a, b)
 				var aVal = parseInt(a.getAttribute(attrName)),
 				    bVal = parseInt(b.getAttribute(attrName));
 				return  bVal - aVal;

@@ -917,7 +917,7 @@
 														});
 												},
 												setEventTime(ev) {
-													console.log(ev, $(ev.node).val());
+													console.log(ev, $(ev.node).hasClass('event-time-start'), $(ev.node).val());
 
 													if ($(ev.node).hasClass('event-time-start')){
 														this.set('start_time', $(ev.node).val());
