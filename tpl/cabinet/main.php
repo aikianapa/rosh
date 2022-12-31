@@ -298,9 +298,12 @@
 						{{#each catalog.quoteType as qt}}
 						<label class="text-radio">
 							{{#if qt.id === record.type }}
-							<input type="radio" name="type" value="{{ qt.id }}" checked on-click="checkConsultation">
+							<input type="radio" name="type"
+								value="{{ qt.id }}" checked
+								on-click="checkConsultation">
 							{{else}}
-							<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
+							<input type="radio" name="type" value="{{ qt.id }}"
+								on-click="checkConsultation">
 							{{/if}}
 							<span>{{qt.name}}</span>
 						</label>
@@ -612,7 +615,9 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<div><a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a></div>
+							<div>
+								<a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+							</div>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
@@ -714,15 +719,15 @@
 <script wb-app remove>
 	var tabs = {};
 	$(document).on('cabinet-db-ready', function () {
-		var getGroupByStatus = function (status){
-			if (['new', 'uncall', 'delay'].includes(status)){
-				return 'quote'
+		var getGroupByStatus = function (status) {
+			if (['new', 'uncall', 'delay'].includes(status)) {
+				return 'quote';
 			}
 			return 'event';
 		};
-		let editProfile = wbapp.tpl('#editProfile').html;
-		let editStatus  = wbapp.tpl('#editStatus').html;
-		window.load     = function () {
+		let editProfile      = wbapp.tpl('#editProfile').html;
+		let editStatus       = wbapp.tpl('#editStatus').html;
+		window.load          = function () {
 			['group=quotes',
 			 'group=events&status=upcoming',
 			 'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]'
@@ -732,8 +737,8 @@
 						'_lastdate:d',
 						'event_date:d',
 						'event_date:d'
-					]
-					utils.api.get('/api/v2/list/records?'+ target_tab, {'@sort': _sorts[i]}).then(
+					];
+					utils.api.get('/api/v2/list/records?' + target_tab, {'@sort': _sorts[i]}).then(
 						function (result) {
 							let data = {
 								group: target_tab,
@@ -753,13 +758,13 @@
 										console.log('>>> loaded', target_tab);
 										$(this.el).find('.loading-overlay').remove();
 									},
-									complete(){
+									complete() {
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
 										var form = $(ev.node).parents('.admin-editor')
 											.find('.admin-editor__edit-profile');
-										if ($(ev.node).hasClass('open')){
+										if ($(ev.node).hasClass('open')) {
 											$(ev.node).removeClass('open');
 											$(form).html('');
 											return;
@@ -767,7 +772,7 @@
 										$(ev.node).addClass('open');
 										var profile_id = $(ev.node).data('id');
 
-										let editor     = new Ractive({
+										let editor = new Ractive({
 											el: form,
 											template: editProfile,
 											data: {},
@@ -786,7 +791,7 @@
 																console.log('client saved', res);
 																data.birthdate_fmt = utils.formatDate(data.birthdate);
 																data.phone         = utils.formatPhone(data.phone);
-																_tab.set('catalog.clients.'+ profile_id, data);
+																_tab.set('catalog.clients.' + profile_id, data);
 																catalog.clients[profile_id] = data;
 
 																$(form).html('');
@@ -808,9 +813,9 @@
 									},
 									editRecord(ev) {
 										var target_tab = this;
-										var _row_idx  = $(ev.node).data('idx');
-										const _parent = $(ev.node).closest('.accardeon');
-										var _record   = this.get('records.' + _row_idx);
+										var _row_idx   = $(ev.node).data('idx');
+										const _parent  = $(ev.node).closest('.accardeon');
+										var _record    = this.get('records.' + _row_idx);
 										console.log('open ', _record);
 										if (!_record.price) {
 											_record.price = 0;
@@ -840,7 +845,9 @@
 
 													let post = $(copy).serializeJSON();
 
-													post.group = (catalog.quoteStatus[post.status].type || _record.group.substring(0, _record.group.length - 1)) + 's';
+													post.group = (catalog.quoteStatus[post.status].type ||
+													              _record.group.substring(0,
+														              _record.group.length - 1)) + 's';
 
 													utils.api.post('/api/v2/update/records/' + _record.id, post)
 														.then(function (res) {
@@ -855,14 +862,14 @@
 											}
 										});
 
-										let recordEditor   = new Ractive({
+										let recordEditor = new Ractive({
 											el: _parent.find('.admin-editor__events'),
 											template: wbapp.tpl('#editorRecord').html,
 											data: {
 												catalog: catalog,
 												record: _record,
 												start_time: 0,
-												end_time: 0,
+												end_time: 0
 											},
 											on: {
 												complete() {
@@ -870,23 +877,28 @@
 														_parent.find('.admin-editor__events .popup-services-list'),
 														catalog.servicesList
 													);
-													console.log('true: ', $(this.el).find('.search__drop-item.services').length);
+													console.log('true: ',
+														$(this.el).find('.search__drop-item.services').length);
 													initPlugins();
-													if (!!$(this.el).find('.select .select__item input:checked').length) {
-														$(this.el).find('.select.select_experts .select__item').trigger('click');
+
+													if (!!$(this.el)
+														.find('.select .select__item input:checked').length) {
+														$(this.el).find('.select.select_experts .select__item')
+															.trigger('click');
 													}
 													console.log($('.search__drop-item.services').length);
 
 													var _price = (_record.type === 'online')
 														? parseInt(catalog.spec_service.consultation.price)
 														: 0;
-													$(this.el).find('.search__drop-item.services').each(function (){
+													$(this.el).find('.search__drop-item.services').each(function () {
 														_price += parseInt($(this).data('price'));
 													});
 
 													console.log(_price);
 
-													$(this.el).find('.admin-editor__summ input[name="price"]').val(_price);
+													$(this.el).find('.admin-editor__summ input[name="price"]')
+														.val(_price);
 													$(this.el).find('.admin-editor__summ p.price').html(
 														utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
 
@@ -914,9 +926,10 @@
 														});
 												},
 												setEventTime(ev) {
-													console.log(ev, $(ev.node).hasClass('event-time-start'), $(ev.node).val());
+													console.log(ev, $(ev.node).hasClass('event-time-start'),
+														$(ev.node).val());
 													console.log(this.get('start_time'));
-													if ($(ev.node).hasClass('event-time-start')){
+													if ($(ev.node).hasClass('event-time-start')) {
 														this.set('start_time', $(ev.node).val());
 													} else {
 														this.set('end_time', $(ev.node).val());
@@ -929,8 +942,9 @@
 												checkConsultation(ev) {
 													var ght = 0;
 													var lv  = 0;
-													console.log(ev, $(ev.node).parents('form'));
-													if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
+
+													if ($(ev.node).is(':checked')
+													    && $(ev.node).val() == 'online') {
 														ght = parseInt(catalog.spec_service.consultation.price);
 													} else {
 														ght = 0;
@@ -966,16 +980,17 @@
 														let copy = $('<form></form>');
 														$(copy).html($(form).clone());
 
-														let post_statuses   = $(copy).serializeJSON();
+														let post_statuses = $(copy).serializeJSON();
 
 														post_statuses.group = (
 															catalog.quoteStatus[post_statuses.status].type || ''
 														);
-														if (!post_statuses.group){
-															post_statuses.group = getGroupByStatus(post_statuses.status);
+														if (!post_statuses.group) {
+															post_statuses.group = getGroupByStatus(
+																post_statuses.status);
 														}
 														post_statuses.group += 's';
-														var new_data        = $($(ev.node).parents('form'))
+														var new_data = $($(ev.node).parents('form'))
 															.serializeJSON();
 														console.log(post_statuses.group);
 
@@ -997,11 +1012,11 @@
 															return false;
 														}
 														if (new_data.group === 'events'
-														     && !!new_data.experts) {
+														    && !!new_data.experts) {
 															new_data.no_experts = 0;
 														}
 														if (new_data.group === 'events'
-														     && !!new_data.services) {
+														    && !!new_data.services) {
 															new_data.no_services = 0;
 														}
 
