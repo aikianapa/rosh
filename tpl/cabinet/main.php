@@ -282,7 +282,7 @@
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-						{{#if record.for_consultation=== '1' }}
+						{{#if record.for_consultation == '1' }}
 						<input class="checkbox-visible-next-form" type="checkbox"
 							checked
 							name="for_consultation" value="1">
@@ -463,7 +463,11 @@
 				</div>
 				<div class="admin-editor__summ mb-3">
 					<p>Всего</p>
+					{{#if this.for_consultation == '1'}}
+					<input type="hidden" name="price" class="consultation" value="{{record.price}}">
+					{{else}}
 					<input type="hidden" name="price" value="{{record.price}}">
+					{{/if}}
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
 				<div class="mb-4 text-right" data-hide="service-search">
