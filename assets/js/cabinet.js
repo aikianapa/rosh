@@ -146,7 +146,8 @@ $(function () {
 			}
 			return result;
 		},
-		timestamp(datetime) {
+		timestamp(date) {
+			var datetime = this.getDate(date);
 			return Math.floor(new Date(datetime).getTime() / 1000);
 		},
 		monthYearDate(date) {

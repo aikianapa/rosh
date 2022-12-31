@@ -367,6 +367,8 @@
 								<div class="col-md-6">
 									<div class="calendar input mb-30">
 										<input class="input__control timepickr event-time-start"
+											on-click="setEventTime"
+											on-blur="setEventTime"
 											type="text"
 											name="event_time_start"
 											value="{{record.event_time_start}}"
@@ -380,6 +382,7 @@
 									<div class="calendar input mb-30">
 										<input class="input__control timepickr event-time-end"
 											type="text"
+											on-focuse="setEventTime"
 											name="event_time_end"
 											value="{{record.event_time_end}}"
 											data-min-time="09:00"
@@ -860,7 +863,9 @@
 											template: wbapp.tpl('#editorRecord').html,
 											data: {
 												catalog: catalog,
-												record: _record
+												record: _record,
+												start_time: 0,
+												end_time: 0,
 											},
 											on: {
 												complete() {
@@ -910,6 +915,19 @@
 																	});
 															}, 150);
 														});
+												},
+												setEventTime(ev) {
+													console.log(ev, $(ev.node).val());
+
+													if ($(ev.node).hasClass('event-time-start')){
+														this.set('start_time', $(ev.node).val());
+													} else {
+														this.set('end_time', $(ev.node).val());
+														if (!!this.data.start_time) {
+															$(ev.node).timepicker({minTime: this.data.start_time});
+														}
+													}
+
 												},
 												checkConsultation(ev) {
 													var ght = 0;
@@ -968,7 +986,6 @@
 														new_data.status     = post_statuses.status;
 														new_data.pay_status = post_statuses.pay_status;
 														new_data.group      = post_statuses.group;
-
 														if (new_data.group === 'events' && !new_data.event_date) {
 															toast_error('Необходимо выбрать дату/время события');
 															$($(ev.node).parents('form')).find('[name="event_date"]')
@@ -982,14 +999,15 @@
 																.focus();
 															return false;
 														}
-														if ((new_data.group === 'events'
+														if (new_data.group === 'events'
 														     && !!new_data.experts) {
 															new_data.no_experts = 0;
 														}
-														if ((new_data.group === 'events'
-														     && !!new_data.no_services) {
+														if (new_data.group === 'events'
+														     && !!new_data.services) {
 															new_data.no_services = 0;
 														}
+
 														if (new_data.group === 'events' && !new_data.price) {
 															toast_error('Необходимо выбрать услугу');
 															$($(ev.node).parents('form'))

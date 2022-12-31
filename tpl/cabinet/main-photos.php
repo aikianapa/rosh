@@ -76,6 +76,7 @@
 	<div class="admin-photos">
 		{{#each photos: idx}}
 		<a class="admin-photo" data-idx="{{idx}}"
+			data-timestamp="{{this.timestamp}}"
 			data-date_filter="{{this.date_filter}}"
 			data-filter-client="{{this.client}}"
 			data-filter-type="{{this.type}}"
@@ -87,7 +88,7 @@
 			data-href="{{this.image}}">
 			<div class="admin-photo__date">{{ this.date }}</div>
 			<div class="admin-photo__info">
-				<p class="text-bold mb-10 admin-photo__name">{{ @global.catalog.clients[this.client].fullname }}</p>
+				<p class="text-bold mb-10 admin-photo__name">{{ @global.catalog.clients[client].fullname }}</p>
 				<div class="admin-photo__description">
 					{{ this.title }}<br>{{ this.type_text }}
 				</div>
@@ -140,6 +141,16 @@
 				}
 			}
 		});
+
+		window.sortElems    = function (selector, attrName) {
+			return $($(selector).toArray().sort(function (a, b) {
+				console.log(a, b)
+				var aVal = parseInt(a.getAttribute(attrName)),
+				    bVal = parseInt(b.getAttribute(attrName));
+				return  bVal - aVal;
+			}));
+		};
+
 		window.content_load = function () {
 			utils.api.get('/api/v2/list/records/?group=[events,longterms]').then(function (data) {
 				console.log(data);
@@ -149,7 +160,7 @@
 				data.forEach(function (rec) {
 					var _before_photo = rec.photos?.before;
 					if (!!_before_photo) {
-						_before_photo = _before_photo[0];
+						_before_photo                                           = _before_photo[0];
 						var img                                                 = {
 							date: utils.formatDate(_before_photo.date),
 							title: (rec.groups === 'longterms' ? 'Продолжительное лечение: ' + rec.longterm_title
@@ -159,12 +170,13 @@
 							image: _before_photo.src,
 							client: rec.client,
 							record: rec.id,
-							date_filter: utils.monthYearDate(_before_photo.date)
+							date_filter: utils.monthYearDate(_before_photo.date),
+							timestamp: utils.timestamp(_before_photo.date)
 						};
 						_images_groups[utils.monthYearDate(_before_photo.date)] = img;
 
 						if (!_filters[utils.monthYearDate(_before_photo.date)]) {
-							_filters[utils.monthYearDate(_before_photo.date)] = 0
+							_filters[utils.monthYearDate(_before_photo.date)] = 0;
 						}
 						_filters[utils.monthYearDate(_before_photo.date)]++;
 						_images.push(img);
@@ -181,11 +193,12 @@
 								image: photo.src,
 								client: rec.client,
 								record: rec.id,
-								date_filter: utils.monthYearDate(photo.date)
+								date_filter: utils.monthYearDate(photo.date),
+								timestamp: utils.timestamp(photo.date)
 							};
 							_images_groups[utils.monthYearDate(photo.date)] = img;
-							if (!_filters[utils.monthYearDate(photo.date)]){
-								_filters[utils.monthYearDate(photo.date)] = 0
+							if (!_filters[utils.monthYearDate(photo.date)]) {
+								_filters[utils.monthYearDate(photo.date)] = 0;
 							}
 							_filters[utils.monthYearDate(photo.date)]++;
 							_images.push(img);
@@ -209,7 +222,8 @@
 							_img.attr('href', _img.attr('data-href'));
 						});
 					});
-				}, 150);
+					$('.admin-photos').html(window.sortElems('a.admin-photo', 'data-timestamp'))
+				}, 200);
 			});
 		};
 		content_load();
