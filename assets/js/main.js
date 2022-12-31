@@ -379,7 +379,14 @@ $(function() {
                     maxTime: $(this).data('max-time') || '19:00',
                     dynamic: false,
                     dropdown: true,
-                    scrollbar: true
+                    scrollbar: true,
+                    change: function (time) {
+                        // the input field
+                        var element    = $(this), text;
+                        // get access to this Timepicker instance
+                        var timepicker = element.timepicker();
+                        console.log('change', element, element.val(), timepicker);
+                    }
                 });
             });
             $('input.datetimepickr').each(function() {

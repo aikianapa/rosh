@@ -367,8 +367,6 @@
 								<div class="col-md-6">
 									<div class="calendar input mb-30">
 										<input class="input__control timepickr event-time-start"
-											on-click="setEventTime"
-											on-blur="setEventTime"
 											type="text"
 											name="event_time_start"
 											value="{{record.event_time_start}}"
@@ -382,7 +380,6 @@
 									<div class="calendar input mb-30">
 										<input class="input__control timepickr event-time-end"
 											type="text"
-											on-focuse="setEventTime"
 											name="event_time_end"
 											value="{{record.event_time_end}}"
 											data-min-time="09:00"
@@ -679,11 +676,11 @@
 									</button>
 								</div>
 								<div class="admin-editor__iser-contacts">
-									{{#if catalog.clients[client].birthdate}}
+									{{#if catalog.clients[client].birthdate === '01.01.1970' }}
+									{{else}}
 									<p>Дата рождения:
 										<span>{{ @global.utils.formatDate(catalog.clients[client].birthdate) }}</span>
 									</p>
-									{{else}}
 									{{/if}}
 
 									<p>Телефон:
@@ -918,13 +915,13 @@
 												},
 												setEventTime(ev) {
 													console.log(ev, $(ev.node).hasClass('event-time-start'), $(ev.node).val());
-
+													console.log(this.get('start_time'));
 													if ($(ev.node).hasClass('event-time-start')){
 														this.set('start_time', $(ev.node).val());
 													} else {
 														this.set('end_time', $(ev.node).val());
-														if (!!this.data.start_time) {
-															$(ev.node).timepicker({minTime: this.data.start_time});
+														if (!!this.get('start_time')) {
+															$(ev.node).timepicker({minTime: this.get('start_time')});
 														}
 													}
 

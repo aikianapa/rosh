@@ -471,7 +471,7 @@ $(function () {
 			/* for Admins only */
 			if (!!window.user_role && window.user_role !== 'client') {
 				getters.push(
-					utils.api.get('/api/v2/list/users?role=client&active=on' +
+					utils.api.get('/api/v2/list/users?role=client' +
 					              '' +
 					              '&@sort=fullname:a').then(function (data) {
 						_self.clients = utils.arr.indexBy(data);
@@ -489,8 +489,8 @@ $(function () {
 					);
 				}
 				getters.push(
-					utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
-					              '&@return=id,fullname,role&@sort=fullname:a')
+					utils.api.get('/api/v2/list/users?role=[main,expert,client]' +
+					              '&@sort=fullname:a')
 						.then(function (data) {
 							_self.users = utils.arr.indexBy(data);
 						})
