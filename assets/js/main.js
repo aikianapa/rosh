@@ -386,6 +386,26 @@ $(function() {
                         // get access to this Timepicker instance
                         var timepicker = element.timepicker();
                         console.log('change', element, element.val(), timepicker);
+                        /* is start-time changed...*/
+                        if (element.hasClass('event-time-start') && element.val()) {
+                            var end_time = $(this).parents('.event-time').find('input.event-time-end');
+                            var end_tpkr = end_time.timepicker({
+                                'minTime': element.val(),
+                                'startTime': element.val()
+                            });
+                            if (end_time.val() < element.val()) {
+                                end_time.val(element.val());
+                            }
+                        } else {
+                            if (element.hasClass('event-time-end') && element.val()) {
+                                var start_time = $(this).parents('.event-time').find('input.event-time-end');
+
+                                if (start_time.val() > element.val()) {
+                                    element.val(start_time.val());
+                                }
+                            }
+                        }
+
                     }
                 });
             });

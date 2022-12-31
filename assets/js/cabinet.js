@@ -184,7 +184,7 @@ $(function () {
 		},
 		getDate(date) {
 			var result = new Date(this.dateForce(date));
-			if (!result.isValid()) {
+			if (!!date && !result.isValid()) {
 				date   = date.split(' ')[0].split('.').reverse().join('-');
 				result = new Date(date);
 			}
