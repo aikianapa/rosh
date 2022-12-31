@@ -1458,12 +1458,16 @@ $(function () {
 
 	};
 	$(document)
-		.on('change blur', '.event-time-start', function (e) {
+		.on('change blur focus', '.event-time-start', function (e) {
 			var end_time       = $(this).parents('.row.event-time').find('.event-time-end');
 			var start_time_val = $(this).val();
 			var end_time_val   = end_time.val();
-			console.log(end_time_val, start_time_val);
+			console.log('--> ', end_time_val, start_time_val);
+			if (!start_time_val){
+				return;
+			}
 			end_time.attr('data-min-time', start_time_val);
+			end_time.timepicker({'minTime': start_time_val});
 			if (!end_time_val) {
 				end_time.val(start_time_val);
 			}
