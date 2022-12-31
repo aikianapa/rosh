@@ -358,6 +358,12 @@ small {
 a.client-card {
 	z-index: 9999;
 }
+ul li.service_price{
+	line-height   : 1.15;
+	margin-bottom : 8px;
+	letter-spacing: -0.2px;
+	text-align    : justify;
+}
 @media (max-width : 768px) {
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {
@@ -369,9 +375,11 @@ a.client-card {
 }
 @media (min-width : 768px) {
 	.after-healing__item.photo .photos,
-	.after-healing__item.photo {
-
+	.before-healing__item .after-healing__photo {
+		max-width: 50%;
+		background-position: center;
 	}
+
 	h2.healing__date-title {
 		text-transform : lowercase !important;
 		margin-bottom: 20px;

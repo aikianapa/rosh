@@ -591,6 +591,7 @@ $(function () {
 
 			data.price = 0;
 
+
 			utils.api.post('/api/v2/create/records/', data).then(function (res) {
 				callback(res);
 			});
@@ -1042,7 +1043,21 @@ $(function () {
 						data.description    = '';
 						data.client_comment = '';
 
-						data.price = parseInt(data.price || 0);
+						data.price          = parseInt(data.price || 0);
+						if (data.no_services == 1) {
+							data.price          = 0;
+							data.services       = [];
+							data.service_prices = {};
+							if (data.for_consultation == 1 && data.type === 'online') {
+								data.price = parseInt(catalog.spec_service.consultation.price);
+							} else {
+								data.price = 0;
+							}
+						}
+						if (data.no_experts == 1) {
+							data.experts        = [];
+							data.service_prices = {};
+						}
 						Cabinet.createQuote(data, function (res) {
 							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 							$('.popup.--record .popup__panel.--succed').addClass('d-block');
@@ -1070,7 +1085,7 @@ $(function () {
 					}
 					if (ght === 0){
 						if ($(ev.node).parents('form').find('[name="price"]').hasClass('consultation')){
-							price -= catalog.spec_service.consultation.price;
+							price -= parseInt(catalog.spec_service.consultation.price);
 						}
 						$(ev.node).parents('form').find('[name="price"]').removeClass('consultation');
 					} else {

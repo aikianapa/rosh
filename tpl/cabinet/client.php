@@ -349,11 +349,11 @@
 
 										<div class="analysis__description">
 											<p class="text-bold mb-20">Выполнялись процедуры</p>
-											<p class="text-grey">
-												{{#services}}
-												{{catalog.services[this].header}}<br>
-												{{/services}}
-											</p>
+											<ul class="text-grey">
+												{{#each this.service_prices as service_price: i, path}}
+												<li class="service_price">{{service_price.name}}</li>
+												{{/each}}
+											</ul>
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -410,7 +410,7 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="acount__photo">
-													<a class="after-healing__item photo"
+													<a class="before-healing__item photo"
 														data-fancybox="event-{{event.id}}"
 														data-href="{{.src}}"
 														href="{{.src}}"
@@ -435,7 +435,7 @@
 										<p> Фото в процессе лечения</p>
 										{{#each photos.after}}
 										<div class="row">
-											<div class="col-md-12">
+											<div class="col-md-6 mt-1">
 												<div class="acount__photo">
 													<a class="after-healing__item photo"
 														data-fancybox="event-{{event.id}}"

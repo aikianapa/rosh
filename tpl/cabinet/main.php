@@ -854,6 +854,7 @@
 												}
 											}
 										});
+
 										let recordEditor   = new Ractive({
 											el: _parent.find('.admin-editor__events'),
 											template: wbapp.tpl('#editorRecord').html,
@@ -874,12 +875,15 @@
 													}
 													console.log($('.search__drop-item.services').length);
 
-													var _price = _record.type == 'online'
-														? parseInt(catalog.spec_service.consultation.price) : 0;
+													var _price = (_record.type === 'online')
+														? parseInt(catalog.spec_service.consultation.price)
+														: 0;
 													$(this.el).find('.search__drop-item.services').each(function (){
 														_price += parseInt($(this).data('price'));
 													});
+
 													console.log(_price);
+
 													$(this.el).find('.admin-editor__summ input[name="price"]').val(_price);
 													$(this.el).find('.admin-editor__summ p.price').html(
 														utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
@@ -977,6 +981,14 @@
 																.find('.select_experts')
 																.focus();
 															return false;
+														}
+														if ((new_data.group === 'events'
+														     && !!new_data.experts) {
+															new_data.no_experts = 0;
+														}
+														if ((new_data.group === 'events'
+														     && !!new_data.no_services) {
+															new_data.no_services = 0;
 														}
 														if (new_data.group === 'events' && !new_data.price) {
 															toast_error('Необходимо выбрать услугу');
