@@ -1,6 +1,6 @@
 $(function() {
-    window.toast         = function (text, head, icon) {
-        var bgColor   = '#616161';
+    window.toast = function(text, head, icon) {
+        var bgColor = '#616161';
         var textColor = '#FEFEFE';
         switch (icon) {
             case 'error':
@@ -27,30 +27,30 @@ $(function() {
             hideAfter: 4000,
             stack: 5,
             position: 'top-right',
-            bgColor: bgColor,  // Background color of the toast
-            textColor: textColor,  // Text color of the toast
-            textAlign: 'left',  // Text alignment i.e. left, right or center
-            loader: false,  // Whether to show loader or not. True by default
+            bgColor: bgColor, // Background color of the toast
+            textColor: textColor, // Text color of the toast
+            textAlign: 'left', // Text alignment i.e. left, right or center
+            loader: false, // Whether to show loader or not. True by default
             icon: false,
-            beforeShow: function () {}, // will be triggered before the toast is shown
-            afterShown: function () {}, // will be triggered after the toat has been shown
-            beforeHide: function () {}, // will be triggered before the toast gets hidden
-            afterHidden: function () {}  // will be triggered after the toast has been hidden
+            beforeShow: function() {}, // will be triggered before the toast is shown
+            afterShown: function() {}, // will be triggered after the toat has been shown
+            beforeHide: function() {}, // will be triggered before the toast gets hidden
+            afterHidden: function() {} // will be triggered after the toast has been hidden
         });
     };
-    window.toast_success = function (text, head) {
+    window.toast_success = function(text, head) {
         toast(text, head, 'success');
     };
-    window.toast_error   = function (text, head) {
+    window.toast_error = function(text, head) {
         toast(text, head, 'error');
     };
-    window.toast_info    = function (text, head) {
+    window.toast_info = function(text, head) {
         toast(text, head, 'info');
     };
-    window.toast_warning = function (text, head) {
+    window.toast_warning = function(text, head) {
         toast(text, head, 'warning');
     };
-    window.api ={
+    window.api = {
         get(path, data) {
             let _path = path;
             let parts = path.split('?', 2);
@@ -74,7 +74,7 @@ $(function() {
                 _path = parts.join('?');
             }
 
-            const defaultOptions = {Method: 'GET'};
+            const defaultOptions = { Method: 'GET' };
             return fetch(_path, defaultOptions).then((result) => result.json());
         },
         post(path, data) {
@@ -85,12 +85,12 @@ $(function() {
                 try { data.__token = wbapp._session.token; } catch (error) { null; }
             }
             wbapp.loading();
-            return $.post(path, data, function () {
+            return $.post(path, data, function() {
                 wbapp.unloading();
             });
         }
     };
-    window.popupMessage = function (title, subtitle, caption, html, onShow) {
+    window.popupMessage = function(title, subtitle, caption, html, onShow) {
         return new Ractive({
             el: '.popup.--message',
             template: wbapp.tpl('#popupMessage').html,
@@ -102,8 +102,7 @@ $(function() {
                 html: html
             },
             on: {
-                init() {
-                },
+                init() {},
                 complete() {
                     if (!!onShow) {
                         onShow(this);
@@ -306,7 +305,7 @@ $(function() {
         $(document).find('.gallery__slider').each(function() {
             new Swiper(this, {
                 loop: true,
-                slidesPerView: 1,
+                slidesPerView: "auto",
                 speed: 1000,
                 loop: true,
                 loopFillGroupWithBlank: true,
@@ -380,9 +379,10 @@ $(function() {
                     dynamic: false,
                     dropdown: true,
                     scrollbar: true,
-                    change: function (time) {
+                    change: function(time) {
                         // the input field
-                        var element    = $(this), text;
+                        var element = $(this),
+                            text;
                         // get access to this Timepicker instance
                         var timepicker = element.timepicker();
                         console.log('change', element, element.val(), timepicker);

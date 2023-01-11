@@ -32,6 +32,6 @@
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');$dom->find('.content-wrap ul')->addClass('ul-line');"
 />
-<wb-jq wb="$dom->find('.crumbs + h1')->remove();" wb-if="'{{_route.form}}'=='services' AND '{{_route.mode}}'=='show'" />
+<wb-jq wb="$dom->find('.crumbs + h1')->remove();" wb-if="in_array('{{_route.form}}',['services','problems']) AND '{{_route.mode}}'=='show'" />
 
 </html>

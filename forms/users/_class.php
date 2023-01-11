@@ -21,10 +21,11 @@ class usersClass extends cmsFormsClass
 
     public function afterItemRead(&$item)
     {
+        $data = $this->app->dot($item);
         isset($item['phone']) ? null : $item['phone'] = '';
         $item['phone'] = preg_replace('/[^0-9]/', '', $item['phone']);
-        $item['fullname'] = trim($item['first_name'].' '.$item['middle_name'].' '.$item['last_name']);
-        if ($item['role'] == 'expert') {
+        $item['fullname'] = trim($data->get('first_name').' '.$data->get('middle_name').' '.$data->get('last_name'));
+        if ($data->get('role') == 'expert') {
             $list = wbItemList('experts',["filter"=>[
                 "active"=>"on",
                 "login"=>$item['id']

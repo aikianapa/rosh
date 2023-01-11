@@ -50,8 +50,8 @@ class problemsClass extends cmsFormsClass
         ];
 
         foreach ($servs as $srv) {
-            $srv['category'] = (array)$srv['category'];
-            $srv['type'] = (array)$srv['srvtype'];
+            $srv['category'] = @(array)$srv['category'];
+            $srv['type'] = @(array)$srv['srvtype'];
             // Услуги
             foreach ($filter['services'] as $cat) {
                 if (@!isset($filter['services'][$cat['id']]['items'])) {

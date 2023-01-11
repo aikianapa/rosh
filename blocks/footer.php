@@ -82,8 +82,13 @@
         <wb-module wb="module=yonger&mode=edit&block=common.inc" />
     </div>
     <wb-lang>
-        [ru] header = Подвал сайта name = "Наименование блока" active = "Отображать блок" template = Шаблон [en] header = Site footer
-        name = "Block name" active = "Show block" template = Template
-
+        [ru]
+        header = Подвал сайта name = "Наименование блока"
+        active = "Отображать блок"
+        template = Шаблон
+        [en]        header = Site footer
+        name = "Block name"
+        active = "Show block"
+        template = Template
     </wb-lang>
 </edit>
