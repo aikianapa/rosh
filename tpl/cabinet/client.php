@@ -60,8 +60,12 @@
 					</button>
 				</div>
 				<div class="user__group">
-					<div class="user__birthday">Дата рождения:
-						<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
+					<div class="user__birthday">
+						{{#if user.birthdate}}
+							Дата рождения:
+							<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
+						{{else}}
+						{{/if}}
 					</div>
 					<div class="user__phone">Тел:
 						<span>{{ @global.utils.formatPhone(user.phone) }}</span>
@@ -168,6 +172,7 @@
 		{{#each events.upcoming}}
 		<div class="account-events__block" data-sort="{{this.event_timestamp}}">
 			<div class="account-events__block-wrap mb-20">
+				{{#if this.services}}
 				<div class="account-events__item">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
@@ -178,17 +183,30 @@
 						</div>
 					</div>
 				</div>
+				{{elseif this.group == 'events'}}
+				{{elseif this.client_comment}}
+				<div class="account-events__item wide">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Причина обращения:</div>
+						<div class="account-event">
+							{{{@global.nl2br(client_comment)}}}
+						</div>
+					</div>
+				</div>
+				{{/if}}
 
+				{{#if this.experts}}
 				<div class="account-events__item">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Специалист:</div>
 						<div class="account-event">
-							{{#this.experts}}
+							{{#experts}}
 							<p>{{catalog.experts[this].name}}</p>
-							{{/this.experts}}
+							{{/experts}}
 						</div>
 					</div>
 				</div>
+				{{/if}}
 
 
 				{{#if this.status == 'new'}}
@@ -197,6 +215,7 @@
 						<div class="account-events__name" style="color:#393">Заявка на рассмотрении</div>
 					</div>
 				</div>
+				{{elseif this.status == 'upcoming'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Дата приема:</div>
@@ -211,7 +230,12 @@
 						</div>
 					</div>
 				</div>
+				{{/if}}
+
+				{{#if this.status == 'new'}}
+				<!--nothing..-->
 				{{elseif this.type == 'clinic'}}
+				<!--nothing..-->
 				{{elseif this.pay_status == 'unpay'}}
 					<div class="account-events__btns">
 						<div class="account-event-wrap --aicn">
@@ -235,9 +259,9 @@
 							<p>Кнопка станет активной за 5 минут до начала приема</p>
 						</div>
 					</div>
-				{{else}}
-				<div class="account-events__item event_date"></div>
 				{{/if}}
+
+
 			</div>
 
 			{{#if this.analyses}}
@@ -277,7 +301,7 @@
 				</div>
 				<div class="account__table-body">
 					<!-- !!! quote history item !!! -->
-					{{#each history.events}}
+					{{#each history.events as event}}
 					<div class="acount__table-accardeon accardeon"
 						data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
@@ -325,7 +349,11 @@
 
 										<div class="analysis__description">
 											<p class="text-bold mb-20">Выполнялись процедуры</p>
-											<p class="text-grey">{{.comment}}</p>
+											<ul class="text-grey">
+												{{#each this.service_prices as service_price: i, path}}
+												<li class="service_price">{{service_price.name}}</li>
+												{{/each}}
+											</ul>
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -376,14 +404,15 @@
 							{{#if this.hasPhoto}}
 							<div class="acount__photos">
 								<div class="row">
-									<div class="col-md-4">
+									<div class="col-md-5">
 										<p>Фото до начала лечения</p>
 										{{#each photos.before}}
 										<div class="row">
 											<div class="col-md-12">
 												<div class="acount__photo">
-													<a class="after-healing__item"
-														data-fancybox="event-{{this.id}}"
+													<a class="before-healing__item photo"
+														data-fancybox="event-{{event.id}}"
+														data-href="{{.src}}"
 														href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
@@ -402,15 +431,16 @@
 
 										{{/each}}
 									</div>
-									<div class="col-md-4">
-										<p>Фото в процессе лечения:</p>
+									<div class="col-md-7">
+										<p> Фото в процессе лечения</p>
 										{{#each photos.after}}
 										<div class="row">
-											<div class="col-md-12">
+											<div class="col-md-6 mt-1">
 												<div class="acount__photo">
-													<a class="after-healing__item"
-														data-fancybox="event-{{this.id}}"
+													<a class="after-healing__item photo"
+														data-fancybox="event-{{event.id}}"
 														href="{{.src}}"
+														data-href="{{.src}}"
 														data-caption="Фото в процессе лечения:
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
@@ -453,7 +483,7 @@
 					<div class="healing-item">Услуги</div>
 				</div>
 				<div class="account__table-body">
-					{{#each history.longterms}}
+					{{#each history.longterms as event}}
 					<!-- !!! longterm item !!! -->
 					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
@@ -468,25 +498,23 @@
 						<div class="acount__table-list accardeon__list">
 							{{#if this.hasPhoto}}
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-md-5">
 									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
 									{{#each this.photos.before}} <!--single photo!-->
-									<a class="before-healing"
-										data-fancybox="images-{{this.id}}"
-										href="{{.src}}"
+									<a class="before-healing photo"
+										data-fancybox="images-{{event.id}}"
+										data-href="{{.src}}"
 										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
-										<h2 class="h2 healing__date-title d-none">
-											{{ @global.utils.formatDate(.date) }}
+										<h2 class="h2 healing__date-title">
+											{{ @global.utils.formatDateAdv(.date) }}
 										</h2>
-										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
-										<div class="healing__date">
-											{{ @global.utils.formatDate(.date) }}
+										<div class="before-healing__photo" style="background-image: url('{{.src}}')">
 										</div>
 										<div class="healing__description">{{.comment}}</div>
 									</a>
 									{{/each}}
 								</div>
-								<div class="col-md-8">
+								<div class="col-md-7">
 									<div class="text-bold text-big mb-20">
 										Фото после начала лечения
 									</div>
@@ -495,11 +523,13 @@
 										<div class="row">
 											{{#each this.photos.after}}
 											<div class="col-md-6">
-												<a class="after-healing__item"
-													data-fancybox="images-{{this.id}}"
-													href="{{.src}}"
+												<a class="after-healing__item photo"
+													data-fancybox="images-{{event.id}}"
+													data-href="{{.src}}"
 													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
-													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+													<h2 class="h2 healing__date-title">
+														{{ @global.utils.formatDateAdv(.date) }}
+													</h2>
 													<div class="after-healing__photo"
 														style="background-image: url({{.src}});">
 													</div>
@@ -689,13 +719,23 @@
 					this.set('catalog', catalog);
 					setTimeout(function () {
 						$(this.el).find("img[data-src]:not([src])").lazyload();
+
 						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
 							.then(function (data) {
 								data.fullname = data.fullname.replaceAll('  ', ' ');
 								page.set('user', data);
 								console.log(data);
+
+								setTimeout(function () {
+									$('a.photo[data-href]').each(function (i) {
+										var _img = $(this);
+										_img.attr('href', $(this).data('href'));
+									});
+								}, 150);
 							});
 					});
+
+					console.log('READY!!!');
 				},
 				runOnlineChat(ev) {
 					const _rec_id = $(ev.node).data('id');
@@ -788,12 +828,14 @@
 						window.sort_events();
 					}
 					page.set('events_ready', true);
+
+
 					if (!!window.current_day_events.length) {
 						current_day_events_checker = setInterval(function () {
 							console.log('check!');
 							var _upc = page.get('events.upcoming');
 							var _cur = page.get('events.current');
-							if (!!_cur && _cur.length){
+							if (!!_cur && _cur.length) {
 								_cur.forEach(function (ev, i) {
 									if (!Cabinet.isCurrentEvent(ev)) {
 										page.splice('events.current', i, 1);
@@ -814,6 +856,8 @@
 						}, 10000);
 					}
 					$("img[data-src]:not([src])").lazyload();
+
+
 				});
 		};
 		window.sort_events = function (){
@@ -821,6 +865,7 @@
 				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
 				.appendTo(".account-events.upcoming");
 		};
+
 		load();
 		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
 			.then(function (records) {

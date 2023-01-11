@@ -122,9 +122,9 @@ $(function () {
 			},
 			post(path, data) {
 				//return this.request(path, 'post', data, options);
-				if (is_string(data)) {
+				if (is_string(data) && (data.indexOf('__token') == -1)) {
 					data += '&__token=' + wbapp._session.token;
-				} else {
+				} else if(!data.hasOwnProperty('__token')) {
 					try { data.__token = wbapp._session.token; } catch (error) { null; }
 				}
 				wbapp.loading();
@@ -146,7 +146,8 @@ $(function () {
 			}
 			return result;
 		},
-		timestamp(datetime) {
+		timestamp(date) {
+			var datetime = this.getDate(date);
 			return Math.floor(new Date(datetime).getTime() / 1000);
 		},
 		monthYearDate(date) {
@@ -183,7 +184,7 @@ $(function () {
 		},
 		getDate(date) {
 			var result = new Date(this.dateForce(date));
-			if (!result.isValid()) {
+			if (!!date && !result.isValid()) {
 				date   = date.split(' ')[0].split('.').reverse().join('-');
 				result = new Date(date);
 			}
@@ -405,7 +406,7 @@ $(function () {
 							});
 							if (!!service.blocks) {
 								service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-									if (parseInt(serv_price.price) === 0) {
+									if (!serv_price.price || parseInt(serv_price.price) < 1) {
 										return;
 									}
 									let _item = {
@@ -471,8 +472,7 @@ $(function () {
 			if (!!window.user_role && window.user_role !== 'client') {
 				getters.push(
 					utils.api.get('/api/v2/list/users?role=client&active=on' +
-					              '&@return=id,fullname,phone,email,birthdate,' +
-					              'country,city,street,build,flat,intercom,entrance,level,address' +
+					              '' +
 					              '&@sort=fullname:a').then(function (data) {
 						_self.clients = utils.arr.indexBy(data);
 						//sessionStorage.setItem('db.clients', JSON.stringify(_self.clients));
@@ -591,6 +591,7 @@ $(function () {
 			data.description    = '';
 
 			data.price = 0;
+
 
 			utils.api.post('/api/v2/create/records/', data).then(function (res) {
 				callback(res);
@@ -734,57 +735,6 @@ $(function () {
 
 		return changes;
 	};
-	window.toast          = function (text, head, icon) {
-		var bgColor   = '#616161';
-		var textColor = '#FEFEFE';
-		switch (icon) {
-			case 'error':
-				bgColor = '#DC3545';
-				break;
-			case 'success':
-				bgColor = '#198754';
-				break;
-			case 'warning':
-				bgColor = '#BB9107';
-				break;
-			case 'info':
-				bgColor = '#0A6BB9';
-				break;
-			default:
-				bgColor = '#616161';
-		}
-
-		$.toast({
-			text: text, // Text that is to be shown in the toast
-			heading: head || '', // Optional heading to be shown on the toast
-			showHideTransition: 'slide', // fade, slide or plain
-			allowToastClose: true, // Boolean value true or false
-			hideAfter: 4000,
-			stack: 5,
-			position: 'top-right',
-			bgColor: bgColor,  // Background color of the toast
-			textColor: textColor,  // Text color of the toast
-			textAlign: 'left',  // Text alignment i.e. left, right or center
-			loader: false,  // Whether to show loader or not. True by default
-			icon: false,
-			beforeShow: function () {}, // will be triggered before the toast is shown
-			afterShown: function () {}, // will be triggered after the toat has been shown
-			beforeHide: function () {}, // will be triggered before the toast gets hidden
-			afterHidden: function () {}  // will be triggered after the toast has been hidden
-		});
-	};
-	window.toast_success  = function (text, head) {
-		toast(text, head, 'success');
-	};
-	window.toast_error    = function (text, head) {
-		toast(text, head, 'error');
-	};
-	window.toast_info     = function (text, head) {
-		toast(text, head, 'info');
-	};
-	window.toast_warning  = function (text, head) {
-		toast(text, head, 'warning');
-	};
 
 	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
 
@@ -923,13 +873,21 @@ $(function () {
 			client_qry = '&client=' + form.find('[name="client"]').val();
 		}
 		form.find('.event-search.longterm-search').autocomplete({
-			noCache: false,
+			noCache: true,
 			minChars: 1,
 			deferRequestBy: 350,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'title~',
-			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +'&group=longterms' + client_qry,
+			serviceUrl: function () {
+				var client_qry = '';
+				if (!!for_client) {
+					client_qry = '&client=' + form.find('input[name="client"]').val();
+				}
+
+				return '/api/v2/list/records?__token=' + wbapp._session.token +
+					            '&group=longterms' + client_qry;
+			},
 			transformResult: function (response) {
 				console.log(response);
 				return {
@@ -951,28 +909,30 @@ $(function () {
 	};
 	window.initEventSearch    = function ($form, for_client) {
 		var form       = $form || $('.popup .popup__form');
-		let client_qry = '';
-		if (!!for_client) {
-			client_qry = '&client=' + form.find('[name="client"]').val();
-		}
 		form.find('.event-search.record-search').autocomplete({
-			noCache: false,
+			noCache: true,
 			minChars: 0,
-			deferRequestBy: 350,
+			deferRequestBy: 250,
 			dataType: 'json',
 			type: 'GET',
 			paramName: '',
-			serviceUrl: '/api/v2/list/records?__token=' + wbapp._session.token +
-			            '&group=[longterms,events]' + client_qry + '&@sort=_lastdate:d',
 			noSuggestionNotice: '<p>Не найдено событий..</p>',
 			showNoSuggestionNotice: 1,
+			serviceUrl: function () {
+				var client_qry = '';
+				if (!!for_client) {
+					client_qry = '&client=' + form.find('input[name="client"]').val();
+				}
+				return '/api/v2/list/records?__token=' + wbapp._session.token +
+					            '&group=[longterms,events]' + client_qry + '&@sort=_lastdate:d';
+			},
 			transformResult: function (response) {
 				return {
 					suggestions: $.map(response, function (dataItem) {
 						console.log(dataItem);
 
 						var title = '';
-						if (!!dataItem.for_consultation){
+						if (!!dataItem.for_consultation) {
 							title = 'Консультация';
 						} else {
 							title = (dataItem.group === 'longterms')
@@ -980,14 +940,23 @@ $(function () {
 								: catalog.services[dataItem.services[0]].header;
 
 						}
+						var _sufix = '';
+						if (dataItem.group === 'longterms') {
+							_sufix = '    (продолжительное лечение)';
+						} else {
+							if (!!dataItem.event_time_start) {
+								_sufix += dataItem.event_time_start;
+
+								if (!!dataItem.event_time_end) {
+									_sufix += ' - ' + dataItem.event_time_end;
+								}
+							}
+						}
 
 						return {
-							value: title + (dataItem.type == 'online' ? ' (онлайн)' : '') +
+							value: (title + (dataItem.type == 'online' ? ' (онлайн)' : '') +
 							       ', ' +
-							       utils.formatDate(dataItem.event_date) + ' ' +
-							       (dataItem.group === 'longterms'
-								       ? '    (продолжительное лечение)'
-								       : (dataItem.event_time_start + '-' + dataItem.event_time_end)),
+							       utils.formatDate(dataItem.event_date) + ' ' + _sufix).trim(),
 							data: dataItem.id
 						};
 					})
@@ -1012,7 +981,13 @@ $(function () {
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
-				console.log(response);
+				console.log(response, response.length);
+				if (!!response){
+					response = response.filter(function (item){
+						console.log('--',item, item.fullname);
+						return !!item.fullname;
+					});
+				}
 				return {
 					suggestions: $.map(response, function (dataItem) {
 						return {value: dataItem.fullname, data: dataItem.id};
@@ -1044,7 +1019,11 @@ $(function () {
 					initPlugins();
 				},
 				selectCategory(ev) {
-					$(ev.node).parents('form').find('.search-services').trigger('focus');
+					var _el = $(this.el);
+					console.log(_el, _el.find('.search-services'));
+					setTimeout(function (){
+						_el.find('.search-services').trigger('focus');
+					}, 250);
 				},
 				submit(ev) {
 					let $form = $(ev.node);
@@ -1063,8 +1042,23 @@ $(function () {
 						data.comment        = '';
 						data.recommendation = '';
 						data.description    = '';
+						data.client_comment = '';
 
-						data.price = parseInt(data.price || 0);
+						data.price          = parseInt(data.price || 0);
+						if (data.no_services == 1) {
+							data.price          = 0;
+							data.services       = [];
+							data.service_prices = {};
+							if (data.for_consultation == 1 && data.type === 'online') {
+								data.price = parseInt(catalog.spec_service.consultation.price);
+							} else {
+								data.price = 0;
+							}
+						}
+						if (data.no_experts == 1) {
+							data.experts        = [];
+							data.service_prices = {};
+						}
 						Cabinet.createQuote(data, function (res) {
 							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 							$('.popup.--record .popup__panel.--succed').addClass('d-block');
@@ -1092,7 +1086,7 @@ $(function () {
 					}
 					if (ght === 0){
 						if ($(ev.node).parents('form').find('[name="price"]').hasClass('consultation')){
-							price -= catalog.spec_service.consultation.price;
+							price -= parseInt(catalog.spec_service.consultation.price);
 						}
 						$(ev.node).parents('form').find('[name="price"]').removeClass('consultation');
 					} else {
@@ -1227,31 +1221,31 @@ $(function () {
 			}
 		});
 	};
-	window.popupMessage         = function (title, subtitle, caption, html, onShow) {
-		return new Ractive({
-			el: '.popup.--message',
-			template: wbapp.tpl('#popupMessage').html,
-			data: {
-				content: html,
-				title: title,
-				subtitle: subtitle,
-				caption: caption,
-				html: html
-			},
-			on: {
-				init() {
-				},
-				complete() {
-					if (!!onShow) {
-						onShow(this);
-					}
-					$(this.el).show();
-				},
-				close(e) {}
-			}
-		});
-
-	};
+	//window.popupMessage         = function (title, subtitle, caption, html, onShow) {
+	//	return new Ractive({
+	//		el: '.popup.--message',
+	//		template: wbapp.tpl('#popupMessage').html,
+	//		data: {
+	//			content: html,
+	//			title: title,
+	//			subtitle: subtitle,
+	//			caption: caption,
+	//			html: html
+	//		},
+	//		on: {
+	//			init() {
+	//			},
+	//			complete() {
+	//				if (!!onShow) {
+	//					onShow(this);
+	//				}
+	//				$(this.el).show();
+	//			},
+	//			close(e) {}
+	//		}
+	//	});
+	//
+	//};
 	window.popupPhoto2          = function (params) {
 		var _data = {}, _default = {
 			description: '',
@@ -1464,16 +1458,20 @@ $(function () {
 
 	};
 	$(document)
-		.on('change blur', '.event-time-start', function (e) {
-			var end_time       = $(this).parents('.row.event-time').find('.event-time-end');
-			var start_time_val = $(this).val();
-			var end_time_val   = end_time.val();
-			console.log(end_time_val, start_time_val);
-			end_time.attr('data-min-time', start_time_val);
-			if (!end_time_val) {
-				end_time.val(start_time_val);
-			}
-		})
+		//.on('change blur focus', 'input.event-time-start', function (e) {
+		//	var end_time       = $(this).parents('.row.event-time').find('.event-time-end');
+		//	var start_time_val = $(this).val();
+		//	var end_time_val   = end_time.val();
+		//	console.log('--> ', end_time_val, start_time_val);
+		//	if (!start_time_val){
+		//		return;
+		//	}
+		//	end_time.attr('data-min-time', start_time_val);
+		//	end_time.timepicker({'minTime': start_time_val});
+		//	if (!end_time_val) {
+		//		end_time.val(start_time_val);
+		//	}
+		//})
 		.on('change', '[type="file"].client-photo', function (e) {
 			e.stopPropagation();
 			var _block   = $(this).parents('.file-photo');

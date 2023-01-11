@@ -5,7 +5,7 @@
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 
-<body class="body lk-cabinet" data-barba="wrapper">
+<body class="body lk-cabinet photos" data-barba="wrapper">
 <div class="scroll-container lk-main" data-scroll-container>
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
@@ -52,7 +52,7 @@
 		</div>
 	</main>
 </div>
-<template id="gallery">
+<template id="gallery" wb-off>
 	<div class="title-flex --flex --jcsb photos-title">
 		<div class="add-photo">
 			<div class="lk-title mb-0 mr-20">Библиотека фотографий</div>
@@ -64,7 +64,7 @@
 				<div class="filter-select select">
 					<div class="filter-select__main select__main">Фильтр</div>
 					<div class="filter-select__list select__list">
-						<div class="filter-select__item select__item all">Все</div>
+						<div class="filter-select__item select__item all" on-click="filterClear">Все</div>
 						{{#each filters}}
 						<div class="filter-select__item select__item" data-filter="{{@key}}" on-click="['filter', @key]">{{ @key }}</div>
 						{{/each}}
@@ -76,16 +76,19 @@
 	<div class="admin-photos">
 		{{#each photos: idx}}
 		<a class="admin-photo" data-idx="{{idx}}"
+			data-timestamp="{{this.timestamp}}"
 			data-date_filter="{{this.date_filter}}"
 			data-filter-client="{{this.client}}"
 			data-filter-type="{{this.type}}"
 			data-filter-date="{{this.date}}"
 			data-fancybox="gallery"
+			href="{{.image}}"
 			data-caption="{{@global.catalog.clients[this.client].fullname}}<br>{{ this.date }}, {{ this.title }} {{ this.type_text }}"
-			style="background-image: url('{{.image}}');" data-href="{{.image}}">
+			style="background-image: url('{{.image}}');"
+			data-href="{{this.image}}">
 			<div class="admin-photo__date">{{ this.date }}</div>
 			<div class="admin-photo__info">
-				<p class="text-bold mb-10 admin-photo__name">{{ @global.catalog.clients[this.client].fullname }}</p>
+				<p class="text-bold mb-10 admin-photo__name">{{ @global.catalog.clients[client].fullname }}</p>
 				<div class="admin-photo__description">
 					{{ this.title }}<br>{{ this.type_text }}
 				</div>
@@ -131,12 +134,23 @@
 				addPhoto(ev) {
 					console.log('addPhoto');
 					popupPhoto(null, null, function (rec) {
-						toast('Фото успешно добавлено!');
+						toast_success('Фото успешно добавлено!');
+
 						content_load();
 					});
 				}
 			}
 		});
+
+		window.sortElems    = function (selector, attrName) {
+			return $($(selector).toArray().sort(function (a, b) {
+				//console.log(a, b)
+				var aVal = parseInt(a.getAttribute(attrName)),
+				    bVal = parseInt(b.getAttribute(attrName));
+				return  bVal - aVal;
+			}));
+		};
+
 		window.content_load = function () {
 			utils.api.get('/api/v2/list/records/?group=[events,longterms]').then(function (data) {
 				console.log(data);
@@ -146,7 +160,7 @@
 				data.forEach(function (rec) {
 					var _before_photo = rec.photos?.before;
 					if (!!_before_photo) {
-						_before_photo = _before_photo[0];
+						_before_photo                                           = _before_photo[0];
 						var img                                                 = {
 							date: utils.formatDate(_before_photo.date),
 							title: (rec.groups === 'longterms' ? 'Продолжительное лечение: ' + rec.longterm_title
@@ -156,12 +170,13 @@
 							image: _before_photo.src,
 							client: rec.client,
 							record: rec.id,
-							date_filter: utils.monthYearDate(_before_photo.date)
+							date_filter: utils.monthYearDate(_before_photo.date),
+							timestamp: utils.timestamp(_before_photo.date)
 						};
 						_images_groups[utils.monthYearDate(_before_photo.date)] = img;
 
 						if (!_filters[utils.monthYearDate(_before_photo.date)]) {
-							_filters[utils.monthYearDate(_before_photo.date)] = 0
+							_filters[utils.monthYearDate(_before_photo.date)] = 0;
 						}
 						_filters[utils.monthYearDate(_before_photo.date)]++;
 						_images.push(img);
@@ -178,28 +193,37 @@
 								image: photo.src,
 								client: rec.client,
 								record: rec.id,
-								date_filter: utils.monthYearDate(photo.date)
+								date_filter: utils.monthYearDate(photo.date),
+								timestamp: utils.timestamp(photo.date)
 							};
 							_images_groups[utils.monthYearDate(photo.date)] = img;
-							if (!_filters[utils.monthYearDate(photo.date)]){
-								_filters[utils.monthYearDate(photo.date)] = 0
+							if (!_filters[utils.monthYearDate(photo.date)]) {
+								_filters[utils.monthYearDate(photo.date)] = 0;
 							}
 							_filters[utils.monthYearDate(photo.date)]++;
 							_images.push(img);
 						});
 					}
 				});
+
 				console.log(_images_groups, _images);
 				page.set('photos', _images); /* get actually user data */
 				page.set('groups', _images_groups); /* get actually user data */
 				page.set('filters', _filters); /* get actually user data */
 				page.set('content_loaded', true); /* get actually user data */
 
-				setTimeout(function (){
-					$(page.el).find('a[data-href]').each(function (i){
-						$(this).attr('href', $(this).data('href'));
-					})
-				});
+				setTimeout(function () {
+					$(page.el).find('a[data-href]').each(function (i) {
+						console.log($(this).data('href'));
+						var _img = $(this);
+						_img.attr('href', '');// $(this).data('href'));
+
+						setTimeout(function () {
+							_img.attr('href', _img.attr('data-href'));
+						});
+					});
+					$('.admin-photos').html(window.sortElems('a.admin-photo', 'data-timestamp'))
+				}, 200);
 			});
 		};
 		content_load();
@@ -209,6 +233,8 @@
 	<wb-module wb="module=yonger&mode=render&view=footer"/>
 </div>
 
+<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
+<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 </body>
 
 </html>

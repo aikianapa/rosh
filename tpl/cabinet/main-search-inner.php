@@ -75,8 +75,12 @@
 						<span class="crumbs__link mr-10 font-weight-normal">редактировать профиль</span>
 					</button>
 				</div>
-				<div class="user__item">Дата рождения:
+				<div class="user__item">
+					{{#if this.birthdate}}
+					Дата рождения:
 					<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
+					{{else}}
+					{{/if}}
 				</div>
 				<a href="tel:{{this.phone}}" class="user__item">Тел:
 					<span>{{ @global.utils.formatPhone(this.phone) }}</span>
@@ -196,7 +200,7 @@
 				</div>
 				<div class="account__table-body">
 					<!-- !!! quote history item !!! -->
-					{{#each history.events}}
+					{{#each history.events as event}}
 					<div class="acount__table-accardeon accardeon"
 						data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
@@ -257,7 +261,11 @@
 									<div class="col-md-4">
 										<div class="analysis__description">
 											<p class="text-bold mb-20">Выполнялись процедуры</p>
-											<p class="text-grey">{{.comment}}</p>
+											<p class="text-grey">
+												{{#services}}
+												{{catalog.services[this].header}}<br>
+												{{/services}}
+											</p>
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -308,14 +316,15 @@
 							{{#if this.hasPhoto}}
 							<div class="acount__photos">
 								<div class="row">
-									<div class="col-md-4">
+									<div class="col-md-5">
 										<p>Фото до начала лечения</p>
 										{{#each photos.before}}
 										<div class="row">
 											<div class="col-md-12">
 												<div class="acount__photo">
-													<a class="after-healing__item"
-														data-fancybox="event-{{this.id}}"
+													<a class="after-healing__item photo"
+														data-fancybox="event-{{event.id}}"
+														data-href="{{.src}}"
 														href="{{.src}}"
 														data-caption="Фото до начала лечения:
 															{{ @global.utils.formatDate(.date) }}">
@@ -334,20 +343,19 @@
 
 										{{/each}}
 									</div>
-									<div class="col-md-4">
-										<p>Фото в процессе лечения:</p>
+									<div class="col-md-7">
+										<p> Фото в процессе лечения</p>
 										{{#each photos.after}}
 										<div class="row">
-											<div class="col-md-12">
+											<div class="col-md-6">
 												<div class="acount__photo">
-													<a class="after-healing__item"
-														data-fancybox="event-{{this.id}}"
+													<a class="after-healing__item photo"
+														data-fancybox="event-{{event.id}}"
 														href="{{.src}}"
+														data-href="{{.src}}"
 														data-caption="Фото в процессе лечения:
 															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">
-															{{ @global.utils.formatDate(.date) }}
-														</div>
+														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 														<div class="after-healing__photo"
 															style="background-image: url({{.src}})">
 														</div>
@@ -387,7 +395,7 @@
 					<div class="healing-item">Услуги</div>
 				</div>
 				<div class="account__table-body">
-					{{#each history.longterms}}
+					{{#each history.longterms as event}}
 					<!-- !!! longterm item !!! -->
 					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
@@ -402,26 +410,22 @@
 						<div class="acount__table-list accardeon__list">
 							{{#if this.hasPhoto}}
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-md-5">
 									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
-
 									{{#each this.photos.before}} <!--single photo!-->
-									<a class="before-healing"
-										data-fancybox="images-{{this.id}}"
-										href="{{.src}}"
+									<a class="before-healing photo"
+										data-fancybox="images-{{event.id}}"
+										data-href="{{.src}}"
 										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
 										<h2 class="h2 healing__date-title">
 											{{ @global.utils.formatDateAdv(.date) }}
 										</h2>
-										<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
-										<div class="healing__date">
-											{{ @global.utils.formatDate(.date) }}
+										<div class="before-healing__photo" style="background-image: url('{{.src}}')">
 										</div>
-										<div class="healing__description">{{.comment}}</div>
 									</a>
 									{{/each}}
 								</div>
-								<div class="col-md-8">
+								<div class="col-md-7">
 									<div class="text-bold text-big mb-20">
 										Фото после начала лечения
 									</div>
@@ -430,11 +434,13 @@
 										<div class="row">
 											{{#each this.photos.after}}
 											<div class="col-md-6">
-												<a class="after-healing__item"
-													data-fancybox="images-{{this.id}}"
-													href="{{.src}}"
+												<a class="after-healing__item photo"
+													data-fancybox="images-{{event.id}}"
+													data-href="{{.src}}"
 													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
-													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+													<h2 class="h2 healing__date-title">
+														{{ @global.utils.formatDateAdv(.date) }}
+													</h2>
 													<div class="after-healing__photo"
 														style="background-image: url({{.src}});">
 													</div>
@@ -630,6 +636,7 @@
 	</div>
 	{{/if}}
 </template>
+
 <template id="profile-editor-inline" wb-off>
 	<form on-submit="submit">
 		{{#user}}
@@ -759,8 +766,13 @@
 				}
 			},
 			on: {
-				init() {
-
+				complete() {
+					setTimeout(function () {
+						$('a.photo[data-href]').each(function (i) {
+							var _img = $(this);
+							_img.attr('href', $(this).data('href'));
+						});
+					}, 150);
 				},
 				addEventPhoto(ev, client, record) {
 					console.log('addEventPhoto', client, record);
@@ -857,8 +869,7 @@
 							}
 						});
 					}
-				}
-				,
+				},
 				toggleEdit(ev) {
 					if (!!window.profile_inline_editor) {
 						$('.profile-editor-inline').toggleClass('d-none');
@@ -893,8 +904,7 @@
 							}
 						}
 					});
-				}
-				,
+				},
 
 				prepay(ev) {
 					popupPay.showPopup($(ev.node).data('record'));
@@ -913,7 +923,12 @@
 				function (data) {
 					page.set('events.upcoming', data); /* get actually user next events */
 					$("img[data-src]:not([src])").lazyload();
-
+					setTimeout(function () {
+						$('a.photo[data-href]').each(function (i) {
+							var _img = $(this);
+							_img.attr('href', $(this).data('href'));
+						});
+					}, 350);
 				});
 
 			utils.api.get('/api/v2/list/records?status=past&group=events&@sort=event_date:d&client=' + client_id).then(
@@ -922,6 +937,12 @@
 					page.set('events_ready', true); /* get actually user next events */
 					$("img[data-src]:not([src])").lazyload();
 
+					setTimeout(function () {
+						$('a.photo[data-href]').each(function (i) {
+							var _img = $(this);
+							_img.attr('href', $(this).data('href'));
+						});
+					}, 350);
 				});
 
 			utils.api.get('/api/v2/list/records?group=longterms&@sort=_created:d&client=' + client_id)
@@ -930,8 +951,14 @@
 					page.set('longterms_ready', true); /* get actually user next events */
 					$("img[data-src]:not([src])").lazyload();
 
-				});
+					setTimeout(function () {
+						$('a.photo[data-href]').each(function (i) {
+							var _img = $(this);
+							_img.attr('href', $(this).data('href'));
+						});
+					}, 350);
 
+				});
 		};
 		content_load();
 	});

@@ -594,7 +594,7 @@
 					on: {
 						complete() {
 							initClientSearch();
-							initEventSearch();
+							initEventSearch($(this.el), true);
 							initPlugins();
 							$(this.el).show();
 						},
@@ -602,6 +602,10 @@
 							console.log('Submit form...');
 							var _form = $(ev.node);
 							var self = this;
+
+							wbapp.loading();
+							console.log('form data', form_data);
+							_form.addClass('disabled');
 
 							if (_form.verify()) {
 								var form_data = _form.serializeJSON();
@@ -619,9 +623,6 @@
 										.focus();
 									return false;
 								}
-								console.log('form data', form_data);
-								_form.addClass('disabled');
-
 								utils.api.get('/api/v2/read/records/' + form_data.id).then(function(record) {
 									var _photo_group = form_data.target || 'before';
 									delete form_data.target;
@@ -631,9 +632,11 @@
 										'record/photos/' + record.id,
 										Date.now() + '_' + utils.getRandomStr(4),
 										function(photo) {
-											_form.removeClass('disabled');
 
 											if (photo.error) {
+												_form.removeClass('disabled');
+												wbapp.unloading();
+
 												toast_error(photo.error);
 												return false;
 											}
@@ -653,20 +656,30 @@
 											};
 											if (_photo_group == 'before') {
 												record.photos['before'] = [];
+											} else if(!record.photos[_photo_group]){
+												record.photos[_photo_group] = [];
 											}
+
 											record.hasPhoto = 1;
 											record.photos[_photo_group].push(_photo_data);
+											wbapp.loading();
 
 											utils.api.post('/api/v2/update/records/' + record.id, {
 												'photos': record.photos,
 												'hasPhoto': 1
 											}).then(function(rec) {
+												wbapp.unloading();
+												_form.removeClass('disabled');
 												onSaved(rec);
 												$(self.el).hide();
 											});
 										});
 								});
+							} else {
+								wbapp.unloading();
+								_form.removeClass('disabled');
 							}
+
 							return false;
 
 						}
@@ -970,15 +983,15 @@
 													if (!data.length) {
 														post.role   = "client";
 														post.role   = "client";
+														post.confirmed = "0";
 														post.active = "on";
-														utils.api.post('/api/v2/create/users/', post)
+														wbapp.post('/api/v2/create/users/', post)
 															.then(function (data) {
 																if (data.error) {
 																	wbapp.trigger('wb-save-error', {
 																		'data': data
 																	});
 																} else {
-																	toast('Карточка клиента успешно создана!');
 																	$('.popup.--create-client').fadeOut('fast');
 																	popupMessage('Карточка пациента создана!', '',
 																		'Успешно',
@@ -987,7 +1000,6 @@
 																		function (d) {});
 																}
 															});
-
 													} else {
 														toast('Этот e-mail уже используется!', 'Ошибка!', 'error');
 														form.find('[name="email"]').focus();
@@ -1244,24 +1256,30 @@
 									</div>
 								</div>
 							</div>
-							{{else}} {{#each record.service_prices: idx, key}}
-							<div class="search__drop-item" data-index="{{idx}}" data-id="{{key}}" data-service_id="{{service_id}}" data-price="{{price}}">
+							{{else}}{{#each record.service_prices: idx, key}}
+							<div class="search__drop-item" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
+								data-price="{{price}}">
 								<input type="hidden" name="services[]" value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{key}}][service_id]" value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{key}}][price_id]" value="{{price_id}}">
-								<input type="hidden" name="service_prices[{{key}}][name]" value="{{name}}">
-								<input type="hidden" name="service_prices[{{key}}][price]" value="{{price}}">
+								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
+								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
+								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
+								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
 								<div class="search__drop-name">
-									{{name}}
 									<div class="search__drop-delete">
 										<svg class="svgsprite _delete">
 											<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 										</svg>
 									</div>
+									<div class="search__drop-tags">
+										{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+										<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+										{{/each}}
+									</div>
+									{{name}}
 								</div>
-								<div class="search__drop-right">
-									<div class="search__drop-summ">{{ @global.utils.formatPrice(.price) }} ₽</div>
-								</div>
+								<label class="search__drop-right">
+									<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+								</label>
 							</div>
 							{{/each}} {{/if}}
 						</div>

@@ -46,9 +46,12 @@
 							<div class="user">
 								<div class="user__name">{{.fullname}}</div>
 								<div class="user__group">
+									{{#if .birthdate }}
 									<div class="user__birthday">Дата рождения:
 										<span>{{ @global.utils.formatDate(.birthdate) }}</span>
 									</div>
+									{{else}}
+									{{/if}}
 								</div>
 							</div>
 						</div>

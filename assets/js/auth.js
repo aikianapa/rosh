@@ -10,7 +10,13 @@ function Auth()
 	this.timelife_handler = null;
 
 	//Общие функции
-
+	this.set_alert_type = function (target, alert_type){
+		if (!!alert_type) {
+			target.removeClass('alert-warning').addClass('alert-' + alert_type);
+		} else if (target.hasClass('alert-success')) {
+			target.removeClass('alert-success').addClass('alert-warning');
+		}
+	};
 	this.close_all_windows = function(){
 		this.phone_window_close();
 		this.smscode_window_close();
@@ -101,11 +107,13 @@ function Auth()
 		this.smscode_window.hide();
 	}
 
-	this.smscode_window_show_alert = function(message){
+	this.smscode_window_show_alert = function(message, alert_type) {
+		this.set_alert_type(this.smscode_window_alert, alert_type);
 		this.smscode_window_alert.text(message).show();
 	}
 
 	this.smscode_window_clear_alert = function(){
+		this.set_alert_type(this.smscode_window_alert);
 		this.smscode_window_alert.text('').hide();
 	}
 
@@ -128,13 +136,12 @@ function Auth()
 	}
 
 	this.email_enter_window_show_alert = function(message, alert_type){
-		if (!!alert_type){
-			this.email_enter_window_alert.removeClass('alert-warning').addClass('alert-'+ alert_type);
-		}
+		this.set_alert_type(this.email_enter_window_alert, alert_type);
 		this.email_enter_window_alert.text(message).show();
 	}
 
 	this.email_enter_window_clear_alert = function(){
+		this.set_alert_type(this.email_enter_window_alert);
 		this.email_enter_window_alert.text('').hide();
 	}
 
@@ -172,12 +179,16 @@ function Auth()
 	this.registration_window_show_alert = function(message, alert_type){
 		if (!!alert_type) {
 			this.registration_window_alert.removeClass('alert-warning').addClass('alert-' + alert_type);
+		} else if(this.registration_window_alert.hasClass('alert-success')) {
+			this.registration_window_alert.removeClass('alert-success').addClass('alert-warning');
 		}
+		this.set_alert_type(this.registration_window_alert, alert_type);
 		this.registration_window_alert.text(message).show();
 
 	}
 
 	this.registration_window_clear_alert = function(){
+		this.set_alert_type(this.registration_window_alert);
 		this.registration_window_alert.text('').hide();
 	}
 
@@ -197,11 +208,13 @@ function Auth()
 		this.recover_window.hide();
 	}
 
-	this.recover_window_show_alert = function(message){
+	this.recover_window_show_alert = function(message, alert_type) {
+		this.set_alert_type(this.recover_window_alert, alert_type);
 		this.recover_window_alert.text(message).show();
 	}
 
 	this.recover_window_clear_alert = function(){
+		this.set_alert_type(this.recover_window_alert);
 		this.recover_window_alert.text('').hide();
 	}
 
@@ -275,7 +288,7 @@ $(document).ready(function(){
 				},
 				success: function(data){
 
-					auth.smscode_window_show_alert(data.message)
+					auth.smscode_window_show_alert(data.message, (data.status === 'ok') ? 'success' : '');
 
 					if(data.status === 'ok'){
 
@@ -387,7 +400,7 @@ $(document).ready(function(){
 						}, 3000);
 					}
 
-					auth.recover_window_show_alert(data.message);
+					auth.recover_window_show_alert(data.message, (data.status === 'ok') ? 'success' : '');
 				}
 			})
 		}

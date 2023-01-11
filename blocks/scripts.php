@@ -40,7 +40,8 @@
 	</script>
 
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=1122ABC"></script>
+		src="/assets/js/cabinet.js?v=BED202A91C5E43509BD816E4E95F4690">
+	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
 		<script type="text/javascript">
@@ -56,8 +57,8 @@
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css" rel="stylesheet">
 
-	<link wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=1122ABC" rel="stylesheet">
+	<link wb-if="in_array('{{_sess.user.role}}', ['main','client','expert'])"
+		href="/assets/css/cabinet.css?v=83DD2DF475D34B73B780A5D09B67CFDA" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">

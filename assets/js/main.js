@@ -1,5 +1,120 @@
 $(function() {
+    window.toast         = function (text, head, icon) {
+        var bgColor   = '#616161';
+        var textColor = '#FEFEFE';
+        switch (icon) {
+            case 'error':
+                bgColor = '#DC3545';
+                break;
+            case 'success':
+                bgColor = '#198754';
+                break;
+            case 'warning':
+                bgColor = '#BB9107';
+                break;
+            case 'info':
+                bgColor = '#0A6BB9';
+                break;
+            default:
+                bgColor = '#616161';
+        }
 
+        $.toast({
+            text: text, // Text that is to be shown in the toast
+            heading: head || '', // Optional heading to be shown on the toast
+            showHideTransition: 'slide', // fade, slide or plain
+            allowToastClose: true, // Boolean value true or false
+            hideAfter: 4000,
+            stack: 5,
+            position: 'top-right',
+            bgColor: bgColor,  // Background color of the toast
+            textColor: textColor,  // Text color of the toast
+            textAlign: 'left',  // Text alignment i.e. left, right or center
+            loader: false,  // Whether to show loader or not. True by default
+            icon: false,
+            beforeShow: function () {}, // will be triggered before the toast is shown
+            afterShown: function () {}, // will be triggered after the toat has been shown
+            beforeHide: function () {}, // will be triggered before the toast gets hidden
+            afterHidden: function () {}  // will be triggered after the toast has been hidden
+        });
+    };
+    window.toast_success = function (text, head) {
+        toast(text, head, 'success');
+    };
+    window.toast_error   = function (text, head) {
+        toast(text, head, 'error');
+    };
+    window.toast_info    = function (text, head) {
+        toast(text, head, 'info');
+    };
+    window.toast_warning = function (text, head) {
+        toast(text, head, 'warning');
+    };
+    window.api ={
+        get(path, data) {
+            let _path = path;
+            let parts = path.split('?', 2);
+            if (data !== undefined) {
+                if (parts.length === 2) {
+                    parts[1] += '&' + $.param(data);
+                } else {
+                    parts[0] += '?' + $.param(data);
+                }
+            }
+            _path = parts.join('?');
+
+            if (!_path.includes('__token')) {
+                parts = _path.split('?', 2);
+
+                if (parts.length === 2) {
+                    parts[1] += '&__token=' + wbapp._session.token;
+                } else {
+                    parts[0] += '?__token=' + wbapp._session.token;
+                }
+                _path = parts.join('?');
+            }
+
+            const defaultOptions = {Method: 'GET'};
+            return fetch(_path, defaultOptions).then((result) => result.json());
+        },
+        post(path, data) {
+            //return this.request(path, 'post', data, options);
+            if (is_string(data) && (data.indexOf('__token') == -1)) {
+                data += '&__token=' + wbapp._session.token;
+            } else if (!data.hasOwnProperty('__token')) {
+                try { data.__token = wbapp._session.token; } catch (error) { null; }
+            }
+            wbapp.loading();
+            return $.post(path, data, function () {
+                wbapp.unloading();
+            });
+        }
+    };
+    window.popupMessage = function (title, subtitle, caption, html, onShow) {
+        return new Ractive({
+            el: '.popup.--message',
+            template: wbapp.tpl('#popupMessage').html,
+            data: {
+                content: html,
+                title: title,
+                subtitle: subtitle,
+                caption: caption,
+                html: html
+            },
+            on: {
+                init() {
+                },
+                complete() {
+                    if (!!onShow) {
+                        onShow(this);
+                    }
+                    $(this.el).show();
+                },
+                close(e) {}
+            }
+        });
+
+    };
     $(document).ready(function() {
         $(document).delegate('.select .select__main', 'click', function() {
             $(this).parent().toggleClass('active');
@@ -23,7 +138,7 @@ $(function() {
                 $(this).addClass('active').siblings('.select__item').removeClass('active');
                 $(this).closest('.select').removeClass('active').find('.select__main:first').html(value);
                 if ($(this).data('id') !== undefined) value = $(this).data('id');
-                $(this).closest('.select').find('input[type=hidden]').each(function() {
+                $(this).closest('.select').find('input[type=hidden]:not(.group):not(.status):not(.pay_status)').each(function() {
                     $(this).val(value);
                 });
             }
@@ -203,6 +318,7 @@ $(function() {
 
         initPlugins = function() {
             $('input.datebirthdaypickr').each(function() {
+                console.log($(this).val());
                 new AirDatepicker(this, {
                     selectedDates: [$(this).val() || (new Date())],
                     maxDate: (new Date()),
@@ -263,7 +379,34 @@ $(function() {
                     maxTime: $(this).data('max-time') || '19:00',
                     dynamic: false,
                     dropdown: true,
-                    scrollbar: true
+                    scrollbar: true,
+                    change: function (time) {
+                        // the input field
+                        var element    = $(this), text;
+                        // get access to this Timepicker instance
+                        var timepicker = element.timepicker();
+                        console.log('change', element, element.val(), timepicker);
+                        /* is start-time changed...*/
+                        if (element.hasClass('event-time-start') && element.val()) {
+                            var end_time = $(this).parents('.event-time').find('input.event-time-end');
+                            var end_tpkr = end_time.timepicker({
+                                'minTime': element.val(),
+                                'startTime': element.val()
+                            });
+                            if (end_time.val() < element.val()) {
+                                end_time.val(element.val());
+                            }
+                        } else {
+                            if (element.hasClass('event-time-end') && element.val()) {
+                                var start_time = $(this).parents('.event-time').find('input.event-time-end');
+
+                                if (start_time.val() > element.val()) {
+                                    element.val(start_time.val());
+                                }
+                            }
+                        }
+
+                    }
                 });
             });
             $('input.datetimepickr').each(function() {

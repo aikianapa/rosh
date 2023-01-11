@@ -43,7 +43,7 @@
 }
 [type=button]:disabled, .disabled, button.disabled, button:disabled {
 	pointer-events : none !important;
-	opacity        : .75;
+	opacity        : .6;
 }
 .clearfix::after {
 	display : block;
@@ -250,6 +250,9 @@ div.accardeon.active > div.accardeon__list {
 	padding          : 12px;
 	background-color : #FBF9F7;
 }
+.autocomplete-suggestion.search__drop-item {
+	margin-bottom : 8px;
+}
 .autocomplete-suggestions {
 	background-color : #FEFEFE;
 	cursor           : pointer;
@@ -258,6 +261,13 @@ div.accardeon.active > div.accardeon__list {
 .autocomplete-suggestions .autocomplete-suggestion:hover {
 	background-color : #D0DFF3;
 	outline          : 1px solid #EFEFEF;
+}
+.photos .autocomplete-suggestions .autocomplete-suggestion{
+	padding       : 4px 8px;
+	z-index       : 99999;
+	font-size     : 15px;
+	margin-bottom : 2px;
+	line-height   : 1.2;
 }
 .admin-editor__patient .search__drop-item {
 	background : white;
@@ -272,6 +282,8 @@ div.accardeon.active > div.accardeon__list {
 .popup__panel.popup__panel-wide {
 	max-width : 620px;
 }
+.admin-editor__top-select .select.pay .select__main,
+.admin-editor__top-select .select.status .select__main,
 .has-values > .select__main{
 	color: #444;
 	border-color: #444;
@@ -346,10 +358,66 @@ small {
 a.client-card {
 	z-index: 9999;
 }
+ul li.service_price{
+	line-height   : 1.15;
+	margin-bottom : 8px;
+	letter-spacing: -0.2px;
+	text-align    : justify;
+}
 @media (max-width : 768px) {
-	.search__drop-item .search__drop-delete {opacity: 1}
-	.search__drop-item .search__drop-name{
-		padding-left: 20px;
+	.search__drop-item .search__drop-delete {opacity : 1}
+	.search__drop-item .search__drop-name {
+		padding-left : 20px;
+	}
+	.user__name svg {
+		margin-left : 10px;
+	}
+}
+@media (min-width : 768px) {
+	.after-healing__item.photo .photos,
+	.before-healing__item .after-healing__photo {
+		max-width: 50%;
+		background-position: center;
+	}
+
+	h2.healing__date-title {
+		text-transform : lowercase !important;
+		margin-bottom: 20px;
+		font-size: 32px;
+	}
+	.account-events__item.wide .account-event {
+		line-height : 1.12;
+		margin-top  : 3px;
+	}
+	.account-events__item.wide {
+		width        : calc(65% - 40px);
+		margin-right : 40px;
+	}
+	.record-edit .account-events__name {
+		font-weight : 600;
+	}
+	.acount__table-list {
+		padding-top : 10px;
+	}
+	.record-edit .account-events__item.wide {
+		width         : auto;
+		margin-right  : 20px;
+		margin-top    : 0;
+		margin-bottom : 20px;
+	}
+	.before-healing__photo {
+		height : 171px;
+		max-width : 260px;
+	}
+	.admin-editor__images .after-healing__photo,
+	.admin-editor__images .before-healing__photo {
+		max-width           : initial;
+		height              : 171px;
+		background-size     : cover;
+		background-repeat   : no-repeat;
+		background-position : center;
+		border-radius       : 20px;
+		margin-bottom       : 14px;
 	}
 }
 @-webkit-keyframes three-dots {

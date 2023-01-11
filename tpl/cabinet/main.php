@@ -66,18 +66,21 @@
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item active" data-tab="quotes" data-type="group=quotes">
+					<div class="account__tab data-tab-item active" data-tab="quotes"
+						data-type="group=quotes">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
 					</div>
-					<div class="account__tab data-tab-item" data-tab="events" data-type="group=events&status=upcoming">
+					<div class="account__tab data-tab-item" data-tab="events"
+						data-type="group=events&status=upcoming">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=past">
+					<div class="account__tab data-tab-item" data-tab="past"
+						data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
@@ -133,14 +136,14 @@
 		<div class="row profile-edit__wrap">
 			<div class="col-md-9">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="input input--grey">
 							<input class="input__control" type="text" name="country"
 								value="{{ country }}" placeholder="Страна">
 							<div class="input__placeholder input__placeholder--dark">Страна</div>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="input input--grey">
 							<input class="input__control" type="text" name="city"
 								value="{{ city }}" placeholder="Город">
@@ -149,9 +152,17 @@
 					</div>
 					<div class="col-md-4">
 						<div class="input input--grey">
-							<input class="input__control" type="text" name="address"
-								value="{{ address }}" placeholder="Улица и дом">
-							<div class="input__placeholder input__placeholder--dark">Улица и дом</div>
+							<input class="input__control" type="text" name="street"
+								value="{{street}}" placeholder="Улица">
+							<div class="input__placeholder input__placeholder--dark">Улица
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="input input--grey">
+							<input class="input__control" type="text" name="build"
+								value="{{build}}" placeholder="Дом">
+							<div class="input__placeholder input__placeholder--dark">Дом</div>
 						</div>
 					</div>
 				</div>
@@ -198,10 +209,10 @@
 		<div class="select pay">
 			<div class="select__main">Статус оплаты</div>
 			<div class="select__list">
-				<input type="hidden" name="pay_status" value="{{ record.pay_status }}">
+				<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 				{{#each catalog.quotePay}}
-				<div class="select__item" data-id="{{ id }}"
-					onclick="$(this).parent('.select__list').children('input').val($(this).attr('data-id'))">
+				<div class="select__item" data-id="{{id}}"
+					onclick="$(this).parents('.select .pay').find('input.pay_status').val($(this).attr('data-id'));">
 					{{name}}
 				</div>
 				{{/each}}
@@ -220,9 +231,9 @@
 				<div class="select__delimiter" disabled></div>
 				{{else}}
 				<div class="select__item select__item--acc-{{color}}"
-					data-id="{{ id }}"
-					data-group="{{ type }}"
-					onclick="$(this).parents('.select__list').children('input.status').val($(this).attr('data-id'));$(this).parents('.select__list').children('input.group').val($(this).attr('data-group'));">
+					data-id="{{id}}"
+					data-group="{{type}}"
+					onclick="$(this).parents('.select.status').find('input.status').val($(this).attr('data-id'));$(this).parents('.select.status').find('input.group').val($(this).attr('data-group'));">
 					{{name}}
 				</div>
 				{{/if}}
@@ -237,10 +248,20 @@
 	<form class="record-edit">
 		<div class="row">
 			<div class="col-md-7">
+				{{#if record.client_comment}}
+				<div class="account-events__item wide">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Причина обращения:</div>
+						<div class="account-event">
+							{{{@global.nl2br(record.client_comment)}}}
+						</div>
+					</div>
+				</div>
+				{{/if}}
 				<div class="lk-title">Редактировать заявку</div>
 				<input type="hidden" value="{{ record.id }}" name="id">
 
-				{{#if this.spec_service}}
+				{{#if record.spec_service}}
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
 				<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}">
 				{{else}}
@@ -261,7 +282,7 @@
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-						{{#if record.for_consultation=== '1' }}
+						{{#if record.for_consultation == '1' }}
 						<input class="checkbox-visible-next-form" type="checkbox"
 							checked
 							name="for_consultation" value="1">
@@ -277,15 +298,19 @@
 						{{#each catalog.quoteType as qt}}
 						<label class="text-radio">
 							{{#if qt.id === record.type }}
-							<input type="radio" name="type" value="{{ qt.id }}" checked on-click="checkConsultation">
+							<input type="radio" name="type"
+								value="{{ qt.id }}" checked
+								on-click="checkConsultation">
 							{{else}}
-							<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation">
+							<input type="radio" name="type" value="{{ qt.id }}"
+								on-click="checkConsultation">
 							{{/if}}
 							<span>{{qt.name}}</span>
 						</label>
 						{{/each}}
 					</div>
 					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
+						<input type="hidden" name="no_experts" value="0">
 						{{#if record.no_experts === '1' }}
 						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts"
 							checked
@@ -404,7 +429,7 @@
 					</div>
 					{{else}}
 					{{#each record.service_prices: idx, key}}
-					<div class="search__drop-item" data-index="{{idx}}"
+					<div class="search__drop-item services" data-index="{{idx}}"
 						data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 						<input type="hidden" name="services[]"
 							value="{{service_id}}">
@@ -423,7 +448,7 @@
 								</svg>
 							</div>
 							<div class="search__drop-tags">
-								{{#each catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+								{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
 								<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
 								{{/each}}
 							</div>
@@ -438,7 +463,11 @@
 				</div>
 				<div class="admin-editor__summ mb-3">
 					<p>Всего</p>
+					{{#if record.for_consultation == '1'}}
+					<input type="hidden" name="price" class="consultation" value="{{record.price}}">
+					{{else}}
 					<input type="hidden" name="price" value="{{record.price}}">
+					{{/if}}
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
 				<div class="mb-4 text-right" data-hide="service-search">
@@ -448,60 +477,47 @@
 				{{#if record.group == 'events'}}
 				<div class="admin-editor__images mb-40">
 					{{#if record.hasPhoto}}
-					<div class="row acount__photos-wrap mb-20">
+					<div class="row">
 						<div class="col-md-6">
-							{{#if record.photos.before}}
-							<div class="acount__photo">
-								<p>Фото до начала лечения</p>
-								{{#each record.photos.before}}
-								<div class="row">
-									<div class="col-md-12">
-										<div class="acount__photo">
-											<a class="after-healing__item"
-												data-fancybox="event-{{this.id}}"
-												href="{{.src}}"
-												data-caption="Фото до начала лечения:
-															{{ @global.utils.formatDate(.date) }}">
-												<img src="{{.src}}" alt="">
-											</a>
-
-										</div>
-									</div>
+							<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+							{{#each record.photos.before}} <!--single photo!-->
+							<a class="before-healing photo"
+								data-fancybox="images-{{record.id}}"
+								href="{{.src}}"
+								data-href="{{.src}}"
+								data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+								<div class="healing__date">
+									{{ @global.utils.formatDate(.date) }}
 								</div>
-								{{else}}
-
-								{{/each}}
-							</div>
-							{{/if}}
+								<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
+								<div class="healing__description">{{.comment}}</div>
+							</a>
+							{{/each}}
 						</div>
 						<div class="col-md-6">
-							{{#if record.photos.before}}
-							<div class="acount__photo">
-								<p>Фото в процессе лечения</p>
-								{{#each record.photos.after}}
-								<div class="row">
-									<div class="col-md-12">
-										<div class="acount__photo">
-											<a class="after-healing__item"
-												data-fancybox="event-{{this.id}}"
-												href="{{.src}}"
-												data-caption="Фото до начала лечения:
-															{{ @global.utils.formatDate(.date) }}">
-												<img src="{{.src}}" alt="">
-											</a>
-
-										</div>
-									</div>
-								</div>
-								{{else}}
-
-								{{/each}}
+							<div class="text-bold text-big mb-20">
+								Фото после начала лечения
 							</div>
-							{{/if}}
+							<div class="after-healing">
+								<div class="row">
+									{{#each record.photos.after}}
+									<div class="col-md-12">
+										<a class="after-healing__item photo"
+											data-fancybox="images-{{record.id}}"
+											data-href="{{.src}}"
+											data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+											<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+											<div class="after-healing__photo"
+												style="background-image: url({{.src}});">
+											</div>
+										</a>
+									</div>
+									{{/each}}
+								</div>
+							</div>
 						</div>
 					</div>
 					{{/if}}
-
 					<div class="row acount__photos-wrap">
 						<div class="col-md-2">
 							<a class="btn btn--white" on-click="['addPhoto',record]">
@@ -603,7 +619,9 @@
 						</div>
 						<div class="admin-events-item">
 							<p>ФИО</p>
-							<div><a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a></div>
+							<div>
+								<a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+							</div>
 						</div>
 						<div class="admin-events-item">
 							<p>Телефон</p>
@@ -667,9 +685,13 @@
 									</button>
 								</div>
 								<div class="admin-editor__iser-contacts">
+									{{#if catalog.clients[client].birthdate === '01.01.1970' }}
+									{{else}}
 									<p>Дата рождения:
-										<span>{{ catalog.clients[client].birthdate }}</span>
+										<span>{{ @global.utils.formatDate(catalog.clients[client].birthdate) }}</span>
 									</p>
+									{{/if}}
+
 									<p>Телефон:
 										<span>{{ @global.utils.formatPhone(catalog.clients[client].phone) }}</span>
 									</p>
@@ -701,10 +723,15 @@
 <script wb-app remove>
 	var tabs = {};
 	$(document).on('cabinet-db-ready', function () {
-		let editProfile = wbapp.tpl('#editProfile').html;
-		let editStatus  = wbapp.tpl('#editStatus').html;
-		window.load     = function () {
-
+		var getGroupByStatus = function (status) {
+			if (['new', 'uncall', 'delay'].includes(status)) {
+				return 'quote';
+			}
+			return 'event';
+		};
+		let editProfile      = wbapp.tpl('#editProfile').html;
+		let editStatus       = wbapp.tpl('#editStatus').html;
+		window.load          = function () {
 			['group=quotes',
 			 'group=events&status=upcoming',
 			 'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]'
@@ -714,8 +741,8 @@
 						'_lastdate:d',
 						'event_date:d',
 						'event_date:d'
-					]
-					utils.api.get('/api/v2/list/records?'+ target_tab, {'@sort': _sorts[i]}).then(
+					];
+					utils.api.get('/api/v2/list/records?' + target_tab, {'@sort': _sorts[i]}).then(
 						function (result) {
 							let data = {
 								group: target_tab,
@@ -733,16 +760,15 @@
 								on: {
 									loaded() {
 										console.log('>>> loaded', target_tab);
-
+										$(this.el).find('.loading-overlay').remove();
 									},
-									complete(){
-
+									complete() {
 										this.find('.loading-overlay').remove();
 									},
 									editProfile(ev) {
 										var form = $(ev.node).parents('.admin-editor')
 											.find('.admin-editor__edit-profile');
-										if ($(ev.node).hasClass('open')){
+										if ($(ev.node).hasClass('open')) {
 											$(ev.node).removeClass('open');
 											$(form).html('');
 											return;
@@ -750,7 +776,7 @@
 										$(ev.node).addClass('open');
 										var profile_id = $(ev.node).data('id');
 
-										let editor     = new Ractive({
+										let editor = new Ractive({
 											el: form,
 											template: editProfile,
 											data: {},
@@ -769,7 +795,7 @@
 																console.log('client saved', res);
 																data.birthdate_fmt = utils.formatDate(data.birthdate);
 																data.phone         = utils.formatPhone(data.phone);
-																_tab.set('catalog.clients.'+ profile_id, data);
+																_tab.set('catalog.clients.' + profile_id, data);
 																catalog.clients[profile_id] = data;
 
 																$(form).html('');
@@ -791,9 +817,9 @@
 									},
 									editRecord(ev) {
 										var target_tab = this;
-										var _row_idx  = $(ev.node).data('idx');
-										const _parent = $(ev.node).closest('.accardeon');
-										var _record   = this.get('records.' + _row_idx);
+										var _row_idx   = $(ev.node).data('idx');
+										const _parent  = $(ev.node).closest('.accardeon');
+										var _record    = this.get('records.' + _row_idx);
 										console.log('open ', _record);
 										if (!_record.price) {
 											_record.price = 0;
@@ -823,7 +849,9 @@
 
 													let post = $(copy).serializeJSON();
 
-													post.group = (catalog.quoteStatus[post.status].type || _record.group.substring(0, _record.group.length - 1)) + 's';
+													post.group = (catalog.quoteStatus[post.status].type ||
+													              _record.group.substring(0,
+														              _record.group.length - 1)) + 's';
 
 													utils.api.post('/api/v2/update/records/' + _record.id, post)
 														.then(function (res) {
@@ -837,12 +865,15 @@
 												}
 											}
 										});
-										let recordEditor   = new Ractive({
+
+										let recordEditor = new Ractive({
 											el: _parent.find('.admin-editor__events'),
 											template: wbapp.tpl('#editorRecord').html,
 											data: {
 												catalog: catalog,
-												record: _record
+												record: _record,
+												start_time: 0,
+												end_time: 0
 											},
 											on: {
 												complete() {
@@ -850,25 +881,74 @@
 														_parent.find('.admin-editor__events .popup-services-list'),
 														catalog.servicesList
 													);
-
+													console.log('true: ',
+														$(this.el).find('.search__drop-item.services').length);
 													initPlugins();
-													if (!!$('.select .select__item input:checked').length) {
-														$('.select.select_experts .select__item').trigger('click');
+
+													if (!!$(this.el)
+														.find('.select .select__item input:checked').length) {
+														$(this.el).find('.select.select_experts .select__item')
+															.trigger('click');
 													}
+													console.log($('.search__drop-item.services').length);
+
+													var _price = (_record.type === 'online')
+														? parseInt(catalog.spec_service.consultation.price)
+														: 0;
+													$(this.el).find('.search__drop-item.services').each(function () {
+														_price += parseInt($(this).data('price'));
+													});
+
+													console.log(_price);
+
+													$(this.el).find('.admin-editor__summ input[name="price"]')
+														.val(_price);
+													$(this.el).find('.admin-editor__summ p.price').html(
+														utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
+
+													setTimeout(function () {
+														$('a.photo[data-href]').each(function (i) {
+															var _img = $(this);
+															_img.attr('href', $(this).data('href'));
+														});
+													}, 150);
 												},
 												addPhoto(ev, record) {
+													var self = this;
 													popupPhoto(catalog.clients[record.client], record,
 														function (rec) {
 															_tab.set('records.' + _row_idx, rec);
 															toast('Фото добавлено!');
-															//window.load();
+															self.set('record', rec);
+															setTimeout(function () {
+																$(self.el).find('a.photo[data-href]')
+																	.each(function (i) {
+																		var _img = $(this);
+																		_img.attr('href', $(this).data('href'));
+																	});
+															}, 150);
 														});
+												},
+												setEventTime(ev) {
+													console.log(ev, $(ev.node).hasClass('event-time-start'),
+														$(ev.node).val());
+													console.log(this.get('start_time'));
+													if ($(ev.node).hasClass('event-time-start')) {
+														this.set('start_time', $(ev.node).val());
+													} else {
+														this.set('end_time', $(ev.node).val());
+														if (!!this.get('start_time')) {
+															$(ev.node).timepicker({minTime: this.get('start_time')});
+														}
+													}
+
 												},
 												checkConsultation(ev) {
 													var ght = 0;
 													var lv  = 0;
-													console.log(ev, $(ev.node).parents('form'));
-													if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
+
+													if ($(ev.node).is(':checked')
+													    && $(ev.node).val() == 'online') {
 														ght = parseInt(catalog.spec_service.consultation.price);
 													} else {
 														ght = 0;
@@ -904,18 +984,24 @@
 														let copy = $('<form></form>');
 														$(copy).html($(form).clone());
 
-														let post_statuses   = $(copy).serializeJSON();
-														post_statuses.group =
-															(catalog.quoteStatus[post_statuses.status].type ||
-															 'quote') + 's';
-														var new_data        = $($(ev.node).parents('form'))
+														let post_statuses = $(copy).serializeJSON();
+
+														post_statuses.group = (
+															catalog.quoteStatus[post_statuses.status].type || ''
+														);
+														if (!post_statuses.group) {
+															post_statuses.group = getGroupByStatus(
+																post_statuses.status);
+														}
+														post_statuses.group += 's';
+														var new_data = $($(ev.node).parents('form'))
 															.serializeJSON();
+														console.log(post_statuses.group);
 
 														new_data.price      = parseInt(new_data.price);
 														new_data.status     = post_statuses.status;
 														new_data.pay_status = post_statuses.pay_status;
 														new_data.group      = post_statuses.group;
-
 														if (new_data.group === 'events' && !new_data.event_date) {
 															toast_error('Необходимо выбрать дату/время события');
 															$($(ev.node).parents('form')).find('[name="event_date"]')
@@ -929,6 +1015,15 @@
 																.focus();
 															return false;
 														}
+														if (new_data.group === 'events'
+														    && !!new_data.experts) {
+															new_data.no_experts = 0;
+														}
+														if (new_data.group === 'events'
+														    && !!new_data.services) {
+															new_data.no_services = 0;
+														}
+
 														if (new_data.group === 'events' && !new_data.price) {
 															toast_error('Необходимо выбрать услугу');
 															$($(ev.node).parents('form'))
