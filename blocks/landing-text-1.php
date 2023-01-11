@@ -5,7 +5,7 @@
                 <div class="col-lg-4"></div>
                 <div class="col-lg-8">
                     <div class="content-wrap">
-                        <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
+                        <h2 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h2>
                     </div>
                 </div>
             </div>
@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="content-wrap">
-                        <h2 class="big-title" wb-if="'{{right}}'>''">{{right}}</h2>
+                        <h3 class="big-title" wb-if="'{{right}}'>''">{{right}}</h3>
                     </div>
                 </div>
             </div>
