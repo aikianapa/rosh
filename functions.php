@@ -195,12 +195,13 @@ function regenerate_map()
 
 function beforeShow(&$out)
 {
-    $app = $_ENV['app'];
     $map = json_decode(file_get_contents($_ENV['dba'].'/_yonmap.json'), true);
     $fr = $to = [];
     foreach ($map as $m) {
         if ($m['f'] == 'pages') {
             $fr[] = urlencode('['.$m['n'].']');
+            $fr[] = ('[' . $m['n'] . ']');
+            $to[] = $m['u'];
             $to[] = $m['u'];
         }
     }
