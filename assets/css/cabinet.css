@@ -242,11 +242,21 @@
 .admin-events-item.w-9, .admin-events-item:nth-child(1) {
 	width : 9% !important;
 }
+.admin-events-item:nth-child(5){
+	width : 7%;
+}
+.admin-events-item:nth-child(6){
+	width : 9%;
+}
+.admin-events-item.w-7{
+	width : 7% !important;
+}
+
 .admin-events-item.w-8 {
 	width : 8% !important;
 }
 .admin-events-item:nth-child(10), .admin-events-item.comment {
-	width : 27%;
+	width : 24%;
 }
 div.accardeon.active > div.accardeon__list {
 	border-top : 1px solid #E0E0EA;
