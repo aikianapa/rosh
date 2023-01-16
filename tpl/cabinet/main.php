@@ -552,11 +552,6 @@
 					<span>Приём</span>
 					{{/if}}
 				</div>
-				{{#if group == 'group=quotes'}}
-				<div class="admin-events-item">Приём</div>
-				{{else}}
-				<div class="admin-events-item">Заявка</div>
-				{{/if}}
 				<div class="admin-events-item">ФИО</div>
 				<div class="admin-events-item">Телефон</div>
 				<div class="admin-events-item">Специалист</div>
@@ -564,7 +559,13 @@
 				<div class="admin-events-item">Услуга</div>
 				<div class="admin-events-item">Оплата</div>
 				<div class="admin-events-item">Статус</div>
-				<div class="admin-events-item">Комментарии</div>
+				<div class="admin-events-item comment">Комментарии</div>
+				{{#if group == 'group=quotes'}}
+				<div class="admin-events-item w-8">Дата приёма</div>
+				{{else}}
+				<div class="admin-events-item w-8">Дата заявки</div>
+				{{/if}}
+
 			</div>
 			<div class="account__table-body">
 				<div class="loading-overlay">
@@ -621,21 +622,6 @@
 								{{/if}}
 							</div>
 						</div>
-						{{#if group == 'events'}}
-							<div class="admin-events-item">
-								<p>Заявка</p>
-								<div>
-									{{@global.utils.formatDate(_created)}}<br>
-									{{@global.utils.formatTime(_created)}}
-								</div>
-							</div>
-						{{else}}
-							<div class="admin-events-item">
-								<p>Приём</p>
-								<span class="link-danger">&nbsp;</span>
-							</div>
-						{{/if}}
-
 						<div class="admin-events-item">
 							<p>ФИО</p>
 							<div>
@@ -686,15 +672,22 @@
 							<p>Статус</p>
 							<div>{{catalog.quoteStatus[this.status].name}}</div>
 						</div>
-						<div class="admin-events-item">
+						<div class="admin-events-item comment">
 							<p>Комментарии</p>
 							<div>{{this.comment}}</div>
 						</div>
-
-						{{#if group == 'events'}}
-
-						{{else}}
-						{{/if}}
+						<div class="admin-events-item w-8">
+							{{#if group == 'events'}}
+							<p>Дата заявки</p>
+							<div>
+								{{@global.utils.formatDate(_created)}}<br>
+								{{@global.utils.formatTime(_created)}}
+							</div>
+							{{else}}
+							<p>Дата приёма</p>
+							<span class="link-danger">&nbsp;</span>
+							{{/if}}
+						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
 						<div class="admin-editor__top">
