@@ -1159,7 +1159,7 @@ $(function () {
 				},
 				submit() {
 					var form = this.find('.popup.--analize-interpretation .popup__form');
-
+					console.log(form);
 					if ($(form).verify()) {
 
 						var data = $(form).serializeJSON();
