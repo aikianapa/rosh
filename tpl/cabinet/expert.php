@@ -302,6 +302,13 @@
 										<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 									</svg>
 								</a>
+								{{#if this.analyses}}
+									<a class="btn btn--white" href="{{this.analyses}}"
+										target="_blank"
+										download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+										Скачать анализы
+									</a>
+								{{/if}}
 							</div>
 							<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
 								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"

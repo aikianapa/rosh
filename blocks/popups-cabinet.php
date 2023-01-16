@@ -121,25 +121,23 @@
 					</button>
 					<div class="popup__name text-bold">{{catalog.spec_service.analyses_interpretation.header}}</div>
 					<form class="popup__form" method="post" on-submit="submit">
-						<input type="hidden" name="pay_status" value="unpay">
-						<input type="hidden" name="spec_service" value="analyses_interpretation">
-						<input type="hidden" name="price" value="{{catalog.spec_service.analyses_interpretation.price}}">
+						<input type="hidden" name="pay_status" value="free">
+						<input type="hidden" name="for_consultation" value="1">
 						<input type="hidden" name="group" value="quotes">
 						<input type="hidden" name="status" value="new">
 						<input type="hidden" name="title" value="Расшифровка анализов">
 
-						<div class="text-bold mb-20">Тип события</div>
+						<p class="text-grey mb-30">Нажмите на способ получения анализа</p>
 						<div class="popups__text-chexboxs">
-							<label class="text-radio" name="type" value="clinic">
-								<input type="radio" name="status">
+							<label class="text-radio">
+								<input type="radio" name="type" value="clinic" checked>
 								<span>В клинике</span>
 							</label>
-							<label class="text-radio switch-blocks" value="online">
-								<input type="radio" name="status">
+							<label class="text-radio switch-blocks">
+								<input type="radio" name="type" value="online">
 								<span>Онлайн</span>
 							</label>
 						</div>
-						<p class="text-grey mb-30">Нажмите на способ получения анализа</p>
 						<button class="btn btn--black popup__change form__submit" type="button">
 							Оставить заявку
 						</button>

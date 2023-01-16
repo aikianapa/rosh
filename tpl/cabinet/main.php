@@ -244,6 +244,7 @@
 
 	<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 </template>
+
 <template id="editorRecord">
 	<form class="record-edit">
 		<div class="row">
@@ -374,7 +375,7 @@
 											name="event_time_start"
 											value="{{record.event_time_start}}"
 											data-min-time="09:00"
-											data-max-time="18:00" autocomplete="off"
+											data-max-time="21:00" autocomplete="off"
 											pattern="[0-9]{2}:[0-9]{2}" required>
 										<div class="input__placeholder">Время (начало)</div>
 									</div>
@@ -386,7 +387,7 @@
 											name="event_time_end"
 											value="{{record.event_time_end}}"
 											data-min-time="09:00"
-											data-max-time="18:00" autocomplete="off"
+											data-max-time="21:00" autocomplete="off"
 											pattern="[0-9]{2}:[0-9]{2}" required>
 										<div class="input__placeholder">Время (конец)</div>
 									</div>
