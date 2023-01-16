@@ -60,7 +60,7 @@
 
 
 <!--!!! TEMPLATES !!!-->
-<template id="page-content" >
+<template id="page-content" wb-off>
 	<div class="lk-title">Карточка пациента</div>
 	{{#user}}
 	<div class="account__panel">
@@ -492,7 +492,7 @@
 		</div>
 	</div>
 </template>
-<template id="editorRecord" >
+<template id="editorRecord" wb-off>
 	<form class="record-edit">
 		<div class="row">
 			<div class="col-md-7">
@@ -785,7 +785,7 @@
 		</div>
 	</form>
 </template>
-<template id="event-details" >
+<template id="event-details" wb-off>
 	{{#event}}
 	<div class="analysis mb-40">
 		<div class="row">
@@ -886,7 +886,7 @@
 	{{/if}}
 	{{/event}}
 </template>
-<template id="longterm-details" >
+<template id="longterm-details" wb-off>
 	{{#if photos}}
 	<div class="row">
 		<div class="col-md-4">
@@ -932,7 +932,7 @@
 	</div>
 	{{/if}}
 </template>
-<template id="profile-editor-inline" >
+<template id="profile-editor-inline" wb-off>
 	<form on-submit="submit">
 		{{#user}}
 		<p class="text-bold mb-30">Редактировать профиль</p>
@@ -1042,7 +1042,7 @@
 	</form>
 </template>
 
-<script wb-app remove>
+<script wb-app>
 	var client_id = '{{_route.client}}';
 	$(document).on('cabinet-db-ready', function () {
 		window.page = new Ractive({
