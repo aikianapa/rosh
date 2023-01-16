@@ -189,16 +189,16 @@
 				<div class="account__table-head">
 					<div class="history-item">Дата</div>
 					<div class="history-item">Время</div>
-					<div class="history-item">Специалисты</div>
+					<div class="history-item w-10">Специалисты</div>
 					<div class="history-item">Услуги</div>
 					<div class="history-item">Анализы</div>
 				</div>
 				<div class="account__table-body">
 					<!-- !!! quote history item !!! -->
 					{{#each history.events as event}}
-					<div class="acount__table-accardeon accardeon"
-						data-idx="{{@index}}">
-						<div class="acount__table-main accardeon__main accardeon__click">
+					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
+						<div class="acount__table-main accardeon__main accardeon__click" data-record="{{this.id}}"
+							data-idx="{{@index}}" on-click="['editPastRecord', this]">
 							<div class="history-item">
 								<p>Дата</p>
 								{{ @global.utils.formatDate(this.event_date) }}
@@ -235,7 +235,7 @@
 											<div class="analysis__title">Анализы</div>
 
 											{{#if this.analyses}}
-											<a class="btn btn--white" href="{{this.analyses}}"
+											<a class="btn btn--white mr-20" href="{{this.analyses}}"
 												target="_blank"
 												download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
 												Скачать анализы
@@ -255,25 +255,15 @@
 							</div>
 							<div class="mb-40">
 								<div class="row">
-									<div class="col-md-4">
-										<div class="analysis__description">
-											<p class="text-bold mb-20">Выполнялись процедуры</p>
-											<p class="text-grey">
-												{{#services}}
-												{{catalog.services[this].header}}<br>
-												{{/services}}
-											</p>
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="analysis__description">
+									<div class="col-md-8">
+										<div class="analysis__description ml-20">
 											<p class="text-bold mb-20">Рекомендация врача</p>
 											<div class="text">
 												{{.recommendation}}
 											</div>
 										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<div class="analysis__description">
 											<p class="text-grey text-small mb-20">
 												Ред.: {{@global.utils.formatDateAdv(._lastdate)}} - {{catalog.users[._lastuser].fullname}}
@@ -283,91 +273,6 @@
 								</div>
 							</div>
 
-							<div class="experts__worked">
-								<div class="experts__worked-title">С вами работали</div>
-								<div class="row">
-									{{#each .experts: idx}}
-									<div class="col-md-6">
-										<a class="expert__worked"
-											target="_blank"
-											title="Открыть страницу о специалисте"
-											data-href="{{catalog.experts[this].info_uri}}"
-											data-link="{{catalog.experts[this].info_uri}}">
-											<div class="expert__worked-pic">
-												<img class="lazyload"
-													data-src="{{{catalog.experts[this].image[0].img}}}"
-													alt="{{catalog.experts[this].name}}">
-											</div>
-											<div class="expert__worked-name">
-												{{catalog.experts[this].name}}
-											</div>
-											<div class="expert__worked-work">
-												{{catalog.experts[this].spec}}
-											</div>
-										</a>
-									</div>
-									{{/each}}
-								</div>
-							</div>
-
-							{{#if this.hasPhoto}}
-							<div class="acount__photos">
-								<div class="row">
-									<div class="col-md-5">
-										<p>Фото до начала лечения</p>
-										{{#each photos.before}}
-										<div class="row">
-											<div class="col-md-12">
-												<div class="acount__photo">
-													<a class="after-healing__item photo"
-														data-fancybox="event-{{event.id}}"
-														data-href="{{.src}}"
-														href="{{.src}}"
-														data-caption="Фото до начала лечения:
-															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">
-															{{ @global.utils.formatDate(.date) }}
-														</div>
-														<div class="after-healing__photo"
-															style="background-image: url({{.src}})">
-														</div>
-													</a>
-
-												</div>
-											</div>
-										</div>
-										{{else}}
-
-										{{/each}}
-									</div>
-									<div class="col-md-7">
-										<p> Фото в процессе лечения</p>
-										{{#each photos.after}}
-										<div class="row">
-											<div class="col-md-6">
-												<div class="acount__photo">
-													<a class="after-healing__item photo"
-														data-fancybox="event-{{event.id}}"
-														href="{{.src}}"
-														data-href="{{.src}}"
-														data-caption="Фото в процессе лечения:
-															{{ @global.utils.formatDate(.date) }}">
-														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
-														<div class="after-healing__photo"
-															style="background-image: url({{.src}})">
-														</div>
-													</a>
-
-												</div>
-											</div>
-										</div>
-										{{else}}
-
-										{{/each}}
-									</div>
-								</div>
-							</div>
-							{{/if}}
 							<div class="admin-editor__events" data-record="{{.id}}" data-idx="{{idx}}"></div>
 						</div>
 					</div>
@@ -491,6 +396,8 @@
 	<form class="record-edit">
 		<div class="row">
 			<div class="col-md-7">
+				<div class="lk-title">Событие</div>
+
 				{{#if record.client_comment}}
 				<div class="account-events__item wide">
 					<div class="account-event-wrap">
@@ -501,8 +408,7 @@
 					</div>
 				</div>
 				{{/if}}
-				<div class="lk-title">Редактировать заявку</div>
-				<input type="hidden" value="{{ record.id }}" name="id">
+z				<input type="hidden" value="{{ record.id }}" name="id">
 
 				{{#if record.spec_service}}
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
@@ -512,19 +418,7 @@
 				{{/if}}
 
 				<div class="admin-editor__type-event">
-					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-						{{#if record.no_services=== '1' }}
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services"
-							checked
-							value="1">
-						{{else}}
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services"
-							value="1">
-						{{/if}}
-						<span></span>
-						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
-					</label>
-					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+					<label class="checkbox checkbox--record show-checkbox disabled" data-show-input="service">
 						{{#if record.for_consultation == '1' }}
 						<input class="checkbox-visible-next-form" type="checkbox"
 							checked
@@ -537,7 +431,7 @@
 						<div class="checbox__name">Консультация врача</div>
 					</label>
 					<p class="mb-10">Тип события</p>
-					<div class="text-radios">
+					<div class="text-radios disabled">
 						{{#each catalog.quoteType as qt}}
 						<label class="text-radio">
 							{{#if qt.id === record.type }}
@@ -552,18 +446,6 @@
 						</label>
 						{{/each}}
 					</div>
-					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
-						<input type="hidden" name="no_experts" value="0">
-						{{#if record.no_experts === '1' }}
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts"
-							checked
-							value="1">
-						{{else}}
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
-						{{/if}}
-						<span></span>
-						<div class="checbox__name">Я не знаю, кого выбрать</div>
-					</label>
 					<div class="row">
 						{{#if record.spec_service}}
 						{{else}}
@@ -1259,7 +1141,6 @@
 								var self = this;
 								popupPhoto(catalog.clients[record.client], record,
 									function (rec) {
-										_tab.set('records.' + _row_idx, rec);
 										toast('Фото добавлено!');
 										self.set('record', rec);
 										setTimeout(function () {
@@ -1269,6 +1150,7 @@
 													_img.attr('href', $(this).data('href'));
 												});
 										}, 150);
+										page.set('history.events.' + _row_idx, rec);
 									});
 							},
 							setEventTime(ev) {
