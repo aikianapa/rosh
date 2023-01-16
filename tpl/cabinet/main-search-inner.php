@@ -60,7 +60,7 @@
 
 
 <!--!!! TEMPLATES !!!-->
-<template id="page-content" wb-off>
+<template id="page-content" >
 	<div class="lk-title">Карточка пациента</div>
 	{{#user}}
 	<div class="account__panel">
@@ -233,8 +233,6 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-							<a class="account__detail" on-click="['editPastRecord', this]" data-record="{{this.id}}"
-								data-idx="{{@index}}">Редактировать</a>
 							<div class="analysis mb-40">
 								<div class="row">
 									<div class="col-md-12">
@@ -257,6 +255,7 @@
 											</form>
 										</div>
 									</div>
+
 								</div>
 							</div>
 							<div class="mb-40">
@@ -374,7 +373,7 @@
 								</div>
 							</div>
 							{{/if}}
-							<div class="admin-editor__events" data-record="{{this.id}}" data-idx="{{idx}}"></div>
+							<div class="admin-editor__events" data-record="{{.id}}" data-idx="{{idx}}"></div>
 						</div>
 					</div>
 					{{elseif events_ready}}
@@ -493,7 +492,7 @@
 		</div>
 	</div>
 </template>
-<template id="editorRecord">
+<template id="editorRecord" >
 	<form class="record-edit">
 		<div class="row">
 			<div class="col-md-7">
@@ -786,7 +785,7 @@
 		</div>
 	</form>
 </template>
-<template id="event-details" wb-off>
+<template id="event-details" >
 	{{#event}}
 	<div class="analysis mb-40">
 		<div class="row">
@@ -887,8 +886,7 @@
 	{{/if}}
 	{{/event}}
 </template>
-
-<template id="longterm-details" wb-off>
+<template id="longterm-details" >
 	{{#if photos}}
 	<div class="row">
 		<div class="col-md-4">
@@ -934,8 +932,7 @@
 	</div>
 	{{/if}}
 </template>
-
-<template id="profile-editor-inline" wb-off>
+<template id="profile-editor-inline" >
 	<form on-submit="submit">
 		{{#user}}
 		<p class="text-bold mb-30">Редактировать профиль</p>
@@ -1045,7 +1042,7 @@
 	</form>
 </template>
 
-<script wb-app>
+<script wb-app remove>
 	var client_id = '{{_route.client}}';
 	$(document).on('cabinet-db-ready', function () {
 		window.page = new Ractive({
@@ -1206,17 +1203,17 @@
 				prepay(ev) {
 					popupPay.showPopup($(ev.node).data('record'));
 				},
-				editPastRecord(ev) {
-					var _row_idx   = $(ev.node).data('idx');
-					const _parent  = $(ev.node).closest('.accardeon');
-					var _record    = this.get('records.' + _row_idx);
+				editPastRecord(ev, record) {
+					var _row_idx  = $(ev.node).data('idx');
+					const _parent = $(ev.node).closest('.accardeon');
+					var _record   = record;
 					console.log('open ', _record);
 					if (!_record.price) {
 						_record.price = 0;
 					}
 
 					_record.price_text = utils.formatPrice(_record.price);
-					let recordEditor = new Ractive({
+					let recordEditor   = new Ractive({
 						el: _parent.find('.admin-editor__events'),
 						template: wbapp.tpl('#editorRecord').html,
 						data: {
@@ -1297,9 +1294,15 @@
 								var ght = 0;
 								var lv  = 0;
 
-								if ($(ev.node).is(':checked')
-								    && $(ev.node).val() == 'online') {
-									ght = parseInt(catalog.spec_service.consultation.price);
+								if ($(ev.node).is(':checked')) {
+									if ($(ev.node).val() == 'online')
+									{
+										ght = parseInt(catalog.spec_service.consultation.price);
+									}
+									else
+									{
+										ght = 0;
+									}
 								} else {
 									ght = 0;
 								}
@@ -1334,47 +1337,31 @@
 									let copy = $('<form></form>');
 									$(copy).html($(form).clone());
 
-									let post_statuses = $(copy).serializeJSON();
-
-									post_statuses.group = (
-										catalog.quoteStatus[post_statuses.status].type || ''
-									);
-									if (!post_statuses.group) {
-										post_statuses.group = getGroupByStatus(
-											post_statuses.status);
-									}
-									post_statuses.group += 's';
 									var new_data = $($(ev.node).parents('form'))
 										.serializeJSON();
-									console.log(post_statuses.group);
 
-									new_data.price      = parseInt(new_data.price);
-									new_data.status     = post_statuses.status;
-									new_data.pay_status = post_statuses.pay_status;
-									new_data.group      = post_statuses.group;
-									if (new_data.group === 'events' && !new_data.event_date) {
+									new_data.price = parseInt(new_data.price);
+									if (!new_data.event_date) {
 										toast_error('Необходимо выбрать дату/время события');
 										$($(ev.node).parents('form')).find('[name="event_date"]')
 											.focus();
 										return false;
 									}
-									if (new_data.group === 'events' && !new_data.experts) {
+									if (!new_data.experts) {
 										toast_error('Необходимо выбрать специалиста');
 										$($(ev.node).parents('form'))
 											.find('.select_experts')
 											.focus();
 										return false;
 									}
-									if (new_data.group === 'events'
-									    && !!new_data.experts) {
+									if (!!new_data.experts) {
 										new_data.no_experts = 0;
 									}
-									if (new_data.group === 'events'
-									    && !!new_data.services) {
+									if (!!new_data.services) {
 										new_data.no_services = 0;
 									}
 
-									if (new_data.group === 'events' && !new_data.price) {
+									if (!new_data.price) {
 										toast_error('Необходимо выбрать услугу');
 										$($(ev.node).parents('form'))
 											.find('.popup-services-list')
@@ -1390,11 +1377,9 @@
 									utils.api.post(
 											'/api/v2/update/records/' + _record.id, new_data)
 										.then(function (res) {
-
 											console.log('event data:', new_data);
 											toast('Успешно сохранено');
-											_tab.set('records.' + _row_idx, res);
-											window.load();
+											window.content_load();
 										});
 								} else {
 									toast('Проверьте указанные данные');
@@ -1413,6 +1398,7 @@
 		window.content_load = function() {
 			page.set('longterms_ready', false);
 			page.set('events_ready', false);
+			console.log('dddd');
 
 			utils.api.get('/api/v2/list/records?status=upcoming&@sort=event_date:d&client=' + client_id).then(
 				function (data) {
@@ -1455,6 +1441,7 @@
 
 				});
 		};
+		console.log('dddd');
 		content_load();
 	});
 </script>
