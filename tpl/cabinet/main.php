@@ -244,6 +244,7 @@
 
 	<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 </template>
+
 <template id="editorRecord">
 	<form class="record-edit">
 		<div class="row">
@@ -374,7 +375,7 @@
 											name="event_time_start"
 											value="{{record.event_time_start}}"
 											data-min-time="09:00"
-											data-max-time="18:00" autocomplete="off"
+											data-max-time="21:00" autocomplete="off"
 											pattern="[0-9]{2}:[0-9]{2}" required>
 										<div class="input__placeholder">Время (начало)</div>
 									</div>
@@ -386,7 +387,7 @@
 											name="event_time_end"
 											value="{{record.event_time_end}}"
 											data-min-time="09:00"
-											data-max-time="18:00" autocomplete="off"
+											data-max-time="21:00" autocomplete="off"
 											pattern="[0-9]{2}:[0-9]{2}" required>
 										<div class="input__placeholder">Время (конец)</div>
 									</div>
@@ -548,9 +549,17 @@
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
 						</svg>
 					</button>
-					<span>{{#if group == 'events'}} Событие {{else}} Заявка {{/if}}</span>
+					{{#if group == 'group=quotes'}}
+					<span>Заявка</span>
+					{{else}}
+					<span>Приём</span>
+					{{/if}}
 				</div>
+				{{#if group == 'group=quotes'}}
 				<div class="admin-events-item">Приём</div>
+				{{else}}
+				<div class="admin-events-item">Заявка</div>
+				{{/if}}
 				<div class="admin-events-item">ФИО</div>
 				<div class="admin-events-item">Телефон</div>
 				<div class="admin-events-item">Специалист</div>
@@ -603,20 +612,33 @@
 								</button>
 								{{/if}}
 
+								{{#if group == 'events'}}
+								<span class="dt"><strong class="title">Приём: </strong>
+									{{@global.utils.formatDate(event_date)}}<br> {{event_time_start}}-{{event_time_end}}
+								</span>
+								{{else}}
 								<span class="dt"><strong class="title">Заявка: </strong>
 									{{@global.utils.formatDate(_created)}}<br>
 									{{@global.utils.formatTime(_created)}}
 								</span>
+								{{/if}}
 							</div>
 						</div>
-						<div class="admin-events-item">
-							<p>Приём</p>
-							{{#if group === 'events'}}
-							<a href="#">{{@global.utils.formatDate(event_date)}}, {{event_time_start}}-{{event_time_end}}</a>
-							{{else}}
-							<span class="link-danger"></span>
-							{{/if}}
-						</div>
+						{{#if group == 'events'}}
+							<div class="admin-events-item">
+								<p>Заявка</p>
+								<div>
+									{{@global.utils.formatDate(_created)}}<br>
+									{{@global.utils.formatTime(_created)}}
+								</div>
+							</div>
+						{{else}}
+							<div class="admin-events-item">
+								<p>Приём</p>
+								<span class="link-danger">&nbsp;</span>
+							</div>
+						{{/if}}
+
 						<div class="admin-events-item">
 							<p>ФИО</p>
 							<div>
@@ -671,6 +693,11 @@
 							<p>Комментарии</p>
 							<div>{{this.comment}}</div>
 						</div>
+
+						{{#if group == 'events'}}
+
+						{{else}}
+						{{/if}}
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
 						<div class="admin-editor__top">

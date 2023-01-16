@@ -158,7 +158,7 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" href="{{this.analyses}}" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" href="{{this.analyses}}" target="_blank" download="Анализы.pdf">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
@@ -268,6 +268,7 @@
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
 				<a class="btn btn--white" href="{{this.analyses}}"
+					target="_blank"
 					download="Анализы ({{@global.utils.formatDate(this.event_date)}}).pdf">
 					Скачать анализы
 				</a>
@@ -341,6 +342,7 @@
 										<div class="analysis__top --aicn --flex mb-20">
 											<div class="analysis__title">Анализы</div>
 											<a class="btn btn--white" href="{{this.analyses}}"
+												target="_blank"
 												download="Анализы ({{@global.utils.formatDate(this.event_date)}}).pdf">
 												Скачать анализы
 											</a>

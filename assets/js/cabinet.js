@@ -1144,19 +1144,42 @@ $(function () {
 					if (!!onShow) {
 						onShow(this);
 					}
-
 				},
 				submit() {
-					let form = this.find('.popup.--analize-interpretation .popup__form');
-					if ($(form).verify()) {
-						let post = $(form).serializeJSON();
+					var form = this.find('.popup.--analize-interpretation .popup__form');
 
-						utils.api.post('/create/records', post, function (data) {
-							if (data.error) {
-								wbapp.trigger('wb-save-error', {'data': data});
-							} else {
-								$('.popup.--analize-interpretation .popup__panel:not(.--succed)').addClass('d-none');
-								$('.popup.--analize-interpretation .popup__panel.--succed').addClass('d-block');
+					if ($(form).verify()) {
+
+						var data = $(form).serializeJSON();
+						data.group      = 'quotes';
+						data.status     = 'new';
+						data.client     = wbapp._session.user.id;
+						data.priority   = 0;
+						data.marked     = false;
+
+						data.comment        = '';
+						data.recommendation = '';
+						data.description    = '';
+						data.client_comment = 'Расшифровка анализов';
+						data.for_consultation = 1;
+						if (data.type === 'online') {
+							data.price = parseInt(catalog.spec_service.consultation.price);
+							data.pay_status = 'unpay';
+						} else {
+							data.pay_status = 'free';
+							data.price = 0;
+						}
+						data.price = parseInt(data.price || 0);
+						data.services       = [];
+						data.experts        = [];
+						data.service_prices = {};
+
+						Cabinet.createQuote(data, function (res) {
+							$('.popup.--analize-interpretation .popup__panel:not(.--succed)').addClass('d-none');
+							$('.popup.--analize-interpretation .popup__panel.--succed').addClass('d-block');
+
+							if (typeof window.load == 'function') {
+								window.load();
 							}
 						});
 					}
