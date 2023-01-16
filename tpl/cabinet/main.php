@@ -269,7 +269,7 @@
 
 				<div class="admin-editor__type-event">
 					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-						{{#if record.no_services=== '1' }}
+						{{#if record.no_services === '1' }}
 						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services"
 							checked
 							value="1">
@@ -281,9 +281,9 @@
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-						{{#if record.for_consultation == '1' }}
-						<input class="checkbox-visible-next-form" type="checkbox"
-							checked
+						{{#if record.for_consultation === '1' }}
+
+						<input class="checkbox-visible-next-form" type="checkbox" checked
 							name="for_consultation" value="1">
 						{{else}}
 						<input class="checkbox-visible-next-form" type="checkbox"
@@ -559,12 +559,13 @@
 				<div class="admin-events-item">Услуга</div>
 				<div class="admin-events-item">Оплата</div>
 				<div class="admin-events-item">Статус</div>
-				<div class="admin-events-item comment">Комментарии</div>
 				{{#if group == 'group=quotes'}}
 				<div class="admin-events-item w-8">Дата приёма</div>
 				{{else}}
 				<div class="admin-events-item w-8">Дата заявки</div>
 				{{/if}}
+
+				<div class="admin-events-item comment">Комментарии</div>
 
 			</div>
 			<div class="account__table-body">
@@ -672,10 +673,7 @@
 							<p>Статус</p>
 							<div>{{catalog.quoteStatus[this.status].name}}</div>
 						</div>
-						<div class="admin-events-item comment">
-							<p>Комментарии</p>
-							<div>{{this.comment}}</div>
-						</div>
+
 						<div class="admin-events-item w-8">
 							{{#if group == 'events'}}
 							<p>Дата заявки</p>
@@ -687,6 +685,10 @@
 							<p>Дата приёма</p>
 							<span class="link-danger">&nbsp;</span>
 							{{/if}}
+						</div>
+						<div class="admin-events-item comment">
+							<p>Комментарии</p>
+							<div>{{this.comment}}</div>
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">

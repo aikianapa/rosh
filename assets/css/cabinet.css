@@ -246,7 +246,7 @@
 	width : 8% !important;
 }
 .admin-events-item:nth-child(10), .admin-events-item.comment {
-	width : 27% !important;
+	width : 27%;
 }
 div.accardeon.active > div.accardeon__list {
 	border-top : 1px solid #E0E0EA;
