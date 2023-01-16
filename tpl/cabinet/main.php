@@ -91,7 +91,7 @@
 	</main>
 </div>
 
-<template id="editProfile">
+<template id="editProfile" wb-off>
 	<form class="profile-edit d-block" on-submit="save">
 		<input type="hidden" value="{{ id }}" name="id">
 		<p class="text-bold mb-30">Редактировать профиль</p>
@@ -203,8 +203,7 @@
 		</div>
 	</form>
 </template>
-
-<template id="editStatus">
+<template id="editStatus" wb-off>
 	<div class="select-form">
 		<div class="select pay">
 			<div class="select__main">Статус оплаты</div>
@@ -244,8 +243,7 @@
 
 	<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 </template>
-
-<template id="editorRecord">
+<template id="editorRecord" wb-off>
 	<form class="record-edit">
 		<div class="row">
 			<div class="col-md-7">
@@ -538,8 +536,7 @@
 		</div>
 	</form>
 </template>
-
-<template id="listRecords">
+<template id="listRecords" wb-off>
 	<div class="account-scroll">
 		<div class="account__table" data-records-group="{{group}}">
 			<div class="account__table-head">

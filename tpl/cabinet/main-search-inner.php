@@ -11,7 +11,7 @@
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
 
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="account">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -53,11 +53,6 @@
 		</div>
 	</main>
 </div>
-
-<div>
-	<wb-module wb="module=yonger&mode=render&view=footer"/>
-</div>
-
 
 <!--!!! TEMPLATES !!!-->
 <template id="page-content" wb-off>
@@ -1042,7 +1037,7 @@
 	</form>
 </template>
 
-<script wb-app>
+<script wb-app remove>
 	var client_id = '{{_route.client}}';
 	$(document).on('cabinet-db-ready', function () {
 		window.page = new Ractive({
@@ -1085,7 +1080,7 @@
 						dlg.close();
 					});
 				},
-				 createEvent(ev, client) {
+				createEvent(ev, client) {
 					console.log('createEvent', client);
 
 					var editor = window.popupEvent(client, null, function (data) {
@@ -1111,11 +1106,11 @@
 						Date.now() + '_' + utils.getRandomStr(4),
 						function (photo) {
 							console.log(photo);
-							utils.api.post('/api/v2/update/records/'+record.id, {'analyses': photo.uri})
+							utils.api.post('/api/v2/update/records/' + record.id, {'analyses': photo.uri})
 								.then(function (record) {
 									toast('Анализы добавлены!');
 									content_load();
-									page.set('events.upcoming.'+index, record);
+									page.set('events.upcoming.' + index, record);
 								});
 						});
 				},
@@ -1295,12 +1290,9 @@
 								var lv  = 0;
 
 								if ($(ev.node).is(':checked')) {
-									if ($(ev.node).val() == 'online')
-									{
+									if ($(ev.node).val() == 'online') {
 										ght = parseInt(catalog.spec_service.consultation.price);
-									}
-									else
-									{
+									} else {
 										ght = 0;
 									}
 								} else {
@@ -1395,10 +1387,9 @@
 			window.page.set('client', client);
 			window.page.set('user', client);
 		});
-		window.content_load = function() {
+		window.content_load = function () {
 			page.set('longterms_ready', false);
 			page.set('events_ready', false);
-			console.log('dddd');
 
 			utils.api.get('/api/v2/list/records?status=upcoming&@sort=event_date:d&client=' + client_id).then(
 				function (data) {
@@ -1426,7 +1417,7 @@
 					}, 350);
 				});
 
-			utils.api.get('/api/v2/list/records?group=longterms&@sort=_created:d&client=' + client_id)
+			utils.api.get("/api/v2/list/records?group=longterms&@sort=_created:d&client=" + client_id)
 				.then(function (data) {
 					page.set('history.longterms', data); /* get actually user next events */
 					page.set('longterms_ready', true); /* get actually user next events */
@@ -1441,13 +1432,12 @@
 
 				});
 		};
-		console.log('dddd');
 		content_load();
 	});
 </script>
 
+<div>
+	<wb-module wb="module=yonger&mode=render&view=footer"/>
+</div>
 </body>
-<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
-<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
-
 </html>
