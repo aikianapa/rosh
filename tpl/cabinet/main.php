@@ -91,7 +91,7 @@
 	</main>
 </div>
 
-<template id="editProfile">
+<template id="editProfile" wb-off>
 	<form class="profile-edit d-block" on-submit="save">
 		<input type="hidden" value="{{ id }}" name="id">
 		<p class="text-bold mb-30">Редактировать профиль</p>
@@ -203,8 +203,7 @@
 		</div>
 	</form>
 </template>
-
-<template id="editStatus">
+<template id="editStatus" wb-off>
 	<div class="select-form">
 		<div class="select pay">
 			<div class="select__main">Статус оплаты</div>
@@ -244,8 +243,7 @@
 
 	<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 </template>
-
-<template id="editorRecord">
+<template id="editorRecord" wb-off>
 	<form class="record-edit">
 		<div class="row">
 			<div class="col-md-7">
@@ -271,7 +269,7 @@
 
 				<div class="admin-editor__type-event">
 					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-						{{#if record.no_services=== '1' }}
+						{{#if record.no_services === '1' }}
 						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services"
 							checked
 							value="1">
@@ -283,9 +281,9 @@
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-						{{#if record.for_consultation == '1' }}
-						<input class="checkbox-visible-next-form" type="checkbox"
-							checked
+						{{#if record.for_consultation === '1' }}
+
+						<input class="checkbox-visible-next-form" type="checkbox" checked
 							name="for_consultation" value="1">
 						{{else}}
 						<input class="checkbox-visible-next-form" type="checkbox"
@@ -538,8 +536,7 @@
 		</div>
 	</form>
 </template>
-
-<template id="listRecords">
+<template id="listRecords" wb-off>
 	<div class="account-scroll">
 		<div class="account__table" data-records-group="{{group}}">
 			<div class="account__table-head">
@@ -555,11 +552,6 @@
 					<span>Приём</span>
 					{{/if}}
 				</div>
-				{{#if group == 'group=quotes'}}
-				<div class="admin-events-item">Приём</div>
-				{{else}}
-				<div class="admin-events-item">Заявка</div>
-				{{/if}}
 				<div class="admin-events-item">ФИО</div>
 				<div class="admin-events-item">Телефон</div>
 				<div class="admin-events-item">Специалист</div>
@@ -567,7 +559,14 @@
 				<div class="admin-events-item">Услуга</div>
 				<div class="admin-events-item">Оплата</div>
 				<div class="admin-events-item">Статус</div>
-				<div class="admin-events-item">Комментарии</div>
+				{{#if group == 'group=quotes'}}
+				<div class="admin-events-item w-8">Дата приёма</div>
+				{{else}}
+				<div class="admin-events-item w-8">Дата заявки</div>
+				{{/if}}
+
+				<div class="admin-events-item comment">Комментарии</div>
+
 			</div>
 			<div class="account__table-body">
 				<div class="loading-overlay">
@@ -624,21 +623,6 @@
 								{{/if}}
 							</div>
 						</div>
-						{{#if group == 'events'}}
-							<div class="admin-events-item">
-								<p>Заявка</p>
-								<div>
-									{{@global.utils.formatDate(_created)}}<br>
-									{{@global.utils.formatTime(_created)}}
-								</div>
-							</div>
-						{{else}}
-							<div class="admin-events-item">
-								<p>Приём</p>
-								<span class="link-danger">&nbsp;</span>
-							</div>
-						{{/if}}
-
 						<div class="admin-events-item">
 							<p>ФИО</p>
 							<div>
@@ -689,15 +673,23 @@
 							<p>Статус</p>
 							<div>{{catalog.quoteStatus[this.status].name}}</div>
 						</div>
-						<div class="admin-events-item">
+
+						<div class="admin-events-item w-8">
+							{{#if group == 'events'}}
+							<p>Дата заявки</p>
+							<div>
+								{{@global.utils.formatDate(_created)}}<br>
+								{{@global.utils.formatTime(_created)}}
+							</div>
+							{{else}}
+							<p>Дата приёма</p>
+							<span class="link-danger">&nbsp;</span>
+							{{/if}}
+						</div>
+						<div class="admin-events-item comment">
 							<p>Комментарии</p>
 							<div>{{this.comment}}</div>
 						</div>
-
-						{{#if group == 'events'}}
-
-						{{else}}
-						{{/if}}
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
 						<div class="admin-editor__top">

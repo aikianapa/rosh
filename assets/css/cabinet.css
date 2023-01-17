@@ -233,6 +233,30 @@
 .admin-events-item > div, .admin-events-item > a{
 	line-height: 1.2em;
 }
+.admin-events-item:nth-child(2){
+	width : 6%;
+}
+.admin-events-item.w-10{
+	width : 10% !important;
+}
+.admin-events-item.w-9, .admin-events-item:nth-child(1) {
+	width : 9% !important;
+}
+.admin-events-item:nth-child(5){
+	width : 7%;
+}
+.admin-events-item:nth-child(6){
+	width : 9%;
+}
+.admin-events-item.w-7{
+	width : 7% !important;
+}
+.admin-events-item.w-8 {
+	width : 8% !important;
+}
+.admin-events-item:nth-child(10), .admin-events-item.comment {
+	width : 24%;
+}
 div.accardeon.active > div.accardeon__list {
 	border-top : 1px solid #E0E0EA;
 }
@@ -280,7 +304,7 @@ div.accardeon.active > div.accardeon__list {
 	padding-right : 20px;
 }
 .popup__panel.popup__panel-wide {
-	max-width : 620px;
+	max-width : 720px;
 }
 .admin-editor__top-select .select.pay .select__main,
 .admin-editor__top-select .select.status .select__main,
@@ -371,6 +395,21 @@ ul li.service_price{
 	}
 	.user__name svg {
 		margin-left : 10px;
+	}
+
+	.popup__panel.popup__panel-wide {
+		max-width : 95%;
+	}
+	.lk-main div.header__admin > a.btn{
+		margin-right: 10px;
+		letter-spacing: 0;
+	}
+	.lk-main div.header__admin{
+		max-width: 80%;
+		flex-wrap: wrap;
+	}
+	.lk-main .header--transparent .container{
+		height: auto;
 	}
 }
 @media (min-width : 768px) {

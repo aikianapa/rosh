@@ -6,6 +6,13 @@ Date.prototype.isValid = function () {
 	return this.getTime() === this.getTime();
 };
 
+function html_decode(input) {
+	var e       = document.createElement('textarea');
+	e.innerHTML = input;
+	// handle case of empty input
+	return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
+
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
@@ -95,8 +102,10 @@ $(function () {
 		},
 		api: {
 			get(path, data) {
-				let _path = path;
-				let parts = path.split('?', 2);
+				/*!!! fix this !!!*/
+				let _path = path.replaceAll('&amp;', '&');
+
+				let parts = _path.split('?', 2);
 				if (data !== undefined) {
 					if (parts.length === 2) {
 						parts[1] += '&' + $.param(data);
@@ -121,6 +130,9 @@ $(function () {
 				return fetch(_path, defaultOptions).then((result) => result.json());
 			},
 			post(path, data) {
+				/*!!! fix this !!!*/
+				let _path = path.replaceAll('&amp;', '&');
+
 				//return this.request(path, 'post', data, options);
 				if (is_string(data) && (data.indexOf('__token') == -1)) {
 					data += '&__token=' + wbapp._session.token;
@@ -128,7 +140,7 @@ $(function () {
 					try { data.__token = wbapp._session.token; } catch (error) { null; }
 				}
 				wbapp.loading();
-				return $.post(path, data, function () {
+				return $.post(_path, data, function () {
 					wbapp.unloading();
 				});
 			},
@@ -1147,7 +1159,7 @@ $(function () {
 				},
 				submit() {
 					var form = this.find('.popup.--analize-interpretation .popup__form');
-
+					console.log(form);
 					if ($(form).verify()) {
 
 						var data = $(form).serializeJSON();
