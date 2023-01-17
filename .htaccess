@@ -11,7 +11,6 @@ RewriteBase /
 Options +FollowSymLinks
 RewriteEngine On
 
-
 RewriteRule ^about/(.*).php?(.*)$ /? [L,R=301]
 RewriteRule ^about/news$ /? [L,R=301]
 RewriteRule ^about/(.*)/$ /? [L,R=301]
@@ -25,7 +24,6 @@ RewriteRule ^fizioterapiya/$ / [L,R=301]
 RewriteRule ^dermatologiya/akne/$ / [L,R=301]
 RewriteRule ^uhod_za_kozhei/$ / [L,R=301]
 
-RewriteRule ^kosmetologiya/regenerativnaya-meditsina.html$ /services/regenerativnaya-medicina-regenera [L,R=301]
 RewriteRule ^laser-epil1/lazernaya-epilyatsiya-litsa.html$ /services/lazernaya-epilyaciya [L,R=301]
 RewriteRule ^dermatologiya/akne/belie_ugri.html$ /problems/akne-i-postakne [L,R=301]
 RewriteRule ^prp.html$ /services/plazmoterapiya [L,R=301]
@@ -69,13 +67,13 @@ RewriteRule ^dermatologiya/akne/pitanie_pri_akne.html$ /problems/akne-i-postakne
 
 #16-01
 
-    RewriteRule ^kosmetologiya/laser-epil1/lazernaya-epilyatsiya-litsa.html$ /services/lazernaya-epilyaciya [L,R=301]
+RewriteRule ^kosmetologiya/regenerativnaya-meditsina.html$ /services/regenerativnaya-medicina-regenera [L,R=301]
 RewriteRule ^kosmetologiya/prp.html$ /services/plazmoterapiya [L,R=301]
 RewriteRule ^kosmetologiya/intim-plastik.html$ /services/intimnaya-plastika [L,R=301]
 RewriteRule ^kosmetologiya/uvelichenie-gub.html$ /services/fillery [L,R=301]
 RewriteRule ^kosmetologiya/massag-litca.html$ /services/massaj-lica [L,R=301]
 RewriteRule ^kosmetologiya/gipergidroz.html$ /services/lechenie-gipergidroza-povyshennaya-potlivost [L,R=301]
-    RewriteRule ^kosmetologiya/meh-chistka.html$ /services/mekhanicheskaya-chistka-litsa [L,R=301]
+RewriteRule ^kosmetologiya/meh-chistka.html$ /services/mekhanicheskaya-chistka-litsa [L,R=301]
 RewriteRule ^kosmetologiya/pilingi.html$ /services/dermatologicheskiy-piling [L,R=301]
 RewriteRule ^kosmetologiya/kont-plastika.html$ /services/fillery [L,R=301]
 RewriteRule ^kosmetologiya/mezoterapiya.html$ /services/mezoterapiya [L,R=301]
@@ -95,6 +93,9 @@ RewriteRule ^kosmetologiya/konturnaya-plastika-skul.html$ /services/fillery [L,R
 RewriteRule ^kosmetologiya/konturnaya-plastika-nosogubnykh-skladok.html$ /services/fillery [L,R=301]
 RewriteRule ^kosmetologiya/konturnaya-plastika-vek.html$ /services/fillery [L,R=301]
 RewriteRule ^kosmetologiya/konturnaya-plastika-gub.html$ /services/fillery [L,R=301]
+    RewriteRule ^kosmetologiya/laser-epil1/lazernaya-epilyatsiya-litsa.html$ /services/lazernaya-epilyaciya [L,R=301]
+
+
 
 RewriteRule ^(.*)\.less$ index.php 
 RewriteRule ^(.*)\.scss$ index.php 
@@ -104,10 +105,10 @@ RewriteRule ^(.*)$ http://%1/$1 [L,R=301]
 RewriteRule ^database(.*)$ index.php [R=404,L]
 RewriteRule ^.git(.*)$ index.php [R=404,L]
 
-RewriteRule ^(.*).html$ /  [L,R=301]
-
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [L,QSA]
+
+RewriteRule ^(.*).html$ /  [L,R=301]
 
 php_value post_max_size 5000M
 php_value upload_max_filesize 5000M
