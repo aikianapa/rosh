@@ -323,14 +323,14 @@
 												<div class="col-md-6">
 													<div class="calendar input mb-30">
 														<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}"
-														 data-min-time="09:00" data-max-time="18:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
+														 data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
 														<div class="input__placeholder">Время (начало)</div>
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="calendar input mb-30">
 														<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}"
-														 data-min-time="09:00" autocomplete="off" data-max-time="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+														 data-min-time="09:00" autocomplete="off" data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
 														<div class="input__placeholder">Время (конец)</div>
 													</div>
 												</div>
@@ -1226,14 +1226,14 @@
 										<div class="col-md-6">
 											<div class="calendar input mb-30">
 												<input class="input__control timepickr" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00"
-												 data-max-time="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+												 data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
 												<div class="input__placeholder">Время (начало)</div>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="calendar input mb-30">
 												<input class="input__control timepickr" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00"
-												 data-max-time="18:00" pattern="[0-9]{2}:[0-9]{2}" required>
+												 data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
 												<div class="input__placeholder">Время (конец)</div>
 											</div>
 										</div>

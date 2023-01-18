@@ -388,6 +388,20 @@ ul li.service_price{
 	letter-spacing: -0.2px;
 	text-align    : justify;
 }
+.lk-cabinet .ml-20 {
+	margin-left: 20px;
+}
+.lk-cabinet .ml-10 {
+	margin-left: 10px;
+}
+.lk-cabinet .font-16 {
+	font-size: 16px;
+}
+.lk-cabinet .btn.btn--compact {
+	font-size: 16px;
+	height: 40px;
+}
+
 @media (max-width : 768px) {
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {
