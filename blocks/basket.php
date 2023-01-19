@@ -110,14 +110,14 @@
                                         <a class="btn btn--white --openpopup --mobile-fade" data-popup="--enter-number" href="#">Войти</a>
                                     </div>
                                     <div class="input">
-                                        <input class="input__control" type="text" name="fullname" value="{{_sess.user.fullname}}" placeholder="ФИО">
+                                        <input class="input__control" type="text" name="fullname" value="{{_sess.user.fullname}}" placeholder="ФИО" required>
                                         <div class="input__placeholder">ФИО</div>
                                     </div>
                                     <span class="basket-subtitle">Контакты</span>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" pname="phone" value="{{_sess.user.phone}}" laceholder="+7 (___) ___-__-__">
+                                                <input class="input__control" type="tel" pname="phone" value="{{_sess.user.phone}}" laceholder="+7 (___) ___-__-__" required>
                                                 <div class="input__placeholder">+7 (___) ___-__-__</div>
                                             </div>
                                         </div>
@@ -184,7 +184,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="basket-sidebar">
+                            <div class="basket-sidebar" wb-off>
                                 <div class="basket-wrap">
                                     <div class="total">
                                         <span>Итого</span>
@@ -192,7 +192,7 @@
                                     </div>
                                     <div class="basket-main">
                                         <button class="btn btn--black" type="submit">Заказать</button>
-                                        <p>Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании <a href="#">Политики конфиденциальности</a> а также с <a href="#">Условиями продажи</a></p>
+                                        <p>Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании <a href="/policy">Политики конфиденциальности</a> а также с <a href="/delivery">Условиями продажи</a></p>
                                     </div>
                                     <span class="basket-tit">Ваша корзина</span>
                                     {{#each cart.list}}
@@ -271,8 +271,10 @@
                     this.fire('calc')
                 },
                 order(ev) {
-                    ev.preventDefault()
-                    alert(1)
+                    let data = $(basket.el).find('form').serializeJson();
+                    data.cart = basket.get('cart');
+                    console.log(data);
+                    ev.event.preventDefault()
                 }
             }
         })
