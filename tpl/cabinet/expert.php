@@ -156,6 +156,7 @@
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 							</svg>
 						</a>
+
 					</div>
 					<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
 								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
@@ -164,16 +165,17 @@
 						<button class="btn btn--white" type="submit">Сохранить</button>
 					</form>
 				</div>
-
 				{{#if this.analyses}}
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="{{this.analyses}}"
+					<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
 						download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
 						Скачать анализы
 					</a>
 				</div>
 				{{/if}}
+
+
 			</div>
 			{{/each}}
 		</div>
@@ -303,7 +305,7 @@
 									</svg>
 								</a>
 								{{#if this.analyses}}
-									<a class="btn btn--white" href="{{this.analyses}}"
+										<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
 										target="_blank"
 										download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
 										Скачать анализы

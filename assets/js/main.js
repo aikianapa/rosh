@@ -375,7 +375,7 @@ $(function() {
                     timeFormat: $(this).data('time-format') || 'HH:mm',
                     interval: $(this).data('interval') || 15,
                     minTime: $(this).data('min-time') || '08:00',
-                    maxTime: $(this).data('max-time') || '19:00',
+                    maxTime: $(this).data('max-time') || '21:00',
                     dynamic: false,
                     dropdown: true,
                     scrollbar: true,
