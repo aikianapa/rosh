@@ -285,7 +285,7 @@
                                 }
                             }
                             wbapp.storage("shop.cart", cart)
-                            this.fire('calc')
+                            basket.fire('calc')
                         } else {
                             // что-то пошло не так
                         }
