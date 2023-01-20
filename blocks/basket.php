@@ -272,6 +272,7 @@
                 },
                 order(ev) {
                     let data = $(basket.el).find('form').serializeJson();
+                    let that = this
                     data.cart = basket.get('cart');
                     console.log(data);
                     ev.event.preventDefault()
@@ -285,7 +286,7 @@
                                 }
                             }
                             wbapp.storage("shop.cart", cart)
-                            basket.fire('calc')
+                            that.fire('calc')
                         } else {
                             // что-то пошло не так
                         }
