@@ -275,7 +275,7 @@
                     data.cart = basket.get('cart');
                     console.log(data);
                     ev.event.preventDefault()
-                    fetch('/api/v2/create/orders', {
+                    fetch('/api/v2/create/orders?__token='+wbapp.session.token, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
