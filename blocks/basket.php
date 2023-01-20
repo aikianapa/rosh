@@ -275,32 +275,22 @@
                     data.cart = basket.get('cart');
                     console.log(data);
                     ev.event.preventDefault()
-                    fetch('/api/v2/create/orders?__token=' + wbapp._session.token, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(data),
-                        })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if (data.id !== undefined) {
-                                let cart = {
-                                    list: {},
-                                    total: {
-                                        sum: 0,
-                                        qty: 0
-                                    }
+                    wbapp.post('/api/v2/create/orders?__token=' + wbapp._session.token, data, function(data) {
+                        if (data.id !== undefined) {
+                            let cart = {
+                                list: {},
+                                total: {
+                                    sum: 0,
+                                    qty: 0
                                 }
-                                wbapp.storage("shop.cart", cart)
-                                this.fire('calc')
-                            } else {
-                                // что-то пошло не так
                             }
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
+                            wbapp.storage("shop.cart", cart)
+                            this.fire('calc')
+                        } else {
+                            // что-то пошло не так
+                        }
+                    })
+
                 }
             }
         })
