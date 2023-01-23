@@ -558,7 +558,7 @@
 							</label>
 							<label class="text-radio switch-blocks" name="target" value="after">
 								<input type="radio" name="target" value="after">
-								<span>В процессе лечения</span>
+								<span class="changed_label">В процессе лечения</span>
 							</label>
 						</div>
 
@@ -719,7 +719,7 @@
 							 placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Дата посещения</div>
 						</div>
-						<div class="popup-title__checkbox disabled">
+						<div class="popup-title__checkbox disabled d-none">
 							<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
 								<input type="checkbox" name="group" value="longterms" checked>
 								<span></span>
@@ -740,7 +740,7 @@
 							</label>
 							<label class="text-radio">
 								<input type="radio" name="target" value="after">
-								<span>В процессе лечения</span>
+								<span>После начала лечения</span>
 							</label>
 						</div>
 						<label class="file-photo">

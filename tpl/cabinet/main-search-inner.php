@@ -621,7 +621,7 @@ z				<input type="hidden" value="{{ record.id }}" name="id">
 						</div>
 						<div class="col-md-6">
 							<div class="text-bold text-big mb-20">
-								Фото после начала лечения
+								Фото в процессе лечения
 							</div>
 							<div class="after-healing">
 								<div class="row">

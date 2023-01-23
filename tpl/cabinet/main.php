@@ -495,7 +495,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="text-bold text-big mb-20">
-								Фото после начала лечения
+								Фото в процессе лечения
 							</div>
 							<div class="after-healing">
 								<div class="row">
@@ -540,7 +540,7 @@
 	<div class="account-scroll">
 		<div class="account__table" data-records-group="{{group}}">
 			<div class="account__table-head">
-				<div class="admin-events-item">
+				<div class="admin-events-item orderby">
 					<button class="flag-date__ico">
 						<svg class="svgsprite _flag">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
@@ -552,17 +552,17 @@
 					<span>Приём</span>
 					{{/if}}
 				</div>
-				<div class="admin-events-item">ФИО</div>
-				<div class="admin-events-item">Телефон</div>
+				<div class="admin-events-item orderby">ФИО</div>
+				<div class="admin-events-item orderby">Телефон</div>
 				<div class="admin-events-item">Специалист</div>
 				<div class="admin-events-item">Тип</div>
 				<div class="admin-events-item">Услуга</div>
 				<div class="admin-events-item">Оплата</div>
 				<div class="admin-events-item">Статус</div>
 				{{#if group == 'group=quotes'}}
-				<div class="admin-events-item w-8">Дата приёма</div>
+				<div class="admin-events-item w-8 orderby">Дата приёма</div>
 				{{else}}
-				<div class="admin-events-item w-8">Дата заявки</div>
+				<div class="admin-events-item w-8 orderby">Дата заявки</div>
 				{{/if}}
 
 				<div class="admin-events-item comment">Комментарии</div>
@@ -1103,6 +1103,39 @@
 
 		load();
 
+		function OrderBy(a, b, n) {
+			if (n) return a - b;
+			if (a < b) return -1;
+			if (a > b) return 1;
+			return 0;
+		}
+
+		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
+			var $th = $(this);
+			$th.toggleClass('selected');
+			var isSelected = $th.hasClass('selected');
+			var isInput    = false;
+			var column     = $th.index();
+			var $table     = $th.closest('.account__table');
+			var isNum      = false;
+			var rows       = $table.find('.account__table-body .acount__table-accardeon').get();
+			rows.sort(function (rowA, rowB) {
+				var keyA, keyB;
+				if (isInput) {
+					keyA = $(rowA).children('td').eq(column).children('input').val().toUpperCase();
+					keyB = $(rowB).children('td').eq(column).children('input').val().toUpperCase();
+				} else {
+					keyA = $(rowA).children('td').eq(column).text().toUpperCase();
+					keyB = $(rowB).children('td').eq(column).text().toUpperCase();
+				}
+				if (isSelected) return OrderBy(keyA, keyB, isNum);
+				return OrderBy(keyB, keyA, isNum);
+			});
+			$.each(rows, function (index, row) {
+				$table.children('.account__table-body').append(row);
+			});
+			return false;
+		});
 		$(document)
 			.on('click', 'button.flag-date__ico', function (e) {
 				e.stopPropagation();

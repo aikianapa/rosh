@@ -782,7 +782,6 @@ $(function () {
 					CNT.append(
 						$('<label></label>').addClass(
 							'search__drop-item autocomplete-suggestion').attr({
-							"data-index": index,
 							'data-id': this.id,
 							"data-service_id": this.data.service_id,
 							"data-price": this.data.price
@@ -816,7 +815,6 @@ $(function () {
 				var sum     = 0;
 				_parent_form.find('.admin-editor__patient').append(
 					$('<div></div>').addClass('search__drop-item').attr({
-						"data-index": index,
 						'data-id': suggestion.id,
 						"data-service_id": suggestion.data.service_id,
 						"data-price": suggestion.data.price
@@ -969,14 +967,19 @@ $(function () {
 							value: (title + (dataItem.type == 'online' ? ' (онлайн)' : '') +
 							       ', ' +
 							       utils.formatDate(dataItem.event_date) + ' ' + _sufix).trim(),
-							data: dataItem.id
+							data: {id: dataItem.id, is_longterm: dataItem.group === 'longterms'}
 						};
 					})
 				};
 			},
 			onSelect: function (suggestion) {
 				console.log($(this), suggestion);
-				form.find('input[name="id"]').val(suggestion.data);
+				form.find('input[name="id"]').val(suggestion.data.id);
+				if (suggestion.data.is_longterm) {
+					form.find('span.changed_label').text = 'после начала лечения'
+				} else {
+					form.find('span.changed_label').text = 'в процессе лечения'
+				}
 			}
 		});
 	};
