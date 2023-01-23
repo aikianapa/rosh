@@ -767,8 +767,15 @@ $(function () {
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 		$selector.autocomplete('dispose');
+		$selector.on('click', function(e){
+			e.preventDefault();
+			//if (!$(this).val()){
+				$(this).val(' ').trigger('focus');
+			//}
+		});
+
 		return $selector.autocomplete({
-			noCache: false,
+			noCache: true,
 			minChars: 0,
 			lookup: service_list,
 			triggerSelectOnValidInput: false,
@@ -813,8 +820,10 @@ $(function () {
 			},
 			onSelect: function (suggestion) {
 				console.log(suggestion);
-				$selector.val('');
-
+				//$selector.val('');
+				setTimeout(function () {
+					$selector.val('');
+				}, 200);
 				if (_parent_form.find('.admin-editor__patient [data-id=' + suggestion.id + ']').length) {
 					return;
 				}
@@ -1047,8 +1056,9 @@ $(function () {
 					var _el = $(this.el);
 					console.log(_el, _el.find('.search-services'));
 					setTimeout(function (){
+						_el.val(' ').trigger('focus');
 						_el.find('.search-services').trigger('focus');
-					}, 250);
+					}, 200);
 				},
 				submit(ev) {
 					let $form = $(ev.node);
