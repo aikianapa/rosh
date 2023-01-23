@@ -782,6 +782,7 @@ $(function () {
 					CNT.append(
 						$('<label></label>').addClass(
 							'search__drop-item autocomplete-suggestion').attr({
+							'data-index': index,
 							'data-id': this.id,
 							"data-service_id": this.data.service_id,
 							"data-price": this.data.price
