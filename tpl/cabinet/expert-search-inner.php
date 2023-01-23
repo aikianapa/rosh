@@ -464,7 +464,7 @@
 						},
 						history: {
 							'events':[],
-							'longterms'
+							'longterms':[]
 						}
 					},
 					on: {
