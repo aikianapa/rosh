@@ -437,6 +437,7 @@ ul li.service_price{
 }
 .autocomplete-suggestions .autocomplete-suggestion{
 	z-index: 1000000;
+	cursor : pointer;
 }
 
 @media (max-width : 768px) {
