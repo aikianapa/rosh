@@ -6,14 +6,14 @@
 
 <view>
     <div class="container">
-        <div class="account" id="Basket" wb-off>
+        <div class="account" id="Basket">
             <div class="basket account__history data-tab-wrapper" data-tabs="hislech">
                 <div class="account__tab-items">
                     <div class="basket-link data-tab-link" data-tabs="hislech" data-tab="basket">Корзина</div>
                     <div class="basket-link data-tab-link active" data-tabs="hislech" data-tab="registration">Оформление</div>
                 </div>
-                <form action="">
-                    <div class="account__tab data-tab-item" data-tab="basket">
+                <form action="/orders/submit" on-submit="order" method="post">
+                    <div class="account__tab data-tab-item" data-tab="basket" wb-off>
                         <div class="basket-row">
                             <div class="basket-content">
                                 <div class="basket-top">
@@ -104,72 +104,73 @@
                                 </div>
                                 <div class="basket-block">
                                     <span class="basket-subtitle">Получатель</span>
-                                    <div class="basket-wr" wb-if="'{{_sess.user.role}}'==''" wb-on>
+                                    <input type="hidden" name="user_id" value="{{_sess.user.id}}" />
+                                    <div class="basket-wr" wb-if="'{{_sess.user.role}}'==''">
                                         <span class="basket-subtitle">Уже зарегистрированы ?</span>
                                         <a class="btn btn--white --openpopup --mobile-fade" data-popup="--enter-number" href="#">Войти</a>
                                     </div>
                                     <div class="input">
-                                        <input class="input__control" type="text" placeholder="ФИО" >
+                                        <input class="input__control" type="text" name="fullname" value="{{_sess.user.fullname}}" placeholder="ФИО" required>
                                         <div class="input__placeholder">ФИО</div>
                                     </div>
                                     <span class="basket-subtitle">Контакты</span>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="+7 (___) ___-__-__">
+                                                <input class="input__control" type="tel" pname="phone" value="{{_sess.user.phone}}" laceholder="+7 (___) ___-__-__" required>
                                                 <div class="input__placeholder">+7 (___) ___-__-__</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="Е-мейл">
+                                                <input class="input__control" type="text" name="email" value="{{_sess.user.email}}" placeholder="Е-мейл">
                                                 <div class="input__placeholder">Е-мейл</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="basket-block" wb-on>
+                                <div class="basket-block">
                                     <span class="basket-subtitle">Адрес</span>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="Страна">
+                                                <input class="input__control" name="country" value="{{_sess.user.country}}" type="text" placeholder="Страна">
                                                 <div class="input__placeholder">Страна</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="Город">
+                                                <input class="input__control" name="city" value="{{_sess.user.city}}" type="text" placeholder="Город">
                                                 <div class="input__placeholder">Город</div>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="Улица и дом">
+                                                <input class="input__control" name="street" value="{{_sess.user.street}}" type="text" placeholder="Улица и дом">
                                                 <div class="input__placeholder">Улица и дом</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="кв./офис">
+                                                <input class="input__control" name="flat" value="{{_sess.user.flat}}" type="text" placeholder="кв./офис">
                                                 <div class="input__placeholder">кв./офис</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="Домофон">
+                                                <input class="input__control" name="intercom" value="{{_sess.user.intercom}}" type="text" placeholder="Домофон">
                                                 <div class="input__placeholder">Домофон</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="Подъезд">
+                                                <input class="input__control" name="entrance" value="{{_sess.user.entrance}}" type="text" placeholder="Подъезд">
                                                 <div class="input__placeholder">Подъезд</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input">
-                                                <input class="input__control" type="text" placeholder="Этаж">
+                                                <input class="input__control" name="level" value="{{_sess.user.level}}" type="text" placeholder="Этаж">
                                                 <div class="input__placeholder">Этаж</div>
                                             </div>
                                         </div>
@@ -183,16 +184,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="basket-sidebar">
+                            <div class="basket-sidebar" wb-off>
                                 <div class="basket-wrap">
                                     <div class="total">
                                         <span>Итого</span>
                                         <span>{{cart.total.sum}} ₽</span>
                                     </div>
                                     <div class="basket-main">
-                                        <a class="btn btn--black" href="#">Оплатить</a>
-                                        <a class="btn btn--white" href="#">Заберу в клинике</a>
-                                        <p>Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании <a href="#">Политики конфиденциальности</a> а также с <a href="#">Условиями продажи</a></p>
+                                        <button class="btn btn--black" type="submit">Заказать</button>
+                                        <p>Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании <a href="/policy">Политики конфиденциальности</a> а также с <a href="/delivery">Условиями продажи</a></p>
                                     </div>
                                     <span class="basket-tit">Ваша корзина</span>
                                     {{#each cart.list}}
@@ -207,7 +207,7 @@
                                 </div>
                                 <div class="basket-bottom">
                                     <span class="basket-tit">Оплата и доставка</span>
-                                    <a class="btn btn--white" href="#">Подробнее</a>
+                                    <a class="btn btn--white" href="/delivery">Подробнее</a>
                                 </div>
                             </div>
                         </div>
@@ -269,313 +269,31 @@
                     wbapp.storage("shop.cart", cart)
                     basket.set('cart', cart)
                     this.fire('calc')
+                },
+                order(ev) {
+                    let data = $(basket.el).find('form').serializeJson();
+                    let that = this
+                    data.cart = basket.get('cart');
+                    console.log(data);
+                    ev.event.preventDefault()
+                    wbapp.post('/api/v2/create/orders?__token=' + wbapp._session.token, data, function(data) {
+                        if (data.id !== undefined) {
+                            let cart = {
+                                list: {},
+                                total: {
+                                    sum: 0,
+                                    qty: 0
+                                }
+                            }
+                            wbapp.storage("shop.cart", cart)
+                            that.fire('calc')
+                        } else {
+                            // что-то пошло не так
+                        }
+                    })
+
                 }
             }
         })
     </script>
 </view>
-
-<preview>
-    <div class="container">
-        <div class="account">
-            <div class="crumbs"><a class="crumbs__arrow" href="#">
-                    <svg class="svgsprite _crumbs-back">
-                        <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-                    </svg></a><a class="crumbs__link" href="#">Главная</a><a class="crumbs__link" href="#">Корзина</a>
-            </div>
-            <div class="basket account__history data-tab-wrapper" data-tabs="hislech">
-                <div class="account__tab-items">
-                    <div class="basket-link data-tab-link" data-tabs="hislech" data-tab="basket">Корзина</div>
-                    <div class="basket-link data-tab-link active" data-tabs="hislech" data-tab="registration">Оформление</div>
-                </div>
-                <form action="">
-                    <div class="account__tab data-tab-item" data-tab="basket">
-                        <div class="basket-row">
-                            <div class="basket-content">
-                                <div class="basket-top">
-                                    <label class="checkbox">
-                                        <input type="checkbox"><span></span>
-                                    </label>
-                                    <span class="basket-txt">Выбрать все </span>
-                                    <span class="basket-txt basket-txt-2">Цена</span>
-                                    <span class="basket-txt basket-txt-3">Количество</span>
-                                </div>
-                                <div class="orders-product">
-                                    <label class="checkbox">
-                                        <input type="checkbox"><span></span>
-                                    </label>
-                                    <div class="orders-img"><img src="assets/img/new/img-3-min.jpg" alt=""></div>
-                                    <div class="orders-product-wrap">
-                                        <div class="orders-info">
-                                            <span class="orders-name"><a href="#">LANCÔME rénergie h.c.f. triple serum</a></span>
-                                            <span class="orders-volume">Объем: 50 мл.</span>
-                                        </div>
-                                        <span class="orders-price">5 000 ₽</span>
-                                        <div class="orders-bl">
-                                            <div class="filter__select">
-                                                <div class="filter-select select">
-                                                    <div class="filter-select__main select__main">1</div>
-                                                    <div class="filter-select__list select__list">
-                                                        <div class="filter-select__item select__item active">2</div>
-                                                        <div class="filter-select__item select__item">3</div>
-                                                        <div class="filter-select__item select__item">4</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="orders-link">Удалить</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="orders-product">
-                                    <label class="checkbox">
-                                        <input type="checkbox"><span></span>
-                                    </label>
-                                    <div class="orders-img"><img src="assets/img/new/img-3-min.jpg" alt=""></div>
-                                    <div class="orders-product-wrap">
-                                        <div class="orders-info">
-                                            <span class="orders-name"><a href="#">LANCÔME rénergie h.c.f. triple serum</a></span>
-                                            <span class="orders-volume">Объем: 50 мл.</span>
-                                        </div>
-                                        <span class="orders-price">5 000 ₽</span>
-                                        <div class="orders-bl">
-                                            <div class="filter__select">
-                                                <div class="filter-select select">
-                                                    <div class="filter-select__main select__main">1</div>
-                                                    <div class="filter-select__list select__list">
-                                                        <div class="filter-select__item select__item active">2</div>
-                                                        <div class="filter-select__item select__item">3</div>
-                                                        <div class="filter-select__item select__item">4</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="orders-link">Удалить</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="orders-product">
-                                    <label class="checkbox">
-                                        <input type="checkbox"><span></span>
-                                    </label>
-                                    <div class="orders-img"><img src="assets/img/new/img-3-min.jpg" alt=""></div>
-                                    <div class="orders-product-wrap">
-                                        <div class="orders-info">
-                                            <span class="orders-name"><a href="#">LANCÔME rénergie h.c.f. triple serum</a></span>
-                                            <span class="orders-volume">Объем: 50 мл.</span>
-                                        </div>
-                                        <span class="orders-price">5 000 ₽</span>
-                                        <div class="orders-bl">
-                                            <div class="filter__select">
-                                                <div class="filter-select select">
-                                                    <div class="filter-select__main select__main">1</div>
-                                                    <div class="filter-select__list select__list">
-                                                        <div class="filter-select__item select__item active">2</div>
-                                                        <div class="filter-select__item select__item">3</div>
-                                                        <div class="filter-select__item select__item">4</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="orders-link">Удалить</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="orders-product">
-                                    <label class="checkbox">
-                                        <input type="checkbox"><span></span>
-                                    </label>
-                                    <div class="orders-img"><img src="assets/img/new/img-3-min.jpg" alt=""></div>
-                                    <div class="orders-product-wrap">
-                                        <div class="orders-info">
-                                            <span class="orders-name"><a href="#">LANCÔME rénergie h.c.f. triple serum</a></span>
-                                            <span class="orders-volume">Объем: 50 мл.</span>
-                                        </div>
-                                        <span class="orders-price">5 000 ₽</span>
-                                        <div class="orders-bl">
-                                            <div class="filter__select">
-                                                <div class="filter-select select">
-                                                    <div class="filter-select__main select__main">1</div>
-                                                    <div class="filter-select__list select__list">
-                                                        <div class="filter-select__item select__item active">2</div>
-                                                        <div class="filter-select__item select__item">3</div>
-                                                        <div class="filter-select__item select__item">4</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="orders-link">Удалить</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="basket-sidebar">
-                                <div class="basket-wrap">
-                                    <div class="total">
-                                        <span>Итого</span>
-                                        <span>15 000 ₽</span>
-                                    </div>
-                                    <div class="basket-main">
-                                        <a class="btn btn--black" href="#">Перейти к оформлению</a>
-                                        <p>Способы оплаты и время доставки можно выбрать после оформления</p>
-                                    </div>
-                                    <span class="basket-tit">Ваша корзина</span>
-                                    <div class="basket-item">
-                                        <span class="basket-item-tit">Количество (1)</span>
-                                        <div class="basket-item-row">
-                                            <span>LANCÔME rénergie h.c.f. triple serum</span>
-                                            <b>5 000 ₽ </b>
-                                        </div>
-                                    </div>
-                                    <div class="basket-item">
-                                        <span class="basket-item-tit">Количество (2)</span>
-                                        <div class="basket-item-row">
-                                            <span>LANCÔME rénergie h.c.f. triple serum</span>
-                                            <b>5 000 ₽ </b>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="basket-bottom">
-                                    <span class="basket-tit">Оплата и доставка</span>
-                                    <a class="btn btn--white" href="#">Подробнее</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="account__tab data-tab-item active" data-tab="registration">
-                        <div class="basket-row">
-                            <div class="basket-content">
-                                <div class="basket-block">
-                                    <span class="basket-subtitle">Способ доставки</span>
-                                    <div class="ways">
-                                        <div class="way">
-                                            <div class="way-wrap">
-                                                <input type="radio" name="way" checked>
-                                                <span class="way-label">Курьер</span>
-                                            </div>
-                                        </div>
-                                        <div class="way">
-                                            <div class="way-wrap">
-                                                <input type="radio" name="way">
-                                                <span class="way-label">Заберу в клинике</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="basket-block">
-                                    <span class="basket-subtitle">Получатель</span>
-                                    <div class="basket-wr">
-                                        <span class="basket-subtitle">Уже зарегистрированы ?</span>
-                                        <a class="btn btn--white" href="#">Войти</a>
-                                    </div>
-                                    <div class="input">
-                                        <input class="input__control" type="text" placeholder="ФИО">
-                                        <div class="input__placeholder">ФИО</div>
-                                    </div>
-                                    <span class="basket-subtitle">Контакты</span>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="+7 (___) ___-__-__">
-                                                <div class="input__placeholder">+7 (___) ___-__-__</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="Е-мейл">
-                                                <div class="input__placeholder">Е-мейл</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="basket-block">
-                                    <span class="basket-subtitle">Адрес</span>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="Страна">
-                                                <div class="input__placeholder">Страна</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="Город">
-                                                <div class="input__placeholder">Город</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="Улица и дом">
-                                                <div class="input__placeholder">Улица и дом</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="кв./офис">
-                                                <div class="input__placeholder">кв./офис</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="Домофон">
-                                                <div class="input__placeholder">Домофон</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="Подъезд">
-                                                <div class="input__placeholder">Подъезд</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input">
-                                                <input class="input__control" type="text" placeholder="Этаж">
-                                                <div class="input__placeholder">Этаж</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="basket-block basket-block-last">
-                                    <span class="basket-subtitle">Дополнительная информация</span>
-                                    <div class="input">
-                                        <textarea name="text" class="input__control" placeholder="Оставить пожелания"></textarea>
-                                        <div class="input__placeholder">Оставить пожелания</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="basket-sidebar">
-                                <div class="basket-wrap">
-                                    <div class="total">
-                                        <span>Итого</span>
-                                        <span>15 000 ₽</span>
-                                    </div>
-                                    <div class="basket-main">
-                                        <a class="btn btn--black" href="#">Оплатить</a>
-                                        <a class="btn btn--white" href="#">Заберу в клинике</a>
-                                        <p>Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании <a href="#">Политики конфиденциальности</a> а также с <a href="#">Условиями продажи</a></p>
-                                    </div>
-                                    <span class="basket-tit">Ваша корзина</span>
-                                    <div class="basket-item">
-                                        <span class="basket-item-tit">Количество (1)</span>
-                                        <div class="basket-item-row">
-                                            <span>LANCÔME rénergie h.c.f. triple serum</span>
-                                            <b>5 000 ₽ </b>
-                                        </div>
-                                    </div>
-                                    <div class="basket-item">
-                                        <span class="basket-item-tit">Количество (2)</span>
-                                        <div class="basket-item-row">
-                                            <span>LANCÔME rénergie h.c.f. triple serum</span>
-                                            <b>5 000 ₽ </b>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="basket-bottom">
-                                    <span class="basket-tit">Оплата и доставка</span>
-                                    <a class="btn btn--white" href="#">Подробнее</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-</preview>
