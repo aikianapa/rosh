@@ -992,7 +992,8 @@
 														}
 														$(ev.node).parents('form').find('[name="price"]')
 															.removeClass('consultation');
-													} else {
+													} else if(!$(ev.node).parents('form').find('[name="price"]')
+														.hasClass('consultation')) {
 														price += ght;
 														$(ev.node).parents('form').find('[name="price"]')
 															.addClass('consultation');
