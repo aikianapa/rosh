@@ -275,6 +275,7 @@ $(function () {
 			}
 		},
 		/*dyctionary types*/
+		quoteColors: {},
 		quoteStatus: {},
 		quoteType: {},
 		quotePay: {},

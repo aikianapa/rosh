@@ -573,7 +573,7 @@
 					<div class="loader"></div>
 				</div>
 				{{#each records: idx}}
-				<div class="acount__table-accardeon accardeon --{{catalog.quoteStatus[this.status].color}} acount__table-accardeon--pmin"
+				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{this.status}}"
 					data-client="{{.client}}"
 					data-record="{{.id}}"
 					data-id="{{.id}}"

@@ -404,6 +404,33 @@ ul li.service_price{
 .admin-events-item.orderby {
 	cursor: pointer;
 }
+.status-new{
+	/*background : linear-gradient(0deg, rgba(251, 237, 204, .5), rgba(251, 237, 204, .5)), #FBF9F7;*/
+}
+.status-uncall{
+	background : #f8e7e3;
+}
+.status-delay{
+	background : #EEE2F8;
+}
+.status-past{
+	background : #E0F5E2;
+}
+.status-upcoming{
+	background : #FDF2DE;
+}
+.status-cancel_expensive{
+	background: linear-gradient(0deg, rgba(144, 201, 255, .5), rgba(144, 201, 255, .5)), #FBF9F7;
+}
+.status-cancel_think{
+	background: #c6f6f8;
+}
+.status-cancel_noreason{
+	background: #bde0fc;
+}
+.admin-events-item.orderby.selected{
+	opacity : .8;
+}
 @media (max-width : 768px) {
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {
