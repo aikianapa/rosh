@@ -766,10 +766,12 @@ $(function () {
 			_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
+		$selector.autocomplete('dispose');
 		return $selector.autocomplete({
 			noCache: false,
 			minChars: 0,
 			lookup: service_list,
+			triggerSelectOnValidInput: false,
 			beforeRender: function (container, suggestions) {
 				var CNT = $(container);
 				$(container).addClass('search__drop').html('');
@@ -1033,8 +1035,6 @@ $(function () {
 			},
 			on: {
 				teardown(){
-					var t = this.get('selector');
-					console.log(t, 'destroyed');
 					$('.search-services').autocomplete('dispose');
 				},
 				complete() {
