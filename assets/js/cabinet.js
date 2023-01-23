@@ -754,7 +754,18 @@ $(function () {
 		console.log($selector, service_list);
 
 		var _parent_form = $selector.closest('form');
-		$selector.autocomplete({
+		$(document).on('click', '.search__drop-delete', function (e) {
+			e.stopPropagation();
+			$(this).parents('.search__drop-item').remove();
+			let sum = 0;
+			console.log(_parent_form.find('.admin-editor__patient .search__drop-item').length);
+			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
+				sum += parseInt($(this).data('price'));
+			});
+			_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
+			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
+		});
+		return $selector.autocomplete({
 			noCache: false,
 			minChars: 0,
 			lookup: service_list,
@@ -782,7 +793,6 @@ $(function () {
 					CNT.append(
 						$('<label></label>').addClass(
 							'search__drop-item autocomplete-suggestion').attr({
-							'data-index': index,
 							'data-id': this.id,
 							"data-service_id": this.data.service_id,
 							"data-price": this.data.price
@@ -865,17 +875,7 @@ $(function () {
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
-		$(document).on('click', '.search__drop-delete', function (e) {
-			e.stopPropagation();
-			$(this).parents('.search__drop-item').remove();
-			let sum = 0;
-			console.log(_parent_form.find('.admin-editor__patient .search__drop-item').length);
-			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
-				sum += parseInt($(this).data('price'));
-			});
-			_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
-			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
-		});
+
 	};
 	window.initLongtermSearch = function ($form, for_client) {
 		var form       = $form || $('.popup .popup__form');
@@ -1025,9 +1025,15 @@ $(function () {
 				user: wbapp._session.user,
 				'experts': catalog.experts,
 				'categories': catalog.categories,
-				'services': catalog.services
+				'services': catalog.services,
+				'selector': null
 			},
 			on: {
+				teardown(){
+					var t = this.get('selector');
+					console.log(t, 'destroyed');
+					$('.search-services').autocomplete('dispose');
+				},
 				complete() {
 					this.set('catalog', catalog);
 

@@ -582,6 +582,7 @@
 					data-group="{{.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
+
 							<div class="accardeon__click" data-record="{{this.id}}" data-idx="{{idx}}"
 								on-click="editRecord"></div>
 							<div class="flag-date">
@@ -612,10 +613,14 @@
 								{{/if}}
 
 								{{#if group == 'events'}}
+								<input type="hidden" class="orderby" value="{{@global.utils.formatDate(event_date)}}">
+
 								<span class="dt"><strong class="title">Приём: </strong>
 									{{@global.utils.formatDate(event_date)}}<br> {{event_time_start}}-{{event_time_end}}
 								</span>
 								{{else}}
+								<input type="hidden" class="orderby" value="{{@global.utils.formatDate(_created)}}">
+
 								<span class="dt"><strong class="title">Заявка: </strong>
 									{{@global.utils.formatDate(_created)}}<br>
 									{{@global.utils.formatTime(_created)}}
@@ -624,12 +629,14 @@
 							</div>
 						</div>
 						<div class="admin-events-item">
+							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
 							<p>ФИО</p>
 							<div>
 								<a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
 							</div>
 						</div>
 						<div class="admin-events-item">
+							<input type="hidden" class="orderby" value="{{catalog.clients[.client].phone}}">
 							<p>Телефон</p>
 							<div>{{catalog.clients[client].phone}}</div>
 						</div>
@@ -965,7 +972,7 @@
 												checkConsultation(ev) {
 													var ght = 0;
 													var lv  = 0;
-
+													console.log($(ev.node));
 													if ($(ev.node).is(':checked')
 													    && $(ev.node).val() == 'online') {
 														ght = parseInt(catalog.spec_service.consultation.price);
@@ -1112,22 +1119,26 @@
 
 		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
 			var $th = $(this);
+
+			console.log('clicked')
 			$th.toggleClass('selected');
 			var isSelected = $th.hasClass('selected');
-			var isInput    = false;
+			var isInput    = true;
 			var column     = $th.index();
-			var $table     = $th.closest('.account__table');
+			var $table     = $th.parents('.account__table');
 			var isNum      = false;
-			var rows       = $table.find('.account__table-body .acount__table-accardeon').get();
+			var rows       = $table.find('.account__table-body > .acount__table-accardeon').get();
+			console.log(column, $table, rows);
 			rows.sort(function (rowA, rowB) {
 				var keyA, keyB;
 				if (isInput) {
-					keyA = $(rowA).children('td').eq(column).children('input').val().toUpperCase();
-					keyB = $(rowB).children('td').eq(column).children('input').val().toUpperCase();
+					keyA = $(rowA).find('.admin-events-item').eq(column).find('input.orderby').val().toUpperCase();
+					keyB = $(rowB).find('.admin-events-item').eq(column).find('input.orderby').val().toUpperCase();
 				} else {
-					keyA = $(rowA).children('td').eq(column).text().toUpperCase();
-					keyB = $(rowB).children('td').eq(column).text().toUpperCase();
+					keyA = $(rowA).children('.admin-events-item').eq(column).text().toUpperCase();
+					keyB = $(rowB).children('.admin-events-item').eq(column).text().toUpperCase();
 				}
+				console.log('keys:', keyA, keyB);
 				if (isSelected) return OrderBy(keyA, keyB, isNum);
 				return OrderBy(keyB, keyA, isNum);
 			});

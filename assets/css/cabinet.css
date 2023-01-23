@@ -401,7 +401,9 @@ ul li.service_price{
 	font-size: 16px;
 	height: 40px;
 }
-
+.admin-events-item.orderby {
+	cursor: pointer;
+}
 @media (max-width : 768px) {
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {
