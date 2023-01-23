@@ -431,6 +431,14 @@ ul li.service_price{
 .admin-events-item.orderby.selected{
 	color : #1E60C1;
 }
+.autocomplete-suggestions.search__drop{
+	z-index : 999999!important;
+
+}
+.autocomplete-suggestions .autocomplete-suggestion{
+	z-index: 999999;
+}
+
 @media (max-width : 768px) {
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {

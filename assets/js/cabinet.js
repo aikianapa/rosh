@@ -795,6 +795,7 @@ $(function () {
 						$('<label></label>').addClass(
 							'search__drop-item autocomplete-suggestion').attr({
 							'data-id': this.id,
+							'data-index': index,
 							"data-service_id": this.data.service_id,
 							"data-price": this.data.price
 						}).append(
@@ -828,6 +829,7 @@ $(function () {
 				_parent_form.find('.admin-editor__patient').append(
 					$('<div></div>').addClass('search__drop-item').attr({
 						'data-id': suggestion.id,
+						'data-index': index,
 						"data-service_id": suggestion.data.service_id,
 						"data-price": suggestion.data.price
 					}).append(
