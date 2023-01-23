@@ -429,7 +429,7 @@ ul li.service_price{
 	background: #bde0fc;
 }
 .admin-events-item.orderby.selected{
-	opacity : .8;
+	color : #1E60C1;
 }
 @media (max-width : 768px) {
 	.search__drop-item .search__drop-delete {opacity : 1}
