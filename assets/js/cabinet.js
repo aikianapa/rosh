@@ -775,12 +775,6 @@ $(function () {
 			_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 		});
 		$selector.autocomplete('dispose');
-		$selector.on('click', function(e){
-			e.preventDefault();
-			//if (!$(this).val()){
-				$(this).val(' ').trigger('focus');
-			//}
-		});
 
 		return $selector.autocomplete({
 			noCache: true,
@@ -813,6 +807,7 @@ $(function () {
 							'search__drop-item autocomplete-suggestion').attr({
 							'data-id': this.id,
 							'data-index': index,
+							'data-value': index,
 							"data-service_id": this.data.service_id,
 							"data-price": this.data.price
 						}).append(
@@ -828,10 +823,7 @@ $(function () {
 			},
 			onSelect: function (suggestion) {
 				console.log(suggestion);
-				//$selector.val('');
-				setTimeout(function () {
-					$selector.val('');
-				}, 200);
+				$selector.val('');
 				if (_parent_form.find('.admin-editor__patient [data-id=' + suggestion.id + ']').length) {
 					return;
 				}
