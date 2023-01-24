@@ -269,6 +269,10 @@ $(function () {
 				header: 'Консультация врача'
 
 			},
+			consultation_clinik: {
+				header: 'Консультация врача'
+
+			},
 			analyses_interpretation: {
 				header: 'Расшифровка анализов',
 				price: 2000
@@ -514,6 +518,10 @@ $(function () {
 			utils.api.get('/api/v2/read/price/id63619e811c69')
 				.then(function (data) {
 					_self.spec_service.consultation = data;
+				});
+			utils.api.get('/api/v2/read/price/id62339e811e71')
+				.then(function (data) {
+					_self.spec_service.consultation_clinic = data;
 				});
 			return Promise.allSettled(getters).then(() => {
 				$(document).trigger('cabinet-db-ready');
@@ -1105,33 +1113,84 @@ $(function () {
 
 					return false;
 				},
+				forConsultationClick(ev) {
+					var price             = 0;
+					var $price_input      = $(ev.node).parents('form').find('[name="price"]');
+					var prev_price        = $price_input.val();
+					var $for_consultation = $(ev.node);
+					if (!isNaN(prev_price)) {
+						price = parseInt(prev_price);
+					}
+
+					if ($for_consultation.is(':checked')) {
+						$(ev.node).parents('form').find('.clinic[name="type"]').trigger('click');
+					} else {
+						if ($price_input.hasClass('consultation') && price > 0) {
+							if ($price_input.attr('data-type') == 'online') {
+								price -= parseInt(catalog.spec_service.consultation.price);
+							} else if ($price_input.attr('data-type') == 'clinic') {
+								price -= parseInt(catalog.spec_service.consultation_clinic.price);
+							}
+						}
+						$price_input.removeClass('consultation');
+						$price_input.removeAttr('data-type');
+						$price_input.val(price);
+						$(ev.node).parents('form').find('.price').html(
+							utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+					}
+				},
 				checkConsultation(ev) {
-					var ght = 0;
-					var lv  = 0;
-					console.log(ev);
-					if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
-						ght = parseInt(catalog.spec_service.consultation.price);
+					var ght               = 0;
+					var lv                = 0;
+					var sel_type          = $(ev.node).val();
+					var $for_consultation = $(ev.node).parents('form').find('[name="for_consultation"]');
+					var $price_input      = $(ev.node).parents('form').find('[name="price"]');
+					if ($(ev.node).is(':checked')) {
+						if (sel_type == 'online') {
+							ght = parseInt(catalog.spec_service.consultation.price);
+						} else if (sel_type == 'clinic') {
+							ght = parseInt(catalog.spec_service.consultation_clinic.price);
+						} else {
+							ght = 0;
+						}
 					} else {
 						ght = 0;
 					}
 					var price      = 0;
-					var prev_price = $(ev.node).parents('form').find('[name="price"]').val();
-					if (!!prev_price) {
+					var prev_price = $price_input.val();
+
+					if (!isNaN(prev_price)) {
 						price = parseInt(prev_price);
 					}
-					if (ght === 0){
-						if ($(ev.node).parents('form').find('[name="price"]').hasClass('consultation')){
-							price -= parseInt(catalog.spec_service.consultation.price);
+
+					if (ght === 0) {
+						if ($price_input.hasClass('consultation') && price > 0) {
+							if ($price_input.attr('data-type') == 'online') {
+								price -= parseInt(catalog.spec_service.consultation.price);
+							} else if ($price_input.attr('data-type') == 'clinic') {
+								price -= parseInt(catalog.spec_service.consultation_clinic.price);
+							}
 						}
-						$(ev.node).parents('form').find('[name="price"]').removeClass('consultation');
-					} else {
+						$price_input.removeClass('consultation');
+						$price_input.removeAttr('data-type');
+					} else if (!$price_input.hasClass('consultation')
+					           || !$price_input.attr('data-type') != sel_type) {
+						if (price > 0) {
+							if ($price_input.attr('data-type') == 'online') {
+								price -= parseInt(catalog.spec_service.consultation.price);
+							} else if ($price_input.attr('data-type') == 'clinic') {
+								price -= parseInt(catalog.spec_service.consultation_clinic.price);
+							}
+						}
 						price += ght;
-						$(ev.node).parents('form').find('[name="price"]').addClass('consultation');
+
+						$price_input.addClass('consultation');
+						$price_input.attr('data-type', sel_type);
 					}
 
-					$(ev.node).parents('form').find('[name="price"]').val(price);
-					$(ev.node).parents('form').find('.price').html(utils.formatPrice(price) +
-					                                               ' ₽<sup><b>*</b></sup>');
+					$price_input.val(price);
+					$(ev.node).parents('form').find('.price').html(
+						utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
 				}
 			}
 		});

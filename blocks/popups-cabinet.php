@@ -261,13 +261,13 @@
 										<div class="col-md-6">
 											<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
 												{{#if record.for_consultation=== '1' }}
-												<input class="checkbox-visible-next-form" type="checkbox" checked name="for_consultation" value="1"> {{else}}
-												<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1"> {{/if}}
+												<input class="checkbox-visible-next-form" type="checkbox" checked name="for_consultation" value="1" on-click="forConsultationClick"> {{else}}
+												<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1" on-click="forConsultationClick"> {{/if}}
 												<span></span>
 												<div class="checbox__name">Консультация врача</div>
 											</label>
 										</div>
-										<div class="col-md-6" data-show="service">
+										<div class="col-md-6" style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};" data-show="service">
 											<p class="mb-10">Тип события</p>
 											<div class="popups__text-chexboxs">
 												{{#each @global.catalog.quoteType as qt}}
@@ -377,11 +377,21 @@
 									</div>
 									{{/each}} {{/if}}
 								</div>
-
-								<div class="admin-editor__summ">
+								<div class="admin-editor__summ mb-3">
 									<p>Всего</p>
+									{{#if record.for_consultation == '0'}}
 									<input type="hidden" name="price" value="{{record.price}}">
-									<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
+									{{elseif record.type == 'online'}}
+									<input type="hidden" name="price" class="consultation" data-type="online"
+										value="{{record.price}}">
+									{{elseif record.type == 'clinic'}}
+									<input type="hidden" name="price" class="consultation" data-type="clinic"
+										value="{{record.price}}">
+									{{else}}
+									<input type="hidden" name="price" value="{{record.price}}">
+									{{/if}}
+									<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup>
+									</p>
 								</div>
 
 								<button class="btn btn--white" type=submit>Сохранить</button>

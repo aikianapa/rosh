@@ -408,7 +408,7 @@
 					</div>
 				</div>
 				{{/if}}
-z				<input type="hidden" value="{{ record.id }}" name="id">
+				z <input type="hidden" value="{{ record.id }}" name="id">
 
 				{{#if record.spec_service}}
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
@@ -418,33 +418,34 @@ z				<input type="hidden" value="{{ record.id }}" name="id">
 				{{/if}}
 
 				<div class="admin-editor__type-event">
-					<label class="checkbox checkbox--record show-checkbox disabled" data-show-input="service">
-						{{#if record.for_consultation == '1' }}
-						<input class="checkbox-visible-next-form" type="checkbox"
-							checked
-							name="for_consultation" value="1">
+					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+						<input type="hidden" name="for_consultation" value="0">
+						{{#if record.for_consultation === '1' }}
+						<input class="checkbox-visible-next-form" type="checkbox" checked
+							name="for_consultation" value="1" on-click="forConsultationClick">
 						{{else}}
 						<input class="checkbox-visible-next-form" type="checkbox"
-							name="for_consultation" value="1">
+							name="for_consultation" value="1" on-click="forConsultationClick">
 						{{/if}}
 						<span></span>
 						<div class="checbox__name">Консультация врача</div>
 					</label>
-					<p class="mb-10">Тип события</p>
-					<div class="text-radios disabled">
-						{{#each catalog.quoteType as qt}}
-						<label class="text-radio">
-							{{#if qt.id === record.type }}
-							<input type="radio" name="type"
-								value="{{ qt.id }}" checked
-								on-click="checkConsultation">
-							{{else}}
-							<input type="radio" name="type" value="{{ qt.id }}"
-								on-click="checkConsultation">
-							{{/if}}
-							<span>{{qt.name}}</span>
-						</label>
-						{{/each}}
+					<div class="select-form" style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};" data-show="service">
+						<div class="popups__text-chexboxs">
+							{{#each catalog.quoteType as qt}}
+							<label class="text-radio">
+								{{#if qt.id === record.type }}
+								<input type="radio" name="type"
+									value="{{ qt.id }}" checked
+									on-click="checkConsultation">
+								{{else}}
+								<input type="radio" name="type" value="{{ qt.id }}"
+									on-click="checkConsultation">
+								{{/if}}
+								<span>{{qt.name}}</span>
+							</label>
+							{{/each}}
+						</div>
 					</div>
 					<div class="row">
 						{{#if record.spec_service}}
@@ -591,7 +592,11 @@ z				<input type="hidden" value="{{ record.id }}" name="id">
 					{{#if record.for_consultation == '0'}}
 					<input type="hidden" name="price" value="{{record.price}}">
 					{{elseif record.type == 'online'}}
-					<input type="hidden" name="price" class="consultation" value="{{record.price}}">
+					<input type="hidden" name="price" class="consultation" data-type="online"
+						value="{{record.price}}">
+					{{elseif record.type == 'clinic'}}
+					<input type="hidden" name="price" class="consultation" data-type="clinic"
+						value="{{record.price}}">
 					{{else}}
 					<input type="hidden" name="price" value="{{record.price}}">
 					{{/if}}
@@ -1169,13 +1174,43 @@ z				<input type="hidden" value="{{ record.id }}" name="id">
 								}
 
 							},
-							checkConsultation(ev) {
-								var ght = 0;
-								var lv  = 0;
+							forConsultationClick(ev) {
+								var price        = 0;
+								var $price_input = $(ev.node).parents('form').find('[name="price"]');
+								var prev_price   = $price_input.val();
+								var $for_consultation = $(ev.node);
+								if (!isNaN(prev_price)) {
+									price = parseInt(prev_price);
+								}
 
+								if ($for_consultation.is(':checked')) {
+									$(ev.node).parents('form').find('.clinic[name="type"]').trigger('click');
+								} else {
+									if ($price_input.hasClass('consultation') && price > 0) {
+										if ($price_input.attr('data-type') == 'online') {
+											price -= parseInt(catalog.spec_service.consultation.price);
+										} else if ($price_input.attr('data-type') == 'clinic') {
+											price -= parseInt(catalog.spec_service.consultation_clinic.price);
+										}
+									}
+									$price_input.removeClass('consultation');
+									$price_input.removeAttr('data-type');
+									$price_input.val(price);
+									$(ev.node).parents('form').find('.price').html(
+										utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+								}
+							},
+							checkConsultation(ev) {
+								var ght               = 0;
+								var lv                = 0;
+								var sel_type          = $(ev.node).val();
+								var $for_consultation = $(ev.node).parents('form').find('[name="for_consultation"]');
+								var $price_input      = $(ev.node).parents('form').find('[name="price"]');
 								if ($(ev.node).is(':checked')) {
-									if ($(ev.node).val() == 'online') {
+									if (sel_type == 'online') {
 										ght = parseInt(catalog.spec_service.consultation.price);
+									} else if (sel_type == 'clinic') {
+										ght = parseInt(catalog.spec_service.consultation_clinic.price);
 									} else {
 										ght = 0;
 									}
@@ -1183,29 +1218,40 @@ z				<input type="hidden" value="{{ record.id }}" name="id">
 									ght = 0;
 								}
 								var price      = 0;
-								var prev_price = $(ev.node).closest('form')
-									.find('[name="price"]').val();
+								var prev_price = $price_input.val();
+
 								if (!isNaN(prev_price)) {
 									price = parseInt(prev_price);
 								}
+
 								if (ght === 0) {
-									if ($(ev.node).parents('form').find('[name="price"]')
-										.hasClass('consultation')) {
-										price -= parseInt(catalog.spec_service.consultation.price);
+									if ($price_input.hasClass('consultation') && price > 0) {
+										if ($price_input.attr('data-type') == 'online') {
+											price -= parseInt(catalog.spec_service.consultation.price);
+										} else if ($price_input.attr('data-type') == 'clinic') {
+											price -= parseInt(catalog.spec_service.consultation_clinic.price);
+										}
 									}
-									$(ev.node).parents('form').find('[name="price"]')
-										.removeClass('consultation');
-								} else if (!$(ev.node).parents('form').find('[name="price"]')
-									.hasClass('consultation')) {
+									$price_input.removeClass('consultation');
+									$price_input.removeAttr('data-type');
+								} else if (!$price_input.hasClass('consultation')
+								           || !$price_input.attr('data-type') != sel_type) {
+									if (price > 0) {
+										if ($price_input.attr('data-type') == 'online') {
+											price -= parseInt(catalog.spec_service.consultation.price);
+										} else if ($price_input.attr('data-type') == 'clinic') {
+											price -= parseInt(catalog.spec_service.consultation_clinic.price);
+										}
+									}
 									price += ght;
-									$(ev.node).parents('form').find('[name="price"]')
-										.addClass('consultation');
+
+									$price_input.addClass('consultation');
+									$price_input.attr('data-type', sel_type);
 								}
 
-								$(ev.node).parents('form').find('[name="price"]').val(price);
-								$(ev.node).parents('form').find('.price')
-									.html(utils.formatPrice(price) +
-									      ' ₽<sup><b>*</b></sup>');
+								$price_input.val(price);
+								$(ev.node).parents('form').find('.price').html(
+									utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
 							},
 							save(ev) {
 								if ($($(ev.node).parents('form')).length) {
