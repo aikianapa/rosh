@@ -1122,8 +1122,11 @@ $(function () {
 						price = parseInt(prev_price);
 					}
 
+					console.log('?:', $for_consultation.is(':checked'));
 					if ($for_consultation.is(':checked')) {
-						$(ev.node).parents('form').find('.clinic[name="type"]').trigger('click');
+						setTimeout(function (){
+							$(ev.node).parents('form').find('.clinic[name="type"]').trigger('click');
+						});
 					} else {
 						if ($price_input.hasClass('consultation') && price > 0) {
 							if ($price_input.attr('data-type') == 'online') {

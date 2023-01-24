@@ -42,11 +42,11 @@
 						<div class="text-bold mb-20">Тип события</div>
 						<div class="popups__text-chexboxs">
 							<label class="text-radio">
-								<input type="radio" name="type" value="clinic" checked on-click="checkConsultation">
+								<input type="radio" name="type" class="clinic" value="clinic" checked on-click="checkConsultation">
 								<span>В клинике</span>
 							</label>
 							<label class="text-radio switch-blocks">
-								<input type="radio" name="type" value="online" on-click="checkConsultation">
+								<input type="radio" name="type" value="online" class="online" on-click="checkConsultation">
 								<span>Онлайн</span>
 							</label>
 						</div>
@@ -273,8 +273,14 @@
 												{{#each @global.catalog.quoteType as qt}}
 												<label class="text-radio" name="type" value="{{ qt.id }}">
 													{{#if qt.id === record.type }}
-													<input type="radio" name="type" value="{{ qt.id }}" checked on-click="checkConsultation"> {{else}}
-													<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation"> {{/if}}
+													<input type="radio"
+														name="type"
+														class="{{ qt.id }}"
+														value="{{ qt.id }}"
+														checked on-click="checkConsultation"> {{else}}
+													<input type="radio" name="type"
+														class="{{ qt.id }}"
+														value="{{ qt.id }}" on-click="checkConsultation"> {{/if}}
 													<span>{{qt.name}}</span>
 												</label>
 												{{/each}}
@@ -424,37 +430,87 @@
 							console.log('show');
 						},
 
+						forConsultationClick(ev) {
+							var price             = 0;
+							var $price_input      = $(ev.node).parents('form').find('[name="price"]');
+							var prev_price        = $price_input.val();
+							var $for_consultation = $(ev.node);
+							if (!isNaN(prev_price)) {
+								price = parseInt(prev_price);
+							}
+
+							console.log('?:', $for_consultation.is(':checked'));
+							if ($for_consultation.is(':checked')) {
+								setTimeout(function () {
+									$(ev.node).parents('form').find('.clinic[name="type"]').trigger('click');
+								});
+							} else {
+								if ($price_input.hasClass('consultation') && price > 0) {
+									if ($price_input.attr('data-type') == 'online') {
+										price -= parseInt(catalog.spec_service.consultation.price);
+									} else if ($price_input.attr('data-type') == 'clinic') {
+										price -= parseInt(catalog.spec_service.consultation_clinic.price);
+									}
+								}
+								$price_input.removeClass('consultation');
+								$price_input.removeAttr('data-type');
+								$price_input.val(price);
+								$(ev.node).parents('form').find('.price').html(
+									utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+							}
+						},
 						checkConsultation(ev) {
-							var ght = 0;
-							var lv = 0;
-							console.log(ev);
-							if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
-								ght = parseInt(catalog.spec_service.consultation.price);
+							var ght               = 0;
+							var lv                = 0;
+							var sel_type          = $(ev.node).val();
+							var $for_consultation = $(ev.node).parents('form').find('[name="for_consultation"]');
+							var $price_input      = $(ev.node).parents('form').find('[name="price"]');
+							if ($(ev.node).is(':checked')) {
+								if (sel_type == 'online') {
+									ght = parseInt(catalog.spec_service.consultation.price);
+								} else if (sel_type == 'clinic') {
+									ght = parseInt(catalog.spec_service.consultation_clinic.price);
+								} else {
+									ght = 0;
+								}
 							} else {
 								ght = 0;
 							}
-							var price = 0;
-							var prev_price = $(ev.node).parents('form').find('[name="price"]').val();
-							if (!!prev_price) {
+							var price      = 0;
+							var prev_price = $price_input.val();
+
+							if (!isNaN(prev_price)) {
 								price = parseInt(prev_price);
 							}
+
 							if (ght === 0) {
-								if ($(ev.node).parents('form').find('[name="price"]')
-									.hasClass('consultation')) {
-									price -= catalog.spec_service.consultation.price;
+								if ($price_input.hasClass('consultation') && price > 0) {
+									if ($price_input.attr('data-type') == 'online') {
+										price -= parseInt(catalog.spec_service.consultation.price);
+									} else if ($price_input.attr('data-type') == 'clinic') {
+										price -= parseInt(catalog.spec_service.consultation_clinic.price);
+									}
 								}
-								$(ev.node).parents('form').find('[name="price"]')
-									.removeClass('consultation');
-							} else {
+								$price_input.removeClass('consultation');
+								$price_input.removeAttr('data-type');
+							} else if (!$price_input.hasClass('consultation')
+							           || !$price_input.attr('data-type') != sel_type) {
+								if (price > 0) {
+									if ($price_input.attr('data-type') == 'online') {
+										price -= parseInt(catalog.spec_service.consultation.price);
+									} else if ($price_input.attr('data-type') == 'clinic') {
+										price -= parseInt(catalog.spec_service.consultation_clinic.price);
+									}
+								}
 								price += ght;
-								$(ev.node).parents('form').find('[name="price"]')
-									.addClass('consultation');
+
+								$price_input.addClass('consultation');
+								$price_input.attr('data-type', sel_type);
 							}
-							console.log(ght, price);
-							$(ev.node).parents('form').find('[name="price"]').val(price);
-							$(ev.node).parents('form').find('.price')
-								.html(utils.formatPrice(price) +
-									' ₽<sup><b>*</b></sup>');
+
+							$price_input.val(price);
+							$(ev.node).parents('form').find('.price').html(
+								utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
 						},
 						submit(ev) {
 							console.log('saving...', ev);
