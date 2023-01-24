@@ -34,7 +34,7 @@
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-						<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1">
+						<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1" on-click="forConsultationClick">
 						<span></span>
 						<div class="checbox__name">Консультация врача</div>
 					</label>
