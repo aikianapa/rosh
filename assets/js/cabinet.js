@@ -519,7 +519,7 @@ $(function () {
 				.then(function (data) {
 					_self.spec_service.consultation = data;
 				});
-			utils.api.get('/api/v2/read/price/id62339e811e71')
+			utils.api.get('/api/v2/read/price/id63d053b12134')
 				.then(function (data) {
 					_self.spec_service.consultation_clinic = data;
 				});

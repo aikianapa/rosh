@@ -36,11 +36,10 @@
                 }
             });
         });
-
 	</script>
 
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=8B7F84E351A14D71977FA87EDD7F0019">
+		src="/assets/js/cabinet.js?v=AB7AAFD2AFB94315A586EFCAC2AEC37D">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
