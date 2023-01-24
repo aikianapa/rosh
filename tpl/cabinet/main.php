@@ -615,13 +615,13 @@
 								{{/if}}
 
 								{{#if group == 'events'}}
-								<input type="hidden" class="orderby" value="{{@global.utils.formatDate(event_date)}}">
+								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(event_date)}}">
 
 								<span class="dt"><strong class="title">Приём: </strong>
 									{{@global.utils.formatDate(event_date)}}<br> {{event_time_start}}-{{event_time_end}}
 								</span>
 								{{else}}
-								<input type="hidden" class="orderby" value="{{@global.utils.formatDate(_created)}}">
+								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(_created)}}">
 
 								<span class="dt"><strong class="title">Заявка: </strong>
 									{{@global.utils.formatDate(_created)}}<br>
@@ -685,12 +685,14 @@
 
 						<div class="admin-events-item w-8">
 							{{#if group == 'events'}}
+							<input type="hidden" class="orderby" value="{{@global.utils.timestamp(_created)}}">
 							<p>Дата заявки</p>
 							<div>
 								{{@global.utils.formatDate(_created)}}<br>
 								{{@global.utils.formatTime(_created)}}
 							</div>
 							{{else}}
+							<input type="hidden" class="orderby" value="">
 							<p>Дата приёма</p>
 							<span class="link-danger">&nbsp;</span>
 							{{/if}}
@@ -1186,7 +1188,7 @@
 			var $table     = $th.parents('.account__table');
 			var isNum      = false;
 			var rows       = $table.find('.account__table-body > .acount__table-accardeon').get();
-			console.log(column, $table, rows);
+			//console.log(column, $table, rows);
 			rows.sort(function (rowA, rowB) {
 				var keyA, keyB;
 				if (isInput) {
@@ -1196,7 +1198,7 @@
 					keyA = $(rowA).children('.admin-events-item').eq(column).text().toUpperCase();
 					keyB = $(rowB).children('.admin-events-item').eq(column).text().toUpperCase();
 				}
-				console.log('keys:', keyA, keyB);
+				//console.log('keys:', keyA, keyB);
 				if (isSelected) return OrderBy(keyA, keyB, isNum);
 				return OrderBy(keyB, keyA, isNum);
 			});
