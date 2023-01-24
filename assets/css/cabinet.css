@@ -281,7 +281,6 @@ div.accardeon.active > div.accardeon__list {
 	background-color : #FEFEFE;
 	cursor           : pointer;
 }
-.autocomplete-suggestion.autocomplete-selected,
 .autocomplete-suggestions .autocomplete-suggestion:hover {
 	background-color : #D0DFF3;
 	outline          : 1px solid #EFEFEF;
