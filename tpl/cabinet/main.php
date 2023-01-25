@@ -211,7 +211,7 @@
 				<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 				{{#each catalog.quotePay}}
 				<div class="select__item" data-id="{{id}}"
-					onclick="$(this).parents('.select .pay').find('input.pay_status').val($(this).attr('data-id'));">
+					onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));">
 					{{name}}
 				</div>
 				{{/each}}
@@ -1082,7 +1082,7 @@
 														post_statuses.group += 's';
 														var new_data = $($(ev.node).parents('form'))
 															.serializeJSON();
-														console.log(post_statuses.group);
+														console.log(post_statuses.group, post_statuses.pay_status);
 
 														new_data.price      = parseInt(new_data.price);
 														new_data.status     = post_statuses.status;
