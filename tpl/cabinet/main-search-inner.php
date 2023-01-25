@@ -1028,13 +1028,14 @@
 
 												var list = {before: [], after: []};
 												result.forEach(function (photo) {
-													if (_record.photos?.before &&
-													    _record.photos.before.includes(photo.id)) {
-														list.before.push(photo);
-													} else if (_record.photos?.after &&
-													           _record.photos.after.includes(
-														           photo.id)) {
-														list.after.push(photo);
+													if (_record.photos?.before) {
+														if (_record.photos.before.includes(photo.id)) {
+															list.before.push(photo);
+														}
+													} else if (_record.photos?.after) {
+														if (_record.photos.after.includes(photo.id)) {
+															list.after.push(photo);
+														}
 													}
 												});
 												_this.set('photos', list);
@@ -1069,7 +1070,7 @@
 							submit(ev) {
 								let $form = $(ev.node);
 								let uid   = page.get('user.id');
-								if ($form.verify() && uid > '') {
+								if ($form.verify()) {
 									let data = $form.serializeJSON();
 
 									Cabinet.updateProfile(uid, data, function (data) {
@@ -1186,11 +1187,13 @@
 								if ($for_consultation.is(':checked')) {
 									$(ev.node).parents('form').find('.clinic[name="type"]').trigger('click');
 								} else {
-									if ($price_input.hasClass('consultation') && price > 0) {
-										if ($price_input.attr('data-type') == 'online') {
-											price -= parseInt(catalog.spec_service.consultation.price);
-										} else if ($price_input.attr('data-type') == 'clinic') {
-											price -= parseInt(catalog.spec_service.consultation_clinic.price);
+									if ($price_input.hasClass('consultation')) {
+										if(price > 0) {
+											if ($price_input.attr('data-type') == 'online') {
+												price -= parseInt(catalog.spec_service.consultation.price);
+											} else if ($price_input.attr('data-type') == 'clinic') {
+												price -= parseInt(catalog.spec_service.consultation_clinic.price);
+											}
 										}
 									}
 									$price_input.removeClass('consultation');
@@ -1225,15 +1228,18 @@
 								}
 
 								if (ght === 0) {
-									if ($price_input.hasClass('consultation') && price > 0) {
-										if ($price_input.attr('data-type') == 'online') {
-											price -= parseInt(catalog.spec_service.consultation.price);
-										} else if ($price_input.attr('data-type') == 'clinic') {
-											price -= parseInt(catalog.spec_service.consultation_clinic.price);
+									if ($price_input.hasClass('consultation')) {
+										if (price > 0) {
+											if ($price_input.attr('data-type') == 'online') {
+												price -= parseInt(catalog.spec_service.consultation.price);
+											} else if ($price_input.attr('data-type') == 'clinic') {
+												price -= parseInt(catalog.spec_service.consultation_clinic.price);
+											}
 										}
+										$price_input.removeClass('consultation');
+										$price_input.removeAttr('data-type');
 									}
-									$price_input.removeClass('consultation');
-									$price_input.removeAttr('data-type');
+
 								} else if (!$price_input.hasClass('consultation')
 								           || !$price_input.attr('data-type') != sel_type) {
 									if (price > 0) {

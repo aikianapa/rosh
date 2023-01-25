@@ -37,7 +37,6 @@
             });
         });
 	</script>
-
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
 		src="/assets/js/cabinet.js?v=01FF064B278A4078B578164B9106B130">
 	</script>
