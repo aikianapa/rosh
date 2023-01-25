@@ -408,7 +408,7 @@
 					</div>
 				</div>
 				{{/if}}
-				z <input type="hidden" value="{{ record.id }}" name="id">
+				<input type="hidden" value="{{ record.id }}" name="id">
 
 				{{#if record.spec_service}}
 				<input type="hidden" name="spec_service" value="{{this.spec_service}}">
