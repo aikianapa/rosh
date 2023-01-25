@@ -1042,20 +1042,22 @@
 								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
 								utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
 									function (data) {
-										if (!data.length) {
+										if (!data || !data.length) {
 											utils.api.get('/api/v2/list/users/?email=' + post.email).then(
 												function (data) {
 													if (!data.length) {
-														post.role   = "client";
-														post.role   = "client";
+														post.role      = "client";
+														post.role      = "client";
 														post.confirmed = "0";
-														post.active = "on";
-														wbapp.post('/api/v2/create/users/', post)
+														post.active    = "on";
+														utils.api.post('/api/v2/create/users/', post)
 															.then(function (data) {
-																if (data.error) {
-																	wbapp.trigger('wb-save-error', {
-																		'data': data
-																	});
+																if (data) {
+																	if (!!data.error) {
+																		wbapp.trigger('wb-save-error', {
+																			'data': data
+																		});
+																	}
 																} else {
 																	$('.popup.--create-client').fadeOut('fast');
 																	popupMessage('Карточка пациента создана!', '',
@@ -1067,12 +1069,10 @@
 															});
 													} else {
 														toast('Этот e-mail уже используется!', 'Ошибка!', 'error');
-														form.find('[name="email"]').focus();
 													}
 												});
 										} else {
 											toast('Этот номер уже используется!', 'Ошибка!', 'error');
-											form.find('[name="phone"]').focus();
 										}
 									});
 							}
