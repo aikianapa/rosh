@@ -1057,6 +1057,13 @@
 																		wbapp.trigger('wb-save-error', {
 																			'data': data
 																		});
+																	} else {
+																		$('.popup.--create-client').fadeOut('fast');
+																		popupMessage('Карточка пациента создана!', '',
+																			'Успешно',
+																			'<a href="/cabinet/client/' + data.id +
+																			'"> Перейти на страницу профиля </a>',
+																			function (d) {});
 																	}
 																} else {
 																	$('.popup.--create-client').fadeOut('fast');
