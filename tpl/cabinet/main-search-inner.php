@@ -1229,7 +1229,7 @@
 
 								if (ght === 0) {
 									if ($price_input.hasClass('consultation')) {
-										if (price > 0) {
+										if (!!price) {
 											if ($price_input.attr('data-type') == 'online') {
 												price -= parseInt(catalog.spec_service.consultation.price);
 											} else if ($price_input.attr('data-type') == 'clinic') {
@@ -1242,7 +1242,7 @@
 
 								} else if (!$price_input.hasClass('consultation')
 								           || !$price_input.attr('data-type') != sel_type) {
-									if (price > 0) {
+									if (!!price) {
 										if ($price_input.attr('data-type') == 'online') {
 											price -= parseInt(catalog.spec_service.consultation.price);
 										} else if ($price_input.attr('data-type') == 'clinic') {
