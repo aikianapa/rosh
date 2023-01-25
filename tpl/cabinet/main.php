@@ -211,7 +211,7 @@
 				<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 				{{#each catalog.quotePay}}
 				<div class="select__item" data-id="{{id}}"
-					onclick="$(this).parents('.select .pay').find('input.pay_status').val($(this).attr('data-id'));">
+					onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));">
 					{{name}}
 				</div>
 				{{/each}}
@@ -266,60 +266,56 @@
 				{{else}}
 
 				{{/if}}
+				{{#if record.group === 'events' }}
+				{{elseif record.no_services === '1' }}
+					<label class="checkbox checkbox--record hider-checkbox">
+						<input class="checkbox-hidden-next-form disabled" type="checkbox" value="1" checked>
+						<span></span>
+						<div class="checbox__name">Мне лень искать в списке, скажу администратору (указано в пациентом)</div>
+					</label>
+				{{/if}}
+
+				{{#if record.group === 'events' }}
+				{{elseif record.no_experts === '1' }}
+				<label class="checkbox checkbox--record hider-checkbox">
+					<input class="checkbox-hidden-next-form disabled" type="checkbox" value="1" checked>
+					<span></span>
+					<div class="checbox__name">Я не знаю, кого выбрать (указано в пациентом)</div>
+				</label>
+				{{/if}}
 
 				<div class="admin-editor__type-event">
-					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-						{{#if record.no_services === '1' }}
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services"
-							checked
-							value="1">
-						{{else}}
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services"
-							value="1">
-						{{/if}}
-						<span></span>
-						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
-					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
+						<input type="hidden" name="for_consultation" value="0">
 						{{#if record.for_consultation === '1' }}
-
 						<input class="checkbox-visible-next-form" type="checkbox" checked
-							name="for_consultation" value="1">
+							name="for_consultation" value="1" on-click="forConsultationClick">
 						{{else}}
 						<input class="checkbox-visible-next-form" type="checkbox"
-							name="for_consultation" value="1">
+							name="for_consultation" value="1" on-click="forConsultationClick">
 						{{/if}}
 						<span></span>
 						<div class="checbox__name">Консультация врача</div>
 					</label>
-					<p class="mb-10">Тип события</p>
-					<div class="text-radios">
-						{{#each catalog.quoteType as qt}}
-						<label class="text-radio">
-							{{#if qt.id === record.type }}
-							<input type="radio" name="type"
-								value="{{ qt.id }}" checked
-								on-click="checkConsultation">
-							{{else}}
-							<input type="radio" name="type" value="{{ qt.id }}"
-								on-click="checkConsultation">
-							{{/if}}
-							<span>{{qt.name}}</span>
-						</label>
-						{{/each}}
+					<div class="select-form" style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};" data-show="service">
+						<div class="popups__text-chexboxs">
+							{{#each catalog.quoteType as qt}}
+							<label class="text-radio">
+								{{#if qt.id === record.type }}
+								<input type="radio" name="type" class="{{qt.id}}"
+									value="{{ qt.id }}" checked
+									on-click="checkConsultation">
+								{{else}}
+								<input type="radio" name="type" value="{{ qt.id }}"
+									class="{{qt.id}}"
+									on-click="checkConsultation">
+								{{/if}}
+								<span>{{qt.name}}</span>
+							</label>
+							{{/each}}
+						</div>
 					</div>
-					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
-						<input type="hidden" name="no_experts" value="0">
-						{{#if record.no_experts === '1' }}
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts"
-							checked
-							value="1">
-						{{else}}
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
-						{{/if}}
-						<span></span>
-						<div class="checbox__name">Я не знаю, кого выбрать</div>
-					</label>
+
 					<div class="row">
 						{{#if record.spec_service}}
 						{{else}}
@@ -462,8 +458,14 @@
 				</div>
 				<div class="admin-editor__summ mb-3">
 					<p>Всего</p>
-					{{#if record.for_consultation == '1'}}
-					<input type="hidden" name="price" class="consultation" value="{{record.price}}">
+					{{#if record.for_consultation == '0'}}
+					<input type="hidden" name="price" value="{{record.price}}">
+					{{elseif record.type == 'online'}}
+					<input type="hidden" name="price" class="consultation" data-type="online"
+						value="{{record.price}}">
+					{{elseif record.type == 'clinic'}}
+					<input type="hidden" name="price" class="consultation" data-type="clinic"
+						value="{{record.price}}">
 					{{else}}
 					<input type="hidden" name="price" value="{{record.price}}">
 					{{/if}}
@@ -495,7 +497,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="text-bold text-big mb-20">
-								Фото после начала лечения
+								Фото в процессе лечения
 							</div>
 							<div class="after-healing">
 								<div class="row">
@@ -540,7 +542,7 @@
 	<div class="account-scroll">
 		<div class="account__table" data-records-group="{{group}}">
 			<div class="account__table-head">
-				<div class="admin-events-item">
+				<div class="admin-events-item orderby">
 					<button class="flag-date__ico">
 						<svg class="svgsprite _flag">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
@@ -552,17 +554,17 @@
 					<span>Приём</span>
 					{{/if}}
 				</div>
-				<div class="admin-events-item">ФИО</div>
-				<div class="admin-events-item">Телефон</div>
+				<div class="admin-events-item orderby">ФИО</div>
+				<div class="admin-events-item orderby">Телефон</div>
 				<div class="admin-events-item">Специалист</div>
 				<div class="admin-events-item">Тип</div>
 				<div class="admin-events-item">Услуга</div>
 				<div class="admin-events-item">Оплата</div>
 				<div class="admin-events-item">Статус</div>
 				{{#if group == 'group=quotes'}}
-				<div class="admin-events-item w-8">Дата приёма</div>
+				<div class="admin-events-item w-8 orderby">Дата приёма</div>
 				{{else}}
-				<div class="admin-events-item w-8">Дата заявки</div>
+				<div class="admin-events-item w-8 orderby">Дата заявки</div>
 				{{/if}}
 
 				<div class="admin-events-item comment">Комментарии</div>
@@ -573,7 +575,7 @@
 					<div class="loader"></div>
 				</div>
 				{{#each records: idx}}
-				<div class="acount__table-accardeon accardeon --{{catalog.quoteStatus[this.status].color}} acount__table-accardeon--pmin"
+				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{this.status}}"
 					data-client="{{.client}}"
 					data-record="{{.id}}"
 					data-id="{{.id}}"
@@ -582,6 +584,7 @@
 					data-group="{{.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
+
 							<div class="accardeon__click" data-record="{{this.id}}" data-idx="{{idx}}"
 								on-click="editRecord"></div>
 							<div class="flag-date">
@@ -612,10 +615,14 @@
 								{{/if}}
 
 								{{#if group == 'events'}}
+								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(event_date)}}">
+
 								<span class="dt"><strong class="title">Приём: </strong>
 									{{@global.utils.formatDate(event_date)}}<br> {{event_time_start}}-{{event_time_end}}
 								</span>
 								{{else}}
+								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(_created)}}">
+
 								<span class="dt"><strong class="title">Заявка: </strong>
 									{{@global.utils.formatDate(_created)}}<br>
 									{{@global.utils.formatTime(_created)}}
@@ -624,12 +631,14 @@
 							</div>
 						</div>
 						<div class="admin-events-item">
+							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
 							<p>ФИО</p>
 							<div>
 								<a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
 							</div>
 						</div>
 						<div class="admin-events-item">
+							<input type="hidden" class="orderby" value="{{catalog.clients[.client].phone}}">
 							<p>Телефон</p>
 							<div>{{catalog.clients[client].phone}}</div>
 						</div>
@@ -676,12 +685,14 @@
 
 						<div class="admin-events-item w-8">
 							{{#if group == 'events'}}
+							<input type="hidden" class="orderby" value="{{@global.utils.timestamp(_created)}}">
 							<p>Дата заявки</p>
 							<div>
 								{{@global.utils.formatDate(_created)}}<br>
 								{{@global.utils.formatTime(_created)}}
 							</div>
 							{{else}}
+							<input type="hidden" class="orderby" value="">
 							<p>Дата приёма</p>
 							<span class="link-danger">&nbsp;</span>
 							{{/if}}
@@ -962,39 +973,95 @@
 													}
 
 												},
-												checkConsultation(ev) {
-													var ght = 0;
-													var lv  = 0;
+												forConsultationClick(ev) {
+													var price             = 0;
+													var $price_input      = $(ev.node).parents('form')
+														.find('[name="price"]');
+													var prev_price        = $price_input.val();
+													var $for_consultation = $(ev.node);
+													if (!isNaN(prev_price)) {
+														price = parseInt(prev_price);
+													}
 
-													if ($(ev.node).is(':checked')
-													    && $(ev.node).val() == 'online') {
-														ght = parseInt(catalog.spec_service.consultation.price);
+													if ($for_consultation.is(':checked')) {
+														$(ev.node).parents('form').find('.clinic[name="type"]')
+															.trigger('click');
+													} else {
+														if ($price_input.hasClass('consultation') && price > 0) {
+															if ($price_input.attr('data-type') == 'online') {
+																price -= parseInt(
+																	catalog.spec_service.consultation.price);
+															} else if ($price_input.attr('data-type') == 'clinic') {
+																price -= parseInt(
+																	catalog.spec_service.consultation_clinic.price);
+															}
+														}
+														$price_input.removeClass('consultation');
+														$price_input.removeAttr('data-type');
+														$price_input.val(price);
+														$(ev.node).parents('form').find('.price').html(
+															utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+													}
+												},
+												checkConsultation(ev) {
+													var ght               = 0;
+													var lv                = 0;
+													var sel_type          = $(ev.node).val();
+													var $for_consultation = $(ev.node).parents('form')
+														.find('[name="for_consultation"]');
+													var $price_input      = $(ev.node).parents('form')
+														.find('[name="price"]');
+													if ($(ev.node).is(':checked')) {
+														if (sel_type == 'online') {
+															ght = parseInt(catalog.spec_service.consultation.price);
+														} else if (sel_type == 'clinic') {
+															ght = parseInt(
+																catalog.spec_service.consultation_clinic.price);
+														} else {
+															ght = 0;
+														}
 													} else {
 														ght = 0;
 													}
 													var price      = 0;
-													var prev_price = $(ev.node).closest('form')
-														.find('[name="price"]').val();
+													var prev_price = $price_input.val();
+
 													if (!isNaN(prev_price)) {
 														price = parseInt(prev_price);
 													}
+
 													if (ght === 0) {
-														if ($(ev.node).parents('form').find('[name="price"]')
-															.hasClass('consultation')) {
-															price -= parseInt(catalog.spec_service.consultation.price);
+														if ($price_input.hasClass('consultation') && price > 0) {
+															if ($price_input.attr('data-type') == 'online') {
+																price -= parseInt(
+																	catalog.spec_service.consultation.price);
+															} else if ($price_input.attr('data-type') == 'clinic') {
+																price -= parseInt(
+																	catalog.spec_service.consultation_clinic.price);
+															}
 														}
-														$(ev.node).parents('form').find('[name="price"]')
-															.removeClass('consultation');
-													} else {
+														$price_input.removeClass('consultation');
+														$price_input.removeAttr('data-type');
+													} else if (!$price_input.hasClass('consultation')
+													           || !$price_input.attr('data-type') != sel_type) {
+														if (price > 0) {
+															if ($price_input.attr('data-type') == 'online') {
+																price -= parseInt(
+																	catalog.spec_service.consultation.price);
+															} else if ($price_input.attr('data-type') == 'clinic') {
+																price -= parseInt(
+																	catalog.spec_service.consultation_clinic.price);
+															}
+														}
 														price += ght;
-														$(ev.node).parents('form').find('[name="price"]')
-															.addClass('consultation');
+
+														$price_input.addClass('consultation');
+														$price_input.attr('data-type', sel_type);
 													}
 
-													$(ev.node).parents('form').find('[name="price"]').val(price);
-													$(ev.node).parents('form').find('.price')
-														.html(utils.formatPrice(price) +
-														      ' ₽<sup><b>*</b></sup>');
+													$price_input.val(price);
+													$(ev.node).parents('form').find('.price').html(
+														utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
 												},
 												save(ev) {
 													if ($($(ev.node).parents('form')).length) {
@@ -1015,7 +1082,7 @@
 														post_statuses.group += 's';
 														var new_data = $($(ev.node).parents('form'))
 															.serializeJSON();
-														console.log(post_statuses.group);
+														console.log(post_statuses.group, post_statuses.pay_status);
 
 														new_data.price      = parseInt(new_data.price);
 														new_data.status     = post_statuses.status;
@@ -1103,6 +1170,43 @@
 
 		load();
 
+		function OrderBy(a, b, n) {
+			if (n) return a - b;
+			if (a < b) return -1;
+			if (a > b) return 1;
+			return 0;
+		}
+
+		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
+			var $th = $(this);
+
+			console.log('clicked')
+			$th.toggleClass('selected');
+			var isSelected = $th.hasClass('selected');
+			var isInput    = true;
+			var column     = $th.index();
+			var $table     = $th.parents('.account__table');
+			var isNum      = false;
+			var rows       = $table.find('.account__table-body > .acount__table-accardeon').get();
+			//console.log(column, $table, rows);
+			rows.sort(function (rowA, rowB) {
+				var keyA, keyB;
+				if (isInput) {
+					keyA = $(rowA).find('.admin-events-item').eq(column).find('input.orderby').val().toUpperCase();
+					keyB = $(rowB).find('.admin-events-item').eq(column).find('input.orderby').val().toUpperCase();
+				} else {
+					keyA = $(rowA).children('.admin-events-item').eq(column).text().toUpperCase();
+					keyB = $(rowB).children('.admin-events-item').eq(column).text().toUpperCase();
+				}
+				//console.log('keys:', keyA, keyB);
+				if (isSelected) return OrderBy(keyA, keyB, isNum);
+				return OrderBy(keyB, keyA, isNum);
+			});
+			$.each(rows, function (index, row) {
+				$table.children('.account__table-body').append(row);
+			});
+			return false;
+		});
 		$(document)
 			.on('click', 'button.flag-date__ico', function (e) {
 				e.stopPropagation();

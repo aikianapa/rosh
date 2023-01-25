@@ -231,81 +231,171 @@
 			{{/if}}
 
 			<div class="lk-title">История посещений и приемов</div>
-			<div class="account__history">
-				<div class="account__table">
-					<div class="account__table-head">
-						<div class="history-item">Дата</div>
-						<div class="history-item">Время</div>
-						<div class="history-item">Пациент</div>
-						<div class="history-item">Услуги</div>
-						<div class="history-item">Анализы</div>
+			<div class="account__history data-tab-wrapper" data-tabs="history">
+				<div class="account__tab-items">
+					<div class="account__tab-item data-tab-link active" data-tabs="history" data-tab="visits">
+						История посещений
 					</div>
-					<div class="account__table-body">
-						{{#each history}}
-						<div class="acount__table-accardeon accardeon" data-record_id="{{this.id}}">
-							<div class="acount__table-main accardeon__main accardeon__click">
-								<div class="history-item">
-									<p>Дата</p>
-									{{ @global.utils.formatDate(.event_date) }}
+					<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="longterm">
+						Продолжительное лечение
+					</div>
+				</div>
+				<div class="account__tab data-tab-item active" data-tab="visits">
+					<div class="account__table">
+						<div class="account__table-head">
+							<div class="history-item">Дата</div>
+							<div class="history-item">Время</div>
+							<div class="history-item">Пациент</div>
+							<div class="history-item">Услуги</div>
+							<div class="history-item">Анализы</div>
+						</div>
+						<div class="account__table-body">
+							{{#each history.events}}
+							<div class="acount__table-accardeon accardeon" data-record_id="{{this.id}}">
+								<div class="acount__table-main accardeon__main accardeon__click">
+									<div class="history-item">
+										<p>Дата</p>
+										{{ @global.utils.formatDate(.event_date) }}
+									</div>
+									<div class="history-item">
+										<p>Время</p>
+										{{this.event_time_start}} - {{this.event_time_end}}
+									</div>
+									<div class="history-item">
+										<p>Пациент</p>
+										{{catalog.clients[client].fullname}}
+									</div>
+									<div class="history-item">
+										<p>Услуги</p>
+										{{#services}}
+										{{catalog.services[this].header}}<br>
+										{{/services}}
+									</div>
+									<div class="history-item">
+										<p>Анализы</p>
+										{{#if this.analyses}}
+										Есть анализы
+										{{else}}
+										Нет анализов
+										{{/if}}
+									</div>
 								</div>
-								<div class="history-item">
-									<p>Время</p>
-									{{this.event_time_start}} - {{this.event_time_end}}
-								</div>
-								<div class="history-item">
-									<p>Пациент</p>
-									{{catalog.clients[client].fullname}}
-								</div>
-								<div class="history-item">
-									<p>Услуги</p>
-									{{#services}}
-									{{catalog.services[this].header}}<br>
-									{{/services}}
-								</div>
-								<div class="history-item">
-									<p>Анализы</p>
-									{{#if this.analyses}}
-									Есть анализы
-									{{else}}
-									Нет анализов
-									{{/if}}
-								</div>
-							</div>
-							<div class="acount__table-list accardeon__list">
-								<div class="account-edit__title">
-									<p>Рекомендация врача</p>
-									<a class="user__edit">
-										<svg class="svgsprite _edit">
-											<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
-										</svg>
-									</a>
-									{{#if this.analyses}}
-									<a class="btn btn--white" href="{{this.analyses}}"
-										target="_blank"
-										download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
-										Скачать анализы
-									</a>
-									{{/if}}
-								</div>
-								<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
+								<div class="acount__table-list accardeon__list">
+									<div class="account-edit__title">
+										<p>Рекомендация врача</p>
+										<a class="user__edit">
+											<svg class="svgsprite _edit">
+												<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
+											</svg>
+										</a>
+										{{#if this.analyses}}
+										<a class="btn btn--white" href="{{this.analyses}}"
+											target="_blank"
+											download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+											Скачать анализы
+										</a>
+										{{/if}}
+									</div>
+									<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
 								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
 									name="recommendation">{{this.recommendation}}</textarea>
 
-									<button class="btn btn--white" type="submit">Сохранить</button>
-								</form>
+										<button class="btn btn--white" type="submit">Сохранить</button>
+									</form>
+								</div>
 							</div>
-						</div>
-						{{elseif ready}}
-						<div class="acount__table-accardeon accardeon">
-							<div class="acount__table-main accardeon__main">
-								Нет записей о посещении
+							{{elseif ready}}
+							<div class="acount__table-accardeon accardeon">
+								<div class="acount__table-main accardeon__main">
+									Нет записей о посещении
+								</div>
 							</div>
-						</div>
-						{{else}}
-						<div class="acount__table-accardeon accardeon">
+							{{else}}
+							<div class="acount__table-accardeon accardeon">
 
+							</div>
+							{{/each}}
 						</div>
-						{{/each}}
+					</div>
+				</div>
+				<div class="account__tab data-tab-item" data-tab="longterm">
+					<div class="account__table">
+						<div class="account__table-head">
+							<div class="healing-item">Дата</div>
+							<div class="healing-item">Услуги</div>
+						</div>
+						<div class="account__table-body">
+							{{#each history.longterms as event}}
+							<!-- !!! longterm item !!! -->
+							<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
+								<div class="acount__table-main accardeon__main accardeon__click">
+									<div class="healing-item">
+										<p>Дата</p>
+										{{ @global.utils.formatDate(this.event_date) }} - {{ @global.utils.formatDate(this.longterm_date_end) }}
+									</div>
+									<div class="healing-item">
+										<p>Услуги</p> {{this.longterm_title}}
+									</div>
+								</div>
+								<div class="acount__table-list accardeon__list">
+									{{#if this.hasPhoto}}
+									<div class="row">
+										<div class="col-md-5">
+											<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+											{{#each this.photos.before}} <!--single photo!-->
+											<a class="before-healing photo"
+												data-fancybox="images-{{event.id}}"
+												data-href="{{.src}}"
+												data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+												<h2 class="h2 healing__date-title">
+													{{ @global.utils.formatDateAdv(.date) }}
+												</h2>
+												<div class="before-healing__photo" style="background-image: url('{{.src}}')">
+												</div>
+											</a>
+											{{/each}}
+										</div>
+										<div class="col-md-7">
+											<div class="text-bold text-big mb-20">
+												Фото после начала лечения
+											</div>
+											<div class="after-healing">
+												<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
+												<div class="row">
+													{{#each this.photos.after}}
+													<div class="col-md-6">
+														<a class="after-healing__item photo"
+															data-fancybox="images-{{event.id}}"
+															data-href="{{.src}}"
+															data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+															<h2 class="h2 healing__date-title">
+																{{ @global.utils.formatDateAdv(.date) }}
+															</h2>
+															<div class="after-healing__photo"
+																style="background-image: url({{.src}});">
+															</div>
+														</a>
+													</div>
+													{{/each}}
+												</div>
+											</div>
+										</div>
+									</div>
+									{{/if}}
+								</div>
+							</div>
+							{{elseif longterms_ready}}
+							<div class="acount__table-accardeon accardeon">
+								<div class="acount__table-main accardeon__main">
+									Нет записей о продолжительном лечении
+								</div>
+							</div>
+							{{else}}
+							<div class="acount__table-accardeon accardeon">
+								<span>Подождите, идет загрузка..</span>
+							</div>
+							{{/each}}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -372,7 +462,10 @@
 							'upcoming': [],
 							'current': []
 						},
-						history: []
+						history: {
+							'events':[],
+							'longterms':[]
+						}
 					},
 					on: {
 						init() {
@@ -427,7 +520,7 @@
 						let curr_timestamp = parseInt(getdate()[0]);
 						records.forEach(function (rec, idx) {
 							if (rec.status === 'past') {
-								page.push('history', rec);
+								page.push('history.events', rec);
 								return;
 							} else if (idx === 0) {
 								page.set('closest_event', rec);
@@ -451,7 +544,20 @@
 						});
 					});
 				/*!!! check & sync updates by interval (1-3min) !!!*/
+				utils.api.get("/api/v2/list/records?group=longterms&@sort=_created:d&client=" + client_id)
+					.then(function (data) {
+						page.set('history.longterms', data); /* get actually user next events */
+						page.set('longterms_ready', true); /* get actually user next events */
+						$("img[data-src]:not([src])").lazyload();
 
+						setTimeout(function () {
+							$('a.photo[data-href]').each(function (i) {
+								var _img = $(this);
+								_img.attr('href', $(this).data('href'));
+							});
+						}, 350);
+
+					});
 			});
 		});
 	</script>

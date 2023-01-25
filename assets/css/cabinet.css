@@ -281,7 +281,6 @@ div.accardeon.active > div.accardeon__list {
 	background-color : #FEFEFE;
 	cursor           : pointer;
 }
-.autocomplete-suggestion.autocomplete-selected,
 .autocomplete-suggestions .autocomplete-suggestion:hover {
 	background-color : #D0DFF3;
 	outline          : 1px solid #EFEFEF;
@@ -400,6 +399,44 @@ ul li.service_price{
 .lk-cabinet .btn.btn--compact {
 	font-size: 16px;
 	height: 40px;
+}
+.admin-events-item.orderby {
+	cursor: pointer;
+}
+.status-new{
+	/*background : linear-gradient(0deg, rgba(251, 237, 204, .5), rgba(251, 237, 204, .5)), #FBF9F7;*/
+}
+.status-uncall{
+	background : #f8e7e3;
+}
+.status-delay{
+	background : #EEE2F8;
+}
+.status-past{
+	background : #E0F5E2;
+}
+.status-upcoming{
+	background : #FDF2DE;
+}
+.status-cancel_expensive{
+	background: linear-gradient(0deg, rgba(144, 201, 255, .5), rgba(144, 201, 255, .5)), #FBF9F7;
+}
+.status-cancel_think{
+	background: #c6f6f8;
+}
+.status-cancel_noreason{
+	background: #bde0fc;
+}
+.admin-events-item.orderby.selected{
+	color : #1E60C1;
+}
+.autocomplete-suggestions.search__drop{
+	z-index : 999999!important;
+
+}
+.autocomplete-suggestions .autocomplete-suggestion{
+	z-index: 1000000;
+	cursor : pointer;
 }
 
 @media (max-width : 768px) {

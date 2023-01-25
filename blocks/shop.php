@@ -22,7 +22,7 @@
                             <a href="/shop/{{wbFurlGenerate({{header}})}}" class="card-img"><img src="/thumbc/700x680/src{{image.0.img}}" alt="{{header}}"></a>
                             <span class="card-name"><a href="#">{{header}}</a></span>
                             <span class="card-price">{{fmtPrice({{price}})}} ₽</span>
-                            <div class="card-info">
+                            <div class="card-info d-none">
                                 <wb-var stars="{{rand(1,5)}}" />
                                 <i class="hb-ico star-{{_var.stars}}"></i>
                                 <a href="#" class="card-link">{{rand(1,30)}} отзывов</a>

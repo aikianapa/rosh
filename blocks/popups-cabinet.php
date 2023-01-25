@@ -34,7 +34,7 @@
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
 					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-						<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1">
+						<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1" on-click="forConsultationClick">
 						<span></span>
 						<div class="checbox__name">Консультация врача</div>
 					</label>
@@ -42,11 +42,11 @@
 						<div class="text-bold mb-20">Тип события</div>
 						<div class="popups__text-chexboxs">
 							<label class="text-radio">
-								<input type="radio" name="type" value="clinic" checked on-click="checkConsultation">
+								<input type="radio" name="type" class="clinic" value="clinic" checked on-click="checkConsultation">
 								<span>В клинике</span>
 							</label>
 							<label class="text-radio switch-blocks">
-								<input type="radio" name="type" value="online" on-click="checkConsultation">
+								<input type="radio" name="type" value="online" class="online" on-click="checkConsultation">
 								<span>Онлайн</span>
 							</label>
 						</div>
@@ -261,20 +261,26 @@
 										<div class="col-md-6">
 											<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
 												{{#if record.for_consultation=== '1' }}
-												<input class="checkbox-visible-next-form" type="checkbox" checked name="for_consultation" value="1"> {{else}}
-												<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1"> {{/if}}
+												<input class="checkbox-visible-next-form" type="checkbox" checked name="for_consultation" value="1" on-click="forConsultationClick"> {{else}}
+												<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1" on-click="forConsultationClick"> {{/if}}
 												<span></span>
 												<div class="checbox__name">Консультация врача</div>
 											</label>
 										</div>
-										<div class="col-md-6" data-show="service">
+										<div class="col-md-6" style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};" data-show="service">
 											<p class="mb-10">Тип события</p>
 											<div class="popups__text-chexboxs">
 												{{#each @global.catalog.quoteType as qt}}
 												<label class="text-radio" name="type" value="{{ qt.id }}">
 													{{#if qt.id === record.type }}
-													<input type="radio" name="type" value="{{ qt.id }}" checked on-click="checkConsultation"> {{else}}
-													<input type="radio" name="type" value="{{ qt.id }}" on-click="checkConsultation"> {{/if}}
+													<input type="radio"
+														name="type"
+														class="{{ qt.id }}"
+														value="{{ qt.id }}"
+														checked on-click="checkConsultation"> {{else}}
+													<input type="radio" name="type"
+														class="{{ qt.id }}"
+														value="{{ qt.id }}" on-click="checkConsultation"> {{/if}}
 													<span>{{qt.name}}</span>
 												</label>
 												{{/each}}
@@ -377,11 +383,21 @@
 									</div>
 									{{/each}} {{/if}}
 								</div>
-
-								<div class="admin-editor__summ">
+								<div class="admin-editor__summ mb-3">
 									<p>Всего</p>
+									{{#if record.for_consultation == '0'}}
 									<input type="hidden" name="price" value="{{record.price}}">
-									<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
+									{{elseif record.type == 'online'}}
+									<input type="hidden" name="price" class="consultation" data-type="online"
+										value="{{record.price}}">
+									{{elseif record.type == 'clinic'}}
+									<input type="hidden" name="price" class="consultation" data-type="clinic"
+										value="{{record.price}}">
+									{{else}}
+									<input type="hidden" name="price" value="{{record.price}}">
+									{{/if}}
+									<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup>
+									</p>
 								</div>
 
 								<button class="btn btn--white" type=submit>Сохранить</button>
@@ -414,37 +430,87 @@
 							console.log('show');
 						},
 
+						forConsultationClick(ev) {
+							var price             = 0;
+							var $price_input      = $(ev.node).parents('form').find('[name="price"]');
+							var prev_price        = $price_input.val();
+							var $for_consultation = $(ev.node);
+							if (!isNaN(prev_price)) {
+								price = parseInt(prev_price);
+							}
+
+							console.log('?:', $for_consultation.is(':checked'));
+							if ($for_consultation.is(':checked')) {
+								setTimeout(function () {
+									$(ev.node).parents('form').find('.clinic[name="type"]').trigger('click');
+								});
+							} else {
+								if ($price_input.hasClass('consultation') && price > 0) {
+									if ($price_input.attr('data-type') == 'online') {
+										price -= parseInt(catalog.spec_service.consultation.price);
+									} else if ($price_input.attr('data-type') == 'clinic') {
+										price -= parseInt(catalog.spec_service.consultation_clinic.price);
+									}
+								}
+								$price_input.removeClass('consultation');
+								$price_input.removeAttr('data-type');
+								$price_input.val(price);
+								$(ev.node).parents('form').find('.price').html(
+									utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+							}
+						},
 						checkConsultation(ev) {
-							var ght = 0;
-							var lv = 0;
-							console.log(ev);
-							if ($(ev.node).is(':checked') && $(ev.node).val() == 'online') {
-								ght = parseInt(catalog.spec_service.consultation.price);
+							var ght               = 0;
+							var lv                = 0;
+							var sel_type          = $(ev.node).val();
+							var $for_consultation = $(ev.node).parents('form').find('[name="for_consultation"]');
+							var $price_input      = $(ev.node).parents('form').find('[name="price"]');
+							if ($(ev.node).is(':checked')) {
+								if (sel_type == 'online') {
+									ght = parseInt(catalog.spec_service.consultation.price);
+								} else if (sel_type == 'clinic') {
+									ght = parseInt(catalog.spec_service.consultation_clinic.price);
+								} else {
+									ght = 0;
+								}
 							} else {
 								ght = 0;
 							}
-							var price = 0;
-							var prev_price = $(ev.node).parents('form').find('[name="price"]').val();
-							if (!!prev_price) {
+							var price      = 0;
+							var prev_price = $price_input.val();
+
+							if (!isNaN(prev_price)) {
 								price = parseInt(prev_price);
 							}
+
 							if (ght === 0) {
-								if ($(ev.node).parents('form').find('[name="price"]')
-									.hasClass('consultation')) {
-									price -= catalog.spec_service.consultation.price;
+								if ($price_input.hasClass('consultation') && price > 0) {
+									if ($price_input.attr('data-type') == 'online') {
+										price -= parseInt(catalog.spec_service.consultation.price);
+									} else if ($price_input.attr('data-type') == 'clinic') {
+										price -= parseInt(catalog.spec_service.consultation_clinic.price);
+									}
 								}
-								$(ev.node).parents('form').find('[name="price"]')
-									.removeClass('consultation');
-							} else {
+								$price_input.removeClass('consultation');
+								$price_input.removeAttr('data-type');
+							} else if (!$price_input.hasClass('consultation')
+							           || !$price_input.attr('data-type') != sel_type) {
+								if (price > 0) {
+									if ($price_input.attr('data-type') == 'online') {
+										price -= parseInt(catalog.spec_service.consultation.price);
+									} else if ($price_input.attr('data-type') == 'clinic') {
+										price -= parseInt(catalog.spec_service.consultation_clinic.price);
+									}
+								}
 								price += ght;
-								$(ev.node).parents('form').find('[name="price"]')
-									.addClass('consultation');
+
+								$price_input.addClass('consultation');
+								$price_input.attr('data-type', sel_type);
 							}
-							console.log(ght, price);
-							$(ev.node).parents('form').find('[name="price"]').val(price);
-							$(ev.node).parents('form').find('.price')
-								.html(utils.formatPrice(price) +
-									' ₽<sup><b>*</b></sup>');
+
+							$price_input.val(price);
+							$(ev.node).parents('form').find('.price').html(
+								utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
 						},
 						submit(ev) {
 							console.log('saving...', ev);
@@ -558,7 +624,7 @@
 							</label>
 							<label class="text-radio switch-blocks" name="target" value="after">
 								<input type="radio" name="target" value="after">
-								<span>В процессе лечения</span>
+								<span class="changed_label">В процессе лечения</span>
 							</label>
 						</div>
 
@@ -719,7 +785,7 @@
 							 placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Дата посещения</div>
 						</div>
-						<div class="popup-title__checkbox disabled">
+						<div class="popup-title__checkbox disabled d-none">
 							<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
 								<input type="checkbox" name="group" value="longterms" checked>
 								<span></span>
@@ -740,7 +806,7 @@
 							</label>
 							<label class="text-radio">
 								<input type="radio" name="target" value="after">
-								<span>В процессе лечения</span>
+								<span>После начала лечения</span>
 							</label>
 						</div>
 						<label class="file-photo">
@@ -976,20 +1042,29 @@
 								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
 								utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
 									function (data) {
-										if (!data.length) {
+										if (!data || !data.length) {
 											utils.api.get('/api/v2/list/users/?email=' + post.email).then(
 												function (data) {
 													if (!data.length) {
-														post.role   = "client";
-														post.role   = "client";
+														post.role      = "client";
+														post.role      = "client";
 														post.confirmed = "0";
-														post.active = "on";
-														wbapp.post('/api/v2/create/users/', post)
+														post.active    = "on";
+														utils.api.post('/api/v2/create/users/', post)
 															.then(function (data) {
-																if (data.error) {
-																	wbapp.trigger('wb-save-error', {
-																		'data': data
-																	});
+																if (data) {
+																	if (!!data.error) {
+																		wbapp.trigger('wb-save-error', {
+																			'data': data
+																		});
+																	} else {
+																		$('.popup.--create-client').fadeOut('fast');
+																		popupMessage('Карточка пациента создана!', '',
+																			'Успешно',
+																			'<a href="/cabinet/client/' + data.id +
+																			'"> Перейти на страницу профиля </a>',
+																			function (d) {});
+																	}
 																} else {
 																	$('.popup.--create-client').fadeOut('fast');
 																	popupMessage('Карточка пациента создана!', '',
@@ -1001,12 +1076,10 @@
 															});
 													} else {
 														toast('Этот e-mail уже используется!', 'Ошибка!', 'error');
-														form.find('[name="email"]').focus();
 													}
 												});
 										} else {
 											toast('Этот номер уже используется!', 'Ошибка!', 'error');
-											form.find('[name="phone"]').focus();
 										}
 									});
 							}

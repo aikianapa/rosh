@@ -44,7 +44,7 @@
 					<div class="account__panel">
 						<div class="account__info">
 							<div class="user">
-								<div class="user__name">{{.fullname}}</div>
+								<a class="user__name" data-client="{{.id}}">{{.fullname}}</a>
 								<div class="user__group">
 									{{#if .birthdate }}
 									<div class="user__birthday">Дата рождения:

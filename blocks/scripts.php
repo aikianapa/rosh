@@ -36,11 +36,9 @@
                 }
             });
         });
-
 	</script>
-
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=B9B416C1563C44C19496DDE34196F4D2">
+		src="/assets/js/cabinet.js?v=01FF064B278A4078B578164B9106B130">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
@@ -58,7 +56,7 @@
 	<link href="/assets/css/additional/frontend.css" rel="stylesheet">
 
 	<link wb-if="in_array('{{_sess.user.role}}', ['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=B9B416C1563C44C19496DDE34196F4D2" rel="stylesheet">
+		href="/assets/css/cabinet.css?v=37548283B1E744B29032E160F972F9F8" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">
