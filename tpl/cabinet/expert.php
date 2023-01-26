@@ -151,12 +151,6 @@
 				<div class="account-edit pt-30">
 					<div class="account-edit__title">
 						<p>Рекомендация врача</p>
-						<a class="user__edit">
-							<svg class="svgsprite _edit">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
-							</svg>
-						</a>
-
 					</div>
 					<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
 								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
@@ -299,15 +293,10 @@
 						<div class="acount__table-list accardeon__list">
 							<div class="account-edit__title">
 								<p>Рекомендация врача</p>
-								<a class="user__edit">
-									<svg class="svgsprite _edit">
-										<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
-									</svg>
-								</a>
+
 								{{#if this.analyses}}
 										<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
-										target="_blank"
-										download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+										target="_blank">
 										Скачать анализы
 									</a>
 								{{/if}}

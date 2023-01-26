@@ -234,6 +234,20 @@
 						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
 						<div class="row">
 							<div class="col-md-12">
+								<div class="select-form">
+									<div class="select pay">
+										<div class="select__main">Статус оплаты</div>
+										<div class="select__list">
+											<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
+											{{#each @global.catalog.quotePay}}
+											<div class="select__item" data-id="{{record.id}}"
+												onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));">
+												{{name}}
+											</div>
+											{{/each}}
+										</div>
+									</div>
+								</div>
 								<input type="hidden" value="{{ record.id }}" name="id"> {{#if record.spec_service}}
 								<input type="hidden" name="spec_service" value="{{record.spec_service}}">
 								<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}"> {{else}}
@@ -523,7 +537,7 @@
 								new_data.price = parseInt(new_data.price);
 								if (!edit_mode) {
 									new_data.status = 'upcoming';
-									new_data.pay_status = new_data.price ? 'unpay' : 'free';
+									new_data.pay_status = new_data.pay_status || (new_data.price ? 'unpay' : 'free');
 
 									new_data.priority = 0;
 									new_data.marked = false;
@@ -804,7 +818,7 @@
 								<input type="radio" name="target" value="before" checked="checked">
 								<span>До начала лечения</span>
 							</label>
-							<label class="text-radio">
+							<label class="text-radio" style="visibility: hidden">
 								<input type="radio" name="target" value="after">
 								<span>После начала лечения</span>
 							</label>
