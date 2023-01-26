@@ -234,20 +234,7 @@
 						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
 						<div class="row">
 							<div class="col-md-12">
-								<div class="select-form">
-									<div class="select pay">
-										<div class="select__main">Статус оплаты</div>
-										<div class="select__list">
-											<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
-											{{#each @global.catalog.quotePay}}
-											<div class="select__item" data-id="{{record.id}}"
-												onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));">
-												{{name}}
-											</div>
-											{{/each}}
-										</div>
-									</div>
-								</div>
+
 								<input type="hidden" value="{{ record.id }}" name="id"> {{#if record.spec_service}}
 								<input type="hidden" name="spec_service" value="{{record.spec_service}}">
 								<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}"> {{else}}
@@ -270,7 +257,20 @@
 								{{/if}}
 
 								<div class="admin-editor__type-event">
-
+									<div class="select-form">
+										<div class="select pay">
+											<div class="select__main">Статус оплаты</div>
+											<div class="select__list">
+												<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
+												{{#each @global.catalog.quotePay}}
+												<div class="select__item" data-id="{{record.id}}"
+													onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));">
+													{{name}}
+												</div>
+												{{/each}}
+											</div>
+										</div>
+									</div>
 									<div class="row">
 										<div class="col-md-6">
 											<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
