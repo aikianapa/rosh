@@ -1628,11 +1628,6 @@ $(function () {
 			e.preventDefault();
 			window.location.href = "/cabinet/client/" + $(this).data('client');
 		})
-		.on('click', 'a.signout', function (e) {
-			e.stopPropagation();
-			console.log('Logout clicked..');
-			window.catalog.reload();
-		})
 		.on('click', 'a.btn.btn--black.login', function (e) {
 			e.stopPropagation();
 			console.log('Login clicked..');

@@ -281,11 +281,21 @@ div.accardeon.active > div.accardeon__list {
 	background-color : #FEFEFE;
 	cursor           : pointer;
 }
+.client-card.link {
+	color      : #246;
+	transition : all linear .3s;
+}
+.client-card.link:hover {
+	text-decoration : underline;
+}
+.record-edit .account-events__item.wide .account-event-wrap {
+	font-size: 1.3em;
+}
 .autocomplete-suggestions .autocomplete-suggestion:hover {
 	background-color : #D0DFF3;
 	outline          : 1px solid #EFEFEF;
 }
-.photos .autocomplete-suggestions .autocomplete-suggestion{
+.photos .autocomplete-suggestions .autocomplete-suggestion {
 	padding       : 4px 8px;
 	z-index       : 99999;
 	font-size     : 15px;

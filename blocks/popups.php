@@ -1,5 +1,5 @@
 <view>
-	<a class="phone --openpopup" href="#" data-popup="--fast">
+	<a class="phone --openpopup" href="javascript:void(0)" data-popup="--fast">
 		<svg class="svgsprite _phone">
 			<use xlink:href="/assets/img/sprites/svgsprites.svg#phone"></use>
 		</svg>

@@ -236,8 +236,7 @@
 
 											{{#if this.analyses}}
 											<a class="btn btn--white mr-20" href="{{this.analyses}}"
-												target="_blank"
-												download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+												target="_blank">
 												Скачать анализы
 											</a>
 											{{/if}}
@@ -678,8 +677,7 @@
 				<div class="account-events__download">
 					<div class="lk-title">Анализы</div>
 					<a class="btn btn--white" href="{{.}}"
-						target="_blank"
-						download="Анализы (за {{@global.utils.formatDate(this.event_date)}}).pdf">
+						target="_blank">
 						Скачать анализы
 					</a>
 				</div>

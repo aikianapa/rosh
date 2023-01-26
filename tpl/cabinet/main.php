@@ -45,13 +45,19 @@
 				<div class="container data-tab-wrapper" data-tabs="records">
 					<div class="account__tab-items">
 						<div class="account__tab-item data-tab-link active"
+							data-type="group=quotes"
 							data-tab="quotes" data-tabs="records">Заявки
 						</div>
 						<div class="account__tab-item data-tab-link"
+							data-type="group=events&status=upcoming"
 							data-tab="events" data-tabs="records">События
 						</div>
 						<div class="account__tab-item data-tab-link"
+							data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]"
 							data-tab="past" data-tabs="records">Завершенные
+						</div>
+						<div class="account__tab-item data-tab-link"
+							data-tab="longterms" data-tabs="records">Продолжытельное
 						</div>
 						<div class="buttons disabled">
 							<label class="checkbox">
@@ -81,6 +87,12 @@
 
 					<div class="account__tab data-tab-item" data-tab="past"
 						data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]">
+						<div class="loading-overlay">
+							<div class="loader"></div>
+						</div>
+					</div>
+					<div class="account__tab data-tab-item hidden d-none" data-tab="longterms"
+						data-type="group=longterms">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
@@ -249,7 +261,7 @@
 			<div class="col-md-7">
 				{{#if record.client_comment}}
 				<div class="account-events__item wide">
-					<div class="account-event-wrap">
+					<div class="account-event-wrap" style="font-size: 20px">
 						<div class="account-events__name">Причина обращения:</div>
 						<div class="account-event">
 							{{{@global.nl2br(record.client_comment)}}}
@@ -556,19 +568,17 @@
 				</div>
 				<div class="admin-events-item orderby">ФИО</div>
 				<div class="admin-events-item orderby">Телефон</div>
-				<div class="admin-events-item">Специалист</div>
+				<div class="admin-events-item orderby">Специалист</div>
 				<div class="admin-events-item">Тип</div>
 				<div class="admin-events-item">Услуга</div>
-				<div class="admin-events-item">Оплата</div>
-				<div class="admin-events-item">Статус</div>
+				<div class="admin-events-item orderby">Оплата</div>
+				<div class="admin-events-item orderby">Статус</div>
 				{{#if group == 'group=quotes'}}
 				<div class="admin-events-item w-8 orderby">Дата приёма</div>
 				{{else}}
 				<div class="admin-events-item w-8 orderby">Дата заявки</div>
 				{{/if}}
-
 				<div class="admin-events-item comment">Комментарии</div>
-
 			</div>
 			<div class="account__table-body">
 				<div class="loading-overlay">
@@ -634,7 +644,7 @@
 							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
 							<p>ФИО</p>
 							<div>
-								<a class="client-card" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
 							</div>
 						</div>
 						<div class="admin-events-item">
@@ -647,6 +657,7 @@
 							{{#if no_experts == '1'}}
 							<div></div>
 							{{else}}
+							<input type="hidden" class="orderby" value="{{#experts}}{{catalog.experts[this].name}},{{/experts}}">
 							{{#experts}}
 							<div>{{catalog.experts[this].name}}</div>
 							{{/experts}}
@@ -674,11 +685,13 @@
 							<p>Оплата</p>
 							{{#each catalog.quotePay as item}}
 							{{#if item.id == pay_status }}
+							<input type="hidden" class="orderby" value="{{item.name}}">
 							<div>{{item.name}}</div>
 							{{/if}}
 							{{/each}}
 						</div>
 						<div class="admin-events-item">
+							<input type="hidden" class="orderby" value="{{catalog.quoteStatus[this.status].name}}">
 							<p>Статус</p>
 							<div>{{catalog.quoteStatus[this.status].name}}</div>
 						</div>
@@ -759,407 +772,411 @@
 			}
 			return 'event';
 		};
+		window.tab_urls      = [
+			'group=quotes',
+			'group=events&status=upcoming',
+			'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]'
+		];
 		let editProfile      = wbapp.tpl('#editProfile').html;
 		let editStatus       = wbapp.tpl('#editStatus').html;
-		window.load          = function () {
-			['group=quotes',
-			 'group=events&status=upcoming',
-			 'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]'
-			].forEach(
-				function (target_tab, i) {
-					var _sorts = [
-						'_lastdate:d',
-						'event_date:d',
-						'event_date:d'
-					];
-					utils.api.get('/api/v2/list/records?' + target_tab, {'@sort': _sorts[i]}).then(
-						function (result) {
-							let data = {
+		window.load          = function (only_tab) {
+			tab_urls.forEach(function (target_tab, i) {
+				if (only_tab && only_tab != target_tab) {
+					return;
+				}
+				var _sorts = [
+					'_lastdate:d',
+					'event_date:d',
+					'event_date:d'
+				];
+				utils.api.get('/api/v2/list/records?' + target_tab, {'@sort': _sorts[i]}).then(
+					function (result) {
+						let data = {
+							group: target_tab,
+							records: result,
+							catalog: catalog
+						};
+						var _tab = new Ractive({
+							el: '.data-tab-item[data-type="' + target_tab + '"]',
+							template: wbapp.tpl('#listRecords').html,
+							data: {
 								group: target_tab,
 								records: result,
 								catalog: catalog
-							};
-							var _tab = new Ractive({
-								el: '.data-tab-item[data-type="' + target_tab + '"]',
-								template: wbapp.tpl('#listRecords').html,
-								data: {
-									group: target_tab,
-									records: result,
-									catalog: catalog
+							},
+							on: {
+								loaded() {
+									console.log('>>> loaded', target_tab);
+									$(this.el).find('.loading-overlay').remove();
 								},
-								on: {
-									loaded() {
-										console.log('>>> loaded', target_tab);
-										$(this.el).find('.loading-overlay').remove();
-									},
-									complete() {
-										this.find('.loading-overlay').remove();
-									},
-									editProfile(ev) {
-										var form = $(ev.node).parents('.admin-editor')
-											.find('.admin-editor__edit-profile');
-										if ($(ev.node).hasClass('open')) {
-											$(ev.node).removeClass('open');
-											$(form).html('');
-											return;
-										}
-										$(ev.node).addClass('open');
-										var profile_id = $(ev.node).data('id');
+								complete() {
+									this.find('.loading-overlay').remove();
+								},
+								editProfile(ev) {
+									var form = $(ev.node).parents('.admin-editor')
+										.find('.admin-editor__edit-profile');
+									if ($(ev.node).hasClass('open')) {
+										$(ev.node).removeClass('open');
+										$(form).html('');
+										return;
+									}
+									$(ev.node).addClass('open');
+									var profile_id = $(ev.node).data('id');
 
-										let editor = new Ractive({
-											el: form,
-											template: editProfile,
-											data: {},
-											lazy: true,
+									let editor = new Ractive({
+										el: form,
+										template: editProfile,
+										data: {},
+										lazy: true,
 
-											on: {
-												save(ev) {
+										on: {
+											save(ev) {
 
-													var $form = $(ev.node);
-													console.log(form);
-													if ($form.verify() && profile_id > '') {
-														var data = $form.serializeJSON();
+												var $form = $(ev.node);
+												console.log(form);
+												if ($form.verify() && profile_id > '') {
+													var data = $form.serializeJSON();
 
-														Cabinet.updateProfile(profile_id, data,
-															function (res) {
-																console.log('client saved', res);
-																data.birthdate_fmt = utils.formatDate(data.birthdate);
-																data.phone         = utils.formatPhone(data.phone);
-																_tab.set('catalog.clients.' + profile_id, data);
-																catalog.clients[profile_id] = data;
+													Cabinet.updateProfile(profile_id, data,
+														function (res) {
+															console.log('client saved', res);
+															data.birthdate_fmt = utils.formatDate(data.birthdate);
+															data.phone         = utils.formatPhone(data.phone);
+															_tab.set('catalog.clients.' + profile_id, data);
+															catalog.clients[profile_id] = data;
 
-																$(form).html('');
-																toast('Профиль успешно обновлён');
-															});
-													}
-
-													return false;
+															$(form).html('');
+															toast('Профиль успешно обновлён');
+														});
 												}
-											}
-										});
-										utils.api.get('/api/v2/read/users/' + profile_id).then(
-											function (data) {
-												editor.set(data);
-												data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
-												console.log(data);
-												initPlugins();
-											});
-									},
-									editRecord(ev) {
-										var target_tab = this;
-										var _row_idx   = $(ev.node).data('idx');
-										const _parent  = $(ev.node).closest('.accardeon');
-										var _record    = this.get('records.' + _row_idx);
-										console.log('open ', _record);
-										if (!_record.price) {
-											_record.price = 0;
-										}
 
-										_record.price_text = utils.formatPrice(_record.price);
-										var statusEditor   = new Ractive({
-											el: _parent.find('.admin-editor__top-select'),
-											template: editStatus,
-											data: {
-												catalog: catalog,
-												record: _record
+												return false;
+											}
+										}
+									});
+									utils.api.get('/api/v2/read/users/' + profile_id).then(
+										function (data) {
+											editor.set(data);
+											data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
+											console.log(data);
+											initPlugins();
+										});
+								},
+								editRecord(ev) {
+									var target_tab = this;
+									var _row_idx   = $(ev.node).data('idx');
+									const _parent  = $(ev.node).closest('.accardeon');
+									var _record    = this.get('records.' + _row_idx);
+									console.log('open ', _record);
+									if (!_record.price) {
+										_record.price = 0;
+									}
+
+									_record.price_text = utils.formatPrice(_record.price);
+									var statusEditor   = new Ractive({
+										el: _parent.find('.admin-editor__top-select'),
+										template: editStatus,
+										data: {
+											catalog: catalog,
+											record: _record
+										},
+										on: {
+											complete() {
+												$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
+													.trigger('click');
+												$(statusEditor.find(
+													`.select.pay [data-id="${_record.pay_status}"]`))
+													.trigger('click');
 											},
-											on: {
-												complete() {
-													$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
+											save(ev) {
+												let form = $(ev.node).parents('.admin-editor');
+												$(form).find('.admin-editor__edit-profile').html('');
+												let copy = $('<form></form>');
+												$(copy).html($(form).clone());
+
+												let post = $(copy).serializeJSON();
+
+												post.group = (catalog.quoteStatus[post.status].type ||
+												              _record.group.substring(0,
+													              _record.group.length - 1)) + 's';
+
+												utils.api.post('/api/v2/update/records/' + _record.id, post)
+													.then(function (res) {
+														_tab.set('records.' + _row_idx, res);
+														window.load();
+														toast('Успешно сохранено');
+													});
+												delete copy;
+
+												return false;
+											}
+										}
+									});
+
+									let recordEditor = new Ractive({
+										el: _parent.find('.admin-editor__events'),
+										template: wbapp.tpl('#editorRecord').html,
+										data: {
+											catalog: catalog,
+											record: _record,
+											start_time: 0,
+											end_time: 0
+										},
+										on: {
+											complete() {
+												initServicesSearch(
+													_parent.find('.admin-editor__events .popup-services-list'),
+													catalog.servicesList
+												);
+												console.log('true: ',
+													$(this.el).find('.search__drop-item.services').length);
+												initPlugins();
+
+												if (!!$(this.el)
+													.find('.select .select__item input:checked').length) {
+													$(this.el).find('.select.select_experts .select__item')
 														.trigger('click');
-													$(statusEditor.find(
-														`.select.pay [data-id="${_record.pay_status}"]`))
+												}
+												console.log($('.search__drop-item.services').length);
+
+												var _price = (_record.type === 'online')
+													? parseInt(catalog.spec_service.consultation.price)
+													: 0;
+												$(this.el).find('.search__drop-item.services').each(function () {
+													_price += parseInt($(this).data('price'));
+												});
+
+												console.log(_price);
+
+												$(this.el).find('.admin-editor__summ input[name="price"]')
+													.val(_price);
+												$(this.el).find('.admin-editor__summ p.price').html(
+													utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
+
+												setTimeout(function () {
+													$('a.photo[data-href]').each(function (i) {
+														var _img = $(this);
+														_img.attr('href', $(this).data('href'));
+													});
+												}, 150);
+											},
+											addPhoto(ev, record) {
+												var self = this;
+												popupPhoto(catalog.clients[record.client], record,
+													function (rec) {
+														_tab.set('records.' + _row_idx, rec);
+														toast('Фото добавлено!');
+														self.set('record', rec);
+														setTimeout(function () {
+															$(self.el).find('a.photo[data-href]')
+																.each(function (i) {
+																	var _img = $(this);
+																	_img.attr('href', $(this).data('href'));
+																});
+														}, 150);
+													});
+											},
+											setEventTime(ev) {
+												console.log(ev, $(ev.node).hasClass('event-time-start'),
+													$(ev.node).val());
+												console.log(this.get('start_time'));
+												if ($(ev.node).hasClass('event-time-start')) {
+													this.set('start_time', $(ev.node).val());
+												} else {
+													this.set('end_time', $(ev.node).val());
+													if (!!this.get('start_time')) {
+														$(ev.node).timepicker({minTime: this.get('start_time')});
+													}
+												}
+
+											},
+											forConsultationClick(ev) {
+												var price             = 0;
+												var $price_input      = $(ev.node).parents('form')
+													.find('[name="price"]');
+												var prev_price        = $price_input.val();
+												var $for_consultation = $(ev.node);
+												if (!isNaN(prev_price)) {
+													price = parseInt(prev_price);
+												}
+
+												if ($for_consultation.is(':checked')) {
+													$(ev.node).parents('form').find('.clinic[name="type"]')
 														.trigger('click');
-												},
-												save(ev) {
+												} else {
+													if ($price_input.hasClass('consultation') && price > 0) {
+														if ($price_input.attr('data-type') == 'online') {
+															price -= parseInt(
+																catalog.spec_service.consultation.price);
+														} else if ($price_input.attr('data-type') == 'clinic') {
+															price -= parseInt(
+																catalog.spec_service.consultation_clinic.price);
+														}
+													}
+													$price_input.removeClass('consultation');
+													$price_input.removeAttr('data-type');
+													$price_input.val(price);
+													$(ev.node).parents('form').find('.price').html(
+														utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+												}
+											},
+											checkConsultation(ev) {
+												var ght               = 0;
+												var lv                = 0;
+												var sel_type          = $(ev.node).val();
+												var $for_consultation = $(ev.node).parents('form')
+													.find('[name="for_consultation"]');
+												var $price_input      = $(ev.node).parents('form')
+													.find('[name="price"]');
+												if ($(ev.node).is(':checked')) {
+													if (sel_type == 'online') {
+														ght = parseInt(catalog.spec_service.consultation.price);
+													} else if (sel_type == 'clinic') {
+														ght = parseInt(
+															catalog.spec_service.consultation_clinic.price);
+													} else {
+														ght = 0;
+													}
+												} else {
+													ght = 0;
+												}
+												var price      = 0;
+												var prev_price = $price_input.val();
+
+												if (!isNaN(prev_price)) {
+													price = parseInt(prev_price);
+												}
+
+												if (ght === 0) {
+													if ($price_input.hasClass('consultation') && price > 0) {
+														if ($price_input.attr('data-type') == 'online') {
+															price -= parseInt(
+																catalog.spec_service.consultation.price);
+														} else if ($price_input.attr('data-type') == 'clinic') {
+															price -= parseInt(
+																catalog.spec_service.consultation_clinic.price);
+														}
+													}
+													$price_input.removeClass('consultation');
+													$price_input.removeAttr('data-type');
+												} else if (!$price_input.hasClass('consultation')
+												           || !$price_input.attr('data-type') != sel_type) {
+													if (price > 0) {
+														if ($price_input.attr('data-type') == 'online') {
+															price -= parseInt(
+																catalog.spec_service.consultation.price);
+														} else if ($price_input.attr('data-type') == 'clinic') {
+															price -= parseInt(
+																catalog.spec_service.consultation_clinic.price);
+														}
+													}
+													price += ght;
+
+													$price_input.addClass('consultation');
+													$price_input.attr('data-type', sel_type);
+												}
+
+												$price_input.val(price);
+												$(ev.node).parents('form').find('.price').html(
+													utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+											},
+											save(ev) {
+												if ($($(ev.node).parents('form')).length) {
 													let form = $(ev.node).parents('.admin-editor');
 													$(form).find('.admin-editor__edit-profile').html('');
 													let copy = $('<form></form>');
 													$(copy).html($(form).clone());
 
-													let post = $(copy).serializeJSON();
+													let post_statuses = $(copy).serializeJSON();
 
-													post.group = (catalog.quoteStatus[post.status].type ||
-													              _record.group.substring(0,
-														              _record.group.length - 1)) + 's';
+													post_statuses.group = (
+														catalog.quoteStatus[post_statuses.status].type || ''
+													);
+													if (!post_statuses.group) {
+														post_statuses.group = getGroupByStatus(
+															post_statuses.status);
+													}
+													post_statuses.group += 's';
+													var new_data = $($(ev.node).parents('form'))
+														.serializeJSON();
+													console.log(post_statuses.group, post_statuses.pay_status);
 
-													utils.api.post('/api/v2/update/records/' + _record.id, post)
+													new_data.price      = parseInt(new_data.price);
+													new_data.status     = post_statuses.status;
+													new_data.pay_status = post_statuses.pay_status;
+													new_data.group      = post_statuses.group;
+													if (new_data.group === 'events' && !new_data.event_date) {
+														toast_error('Необходимо выбрать дату/время события');
+														$($(ev.node).parents('form')).find('[name="event_date"]')
+															.focus();
+														return false;
+													}
+													if (new_data.group === 'events' && !new_data.experts) {
+														toast_error('Необходимо выбрать специалиста');
+														$($(ev.node).parents('form'))
+															.find('.select_experts')
+															.focus();
+														return false;
+													}
+													if (new_data.group === 'events'
+													    && !!new_data.experts) {
+														new_data.no_experts = 0;
+													}
+													if (new_data.group === 'events'
+													    && !!new_data.services) {
+														new_data.no_services = 0;
+													}
+
+													if (new_data.group === 'events' && !new_data.price) {
+														toast_error('Необходимо выбрать услугу');
+														$($(ev.node).parents('form'))
+															.find('.popup-services-list')
+															.focus();
+														return false;
+													}
+
+													new_data.event_date = utils.dateForce(new_data.event_date);
+													new_data.services   = utils.arr.unique(new_data.services);
+
+													changeLogSave(new_data, _record);
+
+													utils.api.post(
+															'/api/v2/update/records/' + _record.id, new_data)
 														.then(function (res) {
+
+															console.log('event data:', new_data);
+															toast('Успешно сохранено');
 															_tab.set('records.' + _row_idx, res);
 															window.load();
-															toast('Успешно сохранено');
 														});
-													delete copy;
-
-													return false;
+												} else {
+													toast('Проверьте указанные данные');
 												}
+												return false;
 											}
-										});
-
-										let recordEditor = new Ractive({
-											el: _parent.find('.admin-editor__events'),
-											template: wbapp.tpl('#editorRecord').html,
-											data: {
-												catalog: catalog,
-												record: _record,
-												start_time: 0,
-												end_time: 0
-											},
-											on: {
-												complete() {
-													initServicesSearch(
-														_parent.find('.admin-editor__events .popup-services-list'),
-														catalog.servicesList
-													);
-													console.log('true: ',
-														$(this.el).find('.search__drop-item.services').length);
-													initPlugins();
-
-													if (!!$(this.el)
-														.find('.select .select__item input:checked').length) {
-														$(this.el).find('.select.select_experts .select__item')
-															.trigger('click');
-													}
-													console.log($('.search__drop-item.services').length);
-
-													var _price = (_record.type === 'online')
-														? parseInt(catalog.spec_service.consultation.price)
-														: 0;
-													$(this.el).find('.search__drop-item.services').each(function () {
-														_price += parseInt($(this).data('price'));
-													});
-
-													console.log(_price);
-
-													$(this.el).find('.admin-editor__summ input[name="price"]')
-														.val(_price);
-													$(this.el).find('.admin-editor__summ p.price').html(
-														utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
-
-													setTimeout(function () {
-														$('a.photo[data-href]').each(function (i) {
-															var _img = $(this);
-															_img.attr('href', $(this).data('href'));
-														});
-													}, 150);
-												},
-												addPhoto(ev, record) {
-													var self = this;
-													popupPhoto(catalog.clients[record.client], record,
-														function (rec) {
-															_tab.set('records.' + _row_idx, rec);
-															toast('Фото добавлено!');
-															self.set('record', rec);
-															setTimeout(function () {
-																$(self.el).find('a.photo[data-href]')
-																	.each(function (i) {
-																		var _img = $(this);
-																		_img.attr('href', $(this).data('href'));
-																	});
-															}, 150);
-														});
-												},
-												setEventTime(ev) {
-													console.log(ev, $(ev.node).hasClass('event-time-start'),
-														$(ev.node).val());
-													console.log(this.get('start_time'));
-													if ($(ev.node).hasClass('event-time-start')) {
-														this.set('start_time', $(ev.node).val());
-													} else {
-														this.set('end_time', $(ev.node).val());
-														if (!!this.get('start_time')) {
-															$(ev.node).timepicker({minTime: this.get('start_time')});
-														}
-													}
-
-												},
-												forConsultationClick(ev) {
-													var price             = 0;
-													var $price_input      = $(ev.node).parents('form')
-														.find('[name="price"]');
-													var prev_price        = $price_input.val();
-													var $for_consultation = $(ev.node);
-													if (!isNaN(prev_price)) {
-														price = parseInt(prev_price);
-													}
-
-													if ($for_consultation.is(':checked')) {
-														$(ev.node).parents('form').find('.clinic[name="type"]')
-															.trigger('click');
-													} else {
-														if ($price_input.hasClass('consultation') && price > 0) {
-															if ($price_input.attr('data-type') == 'online') {
-																price -= parseInt(
-																	catalog.spec_service.consultation.price);
-															} else if ($price_input.attr('data-type') == 'clinic') {
-																price -= parseInt(
-																	catalog.spec_service.consultation_clinic.price);
-															}
-														}
-														$price_input.removeClass('consultation');
-														$price_input.removeAttr('data-type');
-														$price_input.val(price);
-														$(ev.node).parents('form').find('.price').html(
-															utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
-													}
-												},
-												checkConsultation(ev) {
-													var ght               = 0;
-													var lv                = 0;
-													var sel_type          = $(ev.node).val();
-													var $for_consultation = $(ev.node).parents('form')
-														.find('[name="for_consultation"]');
-													var $price_input      = $(ev.node).parents('form')
-														.find('[name="price"]');
-													if ($(ev.node).is(':checked')) {
-														if (sel_type == 'online') {
-															ght = parseInt(catalog.spec_service.consultation.price);
-														} else if (sel_type == 'clinic') {
-															ght = parseInt(
-																catalog.spec_service.consultation_clinic.price);
-														} else {
-															ght = 0;
-														}
-													} else {
-														ght = 0;
-													}
-													var price      = 0;
-													var prev_price = $price_input.val();
-
-													if (!isNaN(prev_price)) {
-														price = parseInt(prev_price);
-													}
-
-													if (ght === 0) {
-														if ($price_input.hasClass('consultation') && price > 0) {
-															if ($price_input.attr('data-type') == 'online') {
-																price -= parseInt(
-																	catalog.spec_service.consultation.price);
-															} else if ($price_input.attr('data-type') == 'clinic') {
-																price -= parseInt(
-																	catalog.spec_service.consultation_clinic.price);
-															}
-														}
-														$price_input.removeClass('consultation');
-														$price_input.removeAttr('data-type');
-													} else if (!$price_input.hasClass('consultation')
-													           || !$price_input.attr('data-type') != sel_type) {
-														if (price > 0) {
-															if ($price_input.attr('data-type') == 'online') {
-																price -= parseInt(
-																	catalog.spec_service.consultation.price);
-															} else if ($price_input.attr('data-type') == 'clinic') {
-																price -= parseInt(
-																	catalog.spec_service.consultation_clinic.price);
-															}
-														}
-														price += ght;
-
-														$price_input.addClass('consultation');
-														$price_input.attr('data-type', sel_type);
-													}
-
-													$price_input.val(price);
-													$(ev.node).parents('form').find('.price').html(
-														utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
-												},
-												save(ev) {
-													if ($($(ev.node).parents('form')).length) {
-														let form = $(ev.node).parents('.admin-editor');
-														$(form).find('.admin-editor__edit-profile').html('');
-														let copy = $('<form></form>');
-														$(copy).html($(form).clone());
-
-														let post_statuses = $(copy).serializeJSON();
-
-														post_statuses.group = (
-															catalog.quoteStatus[post_statuses.status].type || ''
-														);
-														if (!post_statuses.group) {
-															post_statuses.group = getGroupByStatus(
-																post_statuses.status);
-														}
-														post_statuses.group += 's';
-														var new_data = $($(ev.node).parents('form'))
-															.serializeJSON();
-														console.log(post_statuses.group, post_statuses.pay_status);
-
-														new_data.price      = parseInt(new_data.price);
-														new_data.status     = post_statuses.status;
-														new_data.pay_status = post_statuses.pay_status;
-														new_data.group      = post_statuses.group;
-														if (new_data.group === 'events' && !new_data.event_date) {
-															toast_error('Необходимо выбрать дату/время события');
-															$($(ev.node).parents('form')).find('[name="event_date"]')
-																.focus();
-															return false;
-														}
-														if (new_data.group === 'events' && !new_data.experts) {
-															toast_error('Необходимо выбрать специалиста');
-															$($(ev.node).parents('form'))
-																.find('.select_experts')
-																.focus();
-															return false;
-														}
-														if (new_data.group === 'events'
-														    && !!new_data.experts) {
-															new_data.no_experts = 0;
-														}
-														if (new_data.group === 'events'
-														    && !!new_data.services) {
-															new_data.no_services = 0;
-														}
-
-														if (new_data.group === 'events' && !new_data.price) {
-															toast_error('Необходимо выбрать услугу');
-															$($(ev.node).parents('form'))
-																.find('.popup-services-list')
-																.focus();
-															return false;
-														}
-
-														new_data.event_date = utils.dateForce(new_data.event_date);
-														new_data.services   = utils.arr.unique(new_data.services);
-
-														changeLogSave(new_data, _record);
-
-														utils.api.post(
-																'/api/v2/update/records/' + _record.id, new_data)
-															.then(function (res) {
-
-																console.log('event data:', new_data);
-																toast('Успешно сохранено');
-																_tab.set('records.' + _row_idx, res);
-																window.load();
-															});
-													} else {
-														toast('Проверьте указанные данные');
-													}
-													return false;
-												}
-											}
-										});
-									}
-
+										}
+									});
 								}
-							});
 
-							_tab.fire('loaded');
-							tabs[target_tab] = {ractive: _tab, data: data};
+							}
 						});
-					/* sort by prior */
-					const _list = $('.account__tab.data-tab-item[data-tab="' + target_tab + '"] .account__table-body');
-					_list.find(".acount__table-accardeon").sort(function (a, b) {
-						const _a = parseInt($(a).attr('data-priority'));
-						const _b = parseInt($(b).attr('data-priority'));
-						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-					}).appendTo(_list);
-					setTimeout(function () {
-						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
-							$(this).attr('href', $(this).data('href'));
-						});
-					}, 550);
-				});
+
+						_tab.fire('loaded');
+						tabs[target_tab] = {ractive: _tab, data: data};
+					});
+				/* sort by prior */
+				const _list = $('.account__tab.data-tab-item[data-tab="' + target_tab + '"] .account__table-body');
+				_list.find(".acount__table-accardeon").sort(function (a, b) {
+					const _a = parseInt($(a).attr('data-priority'));
+					const _b = parseInt($(b).attr('data-priority'));
+					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+				}).appendTo(_list);
+				setTimeout(function () {
+					$('a.account__table').find('a.client-card[data-href]').each(function (i) {
+						$(this).attr('href', $(this).data('href'));
+					});
+				}, 550);
+			});
 
 			setTimeout(function () {
 				$('.account__table').find('a.client-card[data-href]').each(function (i) {
@@ -1170,6 +1187,11 @@
 
 		load();
 
+		setTimeout(function reload() {
+			window.load();
+			setTimeout(repeat, 600000);
+		}, 600000);
+
 		function OrderBy(a, b, n) {
 			if (n) return a - b;
 			if (a < b) return -1;
@@ -1177,6 +1199,11 @@
 			return 0;
 		}
 
+		$('body').on('click', '.account__tab-items .account__tab-item.data-tab-link', function () {
+			var _type = $(this).data('type');
+			console.log('open:',_type);
+			window.load(_type);
+		});
 		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
 			var $th = $(this);
 

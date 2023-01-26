@@ -88,7 +88,7 @@
 				{{/if}}
 			</div>
 		</div>
-		<a href="/signout" class="account__exit signout">Выйти из аккаунта</a>
+		<a class="account__exit signout" href="/signout">Выйти из аккаунта</a>
 		<input class="admin-edit__upload" type="hidden" id="analyses-file">
 
 		<div class="profile-editor-inline d-none">
@@ -158,7 +158,7 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" href="{{this.analyses}}" target="_blank" download="Анализы.pdf">Скачать анализы</a>
+				<a class="btn btn--white" href="{{this.analyses}}" target="_blank">Скачать анализы</a>
 			</div>
 			{{/if}}
 		</div>
@@ -267,9 +267,7 @@
 			{{#if this.analyses}}
 			<div class="account-events__download">
 				<div class="lk-title">Анализы</div>
-				<a class="btn btn--white" href="{{this.analyses}}"
-					target="_blank"
-					download="Анализы ({{@global.utils.formatDate(this.event_date)}}).pdf">
+				<a class="btn btn--white" href="{{this.analyses}}" target="_blank">
 					Скачать анализы
 				</a>
 			</div>
@@ -342,8 +340,7 @@
 										<div class="analysis__top --aicn --flex mb-20">
 											<div class="analysis__title">Анализы</div>
 											<a class="btn btn--white" href="{{this.analyses}}"
-												target="_blank"
-												download="Анализы ({{@global.utils.formatDate(this.event_date)}}).pdf">
+												target="_blank">
 												Скачать анализы
 											</a>
 										</div>
@@ -710,7 +707,8 @@
 				},
 				history: {
 					'events': [],
-					'longterms': []
+					'longterms': [],
+					'orders': []
 				}
 			},
 			on: {
@@ -736,8 +734,6 @@
 								}, 150);
 							});
 					});
-
-					console.log('READY!!!');
 				},
 				runOnlineChat(ev) {
 					const _rec_id = $(ev.node).data('id');
@@ -876,6 +872,13 @@
 				}
 				page.set('longterms_ready', true);
 			});
+		//utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+		//	.then(function (records) {
+		//		if (!!records) {
+		//			page.set('history.orders', records);
+		//		}
+		//		page.set('orders_ready', true);
+		//	});
 
 		setTimeout(function () {
 		});

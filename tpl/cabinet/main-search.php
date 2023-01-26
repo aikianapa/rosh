@@ -56,10 +56,10 @@
 <template id="search-result">
 	<div class="lk-title">Результаты поиска</div>
 	{{#each results}}
-	<div class="account__panel">
+	<div class="account__panel" data-orderby="{{this.fullname}}">
 		<div class="account__info">
 			<div class="user">
-				<div class="user__name">{{this.fullname}}</div>
+				<a class="user__name" data-client="{{.id}}">{{this.fullname}}</a>
 				<div class="user__item">
 					{{#if this.birthdate}}
 					Дата рождения:
@@ -138,7 +138,7 @@
 				createEvent(ev, client) {
 					console.log('createEvent', client);
 
-					var editor = window.popupEvent(client, null, function(data){
+					var editor = window.popupEvent(client, null, function (data) {
 						console.log(client, data);
 						toast('Запись на прием успешно создана!');
 						editor.close();
@@ -146,7 +146,7 @@
 				},
 				createLongterm(ev, client) {
 					console.log('createLongterm', client);
-					popupLongterm(client, null, function(rec){
+					popupLongterm(client, null, function (rec) {
 						toast('Запись успешно создана!');
 					});
 				}
@@ -155,7 +155,25 @@
 		var result_ready = function (resolved_count) {
 			if (resolved_count > 2) {
 				page.set('ready', true);
-				$('.loading-overlay').length && $('.loading-overlay').remove();
+
+				const _list = $('.search-result .container');
+
+				_list.find(".account__panel").sort(function (a, b) {
+					const _a = $(a).attr('data-orderby').toUpperCase();
+					const _b = $(b).attr('data-orderby').toUpperCase();
+					if (_a > _b) {
+						return 1;
+					} else {
+						if (_a == _b) {
+							return 0;
+						} else {
+							return -1;
+						}
+					}
+				}).appendTo(_list);
+				setTimeout(function (){
+					$('.loading-overlay').length && $('.loading-overlay').remove();
+				});
 			}
 		};
 		var search       = function () {
