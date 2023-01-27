@@ -293,11 +293,69 @@
 										{{/if}}
 									</div>
 									<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
-								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
-									name="recommendation">{{this.recommendation}}</textarea>
+										<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
+											name="recommendation">{{this.recommendation}}</textarea>
 
 										<button class="btn btn--white" type="submit">Сохранить</button>
 									</form>
+									{{#if this.hasPhoto}}
+									<div class="acount__photos">
+										<div class="row">
+											<div class="col-md-5">
+												<p>Фото до начала лечения</p>
+												{{#each photos.before}}
+												<div class="row">
+													<div class="col-md-12">
+														<div class="acount__photo">
+															<a class="before-healing__item photo"
+																data-fancybox="event-{{event.id}}"
+																data-href="{{.src}}"
+																href="{{.src}}"
+																data-caption="Фото до начала лечения:
+															{{ @global.utils.formatDate(.date) }}">
+																<div class="healing__date">
+																	{{ @global.utils.formatDate(.date) }}
+																</div>
+																<div class="after-healing__photo"
+																	style="background-image: url({{.src}})">
+																</div>
+															</a>
+
+														</div>
+													</div>
+												</div>
+												{{else}}
+
+												{{/each}}
+											</div>
+											<div class="col-md-7">
+												<p>Фото в процессе лечения</p>
+												{{#each photos.after}}
+												<div class="row">
+													<div class="col-md-6 mt-1">
+														<div class="acount__photo">
+															<a class="after-healing__item photo"
+																data-fancybox="event-{{event.id}}"
+																href="{{.src}}"
+																data-href="{{.src}}"
+																data-caption="Фото в процессе лечения:
+															{{ @global.utils.formatDate(.date) }}">
+																<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+																<div class="after-healing__photo"
+																	style="background-image: url({{.src}})">
+																</div>
+															</a>
+
+														</div>
+													</div>
+												</div>
+												{{else}}
+
+												{{/each}}
+											</div>
+										</div>
+									</div>
+									{{/if}}
 								</div>
 							</div>
 							{{elseif ready}}
@@ -459,8 +517,8 @@
 							'current': []
 						},
 						history: {
-							'events':[],
-							'longterms':[]
+							'events': [],
+							'longterms': []
 						}
 					},
 					on: {

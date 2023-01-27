@@ -27,10 +27,16 @@
 						<div class="title">
 							<h1 class="h1 mb-10">Кабинет администратора</h1>
 						</div>
-						<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
-							data-popup="--create-client">
-							Создать карточку пациента
-						</a>
+						<div>
+							<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
+								data-popup="--create-client">
+								Создать карточку пациента
+							</a>
+							<a class="btn btn--black" onclick="newEvent();">
+								Записать на прием
+							</a>
+						</div>
+
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
@@ -57,7 +63,7 @@
 							data-tab="past" data-tabs="records">Завершенные
 						</div>
 						<div class="account__tab-item data-tab-link"
-							data-tab="longterms" data-tabs="records">Продолжытельное
+							data-tab="longterms" data-tabs="records">Продолжительное
 						</div>
 						<div class="buttons disabled">
 							<label class="checkbox">
@@ -223,7 +229,7 @@
 				<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 				{{#each catalog.quotePay}}
 				<div class="select__item" data-id="{{id}}"
-					onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));">
+					onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values')">
 					{{name}}
 				</div>
 				{{/each}}
@@ -779,6 +785,13 @@
 		];
 		let editProfile      = wbapp.tpl('#editProfile').html;
 		let editStatus       = wbapp.tpl('#editStatus').html;
+		window.newEvent  = function(){
+			var editor = window.popupEvent(null, null, function (data) {
+				toast('Запись успешно создана!');
+				window.load('group=events&status=upcoming');
+				editor.close();
+			});
+		}
 		window.load          = function (only_tab) {
 			tab_urls.forEach(function (target_tab, i) {
 				if (only_tab && only_tab != target_tab) {

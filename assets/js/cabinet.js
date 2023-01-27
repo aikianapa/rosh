@@ -339,7 +339,6 @@ $(function () {
 				sessionStorage.removeItem('db.' + _key);
 			} else {
 				localStorage.removeItem('db.quoteStatus');
-				localStorage.removeItem('db.quotePay');
 				localStorage.removeItem('db.quoteType');
 				localStorage.removeItem('db.categories');
 
@@ -369,17 +368,17 @@ $(function () {
 				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatus'));
 			}
 
-			if (!localStorage.getItem('db.quotePay')) {
-				getters.push(
-					utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-						_self.quotePay = utils.arr.indexBy(data);
-						localStorage.setItem('db.quotePay', JSON.stringify(_self.quotePay));
-
-					})
-				);
-			} else {
-				_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay'));
-			}
+			//if (!localStorage.getItem('db.quotePay')) {
+			//	getters.push(
+			//		utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+			//			_self.quotePay = utils.arr.indexBy(data);
+			//			localStorage.setItem('db.quotePay', JSON.stringify(_self.quotePay));
+			//
+			//		})
+			//	);
+			//} else {
+			//	_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay'));
+			//}
 
 			if (!localStorage.getItem('db.quoteType')) {
 				getters.push(
