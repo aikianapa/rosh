@@ -1097,9 +1097,8 @@
 					var self = this;
 					popupPhoto(catalog.clients[record.client], record,
 						function (rec) {
-							_tab.set('records.' + _row_idx, rec);
 							toast('Фото добавлено!');
-							self.set('record', rec);
+							content_load();
 							setTimeout(function () {
 								$(self.el).find('a.photo[data-href]')
 									.each(function (i) {
