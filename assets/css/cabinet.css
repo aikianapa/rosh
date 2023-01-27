@@ -448,7 +448,13 @@ ul li.service_price{
 	z-index: 1000000;
 	cursor : pointer;
 }
-
+.text-danger {color : #DC3545 !important}
+a.text-danger:hover, a.text-danger:focus {color : #A71D2A !important}
+.admin-edit__user-btns.vertical-btns {
+	flex-direction  : column;
+	justify-content : space-between;
+	text-align      : end;
+}
 @media (max-width : 768px) {
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {

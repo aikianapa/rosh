@@ -186,13 +186,14 @@
                 } else {
                   firstChar = str.charAt(0);
                 }
+                console.log(firstChar);
+
                 addLetterClass(firstChar, $this, true);
                 return;
               }
             }
             // Find the first letter in the LI, including prefixes
             firstChar = str.charAt(0);
-
             // Doesn't send true to function, which will ++ the All count on prefixed items
             addLetterClass(firstChar, $this);
           }
@@ -232,11 +233,11 @@
       }
 
       function addNoMatchLI() {
-        $list.append('<li class="ln-no-match listNavHide">' + opts.noMatchText + '</li>');
+        $list.append('<div class="ln-no-match listNavHide">' + opts.noMatchText + '</div>');
       }
 
       function addInitHiddenLI() {
-        $list.append('<li class="ln-init-hidden listNavHide">' + opts.initHiddenText + '</li>');
+        $list.append('<div class="ln-init-hidden listNavHide">' + opts.initHiddenText + '</div>');
       }
 
       function getLetterCount(el) {
@@ -376,11 +377,11 @@
     flagDisabled: true,
     includeAll: true,
     includeNums: true,
-    includeOther: false,
+    includeOther: true,
     initHidden: false,
     initHiddenText: 'Tap a letter above to view matching items',
     initLetter: '',
-    letters: ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '-'],
+    letters: ['_', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '-'],
     noMatchText: 'No matching entries',
     onClick: null,
     prefixes: [],
