@@ -6,5 +6,6 @@
 <p class="text-bold text-big mb-10" wb-if="'{{blocks.landing_main.active}}' == 'on'">{{blocks.landing_main.subheader}}</p>
 <div class="text text-break" wb-if="'{{blocks.landing_main.active}}' == 'on'">{{blocks.landing_main.text}}</div>
 
-<a class="btn btn--black" href="/problems/{{wbFurlGenerate({{header}})}}">Читать подробнее</a>
+<a class="btn btn--black" href="{{yongerFurl()}}">Читать подробнее</a>
+
 </html>
