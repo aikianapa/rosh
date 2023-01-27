@@ -282,7 +282,20 @@ $(function () {
 		quoteColors: {},
 		quoteStatus: {},
 		quoteType: {},
-		quotePay: {},
+		quotePay: {
+			"prepay": {
+				"id": "prepay",
+				"name": "Оплачено"
+			},
+			"unpay": {
+				"id": "unpay",
+				"name": "Ожидает оплаты"
+			},
+			"free": {
+				"id": "free",
+				"name": "Не требует оплаты"
+			}
+		},
 
 		services: {},
 		servicePrices: {},

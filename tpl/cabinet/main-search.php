@@ -119,6 +119,8 @@
 	</div>
 	{{/each}}
 </template>
+<script src='/assets/js/jquery-listnav.js'></script>
+
 <script wbapp>
 	var q = '{{_route.params.q}}';
 	$(document).on('cabinet-db-ready', function () {
