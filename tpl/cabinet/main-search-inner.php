@@ -632,7 +632,6 @@
 									{{ @global.utils.formatDate(.date) }}
 								</div>
 								<div class="before-healing__photo" style="background-image: url('{{.src}}')"></div>
-								<div class="healing__description">{{.comment}}</div>
 							</a>
 							{{/each}}
 						</div>
