@@ -1,4 +1,5 @@
 <view>
+    <wb-meta />
     <wb-var cityPrefix="+7 (495) " />
     <div class="scroll-container" data-scroll-container>
 
