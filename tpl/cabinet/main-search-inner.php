@@ -310,6 +310,13 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
+							<div class="row acount__photos-wrap">
+								<div class="col-md-2">
+									<a class="btn btn--white" on-click="['addPhoto',this]">
+										Добавить фото
+									</a>
+								</div>
+							</div>
 							{{#if this.hasPhoto}}
 							<div class="row">
 								<div class="col-md-5">
@@ -1085,6 +1092,21 @@
 				},
 				prepay(ev) {
 					popupPay.showPopup($(ev.node).data('record'));
+				},
+				addPhoto(ev, record) {
+					var self = this;
+					popupPhoto(catalog.clients[record.client], record,
+						function (rec) {
+							toast('Фото добавлено!');
+							content_load();
+							setTimeout(function () {
+								$(self.el).find('a.photo[data-href]')
+									.each(function (i) {
+										var _img = $(this);
+										_img.attr('href', $(this).data('href'));
+									});
+							}, 150);
+						});
 				},
 				editPastRecord(ev, record) {
 					var _row_idx  = $(ev.node).data('idx');

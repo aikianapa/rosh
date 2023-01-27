@@ -431,7 +431,7 @@
 										{{/each}}
 									</div>
 									<div class="col-md-7">
-										<p> Фото в процессе лечения</p>
+										<p>Фото в процессе лечения</p>
 										{{#each photos.after}}
 										<div class="row">
 											<div class="col-md-6 mt-1">

@@ -27,10 +27,16 @@
 						<div class="title">
 							<h1 class="h1 mb-10">Кабинет администратора</h1>
 						</div>
-						<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
-							data-popup="--create-client">
-							Создать карточку пациента
-						</a>
+						<div>
+							<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
+								data-popup="--create-client">
+								Создать карточку пациента
+							</a>
+							<a class="btn btn--black" onclick="newEvent();">
+								Записать пациента
+							</a>
+						</div>
+
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
@@ -57,7 +63,7 @@
 							data-tab="past" data-tabs="records">Завершенные
 						</div>
 						<div class="account__tab-item data-tab-link"
-							data-tab="longterms" data-tabs="records">Продолжытельное
+							data-tab="longterms" data-tabs="records">Продолжительное
 						</div>
 						<div class="buttons disabled">
 							<label class="checkbox">
@@ -91,7 +97,7 @@
 							<div class="loader"></div>
 						</div>
 					</div>
-					<div class="account__tab data-tab-item hidden d-none" data-tab="longterms"
+					<div class="account__tab data-tab-item" data-tab="longterms"
 						data-type="group=longterms">
 						<div class="loading-overlay">
 							<div class="loader"></div>
@@ -223,7 +229,7 @@
 				<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 				{{#each catalog.quotePay}}
 				<div class="select__item" data-id="{{id}}"
-					onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));">
+					onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values')">
 					{{name}}
 				</div>
 				{{/each}}
@@ -594,7 +600,6 @@
 					data-group="{{.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
-
 							<div class="accardeon__click" data-record="{{this.id}}" data-idx="{{idx}}"
 								on-click="editRecord"></div>
 							<div class="flag-date">
@@ -762,7 +767,235 @@
 		</div>
 	</div>
 </template>
+<template id="listLongterms" wb-off>
+	<div class="account-scroll">
+		<div class="account__table">
+			<div class="account__table-head">
+				<div class="admin-events-item orderby">
+					<button class="flag-date__ico">
+						<svg class="svgsprite _flag">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
+						</svg>
+					</button>
+					<span>Дата</span>
+				</div>
+				<div class="admin-events-item orderby">ФИО</div>
+				<div class="admin-events-item orderby">Телефон</div>
+				<div class="admin-events-item">Услуга</div>
+			</div>
+			<div class="account__table-body">
+				<div class="loading-overlay">
+					<div class="loader"></div>
+				</div>
+				{{#each records: idx}}
+				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin"
+					data-client="{{.client}}"
+					data-record="{{.id}}"
+					data-id="{{.id}}"
+					data-idx="{{idx}}"
+					data-priority="{{.priority}}"
+					data-group="{{.group}}">
+					<div class="acount__table-main accardeon__main acount__table-auto">
+						<div class="admin-events-item heap">
+							<div class="accardeon__click" data-record="{{this.id}}" data-idx="{{idx}}"></div>
+							<div class="flag-date">
+								{{#if priority * 1}}
+								<label class="checkbox">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+								{{else}}
+								<label class="checkbox">
+									<input type="checkbox">
+									<span></span>
+								</label>
+								{{/if}}
 
+								{{#if marked == 'true' }}
+								<button class="flag-date__ico checked">
+									<svg class="svgsprite _flag">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
+									</svg>
+								</button>
+								{{else}}
+								<button class="flag-date__ico">
+									<svg class="svgsprite _flag">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
+									</svg>
+								</button>
+								{{/if}}
+								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(_created)}}">
+
+								<span class="dt"><strong class="title">Дата: </strong>
+									{{@global.utils.formatDate(_created)}}<br>
+									{{@global.utils.formatTime(_created)}}
+								</span>
+							</div>
+						</div>
+						<div class="admin-events-item">
+							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
+							<p>ФИО</p>
+							<div>
+								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+								<br>
+								<small class="text-danger">продолжительное</small>
+							</div>
+						</div>
+						<div class="admin-events-item">
+							<input type="hidden" class="orderby" value="{{catalog.clients[.client].phone}}">
+							<p>Телефон</p>
+							<div>{{catalog.clients[client].phone}}</div>
+						</div>
+						<div class="admin-events-item col-services flex-column">
+							<p>Услуги</p>
+							<div>{{this.longterm_title}}</div>
+						</div>
+					</div>
+					<div class="acount__table-list accardeon__list admin-editor">
+						<div class="admin-editor__top">
+							<div class="admin-editor__top-info">
+								<div class="lk-title">Редактировать профиль</div>
+								<div class="admin-editor__name user__edit">
+									{{ catalog.clients[client].fullname }}
+									<button class="user__edit" on-click="editProfile" data-id="{{client}}">
+										<svg class="svgsprite _edit">
+											<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
+										</svg>
+									</button>
+								</div>
+								<div class="admin-editor__iser-contacts">
+									{{#if catalog.clients[client].birthdate === '01.01.1970' }}
+									{{else}}
+									<p>Дата рождения:
+										<span>{{ @global.utils.formatDate(catalog.clients[client].birthdate) }}</span>
+									</p>
+									{{/if}}
+
+									<p>Телефон:
+										<span>{{ @global.utils.formatPhone(catalog.clients[client].phone) }}</span>
+									</p>
+								</div>
+							</div>
+							<div class="admin-editor__top-status">
+								<div class="admin-editor__top-date">
+									Заявка сформирована {{@global.utils.formatDate(_created)}} / {{@global.utils.formatTime(_created)}}
+								</div>
+								<div class="admin-editor__top-select"></div>
+							</div>
+						</div>
+						<div class="admin-editor__edit-profile" data-client="{{.client}}"></div>
+						<div class="admin-editor__events mt-20 border-top" data-record="{{.id}}" data-idx="{{idx}}">
+							<div class="row acount__photos-wrap">
+								<div class="col-md-2">
+									<a class="btn btn--white" on-click="['addPhoto',this]">
+										Добавить фото
+									</a>
+								</div>
+							</div>
+							{{#if this.hasPhoto}}
+							<div class="row">
+								<div class="col-md-5">
+									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+									{{#each this.photos.before}} <!--single photo!-->
+									<a class="before-healing photo"
+										data-fancybox="images-{{event.id}}"
+										data-href="{{.src}}"
+										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+										<h2 class="h2 healing__date-title">
+											{{ @global.utils.formatDateAdv(.date) }}
+										</h2>
+										<div class="before-healing__photo" style="background-image: url('{{.src}}')">
+										</div>
+									</a>
+									{{/each}}
+								</div>
+								<div class="col-md-7">
+									<div class="text-bold text-big mb-20">
+										Фото после начала лечения
+									</div>
+									<div class="after-healing">
+										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
+										<div class="row">
+											{{#each this.photos.after}}
+											<div class="col-md-6">
+												<a class="after-healing__item photo"
+													data-fancybox="images-{{event.id}}"
+													data-href="{{.src}}"
+													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+													<h2 class="h2 healing__date-title">
+														{{ @global.utils.formatDateAdv(.date) }}
+													</h2>
+													<div class="after-healing__photo"
+														style="background-image: url({{.src}});">
+													</div>
+												</a>
+											</div>
+											{{/each}}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{/if}}
+						</div>
+					</div>
+				</div>
+				{{else}}
+				<div class="acount__table-accardeon accardeon">
+					<div class="acount__table-main accardeon__main">
+						Нет записей
+					</div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</template>
+<template id="longterm-details" wb-off>
+	{{#if photos}}
+	<div class="row">
+		<div class="col-md-4">
+			<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+			{{#each photos.before}} <!--single photo!-->
+			<a class="after-healing__item"
+				data-fancybox="images"
+				href="{{.src}}"
+				data-caption="{{.date}}">
+				<h2 class="h2 healing__date-title">{{.date}}</h2>
+				<div class="after-healing__photo"
+					style="background-image: url('{{.src}}')">
+				</div>
+				<div class="healing__description">
+					{{.comment}}
+				</div>
+			</a>
+			{{/each}}
+		</div>
+		<div class="col-md-8">
+			<div class="text-bold text-big mb-20">
+				Фото после начала лечения
+			</div>
+			<div class="after-healing">
+				<h2 class="h2 healing__date-title d-none month-header"></h2>
+				<div class="row">
+					{{#each this.photos.after}}
+					<div class="col-md-6">
+						<a class="after-healing__item"
+							data-fancybox="images-{{this.id}}"
+							href="{{.src}}"
+							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+							<div class="after-healing__photo"
+								style="background-image: url({{.src}});">
+							</div>
+						</a>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</div>
+	{{/if}}
+</template>
 <script wb-app remove>
 	var tabs = {};
 	$(document).on('cabinet-db-ready', function () {
@@ -775,10 +1008,18 @@
 		window.tab_urls      = [
 			'group=quotes',
 			'group=events&status=upcoming',
-			'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]'
+			'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]',
+			'group=longterms'
 		];
 		let editProfile      = wbapp.tpl('#editProfile').html;
 		let editStatus       = wbapp.tpl('#editStatus').html;
+		window.newEvent  = function(){
+			var editor = window.popupEvent(null, null, function (data) {
+				toast('Запись успешно создана!');
+				window.load('group=events&status=upcoming');
+				editor.close();
+			});
+		}
 		window.load          = function (only_tab) {
 			tab_urls.forEach(function (target_tab, i) {
 				if (only_tab && only_tab != target_tab) {
@@ -787,7 +1028,8 @@
 				var _sorts = [
 					'_lastdate:d',
 					'event_date:d',
-					'event_date:d'
+					'event_date:d',
+					'_created:d'
 				];
 				utils.api.get('/api/v2/list/records?' + target_tab, {'@sort': _sorts[i]}).then(
 					function (result) {
@@ -796,371 +1038,460 @@
 							records: result,
 							catalog: catalog
 						};
-						var _tab = new Ractive({
-							el: '.data-tab-item[data-type="' + target_tab + '"]',
-							template: wbapp.tpl('#listRecords').html,
-							data: {
-								group: target_tab,
-								records: result,
-								catalog: catalog
-							},
-							on: {
-								loaded() {
-									console.log('>>> loaded', target_tab);
-									$(this.el).find('.loading-overlay').remove();
+						var _tab;
+						if (target_tab == 'group=longterms'){
+							_tab = new Ractive({
+								el: '.data-tab-item[data-type="' + target_tab + '"]',
+								template: wbapp.tpl('#listLongterms').html,
+								data: {
+									group: target_tab,
+									records: result,
+									catalog: catalog
 								},
-								complete() {
-									this.find('.loading-overlay').remove();
-								},
-								editProfile(ev) {
-									var form = $(ev.node).parents('.admin-editor')
-										.find('.admin-editor__edit-profile');
-									if ($(ev.node).hasClass('open')) {
-										$(ev.node).removeClass('open');
-										$(form).html('');
-										return;
-									}
-									$(ev.node).addClass('open');
-									var profile_id = $(ev.node).data('id');
-
-									let editor = new Ractive({
-										el: form,
-										template: editProfile,
-										data: {},
-										lazy: true,
-
-										on: {
-											save(ev) {
-
-												var $form = $(ev.node);
-												console.log(form);
-												if ($form.verify() && profile_id > '') {
-													var data = $form.serializeJSON();
-
-													Cabinet.updateProfile(profile_id, data,
-														function (res) {
-															console.log('client saved', res);
-															data.birthdate_fmt = utils.formatDate(data.birthdate);
-															data.phone         = utils.formatPhone(data.phone);
-															_tab.set('catalog.clients.' + profile_id, data);
-															catalog.clients[profile_id] = data;
-
-															$(form).html('');
-															toast('Профиль успешно обновлён');
-														});
-												}
-
-												return false;
-											}
+								on: {
+									loaded() {
+										console.log('>>> loaded', target_tab);
+										$(this.el).find('.loading-overlay').remove();
+									},
+									complete() {
+										this.find('.loading-overlay').remove();
+									},
+									editProfile(ev) {
+										var form = $(ev.node).parents('.admin-editor')
+											.find('.admin-editor__edit-profile');
+										if ($(ev.node).hasClass('open')) {
+											$(ev.node).removeClass('open');
+											$(form).html('');
+											return;
 										}
-									});
-									utils.api.get('/api/v2/read/users/' + profile_id).then(
-										function (data) {
-											editor.set(data);
-											data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
-											console.log(data);
-											initPlugins();
+										$(ev.node).addClass('open');
+										var profile_id = $(ev.node).data('id');
+
+										let editor = new Ractive({
+											el: form,
+											template: editProfile,
+											data: {},
+											lazy: true,
+
+											on: {
+												save(ev) {
+
+													var $form = $(ev.node);
+													console.log(form);
+													if ($form.verify() && profile_id > '') {
+														var data = $form.serializeJSON();
+
+														Cabinet.updateProfile(profile_id, data,
+															function (res) {
+																console.log('client saved', res);
+																data.birthdate_fmt = utils.formatDate(data.birthdate);
+																data.phone         = utils.formatPhone(data.phone);
+																_tab.set('catalog.clients.' + profile_id, data);
+																catalog.clients[profile_id] = data;
+
+																$(form).html('');
+																toast('Профиль успешно обновлён');
+															});
+													}
+
+													return false;
+												}
+											}
 										});
-								},
-								editRecord(ev) {
-									var target_tab = this;
-									var _row_idx   = $(ev.node).data('idx');
-									const _parent  = $(ev.node).closest('.accardeon');
-									var _record    = this.get('records.' + _row_idx);
-									console.log('open ', _record);
-									if (!_record.price) {
-										_record.price = 0;
-									}
-
-									_record.price_text = utils.formatPrice(_record.price);
-									var statusEditor   = new Ractive({
-										el: _parent.find('.admin-editor__top-select'),
-										template: editStatus,
-										data: {
-											catalog: catalog,
-											record: _record
-										},
-										on: {
-											complete() {
-												$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
-													.trigger('click');
-												$(statusEditor.find(
-													`.select.pay [data-id="${_record.pay_status}"]`))
-													.trigger('click');
-											},
-											save(ev) {
-												let form = $(ev.node).parents('.admin-editor');
-												$(form).find('.admin-editor__edit-profile').html('');
-												let copy = $('<form></form>');
-												$(copy).html($(form).clone());
-
-												let post = $(copy).serializeJSON();
-
-												post.group = (catalog.quoteStatus[post.status].type ||
-												              _record.group.substring(0,
-													              _record.group.length - 1)) + 's';
-
-												utils.api.post('/api/v2/update/records/' + _record.id, post)
-													.then(function (res) {
-														_tab.set('records.' + _row_idx, res);
-														window.load();
-														toast('Успешно сохранено');
-													});
-												delete copy;
-
-												return false;
-											}
-										}
-									});
-
-									let recordEditor = new Ractive({
-										el: _parent.find('.admin-editor__events'),
-										template: wbapp.tpl('#editorRecord').html,
-										data: {
-											catalog: catalog,
-											record: _record,
-											start_time: 0,
-											end_time: 0
-										},
-										on: {
-											complete() {
-												initServicesSearch(
-													_parent.find('.admin-editor__events .popup-services-list'),
-													catalog.servicesList
-												);
-												console.log('true: ',
-													$(this.el).find('.search__drop-item.services').length);
+										utils.api.get('/api/v2/read/users/' + profile_id).then(
+											function (data) {
+												editor.set(data);
+												data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
+												console.log(data);
 												initPlugins();
+											});
+									},
+									addPhoto(ev, record) {
+										var self = this;
+										var _row_idx = $(ev.node).parents('.admin-editor__events').data('idx');
 
-												if (!!$(this.el)
-													.find('.select .select__item input:checked').length) {
-													$(this.el).find('.select.select_experts .select__item')
-														.trigger('click');
-												}
-												console.log($('.search__drop-item.services').length);
-
-												var _price = (_record.type === 'online')
-													? parseInt(catalog.spec_service.consultation.price)
-													: 0;
-												$(this.el).find('.search__drop-item.services').each(function () {
-													_price += parseInt($(this).data('price'));
-												});
-
-												console.log(_price);
-
-												$(this.el).find('.admin-editor__summ input[name="price"]')
-													.val(_price);
-												$(this.el).find('.admin-editor__summ p.price').html(
-													utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
-
+										popupPhoto(catalog.clients[record.client], record,
+											function (rec) {
+												_tab.set('records.' + _row_idx, rec);
+												toast('Фото добавлено!');
+												self.set('record', rec);
 												setTimeout(function () {
-													$('a.photo[data-href]').each(function (i) {
-														var _img = $(this);
-														_img.attr('href', $(this).data('href'));
-													});
+													$(self.el).find('a.photo[data-href]')
+														.each(function (i) {
+															var _img = $(this);
+															_img.attr('href', $(this).data('href'));
+														});
 												}, 150);
-											},
-											addPhoto(ev, record) {
-												var self = this;
-												popupPhoto(catalog.clients[record.client], record,
-													function (rec) {
-														_tab.set('records.' + _row_idx, rec);
-														toast('Фото добавлено!');
-														self.set('record', rec);
-														setTimeout(function () {
-															$(self.el).find('a.photo[data-href]')
-																.each(function (i) {
-																	var _img = $(this);
-																	_img.attr('href', $(this).data('href'));
-																});
-														}, 150);
-													});
-											},
-											setEventTime(ev) {
-												console.log(ev, $(ev.node).hasClass('event-time-start'),
-													$(ev.node).val());
-												console.log(this.get('start_time'));
-												if ($(ev.node).hasClass('event-time-start')) {
-													this.set('start_time', $(ev.node).val());
-												} else {
-													this.set('end_time', $(ev.node).val());
-													if (!!this.get('start_time')) {
-														$(ev.node).timepicker({minTime: this.get('start_time')});
+											});
+									}
+								}
+							});
+						} else {
+							_tab = new Ractive({
+								el: '.data-tab-item[data-type="' + target_tab + '"]',
+								template: wbapp.tpl('#listRecords').html,
+								data: {
+									group: target_tab,
+									records: result,
+									catalog: catalog
+								},
+								on: {
+									loaded() {
+										console.log('>>> loaded', target_tab);
+										$(this.el).find('.loading-overlay').remove();
+									},
+									complete() {
+										this.find('.loading-overlay').remove();
+									},
+									editProfile(ev) {
+										var form = $(ev.node).parents('.admin-editor')
+											.find('.admin-editor__edit-profile');
+										if ($(ev.node).hasClass('open')) {
+											$(ev.node).removeClass('open');
+											$(form).html('');
+											return;
+										}
+										$(ev.node).addClass('open');
+										var profile_id = $(ev.node).data('id');
+
+										let editor = new Ractive({
+											el: form,
+											template: editProfile,
+											data: {},
+											lazy: true,
+
+											on: {
+												save(ev) {
+
+													var $form = $(ev.node);
+													console.log(form);
+													if ($form.verify() && profile_id > '') {
+														var data = $form.serializeJSON();
+
+														Cabinet.updateProfile(profile_id, data,
+															function (res) {
+																console.log('client saved', res);
+																data.birthdate_fmt = utils.formatDate(data.birthdate);
+																data.phone         = utils.formatPhone(data.phone);
+																_tab.set('catalog.clients.' + profile_id, data);
+																catalog.clients[profile_id] = data;
+
+																$(form).html('');
+																toast('Профиль успешно обновлён');
+															});
 													}
-												}
 
+													return false;
+												}
+											}
+										});
+										utils.api.get('/api/v2/read/users/' + profile_id).then(
+											function (data) {
+												editor.set(data);
+												data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
+												console.log(data);
+												initPlugins();
+											});
+									},
+									editRecord(ev) {
+										var target_tab = this;
+										var _row_idx   = $(ev.node).data('idx');
+										const _parent  = $(ev.node).closest('.accardeon');
+										var _record    = this.get('records.' + _row_idx);
+										console.log('open ', _record);
+										if (!_record.price) {
+											_record.price = 0;
+										}
+
+										_record.price_text = utils.formatPrice(_record.price);
+										var statusEditor   = new Ractive({
+											el: _parent.find('.admin-editor__top-select'),
+											template: editStatus,
+											data: {
+												catalog: catalog,
+												record: _record
 											},
-											forConsultationClick(ev) {
-												var price             = 0;
-												var $price_input      = $(ev.node).parents('form')
-													.find('[name="price"]');
-												var prev_price        = $price_input.val();
-												var $for_consultation = $(ev.node);
-												if (!isNaN(prev_price)) {
-													price = parseInt(prev_price);
-												}
-
-												if ($for_consultation.is(':checked')) {
-													$(ev.node).parents('form').find('.clinic[name="type"]')
+											on: {
+												complete() {
+													$(statusEditor.find(`.select.status [data-id="${_record.status}"]`))
 														.trigger('click');
-												} else {
-													if ($price_input.hasClass('consultation') && price > 0) {
-														if ($price_input.attr('data-type') == 'online') {
-															price -= parseInt(
-																catalog.spec_service.consultation.price);
-														} else if ($price_input.attr('data-type') == 'clinic') {
-															price -= parseInt(
-																catalog.spec_service.consultation_clinic.price);
-														}
-													}
-													$price_input.removeClass('consultation');
-													$price_input.removeAttr('data-type');
-													$price_input.val(price);
-													$(ev.node).parents('form').find('.price').html(
-														utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
-												}
-											},
-											checkConsultation(ev) {
-												var ght               = 0;
-												var lv                = 0;
-												var sel_type          = $(ev.node).val();
-												var $for_consultation = $(ev.node).parents('form')
-													.find('[name="for_consultation"]');
-												var $price_input      = $(ev.node).parents('form')
-													.find('[name="price"]');
-												if ($(ev.node).is(':checked')) {
-													if (sel_type == 'online') {
-														ght = parseInt(catalog.spec_service.consultation.price);
-													} else if (sel_type == 'clinic') {
-														ght = parseInt(
-															catalog.spec_service.consultation_clinic.price);
-													} else {
-														ght = 0;
-													}
-												} else {
-													ght = 0;
-												}
-												var price      = 0;
-												var prev_price = $price_input.val();
-
-												if (!isNaN(prev_price)) {
-													price = parseInt(prev_price);
-												}
-
-												if (ght === 0) {
-													if ($price_input.hasClass('consultation') && price > 0) {
-														if ($price_input.attr('data-type') == 'online') {
-															price -= parseInt(
-																catalog.spec_service.consultation.price);
-														} else if ($price_input.attr('data-type') == 'clinic') {
-															price -= parseInt(
-																catalog.spec_service.consultation_clinic.price);
-														}
-													}
-													$price_input.removeClass('consultation');
-													$price_input.removeAttr('data-type');
-												} else if (!$price_input.hasClass('consultation')
-												           || !$price_input.attr('data-type') != sel_type) {
-													if (price > 0) {
-														if ($price_input.attr('data-type') == 'online') {
-															price -= parseInt(
-																catalog.spec_service.consultation.price);
-														} else if ($price_input.attr('data-type') == 'clinic') {
-															price -= parseInt(
-																catalog.spec_service.consultation_clinic.price);
-														}
-													}
-													price += ght;
-
-													$price_input.addClass('consultation');
-													$price_input.attr('data-type', sel_type);
-												}
-
-												$price_input.val(price);
-												$(ev.node).parents('form').find('.price').html(
-													utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
-											},
-											save(ev) {
-												if ($($(ev.node).parents('form')).length) {
+													$(statusEditor.find(
+														`.select.pay [data-id="${_record.pay_status}"]`))
+														.trigger('click');
+												},
+												save(ev) {
 													let form = $(ev.node).parents('.admin-editor');
 													$(form).find('.admin-editor__edit-profile').html('');
 													let copy = $('<form></form>');
 													$(copy).html($(form).clone());
 
-													let post_statuses = $(copy).serializeJSON();
+													let post = $(copy).serializeJSON();
 
-													post_statuses.group = (
-														catalog.quoteStatus[post_statuses.status].type || ''
-													);
-													if (!post_statuses.group) {
-														post_statuses.group = getGroupByStatus(
-															post_statuses.status);
-													}
-													post_statuses.group += 's';
-													var new_data = $($(ev.node).parents('form'))
-														.serializeJSON();
-													console.log(post_statuses.group, post_statuses.pay_status);
+													post.group = (catalog.quoteStatus[post.status].type ||
+													              _record.group.substring(0,
+														              _record.group.length - 1)) + 's';
 
-													new_data.price      = parseInt(new_data.price);
-													new_data.status     = post_statuses.status;
-													new_data.pay_status = post_statuses.pay_status;
-													new_data.group      = post_statuses.group;
-													if (new_data.group === 'events' && !new_data.event_date) {
-														toast_error('Необходимо выбрать дату/время события');
-														$($(ev.node).parents('form')).find('[name="event_date"]')
-															.focus();
-														return false;
-													}
-													if (new_data.group === 'events' && !new_data.experts) {
-														toast_error('Необходимо выбрать специалиста');
-														$($(ev.node).parents('form'))
-															.find('.select_experts')
-															.focus();
-														return false;
-													}
-													if (new_data.group === 'events'
-													    && !!new_data.experts) {
-														new_data.no_experts = 0;
-													}
-													if (new_data.group === 'events'
-													    && !!new_data.services) {
-														new_data.no_services = 0;
-													}
-
-													if (new_data.group === 'events' && !new_data.price) {
-														toast_error('Необходимо выбрать услугу');
-														$($(ev.node).parents('form'))
-															.find('.popup-services-list')
-															.focus();
-														return false;
-													}
-
-													new_data.event_date = utils.dateForce(new_data.event_date);
-													new_data.services   = utils.arr.unique(new_data.services);
-
-													changeLogSave(new_data, _record);
-
-													utils.api.post(
-															'/api/v2/update/records/' + _record.id, new_data)
+													utils.api.post('/api/v2/update/records/' + _record.id, post)
 														.then(function (res) {
-
-															console.log('event data:', new_data);
-															toast('Успешно сохранено');
 															_tab.set('records.' + _row_idx, res);
 															window.load();
+															toast('Успешно сохранено');
 														});
-												} else {
-													toast('Проверьте указанные данные');
+													delete copy;
+
+													return false;
 												}
-												return false;
 											}
-										}
-									});
+										});
+
+										let recordEditor = new Ractive({
+											el: _parent.find('.admin-editor__events'),
+											template: wbapp.tpl('#editorRecord').html,
+											data: {
+												catalog: catalog,
+												record: _record,
+												start_time: 0,
+												end_time: 0
+											},
+											on: {
+												complete() {
+													initServicesSearch(
+														_parent.find('.admin-editor__events .popup-services-list'),
+														catalog.servicesList
+													);
+													console.log('true: ',
+														$(this.el).find('.search__drop-item.services').length);
+													initPlugins();
+
+													if (!!$(this.el)
+														.find('.select .select__item input:checked').length) {
+														$(this.el).find('.select.select_experts .select__item')
+															.trigger('click');
+													}
+													console.log($('.search__drop-item.services').length);
+
+													var _price = (_record.type === 'online')
+														? parseInt(catalog.spec_service.consultation.price)
+														: 0;
+													$(this.el).find('.search__drop-item.services').each(function () {
+														_price += parseInt($(this).data('price'));
+													});
+
+													console.log(_price);
+
+													$(this.el).find('.admin-editor__summ input[name="price"]')
+														.val(_price);
+													$(this.el).find('.admin-editor__summ p.price').html(
+														utils.formatPrice(_price) + ' ₽<sup><b>*</b></sup>');
+
+													setTimeout(function () {
+														$('a.photo[data-href]').each(function (i) {
+															var _img = $(this);
+															_img.attr('href', $(this).data('href'));
+														});
+													}, 150);
+												},
+												addPhoto(ev, record) {
+													var self = this;
+													popupPhoto(catalog.clients[record.client], record,
+														function (rec) {
+															_tab.set('records.' + _row_idx, rec);
+															toast('Фото добавлено!');
+															self.set('record', rec);
+															setTimeout(function () {
+																$(self.el).find('a.photo[data-href]')
+																	.each(function (i) {
+																		var _img = $(this);
+																		_img.attr('href', $(this).data('href'));
+																	});
+															}, 150);
+														});
+												},
+												setEventTime(ev) {
+													console.log(ev, $(ev.node).hasClass('event-time-start'),
+														$(ev.node).val());
+													console.log(this.get('start_time'));
+													if ($(ev.node).hasClass('event-time-start')) {
+														this.set('start_time', $(ev.node).val());
+													} else {
+														this.set('end_time', $(ev.node).val());
+														if (!!this.get('start_time')) {
+															$(ev.node).timepicker({minTime: this.get('start_time')});
+														}
+													}
+
+												},
+												forConsultationClick(ev) {
+													var price             = 0;
+													var $price_input      = $(ev.node).parents('form')
+														.find('[name="price"]');
+													var prev_price        = $price_input.val();
+													var $for_consultation = $(ev.node);
+													if (!isNaN(prev_price)) {
+														price = parseInt(prev_price);
+													}
+
+													if ($for_consultation.is(':checked')) {
+														$(ev.node).parents('form').find('.clinic[name="type"]')
+															.trigger('click');
+													} else {
+														if ($price_input.hasClass('consultation') && price > 0) {
+															if ($price_input.attr('data-type') == 'online') {
+																price -= parseInt(
+																	catalog.spec_service.consultation.price);
+															} else if ($price_input.attr('data-type') == 'clinic') {
+																price -= parseInt(
+																	catalog.spec_service.consultation_clinic.price);
+															}
+														}
+														$price_input.removeClass('consultation');
+														$price_input.removeAttr('data-type');
+														$price_input.val(price);
+														$(ev.node).parents('form').find('.price').html(
+															utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+													}
+												},
+												checkConsultation(ev) {
+													var ght               = 0;
+													var lv                = 0;
+													var sel_type          = $(ev.node).val();
+													var $for_consultation = $(ev.node).parents('form')
+														.find('[name="for_consultation"]');
+													var $price_input      = $(ev.node).parents('form')
+														.find('[name="price"]');
+													if ($(ev.node).is(':checked')) {
+														if (sel_type == 'online') {
+															ght = parseInt(catalog.spec_service.consultation.price);
+														} else if (sel_type == 'clinic') {
+															ght = parseInt(
+																catalog.spec_service.consultation_clinic.price);
+														} else {
+															ght = 0;
+														}
+													} else {
+														ght = 0;
+													}
+													var price      = 0;
+													var prev_price = $price_input.val();
+
+													if (!isNaN(prev_price)) {
+														price = parseInt(prev_price);
+													}
+
+													if (ght === 0) {
+														if ($price_input.hasClass('consultation') && price > 0) {
+															if ($price_input.attr('data-type') == 'online') {
+																price -= parseInt(
+																	catalog.spec_service.consultation.price);
+															} else if ($price_input.attr('data-type') == 'clinic') {
+																price -= parseInt(
+																	catalog.spec_service.consultation_clinic.price);
+															}
+														}
+														$price_input.removeClass('consultation');
+														$price_input.removeAttr('data-type');
+													} else if (!$price_input.hasClass('consultation')
+													           || !$price_input.attr('data-type') != sel_type) {
+														if (price > 0) {
+															if ($price_input.attr('data-type') == 'online') {
+																price -= parseInt(
+																	catalog.spec_service.consultation.price);
+															} else if ($price_input.attr('data-type') == 'clinic') {
+																price -= parseInt(
+																	catalog.spec_service.consultation_clinic.price);
+															}
+														}
+														price += ght;
+
+														$price_input.addClass('consultation');
+														$price_input.attr('data-type', sel_type);
+													}
+
+													$price_input.val(price);
+													$(ev.node).parents('form').find('.price').html(
+														utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
+												},
+												save(ev) {
+													if ($($(ev.node).parents('form')).length) {
+														let form = $(ev.node).parents('.admin-editor');
+														$(form).find('.admin-editor__edit-profile').html('');
+														let copy = $('<form></form>');
+														$(copy).html($(form).clone());
+
+														let post_statuses = $(copy).serializeJSON();
+
+														post_statuses.group = (
+															catalog.quoteStatus[post_statuses.status].type || ''
+														);
+														if (!post_statuses.group) {
+															post_statuses.group = getGroupByStatus(
+																post_statuses.status);
+														}
+														post_statuses.group += 's';
+														var new_data = $($(ev.node).parents('form'))
+															.serializeJSON();
+														console.log(post_statuses.group, post_statuses.pay_status);
+
+														new_data.price      = parseInt(new_data.price);
+														new_data.status     = post_statuses.status;
+														new_data.pay_status = post_statuses.pay_status;
+														new_data.group      = post_statuses.group;
+														if (new_data.group === 'events' && !new_data.event_date) {
+															toast_error('Необходимо выбрать дату/время события');
+															$($(ev.node).parents('form')).find('[name="event_date"]')
+																.focus();
+															return false;
+														}
+														if (new_data.group === 'events' && !new_data.experts) {
+															toast_error('Необходимо выбрать специалиста');
+															$($(ev.node).parents('form'))
+																.find('.select_experts')
+																.focus();
+															return false;
+														}
+														if (new_data.group === 'events'
+														    && !!new_data.experts) {
+															new_data.no_experts = 0;
+														}
+														if (new_data.group === 'events'
+														    && !!new_data.services) {
+															new_data.no_services = 0;
+														}
+
+														if (new_data.group === 'events' && !new_data.price) {
+															toast_error('Необходимо выбрать услугу');
+															$($(ev.node).parents('form'))
+																.find('.popup-services-list')
+																.focus();
+															return false;
+														}
+
+														new_data.event_date = utils.dateForce(new_data.event_date);
+														new_data.services   = utils.arr.unique(new_data.services);
+
+														changeLogSave(new_data, _record);
+
+														utils.api.post(
+																'/api/v2/update/records/' + _record.id, new_data)
+															.then(function (res) {
+
+																console.log('event data:', new_data);
+																toast('Успешно сохранено');
+																_tab.set('records.' + _row_idx, res);
+																window.load();
+															});
+													} else {
+														toast('Проверьте указанные данные');
+													}
+													return false;
+												}
+											}
+										});
+									}
+
 								}
-
-							}
-						});
-
+							});
+						}
 						_tab.fire('loaded');
 						tabs[target_tab] = {ractive: _tab, data: data};
 					});
@@ -1189,7 +1520,7 @@
 
 		setTimeout(function reload() {
 			window.load();
-			setTimeout(repeat, 600000);
+			setTimeout(reload, 600000);
 		}, 600000);
 
 		function OrderBy(a, b, n) {

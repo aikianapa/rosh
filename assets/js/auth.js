@@ -6,7 +6,7 @@ function Auth()
 
 	this.phone_current = null;
 	this.sms_code = '';
-	this.sms_code_timelife = 30;
+	this.sms_code_timelife = 60;
 	this.timelife_handler = null;
 
 	//Общие функции
@@ -225,7 +225,7 @@ $(document).ready(function(){
 
 	//Устанавливаем и проверяем маску
 	auth.phone_value.mask('+7 (999) 999-99-99');
-	auth.phone_value.on('keyup', function(){
+	auth.phone_value.on('keyup input change', function(){
 		if(/^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/.test($(this).val()) === true){
 			auth.phone_window_submit_btn.removeAttr('disabled');
 		}else{

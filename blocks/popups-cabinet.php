@@ -231,10 +231,18 @@
 					</button>
 					<div class="popup__name text-bold">Записать пациента на прием</div>
 					<form class="record-edit popup__form" on-submit="submit" data-record="{{record.id}}">
+						{{#if client}}
+						<input type="hidden" value="{{ client.id }}" name="client">
 						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
+						{{else}}
+						<div class="search-form input">
+							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+							<div class="input__placeholder">Выбрать пациента</div>
+						</div>
+						<input type="hidden" name="client" value="">
+						{{/if}}
 						<div class="row">
 							<div class="col-md-12">
-
 								<input type="hidden" value="{{ record.id }}" name="id"> {{#if record.spec_service}}
 								<input type="hidden" name="spec_service" value="{{record.spec_service}}">
 								<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}"> {{else}}
@@ -264,7 +272,7 @@
 												<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 												{{#each @global.catalog.quotePay}}
 												<div class="select__item" data-id="{{record.id}}"
-													onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));">
+													onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values');">
 													{{name}}
 												</div>
 												{{/each}}
@@ -436,6 +444,7 @@
 					on: {
 						complete() {
 							initServicesSearch($('.search-services'), catalog.servicesList);
+							initClientSearch();
 							initPlugins();
 							if (!!$('.select .select__item input:checked').length) {
 								$('.select.select_experts .select__item').trigger('click');
@@ -545,7 +554,13 @@
 										before: [],
 										after: []
 									};
-									new_data.client = uid;
+									new_data.client = new_data.client || uid;
+
+									if (new_data.group === 'events' && !new_data.client) {
+										toast_error('Необходимо указать пациента!');
+										$($(ev.node).parents('form')).find('.client-search').focus();
+										return false;
+									}
 								}
 
 								if (new_data.group === 'events' && !new_data.event_date) {
@@ -603,7 +618,9 @@
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
 						</svg>
 					</button>
-					<div class="popup__name text-bold">Добавить фото</div>
+					<div class="popup__name text-bold">Добавить фото
+						{{#if record.group == 'longterms'}} в продолжительное лечение {{/if}}
+					</div>
 					<form class="popup__form" on-submit="submit">
 						{{#if record}}
 						<input type="hidden" name="id" value="{{record.id}}">
@@ -621,9 +638,9 @@
 						<input type="hidden" name="id" value="">
 
 						<div class="search-form event disabled input">
-							<input class="input__control autocomplete event-search record-search" type="text" placeholder="Выбрать пациента" required
+							<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
 							 autocomplete="off">
-							<div class="input__placeholder">Выбрать событие/посещение</div>
+							<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
 						</div>
 						{{/if}}
 
@@ -634,11 +651,14 @@
 						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
 							<label class="text-radio" name="target" value="before">
 								<input type="radio" name="target" value="before">
-								<span>До начала лечения</span>
+								<span>
+									До начала лечения</span>
 							</label>
 							<label class="text-radio switch-blocks" name="target" value="after">
 								<input type="radio" name="target" value="after">
-								<span class="changed_label">В процессе лечения</span>
+								<span class="changed_label">
+									{{#if record.group == 'longterms'}} После начала лечения {{else}} В процессе лечения {{/if}}
+									</span>
 							</label>
 						</div>
 
