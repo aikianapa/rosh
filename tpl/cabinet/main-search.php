@@ -57,7 +57,7 @@
 <template id="search-result">
 	<div class="lk-title">Результаты поиска</div>
 	<div class="result-list" id="result-list">
-		{{#each results}}
+		{{#each results: idx}}
 		<div class="account__panel" data-orderby="{{this.fullname}}">
 			<div class="account__info">
 				<div class="user">
@@ -106,11 +106,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="admin-edit__user-btns vertical-btns" style="">
+			<div class="admin-edit__user-btns vertical-btns" style="margin-top:0;padding-top: 0">
 				<a class="account__detail" data-client="[[id]]">
 					Подробнее
 				</a>
-				<a class="text-danger" on-click="['deleteProfile', this]">
+				<a class="text-danger" on-click="['deleteProfile', this, idx]" style="padding-bottom: 20px;">
 					Удалить профиль
 				</a>
 			</div>
@@ -144,11 +144,26 @@
 				complete(ev) {
 					$('main.page .loading-overlay').remove();
 				},
-				deleteProfile(ev, client){
-					if (confirm("Удалить профиль и все записи пациента?") == true) {
-						;
+				deleteProfile(ev, client, idx){
+					if (confirm("Удалить профиль "+client.fullname+" и все записи пациента?") == true) {
+						window.api.get('/api/v2/list/records?client='+client.id).then(function (recs){
+							if (!!recs){
+								recs.forEach(function (rec, i) {
+									setTimeout(function () {
+										window.api.get('/api/v2/delete/record/' + rec.id);
+									});
+								});
+							}
+							window.api.get('/api/v2/delete/users/' + client.id).then(function (){
+								toast('Профиль удален!');
+
+								setTimeout(function () {
+									search();
+								});
+							});
+						});
 					} else {
-						text = "You canceled!";
+
 					}
 				},
 				createEvent(ev, client) {
@@ -190,6 +205,7 @@
 				}).appendTo(_list);
 				setTimeout(function (){
 					$('.loading-overlay').length && $('.loading-overlay').remove();
+					$('#result-list-nav').remove();
 					$('.result-list').listnav({
 						filterSelector: '.user__name',
 						includeNums: true,
@@ -204,7 +220,7 @@
 			var loaded      = 0;
 			var phone_query = str_replace([' ', '+', '-', '(', ')'], '', q);
 			page.set('ready', false);
-
+			page.set('results', {});
 			if (phone_query.length > 1 && phone_query[0] == '8') {
 				phone_query = '7' + phone_query.substring(1);
 			}

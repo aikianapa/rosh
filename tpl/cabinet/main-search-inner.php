@@ -111,9 +111,13 @@
 						on-click="['createLongterm', this]">
 						Добавить продолжительное лечение
 					</a>
-
 				</div>
 			</div>
+		</div>
+		<div class="admin-edit__user-btns vertical-btns mt-0 pt-0" style="margin-top:0;">
+			<a class="text-danger" on-click="['deleteProfile', this, idx]">
+				Удалить профиль
+			</a>
 		</div>
 		<input class="admin-edit__upload" type="hidden" id="analyses-file" name="analyses"
 			value="{{this.analyses}}">
@@ -670,7 +674,58 @@
 			</div>
 			<div class="col-md-1"></div>
 			<div class="col-md-4 --jcfe --flex">
-				<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="select-form">
+							<div class="select pay">
+								<div class="select__main">Статус оплаты</div>
+								<div class="select__list">
+									<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
+									{{#each @global.catalog.quotePay}}
+									<div class="select__item" data-id="{{id}}"
+										onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values')">
+										{{name}}
+									</div>
+									{{/each}}
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+
+						<div class="select-form">
+							<div class="select status">
+								<div class="select__main">Изменить статус</div>
+								<div class="select__list">
+									<input type="hidden" class="status" name="status" value="{{ record.status }}">
+									<input type="hidden" class="group" name="group" value="{{ record.group }}">
+									{{#each @global.catalog.quoteStatus}}
+									{{#if id == 'delimiter'}}
+									<div class="select__delimiter" disabled></div>
+									{{else}}
+									<div class="select__item select__item--acc-{{color}}"
+										data-id="{{id}}"
+										data-group="{{type}}"
+										onclick="$(this).parents('.select.status').find('input.status').val($(this).attr('data-id'));$(this).parents('.select.status').find('input.group').val($(this).attr('data-group'));">
+										{{name}}
+									</div>
+									{{/if}}
+									{{/each}}
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</form>
@@ -1107,6 +1162,28 @@
 									});
 							}, 150);
 						});
+				},
+				deleteProfile(ev, client, idx) {
+					if (confirm("Удалить профиль " + client.fullname + " и все записи пациента?") == true) {
+						window.api.get('/api/v2/list/records?client=' + client.id).then(function (recs) {
+							if (!!recs) {
+								recs.forEach(function (rec, i) {
+									setTimeout(function () {
+										window.api.get('/api/v2/delete/record/' + rec.id);
+									});
+								});
+							}
+							window.api.get('/api/v2/delete/users/' + client.id).then(function () {
+								toast('Профиль удален!');
+
+								setTimeout(function () {
+									location.href = '/cabinet/search'
+								}, 1000);
+							});
+						});
+					} else {
+
+					}
 				},
 				editPastRecord(ev, record) {
 					var _row_idx  = $(ev.node).data('idx');
