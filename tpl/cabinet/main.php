@@ -97,7 +97,7 @@
 							<div class="loader"></div>
 						</div>
 					</div>
-					<div class="account__tab data-tab-item hidden d-none" data-tab="longterms"
+					<div class="account__tab data-tab-item" data-tab="longterms"
 						data-type="group=longterms">
 						<div class="loading-overlay">
 							<div class="loader"></div>
@@ -788,7 +788,7 @@
 					<div class="loader"></div>
 				</div>
 				{{#each records: idx}}
-				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{this.status}}"
+				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin"
 					data-client="{{.client}}"
 					data-record="{{.id}}"
 					data-id="{{.id}}"
@@ -830,7 +830,6 @@
 									{{@global.utils.formatDate(_created)}}<br>
 									{{@global.utils.formatTime(_created)}}
 								</span>
-								{{/if}}
 							</div>
 						</div>
 						<div class="admin-events-item">
@@ -838,6 +837,8 @@
 							<p>ФИО</p>
 							<div>
 								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+								<br>
+								<small class="text-danger">продолжительное</small>
 							</div>
 						</div>
 						<div class="admin-events-item">
@@ -846,7 +847,8 @@
 							<div>{{catalog.clients[client].phone}}</div>
 						</div>
 						<div class="admin-events-item col-services flex-column">
-							<p>Услуги</p> <div>{{this.longterm_title}}</div>
+							<p>Услуги</p>
+							<div>{{this.longterm_title}}</div>
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
@@ -882,57 +884,59 @@
 							</div>
 						</div>
 						<div class="admin-editor__edit-profile" data-client="{{.client}}"></div>
-						<div class="row acount__photos-wrap">
-							<div class="col-md-2">
-								<a class="btn btn--white" on-click="['addPhoto',this]">
-									Добавить фото
-								</a>
-							</div>
-						</div>
-						{{#if this.hasPhoto}}
-						<div class="row">
-							<div class="col-md-5">
-								<div class="text-bold text-big mb-20">Фото до начала лечения</div>
-								{{#each this.photos.before}} <!--single photo!-->
-								<a class="before-healing photo"
-									data-fancybox="images-{{event.id}}"
-									data-href="{{.src}}"
-									data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
-									<h2 class="h2 healing__date-title">
-										{{ @global.utils.formatDateAdv(.date) }}
-									</h2>
-									<div class="before-healing__photo" style="background-image: url('{{.src}}')">
-									</div>
-								</a>
-								{{/each}}
-							</div>
-							<div class="col-md-7">
-								<div class="text-bold text-big mb-20">
-									Фото после начала лечения
+						<div class="admin-editor__events" data-record="{{.id}}" data-idx="{{idx}}">
+							<div class="row acount__photos-wrap">
+								<div class="col-md-2">
+									<a class="btn btn--white" on-click="['addPhoto',this]">
+										Добавить фото
+									</a>
 								</div>
-								<div class="after-healing">
-									<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
-									<div class="row">
-										{{#each this.photos.after}}
-										<div class="col-md-6">
-											<a class="after-healing__item photo"
-												data-fancybox="images-{{event.id}}"
-												data-href="{{.src}}"
-												data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
-												<h2 class="h2 healing__date-title">
-													{{ @global.utils.formatDateAdv(.date) }}
-												</h2>
-												<div class="after-healing__photo"
-													style="background-image: url({{.src}});">
-												</div>
-											</a>
+							</div>
+							{{#if this.hasPhoto}}
+							<div class="row">
+								<div class="col-md-5">
+									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+									{{#each this.photos.before}} <!--single photo!-->
+									<a class="before-healing photo"
+										data-fancybox="images-{{event.id}}"
+										data-href="{{.src}}"
+										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+										<h2 class="h2 healing__date-title">
+											{{ @global.utils.formatDateAdv(.date) }}
+										</h2>
+										<div class="before-healing__photo" style="background-image: url('{{.src}}')">
 										</div>
-										{{/each}}
+									</a>
+									{{/each}}
+								</div>
+								<div class="col-md-7">
+									<div class="text-bold text-big mb-20">
+										Фото после начала лечения
+									</div>
+									<div class="after-healing">
+										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
+										<div class="row">
+											{{#each this.photos.after}}
+											<div class="col-md-6">
+												<a class="after-healing__item photo"
+													data-fancybox="images-{{event.id}}"
+													data-href="{{.src}}"
+													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+													<h2 class="h2 healing__date-title">
+														{{ @global.utils.formatDateAdv(.date) }}
+													</h2>
+													<div class="after-healing__photo"
+														style="background-image: url({{.src}});">
+													</div>
+												</a>
+											</div>
+											{{/each}}
+										</div>
 									</div>
 								</div>
 							</div>
+							{{/if}}
 						</div>
-						{{/if}}
 					</div>
 				</div>
 				{{else}}
