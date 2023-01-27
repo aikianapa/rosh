@@ -1108,6 +1108,8 @@
 									},
 									addPhoto(ev, record) {
 										var self = this;
+										var _row_idx = $(ev.node).parents('.admin-editor__events').data('idx');
+
 										popupPhoto(catalog.clients[record.client], record,
 											function (rec) {
 												_tab.set('records.' + _row_idx, rec);
