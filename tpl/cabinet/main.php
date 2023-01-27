@@ -884,7 +884,7 @@
 							</div>
 						</div>
 						<div class="admin-editor__edit-profile" data-client="{{.client}}"></div>
-						<div class="admin-editor__events" data-record="{{.id}}" data-idx="{{idx}}">
+						<div class="admin-editor__events mt-20 border-top" data-record="{{.id}}" data-idx="{{idx}}">
 							<div class="row acount__photos-wrap">
 								<div class="col-md-2">
 									<a class="btn btn--white" on-click="['addPhoto',this]">
