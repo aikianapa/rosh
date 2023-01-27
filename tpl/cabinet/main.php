@@ -680,10 +680,14 @@
 							<p>Услуга</p>
 							{{#if no_services == '1'}}
 							<div></div>
-							{{else}}
+							{{elseif services}}
 							{{#services}}
 							<div>{{catalog.services[this].header}}</div>
 							{{/services}}
+							{{elseif group == 'quotes'}}
+							<div>{{{@global.nl2br(client_comment)}}}</div>
+							{{else}}
+							<div></div>
 							{{/if}}
 						</div>
 						<div class="admin-events-item">
