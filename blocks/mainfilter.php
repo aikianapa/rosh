@@ -150,7 +150,7 @@
 											<div class="mainfilter-tag__name">
 												<div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
 													<svg class="svgsprite _delete">
-														<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 													</svg>
 												</div>
 												<a class="mainfilter-tag__link" href="#__srv" data-service="{{service}}" data-popup="--service-l" on-click="viewService">{{header}}</a>
@@ -162,7 +162,7 @@
 											<div class="mainfilter-tag__name">
 												<div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
 													<svg class="svgsprite _delete">
-														<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 													</svg>
 												</div>
 												<a class="mainfilter-tag__link" href="#__prb" data-problem="{{problem}}" data-popup="--service-l" on-click="viewProblem">{{header}}</a>
@@ -175,7 +175,7 @@
 								</div>
 								<a href="#" class="mainfilter__symptoms-link" on-click="clearProblems">
 									<svg class="svgsprite _delete">
-										<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 									</svg>
 									<span>Очистить все</span>
 								</a>
@@ -186,12 +186,12 @@
 									{{#each choice.symprbms}}
 										<div class="mainfilter-tag">
 											<div class="mainfilter-tag__name">
-												<div class="mainfilter-tag__delete" data-id="{{id}}" data-symptom="{{symptom}}" on-click="deleteSymPrb">
+												<div class="mainfilter-tag__delete" data-id="{{id}}" data-problem="{{id}}" on-click="deleteSymPrb">
 													<svg class="svgsprite _delete">
-														<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 													</svg>
 												</div>
-												<a class="mainfilter-tag__link" href="#__sym" data-problem="{{problem}}" data-popup="--service-l" on-click="viewProblem">{{header}}</a>
+												<a class="mainfilter-tag__link" href="#__sym" data-problem="{{id}}" data-popup="--service-l" on-click="viewProblem">{{header}}</a>
 											</div>
 											{{#each tags}}
 												<div class="mainfilter-tag__group --{{.color}}">{{.liter}}</div>
@@ -201,7 +201,7 @@
 								</div>
 								<a href="#" class="mainfilter__symptoms-link" on-click="clearSymptoms">
 									<svg class="svgsprite _delete">
-										<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 									</svg>
 									<span>Очистить все</span>
 								</a>
