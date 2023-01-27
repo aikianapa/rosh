@@ -673,7 +673,9 @@
 				<button class="btn btn--white" on-click="save">Сохранить</button>
 			</div>
 			<div class="col-md-1"></div>
-			<div class="col-md-4 --jcfe --flex">
+			<div class="col-md-4 --jcfe --flex" style="
+    flex-direction: column;
+    justify-content: flex-start;">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="select-form">
@@ -709,7 +711,7 @@
 									<div class="select__item select__item--acc-{{color}}"
 										data-id="{{id}}"
 										data-group="{{type}}"
-										onclick="$(this).parents('.select.status').find('input.status').val($(this).attr('data-id'));$(this).parents('.select.status').find('input.group').val($(this).attr('data-group'));">
+										onclick="$(this).parents('.select.status').find('input.status').val($(this).attr('data-id'));$(this).parents('.select.status').find('input.group').val($(this).attr('data-group'));$(this).parents('.select.status').addClass('has-values')">
 										{{name}}
 									</div>
 									{{/if}}
@@ -722,7 +724,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+						<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий" style="max-width: none;">{{record.comment}}</textarea>
 					</div>
 				</div>
 
