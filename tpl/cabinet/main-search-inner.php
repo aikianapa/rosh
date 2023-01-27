@@ -1197,7 +1197,7 @@
 					}
 
 					_record.price_text = utils.formatPrice(_record.price);
-					let recordEditor   = new Ractive({
+					var recordEditor   = new Ractive({
 						el: _parent.find('.admin-editor__events'),
 						template: wbapp.tpl('#editorRecord').html,
 						data: {
@@ -1208,6 +1208,10 @@
 						},
 						on: {
 							complete() {
+								$(this.find(`.select.status [data-id="${_record.status}"]`))
+									.trigger('click');
+								$(this.find(`.select.pay [data-id="${_record.pay_status}"]`))
+									.trigger('click');
 								initServicesSearch(
 									_parent.find('.admin-editor__events .popup-services-list'),
 									catalog.servicesList
