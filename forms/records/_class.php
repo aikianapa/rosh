@@ -9,9 +9,9 @@ class recordsClass extends cmsFormsClass
     function download() {
         $post = $this->app->vars('_post');
         $filter = [];
-        $period = $post['period'] > '' ? explode(' - ', $post['period']) : null;
+        $period = $post['period'] > '' ? explode(' - ', $post['period']) : (array)$post['period'];
         if (count($period)) {
-            count($period) == 1 ? $period[1] = $period[0] : null;
+            count($period) == 1 ? $period[1] = date('Y-m-d') : null;
             $filter = [
                 'event_date' => [
                     '$gte' => date('Y-m-d',strtotime($period[0])),
@@ -20,9 +20,9 @@ class recordsClass extends cmsFormsClass
             ];
         }
         $list = $this->app->itemList('records', ['filter'=>$filter])['list'];
-        $services = $this->app->vars('_post.services') ?  $this->app->vars('_post.services') : null;
-        $experts = $this->app->vars('_post.experts') ? $this->app->vars('_post.experts') : null;
-        $admins = $this->app->vars('_post.admins') ? $this->app->vars('_post.admins') : null;
+        $services = $this->app->vars('_post.services') ?  (array) $this->app->vars('_post.services') : null;
+        $experts = $this->app->vars('_post.experts') ? (array) $this->app->vars('_post.experts') : null;
+        $admins = $this->app->vars('_post.admins') ? (array) $this->app->vars('_post.admins') : null;
         $phone = $this->app->vars('_post.phone') ? text2tel($this->app->vars('_post.phone')) : null;
         $email = $this->app->vars('_post.email') ? trim($this->app->vars('_post.email')) : null;
 
@@ -37,22 +37,22 @@ class recordsClass extends cmsFormsClass
         foreach($list as $item) {
             $flag = true;
             $client = $clients[$item['client']];
+            $item['experts'] = (array)$item['experts'];
+            $item['services'] = (array)$item['services'];
+            $item['admins'] = (array)$item['admins'];
             if ($services) {
-                $flag = false;
                 foreach($services as $srv) {
-                    in_array($srv, $item['services']) ? $flag = true : null;
+                    in_array($srv, (array)$item['services']) ? null : $flag = false;
                 }
             }
             if ($experts) {
-                $flag = false;
                 foreach ($experts as $exp) {
-                    in_array($exp, $item['experts']) ? $flag = true : null;
+                    in_array($exp, (array)$item['experts']) ? null : $flag = false;
                 }
             }
             if ($admins) {
-                $flag = false;
                 foreach ($admins as $adm) {
-                    in_array($adm, $item['admins']) ? $flag = true : null;
+                    in_array($adm, (array)$item['admins']) ? null : $flag = false;
                 }
             }
             if ($phone && $phone !== text2tel($client['phone'])) {
@@ -64,9 +64,6 @@ class recordsClass extends cmsFormsClass
             }
 
             if ($flag === true) {
-                $item['experts'] = (array)$item['experts'];
-                $item['services'] = (array)$item['services'];
-
                 foreach($item['experts'] as &$expert) {
                     $expert = $specs[$expert]['fullname'];
                 }
