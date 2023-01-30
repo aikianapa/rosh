@@ -62,11 +62,7 @@
                     if ($(this).attr('name') == 'filter') {
                         let val = $(this).val()
                         if (val > '') {
-                            filter['$or'] = [
-                                { header: { '$like': val } },
-                                //{ email: { '$like': val } },
-                                //{ phone: { '$like': val } }
-                            ]
+                            filter.header = { '$like': val }
                         }
                     }
                     if ($(this).attr('name') == 'category') {
