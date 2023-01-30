@@ -3,6 +3,7 @@
 <head>
 	<title seo>Кабинет администратора</title>
 	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
+	<link rel="stylesheet" href="/assets/css/listnav.css?v=2">
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
@@ -55,76 +56,82 @@
 
 <template id="search-result">
 	<div class="lk-title">Результаты поиска</div>
-	{{#each results}}
-	<div class="account__panel" data-orderby="{{this.fullname}}">
-		<div class="account__info">
-			<div class="user">
-				<a class="user__name" data-client="{{.id}}">{{this.fullname}}</a>
-				<div class="user__item">
-					{{#if this.birthdate}}
-					Дата рождения:
-					<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
+	<div class="result-list" id="result-list">
+		{{#each results: idx}}
+		<div class="account__panel" data-orderby="{{this.fullname}}">
+			<div class="account__info">
+				<div class="user">
+					<a class="user__name" data-client="{{.id}}">{{this.fullname}}</a>
+					<div class="user__item">
+						{{#if this.birthdate}}
+						Дата рождения:
+						<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
+						{{else}}
+						{{/if}}
+					</div>
+
+					<a href="tel:{{this.phone}}" class="user__item">Тел:
+						<span>{{ @global.utils.formatPhone(this.phone) }}</span>
+					</a>
+					<div class="user__item">Почта:
+						<span>{{this.email}}</span>
+					</div>
+					{{#if this.confirmed == '0'}}
+					<div class="user__confirm disabled">
+						<svg class="svgsprite _confirm">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#alert-grey"></use>
+						</svg>
+						Неподтвержденный адрес электронной почты <a class="user__notconfirm --openpopup"
+							data-popup="--email-send">Отправить код восстановления на почту</a>
+					</div>
 					{{else}}
+					<div class="user__confirm disabled">
+						<svg class="svgsprite _confirm">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
+						</svg>
+						Подтвержденный аккаунт <a class="user__notconfirm --openpopup"
+							data-popup="--email-send">Отправить код восстановления на почту</a>
+					</div>
 					{{/if}}
-				</div>
 
-				<a href="tel:{{this.phone}}" class="user__item">Тел:
-					<span>{{ @global.utils.formatPhone(this.phone) }}</span>
+					<div class="admin-edit__user-btns">
+						<a class="admin-edit__user-btn btn btn--white"
+							on-click="['createEvent', this]">
+							Записать пациента на прием
+						</a>
+						<a class="admin-edit__user-btn btn btn--white"
+							on-click="['createLongterm', this]">
+							Добавить продолжительное лечение
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="admin-edit__user-btns vertical-btns" style="margin-top:0;padding-top: 0">
+				<a class="account__detail" data-client="[[id]]">
+					Подробнее
 				</a>
-				<div class="user__item">Почта:
-					<span>{{this.email}}</span>
-				</div>
-				{{#if this.confirmed == '0'}}
-				<div class="user__confirm disabled">
-					<svg class="svgsprite _confirm">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#alert-grey"></use>
-					</svg>
-					Неподтвержденный адрес электронной почты <a class="user__notconfirm --openpopup"
-						data-popup="--email-send">Отправить код восстановления на почту</a>
-				</div>
-				{{else}}
-				<div class="user__confirm disabled">
-					<svg class="svgsprite _confirm">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
-					</svg>
-					Подтвержденный аккаунт <a class="user__notconfirm --openpopup"
-						data-popup="--email-send">Отправить код восстановления на почту</a>
-				</div>
-				{{/if}}
-
-				<div class="admin-edit__user-btns">
-					<a class="admin-edit__user-btn btn btn--white"
-						on-click="['createEvent', this]">
-						Записать пациента на прием
-					</a>
-					<a class="admin-edit__user-btn btn btn--white"
-						on-click="['createLongterm', this]">
-						Добавить продолжительное лечение
-					</a>
-				</div>
-
+				<a class="text-danger" on-click="['deleteProfile', this, idx]" style="padding-bottom: 20px;">
+					Удалить профиль
+				</a>
 			</div>
 		</div>
-		<a class="account__detail" data-client="[[id]]">
-			Подробнее
-		</a>
+		{{elseif ready}}
+		<div class="account__panel">
+			<span>Ничего не найдено. Измените запрос и повторите поиск</span>
+		</div>
+		{{else}}
+		<div class="account__panel">
+			<span>Подождите, идет поиск..</span>
+		</div>
+		{{/each}}
 	</div>
-	{{elseif ready}}
-	<div class="account__panel">
-		<span>Ничего не найдено. Измените запрос и повторите поиск</span>
-	</div>
-	{{else}}
-	<div class="account__panel">
-		<span>Подождите, идет поиск..</span>
-	</div>
-	{{/each}}
 </template>
-<script src='/assets/js/jquery-listnav.js'></script>
+<script src='/assets/js/jquery-listnav.js?v=2'></script>
 
 <script wbapp>
 	var q = '{{_route.params.q}}';
 	$(document).on('cabinet-db-ready', function () {
-		window.page      = new Ractive({
+		window.page = new Ractive({
 			el: 'main.page .search-result .container',
 			template: wbapp.tpl('#search-result').html,
 			data: {
@@ -136,6 +143,28 @@
 			on: {
 				complete(ev) {
 					$('main.page .loading-overlay').remove();
+				},
+				deleteProfile(ev, client, idx){
+					if (confirm("Удалить профиль "+client.fullname+" и все записи пациента?") == true) {
+						window.api.get('/api/v2/list/records?client='+client.id).then(function (recs){
+							if (!!recs){
+								recs.forEach(function (rec, i) {
+									setTimeout(function () {
+										window.api.get('/api/v2/delete/record/' + rec.id);
+									});
+								});
+							}
+							window.api.get('/api/v2/delete/users/' + client.id).then(function (){
+								toast('Профиль удален!');
+
+								setTimeout(function () {
+									search();
+								});
+							});
+						});
+					} else {
+
+					}
 				},
 				createEvent(ev, client) {
 					console.log('createEvent', client);
@@ -155,10 +184,11 @@
 			}
 		});
 		var result_ready = function (resolved_count) {
+			console.log(resolved_count);
 			if (resolved_count > 2) {
 				page.set('ready', true);
 
-				const _list = $('.search-result .container');
+				const _list = $('.search-result .container .result-list');
 
 				_list.find(".account__panel").sort(function (a, b) {
 					const _a = $(a).attr('data-orderby').toUpperCase();
@@ -175,6 +205,14 @@
 				}).appendTo(_list);
 				setTimeout(function (){
 					$('.loading-overlay').length && $('.loading-overlay').remove();
+					$('#result-list-nav').remove();
+					$('.result-list').listnav({
+						filterSelector: '.user__name',
+						includeNums: true,
+						includeOther: true,
+						removeDisabled: false,
+						allText: 'Все'
+					});
 				});
 			}
 		};
@@ -182,7 +220,7 @@
 			var loaded      = 0;
 			var phone_query = str_replace([' ', '+', '-', '(', ')'], '', q);
 			page.set('ready', false);
-
+			page.set('results', {});
 			if (phone_query.length > 1 && phone_query[0] == '8') {
 				phone_query = '7' + phone_query.substring(1);
 			}

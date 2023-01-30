@@ -83,9 +83,9 @@
 				        </button>
 				    </span>
 			        <a class="btn btn-link" href="/cabinet">Заявки и события</a>
+			        <a class="btn btn-link" href="/cabinet/search">Пациенты</a>
 			        <a class="btn btn-link" href="/cabinet/photos">Медиатека</a>
 			        <a class="btn btn-link" href="/cabinet/changes">Журнал изменений</a>
-			        <a class="btn btn-link" href="/cabinet/search">Пациенты</a>
 			        <button class="btn btn--white loaddata --openpopup d-sm-block d-lg-none d-md-none"
 				        onclick="popupDownloadData();"
 				        data-popup="--download-data">

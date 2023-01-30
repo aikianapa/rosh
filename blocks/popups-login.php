@@ -41,7 +41,7 @@
                         <h3 class="h3">Введите код</h3>
                         <div class="form-title__description">
                             Мы отправили код подтверждения на номер <span class="current_phone"></span>.<br>
-                            Время жизни кода 30 секунд.<br>
+                            Время жизни кода 60 секунд.<br>
                             Осталось <strong><span class="sms_code_lifetime"></span></strong>
                         </div>
 
