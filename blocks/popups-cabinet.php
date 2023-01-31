@@ -271,7 +271,7 @@
 											<div class="select__list">
 												<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 												{{#each @global.catalog.quotePay}}
-												<div class="select__item" data-id="{{record.id}}"
+												<div class="select__item" data-id="{{.id}}"
 													onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values');">
 													{{name}}
 												</div>
@@ -546,7 +546,8 @@
 								new_data.price = parseInt(new_data.price);
 								if (!edit_mode) {
 									new_data.status = 'upcoming';
-									new_data.pay_status = new_data.pay_status || (new_data.price ? 'unpay' : 'free');
+									//new_data.pay_status = new_data.pay_status;
+									console.log(new_data.pay_status);
 
 									new_data.priority = 0;
 									new_data.marked = false;

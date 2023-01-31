@@ -270,9 +270,17 @@ $(document).ready(function(){
 	auth.smscode_window_digits.mask('9', {placeholder: ''});
 
 	//Обрабатываем ввод цифр
-	auth.smscode_window_digits.on('keyup', function(){
-		$(this).next().focus();
+	auth.smscode_window_digits.on('keyup', function(e){
 
+		if (e.key === "Backspace") {
+			var prev = $(this).prev();
+			if (prev.length){
+				prev.focus();
+			}
+			return false;
+		}
+
+		$(this).next().focus();
 		auth.sms_code = '';
 		$.each(auth.smscode_window_digits, function(digit, item){
 			auth.sms_code += $(item).val();

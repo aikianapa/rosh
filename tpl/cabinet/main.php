@@ -648,13 +648,16 @@
 							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
 							<p>ФИО</p>
 							<div>
-								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{@global.catalog.clients[.client].fullname}}</a>
+								{{#if @global.catalog.clients[.client].has_longterm}}
+								<small class="text-danger">продолжительное</small>
+								{{/if}}
 							</div>
 						</div>
 						<div class="admin-events-item">
 							<input type="hidden" class="orderby" value="{{catalog.clients[.client].phone}}">
 							<p>Телефон</p>
-							<div>{{catalog.clients[client].phone}}</div>
+							<div>{{@global.catalog.clients[client].phone}}</div>
 						</div>
 						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
@@ -726,6 +729,29 @@
 					<div class="acount__table-list accardeon__list admin-editor">
 						<div class="admin-editor__top">
 							<div class="admin-editor__top-info">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="analysis__top --aicn --flex mb-20">
+											<div class="analysis__title">Анализы</div>
+
+											{{#if this.analyses}}
+											<a class="btn btn--white mr-20" href="{{this.analyses}}"
+												target="_blank">
+												Скачать анализы
+											</a>
+											{{/if}}
+
+											<form class="analyses">
+												<label class="admin-edit__upload-btn btn btn--white">
+													Загрузить анализы
+													<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
+												</label>
+											</form>
+										</div>
+									</div>
+
+								</div>
+
 								<div class="lk-title">Редактировать профиль</div>
 								<div class="admin-editor__name user__edit">
 									{{ catalog.clients[client].fullname }}
@@ -839,7 +865,7 @@
 							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
 							<p>ФИО</p>
 							<div>
-								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+								<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
 								<br>
 								<small class="text-danger">продолжительное</small>
 							</div>
@@ -1009,10 +1035,10 @@
 			return 'event';
 		};
 		window.tab_urls      = [
+			'group=longterms',
 			'group=quotes',
 			'group=events&status=upcoming',
 			'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]',
-			'group=longterms'
 		];
 		let editProfile      = wbapp.tpl('#editProfile').html;
 		let editStatus       = wbapp.tpl('#editStatus').html;
@@ -1145,6 +1171,23 @@
 									},
 									complete() {
 										this.find('.loading-overlay').remove();
+									},
+									addAnalyses(ev, record, index) {
+										console.log('addAnalyses', ev, index, record);
+										var $form = $(ev.node).parents('form');
+										uploadFile(
+											$form.find('input[name="file"]')[0],
+											'records/analyses/' + record.client,
+											Date.now() + '_' + utils.getRandomStr(4),
+											function (photo) {
+												console.log(photo);
+												utils.api.post('/api/v2/update/records/' + record.id,
+														{'analyses': photo.uri})
+													.then(function (record) {
+														toast('Анализы добавлены!');
+														window.load();
+													});
+											});
 									},
 									editProfile(ev) {
 										var form = $(ev.node).parents('.admin-editor')

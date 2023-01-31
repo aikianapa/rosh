@@ -16,6 +16,11 @@ function html_decode(input) {
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
+	$('body').on('click', '.crumbs__arrow', function (e) {
+		e.preventDefault();
+		history.back();
+	});
+
 	var isObj  = function (a) {
 		return (!!a) && (a.constructor === Object);
 	};
@@ -283,18 +288,7 @@ $(function () {
 		quoteStatus: {},
 		quoteType: {},
 		quotePay: {
-			"prepay": {
-				"id": "prepay",
-				"name": "Оплачено"
-			},
-			"unpay": {
-				"id": "unpay",
-				"name": "Ожидает оплаты"
-			},
-			"free": {
-				"id": "free",
-				"name": "Не требует оплаты"
-			}
+
 		},
 
 		services: {},
@@ -359,7 +353,7 @@ $(function () {
 			if (!localStorage.getItem('db.quoteStatus')) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
-						_self.quoteStatus = utils.arr.indexBy(data);
+						_self.quoteStatus                 = utils.arr.indexBy(data);
 						_self.quoteStatus['past']['type'] = 'event';
 						localStorage.setItem('db.quoteStatus', JSON.stringify(_self.quoteStatus));
 					})
@@ -368,17 +362,17 @@ $(function () {
 				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatus'));
 			}
 
-			//if (!localStorage.getItem('db.quotePay')) {
-			//	getters.push(
-			//		utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-			//			_self.quotePay = utils.arr.indexBy(data);
-			//			localStorage.setItem('db.quotePay', JSON.stringify(_self.quotePay));
-			//
-			//		})
-			//	);
-			//} else {
-			//	_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay'));
-			//}
+			if (!localStorage.getItem('db.quotePay')) {
+				getters.push(
+					utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
+						_self.quotePay = utils.arr.indexBy(data);
+						localStorage.setItem('db.quotePay', JSON.stringify(_self.quotePay));
+
+					})
+				);
+			} else {
+				_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay'));
+			}
 
 			if (!localStorage.getItem('db.quoteType')) {
 				getters.push(
@@ -504,6 +498,18 @@ $(function () {
 					              '' +
 					              '&@sort=fullname:a').then(function (data) {
 						_self.clients = utils.arr.indexBy(data);
+						utils.api.get('/api/v2/list/records?group=longterms' +
+						              '' +
+						              '&@sort=fullname:a').then(function (data) {
+							if (data) {
+								data.forEach(function (rec) {
+									console.log(rec);
+									if (_self.clients[rec.client]){
+										_self.clients[rec.client]['has_longterm'] = 1;
+									}
+								});
+							}
+						});
 						//sessionStorage.setItem('db.clients', JSON.stringify(_self.clients));
 					})
 				);
