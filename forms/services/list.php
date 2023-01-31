@@ -6,15 +6,15 @@
 
     <div id="{{_form}}List">
 <nav class="nav navbar navbar-expand-md col">
-        <h3 class="tx-bold tx-spacing--2 order-1">Услуги</h3>
-        <div class="ml-auto order-2 float-right" wb-disallow="content">
+        <h3 class="order-1 tx-bold tx-spacing--2">Услуги</h3>
+        <div class="order-2 float-right ml-auto" wb-disallow="content">
             <a href="#" data-ajax="{'url':'/cms/ajax/form/{{_form}}/edit/_new','html':'modals'}" class="btn btn-primary">
                 <img src="/module/myicons/24/FFFFFF/item-select-plus-add.svg" width="24" height="24" /> Добавить
             </a>
         </div>
     </nav>
-        <div class="yonger-nested m-2 p-2">
-                <div class="bg-light p-3 mb-2 rounded search">
+        <div class="p-2 m-2 yonger-nested">
+                <div class="p-3 mb-2 rounded bg-light search">
                     <div class="row">
                         <div class="col-6">
                             <input type="search" class="form-control" name="filter" placeholder="Поиск" on-change="filter">
@@ -33,7 +33,6 @@
                 <ul class="list-group">
                     {{#each result}}
                     <li class="list-group-item d-flex align-items-center" data-id="{{.id}}">
-                        <img src="/thumbc/30x30/src{{.cover.0.img}}" class="wd-30 ht-30 rounded-circle mg-r-15" alt="">
                         <div class="wd-80p">{{.header}}</div>
                         <div class="text-right wd-20p">
                             <div class="custom-control custom-switch d-inline">

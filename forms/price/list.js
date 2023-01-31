@@ -1,6 +1,6 @@
 (() => {
     var api = "/api/v2"
-    var form = "services"
+    var form = "price"
     var size = 50
     var base = api + `/list/${form}?&@size=${size}&@sort=header`
     var list = new Ractive({

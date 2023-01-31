@@ -36,7 +36,7 @@
                                     </span>
                                 {{/if}}
                             </div>
-                            <a href="javascript:" data-ajax="{'url':'/cms/ajax/form/symptoms/edit/{{.id}}','html':'modals'}" class="d-inline">
+                            <a href="javascript:" data-ajax="{'url':'/cms/ajax/form/problems/edit/{{.id}}','html':'modals'}" class="d-inline">
                                 <img src="/module/myicons/content-edit-pen.svg?size=24&stroke=323232">
                             </a>
                             <div class="dropdown dropright d-inline">
