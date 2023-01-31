@@ -818,17 +818,18 @@
 				<div class="loading-overlay">
 					<div class="loader"></div>
 				</div>
-				{{#each records: idx}}
+				{{#each records as record: idx}}
+				{{#with @global.catalog.clients[this.client]}}
 				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin"
-					data-client="{{.client}}"
-					data-record="{{.id}}"
-					data-id="{{.id}}"
+					data-client="{{record.client}}"
+					data-record="{{record.id}}"
+					data-id="{{record.id}}"
 					data-idx="{{idx}}"
-					data-priority="{{.priority}}"
-					data-group="{{.group}}">
+					data-priority="{{record.priority}}"
+					data-group="{{record.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
-							<div class="accardeon__click" data-record="{{this.id}}" data-idx="{{idx}}"></div>
+							<div class="accardeon__click" data-record="{{record.id}}" data-idx="{{idx}}"></div>
 							<div class="flag-date">
 								{{#if priority * 1}}
 								<label class="checkbox">
@@ -864,16 +865,16 @@
 							</div>
 						</div>
 						<div class="admin-events-item">
-							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
+							<input type="hidden" class="orderby" value="{{catalog.clients[record.client].fullname}}">
 							<p>ФИО</p>
 							<div>
-								<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+								<a class="client-card link" href="/cabinet/client/{{record.client}}" target="_blank">{{catalog.clients[record.client].fullname}}</a>
 								<br>
 								<small class="text-danger">продолжительное</small>
 							</div>
 						</div>
 						<div class="admin-events-item">
-							<input type="hidden" class="orderby" value="{{catalog.clients[.client].phone}}">
+							<input type="hidden" class="orderby" value="{{catalog.clients[record.client].phone}}">
 							<p>Телефон</p>
 							<div>{{catalog.clients[client].phone}}</div>
 						</div>
@@ -914,20 +915,20 @@
 								<div class="admin-editor__top-select"></div>
 							</div>
 						</div>
-						<div class="admin-editor__edit-profile" data-client="{{.client}}"></div>
-						<div class="admin-editor__events mt-20 border-top" data-record="{{.id}}" data-idx="{{idx}}">
+						<div class="admin-editor__edit-profile" data-client="{{record.client}}"></div>
+						<div class="admin-editor__events mt-20 border-top" data-record="{{record.id}}" data-idx="{{idx}}">
 							<div class="row acount__photos-wrap">
 								<div class="col-md-2">
-									<a class="btn btn--white" on-click="['addPhoto',this]">
+									<a class="btn btn--white" on-click="['addPhoto',record]">
 										Добавить фото
 									</a>
 								</div>
 							</div>
-							{{#if this.hasPhoto}}
+							{{#if record.hasPhoto}}
 							<div class="row">
 								<div class="col-md-5">
 									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
-									{{#each this.photos.before}} <!--single photo!-->
+									{{#each record.photos.before}} <!--single photo!-->
 									<a class="before-healing photo"
 										data-fancybox="images-{{event.id}}"
 										data-href="{{.src}}"
@@ -947,7 +948,7 @@
 									<div class="after-healing">
 										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
 										<div class="row">
-											{{#each this.photos.after}}
+											{{#each record.photos.after}}
 											<div class="col-md-6">
 												<a class="after-healing__item photo"
 													data-fancybox="images-{{event.id}}"
@@ -970,6 +971,7 @@
 						</div>
 					</div>
 				</div>
+				{{/with}}
 				{{else}}
 				<div class="acount__table-accardeon accardeon">
 					<div class="acount__table-main accardeon__main">
