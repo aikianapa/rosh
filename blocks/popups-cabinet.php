@@ -430,7 +430,17 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupEvent = function(client, _record, onSaved) {
+			window.popupEvent = function (client, _record, onSaved) {
+				var saveRecord = function (edit_mode, id, data, _onSaved) {
+					utils.api.post('/api/v2/' + (edit_mode ? 'update' : 'create') +
+					               '/records/' +
+					               (edit_mode ? id : ''), data)
+						.then(function (res) {
+							if (!!_onSaved) {
+								_onSaved(res);
+							}
+						});
+				};
 				return new Ractive({
 					el: '.popup.--record-editor',
 					template: wbapp.tpl('#popupRecordEditor').html,
@@ -585,19 +595,34 @@
 									return false;
 								}
 								new_data.event_date = utils.dateForce(new_data.event_date);
-								new_data.price = parseInt(new_data.price);
+								new_data.price      = parseInt(new_data.price);
 
 								console.log('saving...', new_data);
 
-								utils.api.post('/api/v2/' + (edit_mode ? 'update' : 'create') +
-										'/records/' +
-										(edit_mode ? _record.id : ''), new_data)
-									.then(function(res) {
-										if (!!onSaved) {
-											onSaved(res);
+								var is_saved = false;
+								if (new_data.type == 'online') {
+									if (new_data.status == 'upcoming') {
+										if (!new_data.meetroom ||
+										    !new_data.meetroom.meetingId) {
+											is_saved = true;
+											onlineRooms.create(function (meetroom) {
+												new_data['meetroom'] = meetroom;
+												saveRecord(edit_mode, _record.id, new_data, onSaved);
+											});
+										} else {
+											is_saved = true;
+											saveRecord(edit_mode, _record.id, new_data, onSaved);
 										}
-									});
+									}
+								}
 
+								if (!is_saved) {
+									if (!!new_data.meetroom) {
+										onlineRooms.delete(new_data.meetroom.meetingId, function (meetroom) {});
+										new_data.meetroom = {}
+									}
+									saveRecord(edit_mode, _record.id, new_data, onSaved);
+								}
 							}
 
 							return false;
