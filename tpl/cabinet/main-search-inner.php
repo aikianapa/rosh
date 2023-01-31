@@ -652,7 +652,7 @@
 								data-fancybox="images-{{record.id}}"
 								href="{{.src}}"
 								data-href="{{.src}}"
-								data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+								data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
 								<div class="healing__date">
 									{{ @global.utils.formatDate(.date) }}
 								</div>
@@ -671,7 +671,7 @@
 										<a class="after-healing__item photo"
 											data-fancybox="images-{{record.id}}"
 											data-href="{{.src}}"
-											data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+											data-caption="Фото в процессе лечения, {{ @global.utils.formatDate(.date) }}">
 											<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 											<div class="after-healing__photo"
 												style="background-image: url({{.src}});">
