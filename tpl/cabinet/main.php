@@ -729,6 +729,29 @@
 					<div class="acount__table-list accardeon__list admin-editor">
 						<div class="admin-editor__top">
 							<div class="admin-editor__top-info">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="analysis__top --aicn --flex mb-20">
+											<div class="analysis__title">Анализы</div>
+
+											{{#if this.analyses}}
+											<a class="btn btn--white mr-20" href="{{this.analyses}}"
+												target="_blank">
+												Скачать анализы
+											</a>
+											{{/if}}
+
+											<form class="analyses">
+												<label class="admin-edit__upload-btn btn btn--white">
+													Загрузить анализы
+													<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
+												</label>
+											</form>
+										</div>
+									</div>
+
+								</div>
+
 								<div class="lk-title">Редактировать профиль</div>
 								<div class="admin-editor__name user__edit">
 									{{ catalog.clients[client].fullname }}
@@ -1148,6 +1171,23 @@
 									},
 									complete() {
 										this.find('.loading-overlay').remove();
+									},
+									addAnalyses(ev, record, index) {
+										console.log('addAnalyses', ev, index, record);
+										var $form = $(ev.node).parents('form');
+										uploadFile(
+											$form.find('input[name="file"]')[0],
+											'records/analyses/' + record.client,
+											Date.now() + '_' + utils.getRandomStr(4),
+											function (photo) {
+												console.log(photo);
+												utils.api.post('/api/v2/update/records/' + record.id,
+														{'analyses': photo.uri})
+													.then(function (record) {
+														toast('Анализы добавлены!');
+														window.load();
+													});
+											});
 									},
 									editProfile(ev) {
 										var form = $(ev.node).parents('.admin-editor')
