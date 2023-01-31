@@ -589,17 +589,18 @@
 				<div class="loading-overlay">
 					<div class="loader"></div>
 				</div>
-				{{#each records: idx}}
-				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{this.status}}"
-					data-client="{{.client}}"
-					data-record="{{.id}}"
-					data-id="{{.id}}"
+				{{#each records as record: idx}}
+				{{#with @global.catalog.clients[this.client]}}
+				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{status}}"
+					data-client="{{record.client}}"
+					data-record="{{record.id}}"
+					data-id="{{record.id}}"
 					data-idx="{{idx}}"
-					data-priority="{{.priority}}"
-					data-group="{{.group}}">
+					data-priority="{{record.priority}}"
+					data-group="{{record.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
-							<div class="accardeon__click" data-record="{{this.id}}" data-idx="{{idx}}"
+							<div class="accardeon__click" data-record="{{record.id}}" data-idx="{{idx}}"
 								on-click="editRecord"></div>
 							<div class="flag-date">
 								{{#if priority * 1}}
@@ -645,17 +646,17 @@
 							</div>
 						</div>
 						<div class="admin-events-item">
-							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
+							<input type="hidden" class="orderby" value="{{catalog.clients[client].fullname}}">
 							<p>ФИО</p>
 							<div>
-								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{@global.catalog.clients[.client].fullname}}</a>
-								{{#if @global.catalog.clients[.client].has_longterm}}
+								<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{@global.catalog.clients[client].fullname}}</a>
+								{{#if @global.catalog.clients[client].has_longterm}}
 								<small class="text-danger">продолжительное</small>
 								{{/if}}
 							</div>
 						</div>
 						<div class="admin-events-item">
-							<input type="hidden" class="orderby" value="{{catalog.clients[.client].phone}}">
+							<input type="hidden" class="orderby" value="{{catalog.clients[client].phone}}">
 							<p>Телефон</p>
 							<div>{{@global.catalog.clients[client].phone}}</div>
 						</div>
@@ -702,9 +703,9 @@
 							{{/each}}
 						</div>
 						<div class="admin-events-item">
-							<input type="hidden" class="orderby" value="{{catalog.quoteStatus[this.status].name}}">
+							<input type="hidden" class="orderby" value="{{catalog.quoteStatus[status].name}}">
 							<p>Статус</p>
-							<div>{{catalog.quoteStatus[this.status].name}}</div>
+							<div>{{catalog.quoteStatus[status].name}}</div>
 						</div>
 
 						<div class="admin-events-item w-8">
@@ -734,8 +735,8 @@
 										<div class="analysis__top --aicn --flex mb-20">
 											<div class="analysis__title">Анализы</div>
 
-											{{#if this.analyses}}
-											<a class="btn btn--white mr-20" href="{{this.analyses}}"
+											{{#if record.analyses}}
+											<a class="btn btn--white mr-20" href="{{record.analyses}}"
 												target="_blank">
 												Скачать анализы
 											</a>
@@ -744,7 +745,7 @@
 											<form class="analyses">
 												<label class="admin-edit__upload-btn btn btn--white">
 													Загрузить анализы
-													<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
+													<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',record,@index]">
 												</label>
 											</form>
 										</div>
@@ -781,10 +782,11 @@
 								<div class="admin-editor__top-select"></div>
 							</div>
 						</div>
-						<div class="admin-editor__edit-profile" data-client="{{.client}}"></div>
-						<div class="admin-editor__events" data-record="{{.id}}" data-idx="{{idx}}"></div>
+						<div class="admin-editor__edit-profile" data-client="{{record.client}}"></div>
+						<div class="admin-editor__events" data-record="{{record.id}}" data-idx="{{idx}}"></div>
 					</div>
 				</div>
+				{{/with}}
 				{{else}}
 				<div class="acount__table-accardeon accardeon">
 					<div class="acount__table-main accardeon__main">
