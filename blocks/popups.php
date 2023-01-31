@@ -111,7 +111,7 @@
 						}
 					});
 			};
-			let popFast2        = new Ractive({
+			var popFast22        = new Ractive({
 				el: '.popup.--fast',
 				template: document.querySelector('.popup.--fast > template').innerHTML,
 				data: {
