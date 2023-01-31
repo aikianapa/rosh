@@ -648,13 +648,16 @@
 							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
 							<p>ФИО</p>
 							<div>
-								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{@global.catalog.clients[.client].fullname}}</a>
+								{{#if @global.catalog.clients[.client].has_longterm}}
+								<small class="text-danger">продолжительное</small>
+								{{/if}}
 							</div>
 						</div>
 						<div class="admin-events-item">
 							<input type="hidden" class="orderby" value="{{catalog.clients[.client].phone}}">
 							<p>Телефон</p>
-							<div>{{catalog.clients[client].phone}}</div>
+							<div>{{@global.catalog.clients[client].phone}}</div>
 						</div>
 						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
@@ -1009,10 +1012,10 @@
 			return 'event';
 		};
 		window.tab_urls      = [
+			'group=longterms',
 			'group=quotes',
 			'group=events&status=upcoming',
 			'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]',
-			'group=longterms'
 		];
 		let editProfile      = wbapp.tpl('#editProfile').html;
 		let editStatus       = wbapp.tpl('#editStatus').html;
