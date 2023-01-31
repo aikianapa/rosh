@@ -169,7 +169,32 @@
 						</div>
 					</div>
 				</div>
+				<div class="analysis mt-20">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="analysis__top --aicn --flex mb-20">
+								<div class="analysis__title">Анализы</div>
+
+								{{#if this.analyses}}
+								<a class="btn btn--white mr-20" href="{{this.analyses}}"
+									target="_blank">
+									Скачать анализы
+								</a>
+								{{/if}}
+
+								<form class="analyses">
+									<label class="admin-edit__upload-btn btn btn--white">
+										Загрузить анализы
+										<input class="admin-edit__upload analyses" type="file" name="file" accept=".pdf" on-change="['addAnalyses',this,@index]">
+									</label>
+								</form>
+							</div>
+						</div>
+
+					</div>
+				</div>
 			</div>
+
 			<a class="account__detail" on-click="['editRecord', this]" data-idx="{{@index}}">Редактировать</a>
 		</div>
 		{{/each}}

@@ -865,7 +865,7 @@
 							<input type="hidden" class="orderby" value="{{catalog.clients[.client].fullname}}">
 							<p>ФИО</p>
 							<div>
-								<a class="client-card link" data-href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
+								<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">{{catalog.clients[.client].fullname}}</a>
 								<br>
 								<small class="text-danger">продолжительное</small>
 							</div>
