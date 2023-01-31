@@ -1478,13 +1478,13 @@ $(function () {
 
 	};
 
-	window.uploadFile    = function (file_input, path, filename, callback) {
+	window.uploadFile = function (file, path, filename, callback) {
 		var formData  = new FormData();
-		var _fileext  = file_input.files[0].name.split('.').pop();
-		var _filename = filename ? filename + '.' + _fileext : file_input.files[0].name;
+		var _fileext  = file.name.split('.').pop();
+		var _filename = filename ? filename + '.' + _fileext : file.name;
 		console.log(_filename);
 		formData.append("__token", wbapp._session.token);
-		formData.append("file", file_input.files[0], _filename);
+		formData.append("file", file, _filename);
 		formData.append("path", '/' + path + '/');
 		$.ajax({
 			url: "/api/v2/upload/",
@@ -1505,7 +1505,7 @@ $(function () {
 			}
 		});
 	};
-	window.uploader      = function (file_input, upload_url, callback) {
+	window.uploader   = function (file_input, upload_url, callback) {
 		var formData = new FormData();
 
 		formData.append("__token", wbapp._session.token);
@@ -1604,35 +1604,39 @@ $(function () {
 		//})
 		.on('change', '[type="file"].client-photo', function (e) {
 			e.stopPropagation();
-			var _block   = $(this).parents('.file-photo');
-			var _files   = e.target.files;
+			var _block = $(this).parents('.file-photo');
+			var _files = Array.from(e.target.files);
+			_block.find('img.preview.cloned').remove();
 			var _preview = _block.find('img.preview');
 			console.log(_block, 'selected!');
 
 			if (!!_preview.length) {
 				var reader;
-				var file;
-				var url;
-
 				var max_size = 10 * 1024 * 1024;
 				if (_files && _files.length > 0) {
-					file = _files[0];
-					if (file.size >= max_size) {
-						toast('Размер файла c фото не может превышать 10 мб', '', 'error');
-						$(this).val('');
-						return;
-					}
-					if (URL) {
-						_preview.attr('src', URL.createObjectURL(file));
-						_preview.removeClass('d-none');
-					} else if (FileReader) {
-						reader        = new FileReader();
-						reader.onload = function (e) {
-							_preview.attr('src', reader.result);
-							_preview.removeClass('d-none');
-						};
-						reader.readAsDataURL(file);
-					}
+					_block.find('.svgsprite._file').addClass('d-none');
+					_files.forEach(function (file) {
+						//file = _files[0];
+						if (file.size >= max_size) {
+							toast('Размер файла c фото не может превышать 10 мб', '', 'error');
+							$(this).val('');
+							return;
+						}
+
+						var preview = _preview.clone();
+						_preview.parents('.file-photo__ico').append(preview);
+						if (URL) {
+							preview.attr('src', URL.createObjectURL(file));
+							preview.addClass('cloned').removeClass('d-none');
+						} else if (FileReader) {
+							reader        = new FileReader();
+							reader.onload = function (e) {
+								preview.attr('src', reader.result);
+								preview.addClass('cloned').removeClass('d-none');
+							};
+							reader.readAsDataURL(file);
+						}
+					});
 				}
 			}
 		})
