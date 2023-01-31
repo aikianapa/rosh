@@ -455,6 +455,15 @@ a.text-danger:hover, a.text-danger:focus {color : #A71D2A !important}
 	justify-content : space-between;
 	text-align      : end;
 }
+.admin-editor__events {
+	padding-top: 20px;
+}
+img.preview.cloned{
+	margin-bottom : 4px;
+}
+.file-photo__ico {
+	flex-direction: column;
+}
 @media (max-width : 1280px){
 	.admin-events-item:nth-child(7) {
 		width          : 7%;

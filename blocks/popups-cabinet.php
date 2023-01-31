@@ -640,26 +640,27 @@
 
 						<div class="search-form event disabled input">
 							<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
-							 autocomplete="off">
+								autocomplete="off">
 							<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
 						</div>
 						{{/if}}
 
 						<div class="input calendar mb-20">
-							<input class="input__control datepickr" type="text" name="date" placeholder="Выбрать дату посещения" autocomplete="off">
+							<input class="input__control datepickr" type="text" name="date" placeholder="Выбрать дату посещения" autocomplete="off" required>
 							<div class="input__placeholder">Укажите дату фото</div>
 						</div>
 						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
-							<label class="text-radio" name="target" value="before">
+							<label class="text-radio" name="target" value="before" on-click="singlePhoto">
 								<input type="radio" name="target" value="before">
 								<span>
-									До начала лечения</span>
+									До начала лечения
+								</span>
 							</label>
-							<label class="text-radio switch-blocks" name="target" value="after">
+							<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
 								<input type="radio" name="target" value="after">
 								<span class="changed_label">
 									{{#if record.group == 'longterms'}} После начала лечения {{else}} В процессе лечения {{/if}}
-									</span>
+								</span>
 							</label>
 						</div>
 
@@ -698,10 +699,16 @@
 							initPlugins();
 							$(this.el).show();
 						},
+						multiplePhoto(ev) {
+							$(ev.node).parents('form').find('.client-photo').attr('multiple', 'multiple');
+						},
+						singlePhoto(ev) {
+							$(ev.node).parents('form').find('.client-photo').removeAttr('multiple');
+						},
 						submit(ev) {
 							console.log('Submit form...');
 							var _form = $(ev.node);
-							var self = this;
+							var self  = this;
 
 							wbapp.loading();
 							console.log('form data', form_data);
@@ -723,57 +730,60 @@
 										.focus();
 									return false;
 								}
-								utils.api.get('/api/v2/read/records/' + form_data.id).then(function(record) {
+								utils.api.get('/api/v2/read/records/' + form_data.id).then(function (record) {
 									var _photo_group = form_data.target || 'before';
 									delete form_data.target;
+									var files = Array.from(_form.find('input[name="file"]')[0].files);
+									console.log(files);
+									files.forEach(function (file) {
+										uploadFile(file,
+											'record/photos/' + record.id,
+											Date.now() + '_' + utils.getRandomStr(4),
+											function (photo) {
 
-									uploadFile(
-										_form.find('input[name="file"]')[0],
-										'record/photos/' + record.id,
-										Date.now() + '_' + utils.getRandomStr(4),
-										function(photo) {
+												if (photo.error) {
+													_form.removeClass('disabled');
+													wbapp.unloading();
 
-											if (photo.error) {
-												_form.removeClass('disabled');
-												wbapp.unloading();
-
-												toast_error(photo.error);
-												return false;
-											}
-											console.log('record: ', record, _photo_group);
-											if (!record.photos) {
-												record.photos = {
-													'before': [],
-													'after': []
+													toast_error(photo.error);
+													return false;
+												}
+												console.log('record: ', record, _photo_group);
+												if (!record.photos) {
+													record.photos = {
+														'before': [],
+														'after': []
+													};
+												}
+												var _photo_data = {
+													src: photo.uri,
+													filename: photo.filename,
+													comment: record.comment,
+													date: form_data.date,
+													photo_group: _photo_group
 												};
-											}
-											var _photo_data = {
-												src: photo.uri,
-												filename: photo.filename,
-												comment: record.comment,
-												date: form_data.date,
-												photo_group: _photo_group
-											};
-											if (_photo_group == 'before') {
-												record.photos['before'] = [];
-											} else if(!record.photos[_photo_group]){
-												record.photos[_photo_group] = [];
-											}
+												if (_photo_group == 'before') {
+													record.photos['before'] = [];
+												} else if (!record.photos[_photo_group]) {
+													record.photos[_photo_group] = [];
+												}
 
-											record.hasPhoto = 1;
-											record.photos[_photo_group].push(_photo_data);
-											wbapp.loading();
+												record.hasPhoto = 1;
+												record.photos[_photo_group].push(_photo_data);
+												wbapp.loading();
 
-											utils.api.post('/api/v2/update/records/' + record.id, {
-												'photos': record.photos,
-												'hasPhoto': 1
-											}).then(function(rec) {
-												wbapp.unloading();
-												_form.removeClass('disabled');
-												onSaved(rec);
-												$(self.el).hide();
+												utils.api.post('/api/v2/update/records/' + record.id, {
+													'photos': record.photos,
+													'hasPhoto': 1
+												}).then(function (rec) {
+													wbapp.unloading();
+													_form.removeClass('disabled');
+													onSaved(rec);
+													$(self.el).hide();
+												});
 											});
-										});
+									});
+
 								});
 							} else {
 								wbapp.unloading();
@@ -906,42 +916,48 @@
 										.focus();
 									return false;
 								}
-								form_data.event_date = utils.dateForce(form_data.event_date);
+								form_data.event_date     = utils.dateForce(form_data.event_date);
 								form_data.recommendation = '';
-								form_data.description = '';
-								form_data.price = 0;
-								var _photo_group = form_data.target || 'before';
+								form_data.description    = '';
+								form_data.price          = 0;
+								var _photo_group         = form_data.target || 'before';
 								delete form_data.photo_group;
+								var files = Array.from(_form.find('input[name="file"]')[0].files);
+								console.log(files);
+								files.forEach(function (file) {
+									uploadFile(
+										file,
+										'records/photos/longterms',
+										Date.now() + '_' + utils.getRandomStr(4),
+										function (photo) {
+											if (photo.error) {
+												toast_error(photo.error);
+												return false;
+											}
 
-								uploadFile(
-									$form.find('input[name="file"]')[0],
-									'records/photos/longterms',
-									Date.now() + '_' + utils.getRandomStr(4),
-									function(photo) {
-										if (photo.error) {
-											toast_error(photo.error);
-											return false;
-										}
+											var _photo_data = {
+												src: photo.uri,
+												filename: photo.filename,
+												date: form_data.event_date,
+												timestamp: utils.timestamp(form_data.event_date),
+												photo_group: _photo_group
+											};
+											form_data.photos[_photo_group].push(_photo_data);
+											form_data.hasPhoto = 1;
+											wbapp.loading();
+											utils.api.post('/api/v2/create/records/', form_data).then(
+												function (longterm_record) {
 
-										var _photo_data = {
-											src: photo.uri,
-											filename: photo.filename,
-											date: form_data.event_date,
-											timestamp: utils.timestamp(form_data.event_date),
-											photo_group: _photo_group
-										};
-										form_data.photos[_photo_group].push(_photo_data);
-										form_data.hasPhoto = 1;
-										utils.api.post('/api/v2/create/records/', form_data).then(
-											function(longterm_record) {
-												if (typeof onSaved == 'function') {
-													onSaved(longterm_record);
+													wbapp.unloading();
+													if (typeof onSaved == 'function') {
+														onSaved(longterm_record);
+													}
+													$(self.el).hide();
+												});
+										});
 
+								});
 
-												}
-												$(self.el).hide();
-											});
-									});
 							}
 
 							return false;

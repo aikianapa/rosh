@@ -144,7 +144,7 @@
 						<div class="mainfilter__choice">
 							<div class="mainfilter__choice-main">
 								<h5 class="h5">Выбранные услуги или существующие проблемы</h5>
-								<div class="mainfilter__tags">
+								<div class="mainfilter__tags problems">
 									{{#each choice.services}}
 										<div class="mainfilter-tag">
 											<div class="mainfilter-tag__name">
@@ -157,7 +157,8 @@
 											</div>
 											<div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
 										</div>
-									{{/each}} {{#each choice.problems}}
+									{{/each}}
+									{{#each choice.problems}}
 										<div class="mainfilter-tag">
 											<div class="mainfilter-tag__name">
 												<div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
@@ -335,6 +336,8 @@
 				clearSymptoms() {
 					$(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(
 						'checked', false);
+					$(document).find('.mainfilter__symptoms .mainfilter-tag').remove();
+
 					mainFilter.set('choice.symprbms', {});
 					mainFilter.set('choice.symptoms', {});
 					wbapp.data('choice.symprbms', {});
@@ -349,6 +352,8 @@
 						'checked', false);
 					$(document).find('.mainfilter__tab[data-tab="problems"] input[type="checkbox"]:checked').prop(
 						'checked', false);
+					$(document).find('.mainfilter__tags.problems .mainfilter-tag').remove();
+
 					mainFilter.set('choice.problems', {});
 					wbapp.data('choice.problems', {});
 					mainFilter.set('choice.services', {});
