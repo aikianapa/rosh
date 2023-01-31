@@ -1,6 +1,18 @@
 <view>
 	<div class="fast-form-block">
 		<template>
+			<div class="popup fast-form-block">
+				<div class="popup__panel --succed">
+					<button class="popup__close">
+						<svg class="svgsprite _close">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+						</svg>
+					</button>
+					<div class="popup__name text-bold">Быстрая запись</div>
+					<h3 class="h3">Успешно !</h3>
+					<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+				</div>
+			</div>
 			<form class="fast-form no-validation">
 				<div class="container">
 					<div class="container-fluid">
@@ -97,13 +109,11 @@
 						wbapp.trigger('wb-save-error',
 							{'data': data});
 					} else {
-						$('.popup.--fast .popup__panel:not(.--succed)')
+						$('.popup.fast-form-block').show();
+						$('.popup.fast-form-block .popup__panel:not(.--succed)')
 							.addClass('d-none');
-						$('.popup.--fast .popup__panel.--succed')
+						$('.popup.fast-form-block .popup__panel.--succed')
 							.addClass('d-block');
-						if (typeof window.load == 'function') {
-							window.load();
-						}
 					}
 				});
 		};
