@@ -1,6 +1,6 @@
 <view>
 	<div wb-if="'{{_sess.user.role}}'=='client'">
-		<div class="popup --record">
+		<div class="popup --record strict_close">
 			<template id="popupRecord">
 				<div class="popup__overlay"></div>
 				<form class="popup__panel popup__panel-wide" on-submit="submit">
