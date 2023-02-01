@@ -300,7 +300,7 @@
 			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="longterm">
 				Продолжительное лечение
 			</div>
-			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="history">
+			<div class="account__tab-item data-tab-link d-none" data-tabs="history" data-tab="history">
 				История покупок
 			</div>
 		</div>
@@ -571,7 +571,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="account__tab data-tab-item purchases" data-tab="history">
+		<div class="account__tab data-tab-item purchases d-none" data-tab="history">
 			<div class="account__table account__table-second">
 				<div class="account__table-head">
 					<div class="healing-item">Дата</div>

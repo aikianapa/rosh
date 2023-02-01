@@ -43,31 +43,55 @@
                     <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-2"></use>
                 </svg></a>
             <a class="socials__link" href="{{_var.vkontakte}}" wb-if="'{{_var.vkontakte}}'>''">
-                <svg class="svgsprite _socials-4">
-                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-4"></use>
-                </svg></a><a class="socials__link" href="{{_var.youtube}}" wb-if="'{{_var.youtube}}'>''">
-                <svg class="svgsprite _socials-3">
-                    <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-3"></use>
-                </svg></a>
+	            <svg class="svgsprite _socials-4">
+		            <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-4"></use>
+	            </svg>
+            </a><a class="socials__link" href="{{_var.youtube}}" wb-if="'{{_var.youtube}}'>''">
+		        <svg class="svgsprite _socials-3">
+			        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-3"></use>
+		        </svg>
+	        </a>
         </div>
 
-        <div class="menu__contacts"> <a class="text-small text-grey" href="/contacts">
-            {{_sett.address}}
-        </a><a class="text-small text-grey" href="mailto:{{_sett.contactEmail}}">
-                {{_sett.contactEmail}}</a></div><a class="en-version" href="/english">
-            <svg class="svgsprite _web">
-                <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
-            </svg>English version
-            <svg class="svgsprite _arrow-link">
-                <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
-            </svg></a>
+	    <div class="menu__contacts"><a class="text-small text-grey" href="/contacts">
+			    {{_sett.address}}
+		    </a>
+		    <a class="text-small text-grey" href="mailto:{{_sett.contactEmail}}">
+			    {{_sett.contactEmail}}</a></div>
+	    <a class="en-version" href="/english" wb-if="'{{_route.uri}}' !=='/english'">
+		    <svg class="svgsprite _web">
+			    <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
+		    </svg>
+		    English version
+		    <svg class="svgsprite _arrow-link">
+			    <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
+		    </svg>
+	    </a>
+	    <a class="en-version" href="/english" wb-if="'{{_route.uri}}' !=='/english'">
+		    <svg class="svgsprite _web">
+			    <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
+		    </svg>
+		    English version
+		    <svg class="svgsprite _arrow-link">
+			    <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
+		    </svg>
+	    </a>
+	    <a class="en-version" href="/" wb-if="'{{_route.uri}}' =='/english'">
+		    <svg class="svgsprite _web">
+			    <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
+		    </svg>
+		    Русская версия
+		    <svg class="svgsprite _arrow-link">
+			    <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
+		    </svg>
+	    </a>
 
     </div>
 
 </view>
 
 <edit header="Главное меню">
-    <div>
-        <wb-module wb="module=yonger&mode=edit&block=common.inc" />
-    </div>
+	<div>
+		<wb-module wb="module=yonger&mode=edit&block=common.inc"/>
+	</div>
 </edit>

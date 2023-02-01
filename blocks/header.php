@@ -31,13 +31,13 @@
                             <div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>
                         </wb-data>
                     </div>
-	                <a class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
+	                <a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
                 </div>
 
                 <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'==''">
-                    <button class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
+                    <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
-                    <a href="/basket" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
+                    <a href="/basket" wb-if="'{{_route.uri}}' !=='/english'" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
                     <button class="burger"></button>
                 </div>
                 
@@ -64,7 +64,9 @@
                             <a class="enter__btn text-small signout" href="/signout">Выйти</a>
                         </div>
                     </button>
-                    <a  wb-if="'{{_sess.user.role}}'!=='expert'" href="/basket" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
+	                <div wb-if="'{{_route.uri}}' !=='/english'">
+                    <a wb-if="'{{_sess.user.role}}'!=='expert'" href="/basket" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
+	                </div>
                     <button class="burger"></button>
                 </div>
             </div>
@@ -108,7 +110,7 @@
                     <button class="burger"></button>
                 </div>
             </div>
-            <div class="crumbs__en" wb-if="'{{_route.uri}}' =='/english'">
+            <div class="crumbs__en" wb-if="'{{_route.uri}}'=='/english'">
                 <div class="container">
                     <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
                             <svg class="svgsprite _crumbs-back-white">
