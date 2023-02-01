@@ -138,7 +138,7 @@
 				<div class="account-events__btns">
 					<div class="account-event-wrap --aicn">
 						<div class="account-events__btn">
-							<a class="btn btn--black" data-id="{{this.id}}" on-click="runOnlineChat">
+							<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
 								Начать консультацию
 							</a>
 						</div>
@@ -622,9 +622,8 @@
 				},
 				on: {
 					init() {},
-					runOnlineChat(ev) {
-						var _rec_id = $(ev.node).data('id');
-						Cabinet.runOnlineChat(_rec_id);
+					runOnlineChat(ev, record) {
+						Cabinet.runOnlineChat(record?.meetroom?.roomName);
 					},
 					toggleEdit(ev) {
 						console.log(ev, $(ev.node), this);

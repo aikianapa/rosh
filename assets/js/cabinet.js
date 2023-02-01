@@ -546,7 +546,7 @@ $(function () {
 			});
 		}
 	};
-	window.Cabinet = {
+	window.Cabinet     = {
 		eventTimestamp(event) {
 			var event_date           = utils.getDate(event.event_date);
 			let event_from_timestamp = utils.timestamp(
@@ -576,13 +576,13 @@ $(function () {
 
 			return (event_from_timestamp < (curr_timestamp + 301) && event_to_timestamp >= curr_timestamp);
 		},
-		runOnlineChat(record_id) {
+		runOnlineChat(room_name) {
 			/*!! check record  exists & status & pay_status & date !!*/
 			/*!! mark record as "online_waiting"=1 !!*/
 			if (!wbapp?._session?.user) {
 				return false;
 			}
-			window.open('/cabinet/online#' + record_id,
+			window.open('/cabinet/online#' + room_name,
 				'_blank', 'width=' + screen.availWidth + ',' +
 				          'height=' + screen.availHeight +
 				          ',location=yes,scrollbars=yes,status=no');
@@ -750,7 +750,22 @@ $(function () {
 				});
 		}
 	};
-
+	window.onlineRooms = {
+		create(onSuccess) {
+			var self = this;
+			utils.api.post('/form/records/meetRoomCreate', {}).then(function(data){
+				console.log('success:', data);
+				onSuccess(data);
+			});
+		},
+		delete(meetingId, onSuccess) {
+			var self = this;
+			utils.api.post('/form/records/meetRoomDelete', {'meetingId': meetingId}).then(function (data) {
+				console.log('success:', data);
+				onSuccess(data);
+			});
+		}
+	};
 	window.catalog.init(false);
 	//.then(() => {
 	//});

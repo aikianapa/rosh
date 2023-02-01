@@ -1015,6 +1015,15 @@
 <script wb-app remove>
 	var client_id = '{{_route.client}}';
 	$(document).on('cabinet-db-ready', function () {
+		var saveRecord = function(id, data){
+			utils.api.post(
+					'/api/v2/update/records/' + id, data)
+				.then(function (res) {
+					console.log('event data:', data);
+					toast('Успешно сохранено');
+					window.content_load();
+				});
+		};
 		window.page = new Ractive({
 			el: 'main.page .page-content .container',
 			template: wbapp.tpl('#page-content').html,
@@ -1429,14 +1438,30 @@
 									new_data.services   = utils.arr.unique(new_data.services);
 
 									changeLogSave(new_data, _record);
+									var is_saved = false;
+									if (new_data.type == 'online') {
+										if (new_data.status == 'upcoming') {
+											if (!new_data.meetroom ||
+											    !new_data.meetroom.meetingId) {
+												is_saved = true;
+												onlineRooms.create(function (meetroom) {
+													new_data['meetroom'] = meetroom;
+													saveRecord(_record.id, new_data);
+												});
+											} else {
+												is_saved = true;
+												saveRecord(_record.id, new_data);
+											}
+										}
+									}
 
-									utils.api.post(
-											'/api/v2/update/records/' + _record.id, new_data)
-										.then(function (res) {
-											console.log('event data:', new_data);
-											toast('Успешно сохранено');
-											window.content_load();
-										});
+									if (!is_saved) {
+										if (!!new_data.meetroom) {
+											onlineRooms.delete(new_data.meetroom.meetingId, function (meetroom) {});
+											new_data.meetroom = {};
+										}
+										saveRecord(_record.id, new_data);
+									}
 								} else {
 									toast('Проверьте указанные данные');
 								}

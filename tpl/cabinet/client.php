@@ -23,17 +23,16 @@
 						</a>
 						<a class="crumbs__link" href="/">Главная</a>
 						<span class="crumbs__link">Личный кабинет</span>
-				</div>
-				<div class="title-flex --flex --jcsb">
-					<div class="title">
-						<h1 class="h1 mb-10">Личный кабинет</h1>
 					</div>
-					<button class="btn btn--black --openpopup" data-popup="--record"
-						onclick="popupCreateQuote()">
-						Записаться на прием
-					</button>
-				</div>
-
+					<div class="title-flex --flex --jcsb">
+						<div class="title">
+							<h1 class="h1 mb-10">Личный кабинет</h1>
+						</div>
+						<button class="btn btn--black --openpopup" data-popup="--record"
+							onclick="popupCreateQuote()">
+							Записаться на прием
+						</button>
+					</div>
 					<div class="page-content">
 						<div class="loading-overlay">
 							<div class="loader"></div>
@@ -62,8 +61,8 @@
 				<div class="user__group">
 					<div class="user__birthday">
 						{{#if user.birthdate}}
-							Дата рождения:
-							<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
+						Дата рождения:
+						<span>{{ @global.utils.formatDate(user.birthdate) }}</span>
 						{{else}}
 						{{/if}}
 					</div>
@@ -145,7 +144,7 @@
 			<div class="account-events__btns">
 				<div class="account-event-wrap --aicn">
 					<div class="account-events__btn">
-						<a class="btn btn--black" data-id="{{this.id}}" on-click="runOnlineChat">
+						<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
 							Начать консультацию
 						</a>
 					</div>
@@ -237,28 +236,28 @@
 				{{elseif this.type == 'clinic'}}
 				<!--nothing..-->
 				{{elseif this.pay_status == 'unpay'}}
-					<div class="account-events__btns">
-						<div class="account-event-wrap --aicn">
-							<div class="account-events__btn">
-								<button class="btn btn--black"
-									onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
-									Внести предоплату
-								</button>
-							</div>
-							<p>Услуга требует внесения предоплаты</p>
+				<div class="account-events__btns">
+					<div class="account-event-wrap --aicn">
+						<div class="account-events__btn">
+							<button class="btn btn--black"
+								onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+								Внести предоплату
+							</button>
 						</div>
+						<p>Услуга требует внесения предоплаты</p>
 					</div>
+				</div>
 				{{elseif this.type == 'online'}}
-					<div class="account-events__btns">
-						<div class="account-event-wrap --aicn">
-							<div class="account-events__btn">
-								<button class="btn btn--white disabled" disabled>
-									Онлайн консультация
-								</button>
-							</div>
-							<p>Кнопка станет активной за 5 минут до начала приема</p>
+				<div class="account-events__btns">
+					<div class="account-event-wrap --aicn">
+						<div class="account-events__btn">
+							<button class="btn btn--white disabled" disabled>
+								Онлайн консультация
+							</button>
 						</div>
+						<p>Кнопка станет активной за 5 минут до начала приема</p>
 					</div>
+				</div>
 				{{/if}}
 
 
@@ -695,7 +694,7 @@
 
 <script>
 	$(document).on('cabinet-db-ready', function () {
-		window.page = new Ractive({
+		window.page                    = new Ractive({
 			el: 'main.page .page-content',
 			template: wbapp.tpl('#page-content').html,
 			data: {
@@ -735,9 +734,8 @@
 							});
 					});
 				},
-				runOnlineChat(ev) {
-					const _rec_id = $(ev.node).data('id');
-					Cabinet.runOnlineChat(_rec_id);
+				runOnlineChat(ev, record) {
+					Cabinet.runOnlineChat(record?.meetroom?.roomName);
 				},
 				toggleEdit(ev) {
 					console.log(ev, $(ev.node), this);
@@ -780,9 +778,9 @@
 				}
 			}
 		});
-		window.current_day_events = [];
+		window.current_day_events      = [];
 		var current_day_events_checker = null;
-		window.load = function () {
+		window.load                    = function () {
 			if (!!current_day_events_checker) {
 				clearInterval(current_day_events_checker);
 			}
@@ -827,7 +825,6 @@
 					}
 					page.set('events_ready', true);
 
-
 					if (!!window.current_day_events.length) {
 						current_day_events_checker = setInterval(function () {
 							console.log('check!');
@@ -855,10 +852,9 @@
 					}
 					$("img[data-src]:not([src])").lazyload();
 
-
 				});
 		};
-		window.sort_events = function (){
+		window.sort_events             = function () {
 			$(".account-events.upcoming .account-events__block")
 				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
 				.appendTo(".account-events.upcoming");

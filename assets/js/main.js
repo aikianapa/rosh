@@ -245,7 +245,7 @@ $(function() {
             $(this).closest('.accardeon').find('.profile-edit:first').toggleClass('active');
             return false;
         }).on('click', '.popup__overlay', function() {
-            $(this).closest('.popup').hide();
+            $(this).closest('.popup:not(.strict_close)').hide();
         }).on('click', '.profile-menu', function(e) {
             e.stopPropagation();
             $(this).toggleClass('active');
