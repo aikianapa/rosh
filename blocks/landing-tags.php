@@ -21,7 +21,7 @@
     <div class="landing">
         <div class="container">
             <div class="row">
-                <div class="offset-md-4 col-md-8">
+                <div class="offset-lg-4 col-lg-8">
                     <div class="symptoms">
                         <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
                         <div class="tags">
@@ -40,7 +40,7 @@
     <div class="landing page">
         <div class="container">
             <div class="row">
-                <div class="offset-md-4 col-md-8">
+                <div class="offset-lg-4 col-lg-8">
                     <div class="symptoms">
                         <h3 class="h3 mb-40">Симптомы:</h3>
                         <div class="tags">

@@ -2,10 +2,10 @@
     <div class="landing">
         <div class="container">
         <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <h5 class="h5 content-title" wb-if="'{{title}}'>''">{{title}}</h5>
                 </div>
-                <div class="col-md-8">
+                <div class="col-lg-8">
                     <div class="content-wrap">
                         <h3 class="h3 mb-40" wb-if="'{{subtitle}}'>''">{{subtitle}}</h3>
                         <div class="text mb-80" wb-if="'{{text}}'>''">
@@ -48,10 +48,10 @@
     <div class="landing page">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <h5 class="h5 content-title">Проявление аллергенов</h5>
                 </div>
-                <div class="col-md-8">
+                <div class="col-lg-8">
                     <div class="content-wrap">
                         <h3 class="h3 mb-40">Аллергены</h3>
                         <div class="text mb-80">
