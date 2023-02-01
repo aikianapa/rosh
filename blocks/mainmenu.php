@@ -1,7 +1,7 @@
 <view>
 
     <div class="menu" id="mainmenu">
-        <nav class="nav">
+        <nav class="nav" wb-if="'{{_route.uri}}' !=='/english'">
             <wb-var menu wb-api="/api/v2/list/pages?active=on&menu=on&@sort=_sort"/>
             <wb-foreach wb="from=_var.menu&tpl=false" wb-filter="path=">
                 <wb-var child="0" />
@@ -25,7 +25,7 @@
                 </div>
             </wb-foreach>
         </nav>
-        <div class="mobile-btns">
+        <div class="mobile-btns" wb-if="'{{_route.uri}}' !=='/english'">
             <!-- button class="btn btn--white --openfilter mb-10">Подобрать услугу</button -->
             <div class="--flex">
                 <button class="btn btn-link --openpopup pl-0" data-popup="--fast">Записаться на прием</button>
