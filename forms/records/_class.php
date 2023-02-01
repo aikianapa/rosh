@@ -51,9 +51,12 @@ class recordsClass extends cmsFormsClass
                 }
             }
             if ($admins) {
+                in_array($item['_creator'],(array)$admins) ? null : $flag = false;
+                /*
                 foreach ($admins as $adm) {
                     in_array($adm, (array)$item['admins']) ? null : $flag = false;
                 }
+                */
             }
             if ($phone && $phone !== text2tel($client['phone'])) {
                 $flag = false;
