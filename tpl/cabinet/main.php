@@ -1088,6 +1088,14 @@
 									},
 									complete() {
 										this.find('.loading-overlay').remove();
+										var self = this;
+										setTimeout(function () {
+											$(self.el).find('a.photo[data-href]')
+												.each(function (i) {
+													var _img = $(this);
+													_img.attr('href', $(this).data('href'));
+												});
+										}, 150);
 									},
 									editProfile(ev) {
 										var form = $(ev.node).parents('.admin-editor')
@@ -1175,6 +1183,14 @@
 									},
 									complete() {
 										this.find('.loading-overlay').remove();
+										var self = this;
+										setTimeout(function () {
+											$(self.el).find('a.photo[data-href]')
+												.each(function (i) {
+													var _img = $(this);
+													_img.attr('href', $(this).data('href'));
+												});
+										}, 150);
 									},
 									addAnalyses(ev, record, index) {
 										console.log('addAnalyses', ev, index, record);

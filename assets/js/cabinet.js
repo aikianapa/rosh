@@ -20,7 +20,35 @@ $(function () {
 		e.preventDefault();
 		history.back();
 	});
-
+	window.resoreSending = false;
+	window.sendRestoreEMail = function(email) {
+		if(window.resoreSending == true){
+			toast_warning('Подождите, идет предыдущая отправка кода!');
+			return;
+		}
+		if (email !== '') {
+			wbapp.loading();
+			window.resoreSending = true;
+			$.ajax({
+				url: '/form/emailAuth/recover',
+				method: 'POST',
+				data: {
+					email: email,
+				},
+				complete: function(){
+					window.resoreSending = false;
+				},
+				success: function (data) {
+					wbapp.unloading();
+					if (data.status === 'ok') {
+						toast('Код успешно отправлен!');
+					} else {
+						toast('Код успешно отправлен!');
+					}
+				}
+			})
+		}
+	}
 	var isObj  = function (a) {
 		return (!!a) && (a.constructor === Object);
 	};
