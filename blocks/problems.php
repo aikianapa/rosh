@@ -74,9 +74,9 @@
         <div class="container">
             <p class="text-bold problems-filter__title">Фильтр:</p>
             <div class="problems-filter__list">
-                <div class="problems-filter__item cursor-pointer active" data-category="">Все</div>
+                <div class="cursor-pointer problems-filter__item active" data-category="">Все</div>
                 <wb-foreach wb="table=catalogs&item=srvcat&from=tree.data">
-                    <div class="problems-filter__item cursor-pointer" data-category="{{id}}" wb-if='!in_array({{id}},["gyn","lab"])'>{{name}}</div>
+                    <div class="cursor-pointer problems-filter__item" data-category="{{id}}" wb-if='!in_array({{id}},["gyn","lab"])'>{{name}}</div>
                 </wb-foreach>
             </div>
         </div>
@@ -86,7 +86,7 @@
         <div class="all-tab data-tab-item {{_var.active}}" >
             <div class="container">
                 <div class="all-services">
-                    <wb-foreach wb="table=problems&size=999999&tpl=false" wb-filter="active=on">
+                    <wb-foreach wb="table=problems&sort=header&size=999999&tpl=false" wb-filter="active=on">
                         <wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
                         <a class="all-services__item" href="/{{_table}}/{{wbFurlGenerate({{header}})}}" data-srvtype="{{srvtype}}" data-category='{{implode(" ",category)}}'>
                             <div class="all-services__pic" style="background-image: url(/thumbc/610x314/src{{_var.image}})"></div>

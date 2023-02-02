@@ -8,7 +8,7 @@
     <div class="container">
         <div class="title-flex --flex --jcsb">
             <div class="title">
-                <h1 class="h1 mb-10">{{_parent.header}}</h1>
+                <h1 class="mb-10 h1">{{_parent.header}}</h1>
                 <h3></h3>
             </div>
         </div>
@@ -16,7 +16,7 @@
     <div class="card" id="Shop">
         <div class="container">
             <div class="card-row">
-                <wb-foreach wb="table=shop&size=12&sort=header:d" wb-filter="active=on">
+                <wb-foreach wb="table=shop&size=12&sort=header" wb-filter="active=on">
                     <div class="card-col">
                         <div class="card-wrap"  data-id="{{id}}" data-price="{{price}}" data-img="{{image.0.img}}">
                             <a href="/shop/{{wbFurlGenerate({{header}})}}" class="card-img"><img src="/thumbc/700x680/src{{image.0.img}}" alt="{{header}}"></a>

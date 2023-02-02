@@ -41,6 +41,7 @@ class usersClass extends cmsFormsClass
 
     public function beforeItemSave(&$item)
     {
+        isset($item['email']) ? $item['email'] = strtolower($item['email']) : null;
         $item['phone'] = isset($item['phone']) ? wbDigitsOnly($item['phone']) : '';
         if (!isset($item['middle_name'])) $item['middle_name'] = '';
         if (!$this->app->vars('_route._post.fullname') && $this->app->vars('_route._post.first_name') > '' ) {
