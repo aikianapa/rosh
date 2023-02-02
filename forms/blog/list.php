@@ -60,7 +60,7 @@
                             <form method="post" class="m-0 text-right cursor-pointer"  data-item="{{id}}" data-form="{{_form}}">
                                 <wb-var wb-if='"{{active}}" == ""' stroke="FC5A5A" else="82C43C" />
                                 <input type="checkbox" name="active" class="d-none">
-                                <img src="/module/myicons/24/7987a1/copy-paste-select-add-plus.svg" width="24" height="24" class="dd-copy" wb-allow="admin">
+                                <!--img src="/module/myicons/24/7987a1/copy-paste-select-add-plus.svg" width="24" height="24" class="dd-copy" wb-allow="admin"-->
                                 <img src="/module/myicons/24/7987a1/content-edit-pen.svg" width="24" height="24" class="dd-edit">
                                 <img src="/module/myicons/24/{{_var.stroke}}/power-turn-on-square.1.svg" class="cursor-pointer dd-active" wb-allow="admin">
                                 <img src="/module/myicons/24/FC5A5A/trash-delete-bin.2.svg" width="24" height="24" class="dd-remove" wb-allow="admin">

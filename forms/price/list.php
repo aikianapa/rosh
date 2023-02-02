@@ -71,7 +71,7 @@
                     </li>
                 {{/each}}
             </ul>
-            <!--
+            
         {{#~/pages }} {{#if ~/pages != 1 }}
         <nav>
             <ul class="pagination justify-content-center mg-b-0 mg-t-10">
@@ -95,7 +95,7 @@
             </ul>
         </nav>
         {{/if}} {{/pages}}
--->
+
         </div>
     </div>
 </div>
