@@ -742,6 +742,8 @@
 							page.push('history', rec);
 							console.log('past:', rec);
 							return;
+						} else if (rec.status !== 'upcoming') {
+							return;
 						} else if (idx === 0) {
 							page.set('closest_event', rec);
 						}

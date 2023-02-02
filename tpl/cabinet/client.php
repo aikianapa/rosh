@@ -134,13 +134,32 @@
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Время приема:</div>
 						<div class="account-event">
-							<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
+							<div class="account-event text-right">
+								<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
+									<small>по московскому времени</small>
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			{{#if this.type == 'online'}}
+			{{#if this.status == 'new'}}
+			<!--nothing..-->
+			{{elseif this.type == 'clinic'}}
+			<!--nothing..-->
+			{{elseif this.pay_status == 'unpay'}}
+			<div class="account-events__btns">
+				<div class="account-event-wrap --aicn">
+					<div class="account-events__btn">
+						<button class="btn btn--black"
+							onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+							Внести предоплату
+						</button>
+					</div>
+					<p>Услуга требует внесения предоплаты</p>
+				</div>
+			</div>
+			{{elseif this.type == 'online'}}
 			<div class="account-events__btns">
 				<div class="account-event-wrap --aicn">
 					<div class="account-events__btn">
@@ -224,13 +243,12 @@
 					</div>
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Время приема:</div>
-						<div class="account-event">
-							<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
+						<div class="account-event text-right">
+							<p>{{this.event_time_start}}-{{this.event_time_end}}<br><small>по московскому времени</small></p>
 						</div>
 					</div>
 				</div>
 				{{/if}}
-
 				{{#if this.status == 'new'}}
 				<!--nothing..-->
 				{{elseif this.type == 'clinic'}}
@@ -259,8 +277,6 @@
 					</div>
 				</div>
 				{{/if}}
-
-
 			</div>
 
 			{{#if this.analyses}}
@@ -284,7 +300,7 @@
 			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="longterm">
 				Продолжительное лечение
 			</div>
-			<div class="account__tab-item data-tab-link" data-tabs="history" data-tab="history">
+			<div class="account__tab-item data-tab-link d-none" data-tabs="history" data-tab="history">
 				История покупок
 			</div>
 		</div>
@@ -555,7 +571,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="account__tab data-tab-item purchases" data-tab="history">
+		<div class="account__tab data-tab-item purchases d-none" data-tab="history">
 			<div class="account__table account__table-second">
 				<div class="account__table-head">
 					<div class="healing-item">Дата</div>
@@ -797,14 +813,19 @@
 					page.set('history.events', []);
 					if (!!records) {
 						records.forEach(function (rec, idx) {
-							console.log('event:', rec);
+
 							if (rec.status === 'past') {
 								page.push('history.events', rec);
 								return;
 							}
+
+
 							if (rec.status === 'new') {
 								rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
 								page.push('events.upcoming', rec);
+								return;
+							}
+							if (rec.status !== 'upcoming') {
 								return;
 							}
 
@@ -816,6 +837,7 @@
 
 							if (Cabinet.isCurrentEvent(rec)) {
 								page.push('events.current', rec);
+								console.log('event:', rec);
 							} else {
 								page.push('events.upcoming', rec);
 							}
@@ -848,7 +870,7 @@
 							}
 							window.sort_events();
 
-						}, 10000);
+						}, 20000);
 					}
 					$("img[data-src]:not([src])").lazyload();
 
