@@ -504,9 +504,15 @@ $(function() {
                 parent.find('.consultations .consultation-type').on('change', function (e) {
                     var _parent = $(this).parents('.consultations');
                     var _val = $(this).val();
+                    _parent.find('.consultation').removeClass('selected');
+                    _parent.find('.consultation').attr('data-price', '0');
+                    _parent.find('[name="consultation_price"]').val(0);
 
                     _parent.find('.price-list .consultation').hide();
                     _parent.find('.price-list .consultation.'+_val).show();
+                    setTimeout(function () {
+                        window.updPrice(_parent.parents('form'));
+                    });
                 });
                 parent.find('.consultations input[name="for_consultation"]').on('change', function (e) {
                     var _parent = $(this).parents('.consultations');
@@ -515,12 +521,12 @@ $(function() {
                     _parent.find('[name="consultation_price"]').val(0);
                     console.log('>> for_consultation:checked', $(this).is(':checked'));
                     if ($(this).is(':checked')) {
-                        _parent.find('.consultation-type:checked').trigger('click');
-                        setTimeout(function (){
-                           window.updPrice(_parent.parents('form').parent());
-                        });
-                    } else {
+                        _parent.find('.consultation-type:checked').trigger('change');
+
                     }
+                    setTimeout(function () {
+                        window.updPrice(_parent.parents('form'));
+                    });
                 });
                 parent.find('.consultations .consultation .checkbox input[type="radio"]').on('change', function (e) {
                     var _parent       = $(this).parents('.consultations');
@@ -536,7 +542,7 @@ $(function() {
                         _parent.find('[name="consultation_price"]').val($(this).data('price'));
                         _consultation.attr('data-price', $(this).data('price'));
                         setTimeout(function () {
-                            window.updPrice(_parent.parents('form').parent());
+                            window.updPrice(_parent.parents('form'));
                         });
                     }
                 });

@@ -302,7 +302,7 @@
 				{{/if}}
 
 				<div class="admin-editor__type-event">
-					<div class="consultations">
+					<div class="consultations mb-16">
 						<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
 							<input type="hidden" name="for_consultation" value="0">
 

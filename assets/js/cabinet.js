@@ -851,8 +851,8 @@ $(function () {
 	};
 
 	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
-	window.updPrice = function($selector){
-		var _parent_form = $selector.closest('form');
+	window.updPrice = function(_parent_form){
+		var sum = 0;
 		_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
 			sum += parseInt($(this).data('price'));
 		});
@@ -922,7 +922,7 @@ $(function () {
 			onSelect: function (suggestion) {
 				console.log(suggestion);
 				$selector.val('');
-				if (_parent_form.find('.admin-editor__patient [data-id=' + suggestion.id + ']').length) {
+				if (_parent_form.find('.admin-editor__patient:not(.price-list) [data-id=' + suggestion.id + ']').length) {
 					return;
 				}
 				var PRICE = new Intl.NumberFormat('ru-RU').format(suggestion.data.price);
@@ -933,9 +933,9 @@ $(function () {
 					);
 				});
 				const index = _parent_form.find(
-					'.admin-editor__patient .search__drop-item[data-service_id]').length;
+					'.admin-editor__patient:not(.price-list) .search__drop-item[data-service_id]').length;
 				var sum     = 0;
-				_parent_form.find('.admin-editor__patient').append(
+				_parent_form.find('.admin-editor__patient:not(.price-list)').append(
 					$('<div></div>').addClass('search__drop-item selected').attr({
 						'data-id': suggestion.id,
 						'data-index': index,
@@ -979,12 +979,13 @@ $(function () {
 							.append($('<div></div>').addClass('search__drop-summ').html(PRICE + ' ₽<sup><b>*</b></sup>'))
 					)
 				);
-				_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
-					sum += parseInt($(this).data('price'));
-				});
-				console.log(_parent_form, sum);
-				_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
-				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
+				updPrice(_parent_form);
+				//_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
+				//	sum += parseInt($(this).data('price'));
+				//});
+				//console.log(_parent_form, sum);
+				//_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
+				//_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
 	};
