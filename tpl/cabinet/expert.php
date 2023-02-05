@@ -665,7 +665,8 @@
 										utils.api.post('/api/v2/update/experts/' + expert_id, {
 											'name': data.fullname,
 											'fullname': data.fullname,
-											'header': data.fullname
+											'header': data.fullname,
+											'login':uid
 										}).then(function (res) {
 											console.log('expert', res);
 											page.set('expert', res);
@@ -730,7 +731,7 @@
 			});
 
 			utils.api.get('/api/v2/list/records?group=events' +
-					'&experts~=' + wbapp._session.user.expert.id +
+					'&experts~=' + wbapp._session.user.id +
 					'&@sort=event_date:d')
 				.then(function (records) {
 					if (!records) {

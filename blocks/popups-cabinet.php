@@ -33,23 +33,54 @@
 						<span></span>
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
-					<label class="checkbox checkbox--record show-checkbox" data-show-input="service">
-						<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1" on-click="forConsultationClick">
-						<span></span>
-						<div class="checbox__name">Консультация врача</div>
-					</label>
-					<div class="select-form" style="display: none;" data-show="service">
-						<div class="text-bold mb-20">Тип события</div>
-						<div class="popups__text-chexboxs">
-							<label class="text-radio">
-								<input type="radio" name="type" class="clinic" value="clinic" checked on-click="checkConsultation">
-								<span>В клинике</span>
-							</label>
-							<label class="text-radio switch-blocks">
-								<input type="radio" name="type" value="online" class="online" on-click="checkConsultation">
-								<span>Онлайн</span>
-							</label>
+					<div class="consultations">
+						<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
+							<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation"
+								value="1" on-click="forConsultationClick">
+							<span></span>
+							<div class="checbox__name">Консультация врача</div>
+						</label>
+						<div class="select-form" style="display: none;" data-show="consultation-type">
+							<div class="text-bold mb-20">Тип события</div>
+							<div class="popups__text-chexboxs">
+								<label class="text-radio">
+									<input type="radio" name="type" class="clinic show-checkbox" value="clinic"
+										data-show-input="consultation-clinic" checked>
+									<span>В клинике</span>
+								</label>
+								<label class="text-radio switch-blocks">
+									<input type="radio" name="type" class="online show-checkbox" value="online"
+										data-show-input="consultation-online">
+									<span>Онлайн</span>
+								</label>
+							</div>
+							<div class="text-bold mb-20">Тип события</div>
+							<div class="row d-none consultations-list">
+								{{#each @global.catalog.spec_service.consultations.online}}
+								<div class="col-md-12 mt-10" data-show="consultation-online" style="display:none;">
+									<label class="checkbox"
+										data-name="{{this.header}}" data-price="{{this.price}}"
+										data-id="{{this.id}}">
+										<input type="checkbox" name="consultation" value="{{this.id}}" disabled>
+										<span></span>
+										<div class="checbox__name">{{this.header}}</div>
+									</label>
+								</div>
+								{{/each}}
+								{{#each @global.catalog.spec_service.consultations.clinic}}
+								<div class="col-md-12 mt-10" data-show="consultation-clinic">
+									<label class="checkbox"
+										data-name="{{this.header}}" data-price="{{this.price}}"
+										data-id="{{this.id}}">
+										<input type="checkbox" name="consultation" value="{{this.id}}" disabled>
+										<span></span>
+										<div class="checbox__name">{{this.header}}</div>
+									</label>
+								</div>
+								{{/each}}
+							</div>
 						</div>
+
 					</div>
 
 					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
@@ -64,10 +95,10 @@
 								<div class="select__values"></div>
 							</div>
 							<div class="select__list">
-								{{#each experts}}
+								{{#each @global.catalog.expert_users}}
 								<div class="select__item select__item--checkbox">
 									<label class="checkbox checkbox--record">
-										<input type="checkbox" name="experts[]" value="{{id}}">
+										<input type="checkbox" name="experts[]" value="{{login}}">
 										<span></span>
 										<div class="checbox__name">
 											<div class="select__name">{{name}}</div>

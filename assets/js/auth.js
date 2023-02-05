@@ -44,10 +44,11 @@ function Auth()
 	}
 
 	//Окно ввода номера телефона-----------------------------------
-	this.phone_window = $('.popup.--enter-number');
-	this.phone_value = this.phone_window.find('input[name=phone]');
-	this.phone_window_alert = this.phone_window.find('.alert');
-	this.phone_window_close_btn = this.phone_window.find('.popup__close');
+	this.phone_window            = $('.popup.--enter-number');
+	this.tel_input               = this.phone_window.find('input[name=tel]');
+	this.phone_value             = this.phone_window.find('input[name=phone]');
+	this.phone_window_alert      = this.phone_window.find('.alert');
+	this.phone_window_close_btn  = this.phone_window.find('.popup__close');
 	this.phone_window_submit_btn = this.phone_window.find('.form__submit');
 
 	this.phone_window_close = function(){
@@ -220,21 +221,61 @@ function Auth()
 
 }
 
-$(document).ready(function(){
+$(document).ready(function() {
 	auth = new Auth();
 
 	//Устанавливаем и проверяем маску
-	auth.phone_value.mask('+7 (999) 999-99-99');
-	auth.phone_value.on('keyup input change', function(){
-		if(/^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/.test($(this).val()) === true){
+	//auth.phone_value.mask('+7 (999) 999-99-99');
+
+	//auth.phone_value.mask('+9 (999) 999-99-99');
+	var iti = auth.phone_value.intlTelInput({
+		// allowDropdown: false,
+		autoHideDialCode: true,
+		// autoPlaceholder: "off",
+		// dropdownContainer: document.body,
+		// excludeCountries: ["us"],
+		// formatOnDisplay: false,
+		// geoIpLookup: function(callback) {
+		//   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+		//     var countryCode = (resp && resp.country) ? resp.country : "";
+		//     callback(countryCode);
+		//   });
+		// },
+		customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+			//console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
+			selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
+				'+'+selectedCountryData.dialCode, ' ');
+			auth.phone_value.inputmask('+' + selectedCountryData.dialCode.replace('9', '\\9')
+			                           + ' ' +
+			                           selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
+				{clearMaskOnLostFocus:false, showMaskOnHover: false});
+			return selectedCountryPlaceholder;
+		},
+
+		hiddenInput: "phones",
+		// initialCountry: "auto",
+		// localizedCountries: { 'de': 'Deutschland' },
+		nationalMode: false,
+		// onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+		placeholderNumberType: "FIXED_LINE",
+		preferredCountries: ['ru'],
+		separateDialCode: false,
+		utilsScript: "/assets/js/intlTelInput-utils.js"
+	});
+	auth.phone_value.on('countrychange', function (e, cd){
+
+	});
+	auth.phone_value.on('keyup input change blur', function () {
+		console.log($(this).val());
+		if ($(this).intlTelInput('isValidNumber')) {
 			auth.phone_window_submit_btn.removeAttr('disabled');
-		}else{
+		} else {
 			auth.phone_window_submit_btn.attr('disabled', '');
 		}
-	})
+	});
 
 	//Дополнительные события для кнопок
-	auth.phone_window_close_btn.on('click', function(){
+	auth.phone_window_close_btn.on('click', function () {
 		auth.phone_window_close();
 	})
 

@@ -14,6 +14,7 @@
 		"/assets/js/air-datepicker.js",
 		"/assets/js/jquery.timepicker.min.js",
 		"/assets/js/jquery.toast.min.js",
+		"/assets/js/intlTelInput-jquery.min.js",
 		"/assets/js/main.js",
 		"/assets/js/new.js",
 		"/assets/js/blogFilter.js",
@@ -51,7 +52,8 @@
 
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
-	<link href="/assets/css/new.css?v=1.1" rel="stylesheet">
+	<link href="/assets/css/intlTelInput.min.css?v=1.1" rel="stylesheet">
+	<link href="/assets/css/new.css?v=1.2" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css" rel="stylesheet">
 

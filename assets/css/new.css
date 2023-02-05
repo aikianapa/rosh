@@ -1650,27 +1650,54 @@ blockquote cite {
 }
 
 #popupsLogin .alert.alert-success {
-    color: #FFF;
-    background-color: #10B759;
-    border-color: #10B759;
-    padding: 15px 20px;
-    border-radius: 10px;
-    display: none
+    color            : #FFF;
+    background-color : #10B759;
+    border-color     : #10B759;
+    padding          : 15px 20px;
+    border-radius    : 10px;
+    display          : none
 }
 
 .inner-experts__item h2 {
-    font-size: 25px;
+    font-size : 25px;
+}
+.intl-tel::placeholder {
+    opacity            : 1;
+    -webkit-transition : opacity .3s;
+    transition         : opacity .3s;
+}
+.input__placeholder.active{
+    -webkit-transform : translateY(-32px) scale(.9);
+    transform         : translateY(-32px) scale(0.9);
+    z-index           : 20;
+    background-color  : #F6F4F3;
+    color             : #363838;
+}
+.input__placeholder{
+    top:12px;
+}
+/* intlTelInput plugin */
+.iti {
+    width : 100%;
+}
+.iti__country-list{
+    max-height : 140px;
+}
+.iti__flag {background-image : url("/assets/img/flags.png");}
+
+@media (-webkit-min-device-pixel-ratio : 2), (min-resolution : 192dpi) {
+    .iti__flag {background-image : url("/assets/img/flags@2x.png");}
 }
 
-@media (max-width: 1130px) {
+@media (max-width : 1130px) {
     .orders-sidebar,
     .basket-sidebar {
-        min-width: 300px;
-        width: 300px;
+        min-width : 300px;
+        width     : 300px;
     }
     .basket-txt-2,
     .basket .orders-price {
-        right: 200px;
+        right : 200px;
     }
     .basket-top,
     .basket .orders-product {

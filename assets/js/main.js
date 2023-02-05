@@ -313,7 +313,13 @@ $(function() {
                 navigation: { nextEl: '.gallery__nav .next', prevEl: '.gallery__nav .prev' },
             });
 
-        })
+        });
+
+        var countryData = window.intlTelInputGlobals.getCountryData();
+        for (var i = 0; i < countryData.length; i++) {
+            var country  = countryData[i];
+            country.name = country.name.replace(/.+\((.+)\)/, "$1");
+        }
 
         initPlugins = function() {
             $('input.datebirthdaypickr').each(function() {
@@ -422,9 +428,10 @@ $(function() {
                 });
             });
 
-            $('input[data-inputmask]').each(function() {
+            $('input[data-inputmask]').each(function () {
                 $(this).inputmask();
             });
+
 
             //
             //$('input.autocomplete').each(function () {
@@ -434,7 +441,7 @@ $(function() {
             //    });
             //});
 
-            $('input.autocomplete-inline').each(function() {
+            $('input.autocomplete-inline').each(function () {
                 let _lookup = $(this).data('lookup');
                 if (!!_lookup) {
                     _lookup = _lookup.split(',');
@@ -455,6 +462,33 @@ $(function() {
                         var result = { suggestions: _res };
                         done(result);
                     },
+                });
+            });
+
+            $('input[type="tel"].intl-tel').each(function () {
+                console.log($(this), 'init tel');
+                $(this).intlTelInput({
+                    // allowDropdown: false,
+                    autoHideDialCode: false,
+                    // autoPlaceholder: "off",
+                    // dropdownContainer: document.body,
+                    // excludeCountries: ["us"],
+                    // formatOnDisplay: false,
+                    // geoIpLookup: function(callback) {
+                    //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+                    //     var countryCode = (resp && resp.country) ? resp.country : "";
+                    //     callback(countryCode);
+                    //   });
+                    // },
+                    hiddenInput: "full_number",
+                    // initialCountry: "auto",
+                    // localizedCountries: { 'de': 'Deutschland' },
+                    // nationalMode: false,
+                    // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+                    placeholderNumberType: "MOBILE",
+                    preferredCountries: ['ru'],
+                    // separateDialCode: true,
+                    utilsScript: "/assets/js/intlTelInput-utils.js"
                 });
             });
 

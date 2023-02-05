@@ -58,6 +58,9 @@ $(function () {
 	var months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 	window.utils   = {
+		isObjEmpty(obj) {
+			return Object.keys(obj).length === 0;
+		},
 		urlParams(params, skipobjects, prefix) {
 			if (skipobjects === void 0) {
 				skipobjects = false;
@@ -294,30 +297,20 @@ $(function () {
 	window.catalog = {
 		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
 		spec_service: {
-			experts_consultation: {
-				header: 'Общая консультация специалиста',
-				price: 4000
-			},
-			consultation: {
-				header: 'Консультация врача'
-
-			},
-			consultation_clinik: {
-				header: 'Консультация врача'
-
+			consultations: {
+				online: {},
+				clinic: {}
 			},
 			analyses_interpretation: {
-				header: 'Расшифровка анализов',
-				price: 2000
+				online: {},
+				clinic: {}
 			}
 		},
 		/*dyctionary types*/
 		quoteColors: {},
 		quoteStatus: {},
 		quoteType: {},
-		quotePay: {
-
-		},
+		quotePay: {},
 
 		services: {},
 		servicePrices: {},
@@ -351,9 +344,10 @@ $(function () {
 		},
 		categories: {},
 		experts: {},
-
+		expert_users: {},
 		clients: {},
 		admins: {},
+		consultations: {},
 		reload(only_key) {
 			var _key = only_key;
 			if (!!_key) {
@@ -367,9 +361,15 @@ $(function () {
 				sessionStorage.removeItem('db.services');
 				sessionStorage.removeItem('db.servicesList');
 				sessionStorage.removeItem('db.servicePrices');
+
+				/* old keys clear */
 				sessionStorage.removeItem('db.experts');
+				sessionStorage.removeItem('db.experts_alt');
+
+				sessionStorage.removeItem('db.expert_list');
+				sessionStorage.removeItem('db.expert_user_list');
 			}
-			console.log('Clear cached!');
+			console.log('Cache cleared!');
 			if (_key !== false) {
 				this.init();
 			}
@@ -500,24 +500,32 @@ $(function () {
 					utils.api.get('/api/v2/list/experts?active=on&' +
 					              '@return=id,name,image,devision,spec,experience,education' +
 					              '@sort=name:a').then(function (data) {
-						let _experts = {};
+						let _experts      = {};
+						let _expert_users = {};
 						data.forEach(function (expert, i) {
 							_experts[expert.id] = expert;
-
-							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
-								.then(function (res) {
-									catalog.experts[expert.id].info_uri = res[0]['u'] || '';
-									sessionStorage.setItem('db.experts_alt', JSON.stringify(catalog.experts));
-									/* save to SS */
-								});
+							if (expert.login) {
+								_expert_users[expert.login] = expert;
+							}
+							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id}).then(function (res) {
+								catalog.experts[expert.id].info_uri = res[0]['u'] || '';
+								sessionStorage.setItem('db.expert_list', JSON.stringify(catalog.experts));
+								if (expert.login) {
+									catalog.expert_users[expert.login] = catalog.experts[expert.id];
+									sessionStorage.setItem('db.expert_user_list', JSON.stringify(catalog.expert_users));
+								}
+							});
 						});
-						_self.experts = _experts;
-						sessionStorage.setItem('db.experts_alt', JSON.stringify(_self.experts));
+						_self.experts      = _experts;
+						_self.expert_users = _expert_users;
 
+						sessionStorage.setItem('db.expert_list', JSON.stringify(_self.experts));
+						sessionStorage.setItem('db.expert_user_list', JSON.stringify(_self.expert_users));
 					})
 				);
 			} else {
-				_self.experts = JSON.parse(sessionStorage.getItem('db.experts_alt'));
+				_self.experts      = JSON.parse(sessionStorage.getItem('db.expert_list'));
+				_self.expert_users = JSON.parse(sessionStorage.getItem('db.expert_user_list'));
 			}
 			/* for Admins only */
 			if (!!window.user_role && window.user_role !== 'client') {
@@ -561,14 +569,29 @@ $(function () {
 			} else {
 				sessionStorage.removeItem('db.clients');
 			}
-			utils.api.get('/api/v2/read/price/id63619e811c69')
-				.then(function (data) {
-					_self.spec_service.consultation = data;
-				});
-			utils.api.get('/api/v2/read/price/id63d053b12134')
-				.then(function (data) {
-					_self.spec_service.consultation_clinic = data;
-				});
+
+			getters.push(
+				utils.api.get('/api/v2/list/price?category=konsultacii').then(function (data) {
+					if (data) {
+						data.forEach(function (rec) {
+							if (rec.header.includes('анализов')) {
+								if (rec.header.includes('Онлайн')) {
+									_self.spec_service.analyses_interpretation.online = rec;
+								} else {
+									_self.spec_service.analyses_interpretation.clinic = rec;
+								}
+							} else {
+								if (rec.header.includes('Онлайн')) {
+									_self.spec_service.consultations.online[rec.id] = rec;
+								} else {
+									_self.spec_service.consultations.clinic[rec.id] = rec;
+								}
+							}
+						});
+					}
+				})
+			);
+
 			return Promise.allSettled(getters).then(() => {
 				$(document).trigger('cabinet-db-ready');
 			});
@@ -619,12 +642,12 @@ $(function () {
 			let data   = profile_data;
 			//console.log(data);
 
-			data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
+			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
 			if (data.phone.length === 10) {
 				data.phone = '7'+ data.phone;
 			}
-			data.fullname = data.fullname.replaceAll('  ', ' ')
-			var names            = data.fullname.split(' ');
+			data.fullname    = data.fullname.replaceAll('  ', ' ')
+			var names        = data.fullname.split(' ');
 			data.first_name  = names[0];
 			data.middle_name = names[1] || '';
 			data.last_name   = names[2] || '';
@@ -1141,15 +1164,10 @@ $(function () {
 						data.client_comment = '';
 
 						data.price          = parseInt(data.price || 0);
+
 						if (data.no_services == 1) {
-							data.price          = 0;
 							data.services       = [];
 							data.service_prices = {};
-							if (data.for_consultation == 1 && data.type === 'online') {
-								data.price = parseInt(catalog.spec_service.consultation.price);
-							} else {
-								data.price = 0;
-							}
 						}
 						if (data.no_experts == 1) {
 							data.experts        = [];
