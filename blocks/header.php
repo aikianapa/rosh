@@ -39,7 +39,16 @@
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
                     <a href="/basket" wb-if="'{{_route.uri}}' !=='/english'" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
-                    <button class="burger"></button>
+                    <button wb-if="'{{_route.uri}}' !=='/english'" class="burger"></button>
+	                <a class="en-version pt-0" href="/" wb-if="'{{_route.uri}}' =='/english'">
+		                <svg class="svgsprite _web">
+			                <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
+		                </svg>
+		                Русская версия
+		                <svg class="svgsprite _arrow-link">
+			                <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
+		                </svg>
+	                </a>
                 </div>
                 
                 <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
