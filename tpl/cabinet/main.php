@@ -302,7 +302,7 @@
 				{{/if}}
 
 				<div class="admin-editor__type-event">
-					<div class="consultations mb-16">
+					<div class="consultations mb-20">
 						<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
 							<input type="hidden" name="for_consultation" value="0">
 
@@ -318,7 +318,7 @@
 						</label>
 						<div class="select-form" data-show="consultation-type"
 							style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
-							<div class="text-bold mb-20">Тип события</div>
+							<div class="text-bold mb-10">Тип события</div>
 							<div class="popups__text-chexboxs">
 								{{#each @global.catalog.quoteType as qt}}
 								<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
@@ -396,7 +396,7 @@
 						<input type="hidden" class="consultation_price" name="consultation_price" value="{{record.consultation_price}}">
 					</div>
 
-					<div class="row">
+					<div class="row mt-30">
 						{{#if record.spec_service}}
 						{{else}}
 						<div class="col-md-6">
