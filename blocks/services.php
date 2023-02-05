@@ -59,7 +59,7 @@
         <div class="all-tabs-items">
             <div class="all-tabs-item data-tab-link active" data-tabs="services" data-tab="">Все услуги</div>
             <wb-foreach wb="table=catalogs&item=srvcat&from=tree.data&tpl=false">
-                <div class="all-tabs-item data-tab-link cursor-pointer" data-tabs="services" data-tab="{{id}}">{{name}}</div>
+                <div class="cursor-pointer all-tabs-item data-tab-link" data-tabs="services" data-tab="{{id}}">{{name}}</div>
             </wb-foreach>
         </div>
         <div class="all-tabs data-tab-wrapper" data-tabs="services">
@@ -68,7 +68,7 @@
                     <wb-foreach wb="{
                         'table':'services',
                         'size':'100',
-                        'sort': 'date:d',
+                        'sort': 'header',
                         'more': 'true',
                         'bind': 'site.list.services',
                         'filter':{
@@ -134,7 +134,7 @@
                                         <input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
                                         <div class="input__placeholder">Номер телефона</div>
                                     </div>
-                                    <button class="all-form__submit btn btn--black mb-20">Записаться</button>
+                                    <button class="mb-20 all-form__submit btn btn--black">Записаться</button>
                                     <div class="form__description">Нажимая на кнопку "Записаться", Вы даете согласие на обработку своих персональных данных  на основании <a href="policy.html">Политики конфиденциальности</a></div>
                                     <div class="form-bottom">После отправки заявки для Вас будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку «Войти» в&nbsp;верхнем меню сайта</div>
                                 </div>

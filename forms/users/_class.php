@@ -24,7 +24,7 @@ class usersClass extends cmsFormsClass
         $data = $this->app->dot($item);
         isset($item['phone']) ? null : $item['phone'] = '';
         $item['phone'] = preg_replace('/[^0-9]/', '', $item['phone']);
-        $item['fullname'] = trim($data->get('first_name').' '.$data->get('middle_name').' '.$data->get('last_name'));
+        $item['fullname'] = trim($data->get('last_name').' '.$data->get('first_name').' '.$data->get('middle_name'));
         if ($data->get('role') == 'expert') {
             $list = wbItemList('experts',["filter"=>[
                 "active"=>"on",
@@ -41,10 +41,11 @@ class usersClass extends cmsFormsClass
 
     public function beforeItemSave(&$item)
     {
-        isset($item['phone']) ? null : $item['phone'] = wbDigitsOnly($item['phone']);
+        isset($item['email']) ? $item['email'] = strtolower($item['email']) : null;
+        $item['phone'] = isset($item['phone']) ? wbDigitsOnly($item['phone']) : '';
         if (!isset($item['middle_name'])) $item['middle_name'] = '';
         if (!$this->app->vars('_route._post.fullname') && $this->app->vars('_route._post.first_name') > '' ) {
-            $item['fullname'] = trim($item['first_name'].' '.$item['middle_name'].' '.$item['last_name']);
+            $item['fullname'] = trim($item['last_name'].' '.$item['first_name'].' '.$item['middle_name']);
         }
         $this->changePassword($item);
         foreach($item as $key => $val) {

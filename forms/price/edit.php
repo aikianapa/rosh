@@ -9,38 +9,49 @@
                 <div class="col-7">
                     <h3 class="header"></h3>
                 </div>
-                <i class="fa fa-close r-20 position-absolute cursor-pointer" data-dismiss="modal" aria-label="Close"></i>
+                <i class="cursor-pointer fa fa-close r-20 position-absolute" data-dismiss="modal" aria-label="Close"></i>
             </div>
             <div class="modal-body pd-20">
                 <div class="row">
                     <div class="col-12">
                         <form id="{{_form}}EditForm">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text p-1">
-                                                <input name="active" wb-module="swico">
-                                            </span>
-                                        </div>
-                                        <textarea name="header" class="form-control" placeholder="Наименование" required></textarea>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="p-1 input-group-text">
+                                            <input name="active" wb-module="swico">
+                                        </span>
                                     </div>
+                                    <textarea name="header" class="form-control" placeholder="Наименование" required></textarea>
                                 </div>
+                            </div>
 
-                                <div class="form-group row">
-                                    <label class="col-form-label col-sm-4">Категория</label>
-                                    <div class="col">
-                                        <select class="form-control" wb-tree="dict=shop_category&children=false" placeholder="Категория" name="category" >
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-4">Разделы</label>
+                                <div class="col">
+                                    <select class="form-control" wb-select2 multiple placeholder="" name="type">
+                                        <wb-foreach wb="table=catalogs&item=srvcat&from=tree.data" wb-filter="active=on">
                                             <option value="{{id}}">{{name}}</option>
-                                        </select>
-                                    </div>
+                                        </wb-foreach>
+                                    </select>
                                 </div>
+                            </div>
 
-                                <div class="form-group row">
-                                    <label class="col-form-label col-sm-4">Цена</label>
-                                    <div class="col">
-                                        <input name="price" type="number" class="form-control" placeholder="Цена" required>
-                                    </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-4">Категория</label>
+                                <div class="col">
+                                    <select class="form-control" wb-tree="dict=shop_category&children=false" placeholder="Категория" name="category">
+                                        <option value="{{id}}">{{name}}</option>
+                                    </select>
                                 </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-4">Цена</label>
+                                <div class="col">
+                                    <input name="price" type="number" class="form-control" placeholder="Цена" required>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

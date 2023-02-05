@@ -27,8 +27,8 @@ class problemsClass extends cmsFormsClass
         $scats = wbItemRead('catalogs', 'srvcat')['tree']['data'];
         $texts = wbItemRead('catalogs', 'mainfilter_text');
         $sympt = wbItemList('symptoms', ['sort'=>'header','filter'=>['active'=>'on'],'return'=>'id,header,category,active,data'])['list'];
-        $servs = wbItemList('services', ['filter'=>['active'=>'on'],'return'=>'id,name,header,type,category,active,data'])['list'];
-        $prbms = wbItemList('problems', ['filter'=>['active'=>'on'],'return'=>'id,header,srvtype,category,active,symptoms'])['list'];
+        $servs = wbItemList('services', ['sort' => 'header', 'filter'=>['active'=>'on'],'return'=>'id,name,header,type,category,active,data'])['list'];
+        $prbms = wbItemList('problems', ['sort' => 'header', 'filter'=>['active'=>'on'],'return'=>'id,header,srvtype,category,active,symptoms'])['list'];
         $srvlab = wbItemList('price', ['sort'=>'header','filter'=>['active'=>'on']])['list'];
 
         foreach ($scats as &$s) {

@@ -1,6 +1,6 @@
 (() => {
     var api = "/api/v2"
-    var form = "services"
+    var form = "equipment"
     var size = 50
     var base = api + `/list/${form}?&@size=${size}&@sort=header`
     var list = new Ractive({
@@ -26,19 +26,21 @@
                 list.set("page", data.page);
                 list.set("pages", data.pages);
                 document.getElementById(`${form}List`).scrollIntoView()
-                if (Object.keys().length == 0) {
-                    $(`#${form}List .list-group`).sortable({
-                        update: function(ev, line) {
-                            let data = {}
-                            $(ev.target).children().each(function(i, li) {
-                                data[i] = $(li).data('id')
-                            })
-                            wbapp.post(`/api/v2/func/${form}/sort`, data)
-                        }
-                    });
-                } else {
-                    $(`#${form}List .list-group`).sortable("destroy");
-                }
+                    /*
+                    if (Object.keys().length == 0) {
+                        $(`#${form}List .list-group`).sortable({
+                            update: function(ev, line) {
+                                let data = {}
+                                $(ev.target).children().each(function(i, li) {
+                                    data[i] = $(li).data('id')
+                                })
+                                wbapp.post(`/api/v2/func/${form}/sort`, data)
+                            }
+                        });
+                    } else {
+                        $(`#${form}List .list-group`).sortable("destroy");
+                    }
+                    */
             },
             setPage(ev) {
                 let page = $(ev.node).attr("data-page");
@@ -62,7 +64,11 @@
                     if ($(this).attr('name') == 'filter') {
                         let val = $(this).val()
                         if (val > '') {
-                            filter.header = { '$like': val }
+                            filter['$or'] = [
+                                { header: { '$like': val } },
+                                //{ email: { '$like': val } },
+                                //{ phone: { '$like': val } }
+                            ]
                         }
                     }
                     if ($(this).attr('name') == 'category') {

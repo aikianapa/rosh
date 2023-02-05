@@ -9,11 +9,11 @@
                 <div class="col-7">
                     <h3 class="header"></h3>
                 </div>
-                <i class="fa fa-close r-20 position-absolute cursor-pointer" data-dismiss="modal" aria-label="Close"></i>
+                <i class="cursor-pointer fa fa-close r-20 position-absolute" data-dismiss="modal" aria-label="Close"></i>
             </div>
             <div class="modal-body pd-20">
                 <div class="row">
-                    <div class="col-5 col-lg-4 scroll-y modal-h">
+                    <div class="col-5 col-xl-4 scroll-y modal-h">
                         <form id="{{_form}}EditForm">
                             <input type="checkbox" class="custom-control-input" name="active" id="{{_form}}SwitchItemActive">
                             <div class="form-group">
@@ -21,10 +21,10 @@
                                 </wb-module>
                             </div>
 
-                            <div class="form-group">
+                            <div class="mb-1 form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text p-1">
+                                        <span class="p-1 input-group-text">
                                             <input name="active" wb-module="swico">
                                         </span>
                                     </div>
@@ -32,46 +32,74 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="mb-1 form-group">
                                 <select class="form-control" wb-tree="dict=divisions&children=false" name="division" required>
                                     <option value="{{id}}">{{name}}</option>
                                 </select>
                             </div>
-                            <div class="form-group row">
+                            <div class="mb-1 form-group row">
                                 <label class="col-form-label col-sm-3">Направление</label>
                                 <div class="col">
-                                    <select class="form-control" wb-tree="dict=srvtype&children=false" multiple wb-select2 placeholder="" name="srvtype" >
+                                    <select class="form-control" wb-tree="dict=srvtype&children=false" multiple wb-select2 placeholder="" name="srvtype">
                                         <option value="{{id}}">{{name}}</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="mb-1 form-group row">
                                 <label class="col-form-label col-sm-3">Специализация</label>
                                 <div class="col-sm-9">
                                     <textarea name="spec" rows="auto" class="form-control"></textarea>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="mb-1 form-group row">
                                 <label class="col-form-label col-sm-3">Опыт работы</label>
                                 <div class="col-sm-9">
                                     <input name="experience" class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-form-label  col-sm-3">Учётная запись</label>
-                                <div class="col-sm-9">
-                                <select class="form-control" name="login">
-                                    <option></option>
-                                    <wb-foreach wb="table=users&sort=fullname&size=999" wb-filter="active=on&role=expert" >
-                                        <option value="{{id}}">{{fullname}} {{email}}</option>
-                                    </wb-foreach>
-                                </select>
+                            <div>
+                                <div class="mb-1 form-group row">
+                                    <label class="col-form-label col-sm-3">Учётная запись</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="login" wb-select2 onchange="changeLogin(this)">
+                                            <option value="" wb-if="'{{id}}'==''">Создать нового пользователя</option>
+                                            <wb-foreach wb="table=users&sort=fullname&size=999" wb-filter="role=expert">
+                                                <option value="{{id}}">{{fullname}} {{email}}</option>
+                                            </wb-foreach>
+                                            <option value="" wb-if="'{{id}}'>''">Создать нового пользователя</option>
+                                        </select>
+                                    </div>
                                 </div>
+
+
+                                <div class="mb-1 form-group row loginBlock" wb-if="'{{id}}'==''">
+                                    <label class="col-form-label col-sm-3">Эл.почта</label>
+                                    <div class="col-sm-9 email">
+                                        <input name="email" class="form-control" required placeholder="Эл.почта">
+                                        <small>используется для входа в систему</small>
+                                    </div>
+                                    <label class="col-form-label col-sm-3">Пароль</label>
+                                    <div class="col-sm-9">
+                                        <input name="password" class="form-control" required placeholder="Придумайте пароль" minlength="8" value="{{wbPasswordGenerate(8)}}">
+                                    </div>
+                                </div>
+                                <div class="mb-1 form-group row loginBlock" wb-if="'{{id}}'>''" style="display:none;">
+                                    <label class="col-form-label col-sm-3">Эл.почта</label>
+                                    <div class="col-sm-9 email">
+                                        <input _name="email" class="form-control"  placeholder="Эл.почта">
+                                        <small>используется для входа в систему</small>
+                                    </div>
+                                    <label class="col-form-label col-sm-3">Пароль</label>
+                                    <div class="col-sm-9">
+                                        <input _name="password" class="form-control"  placeholder="Придумайте пароль" minlength="8" value="{{wbPasswordGenerate(8)}}">
+                                    </div>
+                                </div>
+
                             </div>
                             <wb-module wb="module=yonger&mode=structure&preset=expert" />
                         </form>
                     </div>
-                    <div class="col-7 col-lg-8 scroll-y modal-h">
+                    <div class="col-7 col-xl-8 scroll-y modal-h">
                         <div id="yongerBlocksForm">
                             <form method="post">
 
@@ -92,9 +120,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <i></i>
-                <i class="fa fa-close cursor-pointer" data-dismiss="modal" aria-label="Close"></i>
+                <i class="cursor-pointer fa fa-close" data-dismiss="modal" aria-label="Close"></i>
             </div>
-            <div class="modal-body p-0 pb-5 scroll-y">
+            <div class="p-0 pb-5 modal-body scroll-y">
                 <div class="list-group" id="{{_form}}EditFormListBlocks">
                     <wb-foreach wb="from=_null&render=client&bind=yonger.blocks">
                         <a class="list-group-item list-group-item-action" href="javascript:void(0)" data-name="{{name}}" onclick="yonger.yongerPageBlockAdd('{{id}}')">
@@ -109,6 +137,24 @@
 </div>
 
 <script wb-app>
+    var changeLogin = function(ev) {
+        let $form = $('#{{_form}}EditForm');
+        if ($(ev).val() > '') {
+            $form.find('.loginBlock').hide()
+            $form.find('.loginBlock :input').each(function() {
+                $(this).attr('_name', $(this).attr('name'))
+                $(this).removeAttr('name').removeAttr('required')
+            })
+        } else {
+            $form.find('.loginBlock').show()
+            $form.find('.loginBlock :input').each(function() {
+                $(this).attr('name', $(this).attr('_name'))
+                $(this).prop('required', true)
+            })
+        }
+
+    }
+
     yonger.pageEditor = function() {
         let $form = $('#{{_form}}EditForm');
         $form.delegate('[name=path]', 'change', function() {
