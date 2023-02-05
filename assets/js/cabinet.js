@@ -245,7 +245,7 @@ $(function () {
 			return new Date(date).toLocaleTimeString();
 		},
 		formatPhone(_phone) {
-			var phone   = str_replace([' ', '+', '-', '(', ')'], '', _phone);
+			var phone   = str_replace([' ', '-', '(', ')'], '', _phone);
 			var cleaned = ('' + phone).replace(/\D/g, '');
 			if (phone.length === 10) {
 				phone = '7'+phone;
@@ -495,39 +495,48 @@ $(function () {
 				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices'));
 			}
 
-			if (!sessionStorage.getItem('db.experts_alt')) {
+			if (!sessionStorage.getItem('db.expert_user_list')) {
 				getters.push(
-					utils.api.get('/api/v2/list/experts?active=on&' +
-					              '@return=id,name,image,devision,spec,experience,education' +
+					utils.api.get('/api/v2/list/experts?active=on&login~=id&' +
+					              '@return=id,name,image,devision,spec,experience,education,login&' +
 					              '@sort=name:a').then(function (data) {
-						let _experts      = {};
 						let _expert_users = {};
 						data.forEach(function (expert, i) {
-							_experts[expert.id] = expert;
-							if (expert.login) {
+							if (!!expert.login) {
 								_expert_users[expert.login] = expert;
+								utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
+									.then(function (res) {
+										if (!res || !res[0]) {
+											return;
+										}
+										catalog.experts[expert.id].info_uri = res[0]['u'] || '';
+										sessionStorage.setItem('db.expert_list', JSON.stringify(catalog.experts));
+										if (expert.login) {
+											catalog.expert_users[expert.login] = catalog.experts[expert.id];
+											sessionStorage.setItem('db.expert_user_list',
+												JSON.stringify(catalog.expert_users));
+										}
+									});
 							}
-							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id}).then(function (res) {
-								catalog.experts[expert.id].info_uri = res[0]['u'] || '';
-								sessionStorage.setItem('db.expert_list', JSON.stringify(catalog.experts));
-								if (expert.login) {
-									catalog.expert_users[expert.login] = catalog.experts[expert.id];
-									sessionStorage.setItem('db.expert_user_list', JSON.stringify(catalog.expert_users));
-								}
-							});
 						});
-						_self.experts      = _experts;
+						//_self.experts      = _experts;
 						_self.expert_users = _expert_users;
 
-						sessionStorage.setItem('db.expert_list', JSON.stringify(_self.experts));
+						//sessionStorage.setItem('db.expert_list', JSON.stringify(_self.experts));
 						sessionStorage.setItem('db.expert_user_list', JSON.stringify(_self.expert_users));
 					})
 				);
 			} else {
-				_self.experts      = JSON.parse(sessionStorage.getItem('db.expert_list'));
+				//_self.experts      = JSON.parse(sessionStorage.getItem('db.expert_list'));
 				_self.expert_users = JSON.parse(sessionStorage.getItem('db.expert_user_list'));
 			}
 			/* for Admins only */
+			utils.api.get('/api/v2/list/users?role=expert&active=on' +
+			              '' +
+			              '&@sort=fullname:a').then(function (data) {
+				_self.experts = utils.arr.indexBy(data);
+			});
+
 			if (!!window.user_role && window.user_role !== 'client') {
 				getters.push(
 					utils.api.get('/api/v2/list/users?role=client&active=on' +
@@ -642,7 +651,7 @@ $(function () {
 			let data   = profile_data;
 			//console.log(data);
 
-			data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+			data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 			if (data.phone.length === 10) {
 				data.phone = '7'+ data.phone;
 			}
@@ -1134,7 +1143,7 @@ $(function () {
 					this.set('catalog', catalog);
 
 					initServicesSearch($('.search-services'), catalog.servicesList);
-					initPlugins();
+					initPlugins($(this.el));
 				},
 				selectCategory(ev) {
 					var _el = $(this.el);
@@ -1331,11 +1340,11 @@ $(function () {
 						data.client_comment = 'Расшифровка анализов';
 						data.for_consultation = 1;
 						if (data.type === 'online') {
-							data.price = parseInt(catalog.spec_service.consultation.price);
+							data.price = parseInt(catalog.spec_service.analyses_interpretation.online.price);
 							data.pay_status = 'unpay';
 						} else {
-							data.pay_status = 'free';
-							data.price = 0;
+							data.price      = parseInt(catalog.spec_service.analyses_interpretation.clinic);
+							data.pay_status = 'unpay';
 						}
 						data.price = parseInt(data.price || 0);
 						data.services       = [];
@@ -1459,7 +1468,7 @@ $(function () {
 			on: {
 				init() {
 					setTimeout(function () {
-						initPlugins();
+						initPlugins($(this.el));
 						initClientSearch($('.popup.--photo form'));
 						initLongtermSearch($('.popup.--photo form'), true);
 					});
@@ -1504,12 +1513,13 @@ $(function () {
 			on: {
 				init() {
 					setTimeout(function () {
-						initPlugins();
 						initClientSearch($('.popup.--longterm form'));
 						initLongtermSearch($('.popup.--longterm form'), true);
 					});
 				},
 				complete() {
+					var self = this;
+					initPlugins($(this.el));
 					$(this.el).show();
 				},
 				submit(ev) {

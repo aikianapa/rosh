@@ -1666,9 +1666,20 @@ blockquote cite {
     -webkit-transition : opacity .3s;
     transition         : opacity .3s;
 }
+.input:has(.phone-error-msg){
+    margin-bottom: 0;
+}
+.phone-error-msg.visible{
+    visibility: visible;
+}
+.phone-error-msg{
+    font-size: 12px;
+    visibility : hidden;
+    color: var(--bs-danger);
+}
 .input__placeholder.active{
-    -webkit-transform : translateY(-32px) scale(.9);
-    transform         : translateY(-32px) scale(0.9);
+    -webkit-transform : translateY(-24px) scale(.9);
+    transform         : translateY(-24px) scale(0.9);
     z-index           : 20;
     background-color  : #F6F4F3;
     color             : #363838;

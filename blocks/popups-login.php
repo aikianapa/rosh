@@ -16,6 +16,7 @@
                         <div class="input input--grey">
                             <input class="input__control intl-tel" name="phone" type="tel" autocomplete="off">
                             <div class="input__placeholder active">Номер телефона</div>
+	                        <span class="phone-error-msg">Неправильный номер телефона</span>
                         </div>
 
                         <div class="alert alert-warning mb-2"></div>

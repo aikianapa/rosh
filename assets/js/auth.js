@@ -229,12 +229,11 @@ $(document).ready(function() {
 
 	//auth.phone_value.mask('+9 (999) 999-99-99');
 	var iti = auth.phone_value.intlTelInput({
-		// allowDropdown: false,
-		autoHideDialCode: true,
-		// autoPlaceholder: "off",
+		// allowDropdown: false
+		// autoHideDialCode: true,
 		// dropdownContainer: document.body,
 		// excludeCountries: ["us"],
-		// formatOnDisplay: false,
+		 formatOnDisplay: false,
 		// geoIpLookup: function(callback) {
 		//   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
 		//     var countryCode = (resp && resp.country) ? resp.country : "";
@@ -244,31 +243,44 @@ $(document).ready(function() {
 		customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
 			//console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
 			selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
-				'+'+selectedCountryData.dialCode, ' ');
-			auth.phone_value.inputmask('+' + selectedCountryData.dialCode.replace('9', '\\9')
+				'+'+selectedCountryData.dialCode, '');
+			auth.phone_value.inputmask('+' + selectedCountryData.dialCode.replaceAll(/[0-9]/g, '9')
 			                           + ' ' +
 			                           selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
-				{clearMaskOnLostFocus:false, showMaskOnHover: false});
-			return selectedCountryPlaceholder;
+				{placeholder: '+' + selectedCountryData.dialCode.replace('9', '\\9')
+				              + ' ' +
+				              selectedCountryPlaceholder.replaceAll(/[0-9]/g, '_').replaceAll(' ', '-'),
+					clearMaskOnLostFocus:true, showMaskOnHover: false, positionCaretOnClick: 'radixFocus'});
+			return '+' + selectedCountryData.dialCode.replace('9', '\\9')
+			       + ' ' +
+			       selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
 		},
 
-		hiddenInput: "phones",
+		// hiddenInput: "phones",
 		// initialCountry: "auto",
 		// localizedCountries: { 'de': 'Deutschland' },
 		nationalMode: false,
-		// onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+		onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
+		                "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
+		                "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
+		                "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
 		placeholderNumberType: "FIXED_LINE",
 		preferredCountries: ['ru'],
 		separateDialCode: false,
 		utilsScript: "/assets/js/intlTelInput-utils.js"
 	});
-	auth.phone_value.on('countrychange', function (e, cd){
-
-	});
 	auth.phone_value.on('keyup input change blur', function () {
-		console.log($(this).val());
-		if ($(this).intlTelInput('isValidNumber')) {
-			auth.phone_window_submit_btn.removeAttr('disabled');
+		auth.phone_window.find('.phone-error-msg.visible').removeClass('visible');
+
+		if ($(this).inputmask('isComplete')) {
+			console.log('is complete!', $(this).val());
+
+			if ($(this).intlTelInput('isValidNumber')) {
+				auth.phone_window_submit_btn.removeAttr('disabled');
+			} else {
+				auth.phone_window.find('.phone-error-msg').addClass('visible');
+				auth.phone_window_submit_btn.attr('disabled', '');
+			}
 		} else {
 			auth.phone_window_submit_btn.attr('disabled', '');
 		}

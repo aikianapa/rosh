@@ -164,7 +164,7 @@
 						<div class="account-events__name">Специалист:</div>
 						<div class="account-event">
 							{{#this.experts}}
-							<p>{{catalog.experts[this].name}}</p>
+							<p>{{@global.catalog.experts[this].fullname}}</p>
 							{{/this.experts}}
 						</div>
 					</div>
@@ -238,7 +238,7 @@
 							<div class="history-item">
 								<p>Специалисты</p>
 								{{#each experts}}
-								{{catalog.experts[this].name}}<br>
+								{{@global.catalog.experts[this].fullname}}<br>
 								{{/each}}
 							</div>
 							<div class="history-item">
@@ -799,10 +799,10 @@
 					<div class="expert__worked-pic">
 						<img class="lazyload"
 							data-src="{{{catalog.experts[this].image[0].img}}}"
-							alt="{{catalog.experts[this].name}}">
+							alt="{{@global.catalog.experts[this].fullname}}">
 					</div>
 					<div class="expert__worked-name">
-						{{catalog.experts[this].name}}
+						{{@global.catalog.experts[this].fullname}}
 					</div>
 					<div class="expert__worked-work">
 						{{catalog.experts[this].spec}}
@@ -928,14 +928,15 @@
 			</div>
 			<div class="col-md-3">
 				<div class="input input--grey">
-					<input class="input__control" type="tel" name="phone" value="{{.phone}}" placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
-					<div class="input__placeholder input__placeholder--dark">Телефон</div>
+					<input class="input__control intl-tel" type="tel" name="phone"
+						value="{{.phone}}" required>
+					<div class="input__placeholder input__placeholder--dark active">Телефон</div>
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control" type="email"
-						name="email" value="{{.email}}" placeholder="E-mail">
+						name="email" value="{{.email}}" placeholder="E-mail" required>
 					<div class="input__placeholder input__placeholder--dark">E-mail</div>
 				</div>
 			</div>
@@ -1160,7 +1161,8 @@
 						on: {
 							complete() {
 								$('.profile-editor-inline').removeClass('d-none');
-								initPlugins();
+								initPlugins($(this.el));
+
 							},
 							submit(ev) {
 								let $form = $(ev.node);
@@ -1251,7 +1253,7 @@
 								);
 								console.log('true: ',
 									$(this.el).find('.search__drop-item.services').length);
-								initPlugins();
+								initPlugins($(this.el));
 
 								if (!!$(this.el)
 									.find('.select .select__item input:checked').length) {

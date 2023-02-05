@@ -143,7 +143,7 @@
 									post[keys[i]] = names[i];
 								}
 								var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
+								post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
 								window.api.get('/api/v2/list/users/?role=client&phone=' + post.phone +
 								          '&__token=' + _token).then(
 									function (data) {

@@ -118,7 +118,7 @@
 						<div class="account-events__name">Специалист:</div>
 						<div class="account-event">
 							{{#this.experts}}
-							<p>{{catalog.experts[this].name}}</p>
+							<p>{{@global.catalog.experts[this].fullname}}</p>
 							{{/this.experts}}
 						</div>
 					</div>
@@ -219,7 +219,7 @@
 						<div class="account-events__name">Специалист:</div>
 						<div class="account-event">
 							{{#experts}}
-							<p>{{catalog.experts[this].name}}</p>
+							<p>{{@global.catalog.experts[this].fullname}}</p>
 							{{/experts}}
 						</div>
 					</div>
@@ -329,7 +329,7 @@
 							<div class="history-item">
 								<p>Специалисты</p>
 								{{#each experts}}
-								{{catalog.experts[this].name}}<br>
+								{{@global.catalog.experts[this].fullname}}<br>
 								{{/each}}
 							</div>
 							<div class="history-item">
@@ -401,10 +401,10 @@
 											<div class="expert__worked-pic">
 												<img class="lazyload"
 													data-src="{{{catalog.experts[this].image[0].img}}}"
-													alt="{{catalog.experts[this].name}}">
+													alt="{{@global.catalog.experts[this].fullname}}">
 											</div>
 											<div class="expert__worked-name">
-												{{catalog.experts[this].name}}
+												{{@global.catalog.experts[this].fullname}}
 											</div>
 											<div class="expert__worked-work">
 												{{catalog.experts[this].spec}}
@@ -620,10 +620,8 @@
 			</div>
 			<div class="col-md-3">
 				<div class="input input--grey">
-					<input class="input__control" type="tel" name="phone"
-						required value="{{user.phone}}" placeholder="Телефон"
-						data-inputmask="'mask': '+9 (999) 999-99-99'">
-					<div class="input__placeholder input__placeholder--dark">Телефон</div>
+					<input class="input__control intl-tel" type="tel" name="phone" required value="{{user.phone}}">
+					<div class="input__placeholder input__placeholder--dark active">Телефон</div>
 				</div>
 			</div>
 			<div class="col-md-3">
@@ -737,6 +735,7 @@
 
 						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
 							.then(function (data) {
+								data.phone = data.phone.includes('+') ? data.phone : '+'+data.phone;
 								data.fullname = data.fullname.replaceAll('  ', ' ');
 								page.set('user', data);
 								console.log(data);
@@ -768,15 +767,14 @@
 						on: {
 							complete() {
 								$('.profile-editor-inline').removeClass('d-none');
-								initPlugins();
-
+								initPlugins($(this.el));
 							},
 							submit(ev) {
 								let $form = $(ev.node);
 								let uid   = page.get('user.id');
 								if ($form.verify() && uid > '') {
 									let data   = $form.serializeJSON();
-									data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+									data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 									Cabinet.updateProfile(uid, data, function (data) {
 										data.birthdate_fmt = utils.formatDate(data.birthdate);
 										page.set('user', data); /* get actually user data */

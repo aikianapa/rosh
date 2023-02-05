@@ -123,7 +123,7 @@
 											<p class="">
 												{{#if this.field == 'experts'}}
 												{{#each this.prev_val}}
-												{{catalog.experts[this].name}}<br>
+												{{catalog.experts[this].fullname}}<br>
 												{{/each}}
 												{{elseif this.field == 'services'}}
 												{{#each this.prev_val}}
@@ -142,7 +142,7 @@
 											<p class="">
 												{{#if this.field == 'experts'}}
 												{{#each this.new_val}}
-												{{catalog.experts[this].name}}
+												{{catalog.experts[this].fullname}}
 												{{/each}}
 												{{elseif this.field == 'services'}}
 												{{#each this.new_val}}

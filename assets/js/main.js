@@ -321,176 +321,356 @@ $(function() {
             country.name = country.name.replace(/.+\((.+)\)/, "$1");
         }
 
-        initPlugins = function() {
-            $('input.datebirthdaypickr').each(function() {
-                console.log($(this).val());
-                new AirDatepicker(this, {
-                    selectedDates: [$(this).val() || (new Date())],
-                    maxDate: (new Date()),
-                    autoClose: true,
-                    dateFormat: 'dd.MM.yyyy',
-                    timepicker: false
+        initPlugins = function (parent) {
+            if (parent) {
+                parent.find('input.datebirthdaypickr').each(function () {
+                    console.log($(this).val());
+                    new AirDatepicker(this, {
+                        selectedDates: [$(this).val() || (new Date())],
+                        maxDate: (new Date()),
+                        autoClose: true,
+                        dateFormat: 'dd.MM.yyyy',
+                        timepicker: false
+                    });
                 });
-            });
-            $('input.daterangepickr').each(function() {
-                new AirDatepicker(this, {
-                    autoClose: true,
-                    range: true,
-                    multipleDatesSeparator: ' - '
+                parent.find('input.daterangepickr').each(function () {
+                    new AirDatepicker(this, {
+                        autoClose: true,
+                        range: true,
+                        multipleDatesSeparator: ' - '
+                    });
                 });
-            });
-            $('input.yearpickr').each(function() {
-                let _config = {
-                    selectedDates: [$(this).val() || (new Date())],
-                    dateFormat: 'yyyy',
-                    maxDate: (new Date()),
-                    view: 'years',
-                    timepicker: false,
-                    minView: 'years',
-                    autoClose: true
-                };
-                if ($(this).hasClass('empty-date') || $(this).val() == '') {
-                    delete _config.selectedDates;
-                }
-
-                new AirDatepicker(this, _config);
-            });
-
-            $('input.datepickr').each(function() {
-                let _config = {
-                    timepicker: false,
-                    dateFormat: 'dd.MM.yyyy',
-                    autoClose: true
-                };
-
-                if ($(this).val() != '') {
-                    _config.selectedDates = [$(this).val()],
-
-                        _config.minDate = $(this).data('min-date') || '';
-                    if ($(this).data('max-date')) {
-                        _config.maxDate = $(this).data('max-date');
+                parent.find('input.yearpickr').each(function () {
+                    let _config = {
+                        selectedDates: [$(this).val() || (new Date())],
+                        dateFormat: 'yyyy',
+                        maxDate: (new Date()),
+                        view: 'years',
+                        timepicker: false,
+                        minView: 'years',
+                        autoClose: true
+                    };
+                    if ($(this).hasClass('empty-date') || $(this).val() == '') {
+                        delete _config.selectedDates;
                     }
-                }
 
-                new AirDatepicker(this, _config);
-            });
+                    new AirDatepicker(this, _config);
+                });
 
-            $('.input__control.timepickr').each(function(e) {
-                console.log($(this), e);
-                $(this).timepicker({
-                    timeFormat: $(this).data('time-format') || 'HH:mm',
-                    interval: $(this).data('interval') || 15,
-                    minTime: $(this).data('min-time') || '08:00',
-                    maxTime: $(this).data('max-time') || '21:00',
-                    dynamic: false,
-                    dropdown: true,
-                    scrollbar: true,
-                    change: function(time) {
-                        // the input field
-                        var element = $(this),
-                            text;
-                        // get access to this Timepicker instance
-                        var timepicker = element.timepicker();
-                        console.log('change', element, element.val(), timepicker);
-                        /* is start-time changed...*/
-                        if (element.hasClass('event-time-start') && element.val()) {
-                            var end_time = $(this).parents('.event-time').find('input.event-time-end');
-                            var end_tpkr = end_time.timepicker({
-                                'minTime': element.val(),
-                                'startTime': element.val()
-                            });
-                            if (end_time.val() < element.val()) {
-                                end_time.val(element.val());
-                            }
-                        } else {
-                            if (element.hasClass('event-time-end') && element.val()) {
-                                var start_time = $(this).parents('.event-time').find('input.event-time-end');
+                parent.find('input.datepickr').each(function () {
+                    let _config = {
+                        timepicker: false,
+                        dateFormat: 'dd.MM.yyyy',
+                        autoClose: true
+                    };
 
-                                if (start_time.val() > element.val()) {
-                                    element.val(start_time.val());
+                    if ($(this).val() != '') {
+                        _config.selectedDates = [$(this).val()],
+
+                            _config.minDate = $(this).data('min-date') || '';
+                        if ($(this).data('max-date')) {
+                            _config.maxDate = $(this).data('max-date');
+                        }
+                    }
+
+                    new AirDatepicker(this, _config);
+                });
+
+                parent.find('.input__control.timepickr').each(function (e) {
+                    console.log($(this), e);
+                    $(this).timepicker({
+                        timeFormat: $(this).data('time-format') || 'HH:mm',
+                        interval: $(this).data('interval') || 15,
+                        minTime: $(this).data('min-time') || '08:00',
+                        maxTime: $(this).data('max-time') || '21:00',
+                        dynamic: false,
+                        dropdown: true,
+                        scrollbar: true,
+                        change: function (time) {
+                            // the input field
+                            var element    = $(this),
+                                text;
+                            // get access to this Timepicker instance
+                            var timepicker = element.timepicker();
+                            console.log('change', element, element.val(), timepicker);
+                            /* is start-time changed...*/
+                            if (element.hasClass('event-time-start') && element.val()) {
+                                var end_time = $(this).parents('.event-time').find('input.event-time-end');
+                                var end_tpkr = end_time.timepicker({
+                                    'minTime': element.val(),
+                                    'startTime': element.val()
+                                });
+                                if (end_time.val() < element.val()) {
+                                    end_time.val(element.val());
+                                }
+                            } else {
+                                if (element.hasClass('event-time-end') && element.val()) {
+                                    var start_time = $(this).parents('.event-time').find('input.event-time-end');
+
+                                    if (start_time.val() > element.val()) {
+                                        element.val(start_time.val());
+                                    }
                                 }
                             }
+
                         }
+                    });
+                });
+                parent.find('input.datetimepickr').each(function () {
+                    new AirDatepicker(this, {
+                        selectedDates: [$(this).val() || (new Date())],
+                        minHours: 8,
+                        maxHours: 20,
+                        timepicker: true,
+                        autoClose: true,
+                        minutesStep: 10,
+                        dateFormat: 'dd.MM.yyyy',
+                        timeFormat: "HH:mm"
+                    });
+                });
 
+                parent.find('input[data-inputmask]').each(function () {
+                    $(this).inputmask();
+                });
+
+                //
+                //$('input.autocomplete').each(function () {
+                //    $(this).autocomplete({
+                //        noCache: true,
+                //        minChars: 3,
+                //    });
+                //});
+
+                parent.find('input.autocomplete-inline').each(function () {
+                    let _lookup = $(this).data('lookup');
+                    if (!!_lookup) {
+                        _lookup = _lookup.split(',');
+                    } else {
+                        _lookup = [];
                     }
+                    $(this).autocomplete({
+                        noCache: true,
+                        minChars: 1,
+                        noSuggestionNotice: '<p>Нет результатов..</p>',
+                        lookup: function (query, done) {
+                            // Do Ajax call or lookup locally, when done,
+                            // call the callback and pass your results:
+                            var _res = [];
+                            _lookup.forEach(function (v, k) {
+                                _res.push({"value": v, "data": k});
+                            });
+                            var result = {suggestions: _res};
+                            done(result);
+                        }
+                    });
                 });
-            });
-            $('input.datetimepickr').each(function() {
-                new AirDatepicker(this, {
-                    selectedDates: [$(this).val() || (new Date())],
-                    minHours: 8,
-                    maxHours: 20,
-                    timepicker: true,
-                    autoClose: true,
-                    minutesStep: 10,
-                    dateFormat: 'dd.MM.yyyy',
-                    timeFormat: "HH:mm"
+
+                parent.find('input.intl-tel').each(function () {
+                    var self = $(this);
+                    self.intlTelInput({
+                        formatOnDisplay: false,
+                        customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+                            //console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
+                            selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
+                                '+' + selectedCountryData.dialCode, ' ');
+                            self.inputmask('+' + selectedCountryData.dialCode.replaceAll(/[0-9]/g, '9')
+                                           + ' ' +
+                                           selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
+                                {
+                                    placeholder: '+' + selectedCountryData.dialCode.replace('9', '\\9')
+                                                 + ' ' +
+                                                 selectedCountryPlaceholder.replaceAll(/[0-9]/g, '_')
+                                                     .replaceAll(' ', '-'),
+                                    clearMaskOnLostFocus: true,
+                                    showMaskOnHover: false,
+                                    positionCaretOnClick: 'radixFocus'
+                                });
+                            return '+' + selectedCountryData.dialCode.replace('9', '\\9')
+                                   + ' ' +
+                                   selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
+                        },
+                        nationalMode: false,
+                        onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
+                                        "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
+                                        "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
+                                        "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
+                        placeholderNumberType: "FIXED_LINE",
+                        preferredCountries: ['ru'],
+                        separateDialCode: false,
+                        utilsScript: "/assets/js/intlTelInput-utils.js"
+                    });
                 });
-            });
+            } else {
 
-            $('input[data-inputmask]').each(function () {
-                $(this).inputmask();
-            });
-
-
-            //
-            //$('input.autocomplete').each(function () {
-            //    $(this).autocomplete({
-            //        noCache: true,
-            //        minChars: 3,
-            //    });
-            //});
-
-            $('input.autocomplete-inline').each(function () {
-                let _lookup = $(this).data('lookup');
-                if (!!_lookup) {
-                    _lookup = _lookup.split(',');
-                } else {
-                    _lookup = [];
-                }
-                $(this).autocomplete({
-                    noCache: true,
-                    minChars: 1,
-                    noSuggestionNotice: '<p>Нет результатов..</p>',
-                    lookup: function(query, done) {
-                        // Do Ajax call or lookup locally, when done,
-                        // call the callback and pass your results:
-                        var _res = [];
-                        _lookup.forEach(function(v, k) {
-                            _res.push({ "value": v, "data": k });
-                        });
-                        var result = { suggestions: _res };
-                        done(result);
-                    },
+                $('input.datebirthdaypickr').each(function () {
+                    console.log($(this).val());
+                    new AirDatepicker(this, {
+                        selectedDates: [$(this).val() || (new Date())],
+                        maxDate: (new Date()),
+                        autoClose: true,
+                        dateFormat: 'dd.MM.yyyy',
+                        timepicker: false
+                    });
                 });
-            });
-
-            $('input[type="tel"].intl-tel').each(function () {
-                console.log($(this), 'init tel');
-                $(this).intlTelInput({
-                    // allowDropdown: false,
-                    autoHideDialCode: false,
-                    // autoPlaceholder: "off",
-                    // dropdownContainer: document.body,
-                    // excludeCountries: ["us"],
-                    // formatOnDisplay: false,
-                    // geoIpLookup: function(callback) {
-                    //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-                    //     var countryCode = (resp && resp.country) ? resp.country : "";
-                    //     callback(countryCode);
-                    //   });
-                    // },
-                    hiddenInput: "full_number",
-                    // initialCountry: "auto",
-                    // localizedCountries: { 'de': 'Deutschland' },
-                    // nationalMode: false,
-                    // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
-                    placeholderNumberType: "MOBILE",
-                    preferredCountries: ['ru'],
-                    // separateDialCode: true,
-                    utilsScript: "/assets/js/intlTelInput-utils.js"
+                $('input.daterangepickr').each(function () {
+                    new AirDatepicker(this, {
+                        autoClose: true,
+                        range: true,
+                        multipleDatesSeparator: ' - '
+                    });
                 });
-            });
+                $('input.yearpickr').each(function () {
+                    let _config = {
+                        selectedDates: [$(this).val() || (new Date())],
+                        dateFormat: 'yyyy',
+                        maxDate: (new Date()),
+                        view: 'years',
+                        timepicker: false,
+                        minView: 'years',
+                        autoClose: true
+                    };
+                    if ($(this).hasClass('empty-date') || $(this).val() == '') {
+                        delete _config.selectedDates;
+                    }
+
+                    new AirDatepicker(this, _config);
+                });
+
+                $('input.datepickr').each(function () {
+                    let _config = {
+                        timepicker: false,
+                        dateFormat: 'dd.MM.yyyy',
+                        autoClose: true
+                    };
+
+                    if ($(this).val() != '') {
+                        _config.selectedDates = [$(this).val()],
+
+                            _config.minDate = $(this).data('min-date') || '';
+                        if ($(this).data('max-date')) {
+                            _config.maxDate = $(this).data('max-date');
+                        }
+                    }
+
+                    new AirDatepicker(this, _config);
+                });
+
+                $('.input__control.timepickr').each(function (e) {
+                    console.log($(this), e);
+                    $(this).timepicker({
+                        timeFormat: $(this).data('time-format') || 'HH:mm',
+                        interval: $(this).data('interval') || 15,
+                        minTime: $(this).data('min-time') || '08:00',
+                        maxTime: $(this).data('max-time') || '21:00',
+                        dynamic: false,
+                        dropdown: true,
+                        scrollbar: true,
+                        change: function (time) {
+                            // the input field
+                            var element    = $(this),
+                                text;
+                            // get access to this Timepicker instance
+                            var timepicker = element.timepicker();
+                            console.log('change', element, element.val(), timepicker);
+                            /* is start-time changed...*/
+                            if (element.hasClass('event-time-start') && element.val()) {
+                                var end_time = $(this).parents('.event-time').find('input.event-time-end');
+                                var end_tpkr = end_time.timepicker({
+                                    'minTime': element.val(),
+                                    'startTime': element.val()
+                                });
+                                if (end_time.val() < element.val()) {
+                                    end_time.val(element.val());
+                                }
+                            } else {
+                                if (element.hasClass('event-time-end') && element.val()) {
+                                    var start_time = $(this).parents('.event-time').find('input.event-time-end');
+
+                                    if (start_time.val() > element.val()) {
+                                        element.val(start_time.val());
+                                    }
+                                }
+                            }
+
+                        }
+                    });
+                });
+                $('input.datetimepickr').each(function () {
+                    new AirDatepicker(this, {
+                        selectedDates: [$(this).val() || (new Date())],
+                        minHours: 8,
+                        maxHours: 20,
+                        timepicker: true,
+                        autoClose: true,
+                        minutesStep: 10,
+                        dateFormat: 'dd.MM.yyyy',
+                        timeFormat: "HH:mm"
+                    });
+                });
+
+                $('input[data-inputmask]').each(function () {
+                    $(this).inputmask();
+                });
+
+                //
+                //$('input.autocomplete').each(function () {
+                //    $(this).autocomplete({
+                //        noCache: true,
+                //        minChars: 3,
+                //    });
+                //});
+
+                $('input.autocomplete-inline').each(function () {
+                    let _lookup = $(this).data('lookup');
+                    if (!!_lookup) {
+                        _lookup = _lookup.split(',');
+                    } else {
+                        _lookup = [];
+                    }
+                    $(this).autocomplete({
+                        noCache: true,
+                        minChars: 1,
+                        noSuggestionNotice: '<p>Нет результатов..</p>',
+                        lookup: function (query, done) {
+                            // Do Ajax call or lookup locally, when done,
+                            // call the callback and pass your results:
+                            var _res = [];
+                            _lookup.forEach(function (v, k) {
+                                _res.push({"value": v, "data": k});
+                            });
+                            var result = {suggestions: _res};
+                            done(result);
+                        }
+                    });
+                });
+
+                $('input[type="tel"].intl-tel').each(function () {
+                    console.log($(this), 'init tel');
+                    $(this).intlTelInput({
+                        // allowDropdown: false,
+                        autoHideDialCode: false,
+                        // autoPlaceholder: "off",
+                        // dropdownContainer: document.body,
+                        // excludeCountries: ["us"],
+                        // formatOnDisplay: false,
+                        // geoIpLookup: function(callback) {
+                        //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+                        //     var countryCode = (resp && resp.country) ? resp.country : "";
+                        //     callback(countryCode);
+                        //   });
+                        // },
+                        hiddenInput: "full_number",
+                        // initialCountry: "auto",
+                        // localizedCountries: { 'de': 'Deutschland' },
+                        // nationalMode: false,
+                        // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+                        placeholderNumberType: "MOBILE",
+                        preferredCountries: ['ru'],
+                        // separateDialCode: true,
+                        utilsScript: "/assets/js/intlTelInput-utils.js"
+                    });
+                });
+            }
 
         };
 

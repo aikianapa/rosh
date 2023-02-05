@@ -54,7 +54,7 @@
 									<span>Онлайн</span>
 								</label>
 							</div>
-							<div class="text-bold mb-20">Тип события</div>
+							<div class="text-bold mb-20"></div>
 							<div class="row d-none consultations-list">
 								{{#each @global.catalog.spec_service.consultations.online}}
 								<div class="col-md-12 mt-10" data-show="consultation-online" style="display:none;">
@@ -95,13 +95,13 @@
 								<div class="select__values"></div>
 							</div>
 							<div class="select__list">
-								{{#each @global.catalog.expert_users}}
+								{{#each @global.catalog.experts}}
 								<div class="select__item select__item--checkbox">
 									<label class="checkbox checkbox--record">
-										<input type="checkbox" name="experts[]" value="{{login}}">
+										<input type="checkbox" name="experts[]" value="{{id}}">
 										<span></span>
 										<div class="checbox__name">
-											<div class="select__name">{{name}}</div>
+											<div class="select__name">{{fullname}}</div>
 										</div>
 									</label>
 								</div>
@@ -354,11 +354,12 @@
 														<div class="select__item select__item--checkbox">
 															<label class="checkbox checkbox--record">
 																{{#if @global.utils.arr.search(.id, record.experts)}}
-																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required> {{else}}
+																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
+																{{else}}
 																<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
 																<span></span>
 																<div class="checbox__name">
-																	<div class="select__name">{{name}}</div>
+																	<div class="select__name">{{fullname}}</div>
 																</div>
 															</label>
 														</div>
@@ -1112,9 +1113,8 @@
 							<div class="input__placeholder">Дата рождения</div>
 						</div>
 						<div class="input mb-30">
-							<input class="input__control" type="tel" required placeholder="Номер телефона" minlength="7" data-inputmask="'mask': '+7 (999) 999-99-99'"
-							 name="phone">
-							<div class="input__placeholder">Номер телефона</div>
+							<input class="input__control intl-tel" type="tel" name="phone" required>
+							<div class="input__placeholder active">Номер телефона</div>
 						</div>
 						<button class="btn btn--black form__submit" type="submit">Создать</button>
 
@@ -1146,7 +1146,7 @@
 								for (var i = 0; i < names.length; i++) {
 									post[keys[i]] = names[i];
 								}
-								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
+								post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
 								utils.api.get('/api/v2/list/users/?role=client&phone=' + post.phone).then(
 									function (data) {
 										if (!data || !data.length) {
@@ -1220,9 +1220,9 @@
 							<div class="input__placeholder">Дата рождения</div>
 						</div>
 						<div class="input mb-30">
-							<input class="input__control" type="tel" required placeholder="Номер телефона" minlength="7" value="{{.phone}}" data-inputmask="'mask': '+7 (999) 999-99-99'"
+							<input class="input__control intl-tel" type="tel" required value="{{.phone}}"
 							 name="phone">
-							<div class="input__placeholder">Номер телефона</div>
+							<div class="input__placeholder active">Номер телефона</div>
 						</div>
 						<div class="input input--grey">
 							<input class="input__control" type="email" name="email" value="{{.email}}" required placeholder="E-mail">
@@ -1248,7 +1248,10 @@
 							var self = this;
 							utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
 								.then(function(data) {
-									data.fullname = data.fullname.replaceAll('  ', ' ')
+									data.fullname = data.fullname.replaceAll('  ', ' ');
+									data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
+									data.phone = data.phone.includes('+') ? data.phone : '+' + data.phone;
+
 									self.set('user', data);
 									console.log(data);
 
@@ -1262,7 +1265,7 @@
 							var $form = $(ev.node);
 							if ($form.verify()) {
 								var data = $form.serializeJSON();
-								data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+								data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 								Cabinet.updateProfile(wbapp._session.user.id, data, function(data) {
 									data.birthdate_fmt = utils.formatDate(data.birthdate);
 									self.set('user', data); /* get actually user data */
@@ -1374,7 +1377,7 @@
 												<div class="select__values"></div>
 											</div>
 											<div class="select__list">
-												{{#each catalog.experts}}
+												{{#each @global.catalog.experts}}
 												<div class="select__item select__item--checkbox">
 													<label class="checkbox checkbox--record">
 														{{#if @global.utils.arr.search(.id, record.experts)}}
@@ -1382,7 +1385,7 @@
 														<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
 														<span></span>
 														<div class="checbox__name">
-															<div class="select__name">{{name}}</div>
+															<div class="select__name">{{fullname}}</div>
 														</div>
 													</label>
 												</div>
@@ -1519,13 +1522,13 @@
 									<div class="select__values"></div>
 								</div>
 								<div class="select__list">
-									{{#each catalog.experts}}
+									{{#each @global.catalog.experts}}
 									<div class="select__item select__item--checkbox">
 										<label class="checkbox checkbox--record">
 											<input type="checkbox" name="experts[]" value="{{this.id}}">
 											<span></span>
 											<div class="checbox__name">
-												<div class="select__name">{{this.name}}</div>
+												<div class="select__name">{{this.fullname}}</div>
 											</div>
 										</label>
 									</div>
@@ -1562,7 +1565,7 @@
 								<div class="checbox__name text-grey">Выгрузить только список номеров</div>
 							</label>
 							<div class="calendar input">
-								<input class="input__control" type="tel" name="phone" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
+								<input class="input__control" type="tel" name="phone" placeholder="Номер телефона">
 								<div class="input__placeholder">Номер телефона</div>
 							</div>
 						</div>
