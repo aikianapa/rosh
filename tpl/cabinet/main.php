@@ -316,40 +316,42 @@
 							<span></span>
 							<div class="checbox__name">Консультация врача</div>
 						</label>
-						<div class="select-form"
+						<div class="select-form" data-show="consultation-type"
 							style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
 							<div class="text-bold mb-20">Тип события</div>
-							<div class="popups__text-chexboxs" data-show="consultation-type">
+							<div class="popups__text-chexboxs">
 								{{#each @global.catalog.quoteType as qt}}
 								<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
 									{{#if qt.id === record.type }}
-									<input type="radio" name="type" class="{{qt.id}}"
+									<input type="radio" name="type"
+										class="consultation-type {{qt.id}}"
 										value="{{ qt.id }}" checked>
 									{{else}}
 									<input type="radio" name="type" value="{{ qt.id }}"
-										class="{{qt.id}}">
+										class="consultation-type {{qt.id}}">
 									{{/if}}
 									<span>{{qt.name}}</span>
 								</label>
 								{{/each}}
 							</div>
-							<div class="row consultations-list">
+							<div class="admin-editor__patient price-list">
 								{{#each @global.catalog.spec_service.consultations.online}}
-								<div class="col-md-12 search__drop-item consultation"
-									data-show="consultation-clinic"
-									data-price="{{price}}"
-									style="display: {{#if record.type === 'online' }} block {{else}} none {{/if}};">
-									<div class="search__drop-name">
-
+								<div class="search__drop-item consultation online"
+									data-show="consultation-online"
+									data-consultation="{{this.id}}"
+									data-price="0"
+									style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
+									<div class="search__drop-name pl-0">
 										<label class="checkbox"
-											data-name="{{this.header}}" data-price="{{this.price}}"
+											data-name="{{this.header}}"
+											data-price="{{this.price}}"
 											data-id="{{this.id}}">
 											{{#if record.consultation == this.id }}
-											<input type="radio" name="consultation" class="consultation" value="{{this.id}}"
+											<input type="radio" name="consultation" value="{{this.id}}"
 												data-name="{{this.header}}" data-price="{{this.price}}"
 												checked="checked">
 											{{else}}
-											<input type="radio" name="consultation" class="consultation" value="{{this.id}}"
+											<input type="radio" name="consultation" value="{{this.id}}"
 												data-name="{{this.header}}" data-price="{{this.price}}">
 											{{/if}}
 											<span></span>
@@ -363,20 +365,21 @@
 								{{/each}}
 
 								{{#each @global.catalog.spec_service.consultations.clinic}}
-								<div class="col-md-12 search__drop-item consultation"
+								<div class="search__drop-item consultation clinic"
 									data-show="consultation-clinic"
-									data-price="{{price}}"
-									style="display: {{#if record.type === 'clinic' }} block {{else}} none {{/if}};">
-									<div class="search__drop-name">
+									data-consultation="{{this.id}}"
+									data-price="0"
+									style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
+									<div class="search__drop-name pl-0">
 										<label class="checkbox"
 											data-name="{{this.header}}" data-price="{{this.price}}"
 											data-id="{{this.id}}">
 											{{#if record.consultation == this.id }}
-											<input type="radio" name="consultation" class="consultation" value="{{this.id}}"
+											<input type="radio" name="consultation" value="{{this.id}}"
 												data-name="{{this.header}}" data-price="{{this.price}}"
 												checked="checked">
 											{{else}}
-											<input type="radio" name="consultation" class="consultation" value="{{this.id}}"
+											<input type="radio" name="consultation" value="{{this.id}}"
 												data-name="{{this.header}}" data-price="{{this.price}}">
 											{{/if}}
 											<span></span>
@@ -390,26 +393,7 @@
 								{{/each}}
 							</div>
 						</div>
-
-					</div>
-
-					<div class="select-form" data-show="service">
-						<div class="popups__text-chexboxs">
-							{{#each catalog.quoteType as qt}}
-							<label class="text-radio">
-								{{#if qt.id === record.type }}
-								<input type="radio" name="type" class="{{qt.id}}"
-									value="{{ qt.id }}" checked
-									on-click="checkConsultation">
-								{{else}}
-								<input type="radio" name="type" value="{{ qt.id }}"
-									class="{{qt.id}}"
-									on-click="checkConsultation">
-								{{/if}}
-								<span>{{qt.name}}</span>
-							</label>
-							{{/each}}
-						</div>
+						<input type="hidden" class="consultation_price" name="consultation_price" value="{{record.consultation_price}}">
 					</div>
 
 					<div class="row">

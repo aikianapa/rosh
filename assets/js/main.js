@@ -500,6 +500,46 @@ $(function() {
                         utilsScript: "/assets/js/intlTelInput-utils.js"
                     });
                 });
+
+                parent.find('.consultations .consultation-type').on('change', function (e) {
+                    var _parent = $(this).parents('.consultations');
+                    var _val = $(this).val();
+
+                    _parent.find('.price-list .consultation').hide();
+                    _parent.find('.price-list .consultation.'+_val).show();
+                });
+                parent.find('.consultations input[name="for_consultation"]').on('change', function (e) {
+                    var _parent = $(this).parents('.consultations');
+                    _parent.find('.consultation').removeClass('selected');
+                    _parent.find('.consultation').attr('data-price', '0');
+                    _parent.find('[name="consultation_price"]').val(0);
+                    console.log('>> for_consultation:checked', $(this).is(':checked'));
+                    if ($(this).is(':checked')) {
+                        _parent.find('.consultation-type:checked').trigger('click');
+                        setTimeout(function (){
+                           window.updPrice(_parent.parents('form').parent());
+                        });
+                    } else {
+                    }
+                });
+                parent.find('.consultations .consultation .checkbox input[type="radio"]').on('change', function (e) {
+                    var _parent       = $(this).parents('.consultations');
+                    var _consultation = $(this).parents('.search__drop-item.consultation');
+                    _parent.find('.consultation').removeClass('selected');
+                    _parent.find('.consultation').attr('data-price', '0');
+                    _parent.find('[name="consultation_price"]').val(0);
+
+                    if ($(this).is(':checked')) {
+                        console.log('>> ...', $(this).data());
+
+                        _consultation.addClass('selected');
+                        _parent.find('[name="consultation_price"]').val($(this).data('price'));
+                        _consultation.attr('data-price', $(this).data('price'));
+                        setTimeout(function () {
+                            window.updPrice(_parent.parents('form').parent());
+                        });
+                    }
+                });
             } else {
 
                 $('input.datebirthdaypickr').each(function () {

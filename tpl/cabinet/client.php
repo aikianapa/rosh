@@ -152,7 +152,7 @@
 				<div class="account-event-wrap --aicn">
 					<div class="account-events__btn">
 						<button class="btn btn--black"
-							onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+							onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}','{{this.type}}','{{this.consultation_price}}')">
 							Внести предоплату
 						</button>
 					</div>
@@ -258,7 +258,7 @@
 					<div class="account-event-wrap --aicn">
 						<div class="account-events__btn">
 							<button class="btn btn--black"
-								onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}')">
+								onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}','{{this.type}}','{{this.consultation_price}}')">
 								Внести предоплату
 							</button>
 						</div>
@@ -396,18 +396,18 @@
 										<a class="expert__worked"
 											target="_blank"
 											title="Открыть страницу о специалисте"
-											data-href="{{catalog.experts[this].info_uri}}"
-											data-link="{{catalog.experts[this].info_uri}}">
+											data-href="{{global.catalog.expert_users[this].info_uri}}"
+											data-link="{{global.catalog.expert_users[this].info_uri}}">
 											<div class="expert__worked-pic">
 												<img class="lazyload"
-													data-src="{{{catalog.experts[this].image[0].img}}}"
-													alt="{{@global.catalog.experts[this].fullname}}">
+													data-src="{{{global.catalog.expert_users[this].image[0].img}}}"
+													alt="{{@global.catalog.expert_users[this].fullname}}">
 											</div>
 											<div class="expert__worked-name">
-												{{@global.catalog.experts[this].fullname}}
+												{{@global.catalog.expert_users[this].fullname}}
 											</div>
 											<div class="expert__worked-work">
-												{{catalog.experts[this].spec}}
+												{{@global.catalog.expert_users[this].spec}}
 											</div>
 										</a>
 									</div>

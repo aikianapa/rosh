@@ -61,7 +61,7 @@
 									<label class="checkbox"
 										data-name="{{this.header}}" data-price="{{this.price}}"
 										data-id="{{this.id}}">
-										<input type="checkbox" name="consultation" value="{{this.id}}" disabled>
+										<input type="checkbox" name="consultation" value="{{this.id}}">
 										<span></span>
 										<div class="checbox__name">{{this.header}}</div>
 									</label>
@@ -72,7 +72,7 @@
 									<label class="checkbox"
 										data-name="{{this.header}}" data-price="{{this.price}}"
 										data-id="{{this.id}}">
-										<input type="checkbox" name="consultation" value="{{this.id}}" disabled>
+										<input type="checkbox" name="consultation" value="{{this.id}}">
 										<span></span>
 										<div class="checbox__name">{{this.header}}</div>
 									</label>
@@ -80,7 +80,7 @@
 								{{/each}}
 							</div>
 						</div>
-
+						<input type="hidden" class="consultation_price" name="consultation_price" value="0">
 					</div>
 
 					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
@@ -204,6 +204,7 @@
 						<div class="popup-summ__big">{{this.price}} ₽</div>
 						<div class="popup-summ__small">Предоплата - {{this.pay_price}} ₽</div>
 					</div>
+					{{#if this.
 					<div class="popup__description text-grey mb-30">
 						Для подтверждения необходимо произвести оплату в размере 20% от стоимости
 					</div>

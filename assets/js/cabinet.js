@@ -851,17 +851,22 @@ $(function () {
 	};
 
 	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
-
+	window.updPrice = function($selector){
+		var _parent_form = $selector.closest('form');
+		_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
+			sum += parseInt($(this).data('price'));
+		});
+		console.log(_parent_form, sum);
+		_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
+		_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
+	}
 	window.initServicesSearch = function ($selector, service_list) {
-		console.log($selector, service_list);
-
 		var _parent_form = $selector.closest('form');
 		$(document).on('click', '.search__drop-delete', function (e) {
 			e.stopPropagation();
 			$(this).parents('.search__drop-item').remove();
 			let sum = 0;
-			console.log(_parent_form.find('.admin-editor__patient .search__drop-item').length);
-			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
+			_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
 			_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
@@ -931,7 +936,7 @@ $(function () {
 					'.admin-editor__patient .search__drop-item[data-service_id]').length;
 				var sum     = 0;
 				_parent_form.find('.admin-editor__patient').append(
-					$('<div></div>').addClass('search__drop-item').attr({
+					$('<div></div>').addClass('search__drop-item selected').attr({
 						'data-id': suggestion.id,
 						'data-index': index,
 						"data-service_id": suggestion.data.service_id,
@@ -974,7 +979,7 @@ $(function () {
 							.append($('<div></div>').addClass('search__drop-summ').html(PRICE + ' ₽<sup><b>*</b></sup>'))
 					)
 				);
-				_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
+				_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
 					sum += parseInt($(this).data('price'));
 				});
 				console.log(_parent_form, sum);
@@ -982,7 +987,6 @@ $(function () {
 				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
-
 	};
 	window.initLongtermSearch = function ($form, for_client) {
 		var form       = $form || $('.popup .popup__form');
@@ -1278,15 +1282,21 @@ $(function () {
 			}
 		});
 	};
-	window.popupPay                   = function (record_id, price, user_id) {
-		const pay_price = Math.floor(parseInt(price) / 5);
+	window.popupPay                   = function (record_id, full_price, user_id, type, consultation_price) {
+		const pay_consultation = parseInt(consultation_price || '0');
+		var price = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
+	 	if (pay_consultation){
+
+		}
+		const pay_price = (type == 'online') ? price : Math.floor(price / 5);
 
 		var popup = new Ractive({
 			el: '.popup.--pay',
 			template: wbapp.tpl('#popupPay').html,
 			data: {
 				pay_price: pay_price,
-				price: parseInt(price),
+				is_online: (type == 'online'),
+				price: price,
 				client: user_id,
 				id: record_id
 			},
