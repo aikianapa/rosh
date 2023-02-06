@@ -503,13 +503,14 @@ $(function() {
 
                 parent.find('.consultations .consultation-type').on('change', function (e) {
                     var _parent = $(this).parents('.consultations');
-                    var _val = $(this).val();
+                    var _type   = $(this).val();
                     _parent.find('.consultation').removeClass('selected');
                     _parent.find('.consultation').attr('data-price', '0');
                     _parent.find('[name="consultation_price"]').val(0);
 
                     _parent.find('.price-list .consultation').hide();
-                    _parent.find('.price-list .consultation.'+_val).show();
+                    _parent.find('.price-list .consultation.' + _type).show();
+                    _parent.find('.price-list .consultation.' + _type + ' input:checked').trigger('changed');
                     setTimeout(function () {
                         window.updPrice(_parent.parents('form'));
                     });
@@ -522,6 +523,7 @@ $(function() {
                     console.log('>> for_consultation:checked', $(this).is(':checked'));
                     if ($(this).is(':checked')) {
                         _parent.find('.consultation-type:checked').trigger('change');
+                    } else {
 
                     }
                     setTimeout(function () {

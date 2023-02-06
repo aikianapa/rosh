@@ -504,7 +504,7 @@
 					</div>
 					{{else}}
 					{{#each record.service_prices: idx, key}}
-					<div class="search__drop-item services" data-index="{{idx}}"
+					<div class="search__drop-item services selected" data-index="{{idx}}"
 						data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 						<input type="hidden" name="services[]"
 							value="{{service_id}}">
@@ -695,14 +695,14 @@
 								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(event_date)}}">
 
 								<span class="dt"><strong class="title">Приём: </strong>
-									{{@global.utils.formatDate(event_date)}}<br> {{event_time_start}}-{{event_time_end}}
+									{{@global.utils.formatDate(record.event_date)}}<br> {{record.event_time_start}}-{{record.event_time_end}}
 								</span>
 								{{else}}
-								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(_created)}}">
+								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(record._created)}}">
 
 								<span class="dt"><strong class="title">Заявка: </strong>
-									{{@global.utils.formatDate(_created)}}<br>
-									{{@global.utils.formatTime(_created)}}
+									{{@global.utils.formatDate(record._created)}}<br>
+									{{@global.utils.formatTime(record._created)}}
 								</span>
 								{{/if}}
 							</div>
@@ -711,8 +711,8 @@
 							<input type="hidden" class="orderby" value="{{catalog.clients[client].fullname}}">
 							<p>ФИО</p>
 							<div>
-								<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{@global.catalog.clients[client].fullname}}</a>
-								{{#if @global.catalog.clients[client].has_longterm}}
+								<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{@global.catalog.clients[record.client].fullname}}</a>
+								{{#if @global.catalog.clients[record.client].has_longterm}}
 								<small class="text-danger">продолжительное</small>
 								{{/if}}
 							</div>
@@ -720,7 +720,7 @@
 						<div class="admin-events-item">
 							<input type="hidden" class="orderby" value="{{catalog.clients[client].phone}}">
 							<p>Телефон</p>
-							<div>{{@global.catalog.clients[client].phone}}</div>
+							<div>{{@global.catalog.clients[record.client].phone}}</div>
 						</div>
 						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
@@ -772,11 +772,11 @@
 
 						<div class="admin-events-item w-8">
 							{{#if group == 'events'}}
-							<input type="hidden" class="orderby" value="{{@global.utils.timestamp(_created)}}">
+							<input type="hidden" class="orderby" value="{{@global.utils.timestamp(record._created)}}">
 							<p>Дата заявки</p>
 							<div>
-								{{@global.utils.formatDate(_created)}}<br>
-								{{@global.utils.formatTime(_created)}}
+								{{@global.utils.formatDate(record._created)}}<br>
+								{{@global.utils.formatTime(record._created)}}
 							</div>
 							{{else}}
 							<input type="hidden" class="orderby" value="">
@@ -918,11 +918,11 @@
 									</svg>
 								</button>
 								{{/if}}
-								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(_created)}}">
+								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(record._created)}}">
 
 								<span class="dt"><strong class="title">Дата: </strong>
-									{{@global.utils.formatDate(_created)}}<br>
-									{{@global.utils.formatTime(_created)}}
+									{{@global.utils.formatDate(record._created)}}<br>
+									{{@global.utils.formatTime(record._created)}}
 								</span>
 							</div>
 						</div>
@@ -942,7 +942,7 @@
 						</div>
 						<div class="admin-events-item col-services flex-column">
 							<p>Услуги</p>
-							<div>{{this.longterm_title}}</div>
+							<div>{{record.longterm_title}}</div>
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
@@ -950,8 +950,8 @@
 							<div class="admin-editor__top-info">
 								<div class="lk-title">Редактировать профиль</div>
 								<div class="admin-editor__name user__edit">
-									{{ catalog.clients[client].fullname }}
-									<button class="user__edit" on-click="editProfile" data-id="{{client}}">
+									{{ catalog.clients[record.client].fullname }}
+									<button class="user__edit" on-click="editProfile" data-id="{{record.client}}">
 										<svg class="svgsprite _edit">
 											<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 										</svg>
@@ -972,7 +972,7 @@
 							</div>
 							<div class="admin-editor__top-status">
 								<div class="admin-editor__top-date">
-									Заявка сформирована {{@global.utils.formatDate(_created)}} / {{@global.utils.formatTime(_created)}}
+									Заявка сформирована {{@global.utils.formatDate(record._created)}} / {{@global.utils.formatTime(record._created)}}
 								</div>
 								<div class="admin-editor__top-select"></div>
 							</div>
@@ -1208,7 +1208,7 @@
 												editor.set(data);
 
 												console.log(data);
-												initPlugins();
+												initPlugins(form);
 											});
 									},
 									addPhoto(ev, record) {
@@ -1322,7 +1322,7 @@
 												editor.set(data);
 
 												console.log(data);
-												initPlugins();
+												initPlugins(form);
 											});
 									},
 									editRecord(ev) {
