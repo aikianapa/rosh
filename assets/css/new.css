@@ -1695,7 +1695,15 @@ blockquote cite {
     max-height : 140px;
 }
 .iti__flag {background-image : url("/assets/img/flags.png");}
-
+.iti__country {
+    background-color : #EFEFEF;
+}
+.iti__country.iti__highlight {
+    background-color : #FEFEFE;
+}
+.iti__country-list{
+    z-index: 99;
+}
 @media (-webkit-min-device-pixel-ratio : 2), (min-resolution : 192dpi) {
     .iti__flag {background-image : url("/assets/img/flags@2x.png");}
 }
