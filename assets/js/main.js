@@ -522,6 +522,7 @@ $(function() {
                     var _parent = $(this).parents('.consultations');
                     _parent.find('.consultation').removeClass('selected');
                     _parent.find('.consultation').attr('data-price', '0');
+
                     _parent.find('[name="consultation_price"]').val(0);
                     console.log('>> for_consultation:checked', $(this).is(':checked'));
                     _parent.find('.consultation-type:checked').prop('checked', false);

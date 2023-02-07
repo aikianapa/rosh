@@ -70,7 +70,7 @@
 								<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
 									data-show="consultation-online"
 									data-consultation="{{this.id}}"
-									data-price="0"
+									data-price="{{this.price}}"
 									style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
 
 									<label class="checkbox search__drop-name"
@@ -96,7 +96,7 @@
 								<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
 									data-show="consultation-clinic"
 									data-consultation="{{this.id}}"
-									data-price="0"
+									data-price="{{this.price}}"
 									style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
 									<label class="checkbox search__drop-name"
 										data-name="{{this.header}}" data-price="{{this.price}}"
@@ -404,7 +404,7 @@
 												<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
 													data-show="consultation-online"
 													data-consultation="{{this.id}}"
-													data-price="0"
+													data-price="{{this.price}}"
 													style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
 
 													<label class="checkbox search__drop-name"
@@ -430,7 +430,7 @@
 												<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
 													data-show="consultation-clinic"
 													data-consultation="{{this.id}}"
-													data-price="0"
+													data-price="{{this.price}}"
 													style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
 													<label class="checkbox search__drop-name"
 														data-name="{{this.header}}" data-price="{{this.price}}"
@@ -1440,7 +1440,7 @@
 										<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
 											data-show="consultation-online"
 											data-consultation="{{this.id}}"
-											data-price="0"
+											data-price="{{this.price}}"
 											style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
 
 											<label class="checkbox search__drop-name"
@@ -1466,7 +1466,7 @@
 										<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
 											data-show="consultation-clinic"
 											data-consultation="{{this.id}}"
-											data-price="0"
+											data-price="{{this.price}}"
 											style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
 											<label class="checkbox search__drop-name"
 												data-name="{{this.header}}" data-price="{{this.price}}"
