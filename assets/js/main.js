@@ -530,7 +530,7 @@ $(function() {
                     if ($(this).is(':checked')) {
                         _parent.find('input.consultation-type:checked').trigger('change');
                     } else {
-                        _parent.find('.admin-editor__patient.price-list').hide();
+                        _parent.find('.admin-editor__patient.price-list .consultation').hide();
                         _parent.find('input.consultation-type:checked').prop('checked', false).trigger('change');
                     }
 
