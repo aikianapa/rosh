@@ -336,7 +336,7 @@
 							</div>
 							<div class="admin-editor__patient price-list">
 								{{#each @global.catalog.spec_service.consultations.online}}
-								<div class="search__drop-item consultation online"
+								<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
 									data-show="consultation-online"
 									data-consultation="{{this.id}}"
 									data-price="0"
@@ -362,7 +362,7 @@
 								</div>
 								{{/each}}
 								{{#each @global.catalog.spec_service.consultations.clinic}}
-								<div class="search__drop-item consultation clinic"
+								<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
 									data-show="consultation-clinic"
 									data-consultation="{{this.id}}"
 									data-price="0"
