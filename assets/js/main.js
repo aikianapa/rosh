@@ -510,7 +510,10 @@ $(function() {
 
                     _parent.find('.price-list .consultation').hide();
                     _parent.find('.price-list .consultation.' + _type).show();
-                    _parent.find('.price-list .consultation.' + _type + ' input:checked').trigger('changed');
+                    _parent.find('.price-list .consultation.' + _type + ' input:checked')
+                        .prop('checked', false);
+
+                    _parent.parents('form').find('.selected-consultation').removeClass('d-flex').addClass('d-none');
                     setTimeout(function () {
                         window.updPrice(_parent.parents('form'));
                     });
@@ -521,11 +524,16 @@ $(function() {
                     _parent.find('.consultation').attr('data-price', '0');
                     _parent.find('[name="consultation_price"]').val(0);
                     console.log('>> for_consultation:checked', $(this).is(':checked'));
-                    if ($(this).is(':checked')) {
-                        _parent.find('.consultation-type:checked').trigger('change');
-                    } else {
+                    _parent.find('.consultation-type:checked').prop('checked', false);
 
+                    _parent.parents('form').find('.selected-consultation').removeClass('d-flex').addClass('d-none');
+                    if ($(this).is(':checked')) {
+                        _parent.find('input.consultation-type:checked').trigger('change');
+                    } else {
+                        _parent.find('.admin-editor__patient.price-list').hide();
+                        _parent.find('input.consultation-type:checked').prop('checked', false).trigger('change');
                     }
+
                     setTimeout(function () {
                         window.updPrice(_parent.parents('form'));
                     });
@@ -537,12 +545,20 @@ $(function() {
                     _parent.find('.consultation').attr('data-price', '0');
                     _parent.find('[name="consultation_price"]').val(0);
 
-                    if ($(this).is(':checked')) {
-                        console.log('>> ...', $(this).data());
+                    _parent.parents('form').find('.selected-consultation').removeClass('d-flex').addClass('d-none');
 
+                    if ($(this).is(':checked')) {
                         _consultation.addClass('selected');
                         _parent.find('[name="consultation_price"]').val($(this).data('price'));
                         _consultation.attr('data-price', $(this).data('price'));
+
+                        _parent.parents('form').find('.selected-consultation .consultation-header').text(
+                            $(this).data('name')
+                        );
+                        _parent.parents('form').find('.selected-consultation .consultation-price').text(
+                            utils.formatPrice($(this).data('price')) + ' ₽'
+                        );
+                        _parent.parents('form').find('.selected-consultation').removeClass('d-none').addClass('d-flex');
                         setTimeout(function () {
                             window.updPrice(_parent.parents('form'));
                         });

@@ -72,51 +72,46 @@
 									data-consultation="{{this.id}}"
 									data-price="0"
 									style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
-									<div class="search__drop-name pl-0">
-										<label class="checkbox"
-											data-name="{{this.header}}"
-											data-price="{{this.price}}"
-											data-id="{{this.id}}">
-											{{#if record.consultation == this.id }}
-											<input type="radio" name="consultation" value="{{this.id}}"
-												data-name="{{this.header}}" data-price="{{this.price}}"
-												checked="checked">
-											{{else}}
-											<input type="radio" name="consultation" value="{{this.id}}"
-												data-name="{{this.header}}" data-price="{{this.price}}">
-											{{/if}}
-											<span></span>
-											<div class="checbox__name">{{this.header}}</div>
-										</label>
-									</div>
+
+									<label class="checkbox search__drop-name"
+										data-name="{{this.header}}" data-price="{{this.price}}"
+										data-id="{{this.id}}">
+										{{#if record.consultation == this.id }}
+										<input type="radio" name="consultation" value="{{this.id}}"
+											data-name="{{this.header}}" data-price="{{this.price}}"
+											checked="checked">
+										{{else}}
+										<input type="radio" name="consultation" value="{{this.id}}"
+											data-name="{{this.header}}" data-price="{{this.price}}">
+										{{/if}}
+										<span></span>
+										<div class="checbox__name">{{this.header}}</div>
+									</label>
 									<label class="search__drop-right">
 										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 									</label>
 								</div>
 								{{/each}}
-
 								{{#each @global.catalog.spec_service.consultations.clinic}}
 								<div class="search__drop-item consultation clinic"
 									data-show="consultation-clinic"
 									data-consultation="{{this.id}}"
 									data-price="0"
 									style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-									<div class="search__drop-name pl-0">
-										<label class="checkbox"
+									<label class="checkbox search__drop-name"
+										data-name="{{this.header}}" data-price="{{this.price}}"
+										data-id="{{this.id}}">
+										{{#if record.consultation == this.id }}
+										<input type="radio" name="consultation" value="{{this.id}}"
 											data-name="{{this.header}}" data-price="{{this.price}}"
-											data-id="{{this.id}}">
-											{{#if record.consultation == this.id }}
-											<input type="radio" name="consultation" value="{{this.id}}"
-												data-name="{{this.header}}" data-price="{{this.price}}"
-												checked="checked">
-											{{else}}
-											<input type="radio" name="consultation" value="{{this.id}}"
-												data-name="{{this.header}}" data-price="{{this.price}}">
-											{{/if}}
-											<span></span>
-											<div class="checbox__name">{{this.header}}</div>
-										</label>
-									</div>
+											checked="checked">
+										{{else}}
+										<input type="radio" name="consultation" value="{{this.id}}"
+											data-name="{{this.header}}" data-price="{{this.price}}">
+										{{/if}}
+										<span></span>
+										<div class="checbox__name">{{this.header}}</div>
+									</label>
 									<label class="search__drop-right">
 										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 									</label>
@@ -124,7 +119,9 @@
 								{{/each}}
 							</div>
 						</div>
-						<input type="hidden" class="consultation_price" name="consultation_price" value="{{record.consultation_price}}">
+						<input type="hidden" class="consultation_price"
+							name="consultation_price"
+							value="{{record.consultation_price}}">
 					</div>
 
 					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
@@ -155,6 +152,16 @@
 					</div>
 					<div class="admin-editor__patient" data-hide="service-search">
 						<div class="text-bold mb-10">Выбраны услуги</div>
+						<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
+							<div class="search__drop-name pl-0 consultation-header">
+								{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+							</div>
+							<div class="search__drop-right">
+								<div class="search__drop-summ consultation-price">
+									{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="admin-editor__summ mb-3" data-hide="service-search">
 						<p>Всего</p>
@@ -399,51 +406,46 @@
 													data-consultation="{{this.id}}"
 													data-price="0"
 													style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
-													<div class="search__drop-name pl-0">
-														<label class="checkbox"
-															data-name="{{this.header}}"
-															data-price="{{this.price}}"
-															data-id="{{this.id}}">
-															{{#if record.consultation == this.id }}
-															<input type="radio" name="consultation" value="{{this.id}}"
-																data-name="{{this.header}}" data-price="{{this.price}}"
-																checked="checked">
-															{{else}}
-															<input type="radio" name="consultation" value="{{this.id}}"
-																data-name="{{this.header}}" data-price="{{this.price}}">
-															{{/if}}
-															<span></span>
-															<div class="checbox__name">{{this.header}}</div>
-														</label>
-													</div>
+
+													<label class="checkbox search__drop-name"
+														data-name="{{this.header}}" data-price="{{this.price}}"
+														data-id="{{this.id}}">
+														{{#if record.consultation == this.id }}
+														<input type="radio" name="consultation" value="{{this.id}}"
+															data-name="{{this.header}}" data-price="{{this.price}}"
+															checked="checked">
+														{{else}}
+														<input type="radio" name="consultation" value="{{this.id}}"
+															data-name="{{this.header}}" data-price="{{this.price}}">
+														{{/if}}
+														<span></span>
+														<div class="checbox__name">{{this.header}}</div>
+													</label>
 													<label class="search__drop-right">
 														<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 													</label>
 												</div>
 												{{/each}}
-
 												{{#each @global.catalog.spec_service.consultations.clinic}}
 												<div class="search__drop-item consultation clinic"
 													data-show="consultation-clinic"
 													data-consultation="{{this.id}}"
 													data-price="0"
 													style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-													<div class="search__drop-name pl-0">
-														<label class="checkbox"
+													<label class="checkbox search__drop-name"
+														data-name="{{this.header}}" data-price="{{this.price}}"
+														data-id="{{this.id}}">
+														{{#if record.consultation == this.id }}
+														<input type="radio" name="consultation" value="{{this.id}}"
 															data-name="{{this.header}}" data-price="{{this.price}}"
-															data-id="{{this.id}}">
-															{{#if record.consultation == this.id }}
-															<input type="radio" name="consultation" value="{{this.id}}"
-																data-name="{{this.header}}" data-price="{{this.price}}"
-																checked="checked">
-															{{else}}
-															<input type="radio" name="consultation" value="{{this.id}}"
-																data-name="{{this.header}}" data-price="{{this.price}}">
-															{{/if}}
-															<span></span>
-															<div class="checbox__name">{{this.header}}</div>
-														</label>
-													</div>
+															checked="checked">
+														{{else}}
+														<input type="radio" name="consultation" value="{{this.id}}"
+															data-name="{{this.header}}" data-price="{{this.price}}">
+														{{/if}}
+														<span></span>
+														<div class="checbox__name">{{this.header}}</div>
+													</label>
 													<label class="search__drop-right">
 														<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 													</label>
@@ -451,7 +453,9 @@
 												{{/each}}
 											</div>
 										</div>
-										<input type="hidden" class="consultation_price" name="consultation_price" value="{{record.consultation_price}}">
+										<input type="hidden" class="consultation_price"
+											name="consultation_price"
+											value="{{record.consultation_price}}">
 									</div>
 									<div class="row">
 										{{#if record.spec_service}} {{else}}
@@ -513,6 +517,18 @@
 								</div>
 								<div class="admin-editor__patient">
 									<div class="text-bold mb-10">Выбраны услуги</div>
+
+									<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
+										<div class="search__drop-name pl-0 consultation-header">
+											{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+										</div>
+										<div class="search__drop-right">
+											<div class="search__drop-summ consultation-price">
+												{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+											</div>
+										</div>
+									</div>
+
 									{{#if record.spec_service}}
 									<div class="search__drop-item">
 										<input type="hidden" name="services[]" value="">
@@ -1426,51 +1442,46 @@
 											data-consultation="{{this.id}}"
 											data-price="0"
 											style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
-											<div class="search__drop-name pl-0">
-												<label class="checkbox"
-													data-name="{{this.header}}"
-													data-price="{{this.price}}"
-													data-id="{{this.id}}">
-													{{#if record.consultation == this.id }}
-													<input type="radio" name="consultation" value="{{this.id}}"
-														data-name="{{this.header}}" data-price="{{this.price}}"
-														checked="checked">
-													{{else}}
-													<input type="radio" name="consultation" value="{{this.id}}"
-														data-name="{{this.header}}" data-price="{{this.price}}">
-													{{/if}}
-													<span></span>
-													<div class="checbox__name">{{this.header}}</div>
-												</label>
-											</div>
+
+											<label class="checkbox search__drop-name"
+												data-name="{{this.header}}" data-price="{{this.price}}"
+												data-id="{{this.id}}">
+												{{#if record.consultation == this.id }}
+												<input type="radio" name="consultation" value="{{this.id}}"
+													data-name="{{this.header}}" data-price="{{this.price}}"
+													checked="checked">
+												{{else}}
+												<input type="radio" name="consultation" value="{{this.id}}"
+													data-name="{{this.header}}" data-price="{{this.price}}">
+												{{/if}}
+												<span></span>
+												<div class="checbox__name">{{this.header}}</div>
+											</label>
 											<label class="search__drop-right">
 												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 											</label>
 										</div>
 										{{/each}}
-
 										{{#each @global.catalog.spec_service.consultations.clinic}}
 										<div class="search__drop-item consultation clinic"
 											data-show="consultation-clinic"
 											data-consultation="{{this.id}}"
 											data-price="0"
 											style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-											<div class="search__drop-name pl-0">
-												<label class="checkbox"
+											<label class="checkbox search__drop-name"
+												data-name="{{this.header}}" data-price="{{this.price}}"
+												data-id="{{this.id}}">
+												{{#if record.consultation == this.id }}
+												<input type="radio" name="consultation" value="{{this.id}}"
 													data-name="{{this.header}}" data-price="{{this.price}}"
-													data-id="{{this.id}}">
-													{{#if record.consultation == this.id }}
-													<input type="radio" name="consultation" value="{{this.id}}"
-														data-name="{{this.header}}" data-price="{{this.price}}"
-														checked="checked">
-													{{else}}
-													<input type="radio" name="consultation" value="{{this.id}}"
-														data-name="{{this.header}}" data-price="{{this.price}}">
-													{{/if}}
-													<span></span>
-													<div class="checbox__name">{{this.header}}</div>
-												</label>
-											</div>
+													checked="checked">
+												{{else}}
+												<input type="radio" name="consultation" value="{{this.id}}"
+													data-name="{{this.header}}" data-price="{{this.price}}">
+												{{/if}}
+												<span></span>
+												<div class="checbox__name">{{this.header}}</div>
+											</label>
 											<label class="search__drop-right">
 												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 											</label>
@@ -1478,7 +1489,9 @@
 										{{/each}}
 									</div>
 								</div>
-								<input type="hidden" class="consultation_price" name="consultation_price" value="{{record.consultation_price}}">
+								<input type="hidden" class="consultation_price"
+									name="consultation_price"
+									value="{{record.consultation_price}}">
 							</div>
 							<div class="row">
 								{{#if record.spec_service}} {{else}}
@@ -1522,14 +1535,14 @@
 										<div class="col-md-6">
 											<div class="calendar input mb-30">
 												<input class="input__control timepickr" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00"
-												 data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
+													data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
 												<div class="input__placeholder">Время (начало)</div>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="calendar input mb-30">
 												<input class="input__control timepickr" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00"
-												 data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
+													data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
 												<div class="input__placeholder">Время (конец)</div>
 											</div>
 										</div>
@@ -1539,19 +1552,19 @@
 						</div>
 						<div class="admin-editor__patient">
 							<div class="text-bold mb-10">Выбраны услуги</div>
-							{{#if this.spec_service}}
-							<div class="search__drop-item">
-								<input type="hidden" name="services[]" value="">
-								<div class="search__drop-name">
-									{{catalog.spec_service[this.spec_service].header}}
+
+							<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
+								<div class="search__drop-name pl-0 consultation-header">
+									{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
 								</div>
 								<div class="search__drop-right">
-									<div class="search__drop-summ">
-										{{catalog.spec_service[this.spec_service].price}} ₽
+									<div class="search__drop-summ consultation-price">
+										{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
 									</div>
 								</div>
 							</div>
-							{{else}}{{#each record.service_prices: idx, key}}
+
+							{{#each record.service_prices: idx, key}}
 							<div class="search__drop-item selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
 								data-price="{{price}}">
 								<input type="hidden" name="services[]" value="{{service_id}}">
@@ -1576,7 +1589,7 @@
 									<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 								</label>
 							</div>
-							{{/each}} {{/if}}
+							{{/each}}
 						</div>
 						<div class="admin-editor__summ">
 							<p>Всего</p>

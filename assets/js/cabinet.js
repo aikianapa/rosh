@@ -349,71 +349,73 @@ $(function () {
 		admins: {},
 		consultations: {},
 		reload(only_key) {
-			var _key = only_key;
+			var _self = this;
+			var _key  = only_key;
 			if (!!_key) {
-				localStorage.removeItem('db.' + _key);
-				sessionStorage.removeItem('db.' + _key);
+				localStorage.removeItem('db.' + _key + _self.cacheKey);
+				sessionStorage.removeItem('db.' + _key + _self.cacheKey);
 			} else {
-				localStorage.removeItem('db.quoteStatus');
-				localStorage.removeItem('db.quoteType');
-				localStorage.removeItem('db.categories');
+				localStorage.removeItem('db.quoteStatus' + _self.cacheKey);
+				localStorage.removeItem('db.quoteType' + _self.cacheKey);
+				localStorage.removeItem('db.categories' + _self.cacheKey);
 
-				sessionStorage.removeItem('db.services');
-				sessionStorage.removeItem('db.servicesList');
-				sessionStorage.removeItem('db.servicePrices');
+				sessionStorage.removeItem('db.services' + _self.cacheKey);
+				sessionStorage.removeItem('db.servicesList' + _self.cacheKey);
+				sessionStorage.removeItem('db.servicePrices' + _self.cacheKey);
 
 				/* old keys clear */
-				sessionStorage.removeItem('db.experts');
-				sessionStorage.removeItem('db.experts_alt');
+				sessionStorage.removeItem('db.experts' + _self.cacheKey);
+				sessionStorage.removeItem('db.expert_users' + _self.cacheKey);
+				sessionStorage.removeItem('db.experts_alt' + _self.cacheKey);
 
-				sessionStorage.removeItem('db.expert_list');
-				sessionStorage.removeItem('db.expert_user_list');
+				sessionStorage.removeItem('db.expert_list' + _self.cacheKey);
+				sessionStorage.removeItem('db.expert_user_list' + _self.cacheKey);
 			}
 			console.log('Cache cleared!');
 			if (_key !== false) {
 				this.init();
 			}
 		},
+		cacheKey: '-dev',
 		init(use_session_cache) {
 			var _self   = this;
 			var getters = [];
 
-			if (!localStorage.getItem('db.quoteStatus')) {
+			if (!localStorage.getItem('db.quoteStatus' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
 						_self.quoteStatus                 = utils.arr.indexBy(data);
 						_self.quoteStatus['past']['type'] = 'event';
-						localStorage.setItem('db.quoteStatus', JSON.stringify(_self.quoteStatus));
+						localStorage.setItem('db.quoteStatus' + _self.cacheKey, JSON.stringify(_self.quoteStatus));
 					})
 				);
 			} else {
-				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatus'));
+				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatus' + _self.cacheKey));
 			}
 
-			if (!localStorage.getItem('db.quotePay')) {
+			if (!localStorage.getItem('db.quotePay' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
 						_self.quotePay = utils.arr.indexBy(data);
-						localStorage.setItem('db.quotePay', JSON.stringify(_self.quotePay));
-
+						localStorage.setItem('db.quotePay' + _self.cacheKey, JSON.stringify(_self.quotePay));
 					})
 				);
 			} else {
-				_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay'));
+				_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay' + _self.cacheKey));
 			}
 
-			if (!localStorage.getItem('db.quoteType')) {
+			if (!localStorage.getItem('db.quoteType' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
 						_self.quoteType = utils.arr.indexBy(data);
-						localStorage.setItem('db.quoteType', JSON.stringify(_self.quoteType));
+						localStorage.setItem('db.quoteType' + _self.cacheKey, JSON.stringify(_self.quoteType));
 					})
 				);
 			} else {
-				_self.quoteType = JSON.parse(localStorage.getItem('db.quoteType'));
+				_self.quoteType = JSON.parse(localStorage.getItem('db.quoteType' + _self.cacheKey));
 			}
 
-			if (!localStorage.getItem('db.categories')) {
+			if (!localStorage.getItem('db.categories' + _self.cacheKey)) {
 				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
 					let _serviceCats = {};
 					Object.keys(res.tree.data).forEach(function (_key) {
@@ -428,18 +430,18 @@ $(function () {
 						};
 					});
 					_self.categories = _serviceCats;
-					localStorage.setItem('db.categories', JSON.stringify(_self.categories));
+					localStorage.setItem('db.categories' + _self.cacheKey, JSON.stringify(_self.categories));
 				});
 			} else {
-				_self.categories = JSON.parse(localStorage.getItem('db.categories'));
+				_self.categories = JSON.parse(localStorage.getItem('db.categories' + _self.cacheKey));
 			}
 
-			if (!sessionStorage.getItem('db.services')
-			    || !sessionStorage.getItem('db.servicesPrices')
-			    || !sessionStorage.getItem('db.servicesList')) {
+			if (!sessionStorage.getItem('db.services' + _self.cacheKey)
+			    || !sessionStorage.getItem('db.servicesPrices' + _self.cacheKey)
+			    || !sessionStorage.getItem('db.servicesList' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/list/services?active=on' +
-					              '&@return=id,header,category,blocks' +
+					              '&@return=active,id,header,category,blocks' +
 					              '&@sort=header').then(function (data) {
 						_self.servicePrices = {};
 
@@ -484,18 +486,19 @@ $(function () {
 							}
 						});
 
-						sessionStorage.setItem('db.services', JSON.stringify(_self.services));
-						sessionStorage.setItem('db.servicesList', JSON.stringify(_self.servicesList));
-						sessionStorage.setItem('db.servicePrices', JSON.stringify(_self.servicePrices));
+						sessionStorage.setItem('db.services' + _self.cacheKey, JSON.stringify(_self.services));
+						sessionStorage.setItem('db.servicesList' + _self.cacheKey, JSON.stringify(_self.servicesList));
+						sessionStorage.setItem('db.servicePrices' + _self.cacheKey,
+							JSON.stringify(_self.servicePrices));
 					})
 				);
 			} else {
-				_self.services      = JSON.parse(sessionStorage.getItem('db.services'));
-				_self.servicesList  = JSON.parse(sessionStorage.getItem('db.servicesList'));
-				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices'));
+				_self.services      = JSON.parse(sessionStorage.getItem('db.services' + _self.cacheKey));
+				_self.servicesList  = JSON.parse(sessionStorage.getItem('db.servicesList' + _self.cacheKey));
+				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices' + _self.cacheKey));
 			}
 
-			if (!sessionStorage.getItem('db.expert_user_list')) {
+			if (!sessionStorage.getItem('db.expert_users' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/list/experts?active=on&login~=id&' +
 					              '@return=id,name,image,devision,spec,experience,education,login&' +
@@ -521,14 +524,13 @@ $(function () {
 						});
 						//_self.experts      = _experts;
 						_self.expert_users = _expert_users;
-
 						//sessionStorage.setItem('db.expert_list', JSON.stringify(_self.experts));
-						sessionStorage.setItem('db.expert_user_list', JSON.stringify(_self.expert_users));
+						sessionStorage.setItem('db.expert_users' + _self.cacheKey, JSON.stringify(_self.expert_users));
 					})
 				);
 			} else {
 				//_self.experts      = JSON.parse(sessionStorage.getItem('db.expert_list'));
-				_self.expert_users = JSON.parse(sessionStorage.getItem('db.expert_user_list'));
+				_self.expert_users = JSON.parse(sessionStorage.getItem('db.expert_users' + _self.cacheKey));
 			}
 			/* for Admins only */
 			utils.api.get('/api/v2/list/users?role=expert&active=on' +
@@ -575,8 +577,6 @@ $(function () {
 							_self.users = utils.arr.indexBy(data);
 						})
 				);
-			} else {
-				sessionStorage.removeItem('db.clients');
 			}
 
 			getters.push(

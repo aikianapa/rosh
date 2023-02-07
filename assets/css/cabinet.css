@@ -467,6 +467,11 @@ img.preview.cloned{
 .file-photo__ico {
 	flex-direction: column;
 }
+.search__drop-item.consultation .checkbox.search__drop-name{
+	max-width: initial;
+	padding-left: 20px;
+	width : 100%;
+}
 @media (max-width : 1280px){
 	.admin-events-item:nth-child(7) {
 		width          : 7%;
