@@ -852,6 +852,7 @@ $(function () {
 
 	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
 	window.updPrice = function(_parent_form){
+		console.log('find price for:', _parent_form);
 		var sum = 0;
 		_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
 			sum += parseInt($(this).data('price'));
