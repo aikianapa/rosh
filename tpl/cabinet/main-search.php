@@ -219,7 +219,7 @@
 		};
 		var search       = function () {
 			var loaded      = 0;
-			var phone_query = str_replace([' ', '+', '-', '(', ')'], '', q);
+			var phone_query = str_replace([' ', '-', '(', ')'], '', q);
 			page.set('ready', false);
 			page.set('results', {});
 			if (phone_query.length > 1 && phone_query[0] == '8') {

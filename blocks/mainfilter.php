@@ -220,15 +220,18 @@
 									{{#if user.id}}
 									{{else}}
 										<div class="input input--grey">
-											<input class="input__control" type="text" name="fullname" value="{{user.fullname}}" placeholder="ФИО">
+											<input class="input__control" required type="text" name="fullname" value="{{user.fullname}}"
+												placeholder="ФИО">
 											<div class="input__placeholder">ФИО</div>
 										</div>
 										<div class="input input--grey">
-											<input class="input__control" type="tel" name="phone" value="{{user.phone}}" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
-											<div class="input__placeholder">Номер телефона</div>
+											<input class="input__control intl-tel" type="tel" name="phone"
+												value="{{user.phone}}" required>
+											<div class="input__placeholder active">Номер телефона</div>
 										</div>
 										<div class="input input--grey">
-											<input class="input__control" type="email" name="email" value="{{user.email}}" placeholder="Ваш е-мейл">
+											<input class="input__control" type="email" name="email" value="{{user.email}}"
+												placeholder="Ваш е-мейл" reuired>
 											<div class="input__placeholder">Ваш е-мейл</div>
 										</div>
 									{{/if}}
@@ -655,7 +658,7 @@
 								post[keys[i]] = names[i];
 							}
 							var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-							post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
+							post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
 							window.api.get('/api/v2/list/users/?role=client&phone=' + post.phone +
 								'&__token=' + _token).then(
 								function(data) {

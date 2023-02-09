@@ -14,6 +14,7 @@
 		"/assets/js/air-datepicker.js",
 		"/assets/js/jquery.timepicker.min.js",
 		"/assets/js/jquery.toast.min.js",
+		"/assets/js/intlTelInput-jquery.min.js",
 		"/assets/js/main.js",
 		"/assets/js/new.js",
 		"/assets/js/blogFilter.js",
@@ -38,7 +39,7 @@
         });
 	</script>
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=DE65255B58FF4E13A9027CE3FD58B450">
+		src="/assets/js/cabinet.js?v=74F9E2C9627A4C97962D024FDBBD8D6F">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
@@ -51,12 +52,13 @@
 
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
-	<link href="/assets/css/new.css?v=1.1" rel="stylesheet">
+	<link href="/assets/css/intlTelInput.min.css?v=1.1" rel="stylesheet">
+	<link href="/assets/css/new.css?v=1.15" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css" rel="stylesheet">
 
 	<link wb-if="in_array('{{_sess.user.role}}', ['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=1BA7B0B5A65849458E695EDAB5F6E6DE" rel="stylesheet">
+		href="/assets/css/cabinet.css?v=FFE619D6B39D4712A12BA1F0E3FCFDB3" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">

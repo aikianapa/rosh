@@ -14,8 +14,9 @@
                     <form class="popup__form">
 
                         <div class="input input--grey">
-                            <input class="input__control" name="phone" type="tel" placeholder="Номер телефона" autocomplete="off">
-                            <div class="input__placeholder">Номер телефона</div>
+                            <input class="input__control intl-tel" name="phone" type="tel" autocomplete="off">
+                            <div class="input__placeholder active">Номер телефона</div>
+	                        <span class="phone-error-msg">Неправильный номер телефона</span>
                         </div>
 
                         <div class="alert alert-warning mb-2"></div>

@@ -58,6 +58,9 @@ $(function () {
 	var months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 	window.utils   = {
+		isObjEmpty(obj) {
+			return Object.keys(obj).length === 0;
+		},
 		urlParams(params, skipobjects, prefix) {
 			if (skipobjects === void 0) {
 				skipobjects = false;
@@ -242,7 +245,7 @@ $(function () {
 			return new Date(date).toLocaleTimeString();
 		},
 		formatPhone(_phone) {
-			var phone   = str_replace([' ', '+', '-', '(', ')'], '', _phone);
+			var phone   = str_replace([' ', '-', '(', ')'], '', _phone);
 			var cleaned = ('' + phone).replace(/\D/g, '');
 			if (phone.length === 10) {
 				phone = '7'+phone;
@@ -294,30 +297,20 @@ $(function () {
 	window.catalog = {
 		/*!!! TODO: add methods to set this spec. services price from cms/dashboard !!!*/
 		spec_service: {
-			experts_consultation: {
-				header: 'Общая консультация специалиста',
-				price: 4000
-			},
-			consultation: {
-				header: 'Консультация врача'
-
-			},
-			consultation_clinik: {
-				header: 'Консультация врача'
-
+			consultations: {
+				online: {},
+				clinic: {}
 			},
 			analyses_interpretation: {
-				header: 'Расшифровка анализов',
-				price: 2000
+				online: {},
+				clinic: {}
 			}
 		},
 		/*dyctionary types*/
 		quoteColors: {},
 		quoteStatus: {},
 		quoteType: {},
-		quotePay: {
-
-		},
+		quotePay: {},
 
 		services: {},
 		servicePrices: {},
@@ -351,69 +344,78 @@ $(function () {
 		},
 		categories: {},
 		experts: {},
-
+		expert_users: {},
 		clients: {},
 		admins: {},
+		consultations: {},
 		reload(only_key) {
-			var _key = only_key;
+			var _self = this;
+			var _key  = only_key;
 			if (!!_key) {
-				localStorage.removeItem('db.' + _key);
-				sessionStorage.removeItem('db.' + _key);
+				localStorage.removeItem('db.' + _key + _self.cacheKey);
+				sessionStorage.removeItem('db.' + _key + _self.cacheKey);
 			} else {
-				localStorage.removeItem('db.quoteStatus');
-				localStorage.removeItem('db.quoteType');
-				localStorage.removeItem('db.categories');
+				localStorage.removeItem('db.quoteStatus' + _self.cacheKey);
+				localStorage.removeItem('db.quoteType' + _self.cacheKey);
+				localStorage.removeItem('db.categories' + _self.cacheKey);
 
-				sessionStorage.removeItem('db.services');
-				sessionStorage.removeItem('db.servicesList');
-				sessionStorage.removeItem('db.servicePrices');
-				sessionStorage.removeItem('db.experts');
+				sessionStorage.removeItem('db.services' + _self.cacheKey);
+				sessionStorage.removeItem('db.servicesList' + _self.cacheKey);
+				sessionStorage.removeItem('db.servicePrices' + _self.cacheKey);
+
+				/* old keys clear */
+				sessionStorage.removeItem('db.experts' + _self.cacheKey);
+				sessionStorage.removeItem('db.expert_users' + _self.cacheKey);
+				sessionStorage.removeItem('db.experts_alt' + _self.cacheKey);
+
+				sessionStorage.removeItem('db.expert_list' + _self.cacheKey);
+				sessionStorage.removeItem('db.expert_user_list' + _self.cacheKey);
 			}
-			console.log('Clear cached!');
+			console.log('Cache cleared!');
 			if (_key !== false) {
 				this.init();
 			}
 		},
+		cacheKey: '-dev',
 		init(use_session_cache) {
 			var _self   = this;
 			var getters = [];
 
-			if (!localStorage.getItem('db.quoteStatus')) {
+			if (!localStorage.getItem('db.quoteStatus' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
 						_self.quoteStatus                 = utils.arr.indexBy(data);
 						_self.quoteStatus['past']['type'] = 'event';
-						localStorage.setItem('db.quoteStatus', JSON.stringify(_self.quoteStatus));
+						localStorage.setItem('db.quoteStatus' + _self.cacheKey, JSON.stringify(_self.quoteStatus));
 					})
 				);
 			} else {
-				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatus'));
+				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatus' + _self.cacheKey));
 			}
 
-			if (!localStorage.getItem('db.quotePay')) {
+			if (!localStorage.getItem('db.quotePay' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
 						_self.quotePay = utils.arr.indexBy(data);
-						localStorage.setItem('db.quotePay', JSON.stringify(_self.quotePay));
-
+						localStorage.setItem('db.quotePay' + _self.cacheKey, JSON.stringify(_self.quotePay));
 					})
 				);
 			} else {
-				_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay'));
+				_self.quotePay = JSON.parse(localStorage.getItem('db.quotePay' + _self.cacheKey));
 			}
 
-			if (!localStorage.getItem('db.quoteType')) {
+			if (!localStorage.getItem('db.quoteType' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
 						_self.quoteType = utils.arr.indexBy(data);
-						localStorage.setItem('db.quoteType', JSON.stringify(_self.quoteType));
+						localStorage.setItem('db.quoteType' + _self.cacheKey, JSON.stringify(_self.quoteType));
 					})
 				);
 			} else {
-				_self.quoteType = JSON.parse(localStorage.getItem('db.quoteType'));
+				_self.quoteType = JSON.parse(localStorage.getItem('db.quoteType' + _self.cacheKey));
 			}
 
-			if (!localStorage.getItem('db.categories')) {
+			if (!localStorage.getItem('db.categories' + _self.cacheKey)) {
 				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
 					let _serviceCats = {};
 					Object.keys(res.tree.data).forEach(function (_key) {
@@ -428,18 +430,18 @@ $(function () {
 						};
 					});
 					_self.categories = _serviceCats;
-					localStorage.setItem('db.categories', JSON.stringify(_self.categories));
+					localStorage.setItem('db.categories' + _self.cacheKey, JSON.stringify(_self.categories));
 				});
 			} else {
-				_self.categories = JSON.parse(localStorage.getItem('db.categories'));
+				_self.categories = JSON.parse(localStorage.getItem('db.categories' + _self.cacheKey));
 			}
 
-			if (!sessionStorage.getItem('db.services')
-			    || !sessionStorage.getItem('db.servicesPrices')
-			    || !sessionStorage.getItem('db.servicesList')) {
+			if (!sessionStorage.getItem('db.services' + _self.cacheKey)
+			    || !sessionStorage.getItem('db.servicesPrices' + _self.cacheKey)
+			    || !sessionStorage.getItem('db.servicesList' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/list/services?active=on' +
-					              '&@return=id,header,category,blocks' +
+					              '&@return=active,id,header,category,blocks' +
 					              '&@sort=header').then(function (data) {
 						_self.servicePrices = {};
 
@@ -484,42 +486,59 @@ $(function () {
 							}
 						});
 
-						sessionStorage.setItem('db.services', JSON.stringify(_self.services));
-						sessionStorage.setItem('db.servicesList', JSON.stringify(_self.servicesList));
-						sessionStorage.setItem('db.servicePrices', JSON.stringify(_self.servicePrices));
+						sessionStorage.setItem('db.services' + _self.cacheKey, JSON.stringify(_self.services));
+						sessionStorage.setItem('db.servicesList' + _self.cacheKey, JSON.stringify(_self.servicesList));
+						sessionStorage.setItem('db.servicePrices' + _self.cacheKey,
+							JSON.stringify(_self.servicePrices));
 					})
 				);
 			} else {
-				_self.services      = JSON.parse(sessionStorage.getItem('db.services'));
-				_self.servicesList  = JSON.parse(sessionStorage.getItem('db.servicesList'));
-				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices'));
+				_self.services      = JSON.parse(sessionStorage.getItem('db.services' + _self.cacheKey));
+				_self.servicesList  = JSON.parse(sessionStorage.getItem('db.servicesList' + _self.cacheKey));
+				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices' + _self.cacheKey));
 			}
 
-			if (!sessionStorage.getItem('db.experts_alt')) {
+			if (!sessionStorage.getItem('db.expert_users' + _self.cacheKey)) {
 				getters.push(
-					utils.api.get('/api/v2/list/experts?active=on&' +
-					              '@return=id,name,image,devision,spec,experience,education' +
+					utils.api.get('/api/v2/list/experts?active=on&login~=id&' +
+					              '@return=id,name,image,devision,spec,experience,education,login&' +
 					              '@sort=name:a').then(function (data) {
-						let _experts = {};
+						let _expert_users = {};
 						data.forEach(function (expert, i) {
-							_experts[expert.id] = expert;
-
-							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
-								.then(function (res) {
-									catalog.experts[expert.id].info_uri = res[0]['u'] || '';
-									sessionStorage.setItem('db.experts_alt', JSON.stringify(catalog.experts));
-									/* save to SS */
-								});
+							if (!!expert.login) {
+								_expert_users[expert.login] = expert;
+								utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
+									.then(function (res) {
+										if (!res || !res[0]) {
+											return;
+										}
+										catalog.experts[expert.id].info_uri = res[0]['u'] || '';
+										sessionStorage.setItem('db.expert_list', JSON.stringify(catalog.experts));
+										if (expert.login) {
+											catalog.expert_users[expert.login] = catalog.experts[expert.id];
+											sessionStorage.setItem('db.expert_user_list',
+												JSON.stringify(catalog.expert_users));
+										}
+									});
+							}
 						});
-						_self.experts = _experts;
-						sessionStorage.setItem('db.experts_alt', JSON.stringify(_self.experts));
-
+						//_self.experts      = _experts;
+						_self.expert_users = _expert_users;
+						//sessionStorage.setItem('db.expert_list', JSON.stringify(_self.experts));
+						sessionStorage.setItem('db.expert_users' + _self.cacheKey, JSON.stringify(_self.expert_users));
 					})
 				);
 			} else {
-				_self.experts = JSON.parse(sessionStorage.getItem('db.experts_alt'));
+				//_self.experts      = JSON.parse(sessionStorage.getItem('db.expert_list'));
+				_self.expert_users = JSON.parse(sessionStorage.getItem('db.expert_users' + _self.cacheKey));
 			}
 			/* for Admins only */
+			utils.api.get('/api/v2/list/users?role=expert&active=on' +
+			              '' +
+			              '&@sort=fullname:a').then(function (data) {
+				_self.experts = utils.arr.indexBy(data);
+			});
+
 			if (!!window.user_role && window.user_role !== 'client') {
 				getters.push(
 					utils.api.get('/api/v2/list/users?role=client&active=on' +
@@ -558,17 +577,30 @@ $(function () {
 							_self.users = utils.arr.indexBy(data);
 						})
 				);
-			} else {
-				sessionStorage.removeItem('db.clients');
 			}
-			utils.api.get('/api/v2/read/price/id63619e811c69')
-				.then(function (data) {
-					_self.spec_service.consultation = data;
-				});
-			utils.api.get('/api/v2/read/price/id63d053b12134')
-				.then(function (data) {
-					_self.spec_service.consultation_clinic = data;
-				});
+
+			getters.push(
+				utils.api.get('/api/v2/list/price?category=konsultacii').then(function (data) {
+					if (data) {
+						data.forEach(function (rec) {
+							if (rec.header.includes('анализов')) {
+								if (rec.header.includes('Онлайн')) {
+									_self.spec_service.analyses_interpretation.online = rec;
+								} else {
+									_self.spec_service.analyses_interpretation.clinic = rec;
+								}
+							} else {
+								if (rec.header.includes('Онлайн')) {
+									_self.spec_service.consultations.online[rec.id] = rec;
+								} else {
+									_self.spec_service.consultations.clinic[rec.id] = rec;
+								}
+							}
+						});
+					}
+				})
+			);
+
 			return Promise.allSettled(getters).then(() => {
 				$(document).trigger('cabinet-db-ready');
 			});
@@ -619,12 +651,12 @@ $(function () {
 			let data   = profile_data;
 			//console.log(data);
 
-			data.phone = str_replace([' ', '+7', '-', '(', ')'], '', data.phone);
+			data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 			if (data.phone.length === 10) {
 				data.phone = '7'+ data.phone;
 			}
-			data.fullname = data.fullname.replaceAll('  ', ' ')
-			var names            = data.fullname.split(' ');
+			data.fullname    = data.fullname.replaceAll('  ', ' ')
+			var names        = data.fullname.split(' ');
 			data.first_name  = names[0];
 			data.middle_name = names[1] || '';
 			data.last_name   = names[2] || '';
@@ -819,17 +851,23 @@ $(function () {
 	};
 
 	//document.addEventListener('visibilitychange', (event) => { console.log('Toggle tabs...', event);});
-
+	window.updPrice = function(_parent_form){
+		console.log('find price for:', _parent_form);
+		var sum = 0;
+		_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
+			sum += parseInt($(this).data('price'));
+		});
+		console.log(_parent_form, sum);
+		_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
+		_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
+	}
 	window.initServicesSearch = function ($selector, service_list) {
-		console.log($selector, service_list);
-
 		var _parent_form = $selector.closest('form');
 		$(document).on('click', '.search__drop-delete', function (e) {
 			e.stopPropagation();
 			$(this).parents('.search__drop-item').remove();
 			let sum = 0;
-			console.log(_parent_form.find('.admin-editor__patient .search__drop-item').length);
-			_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
+			_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
 				sum += parseInt($(this).data('price'));
 			});
 			_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
@@ -885,7 +923,7 @@ $(function () {
 			onSelect: function (suggestion) {
 				console.log(suggestion);
 				$selector.val('');
-				if (_parent_form.find('.admin-editor__patient [data-id=' + suggestion.id + ']').length) {
+				if (_parent_form.find('.admin-editor__patient:not(.price-list) [data-id=' + suggestion.id + ']').length) {
 					return;
 				}
 				var PRICE = new Intl.NumberFormat('ru-RU').format(suggestion.data.price);
@@ -896,10 +934,10 @@ $(function () {
 					);
 				});
 				const index = _parent_form.find(
-					'.admin-editor__patient .search__drop-item[data-service_id]').length;
+					'.admin-editor__patient:not(.price-list) .search__drop-item[data-service_id]').length;
 				var sum     = 0;
-				_parent_form.find('.admin-editor__patient').append(
-					$('<div></div>').addClass('search__drop-item').attr({
+				_parent_form.find('.admin-editor__patient:not(.price-list)').append(
+					$('<div></div>').addClass('search__drop-item selected').attr({
 						'data-id': suggestion.id,
 						'data-index': index,
 						"data-service_id": suggestion.data.service_id,
@@ -942,15 +980,15 @@ $(function () {
 							.append($('<div></div>').addClass('search__drop-summ').html(PRICE + ' ₽<sup><b>*</b></sup>'))
 					)
 				);
-				_parent_form.find('.admin-editor__patient .search__drop-item').each(function (e) {
-					sum += parseInt($(this).data('price'));
-				});
-				console.log(_parent_form, sum);
-				_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
-				_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
+				updPrice(_parent_form);
+				//_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
+				//	sum += parseInt($(this).data('price'));
+				//});
+				//console.log(_parent_form, sum);
+				//_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
+				//_parent_form.find('.admin-editor__summ [name="price"]').val(sum);
 			}
 		});
-
 	};
 	window.initLongtermSearch = function ($form, for_client) {
 		var form       = $form || $('.popup .popup__form');
@@ -1111,7 +1149,7 @@ $(function () {
 					this.set('catalog', catalog);
 
 					initServicesSearch($('.search-services'), catalog.servicesList);
-					initPlugins();
+					initPlugins($(this.el));
 				},
 				selectCategory(ev) {
 					var _el = $(this.el);
@@ -1141,15 +1179,10 @@ $(function () {
 						data.client_comment = '';
 
 						data.price          = parseInt(data.price || 0);
+
 						if (data.no_services == 1) {
-							data.price          = 0;
 							data.services       = [];
 							data.service_prices = {};
-							if (data.for_consultation == 1 && data.type === 'online') {
-								data.price = parseInt(catalog.spec_service.consultation.price);
-							} else {
-								data.price = 0;
-							}
 						}
 						if (data.no_experts == 1) {
 							data.experts        = [];
@@ -1251,15 +1284,21 @@ $(function () {
 			}
 		});
 	};
-	window.popupPay                   = function (record_id, price, user_id) {
-		const pay_price = Math.floor(parseInt(price) / 5);
+	window.popupPay                   = function (record_id, full_price, user_id, type, consultation_price) {
+		const pay_consultation = parseInt(consultation_price || '0');
+		var price = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
+	 	if (pay_consultation){
+
+		}
+		const pay_price = (type == 'online') ? price : Math.floor(price / 5);
 
 		var popup = new Ractive({
 			el: '.popup.--pay',
 			template: wbapp.tpl('#popupPay').html,
 			data: {
 				pay_price: pay_price,
-				price: parseInt(price),
+				is_online: (type == 'online'),
+				price: price,
 				client: user_id,
 				id: record_id
 			},
@@ -1313,11 +1352,11 @@ $(function () {
 						data.client_comment = 'Расшифровка анализов';
 						data.for_consultation = 1;
 						if (data.type === 'online') {
-							data.price = parseInt(catalog.spec_service.consultation.price);
+							data.price = parseInt(catalog.spec_service.analyses_interpretation.online.price);
 							data.pay_status = 'unpay';
 						} else {
-							data.pay_status = 'free';
-							data.price = 0;
+							data.price      = parseInt(catalog.spec_service.analyses_interpretation.clinic);
+							data.pay_status = 'unpay';
 						}
 						data.price = parseInt(data.price || 0);
 						data.services       = [];
@@ -1441,7 +1480,7 @@ $(function () {
 			on: {
 				init() {
 					setTimeout(function () {
-						initPlugins();
+						initPlugins($(this.el));
 						initClientSearch($('.popup.--photo form'));
 						initLongtermSearch($('.popup.--photo form'), true);
 					});
@@ -1486,12 +1525,13 @@ $(function () {
 			on: {
 				init() {
 					setTimeout(function () {
-						initPlugins();
 						initClientSearch($('.popup.--longterm form'));
 						initLongtermSearch($('.popup.--longterm form'), true);
 					});
 				},
 				complete() {
+					var self = this;
+					initPlugins($(this.el));
 					$(this.el).show();
 				},
 				submit(ev) {

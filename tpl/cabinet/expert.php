@@ -127,7 +127,7 @@
 							<div class="account-events__name">Специалист:</div>
 							<div class="account-event">
 								{{#this.experts}}
-								<p>{{catalog.experts[this].name}}</p>
+								<p>{{@global.catalog.experts[this].fullname}}</p>
 								{{/this.experts}}
 							</div>
 						</div>
@@ -216,7 +216,7 @@
 							<div class="account-events__name">Специалист:</div>
 							<div class="account-event">
 								{{#this.experts}}
-								<p>{{catalog.experts[this].name}}</p>
+								<p>{{@global.catalog.experts[this].fullname}}</p>
 								{{/this.experts}}
 							</div>
 						</div>
@@ -641,7 +641,7 @@
 							on: {
 								complete() {
 									$('.profile-editor-inline').removeClass('d-none');
-									initPlugins();
+									initPlugins($(this.el));
 								},
 								submitUserForm(ev) {
 									let $form = $(ev.node);
@@ -650,7 +650,7 @@
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
 
-										data.phone = str_replace([' ', '+', '-', '(', ')'], '', data.phone);
+										data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 										data.fullname    = data.fullname.replaceAll('  ', ' ')
 										var names        = data.fullname.split(' ');
 										data.first_name  = names[0];
@@ -665,7 +665,8 @@
 										utils.api.post('/api/v2/update/experts/' + expert_id, {
 											'name': data.fullname,
 											'fullname': data.fullname,
-											'header': data.fullname
+											'header': data.fullname,
+											'login':uid
 										}).then(function (res) {
 											console.log('expert', res);
 											page.set('expert', res);
@@ -730,7 +731,7 @@
 			});
 
 			utils.api.get('/api/v2/list/records?group=events' +
-					'&experts~=' + wbapp._session.user.expert.id +
+					'&experts~=' + wbapp._session.user.id +
 					'&@sort=event_date:d')
 				.then(function (records) {
 					if (!records) {

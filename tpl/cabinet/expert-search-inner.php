@@ -100,7 +100,7 @@
 								<div class="account-events__name">Специалист:</div>
 								<div class="account-event">
 									{{#this.experts}}
-									<p>{{catalog.experts[this].name}}</p>
+									<p>{{@global.catalog.experts[this].fullname}}</p>
 									{{/this.experts}}
 								</div>
 							</div>
@@ -192,7 +192,7 @@
 								<div class="account-events__name">Специалист:</div>
 								<div class="account-event">
 									{{#this.experts}}
-									<p>{{catalog.experts[this].name}}</p>
+									<p>{{@global.catalog.experts[this].fullname}}</p>
 									{{/this.experts}}
 								</div>
 							</div>

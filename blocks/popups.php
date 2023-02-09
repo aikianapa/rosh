@@ -28,11 +28,10 @@
 							<div class="input__placeholder">ФИО</div>
 						</div>
 						<div class="input input--grey">
-							<input class="input__control" name="phone"
+							<input class="input__control intl-tel" name="phone"
 								value="{{user.phone}}"
-								type="tel" placeholder="Номер телефона"
-								data-inputmask="'mask': '+7 (999) 999-99-99'" required>
-							<div class="input__placeholder">Номер телефона</div>
+								type="tel" required>
+							<div class="input__placeholder active" >Номер телефона</div>
 						</div>
 						<div class="input input--grey">
 							<textarea class="input__control"
@@ -143,7 +142,7 @@
 									post[keys[i]] = names[i];
 								}
 								var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-								post.phone = str_replace([' ', '+', '-', '(', ')'], '', post.phone);
+								post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
 								window.api.get('/api/v2/list/users/?role=client&phone=' + post.phone +
 								          '&__token=' + _token).then(
 									function (data) {

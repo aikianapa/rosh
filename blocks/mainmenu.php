@@ -1,7 +1,8 @@
 <view>
 
-    <div class="menu" id="mainmenu">
-        <nav class="nav" wb-if="'{{_route.uri}}' !=='/english'">
+
+    <div class="menu" id="mainmenu" wb-if="'{{_route.uri}}' !=='/english'">
+        <nav class="nav">
             <wb-var menu wb-api="/api/v2/list/pages?active=on&menu=on&@sort=_sort"/>
             <wb-foreach wb="from=_var.menu&tpl=false" wb-filter="path=">
                 <wb-var child="0" />
@@ -58,15 +59,6 @@
 		    </a>
 		    <a class="text-small text-grey" href="mailto:{{_sett.contactEmail}}">
 			    {{_sett.contactEmail}}</a></div>
-	    <a class="en-version" href="/english" wb-if="'{{_route.uri}}' !=='/english'">
-		    <svg class="svgsprite _web">
-			    <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
-		    </svg>
-		    English version
-		    <svg class="svgsprite _arrow-link">
-			    <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
-		    </svg>
-	    </a>
 	    <a class="en-version" href="/english" wb-if="'{{_route.uri}}' !=='/english'">
 		    <svg class="svgsprite _web">
 			    <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
