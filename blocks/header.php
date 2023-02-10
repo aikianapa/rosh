@@ -38,7 +38,7 @@
                 <div class="header__right --flex --aicn"  wb-if="'{{_sess.user.role}}'==''">
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
-                    <a href="/basket" wb-if="'{{_route.uri}}' !=='/english'" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
+                    <a href="/basket" wb-if="'{{_route.uri}}' !=='/english'" class="d-none hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
                     <button wb-if="'{{_route.uri}}' !=='/english'" class="burger"></button>
 	                <a class="en-version pt-0" href="/" wb-if="'{{_route.uri}}' =='/english'">
 		                <svg class="svgsprite _web">
@@ -77,7 +77,7 @@
 					            <a class="enter__btn text-small signout" href="/signout">Выйти</a>
 				            </div>
 			            </button>
-			            <div wb-if="'{{_route.uri}}' !=='/english'">
+			            <div class="d-none" wb-if="'{{_route.uri}}' !=='/english'">
 				            <a wb-if="'{{_sess.user.role}}'!=='expert'" href="/basket" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
 			            </div>
 			            <button class="burger"></button>
