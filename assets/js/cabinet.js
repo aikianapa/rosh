@@ -938,10 +938,9 @@ $(function () {
 		$selector.autocomplete('dispose');
 
 		return $selector.autocomplete({
-			noCache: true,
+			noCache: false,
 			minChars: 0,
 			lookup: service_list,
-			triggerSelectOnValidInput: false,
 			beforeRender: function (container, suggestions) {
 				var CNT = $(container);
 				$(container).addClass('search__drop').html('');
@@ -1214,11 +1213,12 @@ $(function () {
 					initPlugins($(this.el));
 				},
 				selectCategory(ev) {
-					var _el = $(this.el);
-					console.log(_el, _el.find('.search-services'));
+					var _el = $(ev.node).parents('form').find('.search__input.search-services');
+
 					setTimeout(function () {
-						_el.find('.search-services').trigger('focus');
-					}, 250);
+						_el.trigger('focus').trigger('keydown');
+						//_el.find('.search-services').trigger('focus');
+					}, 200);
 				},
 				submit(ev) {
 					let $form = $(ev.node);
