@@ -82,6 +82,15 @@
 			            </div>
 			            <button class="burger"></button>
 		            </div>
+		            <a class="en-version pt-0" href="/" wb-if="'{{_route.uri}}' =='/english'">
+			            <svg class="svgsprite _web">
+				            <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
+			            </svg>
+			            Русская версия
+			            <svg class="svgsprite _arrow-link">
+				            <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
+			            </svg>
+		            </a>
 	            </div>
 
             </div>
