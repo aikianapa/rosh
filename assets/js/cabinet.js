@@ -1205,9 +1205,11 @@ $(function () {
 			on: {
 				teardown(){
 					$('.search-services').autocomplete('dispose');
+					$('.autocomplete-suggestions.search__drop').remove();
 				},
 				complete() {
 					this.set('catalog', catalog);
+					$('.search-services').autocomplete('dispose');
 
 					initServicesSearch($('.search-services'), catalog.servicesList);
 					initPlugins($(this.el));
@@ -1218,7 +1220,7 @@ $(function () {
 					setTimeout(function () {
 						_el.trigger('focus').trigger('keydown');
 						//_el.find('.search-services').trigger('focus');
-					}, 200);
+					}, 500);
 				},
 				submit(ev) {
 					let $form = $(ev.node);
