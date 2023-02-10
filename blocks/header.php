@@ -63,8 +63,9 @@
 	                </div>
                 </div>
 
-	            <div wb-if="'{{_route.uri}}' !=='/english'">
-		            <div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','client','admin'])">
+	            <div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','client','admin'])">
+		            <div wb-if="'{{_route.uri}}' !=='/english'">
+
 			            <button class="btn btn-link --openpopup --mobile-fade" wb-if="'{{_sess.user.role}}'!=='expert'" data-popup="--fast">Записаться на прием</button>
 			            <button class="btn btn-link profile-menu" wb-if="'{{_route.uri}}' !=='/english'">
 				            Профиль
@@ -82,17 +83,7 @@
 			            <button class="burger"></button>
 		            </div>
 	            </div>
-	            <div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' =='/english'">
-		            <a class="en-version pt-0" href="/" wb-if="'{{_route.uri}}' =='/english'">
-			            <svg class="svgsprite _web">
-				            <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
-			            </svg>
-			            Русская версия
-			            <svg class="svgsprite _arrow-link">
-				            <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
-			            </svg>
-		            </a>
-	            </div>
+
             </div>
 	        <div wb-if="'{{_sess.user.role}}'=='main'">
 		        <div wb-if="'{{_route.uri}}' =='/english'">
