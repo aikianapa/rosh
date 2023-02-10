@@ -343,6 +343,8 @@ $(function () {
 			}
 		},
 		categories: {},
+		labCategories: {},
+
 		experts: {},
 		expert_users: {},
 		clients: {},
@@ -355,28 +357,31 @@ $(function () {
 				localStorage.removeItem('db.' + _key + _self.cacheKey);
 				sessionStorage.removeItem('db.' + _key + _self.cacheKey);
 			} else {
-				localStorage.removeItem('db.quoteStatus' + _self.cacheKey);
-				localStorage.removeItem('db.quoteType' + _self.cacheKey);
-				localStorage.removeItem('db.categories' + _self.cacheKey);
+				['-dev', _self.cacheKey].forEach(function (ck) {
+					localStorage.removeItem('db.quoteStatus' + ck);
+					localStorage.removeItem('db.quoteType' + ck);
+					localStorage.removeItem('db.quotePay' + ck);
+					localStorage.removeItem('db.categories' + ck);
+					localStorage.removeItem('db.labCategories' + ck);
 
-				sessionStorage.removeItem('db.services' + _self.cacheKey);
-				sessionStorage.removeItem('db.servicesList' + _self.cacheKey);
-				sessionStorage.removeItem('db.servicePrices' + _self.cacheKey);
+					sessionStorage.removeItem('db.services' + ck);
+					sessionStorage.removeItem('db.servicesList' + ck);
+					sessionStorage.removeItem('db.servicePrices' + ck);
+					/* old keys clear */
+					sessionStorage.removeItem('db.experts' + ck);
+					sessionStorage.removeItem('db.expert_users' + ck);
+					sessionStorage.removeItem('db.experts_alt' + ck);
 
-				/* old keys clear */
-				sessionStorage.removeItem('db.experts' + _self.cacheKey);
-				sessionStorage.removeItem('db.expert_users' + _self.cacheKey);
-				sessionStorage.removeItem('db.experts_alt' + _self.cacheKey);
-
-				sessionStorage.removeItem('db.expert_list' + _self.cacheKey);
-				sessionStorage.removeItem('db.expert_user_list' + _self.cacheKey);
+					sessionStorage.removeItem('db.expert_list' + ck);
+					sessionStorage.removeItem('db.expert_user_list' + ck);
+				});
 			}
 			console.log('Cache cleared!');
 			if (_key !== false) {
 				this.init();
 			}
 		},
-		cacheKey: '-dev',
+		cacheKey: '-preprod',
 		init(use_session_cache) {
 			var _self   = this;
 			var getters = [];
@@ -485,11 +490,72 @@ $(function () {
 								});
 							}
 						});
+					})
+				);
+				getters.push(
+					utils.api.get('/api/v2/list/catalogs?_id=shop_category').then(function (data) {
+						_self.labCategories = data[0]?.tree?.data?.lab?.children;
+						localStorage.setItem('db.labCategories' + _self.cacheKey,
+							JSON.stringify(_self.labCategories));
+						console.log('>> >>');
+						return _self.labCategories;
+					}).then(function () {
+						utils.api.get('/api/v2/list/price?active=on&@return=id,header,price,category' +
+						              '&@sort=category').then(function (data) {
+							if (!data) {
+								return;
+							}
+							console.log('>> >> >>');
+							data.forEach(function (service, i) {
+								if (!_self.labCategories.hasOwnProperty(service.category)) {
+									return;
+								}
+								_self.services[service.category] = _self.labCategories[service.category];
+								_self.services[service.category].header
+								                                 = _self.labCategories[service.category].name;
+								const _cats                      = ["lab"];
+								const _tags                      = [];
 
-						sessionStorage.setItem('db.services' + _self.cacheKey, JSON.stringify(_self.services));
-						sessionStorage.setItem('db.servicesList' + _self.cacheKey, JSON.stringify(_self.servicesList));
-						sessionStorage.setItem('db.servicePrices' + _self.cacheKey,
-							JSON.stringify(_self.servicePrices));
+								_cats.forEach(function (cat) {
+									_tags.push({
+										"id": cat,
+										"color": _self.serviceTags[cat].color,
+										"tag": Array.from(_self.serviceTags[cat].name)[0]
+									});
+								});
+
+								if (!service.price || parseInt(service.price) < 1) {
+									return;
+								}
+								let _item = {
+									value: _self.labCategories[service.category].name + ': ' + service.header,
+									id: service.category + '-' + service.id,
+									data: {
+										service_id: service.category,
+										service_title: _self.labCategories[service.category].name,
+										tags: _tags,
+										price: service.price,
+										price_id: service.id
+									}
+								};
+								_self.servicesList.push(_item);
+								_self.servicePrices[_item.id] = {
+									id: _item.id,
+									service_id: service.category,
+									service_title: _self.labCategories[service.category].name,
+									price: service.price,
+									header: _self.labCategories[service.category].name + ': ' + service.header,
+									tags: _tags
+								};
+							});
+
+							sessionStorage.setItem('db.services' + _self.cacheKey,
+								JSON.stringify(_self.services));
+							sessionStorage.setItem('db.servicesList' + _self.cacheKey,
+								JSON.stringify(_self.servicesList));
+							sessionStorage.setItem('db.servicePrices' + _self.cacheKey,
+								JSON.stringify(_self.servicePrices));
+						});
 					})
 				);
 			} else {
@@ -512,13 +578,9 @@ $(function () {
 										if (!res || !res[0]) {
 											return;
 										}
-										catalog.experts[expert.id].info_uri = res[0]['u'] || '';
-										sessionStorage.setItem('db.expert_list', JSON.stringify(catalog.experts));
-										if (expert.login) {
-											catalog.expert_users[expert.login] = catalog.experts[expert.id];
-											sessionStorage.setItem('db.expert_user_list',
-												JSON.stringify(catalog.expert_users));
-										}
+										catalog.expert_users[expert.id].info_uri = res[0]['u'] || '';
+										sessionStorage.setItem('db.expert_users' + _self.cacheKey,
+											JSON.stringify(catalog.expert_users));
 									});
 							}
 						});
@@ -601,7 +663,7 @@ $(function () {
 				})
 			);
 
-			return Promise.allSettled(getters).then(() => {
+			return Promise.allSettled(getters).then((results) => {
 				$(document).trigger('cabinet-db-ready');
 			});
 		}
@@ -1154,10 +1216,9 @@ $(function () {
 				selectCategory(ev) {
 					var _el = $(this.el);
 					console.log(_el, _el.find('.search-services'));
-					setTimeout(function (){
-						_el.val(' ').trigger('focus');
+					setTimeout(function () {
 						_el.find('.search-services').trigger('focus');
-					}, 200);
+					}, 250);
 				},
 				submit(ev) {
 					let $form = $(ev.node);

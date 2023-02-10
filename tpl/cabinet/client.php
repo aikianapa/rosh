@@ -145,8 +145,6 @@
 			</div>
 			{{#if this.status == 'new'}}
 			<!--nothing..-->
-			{{elseif this.type == 'clinic'}}
-			<!--nothing..-->
 			{{elseif this.pay_status == 'unpay'}}
 			<div class="account-events__btns">
 				<div class="account-event-wrap --aicn">
@@ -196,7 +194,7 @@
 						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
 							{{#services}}
-							{{catalog.services[this].header}}<br>
+							{{@global.catalog.services[this].header}}<br>
 							{{/services}}
 						</div>
 					</div>
@@ -250,8 +248,6 @@
 				</div>
 				{{/if}}
 				{{#if this.status == 'new'}}
-				<!--nothing..-->
-				{{elseif this.type == 'clinic'}}
 				<!--nothing..-->
 				{{elseif this.pay_status == 'unpay'}}
 				<div class="account-events__btns">
@@ -712,7 +708,6 @@
 			el: 'main.page .page-content',
 			template: wbapp.tpl('#page-content').html,
 			data: {
-				catalog: {},
 				user: wbapp._session.user,
 				events: {
 					'upcoming': [],
@@ -729,9 +724,10 @@
 
 				},
 				complete() {
-					this.set('catalog', catalog);
+					var self = this;
 					setTimeout(function () {
-						$(this.el).find("img[data-src]:not([src])").lazyload();
+						$(self.el).find("img[data-src]:not([src])").lazyload();
+						self.set('catalog', window.catalog);
 
 						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
 							.then(function (data) {
@@ -747,7 +743,7 @@
 									});
 								}, 150);
 							});
-					});
+					}, 200);
 				},
 				runOnlineChat(ev, record) {
 					Cabinet.runOnlineChat(record?.meetroom?.roomName);

@@ -52,37 +52,51 @@
                 </div>
                 
                 <div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
-                    <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
-                    <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
-                    <div class="header__contacts"> <a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
-                            {{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
-                        <div wb-if="'{{_route.uri}}' !=='/english'" class="header__contact header__contact--small">{{_var.worktime}}</div>
-                        <wb-data wb="table=pages&item={{_route.item}}&field=blocks.contacts_english" wb-if="'{{_route.uri}}' =='/english'">
-                            <div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>
-                        </wb-data>
-                    </div>
-                </div>
-                <div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','client','admin'])">
-                    <button class="btn btn-link --openpopup --mobile-fade" wb-if="'{{_sess.user.role}}'!=='expert'" data-popup="--fast">Записаться на прием</button>
-                    <button class="btn btn-link profile-menu">
-                        Профиль
-                        <svg class="svgsprite _drop">
-                            <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
-                        </svg>
-                        <div class="enter__panel">
-                            <a class="enter__btn text-small" href="/cabinet">Мой кабинет</a>
-                            <a class="enter__btn text-small signout" href="/signout">Выйти</a>
-                        </div>
-                    </button>
-	                <div wb-if="'{{_route.uri}}' !=='/english'">
-                    <a wb-if="'{{_sess.user.role}}'!=='expert'" href="/basket" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
+	                <wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}"/>
+	                <wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}'/>
+	                <div class="header__contacts"><a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
+			                {{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
+		                <div wb-if="'{{_route.uri}}' !=='/english'" class="header__contact header__contact--small">{{_var.worktime}}</div>
+		                <wb-data wb="table=pages&item={{_route.item}}&field=blocks.contacts_english" wb-if="'{{_route.uri}}' =='/english'">
+			                <div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>
+		                </wb-data>
 	                </div>
-                    <button class="burger"></button>
                 </div>
+
+	            <div wb-if="'{{_route.uri}}' !=='/english'">
+		            <div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','client','admin'])">
+			            <button class="btn btn-link --openpopup --mobile-fade" wb-if="'{{_sess.user.role}}'!=='expert'" data-popup="--fast">Записаться на прием</button>
+			            <button class="btn btn-link profile-menu" wb-if="'{{_route.uri}}' !=='/english'">
+				            Профиль
+				            <svg class="svgsprite _drop">
+					            <use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
+				            </svg>
+				            <div class="enter__panel">
+					            <a class="enter__btn text-small" href="/cabinet">Мой кабинет</a>
+					            <a class="enter__btn text-small signout" href="/signout">Выйти</a>
+				            </div>
+			            </button>
+			            <div wb-if="'{{_route.uri}}' !=='/english'">
+				            <a wb-if="'{{_sess.user.role}}'!=='expert'" href="/basket" class="hb-ico basket-ico header-basket"><i class="cart-total-qty">0</i></a>
+			            </div>
+			            <button class="burger"></button>
+		            </div>
+	            </div>
+	            <div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' =='/english'">
+		            <a class="en-version pt-0" href="/" wb-if="'{{_route.uri}}' =='/english'">
+			            <svg class="svgsprite _web">
+				            <use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
+			            </svg>
+			            Русская версия
+			            <svg class="svgsprite _arrow-link">
+				            <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
+			            </svg>
+		            </a>
+	            </div>
             </div>
 
 	        <div class="container --flex --jcsb --aicn" wb-if="'{{_sess.user.role}}'=='main'">
-		        <div class="header__admin --flex --aicn">
+		        <div class="header__admin --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 			        <span class="lower-deck">
 				        <button class="btn btn--white loaddata --openpopup d-none d-lg-block"
 					        onclick="popupDownloadData();"
@@ -92,7 +106,7 @@
 					        </svg>
 					        Выгрузить данные
 				        </button>
-				    </span>
+			        </span>
 			        <a class="btn btn-link" href="/cabinet">Заявки и события</a>
 			        <a class="btn btn-link" href="/cabinet/search">Пациенты</a>
 			        <a class="btn btn-link" href="/cabinet/photos">Медиатека</a>
@@ -106,7 +120,7 @@
 				        Выгрузить данные
 			        </button>
 		        </div>
-		        <div class="header__right --flex --aicn">
+		        <div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 			        <button class="btn btn-link profile-menu">
 				        Профиль
 				        <svg class="svgsprite _drop">
@@ -115,8 +129,8 @@
 				        <div class="enter__panel">
 					        <a class="enter__btn text-small" onclick="popupEditProfile();">Редактировать</a>
 					        <a class="enter__btn text-small signout" href="/signout">Выйти</a>
-                        </div>
-                    </button>
+				        </div>
+			        </button>
                     <button class="burger"></button>
                 </div>
             </div>

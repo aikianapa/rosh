@@ -117,6 +117,52 @@
 					user: wbapp._session.user
 				},
 				on: {
+					complete(){
+						var self = this;
+						setTimeout(function (){
+							if (wbapp._session.user.phone[0] === '7'){
+								wbapp._session.user.phone = '+'+wbapp._session.user.phone;
+								self.set('user', wbapp._session.user);
+							}
+							console.log('init tel', $(self.el).find('input.intl-tel'));
+							$(self.el).find('input.intl-tel').each(function () {
+								var self = $(this);
+								self.intlTelInput({
+									formatOnDisplay: false,
+									customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+										//console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
+										selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
+											'+' + selectedCountryData.dialCode, ' ');
+										self.inputmask('+' + selectedCountryData.dialCode.replace('9', '\\9')
+										               + ' ' +
+										               selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
+											{
+												placeholder: '+' + selectedCountryData.dialCode.replace('9', '\\9')
+												             + ' ' +
+												             selectedCountryPlaceholder.replaceAll(/[0-9]/g, '_')
+													             .replaceAll(' ', '-'),
+
+												clearMaskOnLostFocus: true,
+												showMaskOnHover: false,
+												positionCaretOnClick: 'radixFocus'
+											});
+										return '+' + selectedCountryData.dialCode.replace('9', '\\9')
+										       + ' ' +
+										       selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
+									},
+									nationalMode: false,
+									onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
+									                "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
+									                "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
+									                "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
+									placeholderNumberType: "FIXED_LINE",
+									preferredCountries: ['ru'],
+									separateDialCode: false,
+									utilsScript: "/assets/js/intlTelInput-utils.js"
+								});
+							});
+						});
+					},
 					submit() {
 						var form = this.find('.popup.--fast .popup__form');
 						if ($(form).verify()) {

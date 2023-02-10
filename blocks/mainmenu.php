@@ -1,6 +1,4 @@
 <view>
-
-
     <div class="menu" id="mainmenu" wb-if="'{{_route.uri}}' !=='/english'">
         <nav class="nav">
             <wb-var menu wb-api="/api/v2/list/pages?active=on&menu=on&@sort=_sort"/>

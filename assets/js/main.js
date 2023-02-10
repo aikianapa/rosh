@@ -473,14 +473,14 @@ $(function() {
                             //console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
                             selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
                                 '+' + selectedCountryData.dialCode, ' ');
-                            self.inputmask('+' + selectedCountryData.dialCode.replaceAll(/[0-9]/g, '9')
+                            self.inputmask('+' + selectedCountryData.dialCode.replace('9', '\\9')
                                            + ' ' +
                                            selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
                                 {
                                     placeholder: '+' + selectedCountryData.dialCode.replace('9', '\\9')
                                                  + ' ' +
-                                                 selectedCountryPlaceholder.replaceAll(/[0-9]/g, '_')
-                                                     .replaceAll(' ', '-'),
+                                                 selectedCountryPlaceholder.replaceAll(/[0-9]/g, '_').replaceAll(' ', '-'),
+
                                     clearMaskOnLostFocus: true,
                                     showMaskOnHover: false,
                                     positionCaretOnClick: 'radixFocus'
@@ -740,15 +740,26 @@ $(function() {
         };
 
         $(document).on('click', 'a.login, a.signout', function(e) {
-            console.log('Clear cached data...');
-            sessionStorage.removeItem('db.quoteStatus');
-            sessionStorage.removeItem('db.quotePay');
-            sessionStorage.removeItem('db.quoteType');
-            sessionStorage.removeItem('db.categories');
+            if (!!window.catalog){
+                catalog.reload(false);
+            }
+
+            localStorage.removeItem('db.quoteStatus');
+            localStorage.removeItem('db.quoteType');
+            localStorage.removeItem('db.quotePay');
+            localStorage.removeItem('db.categories');
+            localStorage.removeItem('db.labCategories');
+
             sessionStorage.removeItem('db.services');
             sessionStorage.removeItem('db.servicesList');
             sessionStorage.removeItem('db.servicePrices');
+
+            /* old keys clear */
             sessionStorage.removeItem('db.experts');
+            sessionStorage.removeItem('db.expert_users');
+            sessionStorage.removeItem('db.experts_alt');
+            sessionStorage.removeItem('db.expert_list');
+            sessionStorage.removeItem('db.expert_user_list');
         });
 
         $(document).on('wb-verify-false', function(e, el, err) {

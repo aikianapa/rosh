@@ -174,7 +174,7 @@
 					</div>
 					<div class="mb-4 text-right" data-hide="service-search">
 						<b>*</b>&nbsp;
-						<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
+						<small>Не является публичной офертой. Cтоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
 					</div>
 					<button class="btn btn--black form__submit" type="submit"> Записаться </button>
 				</form>
@@ -838,7 +838,7 @@
 									var _photo_group = form_data.target || 'before';
 									delete form_data.target;
 									var files = Array.from(_form.find('input[name="file"]')[0].files);
-									console.log(files);
+									wbapp.loading();
 									files.forEach(function (file) {
 										uploadFile(file,
 											'record/photos/' + record.id,
@@ -1025,7 +1025,7 @@
 								form_data.price          = 0;
 								var _photo_group         = form_data.target || 'before';
 								delete form_data.photo_group;
-								var files = Array.from(_form.find('input[name="file"]')[0].files);
+								var files = Array.from($form.find('input[name="file"]')[0].files);
 								console.log(files);
 								files.forEach(function (file) {
 									uploadFile(
