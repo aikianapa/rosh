@@ -1045,7 +1045,7 @@ $(function () {
 				var sum     = 0;
 				console.log('selected:', suggestion);
 				if (suggestion.data.quote){
-					_parent_form.find('input[name="for_consultation"]').prop(':checked', true);
+					_parent_form.find('input.checkbox-visible-next-form[name="for_consultation"]').prop(':checked', true);
 					_parent_form.find('[data-show="consultation-type"]').show();
 					_parent_form.find('[data-show-input="consultation-'+ suggestion.data.quote+'"]').trigger('click');
 					_parent_form.find('.price-list .search__drop-item.consultation[data-consultation="' +
