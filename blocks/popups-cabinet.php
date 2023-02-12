@@ -756,13 +756,13 @@
 							<label class="text-radio" name="target" value="before" on-click="singlePhoto">
 								<input type="radio" name="target" value="before">
 								<span>
-									До начала лечения
+									До приема
 								</span>
 							</label>
 							<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
 								<input type="radio" name="target" value="after">
 								<span class="changed_label">
-									{{#if record.group == 'longterms'}} После начала лечения {{else}} В процессе лечения {{/if}}
+									{{#if record.group == 'longterms'}} После приема {{else}} После приема {{/if}}
 								</span>
 							</label>
 						</div>
@@ -950,11 +950,11 @@
 						<div class="radios --flex">
 							<label class="text-radio">
 								<input type="radio" name="target" value="before" checked="checked">
-								<span>До начала лечения</span>
+								<span>До приема</span>
 							</label>
 							<label class="text-radio" style="visibility: hidden">
 								<input type="radio" name="target" value="after">
-								<span>После начала лечения</span>
+								<span>После приема</span>
 							</label>
 						</div>
 						<label class="file-photo">
@@ -1109,11 +1109,11 @@
 						<div class="radios --flex">
 							<label class="text-radio">
 								<input type="radio" name="target" value="before" checked="checked">
-								<span>До начала лечения</span>
+								<span>До приема</span>
 							</label>
 							<label class="text-radio disabled">
 								<input type="radio" name="target" value="after">
-								<span>В процессе лечения</span>
+								<span>После приема</span>
 							</label>
 						</div>
 
