@@ -1045,11 +1045,14 @@ $(function () {
 				var sum     = 0;
 				console.log('selected:', suggestion);
 				if (suggestion.data.quote){
-					_parent_form.find('[name="for_consultation"]').prop(':checked', true);
+					_parent_form.find('input[name="for_consultation"]').prop(':checked', true);
 					_parent_form.find('[data-show="consultation-type"]').show();
 					_parent_form.find('[data-show-input="consultation-'+ suggestion.data.quote+'"]').trigger('click');
-					_parent_form.find('.price-list .search__drop-item.consultation[data-consultation="' + suggestion.data.price_id + '"]').trigger('click');
-					updPrice(_parent_form);
+					setTimeout(function () {
+						_parent_form.find('.price-list .search__drop-item.consultation[data-consultation="' +
+						                  suggestion.data.price_id + '"] label').trigger('click');
+						updPrice(_parent_form);
+					});
 					return;
 				}
 				_parent_form.find('.admin-editor__patient:not(.price-list)').append(
