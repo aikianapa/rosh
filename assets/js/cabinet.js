@@ -762,9 +762,9 @@ $(function () {
 			}
 			data.fullname    = data.fullname.replaceAll('  ', ' ');
 			var names        = data.fullname.split(' ');
-			data.first_name  = names[2];
-			data.middle_name = names[0] || '';
-			data.last_name   = names[1] || '';
+			data.first_name  = names[1];
+			data.middle_name = names[2] || '';
+			data.last_name   = names[0] || '';
 
 			utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
 				if (!!callback) {
@@ -1047,13 +1047,10 @@ $(function () {
 				if (suggestion.data.quote){
 					_parent_form.find('[name="for_consultation"]').prop(':checked', true);
 					_parent_form.find('[data-show="consultation-type"]').show();
-					_parent_form.find('.consultation-type[type="radio"].'+ suggestion.data.quote).prop(':checked', true);
-
-					_parent_form.find('.admin-editor__patient.price-list .search__drop-item.consultation').hide();
-					_parent_form.find('.admin-editor__patient.price-list .search__drop-item.consultation.' +
-					                  suggestion.data.quote).show();
-					_parent_form.find('.price-list .search__drop-item.consultation input[value="' + suggestion.data.price_id + '"]').trigger('change');
+					_parent_form.find('[data-show-input="consultation-'+ suggestion.data.quote+'"]').trigger('click');
+					_parent_form.find('.price-list .search__drop-item.consultation[data-consultation="' + suggestion.data.price_id + '"]').trigger('click');
 					updPrice(_parent_form);
+					return;
 				}
 				_parent_form.find('.admin-editor__patient:not(.price-list)').append(
 					$('<div></div>').addClass('search__drop-item selected').attr({
