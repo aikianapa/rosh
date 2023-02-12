@@ -343,7 +343,7 @@ $(function () {
 			}
 		},
 		categories: {},
-		labCategories: {},
+		priceCategories: {},
 
 		experts: {},
 		expert_users: {},
@@ -357,7 +357,7 @@ $(function () {
 				localStorage.removeItem('db.' + _key + _self.cacheKey);
 				sessionStorage.removeItem('db.' + _key + _self.cacheKey);
 			} else {
-				['-dev', _self.cacheKey].forEach(function (ck) {
+				['-dev', '-preprod', _self.cacheKey].forEach(function (ck) {
 					localStorage.removeItem('db.quoteStatus' + ck);
 					localStorage.removeItem('db.quoteType' + ck);
 					localStorage.removeItem('db.quotePay' + ck);
@@ -381,7 +381,7 @@ $(function () {
 				this.init();
 			}
 		},
-		cacheKey: '-preprod',
+		cacheKey: '-new',
 		init(use_session_cache) {
 			var _self   = this;
 			var getters = [];
@@ -444,77 +444,112 @@ $(function () {
 			if (!sessionStorage.getItem('db.services' + _self.cacheKey)
 			    || !sessionStorage.getItem('db.servicesPrices' + _self.cacheKey)
 			    || !sessionStorage.getItem('db.servicesList' + _self.cacheKey)) {
-				getters.push(
-					utils.api.get('/api/v2/list/services?active=on' +
-					              '&@return=active,id,header,category,blocks' +
-					              '&@sort=header').then(function (data) {
-						_self.servicePrices = {};
-
-						data.forEach(function (service, i) {
-							_self.services[service.id] = service;
-							const _cats                = service.category;
-							const _tags                = [];
-
-							_cats.forEach(function (cat) {
-								_tags.push({
-									"id": cat,
-									"color": _self.serviceTags[cat].color,
-									"tag": Array.from(_self.serviceTags[cat].name)[0]
-								});
-							});
-							if (!!service.blocks) {
-								service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-									if (!serv_price.price || parseInt(serv_price.price) < 1) {
-										return;
-									}
-									let _item = {
-										value: serv_price.header,
-										id: service.id + '-' + j,
-										data: {
-											service_id: service.id,
-											service_title: service.header,
-											tags: _tags,
-											price: serv_price.price,
-											price_id: j
-										}
-									};
-									_self.servicesList.push(_item);
-									_self.servicePrices[service.id + '-' + j] = {
-										id: service.id + '-' + j,
-										service_id: service.id,
-										service_title: service.header,
-										price: serv_price.price,
-										header: serv_price.header,
-										tags: _tags
-									};
-								});
-							}
-						});
-					})
-				);
+				//getters.push(
+				//	utils.api.get('/api/v2/list/services?active=on' +
+				//	              '&@return=active,id,header,category,blocks' +
+				//	              '&@sort=header').then(function (data) {
+				//		_self.servicePrices = {};
+				//
+				//		data.forEach(function (service, i) {
+				//			_self.services[service.id] = service;
+				//			const _cats                = service.category;
+				//			const _tags                = [];
+				//
+				//			_cats.forEach(function (cat) {
+				//				_tags.push({
+				//					"id": cat,
+				//					"color": _self.serviceTags[cat].color,
+				//					"tag": Array.from(_self.serviceTags[cat].name)[0]
+				//				});
+				//			});
+				//			if (!!service.blocks) {
+				//				service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
+				//					if (!serv_price.price || parseInt(serv_price.price) < 1) {
+				//						return;
+				//					}
+				//					let _item = {
+				//						value: serv_price.header,
+				//						id: service.id + '-' + j,
+				//						data: {
+				//							service_id: service.id,
+				//							service_title: service.header,
+				//							tags: _tags,
+				//							price: serv_price.price,
+				//							price_id: j
+				//						}
+				//					};
+				//					_self.servicesList.push(_item);
+				//					_self.servicePrices[service.id + '-' + j] = {
+				//						id: service.id + '-' + j,
+				//						service_id: service.id,
+				//						service_title: service.header,
+				//						price: serv_price.price,
+				//						header: serv_price.header,
+				//						tags: _tags
+				//					};
+				//				});
+				//			}
+				//		});
+				//	})
+				//);
 				getters.push(
 					utils.api.get('/api/v2/list/catalogs?_id=shop_category').then(function (data) {
-						_self.labCategories = data[0]?.tree?.data?.lab?.children;
-						localStorage.setItem('db.labCategories' + _self.cacheKey,
-							JSON.stringify(_self.labCategories));
+						var all_categories = data[0]?.tree?.data;
+						var keys           = Object.keys(all_categories);
+						keys.forEach(function (key) {
+							let cat = all_categories[key];
+							if (cat.active !== 'on') {
+								return;
+							}
+
+							delete cat.active;
+							if (key === 'lab') {
+								let _keys = Object.keys(cat.children);
+								_keys.forEach(function (_key) {
+									let obj                     = cat.children[_key];
+									obj.isLab                   = ["lab"];
+									obj.type                    = ["lab"];
+									_self.priceCategories[_key] = obj;
+								});
+
+							} else {
+								delete cat.children;
+								_self.priceCategories[key] = cat;
+							}
+						});
 						console.log('>> >>');
-						return _self.labCategories;
+						console.log('price categories', _self.priceCategories);
+						return data;
 					}).then(function () {
-						utils.api.get('/api/v2/list/price?active=on&@return=id,header,price,category' +
-						              '&@sort=category').then(function (data) {
+						utils.api.get('/api/v2/list/price?active=on&@sort=category').then(function (data) {
 							if (!data) {
 								return;
 							}
 							console.log('>> >> >>');
 							data.forEach(function (service, i) {
-								if (!_self.labCategories.hasOwnProperty(service.category)) {
+								if (!service.price || parseInt(service.price) < 1) {
 									return;
 								}
-								_self.services[service.category] = _self.labCategories[service.category];
-								_self.services[service.category].header
-								                                 = _self.labCategories[service.category].name;
-								const _cats                      = ["lab"];
-								const _tags                      = [];
+
+								if (!_self.priceCategories.hasOwnProperty(service.category)) {
+									return;
+								}
+								var service_parent                      = _self.priceCategories[service.category];
+								_self.services[service.category]        = service_parent;
+								_self.services[service.category].header = service_parent.name;
+
+								let _cats;
+								let _tags = [];
+
+								let _quote = '';
+								let title  = '';
+								if (!service.hasOwnProperty('type')) {
+									_cats = ["lab"];
+									title = service_parent.name + ': ' + service.header;
+								} else {
+									title = service.header;
+									_cats = service.type;
+								}
 
 								_cats.forEach(function (cat) {
 									_tags.push({
@@ -523,16 +558,23 @@ $(function () {
 										"tag": Array.from(_self.serviceTags[cat].name)[0]
 									});
 								});
+								if (service.hasOwnProperty('quote')) {
+									_quote = service.quote;
+									if (service.quote == 'online') {
+										_self.spec_service.consultations.online[service.id] = service;
 
-								if (!service.price || parseInt(service.price) < 1) {
-									return;
+									} else if (service.quote == 'clinic') {
+										_self.spec_service.consultations.clinic[service.id] = service;
+									}
 								}
+
 								let _item = {
-									value: _self.labCategories[service.category].name + ': ' + service.header,
+									value: title,
 									id: service.category + '-' + service.id,
 									data: {
+										quote: _quote,
 										service_id: service.category,
-										service_title: _self.labCategories[service.category].name,
+										service_title: _self.priceCategories[service.category].name,
 										tags: _tags,
 										price: service.price,
 										price_id: service.id
@@ -540,11 +582,12 @@ $(function () {
 								};
 								_self.servicesList.push(_item);
 								_self.servicePrices[_item.id] = {
+									quote: _quote,
 									id: _item.id,
 									service_id: service.category,
-									service_title: _self.labCategories[service.category].name,
+									service_title: _self.priceCategories[service.category].name,
 									price: service.price,
-									header: _self.labCategories[service.category].name + ': ' + service.header,
+									header: service.header,
 									tags: _tags
 								};
 							});
@@ -653,9 +696,9 @@ $(function () {
 								}
 							} else {
 								if (rec.header.includes('Онлайн')) {
-									_self.spec_service.consultations.online[rec.id] = rec;
+									//_self.spec_service.consultations.online[rec.id] = rec;
 								} else {
-									_self.spec_service.consultations.clinic[rec.id] = rec;
+									//_self.spec_service.consultations.clinic[rec.id] = rec;
 								}
 							}
 						});
@@ -710,17 +753,17 @@ $(function () {
 				          ',location=yes,scrollbars=yes,status=no');
 		},
 		updateProfile(profile_id, profile_data, callback) {
-			let data   = profile_data;
+			let data = profile_data;
 			//console.log(data);
 
 			data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 			if (data.phone.length === 10) {
-				data.phone = '7'+ data.phone;
+				data.phone = '+7' + data.phone;
 			}
-			data.fullname    = data.fullname.replaceAll('  ', ' ')
+			data.fullname    = data.fullname.replaceAll('  ', ' ');
 			var names        = data.fullname.split(' ');
-			data.first_name  = names[0];
-			data.middle_name = names[1] || '';
+			data.first_name  = names[1];
+			data.middle_name = names[0] || '';
 			data.last_name   = names[2] || '';
 
 			utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {

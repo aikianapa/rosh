@@ -110,19 +110,21 @@
 						}
 					});
 			};
-			var popFast22        = new Ractive({
+			var popFast22       = new Ractive({
 				el: '.popup.--fast',
 				template: document.querySelector('.popup.--fast > template').innerHTML,
 				data: {
 					user: wbapp._session.user
 				},
 				on: {
-					complete(){
+					complete() {
 						var self = this;
-						setTimeout(function (){
-							if (wbapp._session.user.phone[0] === '7'){
-								wbapp._session.user.phone = '+'+wbapp._session.user.phone;
-								self.set('user', wbapp._session.user);
+						setTimeout(function () {
+							if (wbapp._session.user) {
+								if (wbapp._session.user.phone[0] === '7') {
+									wbapp._session.user.phone = '+' + wbapp._session.user.phone;
+									self.set('user', wbapp._session.user);
+								}
 							}
 							console.log('init tel', $(self.el).find('input.intl-tel'));
 							$(self.el).find('input.intl-tel').each(function () {
