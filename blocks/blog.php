@@ -89,14 +89,14 @@
         </div>
     </div>
     <script>
-	    $(document).on('wb-ajax-done', function () {
-		    const _list      = $('#blogList');
+	    $(document).on('wb-ready wb-ajax-done', function () {
+		    const _list = $('#blogList');
 		    _list.find(".blog-panel").sort(function (a, b) {
 
-				const _da = $(a).attr('data-date').split(' ')[0].split('.').reverse().join('');
-				const _db = $(b).attr('data-date').split(' ')[0].split('.').reverse().join('');
-			    console.log(_da,_db);
-				const _a = parseInt(_da);
+			    const _da = $(a).attr('data-date').split(' ')[0].split('.').reverse().join('');
+			    const _db = $(b).attr('data-date').split(' ')[0].split('.').reverse().join('');
+			    console.log(_da, _db);
+			    const _a = parseInt(_da);
 			    const _b = parseInt(_db);
 			    return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 		    }).appendTo(_list);

@@ -70,7 +70,6 @@ function BlogFilter(){
 				_this.periods = data;
 
 				$.each(_this.periods.months, function(i, month){
-					console.log();
 					let cloned = _this.months_items.eq(0).clone();
 					cloned
 						.text(_this.months[parseInt(month)])
