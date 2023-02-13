@@ -1626,26 +1626,27 @@
 				utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}).then(function (res) {
 					//toast('Список обновлен');
 				});
-			}).on('change', '.flag-date [type="checkbox"]', function (e) {
-			e.stopPropagation();
-			const _list      = $(this).parents('.account__table-body');
-			const _parent    = $(this).parents('.acount__table-accardeon');
-			const _id        = _parent.data('id');
-			const _is_marked = $(this).is(':checked');
-			const _priority  = _is_marked ? Date.now() : 0;
+			})
+			.on('change', '.flag-date [type="checkbox"]', function (e) {
+				e.stopPropagation();
+				const _list      = $(this).parents('.account__table-body');
+				const _parent    = $(this).parents('.acount__table-accardeon');
+				const _id        = _parent.data('id');
+				const _is_marked = $(this).is(':checked');
+				const _priority  = _is_marked ? Date.now() : 0;
 
-			_parent.attr('data-priority', _priority);
-			_list.find(".acount__table-accardeon").sort(function (a, b) {
-				const _a = parseInt($(a).attr('data-priority'));
-				const _b = parseInt($(b).attr('data-priority'));
-				return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-			}).appendTo(_list);
+				_parent.attr('data-priority', _priority);
+				_list.find(".acount__table-accardeon").sort(function (a, b) {
+					const _a = parseInt($(a).attr('data-priority'));
+					const _b = parseInt($(b).attr('data-priority'));
+					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+				}).appendTo(_list);
 
-			utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
-				.then(function (res) {
-					//toast('Список обновлен');
-				});
-		});
+				utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
+					.then(function (res) {
+						//toast('Список обновлен');
+					});
+			});
 	});
 </script>
 

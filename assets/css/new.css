@@ -1707,7 +1707,16 @@ blockquote cite {
 @media (-webkit-min-device-pixel-ratio : 2), (min-resolution : 192dpi) {
     .iti__flag {background-image : url("/assets/img/flags@2x.png");}
 }
-
+.gallery__nav .prev,
+.gallery__nav .next{
+    background      : #FFFFFFAA;
+    height          : 40px;
+    width           : 40px;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    border-radius   : 50%;
+}
 @media (max-width : 1130px) {
     .orders-sidebar,
     .basket-sidebar {

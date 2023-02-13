@@ -115,16 +115,17 @@ $(function() {
 
     };
     $(document).ready(function() {
-        $(document).delegate('.select .select__main', 'click', function() {
-            $(this).parent().toggleClass('active');
-            return false;
-        }).delegate('.select .select__item', 'click', function(e) {
+        $(document).on('click', '.select .select__main', function (e) {
+            e.stopPropagation();
+            var _parent = $(this).parents('.select');
+            _parent.toggleClass('active');
+        }).delegate('.select .select__item', 'click', function (e) {
             //e.stopPropagation(); - не работает фильр блога
             var value = false;
             if ($(this).hasClass('select__item--checkbox')) {
                 var ne = false;
-                value = [];
-                $(this).closest('.select__list').find('.select__item--checkbox').each(function() {
+                value  = [];
+                $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
                     if ($(this).find('input[type=checkbox]:checked').length) {
                         value.push($(this).find('.select__name:first').text());
                         ne = true;
@@ -293,11 +294,13 @@ $(function() {
             return false;
         });
 
-        $('html').on('click', 'body', function() {
-            $('.select').removeClass('active');
-            $('button.burger').removeClass('active');
-            $('#mainmenu').removeClass('active');
-            $('.profile-menu').removeClass('active');
+        $('html').on('click', 'body', function(e) {
+            if(!$(e.target).parents('.select').length){
+                $('.select.active').removeClass('active');
+            }
+            $('button.burger.active').removeClass('active');
+            $('#mainmenu.active').removeClass('active');
+            $('.profile-menu.active').removeClass('active');
         }).on('click', 'header', function() {
             $('#mainfilter').hide();
         });
