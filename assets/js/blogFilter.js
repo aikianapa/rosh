@@ -76,6 +76,15 @@ function BlogFilter(){
 						.removeClass('active').removeClass('blank')
 						.appendTo(_this.months_container);
 				})
+				if (_this.periods.years.indexOf('2021') == -1){
+					_this.periods.years.push('2021')
+				}
+				if (_this.periods.years.indexOf('2022') == -1){
+					_this.periods.years.push('2022')
+				}
+				if (_this.periods.years.indexOf('2023') == -1){
+					_this.periods.years.push('2023')
+				}
 				$.each(_this.periods.years.reverse(), function(i, year){
 					let cloned = _this.years_items.eq(0).clone();
 					cloned
