@@ -54,7 +54,7 @@
                     'filter':{
                         'active':'on'
                     },
-                    'size':'6',
+                    'size':'10',
                     'more':'true:ещё'
                 }">
                     <wb-var width="33" />
