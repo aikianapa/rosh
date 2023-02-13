@@ -1709,7 +1709,7 @@ blockquote cite {
 }
 .gallery__nav .prev,
 .gallery__nav .next{
-    background      : #FFFFFFAA;
+    background      : #FFFFFFBB;
     height          : 40px;
     width           : 40px;
     display         : flex;
