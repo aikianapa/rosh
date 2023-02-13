@@ -47,6 +47,18 @@
                             </div>
 
                             <div class="form-group row">
+                                <label class="col-form-label col-sm-4">Запись на приём</label>
+                                <div class="col">
+                                    <select class="form-control" placeholder="Запись на приём" name="quote">
+                                        <option value="">Нет</option>
+                                        <option value="online">Онлайн</option>
+                                        <option value="clinic">В клинике</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
                                 <label class="col-form-label col-sm-4">Цена</label>
                                 <div class="col">
                                     <input name="price" type="number" class="form-control" placeholder="Цена" required>
