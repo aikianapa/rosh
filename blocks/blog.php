@@ -73,7 +73,7 @@
                         </div>
                         <div class="blog-panel__info">
                             <div class="blog-panel__top">
-                                <div class="blog-panel__date" style="color:black">{{dateform({{date}})}}</div>
+                                <div class="blog-panel__date"   >{{dateform({{date}})}}</div>
                                 <div class="blog-panel__title">{{header}}</div>
                             </div>
                             <div class="blog-panel__bottom">
