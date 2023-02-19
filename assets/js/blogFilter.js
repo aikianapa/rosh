@@ -56,7 +56,7 @@ function BlogFilter(){
 			}
 		})
 	}
-
+	this.months = ['', 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 	this.init = function(){
 		var _this = this;
 
@@ -72,12 +72,20 @@ function BlogFilter(){
 				$.each(_this.periods.months, function(i, month){
 					let cloned = _this.months_items.eq(0).clone();
 					cloned
-						.text(month)
+						.text(_this.months[parseInt(month)])
 						.removeClass('active').removeClass('blank')
 						.appendTo(_this.months_container);
 				})
-
-				$.each(_this.periods.years, function(i, year){
+				if (_this.periods.years.indexOf('2021') == -1){
+					_this.periods.years.push('2021')
+				}
+				if (_this.periods.years.indexOf('2022') == -1){
+					_this.periods.years.push('2022')
+				}
+				if (_this.periods.years.indexOf('2023') == -1){
+					_this.periods.years.push('2023')
+				}
+				$.each(_this.periods.years.reverse(), function(i, year){
 					let cloned = _this.years_items.eq(0).clone();
 					cloned
 						.text(year)
@@ -96,7 +104,16 @@ $(document).ready(function(){
 		filter.init();
 
 		$('.filter-select__list#months').on('click', '.filter-select__item', function(){
-			filter.blog_mouth = $(this).text();
+			let _selected = filter.months.indexOf($(this).text());
+			if (_selected < 1){
+				return false;
+			}
+			_selected = ''+_selected;
+			if (_selected < 10) {
+				_selected = '0' + _selected;
+			}
+
+			filter.blog_mouth = _selected;
 			$(this).attr('data-ajax', filter.get_data_ajax());
 		})
 

@@ -166,7 +166,7 @@
 							title: (rec.groups === 'longterms' ? 'Продолжительное лечение: ' + rec.longterm_title
 								: ''),
 							type: 'before',
-							type_text: 'Фото до начала лечения',
+							type_text: 'Фото до приема',
 							image: _before_photo.src,
 							client: rec.client,
 							record: rec.id,
@@ -189,7 +189,7 @@
 									? 'Продолжительное лечение: ' + rec.longterm_title
 									: ''),
 								type: 'after',
-								type_text: 'Фото в процессе лечения',
+								type_text: 'Фото после приема',
 								image: photo.src,
 								client: rec.client,
 								record: rec.id,

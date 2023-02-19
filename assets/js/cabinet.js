@@ -343,6 +343,8 @@ $(function () {
 			}
 		},
 		categories: {},
+		priceCategories: {},
+
 		experts: {},
 		expert_users: {},
 		clients: {},
@@ -355,28 +357,31 @@ $(function () {
 				localStorage.removeItem('db.' + _key + _self.cacheKey);
 				sessionStorage.removeItem('db.' + _key + _self.cacheKey);
 			} else {
-				localStorage.removeItem('db.quoteStatus' + _self.cacheKey);
-				localStorage.removeItem('db.quoteType' + _self.cacheKey);
-				localStorage.removeItem('db.categories' + _self.cacheKey);
+				['-dev', '-preprod', _self.cacheKey].forEach(function (ck) {
+					localStorage.removeItem('db.quoteStatus' + ck);
+					localStorage.removeItem('db.quoteType' + ck);
+					localStorage.removeItem('db.quotePay' + ck);
+					localStorage.removeItem('db.categories' + ck);
+					localStorage.removeItem('db.labCategories' + ck);
 
-				sessionStorage.removeItem('db.services' + _self.cacheKey);
-				sessionStorage.removeItem('db.servicesList' + _self.cacheKey);
-				sessionStorage.removeItem('db.servicePrices' + _self.cacheKey);
+					sessionStorage.removeItem('db.services' + ck);
+					sessionStorage.removeItem('db.servicesList' + ck);
+					sessionStorage.removeItem('db.servicePrices' + ck);
+					/* old keys clear */
+					sessionStorage.removeItem('db.experts' + ck);
+					sessionStorage.removeItem('db.expert_users' + ck);
+					sessionStorage.removeItem('db.experts_alt' + ck);
 
-				/* old keys clear */
-				sessionStorage.removeItem('db.experts' + _self.cacheKey);
-				sessionStorage.removeItem('db.expert_users' + _self.cacheKey);
-				sessionStorage.removeItem('db.experts_alt' + _self.cacheKey);
-
-				sessionStorage.removeItem('db.expert_list' + _self.cacheKey);
-				sessionStorage.removeItem('db.expert_user_list' + _self.cacheKey);
+					sessionStorage.removeItem('db.expert_list' + ck);
+					sessionStorage.removeItem('db.expert_user_list' + ck);
+				});
 			}
 			console.log('Cache cleared!');
 			if (_key !== false) {
 				this.init();
 			}
 		},
-		cacheKey: '-dev',
+		cacheKey: '-new',
 		init(use_session_cache) {
 			var _self   = this;
 			var getters = [];
@@ -439,57 +444,161 @@ $(function () {
 			if (!sessionStorage.getItem('db.services' + _self.cacheKey)
 			    || !sessionStorage.getItem('db.servicesPrices' + _self.cacheKey)
 			    || !sessionStorage.getItem('db.servicesList' + _self.cacheKey)) {
+				//getters.push(
+				//	utils.api.get('/api/v2/list/services?active=on' +
+				//	              '&@return=active,id,header,category,blocks' +
+				//	              '&@sort=header').then(function (data) {
+				//		_self.servicePrices = {};
+				//
+				//		data.forEach(function (service, i) {
+				//			_self.services[service.id] = service;
+				//			const _cats                = service.category;
+				//			const _tags                = [];
+				//
+				//			_cats.forEach(function (cat) {
+				//				_tags.push({
+				//					"id": cat,
+				//					"color": _self.serviceTags[cat].color,
+				//					"tag": Array.from(_self.serviceTags[cat].name)[0]
+				//				});
+				//			});
+				//			if (!!service.blocks) {
+				//				service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
+				//					if (!serv_price.price || parseInt(serv_price.price) < 1) {
+				//						return;
+				//					}
+				//					let _item = {
+				//						value: serv_price.header,
+				//						id: service.id + '-' + j,
+				//						data: {
+				//							service_id: service.id,
+				//							service_title: service.header,
+				//							tags: _tags,
+				//							price: serv_price.price,
+				//							price_id: j
+				//						}
+				//					};
+				//					_self.servicesList.push(_item);
+				//					_self.servicePrices[service.id + '-' + j] = {
+				//						id: service.id + '-' + j,
+				//						service_id: service.id,
+				//						service_title: service.header,
+				//						price: serv_price.price,
+				//						header: serv_price.header,
+				//						tags: _tags
+				//					};
+				//				});
+				//			}
+				//		});
+				//	})
+				//);
 				getters.push(
-					utils.api.get('/api/v2/list/services?active=on' +
-					              '&@return=active,id,header,category,blocks' +
-					              '&@sort=header').then(function (data) {
-						_self.servicePrices = {};
+					utils.api.get('/api/v2/list/catalogs?_id=shop_category').then(function (data) {
+						var all_categories = data[0]?.tree?.data;
+						var keys           = Object.keys(all_categories);
+						keys.forEach(function (key) {
+							let cat = all_categories[key];
+							if (cat.active !== 'on') {
+								return;
+							}
 
-						data.forEach(function (service, i) {
-							_self.services[service.id] = service;
-							const _cats                = service.category;
-							const _tags                = [];
+							delete cat.active;
+							if (key === 'lab') {
+								let _keys = Object.keys(cat.children);
+								_keys.forEach(function (_key) {
+									let obj                     = cat.children[_key];
+									obj.isLab                   = ["lab"];
+									obj.type                    = ["lab"];
+									_self.priceCategories[_key] = obj;
+								});
 
-							_cats.forEach(function (cat) {
-								_tags.push({
-									"id": cat,
-									"color": _self.serviceTags[cat].color,
-									"tag": Array.from(_self.serviceTags[cat].name)[0]
-								});
-							});
-							if (!!service.blocks) {
-								service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-									if (!serv_price.price || parseInt(serv_price.price) < 1) {
-										return;
-									}
-									let _item = {
-										value: serv_price.header,
-										id: service.id + '-' + j,
-										data: {
-											service_id: service.id,
-											service_title: service.header,
-											tags: _tags,
-											price: serv_price.price,
-											price_id: j
-										}
-									};
-									_self.servicesList.push(_item);
-									_self.servicePrices[service.id + '-' + j] = {
-										id: service.id + '-' + j,
-										service_id: service.id,
-										service_title: service.header,
-										price: serv_price.price,
-										header: serv_price.header,
-										tags: _tags
-									};
-								});
+							} else {
+								delete cat.children;
+								_self.priceCategories[key] = cat;
 							}
 						});
+						console.log('>> >>');
+						console.log('price categories', _self.priceCategories);
+						return data;
+					}).then(function () {
+						utils.api.get('/api/v2/list/price?active=on&@sort=header').then(function (data) {
+							if (!data) {
+								return;
+							}
+							console.log('>> >> >>');
+							data.forEach(function (service, i) {
+								if (!service.price || parseInt(service.price) < 1) {
+									return;
+								}
 
-						sessionStorage.setItem('db.services' + _self.cacheKey, JSON.stringify(_self.services));
-						sessionStorage.setItem('db.servicesList' + _self.cacheKey, JSON.stringify(_self.servicesList));
-						sessionStorage.setItem('db.servicePrices' + _self.cacheKey,
-							JSON.stringify(_self.servicePrices));
+								if (!_self.priceCategories.hasOwnProperty(service.category)) {
+									return;
+								}
+								var service_parent                      = _self.priceCategories[service.category];
+								_self.services[service.category]        = service_parent;
+								_self.services[service.category].header = service_parent.name;
+
+								let _cats;
+								let _tags = [];
+
+								let _quote = '';
+								let title  = '';
+								if (!service.hasOwnProperty('type')) {
+									_cats = ["lab"];
+									title = service_parent.name + ': ' + service.header;
+								} else {
+									title = service.header;
+									_cats = service.type;
+								}
+
+								_cats.forEach(function (cat) {
+									_tags.push({
+										"id": cat,
+										"color": _self.serviceTags[cat].color,
+										"tag": Array.from(_self.serviceTags[cat].name)[0]
+									});
+								});
+								if (service.hasOwnProperty('quote')) {
+									_quote = service.quote;
+									if (service.quote == 'online') {
+										_self.spec_service.consultations.online[service.id] = service;
+
+									} else if (service.quote == 'clinic') {
+										_self.spec_service.consultations.clinic[service.id] = service;
+									}
+								}
+
+								let _item = {
+									value: title,
+									id: service.category + '-' + service.id,
+									data: {
+										quote: _quote,
+										service_id: service.category,
+										service_title: _self.priceCategories[service.category].name,
+										tags: _tags,
+										price: service.price,
+										price_id: service.id
+									}
+								};
+								_self.servicesList.push(_item);
+								_self.servicePrices[_item.id] = {
+									quote: _quote,
+									id: _item.id,
+									service_id: service.category,
+									service_title: _self.priceCategories[service.category].name,
+									price: service.price,
+									header: service.header,
+									tags: _tags
+								};
+							});
+
+							sessionStorage.setItem('db.services' + _self.cacheKey,
+								JSON.stringify(_self.services));
+							sessionStorage.setItem('db.servicesList' + _self.cacheKey,
+								JSON.stringify(_self.servicesList));
+							sessionStorage.setItem('db.servicePrices' + _self.cacheKey,
+								JSON.stringify(_self.servicePrices));
+						});
 					})
 				);
 			} else {
@@ -512,13 +621,9 @@ $(function () {
 										if (!res || !res[0]) {
 											return;
 										}
-										catalog.experts[expert.id].info_uri = res[0]['u'] || '';
-										sessionStorage.setItem('db.expert_list', JSON.stringify(catalog.experts));
-										if (expert.login) {
-											catalog.expert_users[expert.login] = catalog.experts[expert.id];
-											sessionStorage.setItem('db.expert_user_list',
-												JSON.stringify(catalog.expert_users));
-										}
+										catalog.expert_users[expert.id].info_uri = res[0]['u'] || '';
+										sessionStorage.setItem('db.expert_users' + _self.cacheKey,
+											JSON.stringify(catalog.expert_users));
 									});
 							}
 						});
@@ -591,9 +696,9 @@ $(function () {
 								}
 							} else {
 								if (rec.header.includes('Онлайн')) {
-									_self.spec_service.consultations.online[rec.id] = rec;
+									//_self.spec_service.consultations.online[rec.id] = rec;
 								} else {
-									_self.spec_service.consultations.clinic[rec.id] = rec;
+									//_self.spec_service.consultations.clinic[rec.id] = rec;
 								}
 							}
 						});
@@ -601,7 +706,7 @@ $(function () {
 				})
 			);
 
-			return Promise.allSettled(getters).then(() => {
+			return Promise.allSettled(getters).then((results) => {
 				$(document).trigger('cabinet-db-ready');
 			});
 		}
@@ -648,18 +753,18 @@ $(function () {
 				          ',location=yes,scrollbars=yes,status=no');
 		},
 		updateProfile(profile_id, profile_data, callback) {
-			let data   = profile_data;
+			let data = profile_data;
 			//console.log(data);
 
 			data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 			if (data.phone.length === 10) {
-				data.phone = '7'+ data.phone;
+				data.phone = '+7' + data.phone;
 			}
-			data.fullname    = data.fullname.replaceAll('  ', ' ')
+			data.fullname    = data.fullname.replaceAll('  ', ' ');
 			var names        = data.fullname.split(' ');
-			data.first_name  = names[0];
-			data.middle_name = names[1] || '';
-			data.last_name   = names[2] || '';
+			data.first_name  = names[1];
+			data.middle_name = names[2] || '';
+			data.last_name   = names[0] || '';
 
 			utils.api.post('/api/v2/update/users/' + profile_id, data).then(function (res) {
 				if (!!callback) {
@@ -865,7 +970,11 @@ $(function () {
 		var _parent_form = $selector.closest('form');
 		$(document).on('click', '.search__drop-delete', function (e) {
 			e.stopPropagation();
-			$(this).parents('.search__drop-item').remove();
+			var item = $(this).parents('.search__drop-item');
+			if (item.data('quote')){
+				_parent_form.find('input[name="for_consultation"]').prop(':checked', true).trigger('change');
+			}
+			item.remove();
 			let sum = 0;
 			_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
 				sum += parseInt($(this).data('price'));
@@ -876,10 +985,9 @@ $(function () {
 		$selector.autocomplete('dispose');
 
 		return $selector.autocomplete({
-			noCache: true,
+			noCache: false,
 			minChars: 0,
 			lookup: service_list,
-			triggerSelectOnValidInput: false,
 			beforeRender: function (container, suggestions) {
 				var CNT = $(container);
 				$(container).addClass('search__drop').html('');
@@ -921,7 +1029,6 @@ $(function () {
 				});
 			},
 			onSelect: function (suggestion) {
-				console.log(suggestion);
 				$selector.val('');
 				if (_parent_form.find('.admin-editor__patient:not(.price-list) [data-id=' + suggestion.id + ']').length) {
 					return;
@@ -936,10 +1043,24 @@ $(function () {
 				const index = _parent_form.find(
 					'.admin-editor__patient:not(.price-list) .search__drop-item[data-service_id]').length;
 				var sum     = 0;
+				console.log('selected:', suggestion);
+				if (suggestion.data.quote){
+					_parent_form.find('input.checkbox-visible-next-form[name="for_consultation"]').prop(':checked', true);
+					_parent_form.find('[data-show="consultation-type"]').show();
+					_parent_form.find('[data-show-input="consultation-'+ suggestion.data.quote+'"]').trigger('click');
+					_parent_form.find('.price-list .search__drop-item.consultation[data-consultation="' +
+					                  suggestion.data.price_id + '"] label').trigger('click');
+					updPrice(_parent_form);
+					setTimeout(function () {
+
+					});
+					return;
+				}
 				_parent_form.find('.admin-editor__patient:not(.price-list)').append(
 					$('<div></div>').addClass('search__drop-item selected').attr({
 						'data-id': suggestion.id,
 						'data-index': index,
+						"data-quote": suggestion.data.quote,
 						"data-service_id": suggestion.data.service_id,
 						"data-price": suggestion.data.price
 					}).append(
@@ -1144,20 +1265,22 @@ $(function () {
 			on: {
 				teardown(){
 					$('.search-services').autocomplete('dispose');
+					$('.autocomplete-suggestions.search__drop').remove();
 				},
 				complete() {
 					this.set('catalog', catalog);
+					$('.search-services').autocomplete('dispose');
 
 					initServicesSearch($('.search-services'), catalog.servicesList);
 					initPlugins($(this.el));
 				},
 				selectCategory(ev) {
-					var _el = $(this.el);
-					console.log(_el, _el.find('.search-services'));
-					setTimeout(function (){
-						_el.val(' ').trigger('focus');
-						_el.find('.search-services').trigger('focus');
-					}, 200);
+					var _el = $(ev.node).parents('form').find('.search__input.search-services');
+
+					setTimeout(function () {
+						_el.trigger('focus').trigger('keydown');
+						//_el.find('.search-services').trigger('focus');
+					}, 400);
 				},
 				submit(ev) {
 					let $form = $(ev.node);
@@ -1198,88 +1321,6 @@ $(function () {
 					}
 
 					return false;
-				},
-				forConsultationClick(ev) {
-					var price             = 0;
-					var $price_input      = $(ev.node).parents('form').find('[name="price"]');
-					var prev_price        = $price_input.val();
-					var $for_consultation = $(ev.node);
-					if (!isNaN(prev_price)) {
-						price = parseInt(prev_price);
-					}
-
-					console.log('?:', $for_consultation.is(':checked'));
-					if ($for_consultation.is(':checked')) {
-						setTimeout(function (){
-							$(ev.node).parents('form').find('.clinic[name="type"]').trigger('click');
-						});
-					} else {
-						if ($price_input.hasClass('consultation') && price > 0) {
-							if ($price_input.attr('data-type') == 'online') {
-								price -= parseInt(catalog.spec_service.consultation.price);
-							} else if ($price_input.attr('data-type') == 'clinic') {
-								price -= parseInt(catalog.spec_service.consultation_clinic.price);
-							}
-						}
-						$price_input.removeClass('consultation');
-						$price_input.removeAttr('data-type');
-						$price_input.val(price);
-						$(ev.node).parents('form').find('.price').html(
-							utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
-					}
-				},
-				checkConsultation(ev) {
-					var ght               = 0;
-					var lv                = 0;
-					var sel_type          = $(ev.node).val();
-					var $for_consultation = $(ev.node).parents('form').find('[name="for_consultation"]');
-					var $price_input      = $(ev.node).parents('form').find('[name="price"]');
-					if ($(ev.node).is(':checked')) {
-						if (sel_type == 'online') {
-							ght = parseInt(catalog.spec_service.consultation.price);
-						} else if (sel_type == 'clinic') {
-							ght = parseInt(catalog.spec_service.consultation_clinic.price);
-						} else {
-							ght = 0;
-						}
-					} else {
-						ght = 0;
-					}
-					var price      = 0;
-					var prev_price = $price_input.val();
-
-					if (!isNaN(prev_price)) {
-						price = parseInt(prev_price);
-					}
-
-					if (ght === 0) {
-						if ($price_input.hasClass('consultation') && price > 0) {
-							if ($price_input.attr('data-type') == 'online') {
-								price -= parseInt(catalog.spec_service.consultation.price);
-							} else if ($price_input.attr('data-type') == 'clinic') {
-								price -= parseInt(catalog.spec_service.consultation_clinic.price);
-							}
-						}
-						$price_input.removeClass('consultation');
-						$price_input.removeAttr('data-type');
-					} else if (!$price_input.hasClass('consultation')
-					           || !$price_input.attr('data-type') != sel_type) {
-						if (price > 0) {
-							if ($price_input.attr('data-type') == 'online') {
-								price -= parseInt(catalog.spec_service.consultation.price);
-							} else if ($price_input.attr('data-type') == 'clinic') {
-								price -= parseInt(catalog.spec_service.consultation_clinic.price);
-							}
-						}
-						price += ght;
-
-						$price_input.addClass('consultation');
-						$price_input.attr('data-type', sel_type);
-					}
-
-					$price_input.val(price);
-					$(ev.node).parents('form').find('.price').html(
-						utils.formatPrice(price) + ' ₽<sup><b>*</b></sup>');
 				}
 			}
 		});

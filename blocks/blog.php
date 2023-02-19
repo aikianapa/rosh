@@ -54,7 +54,7 @@
                     'filter':{
                         'active':'on'
                     },
-                    'size':'6',
+                    'size':'10',
                     'more':'true:ещё'
                 }">
                     <wb-var width="33" />
@@ -62,7 +62,8 @@
                     <wb-var width="100" wb-if="'{{_ndx}}'>'5'" />
                     <wb-var width="66" wb-if="'{{_ndx}}'=='7'" />
                     <wb-var width="33" wb-if="'{{_ndx}}'=='8'" />
-                    <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
+                    <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})"
+                        data-date="{{date}}">
                         <div class="blog-panel__tags">
                             <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
                             <div  wb-if="'{{category}}'=='action'">
@@ -72,7 +73,7 @@
                         </div>
                         <div class="blog-panel__info">
                             <div class="blog-panel__top">
-                                <div class="blog-panel__date">{{dateform({{date}})}}</div>
+                                <div class="blog-panel__date"   >{{dateform({{date}})}}</div>
                                 <div class="blog-panel__title">{{header}}</div>
                             </div>
                             <div class="blog-panel__bottom">
@@ -87,8 +88,21 @@
             </div>
         </div>
     </div>
-    <script wb-app remove>
+    <script>
+	    $(document).on('wb-ready wb-ajax-done', function () {
+		    const _list = $('#blogList');
+		    _list.find(".blog-panel").sort(function (a, b) {
 
+			    const _da = $(a).attr('data-date').split(' ')[0].split('.').reverse().join('');
+			    const _db = $(b).attr('data-date').split(' ')[0].split('.').reverse().join('');
+			    console.log(_da, _db);
+			    const _a = parseInt(_da);
+			    const _b = parseInt(_db);
+			    return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+		    }).appendTo(_list);
+
+		    console.log('LOADED!');
+	    });
     </script>
 </view>
 

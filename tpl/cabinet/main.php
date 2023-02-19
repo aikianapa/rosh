@@ -547,7 +547,7 @@
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
 				<div class="mb-4 text-right" data-hide="service-search">
-					<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
+					<b>*</b>&nbsp;<small>Не является публичной офертой. Стоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
 
 				{{#if record.group == 'events'}}
@@ -555,13 +555,13 @@
 					{{#if record.hasPhoto}}
 					<div class="row">
 						<div class="col-md-6">
-							<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+							<div class="text-bold text-big mb-20">Фото до приема</div>
 							{{#each record.photos.before}} <!--single photo!-->
 							<a class="before-healing photo"
 								data-fancybox="images-{{record.id}}"
 								href="{{.src}}"
 								data-href="{{.src}}"
-								data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
+								data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
 								<div class="healing__date">
 									{{ @global.utils.formatDate(.date) }}
 								</div>
@@ -571,7 +571,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="text-bold text-big mb-20">
-								Фото в процессе лечения
+								Фото после приема
 							</div>
 							<div class="after-healing">
 								<div class="row">
@@ -580,7 +580,7 @@
 										<a class="after-healing__item photo"
 											data-fancybox="images-{{record.id}}"
 											data-href="{{.src}}"
-											data-caption="Фото Фото в процессе лечения, {{ @global.utils.formatDate(.date) }}">
+											data-caption="Фото Фото после приема, {{ @global.utils.formatDate(.date) }}">
 											<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 											<div class="after-healing__photo"
 												style="background-image: url({{.src}});">
@@ -990,12 +990,12 @@
 							{{#if record.hasPhoto}}
 							<div class="row">
 								<div class="col-md-5">
-									<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+									<div class="text-bold text-big mb-20">Фото до приема</div>
 									{{#each record.photos.before}} <!--single photo!-->
 									<a class="before-healing photo"
 										data-fancybox="images-{{event.id}}"
 										data-href="{{.src}}"
-										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+										data-caption="Фото до приема: {{ @global.utils.formatDate(.date) }}">
 										<h2 class="h2 healing__date-title">
 											{{ @global.utils.formatDateAdv(.date) }}
 										</h2>
@@ -1006,7 +1006,7 @@
 								</div>
 								<div class="col-md-7">
 									<div class="text-bold text-big mb-20">
-										Фото после начала лечения
+										Фото после приема
 									</div>
 									<div class="after-healing">
 										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
@@ -1016,7 +1016,7 @@
 												<a class="after-healing__item photo"
 													data-fancybox="images-{{event.id}}"
 													data-href="{{.src}}"
-													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+													data-caption="Фото после приема {{ @global.utils.formatDate(.date) }}">
 													<h2 class="h2 healing__date-title">
 														{{ @global.utils.formatDateAdv(.date) }}
 													</h2>
@@ -1050,7 +1050,7 @@
 	{{#if photos}}
 	<div class="row">
 		<div class="col-md-4">
-			<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+			<div class="text-bold text-big mb-20">Фото до приема</div>
 			{{#each photos.before}} <!--single photo!-->
 			<a class="after-healing__item"
 				data-fancybox="images"
@@ -1068,7 +1068,7 @@
 		</div>
 		<div class="col-md-8">
 			<div class="text-bold text-big mb-20">
-				Фото после начала лечения
+				Фото после приема
 			</div>
 			<div class="after-healing">
 				<h2 class="h2 healing__date-title d-none month-header"></h2>
@@ -1078,7 +1078,7 @@
 						<a class="after-healing__item"
 							data-fancybox="images-{{this.id}}"
 							href="{{.src}}"
-							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+							data-caption="Фото после приема {{ @global.utils.formatDate(.date) }}">
 							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 							<div class="after-healing__photo"
 								style="background-image: url({{.src}});">
@@ -1626,26 +1626,27 @@
 				utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}).then(function (res) {
 					//toast('Список обновлен');
 				});
-			}).on('change', '.flag-date [type="checkbox"]', function (e) {
-			e.stopPropagation();
-			const _list      = $(this).parents('.account__table-body');
-			const _parent    = $(this).parents('.acount__table-accardeon');
-			const _id        = _parent.data('id');
-			const _is_marked = $(this).is(':checked');
-			const _priority  = _is_marked ? Date.now() : 0;
+			})
+			.on('change', '.flag-date [type="checkbox"]', function (e) {
+				e.stopPropagation();
+				const _list      = $(this).parents('.account__table-body');
+				const _parent    = $(this).parents('.acount__table-accardeon');
+				const _id        = _parent.data('id');
+				const _is_marked = $(this).is(':checked');
+				const _priority  = _is_marked ? Date.now() : 0;
 
-			_parent.attr('data-priority', _priority);
-			_list.find(".acount__table-accardeon").sort(function (a, b) {
-				const _a = parseInt($(a).attr('data-priority'));
-				const _b = parseInt($(b).attr('data-priority'));
-				return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-			}).appendTo(_list);
+				_parent.attr('data-priority', _priority);
+				_list.find(".acount__table-accardeon").sort(function (a, b) {
+					const _a = parseInt($(a).attr('data-priority'));
+					const _b = parseInt($(b).attr('data-priority'));
+					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+				}).appendTo(_list);
 
-			utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
-				.then(function (res) {
-					//toast('Список обновлен');
-				});
-		});
+				utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
+					.then(function (res) {
+						//toast('Список обновлен');
+					});
+			});
 	});
 </script>
 

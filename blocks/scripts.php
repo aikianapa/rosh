@@ -9,12 +9,12 @@
 		"/assets/js/jquery.inputmask.min.js",
 		"/assets/js/jquery.maskedinput.min.js",
 		"/assets/js/jquery.autocomplete.min.js",
+		"/assets/js/intlTelInput-jquery.min.js",
 		"/assets/js/fancybox.umd.js",
 		"/assets/js/jquery.serializejson.min.js",
 		"/assets/js/air-datepicker.js",
 		"/assets/js/jquery.timepicker.min.js",
 		"/assets/js/jquery.toast.min.js",
-		"/assets/js/intlTelInput-jquery.min.js",
 		"/assets/js/main.js",
 		"/assets/js/new.js",
 		"/assets/js/blogFilter.js",
@@ -39,7 +39,7 @@
         });
 	</script>
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=74F9E2C9627A4C97962D024FDBBD8D6F">
+		src="/assets/js/cabinet.js?v=7BCF1AF0A61447059B548A902329DAEE">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
@@ -52,8 +52,8 @@
 
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
-	<link href="/assets/css/intlTelInput.min.css?v=1.1" rel="stylesheet">
-	<link href="/assets/css/new.css?v=1.15" rel="stylesheet">
+	<link href="/assets/css/intlTelInput.min.css?v=1.2" rel="stylesheet">
+	<link href="/assets/css/new.css?v=1.25" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css" rel="stylesheet">
 

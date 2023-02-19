@@ -311,7 +311,7 @@
 							<div class="acount__photos">
 								<div class="row">
 									<div class="col-md-5">
-										<p>Фото до начала лечения</p>
+										<p>Фото до приема</p>
 										{{#each photos.before}}
 										<div class="row">
 											<div class="col-md-12">
@@ -320,7 +320,7 @@
 														data-fancybox="event-{{event.id}}"
 														data-href="{{.src}}"
 														href="{{.src}}"
-														data-caption="Фото до начала лечения:
+														data-caption="Фото до приема:
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">
 															{{ @global.utils.formatDate(.date) }}
@@ -338,7 +338,7 @@
 										{{/each}}
 									</div>
 									<div class="col-md-7">
-										<p>Фото в процессе лечения</p>
+										<p>Фото после приема</p>
 										{{#each photos.after}}
 										<div class="row">
 											<div class="col-md-6 mt-1">
@@ -347,7 +347,7 @@
 														data-fancybox="event-{{event.id}}"
 														href="{{.src}}"
 														data-href="{{.src}}"
-														data-caption="Фото в процессе лечения:
+														data-caption="Фото после приема:
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 														<div class="after-healing__photo"

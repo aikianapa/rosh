@@ -302,7 +302,7 @@
 									<div class="acount__photos">
 										<div class="row">
 											<div class="col-md-5">
-												<p>Фото до начала лечения</p>
+												<p>Фото до приема</p>
 												{{#each photos.before}}
 												<div class="row">
 													<div class="col-md-12">
@@ -311,7 +311,7 @@
 																data-fancybox="event-{{event.id}}"
 																data-href="{{.src}}"
 																href="{{.src}}"
-																data-caption="Фото до начала лечения:
+																data-caption="Фото до приема:
 															{{ @global.utils.formatDate(.date) }}">
 																<div class="healing__date">
 																	{{ @global.utils.formatDate(.date) }}
@@ -329,7 +329,7 @@
 												{{/each}}
 											</div>
 											<div class="col-md-7">
-												<p>Фото в процессе лечения</p>
+												<p>Фото после приема</p>
 												{{#each photos.after}}
 												<div class="row">
 													<div class="col-md-6 mt-1">
@@ -338,7 +338,7 @@
 																data-fancybox="event-{{event.id}}"
 																href="{{.src}}"
 																data-href="{{.src}}"
-																data-caption="Фото в процессе лечения:
+																data-caption="Фото после приема:
 															{{ @global.utils.formatDate(.date) }}">
 																<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 																<div class="after-healing__photo"
@@ -395,12 +395,12 @@
 									{{#if this.hasPhoto}}
 									<div class="row">
 										<div class="col-md-5">
-											<div class="text-bold text-big mb-20">Фото до начала лечения</div>
+											<div class="text-bold text-big mb-20">Фото до приема</div>
 											{{#each this.photos.before}} <!--single photo!-->
 											<a class="before-healing photo"
 												data-fancybox="images-{{event.id}}"
 												data-href="{{.src}}"
-												data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+												data-caption="Фото до приема: {{ @global.utils.formatDate(.date) }}">
 												<h2 class="h2 healing__date-title">
 													{{ @global.utils.formatDateAdv(.date) }}
 												</h2>
@@ -411,7 +411,7 @@
 										</div>
 										<div class="col-md-7">
 											<div class="text-bold text-big mb-20">
-												Фото после начала лечения
+												Фото после приема
 											</div>
 											<div class="after-healing">
 												<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
@@ -421,7 +421,7 @@
 														<a class="after-healing__item photo"
 															data-fancybox="images-{{event.id}}"
 															data-href="{{.src}}"
-															data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+															data-caption="Фото после приема {{ @global.utils.formatDate(.date) }}">
 															<h2 class="h2 healing__date-title">
 																{{ @global.utils.formatDateAdv(.date) }}
 															</h2>

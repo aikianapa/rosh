@@ -888,12 +888,12 @@
                                                     <div class="row acount__photos-wrap mb-20">
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото до приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото после приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1253,12 +1253,12 @@
                                                     <div class="row acount__photos-wrap mb-20">
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото до приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото после приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1618,12 +1618,12 @@
                                                     <div class="row acount__photos-wrap mb-20">
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото до приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото после приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1956,12 +1956,12 @@
                                                     <div class="row acount__photos-wrap mb-20">
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото до приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото после приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2321,12 +2321,12 @@
                                                     <div class="row acount__photos-wrap mb-20">
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото до начала лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото до приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="acount__photo">
-                                                                <p>Фото в процессе лечения</p><img src="./assets/img/experts/1.jpg" alt="">
+                                                                <p>Фото после приема</p><img src="./assets/img/experts/1.jpg" alt="">
                                                             </div>
                                                         </div>
                                                     </div>

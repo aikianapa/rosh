@@ -244,7 +244,7 @@ $(document).ready(function() {
 			//console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
 			selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
 				'+'+selectedCountryData.dialCode, '');
-			auth.phone_value.inputmask('+' + selectedCountryData.dialCode.replaceAll(/[0-9]/g, '9')
+			auth.phone_value.inputmask('+' + selectedCountryData.dialCode.replace('9', '\\9')
 			                           + ' ' +
 			                           selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
 				{placeholder: '+' + selectedCountryData.dialCode.replace('9', '\\9')
