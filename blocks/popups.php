@@ -235,9 +235,6 @@
 			});
 		</script>
 	</div>
-	<div>
-		<wb-module wb="module=yonger&mode=render&view=popups-cabinet"/>
-	</div>
 
 
 	<div class="popup --form-send">
@@ -300,7 +297,7 @@
 						</div>
 					</div>
 				</div>
-				<p class="text-grey text-grey mb-10">Необязательно</p>
+				<p class="mb-10 text-grey">Необязательно</p>
 				<div class="input input--grey">
 					<textarea class="input__control" placeholder="Причина обращения"></textarea>
 					<div class="input__placeholder">Причина обращения</div>
@@ -332,9 +329,9 @@
 				</svg>
 			</button>
 			<div class="popup__name text-bold">Лицо</div>
-			<h2 class="h2 mb-20">Консультация врача</h2>
+			<h2 class="mb-20 h2">Консультация врача</h2>
 			<div class="popup__img"><img src="/assets/img/popup/1.jpg" alt=""></div>
-			<p class="text-bold text-big mb-10">На консультации в медицинском центре РОШ врач-дерматолог:</p>
+			<p class="mb-10 text-bold text-big">На консультации в медицинском центре РОШ врач-дерматолог:</p>
 			<div class="text">
 				<p class="mb-10">Врач выслушает ваши жалобы, расспросит об образе жизни, аллергических реакциях.</p>
 				<p class="mb-10">Проведет дерматологическое обследование всего кожного покрова, пигментный скрининг.</p>
@@ -354,9 +351,9 @@
 			</button>
 			<div class="popup__name text-bold">Лицо</div>
 			<div class="popup__content">
-				<h2 class="h2 mb-20">Консультация врача</h2>
+				<h2 class="mb-20 h2">Консультация врача</h2>
 				<div class="popup__img"><img src="/assets/img/popup/1.jpg" alt=""></div>
-				<p class="text-bold text-big mb-10">На консультации в медицинском центре РОШ врач-дерматолог:</p>
+				<p class="mb-10 text-bold text-big">На консультации в медицинском центре РОШ врач-дерматолог:</p>
 				<div class="text">
 					<p class="mb-10">Врач выслушает ваши жалобы, расспросит об образе жизни, аллергических реакциях.</p>
 					<p class="mb-10">Проведет дерматологическое обследование всего кожного покрова, пигментный скрининг.</p>
@@ -377,13 +374,13 @@
 				</svg>
 			</button>
 			<div class="popup__name text-bold">Аллергия на коже</div>
-			<h2 class="h2 mb-20">Аллергия на коже</h2>
+			<h2 class="mb-20 h2">Аллергия на коже</h2>
 			<div class="text">
 				<p class="mb-10">Ответственны за этот процесс клетки иммунной системы – белки крови – иммуноглобулины Е. Они начинают вырабатываться при попадании в организм аллергена, который для каждого человека индивидуален. Аллергия проявляется в виде высыпаний, шелушения
 					и покраснения кожных покровов, зуда, часто – затруднение дыхания, насморк, слезоточивость.жизни.</p>
 			</div>
 			<div class="popup__img"><img src="/assets/img/popup/1.jpg" alt=""></div>
-			<h2 class="h2 mb-20">Лечение в Rosh</h2>
+			<h2 class="mb-20 h2">Лечение в Rosh</h2>
 			<div class="text">
 				<p class="mb-10">Диагноз «аллергия» ставится после проведения соответствующей диагностики: кожных проб и анализа крови, в некоторых случаях, при помощи лабораторных исследований можно выявить конкретный аллерген, но не всегда. В медицинском центре ROSH
 					для диагностики и лечения аллергии мы также применяем биорезонансный аппарат BICOM.</p>
@@ -462,7 +459,7 @@
 					</div>
 				</div>
 				<div class="popup__block">
-					<p class="text-bold mb-10">Тип события</p>
+					<p class="mb-10 text-bold">Тип события</p>
 				</div>
 				<div class="radios --flex">
 					<label class="text-radio">
@@ -513,18 +510,18 @@
 						<input class="input__control" type="text" placeholder="Выбрать пациента">
 						<div class="input__placeholder">Выбрать пациента</div>
 					</div>
-					<div class="input calendar mb-20">
+					<div class="mb-20 input calendar">
 						<input class="input__control datepickr" type="text" value="{{photo.date}}" placeholder="Выбрать дату посещения">
 						<div class="input__placeholder">Выбрать дату посещения</div>
 					</div>
 					<div class="popup-title__checkbox">
 						<p class="mb-10">Выбрать статус</p>
-						<label class="checkbox mb-10 show-checkbox" data-show-input="longterm">
+						<label class="mb-10 checkbox show-checkbox" data-show-input="longterm">
 							<input type="checkbox">
 							<span></span>
 							<div class="checbox__name">Продолжительное лечение</div>
 						</label>
-						<div class="input calendar mb-20" style="display:none;" data-show="longterm">
+						<div class="mb-20 input calendar" style="display:none;" data-show="longterm">
 							<input class="input__control datepickr" type="text" value="{{photo.longterm}}" placeholder="Название продолжительного лечения">
 							<div class="input__placeholder">Название продолжительного лечения</div>
 						</div>
@@ -588,7 +585,7 @@
 					<input class="input__control datebirthdaypickr" type="text" placeholder="Дата рождения">
 					<div class="input__placeholder">Дата рождения</div>
 				</div>
-				<a class="--flex --jcfe mb-10" href="#"> Забыли пароль?</a>
+				<a class="mb-10 --flex --jcfe" href="#"> Забыли пароль?</a>
 				<div class="input mb-30">
 					<input class="input__control" type="tel" placeholder="Номер телефона" data-inputmask="'mask': '+7 (999) 999-99-99'">
 					<div class="input__placeholder">Номер телефона</div>
