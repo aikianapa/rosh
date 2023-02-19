@@ -25,7 +25,7 @@
 					</div>
 					<div class="title-flex --flex --jcsb">
 						<div class="title">
-							<h1 class="h1 mb-10">Кабинет администратора</h1>
+							<h1 class="mb-10 h1">Кабинет администратора</h1>
 						</div>
 						<div>
 							<a class="btn btn--black --openpopup" onclick="popupsCreateProfile();"
@@ -302,7 +302,7 @@
 				{{/if}}
 
 				<div class="admin-editor__type-event">
-					<div class="consultations mb-20">
+					<div class="mb-20 consultations">
 						<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
 							<input type="hidden" name="for_consultation" value="0">
 
@@ -318,7 +318,7 @@
 						</label>
 						<div class="select-form" data-show="consultation-type"
 							style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
-							<div class="text-bold mb-10">Тип события</div>
+							<div class="mb-10 text-bold">Тип события</div>
 							<div class="popups__text-chexboxs">
 								{{#each @global.catalog.quoteType as qt}}
 								<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
@@ -468,7 +468,7 @@
 					</div>
 				</div>
 				<div class="admin-editor__patient">
-					<div class="admin-editor__event mb-20">
+					<div class="mb-20 admin-editor__event">
 						<div class="search__block --flex --aicn">
 							<div class="input">
 								<input class="popup-services-list"
@@ -483,13 +483,13 @@
 							</div>
 						</div>
 					</div>
-					<div class="admin-editor__event mb-20">
+					<div class="mb-20 admin-editor__event">
 						<!-- services-select.dropdown -->
 					</div>
-					<div class="text-bold mb-10">Выбраны услуги</div>
+					<div class="mb-10 text-bold">Выбраны услуги</div>
 
 					<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-						<div class="search__drop-name pl-0 consultation-header">
+						<div class="pl-0 search__drop-name consultation-header">
 							{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
 						</div>
 						<div class="search__drop-right">
@@ -531,7 +531,7 @@
 					</div>
 					{{/each}}
 				</div>
-				<div class="admin-editor__summ mb-3">
+				<div class="mb-3 admin-editor__summ">
 					<p>Всего</p>
 					{{#if record.for_consultation == '0'}}
 					<input type="hidden" name="price" value="{{record.price}}">
@@ -547,21 +547,21 @@
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
 				<div class="mb-4 text-right" data-hide="service-search">
-					<b>*</b>&nbsp;<small>Не является публичной офертой. Стоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
+					<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
 
 				{{#if record.group == 'events'}}
-				<div class="admin-editor__images mb-40">
+				<div class="mb-40 admin-editor__images">
 					{{#if record.hasPhoto}}
 					<div class="row">
 						<div class="col-md-6">
-							<div class="text-bold text-big mb-20">Фото до приема</div>
+							<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
 							{{#each record.photos.before}} <!--single photo!-->
 							<a class="before-healing photo"
 								data-fancybox="images-{{record.id}}"
 								href="{{.src}}"
 								data-href="{{.src}}"
-								data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
+								data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
 								<div class="healing__date">
 									{{ @global.utils.formatDate(.date) }}
 								</div>
@@ -570,8 +570,8 @@
 							{{/each}}
 						</div>
 						<div class="col-md-6">
-							<div class="text-bold text-big mb-20">
-								Фото после приема
+							<div class="mb-20 text-bold text-big">
+								Фото в процессе лечения
 							</div>
 							<div class="after-healing">
 								<div class="row">
@@ -580,7 +580,7 @@
 										<a class="after-healing__item photo"
 											data-fancybox="images-{{record.id}}"
 											data-href="{{.src}}"
-											data-caption="Фото Фото после приема, {{ @global.utils.formatDate(.date) }}">
+											data-caption="Фото Фото в процессе лечения, {{ @global.utils.formatDate(.date) }}">
 											<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 											<div class="after-healing__photo"
 												style="background-image: url({{.src}});">
@@ -637,9 +637,9 @@
 				<div class="admin-events-item orderby">Оплата</div>
 				<div class="admin-events-item orderby">Статус</div>
 				{{#if group == 'group=quotes'}}
-				<div class="admin-events-item w-8 orderby">Дата приёма</div>
+				<div class="w-8 admin-events-item orderby">Дата приёма</div>
 				{{else}}
-				<div class="admin-events-item w-8 orderby">Дата заявки</div>
+				<div class="w-8 admin-events-item orderby">Дата заявки</div>
 				{{/if}}
 				<div class="admin-events-item comment">Комментарии</div>
 			</div>
@@ -771,7 +771,7 @@
 							<div>{{catalog.quoteStatus[status].name}}</div>
 						</div>
 
-						<div class="admin-events-item w-8">
+						<div class="w-8 admin-events-item">
 							{{#if group == 'events'}}
 							<input type="hidden" class="orderby" value="{{@global.utils.timestamp(record._created)}}">
 							<p>Дата заявки</p>
@@ -795,11 +795,11 @@
 							<div class="admin-editor__top-info">
 								<div class="row">
 									<div class="col-md-12">
-										<div class="analysis__top --aicn --flex mb-20">
+										<div class="mb-20 analysis__top --aicn --flex">
 											<div class="analysis__title">Анализы</div>
 
 											{{#if record.analyses}}
-											<a class="btn btn--white mr-20" href="{{record.analyses}}"
+											<a class="mr-20 btn btn--white" href="{{record.analyses}}"
 												target="_blank">
 												Скачать анализы
 											</a>
@@ -979,7 +979,7 @@
 							</div>
 						</div>
 						<div class="admin-editor__edit-profile" data-client="{{record.client}}"></div>
-						<div class="admin-editor__events mt-20 border-top" data-record="{{record.id}}" data-idx="{{idx}}">
+						<div class="mt-20 admin-editor__events border-top" data-record="{{record.id}}" data-idx="{{idx}}">
 							<div class="row acount__photos-wrap">
 								<div class="col-md-2">
 									<a class="btn btn--white" on-click="['addPhoto',record]">
@@ -990,12 +990,12 @@
 							{{#if record.hasPhoto}}
 							<div class="row">
 								<div class="col-md-5">
-									<div class="text-bold text-big mb-20">Фото до приема</div>
+									<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
 									{{#each record.photos.before}} <!--single photo!-->
 									<a class="before-healing photo"
 										data-fancybox="images-{{event.id}}"
 										data-href="{{.src}}"
-										data-caption="Фото до приема: {{ @global.utils.formatDate(.date) }}">
+										data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
 										<h2 class="h2 healing__date-title">
 											{{ @global.utils.formatDateAdv(.date) }}
 										</h2>
@@ -1005,18 +1005,18 @@
 									{{/each}}
 								</div>
 								<div class="col-md-7">
-									<div class="text-bold text-big mb-20">
-										Фото после приема
+									<div class="mb-20 text-bold text-big">
+										Фото после начала лечения
 									</div>
 									<div class="after-healing">
-										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
+										<h2 class="h2 healing__date-title d-none month-header"></h2>
 										<div class="row">
 											{{#each record.photos.after}}
 											<div class="col-md-6">
 												<a class="after-healing__item photo"
 													data-fancybox="images-{{event.id}}"
 													data-href="{{.src}}"
-													data-caption="Фото после приема {{ @global.utils.formatDate(.date) }}">
+													data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
 													<h2 class="h2 healing__date-title">
 														{{ @global.utils.formatDateAdv(.date) }}
 													</h2>
@@ -1050,7 +1050,7 @@
 	{{#if photos}}
 	<div class="row">
 		<div class="col-md-4">
-			<div class="text-bold text-big mb-20">Фото до приема</div>
+			<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
 			{{#each photos.before}} <!--single photo!-->
 			<a class="after-healing__item"
 				data-fancybox="images"
@@ -1067,8 +1067,8 @@
 			{{/each}}
 		</div>
 		<div class="col-md-8">
-			<div class="text-bold text-big mb-20">
-				Фото после приема
+			<div class="mb-20 text-bold text-big">
+				Фото после начала лечения
 			</div>
 			<div class="after-healing">
 				<h2 class="h2 healing__date-title d-none month-header"></h2>
@@ -1078,7 +1078,7 @@
 						<a class="after-healing__item"
 							data-fancybox="images-{{this.id}}"
 							href="{{.src}}"
-							data-caption="Фото после приема {{ @global.utils.formatDate(.date) }}">
+							data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
 							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 							<div class="after-healing__photo"
 								style="background-image: url({{.src}});">
@@ -1626,27 +1626,26 @@
 				utils.api.post('/api/v2/update/records/' + _id, {marked: !!_is_marked}).then(function (res) {
 					//toast('Список обновлен');
 				});
-			})
-			.on('change', '.flag-date [type="checkbox"]', function (e) {
-				e.stopPropagation();
-				const _list      = $(this).parents('.account__table-body');
-				const _parent    = $(this).parents('.acount__table-accardeon');
-				const _id        = _parent.data('id');
-				const _is_marked = $(this).is(':checked');
-				const _priority  = _is_marked ? Date.now() : 0;
+			}).on('change', '.flag-date [type="checkbox"]', function (e) {
+			e.stopPropagation();
+			const _list      = $(this).parents('.account__table-body');
+			const _parent    = $(this).parents('.acount__table-accardeon');
+			const _id        = _parent.data('id');
+			const _is_marked = $(this).is(':checked');
+			const _priority  = _is_marked ? Date.now() : 0;
 
-				_parent.attr('data-priority', _priority);
-				_list.find(".acount__table-accardeon").sort(function (a, b) {
-					const _a = parseInt($(a).attr('data-priority'));
-					const _b = parseInt($(b).attr('data-priority'));
-					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-				}).appendTo(_list);
+			_parent.attr('data-priority', _priority);
+			_list.find(".acount__table-accardeon").sort(function (a, b) {
+				const _a = parseInt($(a).attr('data-priority'));
+				const _b = parseInt($(b).attr('data-priority'));
+				return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+			}).appendTo(_list);
 
-				utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
-					.then(function (res) {
-						//toast('Список обновлен');
-					});
-			});
+			utils.api.post('/api/v2/update/records/' + _id, {priority: _priority})
+				.then(function (res) {
+					//toast('Список обновлен');
+				});
+		});
 	});
 </script>
 

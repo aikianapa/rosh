@@ -1,5 +1,5 @@
 <view head>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>-->
 
 	<wb-snippet name="wbapp"></wb-snippet>
@@ -22,7 +22,7 @@
 		]
 	</wb-scripts>
 
-	<script type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
+	<script defer type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
 	<script type="wbapp">
         $(function () {
             wbapp.init();

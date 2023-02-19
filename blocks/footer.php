@@ -75,7 +75,6 @@
             </svg>
         </div>
     </footer>
-    <wb-module wb="module=yonger&mode=render&view=mainfilter" />
 </view>
 <edit header="Подвал сайта">
     <div>
