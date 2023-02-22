@@ -696,7 +696,7 @@
 									</div>
 									<div class="admin-events-item comment">
 										<p>Комментарии</p>
-										<div>{{this.comment}}</div>
+										<div>{{record.comment}}</div>
 									</div>
 								</div>
 								<div class="acount__table-list accardeon__list admin-editor">
