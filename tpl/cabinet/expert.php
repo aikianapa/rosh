@@ -407,9 +407,8 @@
 					</div>
 					<div class="col-md-3">
 						<div class="input input--grey">
-							<input class="input__control" type="tel" name="phone" value="{{.phone}}"
-								required placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
-							<div class="input__placeholder input__placeholder--dark">Телефон</div>
+							<input class="input__control intl-tel" type="tel" name="phone" required value="{{user.phone}}">
+							<div class="input__placeholder input__placeholder--dark active">Телефон</div>
 						</div>
 					</div>
 					<div class="col-md-3">

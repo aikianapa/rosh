@@ -470,6 +470,12 @@ $(function() {
 
                 parent.find('input.intl-tel').each(function () {
                     var self = $(this);
+                    var val = self.val();
+                    if (val[0] === '7'){
+                        self.val(
+                            '+'+val
+                        )
+                    }
                     self.intlTelInput({
                         formatOnDisplay: false,
                         customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
