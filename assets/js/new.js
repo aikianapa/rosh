@@ -105,7 +105,7 @@ $(function() {
             text = $(this).parents('.service__item').find('.service__name').text(),
             price = $(this).parents('.service__item').find('.service__price').text(),
             block = "<div class='all-form__service' data-name='" + attrNum + "'>" +
-                    '<input type="hidden" name="services[]" value="'+ $(this).attr('data-category')+'">'+
+                    '<input type="hidden" name="services['+ $(this).attr('data-category') +']" value="'+ $(this).attr('data-category')+'">'+
                     '<input type="hidden" name="service_prices['+$(this).attr('data-service_price')+'][service_id]" ' +
                     'value="'+ $(this).attr('data-category')+'">'+
                     '<input type="hidden" name="service_prices['+$(this).attr('data-service_price')+'][price_id]" ' +

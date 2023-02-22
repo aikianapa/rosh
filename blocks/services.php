@@ -42,7 +42,9 @@
 			let category = wbapp.storage('services.list.category');
 			if (category) {
 				$(".all-tabs-item.data-tab-link[data-tab]").removeClass("active");
-				$(".all-tabs-item.data-tab-link[data-tab=" + category + "]").addClass("active").trigger('click');
+				setTimeout(() => {
+					$(".all-tabs-item.data-tab-link[data-tab=" + category + "]").addClass("active").trigger('click');
+				}, 500);
 			}
 		}, 500);
 	</script>
@@ -57,7 +59,7 @@
 			</div>
 		</div>
 		<div class="all-tabs-items">
-			<div class="all-tabs-item data-tab-link active" data-tabs="services" data-tab="">Все услуги</div>
+			<div class="all-tabs-item data-tab-link active" data-tabs="services" data-tab="all">Все услуги</div>
 			<wb-foreach wb="table=catalogs&item=srvcat&from=tree.data&tpl=false">
 				<div class="cursor-pointer all-tabs-item data-tab-link" data-tabs="services" data-tab="{{id}}">{{name}}</div>
 			</wb-foreach>
@@ -161,7 +163,7 @@
 	</div>
 	<script wbapp>
 		$(document).on('wb-ready wb-ajax-done', function () {
-			var fastQuoteServiceCreate = new Ractive({
+			window.fastQuoteServiceCreate = new Ractive({
 				el: '.fastquote-block',
 				template: wbapp.tpl('#fastquote-block-services').html,
 				data: {
@@ -217,63 +219,68 @@
 								createFastQuoteServices(post.client, post);
 							}
 						}
-
+						return false;
 					}
 				}
 			});
-		});
-		var createFastQuoteServices = function (client_id, data) {
-			function unique(array) {
-				function onlyUnique(value, index, self) {
-					return self.indexOf(value) === index;
+			var createFastQuoteServices   = function (client_id, data) {
+				function unique(array) {
+					function onlyUnique(value, index, self) {
+						return self.indexOf(value) === index;
+					}
+
+					return array.filter(onlyUnique);
 				}
 
-				return array.filter(onlyUnique);
-			}
+				var quote        = {};
+				quote.group      = 'quotes';
+				quote.status     = 'new';
+				quote.pay_status = 'unpay';
+				quote.client     = client_id;
+				quote.priority   = 0;
+				quote.marked     = false;
 
-			var quote        = {};
-			quote.group      = 'quotes';
-			quote.status     = 'new';
-			quote.pay_status = 'unpay';
-			quote.client     = client_id;
-			quote.priority   = 0;
-			quote.marked     = false;
+				quote.comment        = '';
+				quote.recommendation = '';
+				quote.description    = '';
+				quote.client_comment = '';
 
-			quote.comment        = '';
-			quote.recommendation = '';
-			quote.description    = '';
-			quote.client_comment = '';
+				quote.price          = data?.price || 0;
+				quote.services       = Object.values(data?.services || {});
+				quote.service_prices = data?.service_prices;
 
-			quote.price          = data?.price || 0;
-			quote.services       = unique(data?.services || []);
-			quote.service_prices = data?.service_prices;
+				quote.event_date       = '';
+				quote.event_time       = '';
+				quote.event_time_start = '';
+				quote.event_time_end   = '';
 
-			quote.event_date       = '';
-			quote.event_time       = '';
-			quote.event_time_start = '';
-			quote.event_time_end   = '';
+				quote.for_consultation  = 0;
+				quote.longterm_date_end = '';
+				quote.longterm_title    = '';
 
-			quote.for_consultation  = 0;
-			quote.longterm_date_end = '';
-			quote.longterm_title    = '';
+				quote.photos  = {before: [], after: []};
+				quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+				console.log('Save new quote record:', quote);
+				window.api.post(
+					'/api/v2/create/records/', quote).then(
+					function (data) {
+						if (data.error) {
+							wbapp.trigger('wb-save-error',
+								{'data': data});
+						} else {
+							popupMessage('Заявка создана!', 'Мы перезвоним Вам в ближайшее время!',
+								'', '',
+								function (d) {});
+							$('#priceListLab .col-lg-8').addClass('col-lg-12').removeClass('col-lg-8');
+							$('.fastquote-block .all-form__succed').removeClass('d-none');
+							$('.fastquote-block .all-form__succed').show();
+							$('.fastquote-block .all-form__main').addClass('d-none');
+						}
+					});
 
-			quote.photos  = {before: [], after: []};
-			quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-			toast_success('Мы перезвоним Вам в ближайшее время!');
-			console.log('Save new quote record:', quote);
-			window.api.post(
-				'/api/v2/create/records/', quote).then(
-				function (data) {
-					if (data.error) {
-						wbapp.trigger('wb-save-error',
-							{'data': data});
-					} else {
-						//$('.fastquote-block.all-form__succed').show();
-						$('.fastquote-block.all-form__main').addClass('d-none');
-						$('.fastquote-block.all-form__succed').removeClass('d-block');
-					}
-				});
-		};
+			};
+		});
+
 	</script>
 </view>
 

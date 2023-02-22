@@ -616,26 +616,26 @@
 										<input type="hidden" class="orderby" value="{{catalog.clients[client].fullname}}">
 										<p>ФИО</p>
 										<div>
-											<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{@global.catalog.clients[record.client].fullname}}</a>
+											<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{catalog.clients[record.client].fullname}}</a>
 											{{#if @global.catalog.clients[record.client].has_longterm}}
-												<small class="text-danger">продолжительное</small>
+											<small class="text-danger">продолжительное</small>
 											{{/if}}
 										</div>
 									</div>
 									<div class="admin-events-item">
 										<input type="hidden" class="orderby" value="{{catalog.clients[client].phone}}">
 										<p>Телефон</p>
-										<div>{{@global.catalog.clients[record.client].phone}}</div>
+										<div>{{catalog.clients[record.client].phone}}</div>
 									</div>
 									<div class="admin-events-item col-experts flex-column">
 										<p>Специалист</p>
 										{{#if no_experts == '1'}}
-											<div></div>
+										<div></div>
 										{{else}}
-											<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].name}},{{/experts}}">
-											{{#experts}}
-												<div>{{@global.catalog.experts[this].fullname}}</div>
-											{{/experts}}
+										<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].name}},{{/experts}}">
+										{{#experts}}
+										<div>{{@global.catalog.experts[this].fullname}}</div>
+										{{/experts}}
 										{{/if}}
 									</div>
 									<div class="admin-events-item">
@@ -726,7 +726,7 @@
 
 											<div class="lk-title">Редактировать профиль</div>
 											<div class="admin-editor__name user__edit">
-												{{ catalog.clients[client].fullname }}
+												{{ catalog.clients[record.client].fullname }}
 												<button class="user__edit" on-click="editProfile" data-id="{{client}}">
 													<svg class="svgsprite _edit">
 														<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
@@ -734,15 +734,15 @@
 												</button>
 											</div>
 											<div class="admin-editor__iser-contacts">
-												{{#if catalog.clients[client].birthdate === '01.01.1970' }}
+												{{#if catalog.clients[record.client].birthdate === '01.01.1970' }}
 												{{else}}
-													<p>Дата рождения:
-														<span>{{ @global.utils.formatDate(catalog.clients[client].birthdate) }}</span>
-													</p>
+												<p>Дата рождения:
+													<span>{{ @global.utils.formatDate(catalog.clients[record.client].birthdate) }}</span>
+												</p>
 												{{/if}}
 
 												<p>Телефон:
-													<span>{{ @global.utils.formatPhone(catalog.clients[client].phone) }}</span>
+													<span>{{ @global.utils.formatPhone(catalog.clients[record.client].phone) }}</span>
 												</p>
 											</div>
 										</div>
@@ -1079,9 +1079,7 @@
 
 												on: {
 													save(ev) {
-
 														var $form = $(ev.node);
-														console.log(form);
 														if ($form.verify() && profile_id > '') {
 															var data = $form.serializeJSON();
 
