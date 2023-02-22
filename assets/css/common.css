@@ -30,8 +30,7 @@ div.ddl > a + svg.svgsprite._drop {
 }
 
 .popup.--service-l .popup__panel {
-    max-width: 830px; top: 60px;
-    -webkit-transform: translateY(0) translateX(-50%); transform: translateY(0) translateX(-50%);
+    max-width: 830px;
 }
 
 .no-border { border: none !important; }

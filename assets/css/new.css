@@ -1721,6 +1721,18 @@ blockquote cite {
     height        : 100vh;
     overflow-y    : hidden;
 }
+.popup__wrapper {
+    display           : -webkit-box;
+    display           : -ms-flexbox;
+    display           : flex;
+    -webkit-box-align : center;
+    -ms-flex-align    : center;
+    align-items       : center;
+    -webkit-box-pack  : center;
+    -ms-flex-pack     : center;
+    justify-content   : center;
+    margin            : 20px;
+}
 @media (max-width : 1130px) {
     .orders-sidebar,
     .basket-sidebar {
@@ -2024,6 +2036,13 @@ blockquote cite {
     blockquote p {
         font-size: 17px;
         line-height: 23px;
+    }
+    .popup__wrapper .popup__panel{
+        transform:none;
+    }
+    .popup__wrapper{
+        margin: 0;
+
     }
 }
 
