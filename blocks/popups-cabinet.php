@@ -755,13 +755,13 @@
 						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
 							<label class="text-radio" name="target" value="before" on-click="singlePhoto">
 								<input type="radio" name="target" value="before">
-								<span>
-									{{#if record.group == 'longterms'}} После начала лечения {{else}} До приема {{/if}}
+								<span class="group_label_before">
+									{{#if record.group == 'longterms'}} До начала лечения {{else}} До приема {{/if}}
 								</span>
 							</label>
 							<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
 								<input type="radio" name="target" value="after">
-								<span class="changed_label">
+								<span class="group_label_after">
 									{{#if record.group == 'longterms'}} После начала лечения {{else}} После приема {{/if}}
 								</span>
 							</label>

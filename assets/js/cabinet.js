@@ -1211,9 +1211,11 @@ $(function () {
 				console.log($(this), suggestion);
 				form.find('input[name="id"]').val(suggestion.data.id);
 				if (suggestion.data.is_longterm) {
-					form.find('span.changed_label').text = 'после начала лечения'
+					form.find('span.changed_label_after').text = 'после начала лечения';
+					form.find('span.group_label_before').text  = 'до начала лечения';
 				} else {
-					form.find('span.changed_label').text = 'в процессе лечения'
+					form.find('span.changed_label_after').text = 'после приема начала лечения';
+					form.find('span.group_label_before').text  = 'до приема';
 				}
 			}
 		});

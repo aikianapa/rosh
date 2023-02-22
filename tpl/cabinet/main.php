@@ -892,7 +892,9 @@
 										{{#if record.hasPhoto}}
 											<div class="row">
 												<div class="col-md-5">
-													<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
+													<div class="mb-20 text-bold text-big">
+														Фото до начала лечения
+													</div>
 													{{#each record.photos.before}} <!--single photo!-->
 														<a class="before-healing photo" data-fancybox="images-{{event.id}}" data-href="{{.src}}" data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
 															<h2 class="h2 healing__date-title">
