@@ -10,7 +10,7 @@
 						</svg>
 					</button>
 					<div class="popup__name text-bold">Запись на прием</div>
-					<div class="text-bold mb-10">Разделы услуг</div>
+					<div class="mb-10 text-bold">Разделы услуг</div>
 					<div class="popups__text-chexboxs">
 						{{#each categories}}
 						<label class="text-radio">
@@ -33,7 +33,7 @@
 						<span></span>
 						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 					</label>
-					<div class="consultations mb-20">
+					<div class="mb-20 consultations">
 						<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
 							<input type="hidden" name="for_consultation" value="0">
 
@@ -49,7 +49,7 @@
 						</label>
 						<div class="select-form" data-show="consultation-type"
 							style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
-							<div class="text-bold mb-10">Тип события</div>
+							<div class="mb-10 text-bold">Тип события</div>
 							<div class="popups__text-chexboxs">
 								{{#each @global.catalog.quoteType as qt}}
 								<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
@@ -151,9 +151,9 @@
 						</div>
 					</div>
 					<div class="admin-editor__patient" data-hide="service-search">
-						<div class="text-bold mb-10">Выбраны услуги</div>
+						<div class="mb-10 text-bold">Выбраны услуги</div>
 						<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-							<div class="search__drop-name pl-0 consultation-header">
+							<div class="pl-0 search__drop-name consultation-header">
 								{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
 							</div>
 							<div class="search__drop-right">
@@ -163,7 +163,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="admin-editor__summ mb-3" data-hide="service-search">
+					<div class="mb-3 admin-editor__summ" data-hide="service-search">
 						<p>Всего</p>
 						<input type="hidden" name="price" value="0">
 						<p class="price">0 ₽
@@ -250,8 +250,8 @@
 					</button>
 					<div class="popup__name text-bold">Внести предоплату</div>
 					<h3 class="h3">В ближайшее время с вами свяжутся для определения удобной даты</h3>
-					<div class="text-grey text-small mb-10">Стоимость услуги</div>
-					<div class="popup-summ --aifs mb-20">
+					<div class="mb-10 text-grey text-small">Стоимость услуги</div>
+					<div class="mb-20 popup-summ --aifs">
 						<div class="popup-summ__big">{{this.price}} ₽</div>
 						<div class="popup-summ__small">Предоплата - {{this.pay_price}} ₽</div>
 					</div>
@@ -321,7 +321,7 @@
 					<form class="record-edit popup__form" on-submit="submit" data-record="{{record.id}}">
 						{{#if client}}
 						<input type="hidden" value="{{ client.id }}" name="client">
-						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
+						<p class="mb-20 text-bold text-big">{{client.fullname}}</p>
 						{{else}}
 						<div class="search-form input">
 							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
@@ -334,7 +334,7 @@
 								<input type="hidden" value="{{ record.id }}" name="id"> {{#if record.spec_service}}
 								<input type="hidden" name="spec_service" value="{{record.spec_service}}">
 								<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}"> {{else}}
-								<div class="admin-editor__event mb-20">
+								<div class="mb-20 admin-editor__event">
 									<div class="search__block --flex --aicn">
 										<div class="input">
 											<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
@@ -347,7 +347,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="admin-editor__event mb-20">
+								<div class="mb-20 admin-editor__event">
 									<!-- services-select.dropdown -->
 								</div>
 								{{/if}}
@@ -367,7 +367,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="consultations mb-20">
+									<div class="mb-20 consultations">
 										<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
 											<input type="hidden" name="for_consultation" value="0">
 
@@ -383,7 +383,7 @@
 										</label>
 										<div class="select-form" data-show="consultation-type"
 											style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
-											<div class="text-bold mb-10">Тип события</div>
+											<div class="mb-10 text-bold">Тип события</div>
 											<div class="popups__text-chexboxs">
 												{{#each @global.catalog.quoteType as qt}}
 												<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
@@ -516,10 +516,10 @@
 									</div>
 								</div>
 								<div class="admin-editor__patient">
-									<div class="text-bold mb-10">Выбраны услуги</div>
+									<div class="mb-10 text-bold">Выбраны услуги</div>
 
 									<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-										<div class="search__drop-name pl-0 consultation-header">
+										<div class="pl-0 search__drop-name consultation-header">
 											{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
 										</div>
 										<div class="search__drop-right">
@@ -566,7 +566,7 @@
 									</div>
 									{{/each}} {{/if}}
 								</div>
-								<div class="admin-editor__summ mb-3">
+								<div class="mb-3 admin-editor__summ">
 									<p>Всего</p>
 									{{#if record.for_consultation == '0'}}
 									<input type="hidden" name="price" value="{{record.price}}">
@@ -730,7 +730,7 @@
 						<input type="hidden" name="id" value="{{record.id}}">
 						<input type="hidden" name="client" value="{{record.client}}">
 
-						<p class="text-bold text-big mb-20">
+						<p class="mb-20 text-bold text-big">
 							{{ @global.catalog.clients[record.client].fullname }}
 						</p>
 						{{else}}
@@ -748,7 +748,7 @@
 						</div>
 						{{/if}}
 
-						<div class="input calendar mb-20">
+						<div class="mb-20 input calendar">
 							<input class="input__control datepickr" type="text" name="date" placeholder="Выбрать дату посещения" autocomplete="off" required>
 							<div class="input__placeholder">Укажите дату фото</div>
 						</div>
@@ -918,7 +918,7 @@
 						{{/if}}
 						<input type="hidden" name="group" value="longterms">
 						<input type="hidden" name="client" value="{{client.id}}"> {{#if client}}
-						<p class="text-bold text-big mb-20">
+						<p class="mb-20 text-bold text-big">
 							{{ @global.catalog.clients[client.id].fullname }}
 						</p>
 						{{else}}
@@ -928,20 +928,20 @@
 						</div>
 						{{/if}}
 
-						<div class="input calendar mb-20">
+						<div class="mb-20 input calendar">
 							<input class="input__control datepickr" type="text" required autocomplete="off" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
 							 placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Дата посещения</div>
 						</div>
 						<div class="popup-title__checkbox disabled d-none">
-							<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
+							<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
 								<input type="checkbox" name="group" value="longterms" checked>
 								<span></span>
 								<div class="checbox__name">Продолжительное лечение</div>
 							</label>
 						</div>
 
-						<div class="input calendar mb-20" data-filter="longterms">
+						<div class="mb-20 input calendar" data-filter="longterms">
 							<input class="input__control event-search longterm-search" type="text" name="longterm_title" autocomplete="off" placeholder="Название продолжительного лечения"
 							 required>
 							<div class="input__placeholder">Название продолжительного лечения</div>
@@ -1089,20 +1089,20 @@
 							<input class="input__control autocomplete client-search" type="text" placeholder="Выбрать пациента">
 							<div class="input__placeholder">Выбрать пациента</div>
 						</div>
-						<div class="input calendar mb-20">
+						<div class="mb-20 input calendar">
 							<input class="input__control datepickr" type="text" name="event_date" placeholder="Выбрать дату посещения">
 							<div class="input__placeholder">Выбрать дату посещения</div>
 						</div>
 						<input type="hidden" name="group" value="event">
 						<input type="hidden" name="id">
 						<div class="popup-title__checkbox">
-							<label class="checkbox mb-20 show-checkbox" data-show-input="longterm">
+							<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
 								<input type="checkbox" name="group" value="longterm" checked>
 								<span></span>
 								<div class="checbox__name">Продолжительное лечение</div>
 							</label>
 						</div>
-						<div class="input calendar mb-20" data-show="longterm">
+						<div class="mb-20 input calendar" data-show="longterm">
 							<input class="input__control longterm-search" type="text" name="title" placeholder="Название продолжительного лечения" value="">
 							<div class="input__placeholder">Название продолжительного лечения</div>
 						</div>
@@ -1359,7 +1359,7 @@
 							<input class="code__input" on-keyup="keyup" type="text">
 						</div>
 
-						<div class="alert alert-warning mb-2"></div>
+						<div class="mb-2 alert alert-warning"></div>
 					</form>
 				</div>
 			</template>
@@ -1378,13 +1378,13 @@
 					<div class="popup__name text-bold">{{title}}</div>
 
 					<form class="popup__form" on-submit="submit" data-record="{{record.id}}">
-						<p class="text-bold text-big mb-20">{{client.fullname}}</p>
+						<p class="mb-20 text-bold text-big">{{client.fullname}}</p>
 
 
 						<input type="hidden" value="{{ record.id }}" name="id"> {{#if this.spec_service}}
 						<input type="hidden" name="spec_service" value="{{this.spec_service}}">
 						<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}"> {{else}}
-						<div class="admin-editor__event mb-20">
+						<div class="mb-20 admin-editor__event">
 							<div class="search__block --flex --aicn">
 								<div class="input">
 									<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
@@ -1397,13 +1397,13 @@
 								</div>
 							</div>
 						</div>
-						<div class="admin-editor__event mb-20">
+						<div class="mb-20 admin-editor__event">
 							<!-- services-select.dropdown -->
 						</div>
 						{{/if}}
 
 						<div class="admin-editor__type-event">
-							<div class="consultations mb-20">
+							<div class="mb-20 consultations">
 								<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
 									<input type="hidden" name="for_consultation" value="0">
 
@@ -1419,7 +1419,7 @@
 								</label>
 								<div class="select-form" data-show="consultation-type"
 									style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
-									<div class="text-bold mb-10">Тип события</div>
+									<div class="mb-10 text-bold">Тип события</div>
 									<div class="popups__text-chexboxs">
 										{{#each @global.catalog.quoteType as qt}}
 										<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
@@ -1551,10 +1551,10 @@
 							</div>
 						</div>
 						<div class="admin-editor__patient">
-							<div class="text-bold mb-10">Выбраны услуги</div>
+							<div class="mb-10 text-bold">Выбраны услуги</div>
 
 							<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-								<div class="search__drop-name pl-0 consultation-header">
+								<div class="pl-0 search__drop-name consultation-header">
 									{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
 								</div>
 								<div class="search__drop-right">
@@ -1685,7 +1685,7 @@
 							<div class="input__placeholder">За весь период</div>
 						</div>
 						<div class="select-form">
-							<label class="checkbox mainfilter__checkbox mb-10">
+							<label class="mb-10 checkbox mainfilter__checkbox">
 								<input type="checkbox" name="only_phones">
 								<span></span>
 								<div class="checbox__name text-grey">Выгрузить только список номеров</div>
@@ -1696,7 +1696,7 @@
 							</div>
 						</div>
 						<div class="select-form mb-30">
-							<label class="checkbox mainfilter__checkbox mb-10">
+							<label class="mb-10 checkbox mainfilter__checkbox">
 								<input type="checkbox" name="only_emails">
 								<span></span>
 								<div class="checbox__name text-grey">Введите только список е-мейлов</div>

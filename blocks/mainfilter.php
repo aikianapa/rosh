@@ -1,5 +1,5 @@
 <view>
-	<div class="mainfilter" id="mainfilter">
+	<div class="mainfilter" id="mainfilter" wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='client'">
 		<a href="#" class="mainfilter-mob">
 			<span class="hb-ico basket2-ico"></span>
 			<i>0</i>
@@ -220,18 +220,15 @@
 									{{#if user.id}}
 									{{else}}
 										<div class="input input--grey">
-											<input class="input__control" required type="text" name="fullname" value="{{user.fullname}}"
-												placeholder="ФИО">
+											<input class="input__control" required type="text" name="fullname" value="{{user.fullname}}" placeholder="ФИО">
 											<div class="input__placeholder">ФИО</div>
 										</div>
 										<div class="input input--grey">
-											<input class="input__control intl-tel" type="tel" name="phone"
-												value="{{user.phone}}" required>
+											<input class="input__control intl-tel" type="tel" name="phone" value="{{user.phone}}" required>
 											<div class="input__placeholder active">Номер телефона</div>
 										</div>
 										<div class="input input--grey">
-											<input class="input__control" type="email" name="email" value="{{user.email}}"
-												placeholder="Ваш е-мейл" reuired>
+											<input class="input__control" type="email" name="email" value="{{user.email}}" placeholder="Ваш е-мейл" reuired>
 											<div class="input__placeholder">Ваш е-мейл</div>
 										</div>
 									{{/if}}
@@ -255,8 +252,8 @@
 						</div>
 					</div>
 					{{else}}
-						<div class="col-12 mt-5">
-							<p class="text-center pt-5">Подождите, выполняется загрузка...</p>
+						<div class="mt-5 col-12">
+							<p class="pt-5 text-center">Подождите, выполняется загрузка...</p>
 						</div>
 				{{/filter}}
 			</div>
