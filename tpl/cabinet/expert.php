@@ -96,7 +96,7 @@
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
 								{{#services}}
-								{{catalog.services[this].header}}<br>
+								{{@global.catalog.services[this].name}}<br>
 								{{/services}}
 							</div>
 						</div>
@@ -186,7 +186,7 @@
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
 								{{#services}}
-								{{catalog.services[this].header}}<br>
+								{{@global.catalog.services[this].name}}<br>
 								{{/services}}
 							</div>
 						</div>
@@ -278,7 +278,7 @@
 							<div class="history-item">
 								<p>Услуги</p>
 								{{#services}}
-								{{catalog.services[this].header}}<br>
+								{{@global.catalog.services[this].name}}<br>
 								{{/services}}
 							</div>
 							<div class="history-item">
@@ -649,6 +649,7 @@
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
 
+										data.active = 'on';
 										data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 										data.fullname    = data.fullname.replaceAll('  ', ' ')
 										var names        = data.fullname.split(' ');
@@ -683,7 +684,7 @@
 
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
-
+										data.active = 'on';
 										utils.api.post('/api/v2/update/users/' + uid, data).then(
 											function (res) {
 												page.set('user', res);
