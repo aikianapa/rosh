@@ -95,10 +95,9 @@
 						<div class="account-event-wrap">
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
-								{{#this.services}}
-								{{@global.catalog.services[this].header}}<br>
-								{{/this.services}}
-
+								{{#services}}
+								{{catalog.services[this].header}}<br>
+								{{/services}}
 							</div>
 						</div>
 					</div>
@@ -186,9 +185,9 @@
 						<div class="account-event-wrap">
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
-								{{#this.services}}
-								{{@global.catalog.services[this].header}}<br>
-								{{/this.services}}
+								{{#services}}
+								{{catalog.services[this].header}}<br>
+								{{/services}}
 							</div>
 						</div>
 					</div>
@@ -279,7 +278,7 @@
 							<div class="history-item">
 								<p>Услуги</p>
 								{{#services}}
-								{{@global.catalog.services[this].name}}<br>
+								{{catalog.services[this].header}}<br>
 								{{/services}}
 							</div>
 							<div class="history-item">
@@ -735,6 +734,8 @@
 					'&experts~=' + wbapp._session.user.id +
 					'&@sort=event_date:d')
 				.then(function (records) {
+					page.set('catalog', window.catalog);
+
 					if (!records) {
 						return;
 					}
