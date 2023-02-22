@@ -1160,8 +1160,9 @@
 										addAnalyses(ev, record, index) {
 											console.log('addAnalyses', ev, index, record);
 											var $form = $(ev.node).parents('form');
+											var files = Array.from($form.find('input[name="file"]')[0].files);
 											uploadFile(
-												$form.find('input[name="file"]')[0],
+												files,
 												'records/analyses/' + record.client,
 												Date.now() + '_' + utils.getRandomStr(4),
 												function(photo) {
