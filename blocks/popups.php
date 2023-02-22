@@ -163,7 +163,7 @@
 									utilsScript: "/assets/js/intlTelInput-utils.js"
 								});
 							});
-						});
+						}, 2000);
 					},
 					submit() {
 						var form = this.find('.popup.--fast .popup__form');

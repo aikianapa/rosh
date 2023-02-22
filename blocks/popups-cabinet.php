@@ -685,11 +685,11 @@
 											is_saved = true;
 											onlineRooms.create(function (meetroom) {
 												new_data['meetroom'] = meetroom;
-												saveRecord(edit_mode, _record.id, new_data, onSaved);
+												saveRecord(edit_mode, edit_mode ? _record?.id : null, new_data, onSaved);
 											});
 										} else {
 											is_saved = true;
-											saveRecord(edit_mode, _record.id, new_data, onSaved);
+											saveRecord(edit_mode, edit_mode ? _record?.id : null, new_data, onSaved);
 										}
 									}
 								}
@@ -699,7 +699,7 @@
 										onlineRooms.delete(new_data.meetroom.meetingId, function (meetroom) {});
 										new_data.meetroom = {}
 									}
-									saveRecord(edit_mode, _record.id, new_data, onSaved);
+									saveRecord(edit_mode, edit_mode ? _record?.id : null, new_data, onSaved);
 								}
 							}
 
@@ -756,13 +756,13 @@
 							<label class="text-radio" name="target" value="before" on-click="singlePhoto">
 								<input type="radio" name="target" value="before">
 								<span>
-									До приема
+									{{#if record.group == 'longterms'}} После начала лечения {{else}} До приема {{/if}}
 								</span>
 							</label>
 							<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
 								<input type="radio" name="target" value="after">
 								<span class="changed_label">
-									{{#if record.group == 'longterms'}} После приема {{else}} После приема {{/if}}
+									{{#if record.group == 'longterms'}} После начала лечения {{else}} После приема {{/if}}
 								</span>
 							</label>
 						</div>
@@ -950,11 +950,11 @@
 						<div class="radios --flex">
 							<label class="text-radio">
 								<input type="radio" name="target" value="before" checked="checked">
-								<span>До приема</span>
+								<span>До начала лечения</span>
 							</label>
 							<label class="text-radio" style="visibility: hidden">
 								<input type="radio" name="target" value="after">
-								<span>После приема</span>
+								<span>После начала лечения</span>
 							</label>
 						</div>
 						<label class="file-photo">
@@ -1109,11 +1109,11 @@
 						<div class="radios --flex">
 							<label class="text-radio">
 								<input type="radio" name="target" value="before" checked="checked">
-								<span>До приема</span>
+								<span>До начала лечения</span>
 							</label>
 							<label class="text-radio disabled">
 								<input type="radio" name="target" value="after">
-								<span>После приема</span>
+								<span>В процессе лечения</span>
 							</label>
 						</div>
 
