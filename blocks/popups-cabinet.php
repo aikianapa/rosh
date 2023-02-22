@@ -621,6 +621,8 @@
 								$('.select.select_experts .select__item').trigger('click');
 							}
 							$(this.el).show();
+							$('body').addClass('noscroll');
+
 							console.log('show');
 						},
 						submit(ev) {
@@ -708,6 +710,7 @@
 					},
 					close() {
 						$(this.el).hide();
+						$('body').removeClass('noscroll');
 					}
 				});
 			};
