@@ -896,7 +896,7 @@
 														Фото до начала лечения
 													</div>
 													{{#each record.photos.before}} <!--single photo!-->
-														<a class="before-healing photo" data-fancybox="images-{{event.id}}" data-href="{{.src}}" data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+														<a class="before-healing photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
 															<h2 class="h2 healing__date-title">
 																{{ @global.utils.formatDateAdv(.date) }}
 															</h2>
@@ -914,7 +914,7 @@
 														<div class="row">
 															{{#each record.photos.after}}
 																<div class="col-md-6">
-																	<a class="after-healing__item photo" data-fancybox="images-{{event.id}}" data-href="{{.src}}" data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+																	<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото после начала лечения, {{ @global.utils.formatDate(.date) }}">
 																		<h2 class="h2 healing__date-title">
 																			{{ @global.utils.formatDateAdv(.date) }}
 																		</h2>
@@ -949,7 +949,8 @@
 				<div class="col-md-4">
 					<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
 					{{#each photos.before}} <!--single photo!-->
-						<a class="after-healing__item" data-fancybox="images" href="{{.src}}" data-caption="{{.date}}">
+						<a class="after-healing__item" data-fancybox="images" href="{{.src}}"
+							data-caption="Фото до начала лечения, {{.date}}">
 							<h2 class="h2 healing__date-title">{{.date}}</h2>
 							<div class="after-healing__photo" style="background-image: url('{{.src}}')">
 							</div>
@@ -968,7 +969,7 @@
 						<div class="row">
 							{{#each this.photos.after}}
 								<div class="col-md-6">
-									<a class="after-healing__item" data-fancybox="images-{{this.id}}" href="{{.src}}" data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+									<a class="after-healing__item" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото после начала лечения, {{ @global.utils.formatDate(.date) }}">
 										<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 										<div class="after-healing__photo" style="background-image: url({{.src}});">
 										</div>
