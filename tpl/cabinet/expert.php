@@ -95,9 +95,10 @@
 						<div class="account-event-wrap">
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
-								{{#services}}
-								{{@global.catalog.services[this].name}}<br>
-								{{/services}}
+								{{#this.services}}
+								{{@global.catalog.services[this].header}}<br>
+								{{/this.services}}
+
 							</div>
 						</div>
 					</div>
@@ -185,9 +186,9 @@
 						<div class="account-event-wrap">
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
-								{{#services}}
-								{{@global.catalog.services[this].name}}<br>
-								{{/services}}
+								{{#this.services}}
+								{{@global.catalog.services[this].header}}<br>
+								{{/this.services}}
 							</div>
 						</div>
 					</div>
