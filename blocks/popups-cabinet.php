@@ -992,6 +992,7 @@
 							initServicesSearch($('.search-services'), catalog.servicesList);
 							initPlugins($(this.el));
 							$(this.el).show();
+							$('body').addClass('noscroll');
 						},
 						longtermSave(ev) {
 							var self = this;
@@ -1056,6 +1057,7 @@
 														onSaved(longterm_record);
 													}
 													$(self.el).hide();
+													$('body').removeClass('noscroll');
 												});
 										});
 
@@ -1180,6 +1182,7 @@
 						complete() {
 							initPlugins($(this.el));
 							$(this.el).show();
+							$('body').addClass('noscroll');
 						},
 						submit() {
 							var form = this.find('.popup__form');
@@ -1212,6 +1215,7 @@
 																		});
 																	} else {
 																		$('.popup.--create-client').fadeOut('fast');
+																		$('body').removeClass('noscroll');
 																		popupMessage('Карточка пациента создана!', '',
 																			'Успешно',
 																			'<a href="/cabinet/client/' + data.id +
@@ -1220,6 +1224,7 @@
 																	}
 																} else {
 																	$('.popup.--create-client').fadeOut('fast');
+																	$('body').removeClass('noscroll');
 																	popupMessage('Карточка пациента создана!', '',
 																		'Успешно',
 																		'<a href="/cabinet/client/' + data.id +
@@ -1306,6 +1311,7 @@
 							initPlugins($(this.el));
 
 							$(this.el).show();
+							$('body').addClass('noscroll');
 						},
 						submit(ev) {
 							var self = this;
@@ -1318,6 +1324,7 @@
 									self.set('user', data); /* get actually user data */
 									toast_success('Профиль обновлён!');
 									$(self.el).hide();
+									$('body').removeClass('noscroll');
 								});
 							}
 							return false;
@@ -1724,6 +1731,7 @@
 						complete() {
 							initPlugins($(this.el));
 							$(this.el).show();
+							$('body').addClass('noscroll');
 						},
 						submit(ev) {
 							let form = ev.node;
@@ -1736,6 +1744,7 @@
 							})
 							return false;
 */
+							$('body').removeClass('noscroll');
 
 							var xhr = new XMLHttpRequest();
 							xhr.open('POST', action, true);

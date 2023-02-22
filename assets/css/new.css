@@ -1717,6 +1717,11 @@ blockquote cite {
     justify-content : center;
     border-radius   : 50%;
 }
+.noscroll{
+    height        : 100vh;
+    overflow-y    : hidden;
+    padding-right : 15px; /* Avoid width reflow */
+}
 @media (max-width : 1130px) {
     .orders-sidebar,
     .basket-sidebar {

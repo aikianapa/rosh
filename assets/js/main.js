@@ -159,6 +159,7 @@ $(function() {
         }).on('click', '.--openpopup', function() {
             var P = $(this).attr('data-popup');
             var _f = $(this).data('call');
+            $('body').addClass('noscroll');
 
             $('body').find('div.' + P + ':first').show();
             setTimeout(function() {
@@ -180,12 +181,14 @@ $(function() {
             return false;
         }).on('click', '.popup__panel.--succed.d-block .popup__close', function(e) {
             e.stopPropagation();
+            $('body').removeClass('noscroll');
             $(this).closest('.popup').hide();
             $(this).closest('.popup').find('.popup__panel.d-none:not(.--succed)').removeClass('d-none');
             $(this).closest('.popup').find('.--succed.d-block').removeClass('d-block');
             return false;
         }).on('click', '.popup__close', function() {
             $(this).closest('.popup').hide();
+            $('body').removeClass('noscroll');
             return false;
         }).on('click', 'button.burger', function(e) {
             e.stopPropagation();

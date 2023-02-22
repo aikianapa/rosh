@@ -1357,6 +1357,7 @@ $(function () {
 				},
 				complete() {
 					$(this.el).show();
+
 					if (!!onShow) {
 						onShow(this);
 					}
@@ -1514,6 +1515,7 @@ $(function () {
 				},
 				complete() {
 					$(this.el).show();
+					$('body').addClass('noscroll');
 				},
 				submit(ev) {
 					let form = $(ev.node);
