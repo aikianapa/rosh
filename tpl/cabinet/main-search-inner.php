@@ -1159,21 +1159,25 @@
 					});
 				},
 				addAnalyses(ev, record, index) {
-					console.log('addAnalyses', ev, index, record);
 					var $form = $(ev.node).parents('form');
-					uploadFile(
-						$form.find('input[name="file"]')[0],
-						'records/analyses/' + record.client,
-						Date.now() + '_' + utils.getRandomStr(4),
-						function (photo) {
-							console.log(photo);
-							utils.api.post('/api/v2/update/records/' + record.id, {'analyses': photo.uri})
-								.then(function (record) {
-									toast('Анализы добавлены!');
-									content_load();
-									page.set('events.upcoming.' + index, record);
-								});
-						});
+					var files = Array.from($form.find('input[name="file"]')[0].files);
+					files.forEach(function (file) {
+						uploadFile(
+							file,
+							'records/analyses/' + record.client,
+							Date.now() + '_' + utils.getRandomStr(4),
+							function (photo) {
+								console.log(photo);
+								utils.api.post('/api/v2/update/records/' + record.id, {
+										'analyses': photo.uri
+									})
+									.then(function (record) {
+										toast('Анализы добавлены!');
+										window.load();
+									});
+							});
+						return false;
+					});
 				},
 				showLongtermDetails(ev) {
 					var _parent = $(ev.node).parents('.accardeon');

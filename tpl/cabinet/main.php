@@ -1158,23 +1158,25 @@
 											}, 150);
 										},
 										addAnalyses(ev, record, index) {
-											console.log('addAnalyses', ev, index, record);
 											var $form = $(ev.node).parents('form');
 											var files = Array.from($form.find('input[name="file"]')[0].files);
-											uploadFile(
-												files,
-												'records/analyses/' + record.client,
-												Date.now() + '_' + utils.getRandomStr(4),
-												function(photo) {
-													console.log(photo);
-													utils.api.post('/api/v2/update/records/' + record.id, {
-															'analyses': photo.uri
-														})
-														.then(function(record) {
-															toast('Анализы добавлены!');
-															window.load();
-														});
-												});
+											files.forEach(function (file) {
+												uploadFile(
+													file,
+													'records/analyses/' + record.client,
+													Date.now() + '_' + utils.getRandomStr(4),
+													function (photo) {
+														console.log(photo);
+														utils.api.post('/api/v2/update/records/' + record.id, {
+																'analyses': photo.uri
+															})
+															.then(function (record) {
+																toast('Анализы добавлены!');
+																window.load();
+															});
+													});
+												return false;
+											});
 										},
 										editProfile(ev) {
 											var form = $(ev.node).parents('.admin-editor')
