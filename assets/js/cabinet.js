@@ -358,7 +358,7 @@ $(function () {
 				sessionStorage.removeItem('db.' + _key + _self.cacheKey);
 			} else {
 				['-dev', '-preprod', _self.cacheKey].forEach(function (ck) {
-					localStorage.removeItem('db.quoteStatus' + ck);
+					localStorage.removeItem('db.quoteStatuses' + ck);
 					localStorage.removeItem('db.quoteType' + ck);
 					localStorage.removeItem('db.quotePay' + ck);
 					localStorage.removeItem('db.categories' + ck);
@@ -386,16 +386,16 @@ $(function () {
 			var _self   = this;
 			var getters = [];
 
-			if (!localStorage.getItem('db.quoteStatus' + _self.cacheKey)) {
+			if (!localStorage.getItem('db.quoteStatuses' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
 						_self.quoteStatus                 = utils.arr.indexBy(data);
 						_self.quoteStatus['past']['type'] = 'event';
-						localStorage.setItem('db.quoteStatus' + _self.cacheKey, JSON.stringify(_self.quoteStatus));
+						localStorage.setItem('db.quoteStatuses' + _self.cacheKey, JSON.stringify(_self.quoteStatus));
 					})
 				);
 			} else {
-				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatus' + _self.cacheKey));
+				_self.quoteStatus = JSON.parse(localStorage.getItem('db.quoteStatuses' + _self.cacheKey));
 			}
 
 			if (!localStorage.getItem('db.quotePay' + _self.cacheKey)) {
