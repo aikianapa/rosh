@@ -39,7 +39,7 @@
         });
 	</script>
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=626E0261B33E4170AF39D0DDBCB26216">
+		src="/assets/js/cabinet.js?v=00D862EDC7B4401A86389DFACCAA0BE2">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
