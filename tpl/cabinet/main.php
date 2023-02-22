@@ -727,7 +727,7 @@
 											<div class="lk-title">Редактировать профиль</div>
 											<div class="admin-editor__name user__edit">
 												{{ catalog.clients[record.client].fullname }}
-												<button class="user__edit" on-click="editProfile" data-id="{{client}}">
+												<button class="user__edit" on-click="editProfile" data-id="{{record.client}}">
 													<svg class="svgsprite _edit">
 														<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 													</svg>
