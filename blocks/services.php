@@ -77,7 +77,7 @@
                         }
                     }">
 						<wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg"/>
-						<a class="all-services__item" href="{{yongerFurl()}}" data-category="{{category}}">
+						<a class="all-services__item" href="" data-category="{{category}}">
 							<div class="all-services__pic" style="background-image: url(/thumbc/510x314/src{{_var.image}})"></div>
 							<div class="all-services__name" wb-if="'{{header}}'>''">{{header}}</div>
 						</a>
@@ -99,7 +99,13 @@
 												<div class="service__price" wb-if="'{{price}}'>''">{{price}} ₽</div>
 												<div class="service__checkbox">
 													<div class="checkbox">
-														<input type="checkbox" data-id="{{id}}" wb-if="'{{price}}'>''" data-price="{{price}}" data-name="{{header}}" on-click="cartAdd">
+														<input type="checkbox"
+															wb-if="'{{price}}'>''"
+															data-id="{{id}}"
+															data-service_price="{{category}}-{{id}}"
+															data-category="{{category}}"
+															data-price="{{price}}"
+															data-name="{{header}}" on-click="cartAdd">
 														<span></span>
 													</div>
 												</div>
@@ -111,7 +117,7 @@
 						</div>
 					</div>
 					<div class="col-lg-4 fastquote-block" wb-off>
-						<template>
+						<template id="fastquote-block-services">
 							<form class="all-form">
 								<div class="all-form__succed d-none">
 									<h3 class="h3">Успешно !</h3>
@@ -119,6 +125,7 @@
 								</div>
 								<div class="all-form__main">
 									<input type="hidden" name="client" value="{{user.id}}">
+									<input type="hidden" class="total_price" name="price" value="0">
 
 									<div class="all-form__summ">
 										<p>Всего </p>
@@ -153,7 +160,77 @@
 		</div>
 	</div>
 	<script wbapp>
-		var createFastQuoteServices = function (client_id, client_comment) {
+		$(document).on('wb-ready wb-ajax-done', function () {
+			var fastQuoteServiceCreate = new Ractive({
+				el: '.fastquote-block',
+				template: wbapp.tpl('#fastquote-block-services').html,
+				data: {
+					user: wbapp._session.user
+				},
+				on: {
+					complete() {
+						var _self = this;
+						setTimeout(function () {
+							initPlugins($(_self.el));
+						}, 500);
+					},
+					submit() {
+						var form = this.find('.fastquote-block form');
+						if ($(form).verify()) {
+
+							var post = $(form).serializeJSON();
+							if (!post.client) {
+								console.log('try to createProfile: ', post);
+
+								let names = post.fullname.split(' ', 3);
+								let keys  = ['last_name', 'first_name', 'middle_name'];
+								for (var i = 0; i < names.length; i++) {
+									post[keys[i]] = names[i];
+								}
+								var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+								post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
+								window.api.get('/api/v2/list/users/?role=client&phone=' + post.phone +
+								               '&__token=' + _token).then(
+									function (data) {
+										if (!data.length) {
+											post.role      = "client";
+											post.role      = "client";
+											post.confirmed = 0;
+											post.active    = "on";
+											post.__token   = _token;
+											window.api.post('/api/v2/create/users/', post).then(
+												function (data) {
+													if (data && data.error) {
+														wbapp.trigger('wb-save-error', {
+															'data': data
+														});
+													} else {
+														createFastQuoteServices(data.id, post);
+													}
+												});
+										} else {
+											toast('Этот номер уже используется!', 'Ошибка!', 'error');
+											form.find('[name="phone"]').focus();
+										}
+									});
+							} else {
+								createFastQuoteServices(post.client, post);
+							}
+						}
+
+					}
+				}
+			});
+		});
+		var createFastQuoteServices = function (client_id, data) {
+			function unique(array) {
+				function onlyUnique(value, index, self) {
+					return self.indexOf(value) === index;
+				}
+
+				return array.filter(onlyUnique);
+			}
+
 			var quote        = {};
 			quote.group      = 'quotes';
 			quote.status     = 'new';
@@ -166,25 +243,24 @@
 			quote.recommendation = '';
 			quote.description    = '';
 			quote.client_comment = '';
-			quote.price          = 0;
 
-			toast_success('Мы перезвоним Вам в ближайшее время!');
+			quote.price          = data?.price || 0;
+			quote.services       = unique(data?.services || []);
+			quote.service_prices = data?.service_prices;
+
 			quote.event_date       = '';
 			quote.event_time       = '';
 			quote.event_time_start = '';
 			quote.event_time_end   = '';
 
+			quote.for_consultation  = 0;
 			quote.longterm_date_end = '';
 			quote.longterm_title    = '';
 
-			quote.photos = {before: [], after: []};
-
-			quote.comment        = '';
-			quote.recommendation = '';
-			quote.description    = '';
-			quote.client_comment = client_comment;
-			quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-
+			quote.photos  = {before: [], after: []};
+			quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+			toast_success('Мы перезвоним Вам в ближайшее время!');
+			console.log('Save new quote record:', quote);
 			window.api.post(
 				'/api/v2/create/records/', quote).then(
 				function (data) {
@@ -198,63 +274,6 @@
 					}
 				});
 		};
-		var fastQuoteServiceCreate  = new Ractive({
-			el: '.fastquote-block',
-			template: document.querySelector('.fastquote-block > template').innerHTML,
-			data: {
-				user: wbapp._session.user
-			},
-			on: {
-				complete() {
-					initPlugins($(this.el));
-				},
-				submit() {
-					var form = this.find('.fastquote-block form');
-					if ($(form).verify()) {
-
-						var post = $(form).serializeJSON();
-						if (!post.client) {
-							console.log('try to createProfile: ', post);
-
-							let names = post.fullname.split(' ', 3);
-							let keys  = ['last_name', 'first_name', 'middle_name'];
-							for (var i = 0; i < names.length; i++) {
-								post[keys[i]] = names[i];
-							}
-							var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-							post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
-							window.api.get('/api/v2/list/users/?role=client&phone=' + post.phone +
-							               '&__token=' + _token).then(
-								function (data) {
-									if (!data.length) {
-										post.role      = "client";
-										post.role      = "client";
-										post.confirmed = 0;
-										post.active    = "on";
-										post.__token   = _token;
-										window.api.post('/api/v2/create/users/', post).then(
-											function (data) {
-												if (data && data.error) {
-													wbapp.trigger('wb-save-error', {
-														'data': data
-													});
-												} else {
-													createFastQuoteServices(data.id, post.client_comment);
-												}
-											});
-									} else {
-										toast('Этот номер уже используется!', 'Ошибка!', 'error');
-										form.find('[name="phone"]').focus();
-									}
-								});
-						} else {
-							createFastQuoteServices(post.client, post.client_comment);
-						}
-					}
-
-				}
-			}
-		});
 	</script>
 </view>
 
