@@ -1145,10 +1145,13 @@
 											console.log('>>> loaded', target_tab);
 											$(this.el).find('.loading-overlay').remove();
 											if (window.afterLoad){
-												var res = window.afterLoad();
-												if (res.length){
-													window.afterLoad = null;
-												}
+												setTimeout(function (){
+
+													var res = window.afterLoad();
+													if (res.length) {
+														window.afterLoad = null;
+													}
+												});
 											}
 										},
 										complete() {
@@ -1189,7 +1192,7 @@
 																			  '"]')[0].scrollIntoView();
 																			$('.accardeon__click[data-record="' +
 																			  record.id + '"]').trigger('click');
-																		}, 500);
+																		}, 800);
 																	}
 																	return res;
 																};
