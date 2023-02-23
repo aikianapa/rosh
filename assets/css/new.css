@@ -1738,6 +1738,10 @@ blockquote cite {
 .popup__overlay {
     z-index : 2;
 }
+.popup__wrapper .popup__panel{
+    -webkit-transform :none!important;
+    transform : none!important;
+}
 @media (max-width : 1130px) {
     .orders-sidebar,
     .basket-sidebar {
