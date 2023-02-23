@@ -1189,8 +1189,9 @@
 																			  '"]')[0].scrollIntoView();
 																			$('.accardeon__click[data-record="' +
 																			  record.id + '"]').trigger('click');
-																		}, 100);
+																		}, 500);
 																	}
+																	return res;
 																};
 																window.load();
 															});
