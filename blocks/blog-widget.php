@@ -79,7 +79,7 @@
 				} else {
 					_c_b = 'blog-panel--33';
 				}
-				$(this).removeClass(_c_a).addClass(_c_b);
+				$(this).removeAttr('class').addClass('blog-panel '+_c_b);
 				//console.log(_pos, _idx, $(this));
 			});
 
