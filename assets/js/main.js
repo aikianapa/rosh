@@ -250,6 +250,7 @@ $(function() {
             return false;
         }).on('click', '.popup__overlay', function() {
             $(this).closest('.popup:not(.strict_close)').hide();
+            $('body').removeClass('noscroll');
         }).on('click', '.profile-menu', function(e) {
             e.stopPropagation();
             $(this).toggleClass('active');
