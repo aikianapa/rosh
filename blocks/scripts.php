@@ -53,12 +53,12 @@
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/intlTelInput.min.css?v=1.2" rel="stylesheet">
-	<link href="/assets/css/new.css?v=1.FFF" rel="stylesheet">
+	<link href="/assets/css/new.css?v=8ACB16610BC44C59A86F2F4E90EF9B39" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
-	<link href="/assets/css/additional/frontend.css" rel="stylesheet">
+	<link href="/assets/css/additional/frontend.css?v=C3C0673667574D6F94E363A4A78993AD" rel="stylesheet">
 
 	<link wb-if="in_array('{{_sess.user.role}}', ['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=37FA096B25D742CDB0C50ABE1D5662E0" rel="stylesheet">
+		href="/assets/css/cabinet.css?v=A8823A7C3A88496D9FD4EB5D80FD067F" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">

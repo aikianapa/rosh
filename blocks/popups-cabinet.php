@@ -726,73 +726,76 @@
 		<div class="popup --photo">
 			<template id="popupPhoto">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel popup__panel-wide">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Добавить фото
-						{{#if record.group == 'longterms'}} в продолжительное лечение {{/if}}
+
+				<div class="popup__wrapper">
+					<div class="popup__panel popup__panel-wide">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Добавить фото
+							{{#if record.group == 'longterms'}} в продолжительное лечение {{/if}}
+						</div>
+						<form class="popup__form" on-submit="submit">
+							{{#if record}}
+							<input type="hidden" name="id" value="{{record.id}}">
+							<input type="hidden" name="client" value="{{record.client}}">
+
+							<p class="mb-20 text-bold text-big">
+								{{ @global.catalog.clients[record.client].fullname }}
+							</p>
+							{{else}}
+							<div class="search-form input">
+								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+								<div class="input__placeholder">Выбрать пациента</div>
+							</div>
+							<input type="hidden" name="client" value="">
+							<input type="hidden" name="id" value="">
+
+							<div class="search-form event disabled input">
+								<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
+									autocomplete="off">
+								<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
+							</div>
+							{{/if}}
+
+							<div class="mb-20 input calendar">
+								<input class="input__control datepickr" type="text" name="date" placeholder="Выбрать дату посещения" autocomplete="off" required>
+								<div class="input__placeholder">Укажите дату фото</div>
+							</div>
+							<div class="popups__text-chexboxs radios --flex" data-show="longterm">
+								<label class="text-radio" name="target" value="before" on-click="singlePhoto">
+									<input type="radio" name="target" value="before">
+									<span class="group_label_before">
+										{{#if record.group == 'longterms'}} До начала лечения {{else}} До приема {{/if}}
+									</span>
+								</label>
+								<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
+									<input type="radio" name="target" value="after">
+									<span class="group_label_after">
+										{{#if record.group == 'longterms'}} После начала лечения {{else}} После приема {{/if}}
+									</span>
+								</label>
+							</div>
+
+							<label class="file-photo">
+								<div class="file-photo__ico">
+									<svg class="svgsprite _file">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
+									</svg>
+									<img class="preview d-none" alt="upload preview">
+								</div>
+								<input type="file" name="file" accept=".jpg, .jpeg, .png" class="client-photo" required>
+								<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id }}/">
+								<div class="file-photo__text text-grey">
+									Для загрузки фото заполните все поля
+									<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
+								</div>
+							</label>
+							<button class="btn btn--white upload-image" type="submit">Сохранить</button>
+						</form>
 					</div>
-					<form class="popup__form" on-submit="submit">
-						{{#if record}}
-						<input type="hidden" name="id" value="{{record.id}}">
-						<input type="hidden" name="client" value="{{record.client}}">
-
-						<p class="mb-20 text-bold text-big">
-							{{ @global.catalog.clients[record.client].fullname }}
-						</p>
-						{{else}}
-						<div class="search-form input">
-							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
-							<div class="input__placeholder">Выбрать пациента</div>
-						</div>
-						<input type="hidden" name="client" value="">
-						<input type="hidden" name="id" value="">
-
-						<div class="search-form event disabled input">
-							<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
-								autocomplete="off">
-							<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
-						</div>
-						{{/if}}
-
-						<div class="mb-20 input calendar">
-							<input class="input__control datepickr" type="text" name="date" placeholder="Выбрать дату посещения" autocomplete="off" required>
-							<div class="input__placeholder">Укажите дату фото</div>
-						</div>
-						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
-							<label class="text-radio" name="target" value="before" on-click="singlePhoto">
-								<input type="radio" name="target" value="before">
-								<span class="group_label_before">
-									{{#if record.group == 'longterms'}} До начала лечения {{else}} До приема {{/if}}
-								</span>
-							</label>
-							<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
-								<input type="radio" name="target" value="after">
-								<span class="group_label_after">
-									{{#if record.group == 'longterms'}} После начала лечения {{else}} После приема {{/if}}
-								</span>
-							</label>
-						</div>
-
-						<label class="file-photo">
-							<div class="file-photo__ico">
-								<svg class="svgsprite _file">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-								</svg>
-								<img class="preview d-none" alt="upload preview">
-							</div>
-							<input type="file" name="file" accept=".jpg, .jpeg, .png" class="client-photo" required>
-							<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id }}/">
-							<div class="file-photo__text text-grey">
-								Для загрузки фото заполните все поля
-								<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
-							</div>
-						</label>
-						<button class="btn btn--white upload-image" type="submit">Сохранить</button>
-					</form>
 				</div>
 			</template>
 		</div>
@@ -914,77 +917,80 @@
 		<div class="popup --longterm">
 			<template id="popupLongterm">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel popup__panel-wide">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Продолжительное лечение</div>
-					<form class="popup__form" on-submit="longtermSave" autocomplete="off">
-						{{#if record}}
-						<input type="hidden" name="id" value="{{record.id}}"> {{else}}
-						<!-- new record -->
-						{{/if}}
-						<input type="hidden" name="group" value="longterms">
-						<input type="hidden" name="client" value="{{client.id}}"> {{#if client}}
-						<p class="mb-20 text-bold text-big">
-							{{ @global.catalog.clients[client.id].fullname }}
-						</p>
-						{{else}}
-						<div class="search-form input">
-							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
-							<div class="input__placeholder">Выбрать пациента</div>
-						</div>
-						{{/if}}
+				<div class="popup__wrapper">
 
-						<div class="mb-20 input calendar">
-							<input class="input__control datepickr" type="text" required autocomplete="off" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
-								placeholder="Выбрать дату посещения">
-							<div class="input__placeholder">Дата посещения</div>
-						</div>
-						<div class="popup-title__checkbox disabled d-none">
-							<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
-								<input type="checkbox" name="group" value="longterms" checked>
-								<span></span>
-								<div class="checbox__name">Продолжительное лечение</div>
-							</label>
-						</div>
+					<div class="popup__panel popup__panel-wide">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Продолжительное лечение</div>
+						<form class="popup__form" on-submit="longtermSave" autocomplete="off">
+							{{#if record}}
+							<input type="hidden" name="id" value="{{record.id}}"> {{else}}
+							<!-- new record -->
+							{{/if}}
+							<input type="hidden" name="group" value="longterms">
+							<input type="hidden" name="client" value="{{client.id}}"> {{#if client}}
+							<p class="mb-20 text-bold text-big">
+								{{ @global.catalog.clients[client.id].fullname }}
+							</p>
+							{{else}}
+							<div class="search-form input">
+								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+								<div class="input__placeholder">Выбрать пациента</div>
+							</div>
+							{{/if}}
 
-						<div class="mb-20 input calendar" data-filter="longterms">
-							<input class="input__control event-search longterm-search" type="text" name="longterm_title" autocomplete="off" placeholder="Название продолжительного лечения"
-								required>
-							<div class="input__placeholder">Название продолжительного лечения</div>
-						</div>
-
-						<div class="radios --flex">
-							<label class="text-radio">
-								<input type="radio" name="target" value="before" checked="checked">
-								<span>До начала лечения</span>
-							</label>
-							<label class="text-radio" style="visibility: hidden">
-								<input type="radio" name="target" value="after">
-								<span>После начала лечения</span>
-							</label>
-						</div>
-						<label class="file-photo">
-							<div class="file-photo__ico">
-								<svg class="svgsprite _file">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-								</svg>
-								<img class="preview d-none" alt="upload preview">
+							<div class="mb-20 input calendar">
+								<input class="input__control datepickr" type="text" required autocomplete="off" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
+									placeholder="Выбрать дату посещения">
+								<div class="input__placeholder">Дата посещения</div>
+							</div>
+							<div class="popup-title__checkbox disabled d-none">
+								<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
+									<input type="checkbox" name="group" value="longterms" checked>
+									<span></span>
+									<div class="checbox__name">Продолжительное лечение</div>
+								</label>
 							</div>
 
-							<input type="hidden" name="path" value="/records/photos/longterms/">
-							<input type="file" accept=".jpg, .jpeg, .png" name="file" class="client-photo" required>
-
-							<div class="file-photo__text text-grey">
-								Для загрузки фото заполните все поля
-								<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
+							<div class="mb-20 input calendar" data-filter="longterms">
+								<input class="input__control event-search longterm-search" type="text" name="longterm_title" autocomplete="off" placeholder="Название продолжительного лечения"
+									required>
+								<div class="input__placeholder">Название продолжительного лечения</div>
 							</div>
-						</label>
-						<button class="btn btn--white" type="submit">Сохранить</button>
-					</form>
+
+							<div class="radios --flex">
+								<label class="text-radio">
+									<input type="radio" name="target" value="before" checked="checked">
+									<span>До начала лечения</span>
+								</label>
+								<label class="text-radio" style="visibility: hidden">
+									<input type="radio" name="target" value="after">
+									<span>После начала лечения</span>
+								</label>
+							</div>
+							<label class="file-photo">
+								<div class="file-photo__ico">
+									<svg class="svgsprite _file">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
+									</svg>
+									<img class="preview d-none" alt="upload preview">
+								</div>
+
+								<input type="hidden" name="path" value="/records/photos/longterms/">
+								<input type="file" accept=".jpg, .jpeg, .png" name="file" class="client-photo" required>
+
+								<div class="file-photo__text text-grey">
+									Для загрузки фото заполните все поля
+									<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
+								</div>
+							</label>
+							<button class="btn btn--white" type="submit">Сохранить</button>
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>
@@ -1086,63 +1092,65 @@
 		<div class="popup --photo-profile">
 			<template id="popupPhotoProfile">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Добавить фото</div>
-					<div class="popup__form">
-						<input type="hidden" name="client" value="{{this.client}}">
-						<input type="hidden" name="id" value="{{this.id}}">
+				<div class="popup__wrapper">
+					<div class="popup__panel">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Добавить фото</div>
+						<div class="popup__form">
+							<input type="hidden" name="client" value="{{this.client}}">
+							<input type="hidden" name="id" value="{{this.id}}">
 
-						<div class="search-form input disabled">
-							<input class="input__control autocomplete client-search" type="text" placeholder="Выбрать пациента">
-							<div class="input__placeholder">Выбрать пациента</div>
-						</div>
-						<div class="mb-20 input calendar">
-							<input class="input__control datepickr" type="text" name="event_date" placeholder="Выбрать дату посещения">
-							<div class="input__placeholder">Выбрать дату посещения</div>
-						</div>
-						<input type="hidden" name="group" value="event">
-						<input type="hidden" name="id">
-						<div class="popup-title__checkbox">
-							<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
-								<input type="checkbox" name="group" value="longterm" checked>
-								<span></span>
-								<div class="checbox__name">Продолжительное лечение</div>
-							</label>
-						</div>
-						<div class="mb-20 input calendar" data-show="longterm">
-							<input class="input__control longterm-search" type="text" name="title" placeholder="Название продолжительного лечения" value="">
-							<div class="input__placeholder">Название продолжительного лечения</div>
-						</div>
-						<div class="radios --flex">
-							<label class="text-radio">
-								<input type="radio" name="target" value="before" checked="checked">
-								<span>До начала лечения</span>
-							</label>
-							<label class="text-radio disabled">
-								<input type="radio" name="target" value="after">
-								<span>В процессе лечения</span>
-							</label>
-						</div>
+							<div class="search-form input disabled">
+								<input class="input__control autocomplete client-search" type="text" placeholder="Выбрать пациента">
+								<div class="input__placeholder">Выбрать пациента</div>
+							</div>
+							<div class="mb-20 input calendar">
+								<input class="input__control datepickr" type="text" name="event_date" placeholder="Выбрать дату посещения">
+								<div class="input__placeholder">Выбрать дату посещения</div>
+							</div>
+							<input type="hidden" name="group" value="event">
+							<input type="hidden" name="id">
+							<div class="popup-title__checkbox">
+								<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
+									<input type="checkbox" name="group" value="longterm" checked>
+									<span></span>
+									<div class="checbox__name">Продолжительное лечение</div>
+								</label>
+							</div>
+							<div class="mb-20 input calendar" data-show="longterm">
+								<input class="input__control longterm-search" type="text" name="title" placeholder="Название продолжительного лечения" value="">
+								<div class="input__placeholder">Название продолжительного лечения</div>
+							</div>
+							<div class="radios --flex">
+								<label class="text-radio">
+									<input type="radio" name="target" value="before" checked="checked">
+									<span>До начала лечения</span>
+								</label>
+								<label class="text-radio disabled">
+									<input type="radio" name="target" value="after">
+									<span>В процессе лечения</span>
+								</label>
+							</div>
 
-						<label class="file-photo" for="file-photo">
-							<input type="hidden" name="path" value="/records/">
-							<div class="file-photo__ico">
-								<svg class="svgsprite _file">
-									<use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
-								</svg>
-								<img class="preview d-none" alt="upload preview">
-							</div>
-							<input type="file" id="file-photo" name="file">
-							<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
-								<br>Фото не должно превышать 10 мб
-							</div>
-						</label>
-						<button class="btn btn--white">Сохранить</button>
+							<label class="file-photo" for="file-photo">
+								<input type="hidden" name="path" value="/records/">
+								<div class="file-photo__ico">
+									<svg class="svgsprite _file">
+										<use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
+									</svg>
+									<img class="preview d-none" alt="upload preview">
+								</div>
+								<input type="file" id="file-photo" name="file">
+								<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
+									<br>Фото не должно превышать 10 мб
+								</div>
+							</label>
+							<button class="btn btn--white">Сохранить</button>
+						</div>
 					</div>
 				</div>
 			</template>
@@ -1352,37 +1360,40 @@
 		<div class="popup --confirm-sms-code">
 			<template id="popupConfirmSmsCode">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Вход</div>
-					<form class="popup__form">
-						<h3 class="h3">Введите код</h3>
-						<div class="form-title__description">
-							Мы отправили код подтверждения на номер
-							<span class="current_phone">{{phone}}</span>
-							.
-							<br> Время жизни кода 30 секунд.
-							<br> Осталось
-							<strong>
-								<span class="sms_code_lifetime"></span>
-							</strong>
-						</div>
+				<div class="popup__wrapper">
 
-						<div class="code">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-						</div>
+					<div class="popup__panel">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Вход</div>
+						<form class="popup__form">
+							<h3 class="h3">Введите код</h3>
+							<div class="form-title__description">
+								Мы отправили код подтверждения на номер
+								<span class="current_phone">{{phone}}</span>
+								.
+								<br> Время жизни кода 30 секунд.
+								<br> Осталось
+								<strong>
+									<span class="sms_code_lifetime"></span>
+								</strong>
+							</div>
 
-						<div class="mb-2 alert alert-warning"></div>
-					</form>
+							<div class="code">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+							</div>
+
+							<div class="mb-2 alert alert-warning"></div>
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>

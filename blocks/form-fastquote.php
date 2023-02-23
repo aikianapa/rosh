@@ -2,15 +2,17 @@
 	<div class="fast-form-block">
 		<template>
 			<div class="popup fast-form-block">
-				<div class="popup__panel --succed">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Быстрая запись</div>
-					<h3 class="h3">Успешно !</h3>
-					<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+				<div class="popup__wrapper">
+					<div class="popup__panel --succed">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Быстрая запись</div>
+						<h3 class="h3">Успешно !</h3>
+						<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
+					</div>
 				</div>
 			</div>
 			<form class="fast-form no-validation">

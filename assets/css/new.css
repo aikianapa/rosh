@@ -1731,7 +1731,8 @@ blockquote cite {
     -webkit-box-pack  : center;
     -ms-flex-pack     : center;
     justify-content   : center;
-    margin            : 20px;
+    padding           : 20px;
+    min-height        : 100%;
 }
 @media (max-width : 1130px) {
     .orders-sidebar,
@@ -2042,7 +2043,6 @@ blockquote cite {
     }
     .popup__wrapper{
         margin: 0;
-
     }
 }
 
