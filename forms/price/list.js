@@ -67,7 +67,19 @@
                     }
                     if ($(this).attr('name') == 'category') {
                         let category = $(this).val()
-                        category == '*' ? null : filter.category = { '$like': category }
+                        if (category !== "*") {
+                            let sel = $(this).find('option:selected')
+                            if (sel.index() == 0 ) {
+                            let grp = sel.parent('optgroup').children('option')
+                            let arr = []
+                                grp.each(function(){
+                                    arr.push($(this).attr('value'))
+                                })
+                                filter.category = { '$in': arr }
+                            } else {
+                                filter.category = { '$like': category }
+                            }
+                        }
                     }
                 })
                 list.set('filter', filter)

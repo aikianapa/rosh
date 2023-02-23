@@ -21,7 +21,6 @@ function BlogFilter(){
 	this.get_data_ajax = function(){
 		var _this = this, filter_params;
 		filter.getDates();
-
 		if(_this.blog_category === null){
 			filter_params = {
 				'id' : {'$in': _this.id_list},
@@ -52,7 +51,11 @@ function BlogFilter(){
 			},
 			async: false,
 			success: function(data){
-				_this.id_list = data;
+				if (!data.length) {
+					_this.id_list = [99999]
+				} else {
+					_this.id_list = data;
+				}
 			}
 		})
 	}

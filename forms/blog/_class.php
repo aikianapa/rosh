@@ -68,7 +68,8 @@ class blogClass extends cmsFormsClass {
         $year = ($_POST['year'] == 'Все')?null:$_POST['year'];
 
         $app = $this->app;
-        $blog = json_decode(file_get_contents($app->vars('_env.dba').'/blog.json'), true);
+        $filter = ['active'=>'on'];
+        $blog = $app->itemList('blog',['filter'=>$filter,'return'=>'date,id'])['list'];
         $res = [];
 
         foreach($blog as $item){

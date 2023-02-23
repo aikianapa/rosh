@@ -67,7 +67,7 @@ class problemsClass extends cmsFormsClass
         // Проблемы
         foreach ($prbms as $problem) {
             foreach ($filter['problems'] as &$prb) {
-                if ($problem['srvtype'] == $prb['id']) {
+                if ($problem['srvtype'] == $prb['id'] && isset($problem['category'])) {
                     foreach ($problem['category'] as $cat) {
                         $prb['cats'][$cat]['items'][] = $problem;
                     }

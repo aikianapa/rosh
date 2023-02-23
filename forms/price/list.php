@@ -25,9 +25,9 @@
                             <option value="*">Все</option>
                             <wb-foreach wb="table=catalogs&item=shop_category&from=tree.data" wb-filter="">
                                 <optgroup label="{{name}}">
+                                    <option value="{{id}}">{{name}}</option>
                                     <wb-foreach wb="from=children&tpl=false">
                                         <option value="{{id}}">{{name}}</option>
-
                                     </wb-foreach>
                                     </optiongroup>
                             </wb-foreach>
@@ -71,30 +71,28 @@
                     </li>
                 {{/each}}
             </ul>
-            
-        {{#~/pages }} {{#if ~/pages != 1 }}
-        <nav>
-            <ul class="pagination justify-content-center mg-b-0 mg-t-10">
-                {{#each pagination}} {{#if ~/page == .page}}
-                <li class="page-item active">
-                    <a class="page-link" data-page="{{.page}}" on-click="setPage" href="#">
-                        {{.label}}
-                    </a>
-                </li>
-                {{/if}} {{#if ~/page != .page}}
-                <li class="page-item">
-                    <a class="page-link" data-page="{{.page}}" on-click="setPage" href="#">
-                        {{#if .label == "prev"}}
-                        <img src="/module/myicons/interface-essential-181.svg?size=18&stroke=0168fa"
-                            class="d-inline">{{/if}} {{#if .label == "next"}}
-                        <img src="/module/myicons/interface-essential-35.svg?size=18&stroke=0168fa"
-                            class="d-inline">{{/if}} {{#if .label != "prev"}}{{#if .label != "next"}}{{.label}}{{/if}}{{/if}}
-                    </a>
-                </li>
-                {{/if}} {{/each}}
-            </ul>
-        </nav>
-        {{/if}} {{/pages}}
+
+            {{#~/pages }} {{#if ~/pages != 1 }}
+                    <nav>
+                        <ul class="pagination justify-content-center mg-b-0 mg-t-10">
+                            {{#each pagination}} {{#if ~/page == .page}}
+                                    <li class="page-item active">
+                                        <a class="page-link" data-page="{{.page}}" on-click="setPage" href="#">
+                                            {{.label}}
+                                        </a>
+                                    </li>
+                                {{/if}} {{#if ~/page != .page}}
+                                    <li class="page-item">
+                                        <a class="page-link" data-page="{{.page}}" on-click="setPage" href="#">
+                                            {{#if .label == "prev"}}
+                                                <img src="/module/myicons/interface-essential-181.svg?size=18&stroke=0168fa" class="d-inline">{{/if}} {{#if .label == "next"}}
+                                                <img src="/module/myicons/interface-essential-35.svg?size=18&stroke=0168fa" class="d-inline">{{/if}} {{#if .label != "prev"}}{{#if .label != "next"}}{{.label}}{{/if}}{{/if}}
+                                        </a>
+                                    </li>
+                                {{/if}} {{/each}}
+                        </ul>
+                    </nav>
+                {{/if}} {{/pages}}
 
         </div>
     </div>

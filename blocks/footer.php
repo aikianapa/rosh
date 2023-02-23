@@ -6,17 +6,22 @@
                     <div class="row footer__top">
                         <div class="footer__item col-lg-2">
                             <div class="socials">
-                                <a class="socials__link" href="#">
+                                <a class="socials__link" href="{{_var.facebook}}" wb-if="'{{_var.facebook}}'>''">
                                     <svg class="svgsprite _socials-1">
                                         <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-1"></use>
                                     </svg>
                                 </a>
-                                <a class="socials__link" href="#">
+                                <a class="socials__link" href="{{_var.instagram}}" wb-if="'{{_var.instagram}}'>''">
                                     <svg class="svgsprite _socials-2">
                                         <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-2"></use>
                                     </svg>
                                 </a>
-                                <a class="socials__link" href="#">
+                                <a class="socials__link" href="{{_var.vkontakte}}" wb-if="'{{_var.vkontakte}}'>''">
+                                    <svg class="svgsprite _socials-4">
+                                        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-4"></use>
+                                    </svg>
+                                </a>
+                                <a class="socials__link" href="{{_var.youtube}}" wb-if="'{{_var.youtube}}'>''">
                                     <svg class="svgsprite _socials-3">
                                         <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-3"></use>
                                     </svg>
