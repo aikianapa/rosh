@@ -1191,14 +1191,13 @@ $(function () {
 				};
 			},
 			onSelect: function (suggestion) {
-				console.log($(this), suggestion);
 				form.find('input[name="id"]').val(suggestion.data.id);
 				if (suggestion.data.is_longterm) {
-					form.find('span.changed_label_after').text = 'после начала лечения';
-					form.find('span.changed_label_before').text  = 'до начала лечения';
+					form.find('span.changed_label_after').text('после начала лечения');
+					form.find('span.changed_label_before').text('до начала лечения');
 				} else {
-					form.find('span.changed_label_after').text = 'после приема';
-					form.find('span.changed_label_before').text  = 'до приема';
+					form.find('span.changed_label_after').text('после приема');
+					form.find('span.changed_label_before').text('до приема');
 				}
 			}
 		});

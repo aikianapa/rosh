@@ -1014,6 +1014,7 @@
 					editor.close();
 				});
 			}
+			window.afterLoad = null;
 			window.load = function(only_tab) {
 				tab_urls.forEach(function(target_tab, i) {
 					if (only_tab && only_tab != target_tab) {
@@ -1143,6 +1144,12 @@
 										loaded() {
 											console.log('>>> loaded', target_tab);
 											$(this.el).find('.loading-overlay').remove();
+											if (window.afterLoad){
+												var res = window.afterLoad();
+												if (res.length){
+													window.afterLoad = null;
+												}
+											}
 										},
 										complete() {
 											this.find('.loading-overlay').remove();
@@ -1170,6 +1177,21 @@
 															})
 															.then(function (record) {
 																toast('Анализы добавлены!');
+																console.log(index);
+																window.afterLoad = function(){
+																	var res = $(
+																		'.accardeon__click[data-record="' + record.id +
+																		'"]');
+																	if (res.length){
+																		setTimeout(function (){
+																			$('.accardeon__click[data-record="' +
+																			  record.id +
+																			  '"]')[0].scrollIntoView();
+																			$('.accardeon__click[data-record="' +
+																			  record.id + '"]').trigger('click');
+																		}, 100);
+																	}
+																};
 																window.load();
 															});
 													});

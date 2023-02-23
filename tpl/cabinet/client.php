@@ -106,6 +106,9 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
+							{{#if consultation}}
+							{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+							{{/if}}
 							{{#services}}
 							{{catalog.services[this].header}}<br>
 							{{/services}}
@@ -192,9 +195,23 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
+							{{#if consultation}}
+							{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+							{{/if}}
 							{{#services}}
 							{{@global.catalog.services[this].header}}<br>
 							{{/services}}
+						</div>
+					</div>
+				</div>
+				{{elseif this.consultation}}
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Услуги:</div>
+						<div class="account-event">
+							{{#if consultation}}
+							{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+							{{/if}}
 						</div>
 					</div>
 				</div>
@@ -203,6 +220,9 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
 						<div class="account-event">
+							{{#if consultation}}
+							{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+							{{/if}}
 							{{#services}}
 							{{@global.catalog.services[this].header}}<br>
 							{{/services}}
