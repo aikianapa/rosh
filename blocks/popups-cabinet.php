@@ -3,191 +3,193 @@
 		<div class="popup --record strict_close">
 			<template id="popupRecord">
 				<div class="popup__overlay"></div>
-				<form class="popup__panel popup__panel-wide" on-submit="submit">
-					<button class="popup__close" on-click="cancel">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Запись на прием</div>
-					<div class="mb-10 text-bold">Разделы услуг</div>
-					<div class="popups__text-chexboxs">
-						{{#each categories}}
-						<label class="text-radio">
-							<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
-							<span>{{name}}</span>
-						</label>
-						{{/each}}
-					</div>
-					<div class="input" data-hide="service-search">
-						<input class="search__input search-services" type="text" placeholder="Поиск по услугам">
-						<div class="search__drop"></div>
-						<button class="search__btn" type="button">
-							<svg class="svgsprite _search">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+				<div class="popup__wrapper">
+					<form class="popup__panel popup__panel-wide" on-submit="submit">
+						<button class="popup__close" on-click="cancel">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
 							</svg>
 						</button>
-					</div>
-					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_services" value="1">
-						<span></span>
-						<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
-					</label>
-					<div class="mb-20 consultations">
-						<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
-							<input type="hidden" name="for_consultation" value="0">
-
-							{{#if record.for_consultation === '1' }}
-							<input class="checkbox-visible-next-form" type="checkbox" checked
-								name="for_consultation" value="1">
-							{{else}}
-							<input class="checkbox-visible-next-form" type="checkbox"
-								name="for_consultation" value="1">
-							{{/if}}
+						<div class="popup__name text-bold">Запись на прием</div>
+						<div class="mb-10 text-bold">Разделы услуг</div>
+						<div class="popups__text-chexboxs">
+							{{#each categories}}
+							<label class="text-radio">
+								<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
+								<span>{{name}}</span>
+							</label>
+							{{/each}}
+						</div>
+						<div class="input" data-hide="service-search">
+							<input class="search__input search-services" type="text" placeholder="Поиск по услугам">
+							<div class="search__drop"></div>
+							<button class="search__btn" type="button">
+								<svg class="svgsprite _search">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+								</svg>
+							</button>
+						</div>
+						<label class="checkbox checkbox--record hider-checkbox" data-hide-input="service-search">
+							<input class="checkbox-hidden-next-form" type="checkbox" name="no_services" value="1">
 							<span></span>
-							<div class="checbox__name">Консультация врача</div>
+							<div class="checbox__name">Мне лень искать в списке, скажу администратору</div>
 						</label>
-						<div class="select-form" data-show="consultation-type"
-							style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
-							<div class="mb-10 text-bold">Тип события</div>
-							<div class="popups__text-chexboxs">
-								{{#each @global.catalog.quoteType as qt}}
-								<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
-									{{#if qt.id === record.type }}
-									<input type="radio" name="type"
-										class="consultation-type {{qt.id}}"
-										value="{{ qt.id }}" checked>
-									{{else}}
-									<input type="radio" name="type" value="{{ qt.id }}"
-										class="consultation-type {{qt.id}}">
-									{{/if}}
-									<span>{{qt.name}}</span>
-								</label>
-								{{/each}}
-							</div>
-							<div class="admin-editor__patient price-list">
-								{{#each @global.catalog.spec_service.consultations.online}}
-								<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
-									data-show="consultation-online"
-									data-consultation="{{this.id}}"
-									data-price="{{this.price}}"
-									style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
+						<div class="mb-20 consultations">
+							<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
+								<input type="hidden" name="for_consultation" value="0">
 
-									<label class="checkbox search__drop-name"
-										data-name="{{this.header}}" data-price="{{this.price}}"
-										data-id="{{this.id}}">
-										{{#if record.consultation == this.id }}
-										<input type="radio" name="consultation" value="{{this.id}}"
-											data-name="{{this.header}}" data-price="{{this.price}}"
-											checked="checked">
+								{{#if record.for_consultation === '1' }}
+								<input class="checkbox-visible-next-form" type="checkbox" checked
+									name="for_consultation" value="1">
+								{{else}}
+								<input class="checkbox-visible-next-form" type="checkbox"
+									name="for_consultation" value="1">
+								{{/if}}
+								<span></span>
+								<div class="checbox__name">Консультация врача</div>
+							</label>
+							<div class="select-form" data-show="consultation-type"
+								style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
+								<div class="mb-10 text-bold">Тип события</div>
+								<div class="popups__text-chexboxs">
+									{{#each @global.catalog.quoteType as qt}}
+									<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
+										{{#if qt.id === record.type }}
+										<input type="radio" name="type"
+											class="consultation-type {{qt.id}}"
+											value="{{ qt.id }}" checked>
 										{{else}}
-										<input type="radio" name="consultation" value="{{this.id}}"
-											data-name="{{this.header}}" data-price="{{this.price}}">
+										<input type="radio" name="type" value="{{ qt.id }}"
+											class="consultation-type {{qt.id}}">
 										{{/if}}
-										<span></span>
-										<div class="checbox__name">{{this.header}}</div>
+										<span>{{qt.name}}</span>
 									</label>
-									<label class="search__drop-right">
-										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-									</label>
+									{{/each}}
 								</div>
-								{{/each}}
-								{{#each @global.catalog.spec_service.consultations.clinic}}
-								<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
-									data-show="consultation-clinic"
-									data-consultation="{{this.id}}"
-									data-price="{{this.price}}"
-									style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-									<label class="checkbox search__drop-name"
-										data-name="{{this.header}}" data-price="{{this.price}}"
-										data-id="{{this.id}}">
-										{{#if record.consultation == this.id }}
-										<input type="radio" name="consultation" value="{{this.id}}"
+								<div class="admin-editor__patient price-list">
+									{{#each @global.catalog.spec_service.consultations.online}}
+									<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
+										data-show="consultation-online"
+										data-consultation="{{this.id}}"
+										data-price="{{this.price}}"
+										style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
+
+										<label class="checkbox search__drop-name"
 											data-name="{{this.header}}" data-price="{{this.price}}"
-											checked="checked">
-										{{else}}
-										<input type="radio" name="consultation" value="{{this.id}}"
-											data-name="{{this.header}}" data-price="{{this.price}}">
-										{{/if}}
-										<span></span>
-										<div class="checbox__name">{{this.header}}</div>
-									</label>
-									<label class="search__drop-right">
-										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-									</label>
+											data-id="{{this.id}}">
+											{{#if record.consultation == this.id }}
+											<input type="radio" name="consultation" value="{{this.id}}"
+												data-name="{{this.header}}" data-price="{{this.price}}"
+												checked="checked">
+											{{else}}
+											<input type="radio" name="consultation" value="{{this.id}}"
+												data-name="{{this.header}}" data-price="{{this.price}}">
+											{{/if}}
+											<span></span>
+											<div class="checbox__name">{{this.header}}</div>
+										</label>
+										<label class="search__drop-right">
+											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+										</label>
+									</div>
+									{{/each}}
+									{{#each @global.catalog.spec_service.consultations.clinic}}
+									<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
+										data-show="consultation-clinic"
+										data-consultation="{{this.id}}"
+										data-price="{{this.price}}"
+										style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
+										<label class="checkbox search__drop-name"
+											data-name="{{this.header}}" data-price="{{this.price}}"
+											data-id="{{this.id}}">
+											{{#if record.consultation == this.id }}
+											<input type="radio" name="consultation" value="{{this.id}}"
+												data-name="{{this.header}}" data-price="{{this.price}}"
+												checked="checked">
+											{{else}}
+											<input type="radio" name="consultation" value="{{this.id}}"
+												data-name="{{this.header}}" data-price="{{this.price}}">
+											{{/if}}
+											<span></span>
+											<div class="checbox__name">{{this.header}}</div>
+										</label>
+										<label class="search__drop-right">
+											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+										</label>
+									</div>
+									{{/each}}
 								</div>
-								{{/each}}
 							</div>
+							<input type="hidden" class="consultation_price"
+								name="consultation_price"
+								value="{{record.consultation_price}}">
 						</div>
-						<input type="hidden" class="consultation_price"
-							name="consultation_price"
-							value="{{record.consultation_price}}">
-					</div>
 
-					<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
-						<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
-						<span></span>
-						<div class="checbox__name">Я не знаю, кого выбрать</div>
-					</label>
-					<div class="select-form" data-hide="expert">
-						<div class="select">
-							<div class="select__main">
-								<div class="select__placeholder">Выберите специалиста</div>
-								<div class="select__values"></div>
-							</div>
-							<div class="select__list">
-								{{#each @global.catalog.experts}}
-								<div class="select__item select__item--checkbox">
-									<label class="checkbox checkbox--record">
-										<input type="checkbox" name="experts[]" value="{{id}}">
-										<span></span>
-										<div class="checbox__name">
-											<div class="select__name">{{fullname}}</div>
-										</div>
-									</label>
+						<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
+							<input class="checkbox-hidden-next-form" type="checkbox" name="no_experts" value="1">
+							<span></span>
+							<div class="checbox__name">Я не знаю, кого выбрать</div>
+						</label>
+						<div class="select-form" data-hide="expert">
+							<div class="select">
+								<div class="select__main">
+									<div class="select__placeholder">Выберите специалиста</div>
+									<div class="select__values"></div>
 								</div>
-								{{/each}}
-							</div>
-						</div>
-					</div>
-					<div class="admin-editor__patient" data-hide="service-search">
-						<div class="mb-10 text-bold">Выбраны услуги</div>
-						<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-							<div class="pl-0 search__drop-name consultation-header">
-								{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
-							</div>
-							<div class="search__drop-right">
-								<div class="search__drop-summ consultation-price">
-									{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+								<div class="select__list">
+									{{#each @global.catalog.experts}}
+									<div class="select__item select__item--checkbox">
+										<label class="checkbox checkbox--record">
+											<input type="checkbox" name="experts[]" value="{{id}}">
+											<span></span>
+											<div class="checbox__name">
+												<div class="select__name">{{fullname}}</div>
+											</div>
+										</label>
+									</div>
+									{{/each}}
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="mb-3 admin-editor__summ" data-hide="service-search">
-						<p>Всего</p>
-						<input type="hidden" name="price" value="0">
-						<p class="price">0 ₽
-							<sup>
-								<b>*</b>
-							</sup>
-						</p>
-					</div>
-					<div class="mb-4 text-right" data-hide="service-search">
-						<b>*</b>&nbsp;
-						<small>Не является публичной офертой. Cтоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
-					</div>
-					<button class="btn btn--black form__submit" type="submit"> Записаться </button>
-				</form>
+						<div class="admin-editor__patient" data-hide="service-search">
+							<div class="mb-10 text-bold">Выбраны услуги</div>
+							<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
+								<div class="pl-0 search__drop-name consultation-header">
+									{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+								</div>
+								<div class="search__drop-right">
+									<div class="search__drop-summ consultation-price">
+										{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="mb-3 admin-editor__summ" data-hide="service-search">
+							<p>Всего</p>
+							<input type="hidden" name="price" value="0">
+							<p class="price">0 ₽
+								<sup>
+									<b>*</b>
+								</sup>
+							</p>
+						</div>
+						<div class="mb-4 text-right" data-hide="service-search">
+							<b>*</b>&nbsp;
+							<small>Не является публичной офертой. Cтоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
+						</div>
+						<button class="btn btn--black form__submit" type="submit"> Записаться</button>
+					</form>
 
-				<div class="popup__panel --succed">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Запись на прием</div>
-					<h3 class="h3">Успешно!</h3>
-					<p class="text-grey">Мы перезвоним Вам в ближайшее время.</p>
+					<div class="popup__panel --succed">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Запись на прием</div>
+						<h3 class="h3">Успешно!</h3>
+						<p class="text-grey">Мы перезвоним Вам в ближайшее время.</p>
+					</div>
 				</div>
 			</template>
 		</div>
@@ -195,46 +197,48 @@
 		<div class="popup --analize-interpretation">
 			<template id="popupAnalizeInterpretation">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">{{catalog.spec_service.analyses_interpretation.header}}</div>
-					<form class="popup__form" method="post" on-submit="submit">
-						<input type="hidden" name="pay_status" value="free">
-						<input type="hidden" name="for_consultation" value="1">
-						<input type="hidden" name="group" value="quotes">
-						<input type="hidden" name="status" value="new">
-						<input type="hidden" name="title" value="Расшифровка анализов">
-
-						<p class="text-grey mb-30">Нажмите на способ получения расшифровки анализов</p>
-						<div class="popups__text-chexboxs">
-							<label class="text-radio">
-								<input type="radio" name="type" value="clinic" checked>
-								<span>В клинике</span>
-							</label>
-							<label class="text-radio switch-blocks">
-								<input type="radio" name="type" value="online">
-								<span>Онлайн</span>
-							</label>
-						</div>
-						<button class="btn btn--black popup__change form__submit" type="submit">
-							Оставить заявку
+				<div class="popup__wrapper">
+					<div class="popup__panel">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
 						</button>
-					</form>
+						<div class="popup__name text-bold">{{catalog.spec_service.analyses_interpretation.header}}</div>
+						<form class="popup__form" method="post" on-submit="submit">
+							<input type="hidden" name="pay_status" value="free">
+							<input type="hidden" name="for_consultation" value="1">
+							<input type="hidden" name="group" value="quotes">
+							<input type="hidden" name="status" value="new">
+							<input type="hidden" name="title" value="Расшифровка анализов">
 
-				</div>
-				<div class="popup__panel --succed">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Заявка на прием</div>
-					<h3 class="h3">Успешно!</h3>
-					<p class="text-grey">Мы перезвоним Вам в ближайшее время.</p>
+							<p class="text-grey mb-30">Нажмите на способ получения расшифровки анализов</p>
+							<div class="popups__text-chexboxs">
+								<label class="text-radio">
+									<input type="radio" name="type" value="clinic" checked>
+									<span>В клинике</span>
+								</label>
+								<label class="text-radio switch-blocks">
+									<input type="radio" name="type" value="online">
+									<span>Онлайн</span>
+								</label>
+							</div>
+							<button class="btn btn--black popup__change form__submit" type="submit">
+								Оставить заявку
+							</button>
+						</form>
+
+					</div>
+					<div class="popup__panel --succed">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Заявка на прием</div>
+						<h3 class="h3">Успешно!</h3>
+						<p class="text-grey">Мы перезвоним Вам в ближайшее время.</p>
+					</div>
 				</div>
 			</template>
 		</div>
@@ -266,9 +270,9 @@
 					{{/if}}
 					<!--!!! change `action` address on PROD. !!!-->
 					<form on-submit="submit" action="https://demo.paykeeper.ru/create/" method="POST" target="_blank">
-						<input type='hidden' name='sum' value='{{this.pay_price}}' />
-						<input type='hidden' name='orderid' value='{{this.id}}' />
-						<input type='hidden' name='clientid' value='{{this.client}}' />
+						<input type='hidden' name='sum' value='{{this.pay_price}}'/>
+						<input type='hidden' name='orderid' value='{{this.id}}'/>
+						<input type='hidden' name='clientid' value='{{this.client}}'/>
 						<button class="btn btn--black form__submit" type="submit">
 							Внести предоплату
 						</button>
@@ -311,282 +315,284 @@
 		<div class="popup --record-editor">
 			<template id="popupRecordEditor">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel popup__panel-wide">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Записать пациента на прием</div>
-					<form class="record-edit popup__form" on-submit="submit" data-record="{{record.id}}">
-						{{#if client}}
-						<input type="hidden" value="{{ client.id }}" name="client">
-						<p class="mb-20 text-bold text-big">{{client.fullname}}</p>
-						{{else}}
-						<div class="search-form input">
-							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
-							<div class="input__placeholder">Выбрать пациента</div>
-						</div>
-						<input type="hidden" name="client" value="">
-						{{/if}}
-						<div class="row">
-							<div class="col-md-12">
-								<input type="hidden" value="{{ record.id }}" name="id"> {{#if record.spec_service}}
-								<input type="hidden" name="spec_service" value="{{record.spec_service}}">
-								<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}"> {{else}}
-								<div class="mb-20 admin-editor__event">
-									<div class="search__block --flex --aicn">
-										<div class="input">
-											<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
-											<div class="search__drop"></div>
-											<button class="search__btn" type="button">
-												<svg class="svgsprite _search">
-													<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-												</svg>
-											</button>
-										</div>
-									</div>
-								</div>
-								<div class="mb-20 admin-editor__event">
-									<!-- services-select.dropdown -->
-								</div>
-								{{/if}}
-
-								<div class="admin-editor__type-event">
-									<div class="select-form">
-										<div class="select pay">
-											<div class="select__main">Статус оплаты</div>
-											<div class="select__list">
-												<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
-												{{#each @global.catalog.quotePay}}
-												<div class="select__item" data-id="{{.id}}"
-													onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values');">
-													{{name}}
-												</div>
-												{{/each}}
-											</div>
-										</div>
-									</div>
-									<div class="mb-20 consultations">
-										<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
-											<input type="hidden" name="for_consultation" value="0">
-
-											{{#if record.for_consultation === '1' }}
-											<input class="checkbox-visible-next-form" type="checkbox" checked
-												name="for_consultation" value="1">
-											{{else}}
-											<input class="checkbox-visible-next-form" type="checkbox"
-												name="for_consultation" value="1">
-											{{/if}}
-											<span></span>
-											<div class="checbox__name">Консультация врача</div>
-										</label>
-										<div class="select-form" data-show="consultation-type"
-											style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
-											<div class="mb-10 text-bold">Тип события</div>
-											<div class="popups__text-chexboxs">
-												{{#each @global.catalog.quoteType as qt}}
-												<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
-													{{#if qt.id === record.type }}
-													<input type="radio" name="type"
-														class="consultation-type {{qt.id}}"
-														value="{{ qt.id }}" checked>
-													{{else}}
-													<input type="radio" name="type" value="{{ qt.id }}"
-														class="consultation-type {{qt.id}}">
-													{{/if}}
-													<span>{{qt.name}}</span>
-												</label>
-												{{/each}}
-											</div>
-											<div class="admin-editor__patient price-list">
-												{{#each @global.catalog.spec_service.consultations.online}}
-												<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
-													data-show="consultation-online"
-													data-consultation="{{this.id}}"
-													data-price="{{this.price}}"
-													style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
-
-													<label class="checkbox search__drop-name"
-														data-name="{{this.header}}" data-price="{{this.price}}"
-														data-id="{{this.id}}">
-														{{#if record.consultation == this.id }}
-														<input type="radio" name="consultation" value="{{this.id}}"
-															data-name="{{this.header}}" data-price="{{this.price}}"
-															checked="checked">
-														{{else}}
-														<input type="radio" name="consultation" value="{{this.id}}"
-															data-name="{{this.header}}" data-price="{{this.price}}">
-														{{/if}}
-														<span></span>
-														<div class="checbox__name">{{this.header}}</div>
-													</label>
-													<label class="search__drop-right">
-														<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-													</label>
-												</div>
-												{{/each}}
-												{{#each @global.catalog.spec_service.consultations.clinic}}
-												<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
-													data-show="consultation-clinic"
-													data-consultation="{{this.id}}"
-													data-price="{{this.price}}"
-													style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-													<label class="checkbox search__drop-name"
-														data-name="{{this.header}}" data-price="{{this.price}}"
-														data-id="{{this.id}}">
-														{{#if record.consultation == this.id }}
-														<input type="radio" name="consultation" value="{{this.id}}"
-															data-name="{{this.header}}" data-price="{{this.price}}"
-															checked="checked">
-														{{else}}
-														<input type="radio" name="consultation" value="{{this.id}}"
-															data-name="{{this.header}}" data-price="{{this.price}}">
-														{{/if}}
-														<span></span>
-														<div class="checbox__name">{{this.header}}</div>
-													</label>
-													<label class="search__drop-right">
-														<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-													</label>
-												</div>
-												{{/each}}
-											</div>
-										</div>
-										<input type="hidden" class="consultation_price"
-											name="consultation_price"
-											value="{{record.consultation_price}}">
-									</div>
-									<div class="row">
-										{{#if record.spec_service}} {{else}}
-										<div class="col-md-6">
-											<div class="select-form select-checkboxes">
-												<div class="select select_experts">
-													<div class="select__main">
-														<div class="select__placeholder">Выберите специалиста</div>
-														<div class="select__values"></div>
-													</div>
-													<div class="select__list">
-														{{#each @global.catalog.experts}}
-														<div class="select__item select__item--checkbox">
-															<label class="checkbox checkbox--record">
-																{{#if @global.utils.arr.search(.id, record.experts)}}
-																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
-																{{else}}
-																<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
-																<span></span>
-																<div class="checbox__name">
-																	<div class="select__name">{{fullname}}</div>
-																</div>
-															</label>
-														</div>
-														{{/each}}
-													</div>
-												</div>
-											</div>
-										</div>
-										{{/if}}
-										<div class="col-md-6">
-											<div class="row">
-												<div class="col-md-12">
-													<div class="input input-lk-calendar input--grey">
-														<input class="input__control datepickr" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" autocomplete="off"
-														 type="text" placeholder="Выбрать дату и время">
-														<div class="input__placeholder">Выбрать дату</div>
-													</div>
-												</div>
-											</div>
-											<div class="row event-time">
-												<div class="col-md-6">
-													<div class="calendar input mb-30">
-														<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}"
-														 data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
-														<div class="input__placeholder">Время (начало)</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="calendar input mb-30">
-														<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}"
-														 data-min-time="09:00" autocomplete="off" data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
-														<div class="input__placeholder">Время (конец)</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="admin-editor__patient">
-									<div class="mb-10 text-bold">Выбраны услуги</div>
-
-									<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-										<div class="pl-0 search__drop-name consultation-header">
-											{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
-										</div>
-										<div class="search__drop-right">
-											<div class="search__drop-summ consultation-price">
-												{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
-											</div>
-										</div>
-									</div>
-
-									{{#if record.spec_service}}
-									<div class="search__drop-item">
-										<input type="hidden" name="services[]" value="">
-										<div class="search__drop-name">
-											{{@global.catalog.spec_service[record.spec_service].header}}
-										</div>
-										<div class="search__drop-right">
-											<div class="search__drop-summ">{{@global.catalog.spec_service[this.spec_service].price}} ₽</div>
-										</div>
-									</div>
-									{{else}} {{#each record.service_prices: idx, key}}
-									<div class="search__drop-item selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
-									 data-price="{{price}}">
-										<input type="hidden" name="services[]" value="{{service_id}}">
-										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
-										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
-										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
-										<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
-										<div class="search__drop-name">
-											<div class="search__drop-delete">
-												<svg class="svgsprite _delete">
-													<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
-												</svg>
-											</div>
-											<div class="search__drop-tags">
-												{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
-												<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
-												{{/each}}
-											</div>
-											{{name}}
-										</div>
-										<label class="search__drop-right">
-											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-										</label>
-									</div>
-									{{/each}} {{/if}}
-								</div>
-								<div class="mb-3 admin-editor__summ">
-									<p>Всего</p>
-									{{#if record.for_consultation == '0'}}
-									<input type="hidden" name="price" value="{{record.price}}">
-									{{elseif record.type == 'online'}}
-									<input type="hidden" name="price" class="consultation" data-type="online"
-										value="{{record.price}}">
-									{{elseif record.type == 'clinic'}}
-									<input type="hidden" name="price" class="consultation" data-type="clinic"
-										value="{{record.price}}">
-									{{else}}
-									<input type="hidden" name="price" value="{{record.price}}">
-									{{/if}}
-									<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup>
-									</p>
-								</div>
-
-								<button class="btn btn--white" type=submit>Сохранить</button>
+				<div class="popup__wrapper">
+					<div class="popup__panel popup__panel-wide">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Записать пациента на прием</div>
+						<form class="record-edit popup__form" on-submit="submit" data-record="{{record.id}}">
+							{{#if client}}
+							<input type="hidden" value="{{ client.id }}" name="client">
+							<p class="mb-20 text-bold text-big">{{client.fullname}}</p>
+							{{else}}
+							<div class="search-form input">
+								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+								<div class="input__placeholder">Выбрать пациента</div>
 							</div>
-						</div>
-					</form>
+							<input type="hidden" name="client" value="">
+							{{/if}}
+							<div class="row">
+								<div class="col-md-12">
+									<input type="hidden" value="{{ record.id }}" name="id"> {{#if record.spec_service}}
+									<input type="hidden" name="spec_service" value="{{record.spec_service}}">
+									<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}"> {{else}}
+									<div class="mb-20 admin-editor__event">
+										<div class="search__block --flex --aicn">
+											<div class="input">
+												<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
+												<div class="search__drop"></div>
+												<button class="search__btn" type="button">
+													<svg class="svgsprite _search">
+														<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+													</svg>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="mb-20 admin-editor__event">
+										<!-- services-select.dropdown -->
+									</div>
+									{{/if}}
+
+									<div class="admin-editor__type-event">
+										<div class="select-form">
+											<div class="select pay">
+												<div class="select__main">Статус оплаты</div>
+												<div class="select__list">
+													<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
+													{{#each @global.catalog.quotePay}}
+													<div class="select__item" data-id="{{.id}}"
+														onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values');">
+														{{name}}
+													</div>
+													{{/each}}
+												</div>
+											</div>
+										</div>
+										<div class="mb-20 consultations">
+											<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
+												<input type="hidden" name="for_consultation" value="0">
+
+												{{#if record.for_consultation === '1' }}
+												<input class="checkbox-visible-next-form" type="checkbox" checked
+													name="for_consultation" value="1">
+												{{else}}
+												<input class="checkbox-visible-next-form" type="checkbox"
+													name="for_consultation" value="1">
+												{{/if}}
+												<span></span>
+												<div class="checbox__name">Консультация врача</div>
+											</label>
+											<div class="select-form" data-show="consultation-type"
+												style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
+												<div class="mb-10 text-bold">Тип события</div>
+												<div class="popups__text-chexboxs">
+													{{#each @global.catalog.quoteType as qt}}
+													<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
+														{{#if qt.id === record.type }}
+														<input type="radio" name="type"
+															class="consultation-type {{qt.id}}"
+															value="{{ qt.id }}" checked>
+														{{else}}
+														<input type="radio" name="type" value="{{ qt.id }}"
+															class="consultation-type {{qt.id}}">
+														{{/if}}
+														<span>{{qt.name}}</span>
+													</label>
+													{{/each}}
+												</div>
+												<div class="admin-editor__patient price-list">
+													{{#each @global.catalog.spec_service.consultations.online}}
+													<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
+														data-show="consultation-online"
+														data-consultation="{{this.id}}"
+														data-price="{{this.price}}"
+														style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
+
+														<label class="checkbox search__drop-name"
+															data-name="{{this.header}}" data-price="{{this.price}}"
+															data-id="{{this.id}}">
+															{{#if record.consultation == this.id }}
+															<input type="radio" name="consultation" value="{{this.id}}"
+																data-name="{{this.header}}" data-price="{{this.price}}"
+																checked="checked">
+															{{else}}
+															<input type="radio" name="consultation" value="{{this.id}}"
+																data-name="{{this.header}}" data-price="{{this.price}}">
+															{{/if}}
+															<span></span>
+															<div class="checbox__name">{{this.header}}</div>
+														</label>
+														<label class="search__drop-right">
+															<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+														</label>
+													</div>
+													{{/each}}
+													{{#each @global.catalog.spec_service.consultations.clinic}}
+													<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
+														data-show="consultation-clinic"
+														data-consultation="{{this.id}}"
+														data-price="{{this.price}}"
+														style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
+														<label class="checkbox search__drop-name"
+															data-name="{{this.header}}" data-price="{{this.price}}"
+															data-id="{{this.id}}">
+															{{#if record.consultation == this.id }}
+															<input type="radio" name="consultation" value="{{this.id}}"
+																data-name="{{this.header}}" data-price="{{this.price}}"
+																checked="checked">
+															{{else}}
+															<input type="radio" name="consultation" value="{{this.id}}"
+																data-name="{{this.header}}" data-price="{{this.price}}">
+															{{/if}}
+															<span></span>
+															<div class="checbox__name">{{this.header}}</div>
+														</label>
+														<label class="search__drop-right">
+															<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+														</label>
+													</div>
+													{{/each}}
+												</div>
+											</div>
+											<input type="hidden" class="consultation_price"
+												name="consultation_price"
+												value="{{record.consultation_price}}">
+										</div>
+										<div class="row">
+											{{#if record.spec_service}} {{else}}
+											<div class="col-md-6">
+												<div class="select-form select-checkboxes">
+													<div class="select select_experts">
+														<div class="select__main">
+															<div class="select__placeholder">Выберите специалиста</div>
+															<div class="select__values"></div>
+														</div>
+														<div class="select__list">
+															{{#each @global.catalog.experts}}
+															<div class="select__item select__item--checkbox">
+																<label class="checkbox checkbox--record">
+																	{{#if @global.utils.arr.search(.id, record.experts)}}
+																	<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
+																	{{else}}
+																	<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
+																	<span></span>
+																	<div class="checbox__name">
+																		<div class="select__name">{{fullname}}</div>
+																	</div>
+																</label>
+															</div>
+															{{/each}}
+														</div>
+													</div>
+												</div>
+											</div>
+											{{/if}}
+											<div class="col-md-6">
+												<div class="row">
+													<div class="col-md-12">
+														<div class="input input-lk-calendar input--grey">
+															<input class="input__control datepickr" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" autocomplete="off"
+																type="text" placeholder="Выбрать дату и время">
+															<div class="input__placeholder">Выбрать дату</div>
+														</div>
+													</div>
+												</div>
+												<div class="row event-time">
+													<div class="col-md-6">
+														<div class="calendar input mb-30">
+															<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}"
+																data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
+															<div class="input__placeholder">Время (начало)</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="calendar input mb-30">
+															<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}"
+																data-min-time="09:00" autocomplete="off" data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
+															<div class="input__placeholder">Время (конец)</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="admin-editor__patient">
+										<div class="mb-10 text-bold">Выбраны услуги</div>
+
+										<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
+											<div class="pl-0 search__drop-name consultation-header">
+												{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+											</div>
+											<div class="search__drop-right">
+												<div class="search__drop-summ consultation-price">
+													{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+												</div>
+											</div>
+										</div>
+
+										{{#if record.spec_service}}
+										<div class="search__drop-item">
+											<input type="hidden" name="services[]" value="">
+											<div class="search__drop-name">
+												{{@global.catalog.spec_service[record.spec_service].header}}
+											</div>
+											<div class="search__drop-right">
+												<div class="search__drop-summ">{{@global.catalog.spec_service[this.spec_service].price}} ₽</div>
+											</div>
+										</div>
+										{{else}} {{#each record.service_prices: idx, key}}
+										<div class="search__drop-item selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
+											data-price="{{price}}">
+											<input type="hidden" name="services[]" value="{{service_id}}">
+											<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
+											<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
+											<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
+											<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
+											<div class="search__drop-name">
+												<div class="search__drop-delete">
+													<svg class="svgsprite _delete">
+														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+													</svg>
+												</div>
+												<div class="search__drop-tags">
+													{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+													<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+													{{/each}}
+												</div>
+												{{name}}
+											</div>
+											<label class="search__drop-right">
+												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+											</label>
+										</div>
+										{{/each}} {{/if}}
+									</div>
+									<div class="mb-3 admin-editor__summ">
+										<p>Всего</p>
+										{{#if record.for_consultation == '0'}}
+										<input type="hidden" name="price" value="{{record.price}}">
+										{{elseif record.type == 'online'}}
+										<input type="hidden" name="price" class="consultation" data-type="online"
+											value="{{record.price}}">
+										{{elseif record.type == 'clinic'}}
+										<input type="hidden" name="price" class="consultation" data-type="clinic"
+											value="{{record.price}}">
+										{{else}}
+										<input type="hidden" name="price" value="{{record.price}}">
+										{{/if}}
+										<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup>
+										</p>
+									</div>
+
+									<button class="btn btn--white" type=submit>Сохранить</button>
+								</div>
+							</div>
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>
@@ -621,15 +627,17 @@
 								$('.select.select_experts .select__item').trigger('click');
 							}
 							$(this.el).show();
+							$('body').addClass('noscroll');
+
 							console.log('show');
 						},
 						submit(ev) {
 							console.log('saving...', ev);
 							var edit_mode = (!!_record && !!_record.id);
-							let $form = $(ev.node);
-							let uid = this.get('client.id');
+							let $form     = $(ev.node);
+							let uid       = this.get('client.id');
 							if ($form.verify()) {
-								let new_data = $form.serializeJSON();
+								let new_data   = $form.serializeJSON();
 								new_data.group = 'events';
 								new_data.price = parseInt(new_data.price);
 								if (!edit_mode) {
@@ -638,12 +646,12 @@
 									console.log(new_data.pay_status);
 
 									new_data.priority = 0;
-									new_data.marked = false;
-									new_data.photos = {
+									new_data.marked   = false;
+									new_data.photos   = {
 										before: [],
 										after: []
 									};
-									new_data.client = new_data.client || uid;
+									new_data.client   = new_data.client || uid;
 
 									if (new_data.group === 'events' && !new_data.client) {
 										toast_error('Необходимо указать пациента!');
@@ -685,11 +693,12 @@
 											is_saved = true;
 											onlineRooms.create(function (meetroom) {
 												new_data['meetroom'] = meetroom;
-												saveRecord(edit_mode, _record.id, new_data, onSaved);
+												saveRecord(edit_mode, edit_mode ? _record?.id : null, new_data,
+													onSaved);
 											});
 										} else {
 											is_saved = true;
-											saveRecord(edit_mode, _record.id, new_data, onSaved);
+											saveRecord(edit_mode, edit_mode ? _record?.id : null, new_data, onSaved);
 										}
 									}
 								}
@@ -697,9 +706,9 @@
 								if (!is_saved) {
 									if (!!new_data.meetroom) {
 										onlineRooms.delete(new_data.meetroom.meetingId, function (meetroom) {});
-										new_data.meetroom = {}
+										new_data.meetroom = {};
 									}
-									saveRecord(edit_mode, _record.id, new_data, onSaved);
+									saveRecord(edit_mode, edit_mode ? _record?.id : null, new_data, onSaved);
 								}
 							}
 
@@ -708,6 +717,7 @@
 					},
 					close() {
 						$(this.el).hide();
+						$('body').removeClass('noscroll');
 					}
 				});
 			};
@@ -716,78 +726,81 @@
 		<div class="popup --photo">
 			<template id="popupPhoto">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel popup__panel-wide">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Добавить фото
-						{{#if record.group == 'longterms'}} в продолжительное лечение {{/if}}
+
+				<div class="popup__wrapper">
+					<div class="popup__panel popup__panel-wide">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Добавить фото
+							{{#if record.group == 'longterms'}} в продолжительное лечение {{/if}}
+						</div>
+						<form class="popup__form" on-submit="submit">
+							{{#if record}}
+							<input type="hidden" name="id" value="{{record.id}}">
+							<input type="hidden" name="client" value="{{record.client}}">
+
+							<p class="mb-20 text-bold text-big">
+								{{ @global.catalog.clients[record.client].fullname }}
+							</p>
+							{{else}}
+							<div class="search-form input">
+								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+								<div class="input__placeholder">Выбрать пациента</div>
+							</div>
+							<input type="hidden" name="client" value="">
+							<input type="hidden" name="id" value="">
+
+							<div class="search-form event disabled input">
+								<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
+									autocomplete="off">
+								<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
+							</div>
+							{{/if}}
+
+							<div class="mb-20 input calendar">
+								<input class="input__control datepickr" type="text" name="date" placeholder="Выбрать дату посещения" autocomplete="off" required>
+								<div class="input__placeholder">Укажите дату фото</div>
+							</div>
+							<div class="popups__text-chexboxs radios --flex" data-show="longterm">
+								<label class="text-radio" name="target" value="before" on-click="singlePhoto">
+									<input type="radio" name="target" value="before">
+									<span class="group_label_before">
+										{{#if record.group == 'longterms'}} До начала лечения {{else}} До приема {{/if}}
+									</span>
+								</label>
+								<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
+									<input type="radio" name="target" value="after">
+									<span class="group_label_after">
+										{{#if record.group == 'longterms'}} После начала лечения {{else}} После приема {{/if}}
+									</span>
+								</label>
+							</div>
+
+							<label class="file-photo">
+								<div class="file-photo__ico">
+									<svg class="svgsprite _file">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
+									</svg>
+									<img class="preview d-none" alt="upload preview">
+								</div>
+								<input type="file" name="file" accept=".jpg, .jpeg, .png" class="client-photo" required>
+								<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id }}/">
+								<div class="file-photo__text text-grey">
+									Для загрузки фото заполните все поля
+									<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
+								</div>
+							</label>
+							<button class="btn btn--white upload-image" type="submit">Сохранить</button>
+						</form>
 					</div>
-					<form class="popup__form" on-submit="submit">
-						{{#if record}}
-						<input type="hidden" name="id" value="{{record.id}}">
-						<input type="hidden" name="client" value="{{record.client}}">
-
-						<p class="mb-20 text-bold text-big">
-							{{ @global.catalog.clients[record.client].fullname }}
-						</p>
-						{{else}}
-						<div class="search-form input">
-							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
-							<div class="input__placeholder">Выбрать пациента</div>
-						</div>
-						<input type="hidden" name="client" value="">
-						<input type="hidden" name="id" value="">
-
-						<div class="search-form event disabled input">
-							<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
-								autocomplete="off">
-							<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
-						</div>
-						{{/if}}
-
-						<div class="mb-20 input calendar">
-							<input class="input__control datepickr" type="text" name="date" placeholder="Выбрать дату посещения" autocomplete="off" required>
-							<div class="input__placeholder">Укажите дату фото</div>
-						</div>
-						<div class="popups__text-chexboxs radios --flex" data-show="longterm">
-							<label class="text-radio" name="target" value="before" on-click="singlePhoto">
-								<input type="radio" name="target" value="before">
-								<span>
-									До приема
-								</span>
-							</label>
-							<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
-								<input type="radio" name="target" value="after">
-								<span class="changed_label">
-									{{#if record.group == 'longterms'}} После приема {{else}} После приема {{/if}}
-								</span>
-							</label>
-						</div>
-
-						<label class="file-photo">
-							<div class="file-photo__ico">
-								<svg class="svgsprite _file">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-								</svg>
-								<img class="preview d-none" alt="upload preview">
-							</div>
-							<input type="file" name="file" accept=".jpg, .jpeg, .png" class="client-photo" required>
-							<input type="hidden" name="path" value="/records/photos/{{ @global.wbapp._session.user.id }}/">
-							<div class="file-photo__text text-grey">
-								Для загрузки фото заполните все поля
-								<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
-							</div>
-						</label>
-						<button class="btn btn--white upload-image" type="submit">Сохранить</button>
-					</form>
 				</div>
 			</template>
 		</div>
 		<script wbapp>
-			window.popupPhoto = function(client, record, onSaved) {
+			window.popupPhoto = function (client, record, onSaved) {
 				return new Ractive({
 					el: '.popup.--photo',
 					template: wbapp.tpl('#popupPhoto').html,
@@ -904,82 +917,85 @@
 		<div class="popup --longterm">
 			<template id="popupLongterm">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel popup__panel-wide">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Продолжительное лечение</div>
-					<form class="popup__form" on-submit="longtermSave" autocomplete="off">
-						{{#if record}}
-						<input type="hidden" name="id" value="{{record.id}}"> {{else}}
-						<!-- new record -->
-						{{/if}}
-						<input type="hidden" name="group" value="longterms">
-						<input type="hidden" name="client" value="{{client.id}}"> {{#if client}}
-						<p class="mb-20 text-bold text-big">
-							{{ @global.catalog.clients[client.id].fullname }}
-						</p>
-						{{else}}
-						<div class="search-form input">
-							<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
-							<div class="input__placeholder">Выбрать пациента</div>
-						</div>
-						{{/if}}
+				<div class="popup__wrapper">
 
-						<div class="mb-20 input calendar">
-							<input class="input__control datepickr" type="text" required autocomplete="off" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
-							 placeholder="Выбрать дату посещения">
-							<div class="input__placeholder">Дата посещения</div>
-						</div>
-						<div class="popup-title__checkbox disabled d-none">
-							<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
-								<input type="checkbox" name="group" value="longterms" checked>
-								<span></span>
-								<div class="checbox__name">Продолжительное лечение</div>
-							</label>
-						</div>
+					<div class="popup__panel popup__panel-wide">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Продолжительное лечение</div>
+						<form class="popup__form" on-submit="longtermSave" autocomplete="off">
+							{{#if record}}
+							<input type="hidden" name="id" value="{{record.id}}"> {{else}}
+							<!-- new record -->
+							{{/if}}
+							<input type="hidden" name="group" value="longterms">
+							<input type="hidden" name="client" value="{{client.id}}"> {{#if client}}
+							<p class="mb-20 text-bold text-big">
+								{{ @global.catalog.clients[client.id].fullname }}
+							</p>
+							{{else}}
+							<div class="search-form input">
+								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+								<div class="input__placeholder">Выбрать пациента</div>
+							</div>
+							{{/if}}
 
-						<div class="mb-20 input calendar" data-filter="longterms">
-							<input class="input__control event-search longterm-search" type="text" name="longterm_title" autocomplete="off" placeholder="Название продолжительного лечения"
-							 required>
-							<div class="input__placeholder">Название продолжительного лечения</div>
-						</div>
-
-						<div class="radios --flex">
-							<label class="text-radio">
-								<input type="radio" name="target" value="before" checked="checked">
-								<span>До приема</span>
-							</label>
-							<label class="text-radio" style="visibility: hidden">
-								<input type="radio" name="target" value="after">
-								<span>После приема</span>
-							</label>
-						</div>
-						<label class="file-photo">
-							<div class="file-photo__ico">
-								<svg class="svgsprite _file">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
-								</svg>
-								<img class="preview d-none" alt="upload preview">
+							<div class="mb-20 input calendar">
+								<input class="input__control datepickr" type="text" required autocomplete="off" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
+									placeholder="Выбрать дату посещения">
+								<div class="input__placeholder">Дата посещения</div>
+							</div>
+							<div class="popup-title__checkbox disabled d-none">
+								<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
+									<input type="checkbox" name="group" value="longterms" checked>
+									<span></span>
+									<div class="checbox__name">Продолжительное лечение</div>
+								</label>
 							</div>
 
-							<input type="hidden" name="path" value="/records/photos/longterms/">
-							<input type="file" accept=".jpg, .jpeg, .png" name="file" class="client-photo" required>
-
-							<div class="file-photo__text text-grey">
-								Для загрузки фото заполните все поля
-								<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
+							<div class="mb-20 input calendar" data-filter="longterms">
+								<input class="input__control event-search longterm-search" type="text" name="longterm_title" autocomplete="off" placeholder="Название продолжительного лечения"
+									required>
+								<div class="input__placeholder">Название продолжительного лечения</div>
 							</div>
-						</label>
-						<button class="btn btn--white" type="submit">Сохранить</button>
-					</form>
+
+							<div class="radios --flex">
+								<label class="text-radio">
+									<input type="radio" name="target" value="before" checked="checked">
+									<span>До начала лечения</span>
+								</label>
+								<label class="text-radio" style="visibility: hidden">
+									<input type="radio" name="target" value="after">
+									<span>После начала лечения</span>
+								</label>
+							</div>
+							<label class="file-photo">
+								<div class="file-photo__ico">
+									<svg class="svgsprite _file">
+										<use xlink:href="/assets/img/sprites/svgsprites.svg#file"></use>
+									</svg>
+									<img class="preview d-none" alt="upload preview">
+								</div>
+
+								<input type="hidden" name="path" value="/records/photos/longterms/">
+								<input type="file" accept=".jpg, .jpeg, .png" name="file" class="client-photo" required>
+
+								<div class="file-photo__text text-grey">
+									Для загрузки фото заполните все поля
+									<br> Фото не должно превышать {{ @global.wbapp.settings()['max_upload_size'] / 1024 / 1024 / 1000 }} мб
+								</div>
+							</label>
+							<button class="btn btn--white" type="submit">Сохранить</button>
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>
 		<script wbapp>
-			window.popupLongterm = function(client, record, onSaved) {
+			window.popupLongterm = function (client, record, onSaved) {
 				return new Ractive({
 					el: '.popup.--longterm',
 					template: wbapp.tpl('#popupLongterm').html,
@@ -992,26 +1008,27 @@
 							initServicesSearch($('.search-services'), catalog.servicesList);
 							initPlugins($(this.el));
 							$(this.el).show();
+							$('body').addClass('noscroll');
 						},
 						longtermSave(ev) {
-							var self = this;
+							var self  = this;
 							var $form = $(ev.node);
-							var uid = this.get('client.id');
+							var uid   = this.get('client.id');
 
 							if ($form.verify() && uid > '') {
 								var form_data = $form.serializeJSON();
 
-								form_data.group = 'longterms';
-								form_data.status = '';
+								form_data.group      = 'longterms';
+								form_data.status     = '';
 								form_data.pay_status = 'free';
-								form_data.photos = {
+								form_data.photos     = {
 									before: [],
 									after: []
 								};
 
-								form_data.client = uid;
+								form_data.client   = uid;
 								form_data.priority = 0;
-								form_data.marked = 0;
+								form_data.marked   = 0;
 								if (!form_data.event_date) {
 									toast_error('Выберите дату и время события');
 									$($(ev.node).parents('form'))
@@ -1056,6 +1073,7 @@
 														onSaved(longterm_record);
 													}
 													$(self.el).hide();
+													$('body').removeClass('noscroll');
 												});
 										});
 
@@ -1074,63 +1092,65 @@
 		<div class="popup --photo-profile">
 			<template id="popupPhotoProfile">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Добавить фото</div>
-					<div class="popup__form">
-						<input type="hidden" name="client" value="{{this.client}}">
-						<input type="hidden" name="id" value="{{this.id}}">
+				<div class="popup__wrapper">
+					<div class="popup__panel">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Добавить фото</div>
+						<div class="popup__form">
+							<input type="hidden" name="client" value="{{this.client}}">
+							<input type="hidden" name="id" value="{{this.id}}">
 
-						<div class="search-form input disabled">
-							<input class="input__control autocomplete client-search" type="text" placeholder="Выбрать пациента">
-							<div class="input__placeholder">Выбрать пациента</div>
-						</div>
-						<div class="mb-20 input calendar">
-							<input class="input__control datepickr" type="text" name="event_date" placeholder="Выбрать дату посещения">
-							<div class="input__placeholder">Выбрать дату посещения</div>
-						</div>
-						<input type="hidden" name="group" value="event">
-						<input type="hidden" name="id">
-						<div class="popup-title__checkbox">
-							<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
-								<input type="checkbox" name="group" value="longterm" checked>
-								<span></span>
-								<div class="checbox__name">Продолжительное лечение</div>
-							</label>
-						</div>
-						<div class="mb-20 input calendar" data-show="longterm">
-							<input class="input__control longterm-search" type="text" name="title" placeholder="Название продолжительного лечения" value="">
-							<div class="input__placeholder">Название продолжительного лечения</div>
-						</div>
-						<div class="radios --flex">
-							<label class="text-radio">
-								<input type="radio" name="target" value="before" checked="checked">
-								<span>До приема</span>
-							</label>
-							<label class="text-radio disabled">
-								<input type="radio" name="target" value="after">
-								<span>После приема</span>
-							</label>
-						</div>
+							<div class="search-form input disabled">
+								<input class="input__control autocomplete client-search" type="text" placeholder="Выбрать пациента">
+								<div class="input__placeholder">Выбрать пациента</div>
+							</div>
+							<div class="mb-20 input calendar">
+								<input class="input__control datepickr" type="text" name="event_date" placeholder="Выбрать дату посещения">
+								<div class="input__placeholder">Выбрать дату посещения</div>
+							</div>
+							<input type="hidden" name="group" value="event">
+							<input type="hidden" name="id">
+							<div class="popup-title__checkbox">
+								<label class="mb-20 checkbox show-checkbox" data-show-input="longterm">
+									<input type="checkbox" name="group" value="longterm" checked>
+									<span></span>
+									<div class="checbox__name">Продолжительное лечение</div>
+								</label>
+							</div>
+							<div class="mb-20 input calendar" data-show="longterm">
+								<input class="input__control longterm-search" type="text" name="title" placeholder="Название продолжительного лечения" value="">
+								<div class="input__placeholder">Название продолжительного лечения</div>
+							</div>
+							<div class="radios --flex">
+								<label class="text-radio">
+									<input type="radio" name="target" value="before" checked="checked">
+									<span>До начала лечения</span>
+								</label>
+								<label class="text-radio disabled">
+									<input type="radio" name="target" value="after">
+									<span>В процессе лечения</span>
+								</label>
+							</div>
 
-						<label class="file-photo" for="file-photo">
-							<input type="hidden" name="path" value="/records/">
-							<div class="file-photo__ico">
-								<svg class="svgsprite _file">
-									<use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
-								</svg>
-								<img class="preview d-none" alt="upload preview">
-							</div>
-							<input type="file" id="file-photo" name="file">
-							<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
-								<br>Фото не должно превышать 10 мб
-							</div>
-						</label>
-						<button class="btn btn--white">Сохранить</button>
+							<label class="file-photo" for="file-photo">
+								<input type="hidden" name="path" value="/records/">
+								<div class="file-photo__ico">
+									<svg class="svgsprite _file">
+										<use xlink:href="assets/img/sprites/svgsprites.svg#file"></use>
+									</svg>
+									<img class="preview d-none" alt="upload preview">
+								</div>
+								<input type="file" id="file-photo" name="file">
+								<div class="file-photo__text text-grey">Для загрузки фото заполните все поля
+									<br>Фото не должно превышать 10 мб
+								</div>
+							</label>
+							<button class="btn btn--white">Сохранить</button>
+						</div>
 					</div>
 				</div>
 			</template>
@@ -1139,39 +1159,42 @@
 		<div class="popup --create-client">
 			<template id="popupCreateClient">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close" on-click="close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Создать карточку пациента</div>
-					<form class="popup__form" on-submit="submit">
-						<input type="hidden" name="role" value="client">
-						<input type="hidden" name="confirmed" value="0">
-						<input type="hidden" name="active" value="on">
-						<div class="input">
-							<input class="input__control" type="text" required placeholder="ФИО" name="fullname" minlength="5">
-							<div class="input__placeholder">ФИО</div>
-						</div>
-						<div class="input">
-							<input class="input__control datebirthdaypickr" required type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
-							<div class="input__placeholder">Дата рождения</div>
-						</div>
-						<div class="input mb-30">
-							<input class="input__control intl-tel" type="tel" name="phone" required>
-							<div class="input__placeholder active">Номер телефона</div>
-						</div>
-						<button class="btn btn--black form__submit" type="submit">Создать</button>
+				<div class="popup__wrapper">
+					<div class="popup__panel">
+						<button class="popup__close" on-click="close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Создать карточку пациента</div>
+						<form class="popup__form" on-submit="submit">
+							<input type="hidden" name="role" value="client">
+							<input type="hidden" name="confirmed" value="0">
+							<input type="hidden" name="active" value="on">
+							<div class="input">
+								<input class="input__control" type="text" required placeholder="ФИО" name="fullname" minlength="5">
+								<div class="input__placeholder">ФИО</div>
+							</div>
+							<div class="input">
+								<input class="input__control datebirthdaypickr" required type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
+								<div class="input__placeholder">Дата рождения</div>
+							</div>
+							<div class="input mb-30">
+								<input class="input__control intl-tel" type="tel" name="phone" required>
+								<div class="input__placeholder active">Номер телефона</div>
+							</div>
+							<button class="btn btn--black form__submit" type="submit">Создать</button>
 
-						<div class="form-bottom">После отправки для пациента будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo;
-							в&nbsp;верхнем меню сайта</div>
-					</form>
+							<div class="form-bottom">После отправки для пациента будет создан Личный кабинет, в&nbsp;который можно попасть через кнопку &laquo;Войти&raquo;
+								в&nbsp;верхнем меню сайта
+							</div>
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>
 		<script wbapp>
-			window.popupsCreateProfile = function() {
+			window.popupsCreateProfile = function () {
 				return new Ractive({
 					el: '.popup.--create-client',
 					template: wbapp.tpl('#popupCreateClient').html,
@@ -1180,6 +1203,7 @@
 						complete() {
 							initPlugins($(this.el));
 							$(this.el).show();
+							$('body').addClass('noscroll');
 						},
 						submit() {
 							var form = this.find('.popup__form');
@@ -1212,6 +1236,7 @@
 																		});
 																	} else {
 																		$('.popup.--create-client').fadeOut('fast');
+																		$('body').removeClass('noscroll');
 																		popupMessage('Карточка пациента создана!', '',
 																			'Успешно',
 																			'<a href="/cabinet/client/' + data.id +
@@ -1220,6 +1245,7 @@
 																	}
 																} else {
 																	$('.popup.--create-client').fadeOut('fast');
+																	$('body').removeClass('noscroll');
 																	popupMessage('Карточка пациента создана!', '',
 																		'Успешно',
 																		'<a href="/cabinet/client/' + data.id +
@@ -1246,43 +1272,45 @@
 		<div class="popup --edit-profile">
 			<template id="popupEditProfile">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close" on-click="close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Редактировать профиль</div>
-					<form class="popup__form" on-submit="submit">
-						{{#user}}
-						<input type="hidden" name="id" value="{{user.id}}">
-						<div class="input">
-							<input class="input__control" type="text" required value="{{.fullname}}" placeholder="ФИО" name="fullname" minlength="5">
-							<div class="input__placeholder">ФИО</div>
-						</div>
-						<div class="input">
-							<input class="input__control datebirthdaypickr" required value="{{.birthdate}}" type="text" placeholder="Дата рождения" name="birthdate"
-							 minlength="5">
-							<div class="input__placeholder">Дата рождения</div>
-						</div>
-						<div class="input mb-30">
-							<input class="input__control intl-tel" type="tel" required value="{{.phone}}"
-							 name="phone">
-							<div class="input__placeholder active">Номер телефона</div>
-						</div>
-						<div class="input input--grey">
-							<input class="input__control" type="email" name="email" value="{{.email}}" required placeholder="E-mail">
-							<div class="input__placeholder input__placeholder--dark">E-mail</div>
-						</div>
+				<div class="popup__wrapper">
+					<div class="popup__panel">
+						<button class="popup__close" on-click="close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Редактировать профиль</div>
+						<form class="popup__form" on-submit="submit">
+							{{#user}}
+							<input type="hidden" name="id" value="{{user.id}}">
+							<div class="input">
+								<input class="input__control" type="text" required value="{{.fullname}}" placeholder="ФИО" name="fullname" minlength="5">
+								<div class="input__placeholder">ФИО</div>
+							</div>
+							<div class="input">
+								<input class="input__control datebirthdaypickr" required value="{{.birthdate}}" type="text" placeholder="Дата рождения" name="birthdate"
+									minlength="5">
+								<div class="input__placeholder">Дата рождения</div>
+							</div>
+							<div class="input mb-30">
+								<input class="input__control intl-tel" type="tel" required value="{{.phone}}"
+									name="phone">
+								<div class="input__placeholder active">Номер телефона</div>
+							</div>
+							<div class="input input--grey">
+								<input class="input__control" type="email" name="email" value="{{.email}}" required placeholder="E-mail">
+								<div class="input__placeholder input__placeholder--dark">E-mail</div>
+							</div>
 
-						<button class="btn btn--black form__submit" type="submit">Сохранить</button>
-						{{/user}}
-					</form>
+							<button class="btn btn--black form__submit" type="submit">Сохранить</button>
+							{{/user}}
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>
 		<script wbapp>
-			window.popupEditProfile = function() {
+			window.popupEditProfile = function () {
 				return new Ractive({
 					el: '.popup.--edit-profile',
 					template: wbapp.tpl('#popupEditProfile').html,
@@ -1293,10 +1321,10 @@
 						complete() {
 							var self = this;
 							utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
-								.then(function(data) {
+								.then(function (data) {
 									data.fullname = data.fullname.replaceAll('  ', ' ');
-									data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
-									data.phone = data.phone.includes('+') ? data.phone : '+' + data.phone;
+									data.phone    = str_replace([' ', '-', '(', ')'], '', data.phone);
+									data.phone    = data.phone.includes('+') ? data.phone : '+' + data.phone;
 
 									self.set('user', data);
 									console.log(data);
@@ -1306,18 +1334,20 @@
 							initPlugins($(this.el));
 
 							$(this.el).show();
+							$('body').addClass('noscroll');
 						},
 						submit(ev) {
-							var self = this;
+							var self  = this;
 							var $form = $(ev.node);
 							if ($form.verify()) {
-								var data = $form.serializeJSON();
+								var data   = $form.serializeJSON();
 								data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
-								Cabinet.updateProfile(wbapp._session.user.id, data, function(data) {
+								Cabinet.updateProfile(wbapp._session.user.id, data, function (data) {
 									data.birthdate_fmt = utils.formatDate(data.birthdate);
 									self.set('user', data); /* get actually user data */
 									toast_success('Профиль обновлён!');
 									$(self.el).hide();
+									$('body').removeClass('noscroll');
 								});
 							}
 							return false;
@@ -1330,37 +1360,40 @@
 		<div class="popup --confirm-sms-code">
 			<template id="popupConfirmSmsCode">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Вход</div>
-					<form class="popup__form">
-						<h3 class="h3">Введите код</h3>
-						<div class="form-title__description">
-							Мы отправили код подтверждения на номер
-							<span class="current_phone">{{phone}}</span>
-							.
-							<br> Время жизни кода 30 секунд.
-							<br> Осталось
-							<strong>
-								<span class="sms_code_lifetime"></span>
-							</strong>
-						</div>
+				<div class="popup__wrapper">
 
-						<div class="code">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-							<input class="code__input" on-keyup="keyup" type="text">
-						</div>
+					<div class="popup__panel">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Вход</div>
+						<form class="popup__form">
+							<h3 class="h3">Введите код</h3>
+							<div class="form-title__description">
+								Мы отправили код подтверждения на номер
+								<span class="current_phone">{{phone}}</span>
+								.
+								<br> Время жизни кода 30 секунд.
+								<br> Осталось
+								<strong>
+									<span class="sms_code_lifetime"></span>
+								</strong>
+							</div>
 
-						<div class="mb-2 alert alert-warning"></div>
-					</form>
+							<div class="code">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+								<input class="code__input" on-keyup="keyup" type="text">
+							</div>
+
+							<div class="mb-2 alert alert-warning"></div>
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>
@@ -1369,241 +1402,243 @@
 		<div class="popup --record-edit">
 			<template id="popupRecordEdit">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel popup__panel-wide">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">{{title}}</div>
+				<div class="popup__wrapper">
+					<div class="popup__panel popup__panel-wide">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">{{title}}</div>
 
-					<form class="popup__form" on-submit="submit" data-record="{{record.id}}">
-						<p class="mb-20 text-bold text-big">{{client.fullname}}</p>
+						<form class="popup__form" on-submit="submit" data-record="{{record.id}}">
+							<p class="mb-20 text-bold text-big">{{client.fullname}}</p>
 
 
-						<input type="hidden" value="{{ record.id }}" name="id"> {{#if this.spec_service}}
-						<input type="hidden" name="spec_service" value="{{this.spec_service}}">
-						<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}"> {{else}}
-						<div class="mb-20 admin-editor__event">
-							<div class="search__block --flex --aicn">
-								<div class="input">
-									<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
-									<div class="search__drop"></div>
-									<button class="search__btn" type="button">
-										<svg class="svgsprite _search">
-											<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-										</svg>
-									</button>
-								</div>
-							</div>
-						</div>
-						<div class="mb-20 admin-editor__event">
-							<!-- services-select.dropdown -->
-						</div>
-						{{/if}}
-
-						<div class="admin-editor__type-event">
-							<div class="mb-20 consultations">
-								<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
-									<input type="hidden" name="for_consultation" value="0">
-
-									{{#if record.for_consultation === '1' }}
-									<input class="checkbox-visible-next-form" type="checkbox" checked
-										name="for_consultation" value="1">
-									{{else}}
-									<input class="checkbox-visible-next-form" type="checkbox"
-										name="for_consultation" value="1">
-									{{/if}}
-									<span></span>
-									<div class="checbox__name">Консультация врача</div>
-								</label>
-								<div class="select-form" data-show="consultation-type"
-									style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
-									<div class="mb-10 text-bold">Тип события</div>
-									<div class="popups__text-chexboxs">
-										{{#each @global.catalog.quoteType as qt}}
-										<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
-											{{#if qt.id === record.type }}
-											<input type="radio" name="type"
-												class="consultation-type {{qt.id}}"
-												value="{{ qt.id }}" checked>
-											{{else}}
-											<input type="radio" name="type" value="{{ qt.id }}"
-												class="consultation-type {{qt.id}}">
-											{{/if}}
-											<span>{{qt.name}}</span>
-										</label>
-										{{/each}}
-									</div>
-									<div class="admin-editor__patient price-list">
-										{{#each @global.catalog.spec_service.consultations.online}}
-										<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
-											data-show="consultation-online"
-											data-consultation="{{this.id}}"
-											data-price="{{this.price}}"
-											style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
-
-											<label class="checkbox search__drop-name"
-												data-name="{{this.header}}" data-price="{{this.price}}"
-												data-id="{{this.id}}">
-												{{#if record.consultation == this.id }}
-												<input type="radio" name="consultation" value="{{this.id}}"
-													data-name="{{this.header}}" data-price="{{this.price}}"
-													checked="checked">
-												{{else}}
-												<input type="radio" name="consultation" value="{{this.id}}"
-													data-name="{{this.header}}" data-price="{{this.price}}">
-												{{/if}}
-												<span></span>
-												<div class="checbox__name">{{this.header}}</div>
-											</label>
-											<label class="search__drop-right">
-												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-											</label>
-										</div>
-										{{/each}}
-										{{#each @global.catalog.spec_service.consultations.clinic}}
-										<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
-											data-show="consultation-clinic"
-											data-consultation="{{this.id}}"
-											data-price="{{this.price}}"
-											style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-											<label class="checkbox search__drop-name"
-												data-name="{{this.header}}" data-price="{{this.price}}"
-												data-id="{{this.id}}">
-												{{#if record.consultation == this.id }}
-												<input type="radio" name="consultation" value="{{this.id}}"
-													data-name="{{this.header}}" data-price="{{this.price}}"
-													checked="checked">
-												{{else}}
-												<input type="radio" name="consultation" value="{{this.id}}"
-													data-name="{{this.header}}" data-price="{{this.price}}">
-												{{/if}}
-												<span></span>
-												<div class="checbox__name">{{this.header}}</div>
-											</label>
-											<label class="search__drop-right">
-												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-											</label>
-										</div>
-										{{/each}}
+							<input type="hidden" value="{{ record.id }}" name="id"> {{#if this.spec_service}}
+							<input type="hidden" name="spec_service" value="{{this.spec_service}}">
+							<input type="hidden" name="title" value="{{catalog.spec_service[this.spec_service].header}}"> {{else}}
+							<div class="mb-20 admin-editor__event">
+								<div class="search__block --flex --aicn">
+									<div class="input">
+										<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
+										<div class="search__drop"></div>
+										<button class="search__btn" type="button">
+											<svg class="svgsprite _search">
+												<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+											</svg>
+										</button>
 									</div>
 								</div>
-								<input type="hidden" class="consultation_price"
-									name="consultation_price"
-									value="{{record.consultation_price}}">
 							</div>
-							<div class="row">
-								{{#if record.spec_service}} {{else}}
-								<div class="col-md-6">
-									<div class="select-form select-checkboxes">
-										<div class="select select_experts">
-											<div class="select__main">
-												<div class="select__placeholder">Выберите специалиста</div>
-												<div class="select__values"></div>
+							<div class="mb-20 admin-editor__event">
+								<!-- services-select.dropdown -->
+							</div>
+							{{/if}}
+
+							<div class="admin-editor__type-event">
+								<div class="mb-20 consultations">
+									<label class="checkbox checkbox--record show-checkbox" data-show-input="consultation-type">
+										<input type="hidden" name="for_consultation" value="0">
+
+										{{#if record.for_consultation === '1' }}
+										<input class="checkbox-visible-next-form" type="checkbox" checked
+											name="for_consultation" value="1">
+										{{else}}
+										<input class="checkbox-visible-next-form" type="checkbox"
+											name="for_consultation" value="1">
+										{{/if}}
+										<span></span>
+										<div class="checbox__name">Консультация врача</div>
+									</label>
+									<div class="select-form" data-show="consultation-type"
+										style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
+										<div class="mb-10 text-bold">Тип события</div>
+										<div class="popups__text-chexboxs">
+											{{#each @global.catalog.quoteType as qt}}
+											<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
+												{{#if qt.id === record.type }}
+												<input type="radio" name="type"
+													class="consultation-type {{qt.id}}"
+													value="{{ qt.id }}" checked>
+												{{else}}
+												<input type="radio" name="type" value="{{ qt.id }}"
+													class="consultation-type {{qt.id}}">
+												{{/if}}
+												<span>{{qt.name}}</span>
+											</label>
+											{{/each}}
+										</div>
+										<div class="admin-editor__patient price-list">
+											{{#each @global.catalog.spec_service.consultations.online}}
+											<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
+												data-show="consultation-online"
+												data-consultation="{{this.id}}"
+												data-price="{{this.price}}"
+												style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
+
+												<label class="checkbox search__drop-name"
+													data-name="{{this.header}}" data-price="{{this.price}}"
+													data-id="{{this.id}}">
+													{{#if record.consultation == this.id }}
+													<input type="radio" name="consultation" value="{{this.id}}"
+														data-name="{{this.header}}" data-price="{{this.price}}"
+														checked="checked">
+													{{else}}
+													<input type="radio" name="consultation" value="{{this.id}}"
+														data-name="{{this.header}}" data-price="{{this.price}}">
+													{{/if}}
+													<span></span>
+													<div class="checbox__name">{{this.header}}</div>
+												</label>
+												<label class="search__drop-right">
+													<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+												</label>
 											</div>
-											<div class="select__list">
-												{{#each @global.catalog.experts}}
-												<div class="select__item select__item--checkbox">
-													<label class="checkbox checkbox--record">
-														{{#if @global.utils.arr.search(.id, record.experts)}}
-														<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}"> {{else}}
-														<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
-														<span></span>
-														<div class="checbox__name">
-															<div class="select__name">{{fullname}}</div>
-														</div>
-													</label>
+											{{/each}}
+											{{#each @global.catalog.spec_service.consultations.clinic}}
+											<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
+												data-show="consultation-clinic"
+												data-consultation="{{this.id}}"
+												data-price="{{this.price}}"
+												style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
+												<label class="checkbox search__drop-name"
+													data-name="{{this.header}}" data-price="{{this.price}}"
+													data-id="{{this.id}}">
+													{{#if record.consultation == this.id }}
+													<input type="radio" name="consultation" value="{{this.id}}"
+														data-name="{{this.header}}" data-price="{{this.price}}"
+														checked="checked">
+													{{else}}
+													<input type="radio" name="consultation" value="{{this.id}}"
+														data-name="{{this.header}}" data-price="{{this.price}}">
+													{{/if}}
+													<span></span>
+													<div class="checbox__name">{{this.header}}</div>
+												</label>
+												<label class="search__drop-right">
+													<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+												</label>
+											</div>
+											{{/each}}
+										</div>
+									</div>
+									<input type="hidden" class="consultation_price"
+										name="consultation_price"
+										value="{{record.consultation_price}}">
+								</div>
+								<div class="row">
+									{{#if record.spec_service}} {{else}}
+									<div class="col-md-6">
+										<div class="select-form select-checkboxes">
+											<div class="select select_experts">
+												<div class="select__main">
+													<div class="select__placeholder">Выберите специалиста</div>
+													<div class="select__values"></div>
 												</div>
-												{{/each}}
+												<div class="select__list">
+													{{#each @global.catalog.experts}}
+													<div class="select__item select__item--checkbox">
+														<label class="checkbox checkbox--record">
+															{{#if @global.utils.arr.search(.id, record.experts)}}
+															<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}"> {{else}}
+															<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
+															<span></span>
+															<div class="checbox__name">
+																<div class="select__name">{{fullname}}</div>
+															</div>
+														</label>
+													</div>
+													{{/each}}
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								{{/if}}
-								<div class="col-md-6">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="input input-lk-calendar input--grey">
-												<input class="input__control datepickr" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" type="text"
-												 placeholder="Выбрать дату и время">
-												<div class="input__placeholder">Выбрать дату</div>
+									{{/if}}
+									<div class="col-md-6">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="input input-lk-calendar input--grey">
+													<input class="input__control datepickr" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" type="text"
+														placeholder="Выбрать дату и время">
+													<div class="input__placeholder">Выбрать дату</div>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-6">
-											<div class="calendar input mb-30">
-												<input class="input__control timepickr" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00"
-													data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
-												<div class="input__placeholder">Время (начало)</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="calendar input mb-30">
+													<input class="input__control timepickr" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00"
+														data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
+													<div class="input__placeholder">Время (начало)</div>
+												</div>
 											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="calendar input mb-30">
-												<input class="input__control timepickr" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00"
-													data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
-												<div class="input__placeholder">Время (конец)</div>
+											<div class="col-md-6">
+												<div class="calendar input mb-30">
+													<input class="input__control timepickr" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00"
+														data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
+													<div class="input__placeholder">Время (конец)</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="admin-editor__patient">
-							<div class="mb-10 text-bold">Выбраны услуги</div>
+							<div class="admin-editor__patient">
+								<div class="mb-10 text-bold">Выбраны услуги</div>
 
-							<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-								<div class="pl-0 search__drop-name consultation-header">
-									{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
-								</div>
-								<div class="search__drop-right">
-									<div class="search__drop-summ consultation-price">
-										{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+								<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
+									<div class="pl-0 search__drop-name consultation-header">
+										{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+									</div>
+									<div class="search__drop-right">
+										<div class="search__drop-summ consultation-price">
+											{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+										</div>
 									</div>
 								</div>
+
+								{{#each record.service_prices: idx, key}}
+								<div class="search__drop-item selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
+									data-price="{{price}}">
+									<input type="hidden" name="services[]" value="{{service_id}}">
+									<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
+									<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
+									<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
+									<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
+									<div class="search__drop-name">
+										<div class="search__drop-delete">
+											<svg class="svgsprite _delete">
+												<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+											</svg>
+										</div>
+										<div class="search__drop-tags">
+											{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+											<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+											{{/each}}
+										</div>
+										{{name}}
+									</div>
+									<label class="search__drop-right">
+										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+									</label>
+								</div>
+								{{/each}}
+							</div>
+							<div class="admin-editor__summ">
+								<p>Всего</p>
+								<input type="hidden" name="price" value="{{record.price}}">
+								<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
 							</div>
 
-							{{#each record.service_prices: idx, key}}
-							<div class="search__drop-item selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
-								data-price="{{price}}">
-								<input type="hidden" name="services[]" value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
-								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
-								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
-								<div class="search__drop-name">
-									<div class="search__drop-delete">
-										<svg class="svgsprite _delete">
-											<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
-										</svg>
-									</div>
-									<div class="search__drop-tags">
-										{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
-										<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
-										{{/each}}
-									</div>
-									{{name}}
-								</div>
-								<label class="search__drop-right">
-									<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-								</label>
-							</div>
-							{{/each}}
-						</div>
-						<div class="admin-editor__summ">
-							<p>Всего</p>
-							<input type="hidden" name="price" value="{{record.price}}">
-							<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽</p>
-						</div>
+							<input type="hidden" name="client" value="{{this.client}}">
+							<input type="hidden" name="group" value="events">
+							<input type="hidden" name="status" value="upcoming">
+							<input type="hidden" name="pay_status" value="unpay">
 
-						<input type="hidden" name="client" value="{{this.client}}">
-						<input type="hidden" name="group" value="events">
-						<input type="hidden" name="status" value="upcoming">
-						<input type="hidden" name="pay_status" value="unpay">
-
-						<button class="btn btn--black" type="submit">Продолжить</button>
-					</form>
+							<button class="btn btn--black" type="submit">Продолжить</button>
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>
@@ -1611,108 +1646,110 @@
 		<div class="popup --download-data">
 			<template id="popupDownloadData">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Выгрузить данные</div>
+				<div class="popup__wrapper">
+					<div class="popup__panel">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Выгрузить данные</div>
 
-					<form class="popup__form" method="GET" action="/form/records/download" on-submit="submit">
-						<div class="select-form">
-							<div class="select">
-								<div class="select__main">
-									<div class="select__placeholder">Все услуги</div>
-									<div class="select__values"></div>
-								</div>
-								<div class="select__list">
-									{{#each catalog.services}}
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox" name="services[]" value="{{this.id}}">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">{{this.header}}</div>
-											</div>
-										</label>
+						<form class="popup__form" method="GET" action="/form/records/download" on-submit="submit">
+							<div class="select-form">
+								<div class="select">
+									<div class="select__main">
+										<div class="select__placeholder">Все услуги</div>
+										<div class="select__values"></div>
 									</div>
-									{{/each}}
+									<div class="select__list">
+										{{#each catalog.services}}
+										<div class="select__item select__item--checkbox">
+											<label class="checkbox checkbox--record">
+												<input type="checkbox" name="services[]" value="{{this.id}}">
+												<span></span>
+												<div class="checbox__name">
+													<div class="select__name">{{this.header}}</div>
+												</div>
+											</label>
+										</div>
+										{{/each}}
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="select-form">
-							<div class="select">
-								<div class="select__main">
-									<div class="select__placeholder">Выберите специалиста</div>
-									<div class="select__values"></div>
-								</div>
-								<div class="select__list">
-									{{#each @global.catalog.experts}}
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox" name="experts[]" value="{{this.id}}">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">{{this.fullname}}</div>
-											</div>
-										</label>
+							<div class="select-form">
+								<div class="select">
+									<div class="select__main">
+										<div class="select__placeholder">Выберите специалиста</div>
+										<div class="select__values"></div>
 									</div>
-									{{/each}}
+									<div class="select__list">
+										{{#each @global.catalog.experts}}
+										<div class="select__item select__item--checkbox">
+											<label class="checkbox checkbox--record">
+												<input type="checkbox" name="experts[]" value="{{this.id}}">
+												<span></span>
+												<div class="checbox__name">
+													<div class="select__name">{{this.fullname}}</div>
+												</div>
+											</label>
+										</div>
+										{{/each}}
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="select-form">
-							<div class="select">
-								<div class="select__main">Все администраторы</div>
-								<div class="select__list">
-									{{#each admins}}
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox" name="admins[]" value="{{this.id}}">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">{{this.fullname}}</div>
-											</div>
-										</label>
+							<div class="select-form">
+								<div class="select">
+									<div class="select__main">Все администраторы</div>
+									<div class="select__list">
+										{{#each admins}}
+										<div class="select__item select__item--checkbox">
+											<label class="checkbox checkbox--record">
+												<input type="checkbox" name="admins[]" value="{{this.id}}">
+												<span></span>
+												<div class="checbox__name">
+													<div class="select__name">{{this.fullname}}</div>
+												</div>
+											</label>
+										</div>
+										{{/each}}
 									</div>
-									{{/each}}
 								</div>
 							</div>
-						</div>
-						<div class="calendar input">
-							<input class="input__control daterangepickr" type="text" name="period" placeholder="За весь период">
-							<div class="input__placeholder">За весь период</div>
-						</div>
-						<div class="select-form">
-							<label class="mb-10 checkbox mainfilter__checkbox">
-								<input type="checkbox" name="only_phones">
-								<span></span>
-								<div class="checbox__name text-grey">Выгрузить только список номеров</div>
-							</label>
 							<div class="calendar input">
-								<input class="input__control" type="tel" name="phone" placeholder="Номер телефона">
-								<div class="input__placeholder">Номер телефона</div>
+								<input class="input__control daterangepickr" type="text" name="period" placeholder="За весь период">
+								<div class="input__placeholder">За весь период</div>
 							</div>
-						</div>
-						<div class="select-form mb-30">
-							<label class="mb-10 checkbox mainfilter__checkbox">
-								<input type="checkbox" name="only_emails">
-								<span></span>
-								<div class="checbox__name text-grey">Введите только список е-мейлов</div>
-							</label>
-							<div class="calendar input">
-								<input class="input__control" type="email" name="email" placeholder="Введите е-мейл">
-								<div class="input__placeholder">Введите е-мейл</div>
+							<div class="select-form">
+								<label class="mb-10 checkbox mainfilter__checkbox">
+									<input type="checkbox" name="only_phones">
+									<span></span>
+									<div class="checbox__name text-grey">Выгрузить только список номеров</div>
+								</label>
+								<div class="calendar input">
+									<input class="input__control" type="tel" name="phone" placeholder="Номер телефона">
+									<div class="input__placeholder">Номер телефона</div>
+								</div>
 							</div>
-						</div>
-						<button type="submit" class="btn btn--black">Скачать</button>
-					</form>
+							<div class="select-form mb-30">
+								<label class="mb-10 checkbox mainfilter__checkbox">
+									<input type="checkbox" name="only_emails">
+									<span></span>
+									<div class="checbox__name text-grey">Введите только список е-мейлов</div>
+								</label>
+								<div class="calendar input">
+									<input class="input__control" type="email" name="email" placeholder="Введите е-мейл">
+									<div class="input__placeholder">Введите е-мейл</div>
+								</div>
+							</div>
+							<button type="submit" class="btn btn--black">Скачать</button>
+						</form>
+					</div>
 				</div>
 			</template>
 		</div>
 		<script wbapp>
-			window.popupDownloadData = function() {
+			window.popupDownloadData = function () {
 				return new Ractive({
 					el: '.popup.--download-data',
 					template: wbapp.tpl('#popupDownloadData').html,
@@ -1724,30 +1761,32 @@
 						complete() {
 							initPlugins($(this.el));
 							$(this.el).show();
+							$('body').addClass('noscroll');
 						},
 						submit(ev) {
-							let form = ev.node;
-							let data = $(form).serializeJSON()
-							let action = $(form).attr('action')
+							let form   = ev.node;
+							let data   = $(form).serializeJSON();
+							let action = $(form).attr('action');
 
-/*
-							$.post(action,data,function(res){
-								console.log(res);
-							})
-							return false;
-*/
+							/*
+							 $.post(action,data,function(res){
+							 console.log(res);
+							 })
+							 return false;
+							 */
+							$('body').removeClass('noscroll');
 
 							var xhr = new XMLHttpRequest();
 							xhr.open('POST', action, true);
 							xhr.responseType = 'blob';
-							xhr.onload = function() {
+							xhr.onload       = function () {
 								if (this.status === 200) {
-									var blob = this.response;
-									var filename = "";
+									var blob        = this.response;
+									var filename    = "";
 									var disposition = xhr.getResponseHeader('Content-Disposition');
 									if (disposition && disposition.indexOf('attachment') !== -1) {
 										var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-										var matches = filenameRegex.exec(disposition);
+										var matches       = filenameRegex.exec(disposition);
 										if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
 									}
 
@@ -1755,7 +1794,7 @@
 										// IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
 										window.navigator.msSaveBlob(blob, filename);
 									} else {
-										var URL = window.URL || window.webkitURL;
+										var URL         = window.URL || window.webkitURL;
 										var downloadUrl = URL.createObjectURL(blob);
 
 										if (filename) {
@@ -1765,7 +1804,7 @@
 											if (typeof a.download === 'undefined') {
 												window.location.href = downloadUrl;
 											} else {
-												a.href = downloadUrl;
+												a.href     = downloadUrl;
 												a.download = filename;
 												document.body.appendChild(a);
 												a.click();
@@ -1774,7 +1813,7 @@
 											window.location.href = downloadUrl;
 										}
 
-										setTimeout(function() {
+										setTimeout(function () {
 											URL.revokeObjectURL(downloadUrl);
 										}, 100); // cleanup
 									}
@@ -1793,6 +1832,6 @@
 </view>
 <edit header="Все попапы для ЛК">
 	<div>
-		<wb-module wb="module=yonger&mode=edit&block=common.inc" />
+		<wb-module wb="module=yonger&mode=edit&block=common.inc"/>
 	</div>
 </edit>

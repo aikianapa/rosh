@@ -616,26 +616,26 @@
 										<input type="hidden" class="orderby" value="{{catalog.clients[client].fullname}}">
 										<p>ФИО</p>
 										<div>
-											<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{@global.catalog.clients[record.client].fullname}}</a>
+											<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{catalog.clients[record.client].fullname}}</a>
 											{{#if @global.catalog.clients[record.client].has_longterm}}
-												<small class="text-danger">продолжительное</small>
+											<small class="text-danger">продолжительное</small>
 											{{/if}}
 										</div>
 									</div>
 									<div class="admin-events-item">
 										<input type="hidden" class="orderby" value="{{catalog.clients[client].phone}}">
 										<p>Телефон</p>
-										<div>{{@global.catalog.clients[record.client].phone}}</div>
+										<div>{{catalog.clients[record.client].phone}}</div>
 									</div>
 									<div class="admin-events-item col-experts flex-column">
 										<p>Специалист</p>
 										{{#if no_experts == '1'}}
-											<div></div>
+										<div></div>
 										{{else}}
-											<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].name}},{{/experts}}">
-											{{#experts}}
-												<div>{{@global.catalog.experts[this].fullname}}</div>
-											{{/experts}}
+										<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].name}},{{/experts}}">
+										{{#experts}}
+										<div>{{@global.catalog.experts[this].fullname}}</div>
+										{{/experts}}
 										{{/if}}
 									</div>
 									<div class="admin-events-item">
@@ -696,7 +696,7 @@
 									</div>
 									<div class="admin-events-item comment">
 										<p>Комментарии</p>
-										<div>{{this.comment}}</div>
+										<div>{{record.comment}}</div>
 									</div>
 								</div>
 								<div class="acount__table-list accardeon__list admin-editor">
@@ -726,23 +726,23 @@
 
 											<div class="lk-title">Редактировать профиль</div>
 											<div class="admin-editor__name user__edit">
-												{{ catalog.clients[client].fullname }}
-												<button class="user__edit" on-click="editProfile" data-id="{{client}}">
+												{{ catalog.clients[record.client].fullname }}
+												<button class="user__edit" on-click="editProfile" data-id="{{record.client}}">
 													<svg class="svgsprite _edit">
 														<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 													</svg>
 												</button>
 											</div>
 											<div class="admin-editor__iser-contacts">
-												{{#if catalog.clients[client].birthdate === '01.01.1970' }}
+												{{#if catalog.clients[record.client].birthdate === '01.01.1970' }}
 												{{else}}
-													<p>Дата рождения:
-														<span>{{ @global.utils.formatDate(catalog.clients[client].birthdate) }}</span>
-													</p>
+												<p>Дата рождения:
+													<span>{{ @global.utils.formatDate(catalog.clients[record.client].birthdate) }}</span>
+												</p>
 												{{/if}}
 
 												<p>Телефон:
-													<span>{{ @global.utils.formatPhone(catalog.clients[client].phone) }}</span>
+													<span>{{ @global.utils.formatPhone(catalog.clients[record.client].phone) }}</span>
 												</p>
 											</div>
 										</div>
@@ -892,9 +892,11 @@
 										{{#if record.hasPhoto}}
 											<div class="row">
 												<div class="col-md-5">
-													<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
+													<div class="mb-20 text-bold text-big">
+														Фото до начала лечения
+													</div>
 													{{#each record.photos.before}} <!--single photo!-->
-														<a class="before-healing photo" data-fancybox="images-{{event.id}}" data-href="{{.src}}" data-caption="Фото до начала лечения: {{ @global.utils.formatDate(.date) }}">
+														<a class="before-healing photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
 															<h2 class="h2 healing__date-title">
 																{{ @global.utils.formatDateAdv(.date) }}
 															</h2>
@@ -912,7 +914,7 @@
 														<div class="row">
 															{{#each record.photos.after}}
 																<div class="col-md-6">
-																	<a class="after-healing__item photo" data-fancybox="images-{{event.id}}" data-href="{{.src}}" data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+																	<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото после начала лечения, {{ @global.utils.formatDate(.date) }}">
 																		<h2 class="h2 healing__date-title">
 																			{{ @global.utils.formatDateAdv(.date) }}
 																		</h2>
@@ -947,7 +949,8 @@
 				<div class="col-md-4">
 					<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
 					{{#each photos.before}} <!--single photo!-->
-						<a class="after-healing__item" data-fancybox="images" href="{{.src}}" data-caption="{{.date}}">
+						<a class="after-healing__item" data-fancybox="images" href="{{.src}}"
+							data-caption="Фото до начала лечения, {{.date}}">
 							<h2 class="h2 healing__date-title">{{.date}}</h2>
 							<div class="after-healing__photo" style="background-image: url('{{.src}}')">
 							</div>
@@ -966,7 +969,7 @@
 						<div class="row">
 							{{#each this.photos.after}}
 								<div class="col-md-6">
-									<a class="after-healing__item" data-fancybox="images-{{this.id}}" href="{{.src}}" data-caption="Фото после начала лечения {{ @global.utils.formatDate(.date) }}">
+									<a class="after-healing__item" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото после начала лечения, {{ @global.utils.formatDate(.date) }}">
 										<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 										<div class="after-healing__photo" style="background-image: url({{.src}});">
 										</div>
@@ -1076,9 +1079,7 @@
 
 												on: {
 													save(ev) {
-
 														var $form = $(ev.node);
-														console.log(form);
 														if ($form.verify() && profile_id > '') {
 															var data = $form.serializeJSON();
 
@@ -1155,22 +1156,25 @@
 											}, 150);
 										},
 										addAnalyses(ev, record, index) {
-											console.log('addAnalyses', ev, index, record);
 											var $form = $(ev.node).parents('form');
-											uploadFile(
-												$form.find('input[name="file"]')[0],
-												'records/analyses/' + record.client,
-												Date.now() + '_' + utils.getRandomStr(4),
-												function(photo) {
-													console.log(photo);
-													utils.api.post('/api/v2/update/records/' + record.id, {
-															'analyses': photo.uri
-														})
-														.then(function(record) {
-															toast('Анализы добавлены!');
-															window.load();
-														});
-												});
+											var files = Array.from($form.find('input[name="file"]')[0].files);
+											files.forEach(function (file) {
+												uploadFile(
+													file,
+													'records/analyses/' + record.client,
+													Date.now() + '_' + utils.getRandomStr(4),
+													function (photo) {
+														console.log(photo);
+														utils.api.post('/api/v2/update/records/' + record.id, {
+																'analyses': photo.uri
+															})
+															.then(function (record) {
+																toast('Анализы добавлены!');
+																window.load();
+															});
+													});
+												return false;
+											});
 										},
 										editProfile(ev) {
 											var form = $(ev.node).parents('.admin-editor')

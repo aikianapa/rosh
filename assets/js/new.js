@@ -104,8 +104,19 @@ $(function() {
         var attrNum = getRandomInt(30000),
             text = $(this).parents('.service__item').find('.service__name').text(),
             price = $(this).parents('.service__item').find('.service__price').text(),
-            block = "<div class='all-form__service' data-servId='" + attrNum + "'><div class='all-form__service-name'><div class='all-form__service-delete'><svg class='svgsprite _delete'><use xlink:href='assets/img/sprites/svgsprites.svg#delete'></use></svg></div><p>" + text + "</p></div><div class='all-form__service__summ'>" + price + "</div></div>",
+            block = "<div class='all-form__service' data-name='" + attrNum + "'>" +
+                    '<input type="hidden" name="services['+ $(this).attr('data-category') +']" value="'+ $(this).attr('data-category')+'">'+
+                    '<input type="hidden" name="service_prices['+$(this).attr('data-service_price')+'][service_id]" ' +
+                    'value="'+ $(this).attr('data-category')+'">'+
+                    '<input type="hidden" name="service_prices['+$(this).attr('data-service_price')+'][price_id]" ' +
+                    'value="' + $(this).attr('data-id') +'">'+
+                    '<input type="hidden" name="service_prices['+$(this).attr('data-service_price')+'][name]" '+
+                    'value="' + $(this).attr('data-name') + '">' +
+                    '<input type="hidden" name="service_prices['+$(this).attr('data-service_price')+'][price]" '+
+                    'value="' + $(this).attr('data-price') + '">' +
+                    "<div class='all-form__service-name'><div class='all-form__service-delete'><svg class='svgsprite _delete'><use xlink:href='assets/img/sprites/svgsprites.svg#delete'></use></svg></div><p>" + text + "</p></div><div class='all-form__service__summ'>" + price + "</div></div>",
             summBlock = $(this).parents('.all-tab').find('.all-form__summ p').eq(1),
+            total_price = $(this).parents('.all-tab').find('.all-form__main input.total_price'),
             summ = $(summBlock).text().replace(/[^0-9]/gi, ''),
             price2 = price.replace(/[^0-9]/gi, '');
 
@@ -113,10 +124,12 @@ $(function() {
         if ($(this).hasClass('act')) {
             $(this).attr('data-servNum', attrNum);
             $('.all-form__services').append(block);
+            total_price.val(parseInt(+summ + +price2));
             $(summBlock).text((+summ + +price2).toLocaleString('ru') + " ₽");
         } else {
             $(this).removeAttr('data-servNum');
             $(this).parents('.all-tab').find(".all-form__service:contains('" + text + "')").remove();
+            total_price.val(parseInt(+summ - +price2));
             $(summBlock).text((+summ - +price2).toLocaleString('ru') + " ₽");
         }
 

@@ -407,9 +407,8 @@
 					</div>
 					<div class="col-md-3">
 						<div class="input input--grey">
-							<input class="input__control" type="tel" name="phone" value="{{.phone}}"
-								required placeholder="Телефон" data-inputmask="'mask': '+9 (999) 999-99-99'">
-							<div class="input__placeholder input__placeholder--dark">Телефон</div>
+							<input class="input__control intl-tel" type="tel" name="phone" required value="{{user.phone}}">
+							<div class="input__placeholder input__placeholder--dark active">Телефон</div>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -650,6 +649,7 @@
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
 
+										data.active = 'on';
 										data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 										data.fullname    = data.fullname.replaceAll('  ', ' ')
 										var names        = data.fullname.split(' ');
@@ -684,7 +684,7 @@
 
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
-
+										data.active = 'on';
 										utils.api.post('/api/v2/update/users/' + uid, data).then(
 											function (res) {
 												page.set('user', res);
@@ -734,6 +734,8 @@
 					'&experts~=' + wbapp._session.user.id +
 					'&@sort=event_date:d')
 				.then(function (records) {
+					page.set('catalog', window.catalog);
+
 					if (!records) {
 						return;
 					}

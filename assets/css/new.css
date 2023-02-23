@@ -1717,6 +1717,31 @@ blockquote cite {
     justify-content : center;
     border-radius   : 50%;
 }
+.noscroll{
+    height        : 100vh;
+    overflow-y    : hidden;
+}
+.popup__wrapper {
+    display           : -webkit-box;
+    display           : -ms-flexbox;
+    display           : flex;
+    -webkit-box-align : center;
+    -ms-flex-align    : center;
+    align-items       : center;
+    -webkit-box-pack  : center;
+    -ms-flex-pack     : center;
+    justify-content   : center;
+    padding           : 20px;
+    min-height        : 100%;
+}
+
+.popup__overlay {
+    z-index : 2;
+}
+.popup__wrapper .popup__panel{
+    -webkit-transform :none!important;
+    transform : none!important;
+}
 @media (max-width : 1130px) {
     .orders-sidebar,
     .basket-sidebar {
@@ -2020,6 +2045,12 @@ blockquote cite {
     blockquote p {
         font-size: 17px;
         line-height: 23px;
+    }
+    .popup__wrapper .popup__panel{
+        transform:none;
+    }
+    .popup__wrapper{
+        margin: 0;
     }
 }
 
