@@ -271,10 +271,7 @@
 							popupMessage('Заявка создана!', 'Мы перезвоним Вам в ближайшее время!',
 								'', '',
 								function (d) {});
-							$('#priceListLab .col-lg-8').addClass('col-lg-12').removeClass('col-lg-8');
-							$('.fastquote-block .all-form__succed').removeClass('d-none');
-							$('.fastquote-block .all-form__succed').show();
-							$('.fastquote-block .all-form__main').addClass('d-none');
+							$('.all-form__services svg').trigger('click');
 						}
 					});
 

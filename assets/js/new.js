@@ -138,12 +138,15 @@ $(function() {
 
     $('.all-form__services').on('click', 'svg', function() {
         var summ1 = $('.all-form__summ p').eq(1).text().replace(/[^0-9]/gi, ''),
+            total_price = $(this).parents('.all-tab').find('.all-form__main input.total_price'),
             summ2 = $(this).parents('.all-form__service').find('.all-form__service__summ').text().replace(/[^0-9]/gi, ''),
             summ3 = +summ1 - +summ2;
 
         $('.all-form__summ').find('p').eq(1).text((summ3).toLocaleString('ru') + " ₽");
+        total_price.val(parseInt(summ3));
 
-        $('[data-servNum = "' + $(this).parents('.all-form__service').attr('data-servId') + '"]').removeClass('act').removeAttr('data-servNum checked');
+        $('.checkbox [data-servnum="' + $(this).parents('.all-form__service').attr('data-name') + '"]').removeClass('act')
+            .removeAttr('data-servnum').prop('checked', false);
         $(this).parents('.all-form__service').remove();
 
         $('.input-sv').val($('.all-form .all-form__service').text().replace(/₽/gi, '₽\n'));

@@ -112,7 +112,6 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="account-events__item">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Специалист:</div>
@@ -200,6 +199,16 @@
 					</div>
 				</div>
 				{{elseif this.group == 'events'}}
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">Услуги:</div>
+						<div class="account-event">
+							{{#services}}
+							{{@global.catalog.services[this].header}}<br>
+							{{/services}}
+						</div>
+					</div>
+				</div>
 				{{elseif this.client_comment}}
 				<div class="account-events__item wide">
 					<div class="account-event-wrap">
@@ -207,6 +216,13 @@
 						<div class="account-event">
 							{{{@global.nl2br(client_comment)}}}
 						</div>
+					</div>
+				</div>
+				{{else}}
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">&nbsp;</div>
+						<div class="account-event">&nbsp;</div>
 					</div>
 				</div>
 				{{/if}}
@@ -220,6 +236,13 @@
 							<p>{{@global.catalog.experts[this].fullname}}</p>
 							{{/experts}}
 						</div>
+					</div>
+				</div>
+				{{else}}
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-events__name">&nbsp;</div>
+						<div class="account-event">&nbsp;</div>
 					</div>
 				</div>
 				{{/if}}

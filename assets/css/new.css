@@ -1493,13 +1493,16 @@ div.swiper-horizontal.post-slider {
     width: 56px!important;
     height: 56px!important;
 }
-
+.phone {
+    background-color : rgba(38, 38, 38, 1) !important;
+}
 .to_top_btn {
-    background-color: rgba(241, 241, 241, 0.5)!important;
+    background-color: rgba(38, 38, 38, 0.5)!important;
 }
 
 .to_top_btn svg {
     width: 15px;
+    fill: #fff;
 }
 
 .phone .svgsprite._phone {

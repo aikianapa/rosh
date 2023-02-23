@@ -96,6 +96,7 @@
 							<div class="account-events__name">Услуги:</div>
 							<div class="account-event">
 								{{#services}}
+								<span data-service="{{this}}"></span>
 								{{catalog.services[this].header}}<br>
 								{{/services}}
 							</div>

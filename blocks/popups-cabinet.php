@@ -292,25 +292,6 @@
 		</div>
 	</div>
 
-	<div class="popup --message">
-		<template id="popupMessage">
-			<div class="popup__overlay"></div>
-			<div class="popup__panel">
-				<button class="popup__close" on-click="close">
-					<svg class="svgsprite _close">
-						<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-					</svg>
-				</button>
-				<div class="popup__name text-bold">{{caption}}</div>
-				<h3 class="h3">{{title}}</h3>
-				<p class="text-grey">{{subtitle}}</p>
-				<div>
-					{{{html}}}
-				</div>
-			</div>
-		</template>
-	</div>
-
 	<div wb-if="'{{_sess.user.role}}'=='main'">
 		<div class="popup --record-editor">
 			<template id="popupRecordEditor">
@@ -767,13 +748,13 @@
 							<div class="popups__text-chexboxs radios --flex" data-show="longterm">
 								<label class="text-radio" name="target" value="before" on-click="singlePhoto">
 									<input type="radio" name="target" value="before">
-									<span class="group_label_before">
+									<span class="changed_label_before">
 										{{#if record.group == 'longterms'}} До начала лечения {{else}} До приема {{/if}}
 									</span>
 								</label>
 								<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
 									<input type="radio" name="target" value="after">
-									<span class="group_label_after">
+									<span class="changed_label_after">
 										{{#if record.group == 'longterms'}} После начала лечения {{else}} После приема {{/if}}
 									</span>
 								</label>
