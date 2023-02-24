@@ -1,9 +1,29 @@
 <view>
 	<a class="phone --openpopup" href="javascript:void(0)" data-popup="--fast">
 		<svg class="svgsprite _phone">
-			<use xlink:href="/assets/img/sprites/svgsprites.svg#phone"></use>
+			<use xlink:href="/assets/img/sprites/svgsprites.svg?v=2#phone"></use>
 		</svg>
 	</a>
+	<div class="popup --message">
+		<template id="popupMessage">
+			<div class="popup__overlay"></div>
+			<div class="popup__wrapper">
+				<div class="popup__panel">
+					<button class="popup__close" on-click="close">
+						<svg class="svgsprite _close">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+						</svg>
+					</button>
+					<div class="popup__name text-bold">{{caption}}</div>
+					<h3 class="h3">{{title}}</h3>
+					<p class="text-grey">{{subtitle}}</p>
+					<div>
+						{{{html}}}
+					</div>
+				</div>
+			</div>
+		</template>
+	</div>
 
 	<div wb-if="in_array('{{_sess.user.role}}',['admin','','main','client'])">
 		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
@@ -11,7 +31,6 @@
 			<template>
 				<div class="popup__overlay"></div>
 				<div class="popup__wrapper">
-
 					<div class="popup__panel">
 						<button class="popup__close">
 							<svg class="svgsprite _close">
