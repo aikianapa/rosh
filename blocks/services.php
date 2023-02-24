@@ -91,7 +91,7 @@
 				<div class="row">
 					<div class="col-lg-8">
 						<div class="service" wb-tree="dict=shop_category&branch=lab&parent=false">
-							<div class="service__accardeon accardeon">
+							<div class="service__accardeon accardeon" wb-if="'{{active}}'=='on'">
 								<div class="accardeon__main service__main accardeon__click" wb-if="'{{name}}'>''">{{name}}</div>
 								<div class="accardeon__list service__drop">
 									<wb-foreach wb="from=_var.pricelist&tpl=false" wb-filter="category~={{id}}">
