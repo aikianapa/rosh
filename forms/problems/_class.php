@@ -23,14 +23,16 @@ class problemsClass extends cmsFormsClass
 
     public function mainfilter()
     {
+
         $types = wbItemRead('catalogs', 'srvtype')['tree']['data'];
         $scats = wbItemRead('catalogs', 'srvcat')['tree']['data'];
         $texts = wbItemRead('catalogs', 'mainfilter_text');
+        $pcats = wbItemRead('catalogs', 'shop_category')['tree']['data'];
         $sympt = wbItemList('symptoms', ['sort'=>'header','filter'=>['active'=>'on'],'return'=>'id,header,category,active,data'])['list'];
         $servs = wbItemList('services', ['sort' => 'header', 'filter'=>['active'=>'on'],'return'=>'id,name,header,type,category,active,data'])['list'];
         $prbms = wbItemList('problems', ['sort' => 'header', 'filter'=>['active'=>'on'],'return'=>'id,header,srvtype,category,active,symptoms'])['list'];
-        $srvlab = wbItemList('price', ['sort'=>'header','filter'=>['active'=>'on']])['list'];
-
+        
+        
         foreach ($scats as &$s) {
             $s['items'] = [];
         }
@@ -38,6 +40,18 @@ class problemsClass extends cmsFormsClass
         foreach ($types as &$t) {
             $t['cats'] = $scats;
         }
+
+        $lab = [];
+            $pcats = $pcats['lab'];
+            if ($pcats['active']=='on') {
+                $pcats = array_filter($pcats['children'],function($v,$k){
+                    return $v['active'] == 'on';
+                }, ARRAY_FILTER_USE_BOTH);
+                $lab = array_column($pcats,'id');
+                array_unshift($lab,'lab');
+            }
+
+        $srvlab = wbItemList('price', ['sort' => 'header', 'filter' => ['active' => 'on','category'=>['$in'=>$lab]]])['list'];
 
         $texts = ($texts['active'] == 'on') ? $texts['tree']['data'] : [];
 
