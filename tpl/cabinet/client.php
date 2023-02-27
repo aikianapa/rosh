@@ -258,6 +258,7 @@
 						</div>
 					</div>
 				</div>
+				{{elseif this.client_comment}}
 				{{else}}
 				<div class="account-events__item">
 					<div class="account-event-wrap">
