@@ -230,7 +230,7 @@
 					</div>
 				</div>
 				{{elseif this.client_comment}}
-				<div class="account-events__item wide">
+				<div class="account-events__item">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Причина обращения:</div>
 						<div class="account-event">
@@ -259,6 +259,13 @@
 					</div>
 				</div>
 				{{elseif this.client_comment}}
+				<div class="account-events__item">
+					<div class="account-event-wrap">
+						<div class="account-event">
+							{{{@global.nl2br(client_comment)}}}
+						</div>
+					</div>
+				</div>
 				{{else}}
 				<div class="account-events__item">
 					<div class="account-event-wrap">
