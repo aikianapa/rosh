@@ -1151,7 +1151,7 @@
 													if (res.length) {
 														window.afterLoad = null;
 													}
-												});
+												}, 300);
 											}
 										},
 										complete() {
