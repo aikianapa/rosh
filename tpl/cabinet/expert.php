@@ -111,11 +111,12 @@
 								<p>{{ @global.utils.formatDate(this.event_date) }}</p>
 							</div>
 						</div>
-
 						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Время приема:</div>
-							<div class="account-event">
-								<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
+							<div class="account-event text-right">
+								<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
+									<small>по московскому времени</small>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -203,8 +204,10 @@
 						</div>
 						<div class="account-event-wrap --jcsb">
 							<div class="account-events__name">Время приема:</div>
-							<div class="account-event">
-								<p>{{this.event_time_start}}-{{this.event_time_end}}</p>
+							<div class="account-event text-right">
+								<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
+									<small>по московскому времени</small>
+								</p>
 							</div>
 						</div>
 					</div>

@@ -1005,18 +1005,19 @@
 				'group=events&status=upcoming',
 				'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]',
 			];
-			let editProfile = wbapp.tpl('#editProfile').html;
-			let editStatus = wbapp.tpl('#editStatus').html;
-			window.newEvent = function() {
-				var editor = window.popupEvent(null, null, function(data) {
+			let editProfile      = wbapp.tpl('#editProfile').html;
+			let editStatus       = wbapp.tpl('#editStatus').html;
+			window.newEvent      = function () {
+				var editor = window.popupEvent(null, null, function (data) {
 					toast('Запись успешно создана!');
 					window.load('group=events&status=upcoming');
 					editor.close();
 				});
-			}
-			window.afterLoad = null;
-			window.load = function(only_tab) {
-				tab_urls.forEach(function(target_tab, i) {
+			};
+			window.afterLoads    = {};
+			window.afterLoad     = null;
+			window.load          = function (only_tab) {
+				tab_urls.forEach(function (target_tab, i) {
 					if (only_tab && only_tab != target_tab) {
 						return;
 					}
@@ -1144,22 +1145,22 @@
 										loaded() {
 											console.log('>>> loaded', target_tab);
 											$(this.el).find('.loading-overlay').remove();
-											if (window.afterLoad){
-												setTimeout(function (){
 
-													var res = window.afterLoad();
+											if (window.afterLoads.hasOwnProperty(target_tab)) {
+												setTimeout(function () {
+													var res = window.afterLoads[target_tab]();
 													if (res.length) {
-														window.afterLoad = null;
+														delete window.afterLoads[target_tab];
 													}
-												});
+												}, 100);
 											}
 										},
 										complete() {
 											this.find('.loading-overlay').remove();
 											var self = this;
-											setTimeout(function() {
+											setTimeout(function () {
 												$(self.el).find('a.photo[data-href]')
-													.each(function(i) {
+													.each(function (i) {
 														var _img = $(this);
 														_img.attr('href', $(this).data('href'));
 													});
@@ -1181,21 +1182,22 @@
 															.then(function (record) {
 																toast('Анализы добавлены!');
 																console.log(index);
-																window.afterLoad = function(){
+
+																window.afterLoads[target_tab] = function () {
 																	var res = $(
 																		'.accardeon__click[data-record="' + record.id +
 																		'"]');
-																	if (res.length){
-																		setTimeout(function (){
+																	if (res.length) {
+																		setTimeout(function () {
 																			$('.accardeon__click[data-record="' +
-																			  record.id +
-																			  '"]')[0].scrollIntoView();
+																			  record.id + '"]')[0].scrollIntoView();
 																			$('.accardeon__click[data-record="' +
-																			  record.id + '"]').trigger('click');
-																		}, 800);
+																			  record.id + '"]')[0].click();
+																		}, 500);
 																	}
 																	return res;
 																};
+
 																window.load();
 															});
 													});
@@ -1259,7 +1261,7 @@
 											var _row_idx = $(ev.node).data('idx');
 											const _parent = $(ev.node).closest('.accardeon');
 											var _record = this.get('records.' + _row_idx);
-											console.log('open ', _record);
+											console.log('clicked ', _record, target_tab, ev);
 											if (!_record.price) {
 												_record.price = 0;
 											}
