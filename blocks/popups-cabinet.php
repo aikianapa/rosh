@@ -794,7 +794,7 @@
 							initClientSearch();
 							initEventSearch($(this.el), true);
 							initPlugins($(this.el));
-
+							$('body').addClass('noscroll');
 							$(this.el).show();
 						},
 						multiplePhoto(ev) {
@@ -876,6 +876,8 @@
 												}).then(function (rec) {
 													wbapp.unloading();
 													_form.removeClass('disabled');
+													$('body').removeClass('noscroll');
+
 													onSaved(rec);
 													$(self.el).hide();
 												});
@@ -885,6 +887,7 @@
 								});
 							} else {
 								wbapp.unloading();
+								$('body').removeClass('noscroll');
 								_form.removeClass('disabled');
 							}
 
