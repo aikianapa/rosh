@@ -8,6 +8,11 @@ class blogClass extends cmsFormsClass {
         isset($item['date']) ? $item['date'] = date('d.m.Y H:i',strtotime($item['date'])) : null;
     }
 
+    function afterItemRead(&$item) {
+        $item['month'] = date('m', strtotime($item['date']));
+        $item['year'] = date('Y', strtotime($item['date']));
+    }
+
     function afterItemSave($item) {
         if (!isset($item['_table']) OR  $item['_table'] == '') return;
         if (!isset($item['_id']) OR  $item['_id'] == '') return;

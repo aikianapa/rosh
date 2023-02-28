@@ -5,6 +5,7 @@
                     <use xlink:href="assets/img/sprites/svgsprites.svg#crumbs-back"></use>
                 </svg></a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="/blog">{{_parent.header}}</a>
         </div>
+
         <div class="title-flex --flex --jcsb --aicn">
             <h1 class="h1">{{_parent.header}}</h1>
             <div class="filter" id="blogFilter">
@@ -12,9 +13,10 @@
                     <div class="filter__name text-bold">Разделы </div>
                     <div class="filter__select">
                         <div class="filter-select select">
-                            <div class="filter-select__main select__main" data-id="">Все</div>
+                            <div class="filter-select__main select__main">Все</div>
                             <div class="filter-select__list select__list" id="category" wb-tree="dict=blog&children=false">
-                                <div class="filter-select__item select__item filter-category" data-id="{{id}}">{{name}}</div>
+                                <div class="filter-select__item select__item filter-category" data-id="*" on-click="setCat" wb-if="'{{_idx}}'=='0'">Все</div>
+                                <div class="filter-select__item select__item filter-category" data-id="{{id}}" on-click="setCat">{{name}}</div>
                             </div>
                         </div>
                     </div>
@@ -23,17 +25,23 @@
                     <div class="filter__name text-bold">Период </div>
                     <div class="filter__select">
                         <div class="filter-select select">
-                            <div class="filter-select__main select__main">Месяц</div>
-                            <div class="filter-select__list select__list" id="months">
-                                <div class="filter-select__item select__item active blank all">Все</div>
+                            <div class="filter-select__main select__main">Год</div>
+                            <div class="filter-select__list select__list" id="years">
+                                <div class="filter-select__item select__item active blank all" on-click="setYear">Все</div>
+                                {{#each y}}
+                                    <div class="filter-select__item select__item active blank" data-id="{{.}}" on-click="setYear">{{.}}</div>
+                                {{/each}}
                             </div>
                         </div>
                     </div>
                     <div class="filter__select">
-                        <div class="filter-select select">
-                            <div class="filter-select__main select__main">Год</div>
-                            <div class="filter-select__list select__list" id="years">
-                                <div class="filter-select__item select__item active blank all">Все</div>
+                        <div class="filter-select select" wb-off>
+                            <div class="filter-select__main select__main">Месяц</div>
+                            <div class="filter-select__list select__list" id="months">
+                                <div class="filter-select__item select__item active blank all" data-id="*" on-click="setMonth">Все</div>
+                                {{#each m}}
+                                    <div class="filter-select__item select__item active blank" data-id="{{num}}" on-click="setMonth">{{name}}</div>
+                                {{/each}}
                             </div>
                         </div>
                     </div>
@@ -54,8 +62,8 @@
                     'filter':{
                         'active':'on'
                     },
-                    'size':'10',
-                    'more':'true:ещё'
+                    'size':'6',
+                    'more':'true'
                 }">
                     <wb-var width="33" />
                     <wb-var width="50" wb-if="'{{_ndx}}'>'3'" />
@@ -87,28 +95,6 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).on('wb-ready wb-ajax-done', function(ev, con) {
-            const _list = $('#blogList');
-            if (con !== undefined) {
-                $('#blogList').html(con.data.html)
-            }
-            return;
-            /*
-            _list.find(".blog-panel").sort(function(a, b) {
-
-                const _da = $(a).attr('data-date').split(' ')[0].split('.').reverse().join('');
-                const _db = $(b).attr('data-date').split(' ')[0].split('.').reverse().join('');
-                console.log(_da, _db);
-                const _a = parseInt(_da);
-                const _b = parseInt(_db);
-                return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-            }).appendTo(_list);
-
-            console.log('LOADED!');
-            */
-        });
-    </script>
 </view>
 
 <edit header="Блог">

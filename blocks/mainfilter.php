@@ -637,7 +637,6 @@
 						});
 					}
 
-					console.log(comment);
 
 					if (!comment.length) {
 						toast('Выберите услугу или укажыте симптомы!');
@@ -669,6 +668,8 @@
 													post.confirmed = 0;
 													post.active = "on";
 													post.__token = _token;
+													mainFilter.fire('clearSymptoms')
+													mainFilter.fire('clearProblems')
 													window.api.post('/api/v2/create/users/', post).then(
 														function(data) {
 															if (data.error) {
