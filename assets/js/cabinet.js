@@ -1,5 +1,5 @@
 window.user_role = wbapp?._session?.user?.role;
-
+window.client_search  = null;
 Date.prototype.isValid = function () {
 	// An invalid date object returns NaN for getTime() and NaN is the only
 	// object not strictly equal to itself.
@@ -967,6 +967,8 @@ $(function () {
 			noCache: false,
 			minChars: 0,
 			lookup: service_list,
+			noSuggestionNotice: '<p>Услуга не найдена..</p>',
+			showNoSuggestionNotice: 1,
 			beforeRender: function (container, suggestions) {
 				var CNT = $(container);
 				$(container).addClass('search__drop').html('');
@@ -1204,13 +1206,14 @@ $(function () {
 	};
 	window.initClientSearch   = function ($form) {
 		var form = $form || $('.popup .popup__form');
-		form.find('input.client-search').autocomplete({
-			noCache: true,
+		window.client_search = form.find('input.client-search').autocomplete({
+			noCache: false,
 			minChars: 0,
 			deferRequestBy: 300,
 			dataType: 'json',
 			type: 'GET',
 			paramName: 'fullname~',
+			ignoreSelected: true,
 			serviceUrl: '/api/v2/list/users?role=client&active=on&@sort=fullname&__token=' + wbapp._session.token,
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			showNoSuggestionNotice: 1,
