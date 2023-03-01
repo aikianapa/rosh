@@ -425,6 +425,7 @@ $(function () {
 				utils.api.get('/api/v2/list/catalogs?_id=shop_category').then(function (data) {
 					var all_categories = data[0]?.tree?.data;
 					var keys           = Object.keys(all_categories);
+					console.log(keys, all_categories)
 					keys.forEach(function (key) {
 						let cat = all_categories[key];
 
