@@ -390,19 +390,35 @@ $(function () {
 				utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
 					_self.quoteStatus                 = utils.arr.indexBy(data);
 					_self.quoteStatus['past']['type'] = 'event';
-					localStorage.setItem('db.quoteStatuses' + _self.cacheKey, JSON.stringify(_self.quoteStatus));
 				})
 			);
 			getters.push(
 				utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
 					_self.quotePay = utils.arr.indexBy(data);
-					localStorage.setItem('db.quotePay' + _self.cacheKey, JSON.stringify(_self.quotePay));
 				})
 			);
 			getters.push(
 				utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
 					_self.quoteType = utils.arr.indexBy(data);
-					localStorage.setItem('db.quoteType' + _self.cacheKey, JSON.stringify(_self.quoteType));
+				})
+			);
+
+			getters.push(
+				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
+					let _serviceCats = {};
+					Object.keys(res.tree.data).forEach(function (_key) {
+						const _cat = res.tree.data[_key];
+						if (_cat.active != 'on') {
+							return;
+						}
+						_serviceCats[_cat.id] = {
+							'id': _cat.id,
+							'name': _cat.name,
+							'color': _cat.data.color
+						};
+					});
+					_self.categories = _serviceCats;
+
 				})
 			);
 			getters.push(
@@ -411,7 +427,6 @@ $(function () {
 					var keys           = Object.keys(all_categories);
 					keys.forEach(function (key) {
 						let cat = all_categories[key];
-
 
 						delete cat.active;
 						if (key === 'lab') {
