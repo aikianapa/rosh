@@ -19,6 +19,10 @@ var BlogFilter = function () {
 				this.getPeriods()
 			},
 			setCat(ev) {
+				$filter.find('#years').prev('.select__main').text("Год")
+				$filter.find('#months').prev('.select__main').text("Месяц")
+				filter.set('filter.month', undefined)
+				filter.set('filter.year', undefined)
 				let cat = $(ev.node).attr('data-id')
 				if (cat == '*') {
 					this.getPeriods()
@@ -27,8 +31,6 @@ var BlogFilter = function () {
 					this.getPeriods(cat)
 					filter.set('filter.category', cat)
 				}
-				$filter.find('#years').prev('.select__main').text("Год")
-				$filter.find('#months').prev('.select__main').text("Месяц")
 				this.update()
 			},
 			setYear(ev) {
@@ -60,8 +62,6 @@ var BlogFilter = function () {
 					years.reverse()
 					filter.set('p', data)
 					filter.set('y', years)
-					filter.set('filter.month', undefined)
-					filter.set('filter.year', undefined)
 				})
 		},
 		update() {
