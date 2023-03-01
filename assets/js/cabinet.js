@@ -405,36 +405,13 @@ $(function () {
 					localStorage.setItem('db.quoteType' + _self.cacheKey, JSON.stringify(_self.quoteType));
 				})
 			);
-
-			if (!localStorage.getItem('db.categories' + _self.cacheKey)) {
-				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
-					let _serviceCats = {};
-					Object.keys(res.tree.data).forEach(function (_key) {
-						const _cat = res.tree.data[_key];
-						if (_cat.active != 'on') {
-							return;
-						}
-						_serviceCats[_cat.id] = {
-							'id': _cat.id,
-							'name': _cat.name,
-							'color': _cat.data.color
-						};
-					});
-					_self.categories = _serviceCats;
-					localStorage.setItem('db.categories' + _self.cacheKey, JSON.stringify(_self.categories));
-				});
-			} else {
-				_self.categories = JSON.parse(localStorage.getItem('db.categories' + _self.cacheKey));
-			}
 			getters.push(
 				utils.api.get('/api/v2/list/catalogs?_id=shop_category').then(function (data) {
 					var all_categories = data[0]?.tree?.data;
 					var keys           = Object.keys(all_categories);
 					keys.forEach(function (key) {
 						let cat = all_categories[key];
-						if (cat.active !== 'on') {
-							return;
-						}
+
 
 						delete cat.active;
 						if (key === 'lab') {
@@ -463,64 +440,6 @@ $(function () {
 					console.log('>> >> >>');
 					_self.rawServices = data;
 				}));
-			if (!sessionStorage.getItem('db.services' + _self.cacheKey)
-			    || !sessionStorage.getItem('db.servicesPrices' + _self.cacheKey)
-			    || !sessionStorage.getItem('db.servicesList' + _self.cacheKey)) {
-				//getters.push(
-				//	utils.api.get('/api/v2/list/services?active=on' +
-				//	              '&@return=active,id,header,category,blocks' +
-				//	              '&@sort=header').then(function (data) {
-				//		_self.servicePrices = {};
-				//
-				//		data.forEach(function (service, i) {
-				//			_self.services[service.id] = service;
-				//			const _cats                = service.category;
-				//			const _tags                = [];
-				//
-				//			_cats.forEach(function (cat) {
-				//				_tags.push({
-				//					"id": cat,
-				//					"color": _self.serviceTags[cat].color,
-				//					"tag": Array.from(_self.serviceTags[cat].name)[0]
-				//				});
-				//			});
-				//			if (!!service.blocks) {
-				//				service.blocks.landing_price?.price?.forEach(function (serv_price, j) {
-				//					if (!serv_price.price || parseInt(serv_price.price) < 1) {
-				//						return;
-				//					}
-				//					let _item = {
-				//						value: serv_price.header,
-				//						id: service.id + '-' + j,
-				//						data: {
-				//							service_id: service.id,
-				//							service_title: service.header,
-				//							tags: _tags,
-				//							price: serv_price.price,
-				//							price_id: j
-				//						}
-				//					};
-				//					_self.servicesList.push(_item);
-				//					_self.servicePrices[service.id + '-' + j] = {
-				//						id: service.id + '-' + j,
-				//						service_id: service.id,
-				//						service_title: service.header,
-				//						price: serv_price.price,
-				//						header: serv_price.header,
-				//						tags: _tags
-				//					};
-				//				});
-				//			}
-				//		});
-				//	})
-				//);
-
-			} else {
-				_self.services      = JSON.parse(sessionStorage.getItem('db.services' + _self.cacheKey));
-				_self.servicesList  = JSON.parse(sessionStorage.getItem('db.servicesList' + _self.cacheKey));
-				_self.servicePrices = JSON.parse(sessionStorage.getItem('db.servicePrices' + _self.cacheKey));
-			}
-
 			if (!sessionStorage.getItem('db.expert_users' + _self.cacheKey)) {
 				getters.push(
 					utils.api.get('/api/v2/list/experts?active=on&login~=id&' +
