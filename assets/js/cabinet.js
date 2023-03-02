@@ -427,27 +427,31 @@ $(function () {
 					var keys           = Object.keys(all_categories);
 					console.log(keys, all_categories)
 					keys.forEach(function (key) {
+						delete cat.active;
 						let cat = all_categories[key];
 
-						delete cat.active;
-						if (key === 'lab') {
+						if (cat.hasOwnProperty('children')) {
 							let _keys = Object.keys(cat.children);
 							_keys.forEach(function (_key) {
-								let obj                     = cat.children[_key];
-								obj.isLab                   = ["lab"];
-								obj.type                    = ["lab"];
-								_self.priceCategories[_key] = obj;
+								let obj = cat.children[_key];
+								if (key === 'lab') {
+									obj.isLab                   = ["lab"];
+									obj.type                    = ["lab"];
+									_self.priceCategories[_key] = obj;
+								} else {
+									delete cat.children;
+									_self.priceCategories[_key] = obj;
+								}
 							});
-
 						} else {
 							delete cat.children;
-							_self.priceCategories[key] = cat;
-						}
+							_self.priceCategories[_key] = obj;
+							console.log('price categories', _self.priceCategories);
+							return data;
+						}11
 					});
-					console.log('>> >>');
-					console.log('price categories', _self.priceCategories);
-					return data;
-				}));
+				})
+			);
 			getters.push(
 				utils.api.get('/api/v2/list/price?active=on&@sort=header').then(function (data) {
 					if (!data) {
