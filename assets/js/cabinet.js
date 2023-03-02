@@ -427,9 +427,9 @@ $(function () {
 					var keys           = Object.keys(all_categories);
 					console.log(keys, all_categories)
 					keys.forEach(function (key) {
+						var cat = all_categories[key];
 						delete cat.active;
-						let cat = all_categories[key];
-
+						console.log(key, cat)
 						if (cat.hasOwnProperty('children')) {
 							let _keys = Object.keys(cat.children);
 							_keys.forEach(function (_key) {
@@ -446,7 +446,7 @@ $(function () {
 						} else {
 							delete cat.children;
 							_self.priceCategories[_key] = obj;
-						}11
+						}
 					});
 				})
 			);
