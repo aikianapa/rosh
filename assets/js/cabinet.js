@@ -437,9 +437,8 @@ $(function () {
 
 						_self.priceCategories[key] = cat;
 						if (cat.hasOwnProperty('children')) {
-
 							var _keys = Object.keys(cat.children);
-							console.log('Parent cat', key, cat, _keys)
+							console.log(key, ' children',  _keys)
 							_keys.forEach(function (_key) {
 								var obj = cat.children[_key];
 								if (key === 'lab') {
@@ -572,7 +571,10 @@ $(function () {
 					}
 
 					if (!_self.priceCategories.hasOwnProperty(service.category)) {
-						return;
+						_self.priceCategories[service.category] = {
+							'name': service.header,
+							'id' : service.category,
+						}
 					}
 					var service_parent                      = _self.priceCategories[service.category];
 					_self.services[service.category]        = service_parent;
