@@ -446,8 +446,6 @@ $(function () {
 						} else {
 							delete cat.children;
 							_self.priceCategories[_key] = obj;
-							console.log('price categories', _self.priceCategories);
-							return data;
 						}11
 					});
 				})
