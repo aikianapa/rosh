@@ -619,8 +619,8 @@
 						symptoms.push($(this).find('a.mainfilter-tag__link').text());
 					});
 
-					var title_problems = 'ВЫБРАННЫЕ УСЛУГИ ИЛИ СУЩЕСТВУЮЩИЕ ПРОБЛЕМЫ';
-					var title_symptoms = 'ВЕРОЯТНАЯ ПРОБЛЕМАТИКА ПО СИМПТОМАМ';
+					var title_problems = 'выбранные услуги или существующие проблемы';
+					var title_symptoms = 'вероятная проблематика по симптомам';
 					var comment = '';
 					if (!!problems.length) {
 						comment += title_problems + "\n";

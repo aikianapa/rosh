@@ -13,6 +13,17 @@ function html_decode(input) {
 	return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
 }
 
+function fix_comment(text) {
+
+	var title_problems = 'ВЫБРАННЫЕ УСЛУГИ ИЛИ СУЩЕСТВУЮЩИЕ ПРОБЛЕМЫ';
+	var title_symptoms = 'ВЕРОЯТНАЯ ПРОБЛЕМАТИКА ПО СИМПТОМАМ';
+	var tmp = text.replace(title_problems, title_problems.toLowerCase());
+	tmp = tmp.replace(title_problems.toLowerCase(), '<div class="text-bold" style="color:#123">'+ title_problems.toLowerCase()+'</div>');
+	tmp = tmp.replace(title_symptoms, title_symptoms.toLowerCase());
+	tmp = tmp.replace(title_symptoms.toLowerCase(), '<div class="text-bold" style="color:#123">'+ title_symptoms.toLowerCase()+'</div>');
+	return tmp;
+}
+
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
@@ -1100,8 +1111,9 @@ $(function () {
 					client_qry = '&client=' + form.find('input[name="client"]').val();
 				}
 				return '/api/v2/list/records?__token=' + wbapp._session.token +
-				       '&group=[longterms,events]' + client_qry + '&@sort=_lastdate:d';
+				       '&group=[longterms,events]&status=[upcoming,past,new]' + client_qry + '&@sort=_lastdate:d';
 			},
+
 			transformResult: function (response) {
 				return {
 					suggestions: $.map(response, function (dataItem) {

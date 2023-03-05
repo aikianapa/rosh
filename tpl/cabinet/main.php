@@ -238,7 +238,7 @@
 		<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 	</template>
 	<template id="editorRecord" wb-off>
-		<form class="record-edit">
+		<form class="record-edit mt-2">
 			<div class="row">
 				<div class="col-md-7">
 					{{#if record.client_comment}}
@@ -246,7 +246,7 @@
 							<div class="account-event-wrap" style="font-size: 20px">
 								<div class="account-events__name">Причина обращения:</div>
 								<div class="account-event">
-									{{{@global.nl2br(record.client_comment)}}}
+									{{{@global.nl2br(@global.fix_comment(record.client_comment))}}}
 								</div>
 							</div>
 						</div>
@@ -359,9 +359,9 @@
 													<div class="select__item select__item--checkbox">
 														<label class="checkbox checkbox--record">
 															{{#if @global.utils.arr.search(.id, record.experts)}}
-																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}">
+																<input type="radio" class="checked" name="experts[]" checked value="{{.id}}">
 															{{else}}
-																<input type="checkbox" name="experts[]" value="{{.id}}">
+																<input type="radio" name="experts[]" value="{{.id}}">
 															{{/if}}
 															<span></span>
 															<div class="checbox__name">
@@ -387,13 +387,13 @@
 								<div class="row event-time">
 									<div class="col-md-6">
 										<div class="calendar input mb-30">
-											<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
+											<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}">
 											<div class="input__placeholder">Время (начало)</div>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="calendar input mb-30">
-											<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
+											<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}">
 											<div class="input__placeholder">Время (конец)</div>
 										</div>
 									</div>
@@ -434,7 +434,7 @@
 						{{#each record.service_prices: idx, key}}
 							<div class="search__drop-item services selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 								<input type="hidden" name="services[]" value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
+								<input type="hidden" name="service_prices[{{idx}}][service_id]" value="{{service_id}}">
 								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
 								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
 								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
@@ -522,8 +522,15 @@
 					<button class="btn btn--white" on-click="save">Сохранить</button>
 				</div>
 				<div class="col-md-1"></div>
-				<div class="col-md-4 --jcfe --flex">
-					<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+				<div class="col-md-4 --jcfe --flex" style="flex-direction: column-reverse; align-items: flex-end;">
+					<div style="width: 100%; max-width: 305px;">
+						<div class="mb-10 text-bold">Комментарий для специалистов</div>
+						<textarea class="admin__editor-textarea" name="comment_for_expert"
+							placeholder="Комментарий для специалистов">{{record.comment_for_expert}}</textarea>
+					</div>
+
+					<textarea class="admin__editor-textarea mb-2" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+					<hr style="opacity:.5">
 				</div>
 			</div>
 		</form>
@@ -653,15 +660,15 @@
 										{{/if}}
 
 										{{#if no_services == '1'}}
-											<div></div>
-											{{elseif services}}
-											{{#services}}
-												<div>{{catalog.services[this].header}}</div>
-											{{/services}}
-											{{elseif group == 'quotes'}}
-											<div>{{{@global.nl2br(client_comment)}}}</div>
+										<div></div>
+										{{elseif services}}
+										{{#services}}
+										<div>{{catalog.services[this].header}}</div>
+										{{/services}}
+										{{elseif group == 'quotes'}}
+										<div>{{{@global.nl2br(@global.fix_comment(client_comment))}}}</div>
 										{{else}}
-											<div></div>
+										<div></div>
 										{{/if}}
 
 									</div>
@@ -1404,6 +1411,7 @@
 															new_data.status = post_statuses.status;
 															new_data.pay_status = post_statuses.pay_status;
 															new_data.group = post_statuses.group;
+															// if(post_statuses.status === 'upcoming'){
 															if (new_data.group === 'events' && !new_data.event_date) {
 																toast_error('Необходимо выбрать дату/время события');
 																$($(ev.node).parents('form')).find('[name="event_date"]')
@@ -1433,7 +1441,6 @@
 																	.focus();
 																return false;
 															}
-
 															new_data.event_date = utils.dateForce(new_data.event_date);
 															new_data.services = utils.arr.unique(new_data.services);
 

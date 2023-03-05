@@ -135,7 +135,6 @@ $(function() {
 
         $('.input-sv').val($('.all-form .all-form__service').text().replace(/₽/gi, '₽\n'));
     });
-
     $('.all-form__services').on('click', 'svg', function() {
         var summ1 = $('.all-form__summ p').eq(1).text().replace(/[^0-9]/gi, ''),
             total_price = $(this).parents('.all-tab').find('.all-form__main input.total_price'),

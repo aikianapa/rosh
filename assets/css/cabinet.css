@@ -472,6 +472,10 @@ img.preview.cloned{
 	padding-left: 20px;
 	width : 100%;
 }
+.container.expert-page .acount__table-accardeon.accardeon{
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
 @media (max-width : 1280px){
 	.admin-events-item:nth-child(7) {
 		width          : 7%;

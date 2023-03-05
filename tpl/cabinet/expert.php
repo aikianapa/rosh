@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off style="padding-top: 100px">
 		<div class="account">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -87,93 +87,105 @@
 
 		{{#if events.current}}
 		<div class="lk-title current_event">Текущее событие</div>
-		<div class="account-events current_event">
+		<div class="account-events current_event status-past">
 			{{#each events.current}}
 			<div class="account-events__block">
-				<div class="account-events__block-wrap mb-20">
-					<div class="account-events__item">
-						<div class="account-event-wrap">
-							<div class="account-events__name">Услуги:</div>
-							<div class="account-event">
-								{{#if consultation}}
-								{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
-								{{/if}}
-								{{#services}}
-								{{catalog.services[this].header}}<br>
-								{{/services}}
-							</div>
-						</div>
-					</div>
-					<div class="account-events__item event_date">
-						<div class="account-event-wrap --jcsb">
-							<div class="account-events__name">Дата приема:</div>
-							<div class="account-event">
-								<p>{{ @global.utils.formatDate(this.event_date) }}</p>
-							</div>
-						</div>
-						<div class="account-event-wrap --jcsb">
-							<div class="account-events__name">Время приема:</div>
-							<div class="account-event text-right">
-								<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
-									<small>по московскому времени</small>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="account-events__item">
-						<div class="account-event-wrap">
-							<div class="account-events__name">Пациент:</div>
-							<div class="account-event">
-								<p>{{ @global.catalog.clients[this.client].fullname }}</p>
-							</div>
-						</div>
-						<div class="account-event-wrap">
-							<div class="account-events__name">Специалист:</div>
-							<div class="account-event">
-								{{#this.experts}}
-								<p>{{@global.catalog.experts[this].fullname}}</p>
-								{{/this.experts}}
-							</div>
-						</div>
-					</div>
-				</div>
+				<div class="acount__table-accardeon accardeon status-past">
+					<div class="acount__table-main accardeon__main accardeon__click">
+						<div class="account-events__block-wrap mb-20">
 
-				{{#if this.type == 'online'}}
-				<div class="account-events__btns">
-					<div class="account-event-wrap --aicn">
-						<div class="account-events__btn">
-							<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
-								Начать консультацию
-							</a>
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Услуги:</div>
+									<div class="account-event">
+										{{#if consultation}}
+										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+										{{/if}}
+										{{#services}}
+										{{catalog.services[this].header}}<br>
+										{{/services}}
+									</div>
+								</div>
+							</div>
+							<div class="account-events__item event_date">
+								<div class="account-event-wrap --jcsb">
+									<div class="account-events__name">Дата приема:</div>
+									<div class="account-event">
+										<p>{{ @global.utils.formatDate(this.event_date) }}</p>
+									</div>
+								</div>
+								<div class="account-event-wrap --jcsb">
+									<div class="account-events__name">Время приема:</div>
+									<div class="account-event text-right">
+										<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
+											<small>по московскому времени</small>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Пациент:</div>
+									<div class="account-event">
+										<p>{{ @global.catalog.clients[this.client].fullname }}</p>
+									</div>
+								</div>
+								<div class="account-event-wrap">
+									<div class="account-events__name">Специалист:</div>
+									<div class="account-event">
+										{{#this.experts}}
+										<p>{{@global.catalog.experts[this].fullname}}</p>
+										{{/this.experts}}
+									</div>
+								</div>
+							</div>
 						</div>
-						{{#if this.online_waiting == 'client'}}
-						<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
+					</div>
+					<div class="acount__table-list accardeon__list">
+						<div class="account-events__download" style="align-items: baseline;padding-top: 10px;">
+							<div class="account-edit mr-40" style="max-width: 310px">
+								<div class="account-edit__title">
+									<p>Рекомендация врача</p>
+								</div>
+								<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
+								<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
+									name="recommendation">{{this.recommendation}}</textarea>
+
+									<button class="btn btn--white" type="submit">Сохранить</button>
+								</form>
+							</div>
+							{{#this.comment_for_expert}}
+							<div class="analysis__description mr-40" style="max-width: 305px">
+								<div class="account-edit__title">
+									<p>Комментарий администратора</p>
+								</div>
+								<div class="text m-0 mt-20"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+							</div>
+							{{/this.comment_for_expert}}
+							{{#if this.analyses}}
+
+							<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
+								download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+								Скачать анализы
+							</a>
+							{{/if}}
+						</div>
+						{{#if this.type == 'online'}}
+						<div class="account-events__btns mt-10">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
+										Начать консультацию
+									</a>
+								</div>
+								{{#if this.online_waiting == 'client'}}
+								<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
+								{{/if}}
+							</div>
+						</div>
 						{{/if}}
 					</div>
 				</div>
-				{{/if}}
-				<div class="account-edit pt-30">
-					<div class="account-edit__title">
-						<p>Рекомендация врача</p>
-					</div>
-					<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
-								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
-									name="recommendation">{{this.recommendation}}</textarea>
-
-						<button class="btn btn--white" type="submit">Сохранить</button>
-					</form>
-				</div>
-				{{#if this.analyses}}
-				<div class="account-events__download">
-					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
-						download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
-						Скачать анализы
-					</a>
-				</div>
-				{{/if}}
-
-
 			</div>
 			{{/each}}
 		</div>
@@ -181,75 +193,88 @@
 
 		{{#if events.upcoming}}
 		<div class="lk-title">Предстоящие события</div>
-		<div class="account-events">
+		<div class="account-events status-upcoming">
 			{{#each events.upcoming}}
-			<div class="account-events__block" >
-				<div class="account-events__block-wrap mb-20">
-					<div class="account-events__item">
-						<div class="account-event-wrap">
-							<div class="account-events__name">Услуги:</div>
-							<div class="account-event">
-								{{#services}}
-								{{catalog.services[this].header}}<br>
-								{{/services}}
+			<div class="account-events__block">
+				<div class="acount__table-accardeon accardeon status-upcoming">
+					<div class="acount__table-main accardeon__main accardeon__click">
+						<div class="account-events__block-wrap">
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Услуги:</div>
+									<div class="account-event">
+										{{#services}}
+										{{catalog.services[this].header}}<br>
+										{{/services}}
+									</div>
+								</div>
+							</div>
+							<div class="account-events__item event_date">
+								<div class="account-event-wrap --jcsb">
+									<div class="account-events__name">Дата приема:</div>
+									<div class="account-event">
+										<p>{{ @global.utils.formatDate(this.event_date) }}</p>
+									</div>
+								</div>
+								<div class="account-event-wrap --jcsb">
+									<div class="account-events__name">Время приема:</div>
+									<div class="account-event text-right">
+										<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
+											<small>по московскому времени</small>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="account-events__item">
+								<div class="account-event-wrap">
+									<div class="account-events__name">Пациент:</div>
+									<div class="account-event">
+										<p>{{ @global.catalog.clients[this.client].fullname }}</p>
+									</div>
+								</div>
+								<div class="account-event-wrap">
+									<div class="account-events__name">Специалист:</div>
+									<div class="account-event">
+										{{#this.experts}}
+										<p>{{@global.catalog.experts[this].fullname}}</p>
+										{{/this.experts}}
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="account-events__item event_date">
-						<div class="account-event-wrap --jcsb">
-							<div class="account-events__name">Дата приема:</div>
-							<div class="account-event">
-								<p>{{ @global.utils.formatDate(this.event_date) }}</p>
+					<div class="acount__table-list accardeon__list">
+						<div class="account-events__download" style="align-items: baseline;padding-top: 10px;">
+							{{#this.comment_for_expert}}
+							<div class="analysis__description mr-40" style="max-width: 305px">
+								<div class="account-edit__title">
+									<p>Комментарий администратора</p>
+								</div>
+								<div class="text m-0 mt-20"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 							</div>
-						</div>
-						<div class="account-event-wrap --jcsb">
-							<div class="account-events__name">Время приема:</div>
-							<div class="account-event text-right">
-								<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
-									<small>по московскому времени</small>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="account-events__item">
-						<div class="account-event-wrap">
-							<div class="account-events__name">Пациент:</div>
-							<div class="account-event">
-								<p>{{ @global.catalog.clients[this.client].fullname }}</p>
-							</div>
-						</div>
-						<div class="account-event-wrap">
-							<div class="account-events__name">Специалист:</div>
-							<div class="account-event">
-								{{#this.experts}}
-								<p>{{@global.catalog.experts[this].fullname}}</p>
-								{{/this.experts}}
-							</div>
-						</div>
-					</div>
-				</div>
-				{{#if this.type == 'online'}}
-				<div class="account-events__btns">
-					<div class="account-event-wrap --aicn">
-						<div class="account-events__btn">
-							<button class="btn btn--white disabled" disabled>
-								Онлайн консультация
-							</button>
-						</div>
-						<p>Кнопка станет активной за 5 минут до начала приема</p>
-					</div>
-				</div>
-				{{/if}}
+							{{/this.comment_for_expert}}
+							{{#if this.analyses}}
 
-				{{#if this.analyses}}
-				<div class="account-events__download">
-					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="{{this.analyses}}"
-						download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
-						Скачать анализы
-					</a>
+							<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
+								download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+								Скачать анализы
+							</a>
+							{{/if}}
+						</div>
+						{{#if this.type == 'online'}}
+						<div class="account-events__btns mt-10">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<button class="btn btn--white disabled" disabled>
+										Онлайн консультация
+									</button>
+								</div>
+								<p>Кнопка станет активной за 5 минут до начала приема</p>
+							</div>
+						</div>
+						{{/if}}
+					</div>
 				</div>
-				{{/if}}
 			</div>
 			{{/each}}
 		</div>
@@ -258,7 +283,7 @@
 		<div class="lk-title">История посещений и приемов</div>
 		<div class="account__history">
 			<div class="account__table">
-				<div class="account__table-head">
+				<div class="account__table-head status-cancel_noreason">
 					<div class="history-item">Дата</div>
 					<div class="history-item">Время</div>
 					<div class="history-item">Пациент</div>
@@ -267,7 +292,7 @@
 				</div>
 				<div class="account__table-body">
 					{{#each history}}
-					<div class="acount__table-accardeon accardeon" data-record_id="{{this.id}}">
+					<div class="acount__table-accardeon accardeon status-cancel_noreason" data-record_id="{{this.id}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="history-item">
 								<p>Дата</p>
@@ -296,19 +321,19 @@
 								{{/if}}
 							</div>
 						</div>
-						<div class="acount__table-list accardeon__list">
+						<div class="acount__table-list accardeon__list pt-1" style="padding-bottom: 16px;">
 							<div class="account-edit__title">
 								<p>Рекомендация врача</p>
 
 								{{#if this.analyses}}
-										<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
-										target="_blank">
-										Скачать анализы
-									</a>
+								<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
+									target="_blank">
+									Скачать анализы
+								</a>
 								{{/if}}
 							</div>
-							<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
-								<textarea class="account-edit__textarea" id="{{this.id}}--recommendation"
+							<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}" style="max-width: 50%">
+								<textarea class="account-edit__textarea" style="border-color:#777"  id="{{this.id}}--recommendation"
 									name="recommendation">{{this.recommendation}}</textarea>
 
 								<button class="btn btn--white" type="submit">Сохранить</button>
@@ -649,15 +674,15 @@
 									initPlugins($(this.el));
 								},
 								submitUserForm(ev) {
-									let $form = $(ev.node);
-									let uid   = this.get('user.id');
+									let $form     = $(ev.node);
+									let uid       = this.get('user.id');
 									var expert_id = this.get('expert.id');
 									if ($form.verify() && uid > '') {
 										let data = $form.serializeJSON();
 
-										data.active = 'on';
-										data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
-										data.fullname    = data.fullname.replaceAll('  ', ' ')
+										data.active      = 'on';
+										data.phone       = str_replace([' ', '-', '(', ')'], '', data.phone);
+										data.fullname    = data.fullname.replaceAll('  ', ' ');
 										var names        = data.fullname.split(' ');
 										data.first_name  = names[0];
 										data.middle_name = names[1] || '';
@@ -672,7 +697,7 @@
 											'name': data.fullname,
 											'fullname': data.fullname,
 											'header': data.fullname,
-											'login':uid
+											'login': uid
 										}).then(function (res) {
 											console.log('expert', res);
 											page.set('expert', res);
@@ -689,7 +714,7 @@
 									let uid   = this.get('user.id');
 
 									if ($form.verify() && uid > '') {
-										let data = $form.serializeJSON();
+										let data    = $form.serializeJSON();
 										data.active = 'on';
 										utils.api.post('/api/v2/update/users/' + uid, data).then(
 											function (res) {
@@ -737,8 +762,8 @@
 			});
 
 			utils.api.get('/api/v2/list/records?group=events' +
-					'&experts~=' + wbapp._session.user.id +
-					'&@sort=event_date:d')
+			              '&experts~=' + wbapp._session.user.id +
+			              '&@sort=event_date:d')
 				.then(function (records) {
 					page.set('catalog', window.catalog);
 
