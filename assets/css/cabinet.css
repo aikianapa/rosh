@@ -467,21 +467,35 @@ img.preview.cloned{
 .file-photo__ico {
 	flex-direction: column;
 }
-.search__drop-item.consultation .checkbox.search__drop-name{
-	max-width: initial;
-	padding-left: 20px;
-	width : 100%;
+.search__drop-item.consultation .checkbox.search__drop-name {
+	max-width    : initial;
+	padding-left : 20px;
+	width        : 100%;
 }
-.container.expert-page .acount__table-accardeon.accardeon{
-	margin-bottom: 0;
-	padding-bottom: 0;
+.container.expert-page .acount__table-accardeon.accardeon {
+	margin-bottom  : 2px;
+	padding-bottom : 2px;
 }
-@media (max-width : 1280px){
+.expert-page .acount__table-main::after {
+	top : 20px;
+}
+
+.expert-page .acount__table-main::after {
+	top : 20px;
+}
+.comment_for_expert {
+	max-width : 30%;
+}
+.acount__table-main accardeon__main
+.text-justify {
+	text-align : justify;
+}
+@media (max-width : 1280px) {
 	.admin-events-item:nth-child(7) {
 		width          : 7%;
 		flex-direction : column;
 	}
-	.account__table-head{
+	.account__table-head {
 		padding-left  : 8px;
 		padding-right : 8px;
 
@@ -498,6 +512,11 @@ img.preview.cloned{
 }
 
 @media (max-width : 768px) {
+
+	.comment_for_expert {
+		max-width     : 100%;
+		margin-bottom : 8px;
+	}
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {
 		padding-left : 20px;

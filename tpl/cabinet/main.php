@@ -40,7 +40,7 @@
 						</div>
 						<div class="search__block --flex --aicn">
 							<div class="input">
-								<input class="search__input" type="text" placeholder="Поиск" name="q">
+								<input class="search__input" type="text" placeholder="Поиск по пациентам" name="q">
 							</div>
 							<button class="btn btn--white">Найти</button>
 						</div>
@@ -242,10 +242,10 @@
 			<div class="row">
 				<div class="col-md-7">
 					{{#if record.client_comment}}
-						<div class="account-events__item wide">
-							<div class="account-event-wrap" style="font-size: 20px">
-								<div class="account-events__name">Причина обращения:</div>
-								<div class="account-event">
+						<div class="account-events__item wide" style="">
+							<div class="account-event-wrap">
+								<div class="account-events__name" style="font-size: 20px">Причина обращения:</div>
+								<div class="account-event" style="font-size: 16px">
 									{{{@global.nl2br(@global.fix_comment(record.client_comment))}}}
 								</div>
 							</div>
@@ -648,15 +648,19 @@
 									<div class="admin-events-item">
 										<p>Тип</p>
 										{{#each catalog.quoteType as item}}
-											{{#if item.id == type }}
-												<div>{{item.name}}</div>
-											{{/if}}
+										{{#if item.id == type }}
+										<div>{{item.name}}</div>
+										{{/if}}
 										{{/each}}
 									</div>
 									<div class="admin-events-item col-services flex-column">
 										<p>Услуга</p>
-										{{#if consultation }}
-											<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
+										{{#if group == 'quotes'}}
+										<div>Заявка из фильтра</div>
+										{{/if}}
+
+										{{#if record.consultation }}
+										<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
 										{{/if}}
 
 										{{#if no_services == '1'}}
@@ -665,8 +669,6 @@
 										{{#services}}
 										<div>{{catalog.services[this].header}}</div>
 										{{/services}}
-										{{elseif group == 'quotes'}}
-										<div>{{{@global.nl2br(@global.fix_comment(client_comment))}}}</div>
 										{{else}}
 										<div></div>
 										{{/if}}
@@ -989,7 +991,6 @@
 			</div>
 		{{/if}}
 	</template>
-
 
 	<wb-module wb="module=yonger&mode=render&view=footer" />
 
@@ -1526,6 +1527,7 @@
 			$('body').on('click', '.account__tab-items .account__tab-item.data-tab-link', function() {
 				var _type = $(this).data('type');
 				console.log('open:', _type);
+				sessionStorage.setItem('active-tab--lk-main', _type);
 				window.load(_type);
 			});
 			$(document).on('click', '.account__table-head .admin-events-item.orderby', function() {
@@ -1572,26 +1574,26 @@
 					});
 				}).on('change', '.flag-date [type="checkbox"]', function(e) {
 					e.stopPropagation();
-					const _list = $(this).parents('.account__table-body');
+					const _list   = $(this).parents('.account__table-body');
 					const _parent = $(this).parents('.acount__table-accardeon');
-					const _id = _parent.data('id');
-					const _is_marked = $(this).is(':checked');
-					const _priority = _is_marked ? Date.now() : 0;
+					const _id     = _parent.data('id');
+				const _is_marked  = $(this).is(':checked');
+				const _priority   = _is_marked ? Date.now() : 0;
 
-					_parent.attr('data-priority', _priority);
-					_list.find(".acount__table-accardeon").sort(function(a, b) {
-						const _a = parseInt($(a).attr('data-priority'));
-						const _b = parseInt($(b).attr('data-priority'));
-						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-					}).appendTo(_list);
+				_parent.attr('data-priority', _priority);
+				_list.find(".acount__table-accardeon").sort(function (a, b) {
+					const _a = parseInt($(a).attr('data-priority'));
+					const _b = parseInt($(b).attr('data-priority'));
+					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+				}).appendTo(_list);
 
-					utils.api.post('/api/v2/update/records/' + _id, {
-							priority: _priority
-						})
-						.then(function(res) {
-							//toast('Список обновлен');
-						});
-				});
+				utils.api.post('/api/v2/update/records/' + _id, {
+						priority: _priority
+					})
+					.then(function (res) {
+						//toast('Список обновлен');
+					});
+			});
 		});
 	</script>
 

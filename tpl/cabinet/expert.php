@@ -26,7 +26,7 @@
 					<h1 class="h1 mb-40">Кабинет специалиста</h1>
 					<div class="search__block --flex --aicn">
 						<div class="input">
-							<input class="search__input" type="text" name="q" placeholder="Поиск">
+							<input class="search__input" type="text" name="q" placeholder="Поиск по пациентам">
 						</div>
 						<button class="btn btn--black" type="submit">Найти</button>
 					</div>
@@ -40,7 +40,7 @@
 		</div>
 	</main>
 
-	<template id="expert-page">
+	<template id="expert-page" wb-off>
 		<div class="account__panel">
 			<div class="account__info" style="max-width: 88%;">
 				<div class="user --flex">
@@ -91,9 +91,9 @@
 			{{#each events.current}}
 			<div class="account-events__block">
 				<div class="acount__table-accardeon accardeon status-past">
-					<div class="acount__table-main accardeon__main accardeon__click">
+					<div class="acount__table-main accardeon__main">
+						<div class="accardeon__click"></div>
 						<div class="account-events__block-wrap mb-20">
-
 							<div class="account-events__item">
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
@@ -127,7 +127,8 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Пациент:</div>
 									<div class="account-event">
-										<p>{{ @global.catalog.clients[this.client].fullname }}</p>
+										<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
+											{{ @global.catalog.clients[this.client].fullname }}</a>
 									</div>
 								</div>
 								<div class="account-event-wrap">
@@ -155,11 +156,11 @@
 								</form>
 							</div>
 							{{#this.comment_for_expert}}
-							<div class="analysis__description mr-40" style="max-width: 305px">
+							<div class="analysis__description comment_for_expert mr-40">
 								<div class="account-edit__title">
 									<p>Комментарий администратора</p>
 								</div>
-								<div class="text m-0 mt-20"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 							</div>
 							{{/this.comment_for_expert}}
 							{{#if this.analyses}}
@@ -197,8 +198,9 @@
 			{{#each events.upcoming}}
 			<div class="account-events__block">
 				<div class="acount__table-accardeon accardeon status-upcoming">
-					<div class="acount__table-main accardeon__main accardeon__click">
+					<div class="acount__table-main accardeon__main">
 						<div class="account-events__block-wrap">
+							<div class="accardeon__click"></div>
 							<div class="account-events__item">
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
@@ -229,7 +231,8 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Пациент:</div>
 									<div class="account-event">
-										<p>{{ @global.catalog.clients[this.client].fullname }}</p>
+										<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
+											{{ @global.catalog.clients[this.client].fullname }}</a>
 									</div>
 								</div>
 								<div class="account-event-wrap">
@@ -246,11 +249,11 @@
 					<div class="acount__table-list accardeon__list">
 						<div class="account-events__download" style="align-items: baseline;padding-top: 10px;">
 							{{#this.comment_for_expert}}
-							<div class="analysis__description mr-40" style="max-width: 305px">
+							<div class="analysis__description mr-40 comment_for_expert">
 								<div class="account-edit__title">
 									<p>Комментарий администратора</p>
 								</div>
-								<div class="text m-0 mt-20"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 							</div>
 							{{/this.comment_for_expert}}
 							{{#if this.analyses}}
@@ -289,11 +292,13 @@
 					<div class="history-item">Пациент</div>
 					<div class="history-item">Услуги</div>
 					<div class="history-item">Анализы</div>
+
+					<div class="accardeon__click"></div>
 				</div>
 				<div class="account__table-body">
 					{{#each history}}
 					<div class="acount__table-accardeon accardeon status-cancel_noreason" data-record_id="{{this.id}}">
-						<div class="acount__table-main accardeon__main accardeon__click">
+						<div class="acount__table-main accardeon__main">
 							<div class="history-item">
 								<p>Дата</p>
 								{{ @global.utils.formatDate(.event_date) }}
@@ -304,7 +309,8 @@
 							</div>
 							<div class="history-item">
 								<p>Пациент</p>
-								{{catalog.clients[client].fullname}}
+								<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
+									{{ @global.catalog.clients[this.client].fullname }}</a>
 							</div>
 							<div class="history-item">
 								<p>Услуги</p>
@@ -320,8 +326,18 @@
 								Нет анализов
 								{{/if}}
 							</div>
+							<div class="history-item accardeon__click"></div>
+
 						</div>
 						<div class="acount__table-list accardeon__list pt-1" style="padding-bottom: 16px;">
+							{{#this.comment_for_expert}}
+							<div class="analysis__description comment_for_expert mr-40">
+								<div class="account-edit__title">
+									<p>Комментарий администратора</p>
+								</div>
+								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+							</div>
+							{{/this.comment_for_expert}}
 							<div class="account-edit__title">
 								<p>Рекомендация врача</p>
 
@@ -332,7 +348,7 @@
 								</a>
 								{{/if}}
 							</div>
-							<form class="profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}" style="max-width: 50%">
+							<form class="active" on-submit="saveRecommendation" data-id="{{this.id}}" style="max-width: 50%">
 								<textarea class="account-edit__textarea" style="border-color:#777"  id="{{this.id}}--recommendation"
 									name="recommendation">{{this.recommendation}}</textarea>
 

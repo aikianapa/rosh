@@ -13,8 +13,35 @@ function html_decode(input) {
 	return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
 }
 
+function setPageScrollPosition(_page_name){
+	sessionStorage["scroll-position--"+_page_name] = $(window).scrollTop();
+	//
+	//window.onbeforeunload = function () {
+	//	sessionStorage["tab--lk-main"] = $('.tab.active').data("tab");
+	//};
+	//var pos               = sessionStorage["sp--lk-main"] || false;
+	//if (pos) {
+	//	$('body').scrollTop(pos);
+	//	sessionStorage.removeItem("sp--lk-main");
+	//}
+}
+function getPageScrollPosition(_page_name, _clear){
+	let res = sessionStorage["scroll-position--"+_page_name] || false;
+	if (!!_clear){
+		sessionStorage.removeItem("scroll-position--" + _page_name);
+	}
+	return res;
+	//
+	//window.onbeforeunload = function () {
+	//	sessionStorage["tab--lk-main"] = $('.tab.active').data("tab");
+	//};
+	//var pos               = sessionStorage["sp--lk-main"] || false;
+	//if (pos) {
+	//	$('body').scrollTop(pos);
+	//	sessionStorage.removeItem("sp--lk-main");
+	//}
+}
 function fix_comment(text) {
-
 	var title_problems = 'ВЫБРАННЫЕ УСЛУГИ ИЛИ СУЩЕСТВУЮЩИЕ ПРОБЛЕМЫ';
 	var title_symptoms = 'ВЕРОЯТНАЯ ПРОБЛЕМАТИКА ПО СИМПТОМАМ';
 	var tmp = text.replace(title_problems, title_problems.toLowerCase());

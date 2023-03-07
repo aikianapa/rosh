@@ -27,7 +27,7 @@
 					<h1 class="h1 mb-40">Кабинет специалиста</h1>
 					<div class="search__block --flex --aicn">
 						<div class="input">
-							<input class="search__input" type="text" name="q" placeholder="Поиск"
+							<input class="search__input" type="text" name="q" placeholder="Поиск по пациентам"
 								value="{{_route.params.q}}">
 						</div>
 						<button class="btn btn--black">Найти</button>

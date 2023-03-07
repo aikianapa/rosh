@@ -253,7 +253,6 @@
 						</svg>
 					</button>
 					<div class="popup__name text-bold">Внести предоплату</div>
-					<h3 class="h3">В ближайшее время с вами свяжутся для определения удобной даты</h3>
 					<div class="mb-10 text-grey text-small">Стоимость услуги</div>
 					<div class="mb-20 popup-summ --aifs">
 						<div class="popup-summ__big">{{this.price}} ₽</div>
