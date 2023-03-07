@@ -1011,7 +1011,7 @@
 				'group=longterms',
 				'group=quotes',
 				'group=events&status=upcoming',
-				'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]',
+				'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]',
 			];
 			let editProfile      = wbapp.tpl('#editProfile').html;
 			let editStatus       = wbapp.tpl('#editStatus').html;
@@ -1413,13 +1413,13 @@
 															new_data.pay_status = post_statuses.pay_status;
 															new_data.group = post_statuses.group;
 															// if(post_statuses.status === 'upcoming'){
-															if (new_data.group === 'events' && !new_data.event_date) {
+															if (new_data.group === 'upcoming' && !new_data.event_date) {
 																toast_error('Необходимо выбрать дату/время события');
 																$($(ev.node).parents('form')).find('[name="event_date"]')
 																	.focus();
 																return false;
 															}
-															if (new_data.group === 'events' && !new_data.experts) {
+															if (new_data.status === 'upcoming' && !new_data.experts) {
 																toast_error('Необходимо выбрать специалиста');
 																$($(ev.node).parents('form'))
 																	.find('.select_experts')
@@ -1435,7 +1435,7 @@
 																new_data.no_services = 0;
 															}
 
-															if (new_data.group === 'events' && !new_data.price) {
+															if (new_data.group === 'upcoming' && !new_data.price) {
 																toast_error('Необходимо выбрать услугу');
 																$($(ev.node).parents('form'))
 																	.find('.popup-services-list')
