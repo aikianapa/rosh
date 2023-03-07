@@ -461,8 +461,6 @@ $(function () {
 			);
 			getters.push(
 				utils.api.get('/api/v2/list/catalogs?_id=shop_category').then(function (data) {
-					console.log(data);
-
 					var all_categories = data[0]?.tree?.data;
 					if (!all_categories){
 						return false;
@@ -471,12 +469,10 @@ $(function () {
 					keys.forEach(function (key) {
 						var cat = all_categories[key];
 						delete cat.active;
-						console.log('Parent cat',key, cat)
 
 						_self.priceCategories[key] = cat;
 						if (cat.hasOwnProperty('children')) {
 							var _keys = Object.keys(cat.children);
-							console.log(key, ' children',  _keys)
 							_keys.forEach(function (_key) {
 								var obj = cat.children[_key];
 								if (key === 'lab') {
@@ -602,7 +598,6 @@ $(function () {
 			);
 
 			return Promise.allSettled(getters).then((results) => {
-				console.log();
 				_self.rawServices.forEach(function (service, i) {
 					if (!service.price || parseInt(service.price) < 1) {
 						return;
