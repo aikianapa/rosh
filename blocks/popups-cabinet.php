@@ -140,7 +140,7 @@
 									{{#each @global.catalog.experts}}
 									<div class="select__item select__item--checkbox">
 										<label class="checkbox checkbox--record">
-											<input type="checkbox" name="experts[]" value="{{id}}">
+											<input type="radio" name="experts[]" value="{{id}}">
 											<span></span>
 											<div class="checbox__name">
 												<div class="select__name">{{fullname}}</div>
@@ -456,9 +456,9 @@
 															<div class="select__item select__item--checkbox">
 																<label class="checkbox checkbox--record">
 																	{{#if @global.utils.arr.search(.id, record.experts)}}
-																	<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
+																	<input type="radio" class="checked" name="experts[]" checked value="{{.id}}" required>
 																	{{else}}
-																	<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
+																	<input type="radio" name="experts[]" value="{{.id}}"> {{/if}}
 																	<span></span>
 																	<div class="checbox__name">
 																		<div class="select__name">{{fullname}}</div>
@@ -1524,8 +1524,8 @@
 													<div class="select__item select__item--checkbox">
 														<label class="checkbox checkbox--record">
 															{{#if @global.utils.arr.search(.id, record.experts)}}
-															<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}"> {{else}}
-															<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
+															<input type="radio" class="checked" name="experts[]" checked value="{{.id}}"> {{else}}
+															<input type="radio" name="experts[]" value="{{.id}}"> {{/if}}
 															<span></span>
 															<div class="checbox__name">
 																<div class="select__name">{{fullname}}</div>
@@ -1670,7 +1670,7 @@
 										{{#each @global.catalog.experts}}
 										<div class="select__item select__item--checkbox">
 											<label class="checkbox checkbox--record">
-												<input type="checkbox" name="experts[]" value="{{this.id}}">
+												<input type="radio" name="experts[]" value="{{this.id}}">
 												<span></span>
 												<div class="checbox__name">
 													<div class="select__name">{{this.fullname}}</div>

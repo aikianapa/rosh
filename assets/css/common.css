@@ -58,7 +58,8 @@ form.profile-edit.active, div.profile-edit.active {width:100%; display: block; }
     display: block;
 }
 
-.select__item--checkbox input[type=checkbox]:checked ~ .checbox__name {
+.select__item--checkbox input[type=checkbox]:checked ~ .checbox__name,
+.select__item--checkbox input[type=radio]:checked ~ .checbox__name {
     color: black;
 }
 

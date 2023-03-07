@@ -126,7 +126,7 @@ $(function() {
                 var ne = false;
                 value  = [];
                 $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
-                    if ($(this).find('input[type=checkbox]:checked').length) {
+                    if ($(this).find('input[type=checkbox]:checked, input[type=radio]:checked').length) {
                         value.push($(this).find('.select__name:first').text());
                         ne = true;
                     }
