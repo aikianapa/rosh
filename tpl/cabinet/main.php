@@ -54,7 +54,7 @@
 							</div>
 							<div class="account__tab-item data-tab-link" data-type="group=events&status=upcoming" data-tab="events" data-tabs="records">События
 							</div>
-							<div class="account__tab-item data-tab-link" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]" data-tab="past" data-tabs="records">Завершенные
+							<div class="account__tab-item data-tab-link" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]" data-tab="past" data-tabs="records">Завершенные
 							</div>
 							<div class="account__tab-item data-tab-link" data-tab="longterms" data-tabs="records">Продолжительное
 							</div>
@@ -82,7 +82,7 @@
 							</div>
 						</div>
 
-						<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]">
+						<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]">
 							<div class="loading-overlay">
 								<div class="loader"></div>
 							</div>
