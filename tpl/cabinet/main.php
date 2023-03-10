@@ -40,7 +40,7 @@
 						</div>
 						<div class="search__block --flex --aicn">
 							<div class="input">
-								<input class="search__input" type="text" placeholder="Поиск" name="q">
+								<input class="search__input" type="text" placeholder="Поиск по пациентам" name="q">
 							</div>
 							<button class="btn btn--white">Найти</button>
 						</div>
@@ -54,7 +54,7 @@
 							</div>
 							<div class="account__tab-item data-tab-link" data-type="group=events&status=upcoming" data-tab="events" data-tabs="records">События
 							</div>
-							<div class="account__tab-item data-tab-link" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]" data-tab="past" data-tabs="records">Завершенные
+							<div class="account__tab-item data-tab-link" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]" data-tab="past" data-tabs="records">Завершенные
 							</div>
 							<div class="account__tab-item data-tab-link" data-tab="longterms" data-tabs="records">Продолжительное
 							</div>
@@ -82,7 +82,7 @@
 							</div>
 						</div>
 
-						<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]">
+						<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]">
 							<div class="loading-overlay">
 								<div class="loader"></div>
 							</div>
@@ -238,15 +238,15 @@
 		<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 	</template>
 	<template id="editorRecord" wb-off>
-		<form class="record-edit">
+		<form class="record-edit mt-2">
 			<div class="row">
 				<div class="col-md-7">
 					{{#if record.client_comment}}
-						<div class="account-events__item wide">
-							<div class="account-event-wrap" style="font-size: 20px">
-								<div class="account-events__name">Причина обращения:</div>
-								<div class="account-event">
-									{{{@global.nl2br(record.client_comment)}}}
+						<div class="account-events__item wide" style="">
+							<div class="account-event-wrap">
+								<div class="account-events__name" style="font-size: 20px">Причина обращения:</div>
+								<div class="account-event" style="font-size: 16px">
+									{{{@global.nl2br(@global.fix_comment(record.client_comment))}}}
 								</div>
 							</div>
 						</div>
@@ -359,9 +359,9 @@
 													<div class="select__item select__item--checkbox">
 														<label class="checkbox checkbox--record">
 															{{#if @global.utils.arr.search(.id, record.experts)}}
-																<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}">
+																<input type="radio" class="checked" name="experts[]" checked value="{{.id}}">
 															{{else}}
-																<input type="checkbox" name="experts[]" value="{{.id}}">
+																<input type="radio" name="experts[]" value="{{.id}}">
 															{{/if}}
 															<span></span>
 															<div class="checbox__name">
@@ -387,13 +387,13 @@
 								<div class="row event-time">
 									<div class="col-md-6">
 										<div class="calendar input mb-30">
-											<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
+											<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}">
 											<div class="input__placeholder">Время (начало)</div>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="calendar input mb-30">
-											<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
+											<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}">
 											<div class="input__placeholder">Время (конец)</div>
 										</div>
 									</div>
@@ -434,7 +434,7 @@
 						{{#each record.service_prices: idx, key}}
 							<div class="search__drop-item services selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
 								<input type="hidden" name="services[]" value="{{service_id}}">
-								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
+								<input type="hidden" name="service_prices[{{idx}}][service_id]" value="{{service_id}}">
 								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
 								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
 								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
@@ -522,8 +522,15 @@
 					<button class="btn btn--white" on-click="save">Сохранить</button>
 				</div>
 				<div class="col-md-1"></div>
-				<div class="col-md-4 --jcfe --flex">
-					<textarea class="admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+				<div class="col-md-4 --jcfe --flex" style="flex-direction: column-reverse; align-items: flex-end;">
+					<div style="width: 100%; max-width: 305px;">
+						<div class="mb-10 text-bold">Комментарий для специалистов</div>
+						<textarea class="admin__editor-textarea" name="comment_for_expert"
+							placeholder="Комментарий для специалистов">{{record.comment_for_expert}}</textarea>
+					</div>
+
+					<textarea class="admin__editor-textarea mb-2" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+					<hr style="opacity:.5">
 				</div>
 			</div>
 		</form>
@@ -641,27 +648,29 @@
 									<div class="admin-events-item">
 										<p>Тип</p>
 										{{#each catalog.quoteType as item}}
-											{{#if item.id == type }}
-												<div>{{item.name}}</div>
-											{{/if}}
+										{{#if item.id == type }}
+										<div>{{item.name}}</div>
+										{{/if}}
 										{{/each}}
 									</div>
 									<div class="admin-events-item col-services flex-column">
 										<p>Услуга</p>
-										{{#if consultation }}
-											<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
+										{{#if group == 'quotes'}}
+										<div>Заявка из фильтра</div>
+										{{/if}}
+
+										{{#if record.consultation }}
+										<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
 										{{/if}}
 
 										{{#if no_services == '1'}}
-											<div></div>
-											{{elseif services}}
-											{{#services}}
-												<div>{{catalog.services[this].header}}</div>
-											{{/services}}
-											{{elseif group == 'quotes'}}
-											<div>{{{@global.nl2br(client_comment)}}}</div>
+										<div></div>
+										{{elseif services}}
+										{{#services}}
+										<div>{{catalog.services[this].header}}</div>
+										{{/services}}
 										{{else}}
-											<div></div>
+										<div></div>
 										{{/if}}
 
 									</div>
@@ -983,7 +992,6 @@
 		{{/if}}
 	</template>
 
-
 	<wb-module wb="module=yonger&mode=render&view=footer" />
 
 	<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');" />
@@ -1003,7 +1011,7 @@
 				'group=longterms',
 				'group=quotes',
 				'group=events&status=upcoming',
-				'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason]',
+				'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]',
 			];
 			let editProfile      = wbapp.tpl('#editProfile').html;
 			let editStatus       = wbapp.tpl('#editStatus').html;
@@ -1404,13 +1412,14 @@
 															new_data.status = post_statuses.status;
 															new_data.pay_status = post_statuses.pay_status;
 															new_data.group = post_statuses.group;
-															if (new_data.group === 'events' && !new_data.event_date) {
+															// if(post_statuses.status === 'upcoming'){
+															if (new_data.group === 'upcoming' && !new_data.event_date) {
 																toast_error('Необходимо выбрать дату/время события');
 																$($(ev.node).parents('form')).find('[name="event_date"]')
 																	.focus();
 																return false;
 															}
-															if (new_data.group === 'events' && !new_data.experts) {
+															if (new_data.status === 'upcoming' && !new_data.experts) {
 																toast_error('Необходимо выбрать специалиста');
 																$($(ev.node).parents('form'))
 																	.find('.select_experts')
@@ -1426,14 +1435,13 @@
 																new_data.no_services = 0;
 															}
 
-															if (new_data.group === 'events' && !new_data.price) {
+															if (new_data.group === 'upcoming' && !new_data.price) {
 																toast_error('Необходимо выбрать услугу');
 																$($(ev.node).parents('form'))
 																	.find('.popup-services-list')
 																	.focus();
 																return false;
 															}
-
 															new_data.event_date = utils.dateForce(new_data.event_date);
 															new_data.services = utils.arr.unique(new_data.services);
 
@@ -1519,6 +1527,7 @@
 			$('body').on('click', '.account__tab-items .account__tab-item.data-tab-link', function() {
 				var _type = $(this).data('type');
 				console.log('open:', _type);
+				sessionStorage.setItem('active-tab--lk-main', _type);
 				window.load(_type);
 			});
 			$(document).on('click', '.account__table-head .admin-events-item.orderby', function() {
@@ -1565,26 +1574,26 @@
 					});
 				}).on('change', '.flag-date [type="checkbox"]', function(e) {
 					e.stopPropagation();
-					const _list = $(this).parents('.account__table-body');
+					const _list   = $(this).parents('.account__table-body');
 					const _parent = $(this).parents('.acount__table-accardeon');
-					const _id = _parent.data('id');
-					const _is_marked = $(this).is(':checked');
-					const _priority = _is_marked ? Date.now() : 0;
+					const _id     = _parent.data('id');
+				const _is_marked  = $(this).is(':checked');
+				const _priority   = _is_marked ? Date.now() : 0;
 
-					_parent.attr('data-priority', _priority);
-					_list.find(".acount__table-accardeon").sort(function(a, b) {
-						const _a = parseInt($(a).attr('data-priority'));
-						const _b = parseInt($(b).attr('data-priority'));
-						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-					}).appendTo(_list);
+				_parent.attr('data-priority', _priority);
+				_list.find(".acount__table-accardeon").sort(function (a, b) {
+					const _a = parseInt($(a).attr('data-priority'));
+					const _b = parseInt($(b).attr('data-priority'));
+					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+				}).appendTo(_list);
 
-					utils.api.post('/api/v2/update/records/' + _id, {
-							priority: _priority
-						})
-						.then(function(res) {
-							//toast('Список обновлен');
-						});
-				});
+				utils.api.post('/api/v2/update/records/' + _id, {
+						priority: _priority
+					})
+					.then(function (res) {
+						//toast('Список обновлен');
+					});
+			});
 		});
 	</script>
 

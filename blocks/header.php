@@ -5,7 +5,7 @@
 
 		<header class="header header--transparent header--fixed --unfilter">
 			<!---div class="container --flex --jcsb --aicn"  wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='admin' OR '{{_sess.user.role}}'=='client'"-->
-			<div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','client','expert','admin'])">
+			<div class="container --flex --jcsb --aicn" wb-if="in_array('{{_sess.user.role}}',['','client','admin'])">
 
 				<wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
 
@@ -63,7 +63,7 @@
 					</div>
 				</div>
 
-				<div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','client','admin'])">
+				<div class="header__right --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['client','admin'])">
 					<div wb-if="'{{_route.uri}}' !=='/english'">
 
 						<button class="btn btn-link --openpopup --mobile-fade" wb-if="'{{_sess.user.role}}'!=='expert'" data-popup="--fast">Записаться на прием</button>
@@ -92,7 +92,55 @@
 						</svg>
 					</a>
 				</div>
+			</div>
+			<div wb-if="'{{_sess.user.role}}'=='expert'">
+				<div wb-if="'{{_route.uri}}' =='/english'">
+					<wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
 
+					<a wb-if="'{{_var.hover_logo}}' == '0'" class="header__logo" href="/">
+						<img src="/assets/img/logo.svg" alt="">
+						<img src="/assets/img/logo-red.svg" alt="">
+					</a>
+
+					<a wb-if="'{{_var.hover_logo}}' == '1'" class="header__logo header__logo-red" href="/">
+						<div class="header__logo-wrap">
+							<div class="logo"><img src="/assets/img/logo.svg" alt=""></div>
+							<div class="logo-red"><img src="/assets/img/logo-red.svg" alt=""></div>
+						</div>
+					</a>
+				</div>
+				<div class="container --flex --jcsb --aicn">
+					<div class="header__admin --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
+						<a class="btn btn-link" href="/cabinet">Список событий</a>
+						<a class="btn btn-link" href="/cabinet/search">Пациенты</a>
+					</div>
+					<div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
+						<button class="btn btn-link profile-menu">
+							Профиль
+							<svg class="svgsprite _drop">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
+							</svg>
+							<div class="enter__panel">
+								<a class="enter__btn text-small" onclick="popupEditProfile();">Редактировать</a>
+								<a class="enter__btn text-small signout" href="/signout">Выйти</a>
+							</div>
+						</button>
+						<button class="burger"></button>
+					</div>
+
+
+					<div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' =='/english'">
+						<a class="pt-0 en-version" href="/">
+							<svg class="svgsprite _web">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
+							</svg>
+							Русская версия
+							<svg class="svgsprite _arrow-link">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
+							</svg>
+						</a>
+					</div>
+				</div>
 			</div>
 			<div wb-if="'{{_sess.user.role}}'=='main'">
 				<div wb-if="'{{_route.uri}}' =='/english'">

@@ -234,7 +234,7 @@
 					<div class="account-event-wrap">
 						<div class="account-events__name">Причина обращения:</div>
 						<div class="account-event text-justify">
-							{{{@global.nl2br(client_comment)}}}
+							{{{@global.nl2br(@global.fix_comment(.client_comment))}}}
 						</div>
 					</div>
 				</div>
@@ -274,6 +274,16 @@
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name" style="color:#393">Заявка на рассмотрении</div>
 					</div>
+				</div>{{elseif this.status == 'uncall'}}
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name" style="color:#a73">Вам не дозвонились</div>
+					</div>
+				</div>{{elseif this.status == 'delay'}}
+				<div class="account-events__item event_date">
+					<div class="account-event-wrap --jcsb">
+						<div class="account-events__name" style="color:#a73">Вы попросили перезвонить</div>
+					</div>
 				</div>
 				{{elseif this.status == 'upcoming'}}
 				<div class="account-events__item event_date">
@@ -292,6 +302,8 @@
 				</div>
 				{{/if}}
 				{{#if this.status == 'new'}}
+				{{elseif this.status == 'delay'}}
+				{{elseif this.status == 'uncall'}}
 				<!--nothing..-->
 				{{elseif this.pay_status == 'unpay'}}
 				<div class="account-events__btns">
@@ -421,7 +433,7 @@
 										<div class="analysis__description">
 											<p class="text-bold mb-20">Рекомендация врача</p>
 											<div class="text">
-												{{.recommendation}}
+												{{{@global.nl2br(.recommendation)}}}
 											</div>
 										</div>
 									</div>
@@ -840,7 +852,7 @@
 			if (!!current_day_events_checker) {
 				clearInterval(current_day_events_checker);
 			}
-			utils.api.get('/api/v2/list/records?status=[upcoming,new,past]&group=[events,quotes]&client=' +
+			utils.api.get('/api/v2/list/records?status=[upcoming,new,past,delay,uncall]&group=[events,quotes]&client=' +
 			              wbapp._session.user.id + '&@sort=_lastdate:d')
 				.then(function (records) {
 					if (!!current_day_events_checker) {
@@ -860,7 +872,7 @@
 							}
 
 
-							if (rec.status === 'new') {
+							if (rec.status === 'new' || rec.status === 'uncall'  || rec.status === 'delay' ) {
 								rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
 								page.push('events.upcoming', rec);
 								return;

@@ -35,7 +35,7 @@
 					</div>
 					<div class="search__block --flex --aicn">
 						<div class="input">
-							<input class="search__input" type="text" name="q" placeholder="Поиск">
+							<input class="search__input" type="text" name="q" placeholder="Поиск по пациентам">
 						</div>
 						<button class="btn btn--black">Найти</button>
 					</div>

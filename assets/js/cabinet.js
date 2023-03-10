@@ -13,6 +13,44 @@ function html_decode(input) {
 	return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
 }
 
+function setPageScrollPosition(_page_name){
+	sessionStorage["scroll-position--"+_page_name] = $(window).scrollTop();
+	//
+	//window.onbeforeunload = function () {
+	//	sessionStorage["tab--lk-main"] = $('.tab.active').data("tab");
+	//};
+	//var pos               = sessionStorage["sp--lk-main"] || false;
+	//if (pos) {
+	//	$('body').scrollTop(pos);
+	//	sessionStorage.removeItem("sp--lk-main");
+	//}
+}
+function getPageScrollPosition(_page_name, _clear){
+	let res = sessionStorage["scroll-position--"+_page_name] || false;
+	if (!!_clear){
+		sessionStorage.removeItem("scroll-position--" + _page_name);
+	}
+	return res;
+	//
+	//window.onbeforeunload = function () {
+	//	sessionStorage["tab--lk-main"] = $('.tab.active').data("tab");
+	//};
+	//var pos               = sessionStorage["sp--lk-main"] || false;
+	//if (pos) {
+	//	$('body').scrollTop(pos);
+	//	sessionStorage.removeItem("sp--lk-main");
+	//}
+}
+function fix_comment(text) {
+	var title_problems = 'ВЫБРАННЫЕ УСЛУГИ ИЛИ СУЩЕСТВУЮЩИЕ ПРОБЛЕМЫ';
+	var title_symptoms = 'ВЕРОЯТНАЯ ПРОБЛЕМАТИКА ПО СИМПТОМАМ';
+	var tmp = text.replace(title_problems, title_problems.toLowerCase());
+	tmp = tmp.replace(title_problems.toLowerCase(), '<div class="text-bold" style="color:#123">'+ title_problems.toLowerCase()+'</div>');
+	tmp = tmp.replace(title_symptoms, title_symptoms.toLowerCase());
+	tmp = tmp.replace(title_symptoms.toLowerCase(), '<div class="text-bold" style="color:#123">'+ title_symptoms.toLowerCase()+'</div>');
+	return tmp;
+}
+
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
@@ -423,8 +461,6 @@ $(function () {
 			);
 			getters.push(
 				utils.api.get('/api/v2/list/catalogs?_id=shop_category').then(function (data) {
-					console.log(data);
-
 					var all_categories = data[0]?.tree?.data;
 					if (!all_categories){
 						return false;
@@ -433,12 +469,10 @@ $(function () {
 					keys.forEach(function (key) {
 						var cat = all_categories[key];
 						delete cat.active;
-						console.log('Parent cat',key, cat)
 
 						_self.priceCategories[key] = cat;
 						if (cat.hasOwnProperty('children')) {
 							var _keys = Object.keys(cat.children);
-							console.log(key, ' children',  _keys)
 							_keys.forEach(function (_key) {
 								var obj = cat.children[_key];
 								if (key === 'lab') {
@@ -564,7 +598,6 @@ $(function () {
 			);
 
 			return Promise.allSettled(getters).then((results) => {
-				console.log();
 				_self.rawServices.forEach(function (service, i) {
 					if (!service.price || parseInt(service.price) < 1) {
 						return;
@@ -1100,8 +1133,9 @@ $(function () {
 					client_qry = '&client=' + form.find('input[name="client"]').val();
 				}
 				return '/api/v2/list/records?__token=' + wbapp._session.token +
-				       '&group=[longterms,events]' + client_qry + '&@sort=_lastdate:d';
+				       '&group=[longterms,events]&status=[upcoming,past,new]' + client_qry + '&@sort=_lastdate:d';
 			},
+
 			transformResult: function (response) {
 				return {
 					suggestions: $.map(response, function (dataItem) {
