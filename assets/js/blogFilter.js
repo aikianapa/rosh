@@ -54,7 +54,7 @@ var BlogFilter = function () {
 		getPeriods(cat = null) {
 			let years = []
 			cat = cat == null ? '' : '&category='+cat 
-			fetch("/api/v2/list/blog?@sort=year&@group=year,month&@return=year,month,date,category"+cat)
+			fetch("/api/v2/list/blog?@sort=year&@group=year,month&@return=year,month,date,category"+cat+'&__token='+wbapp._session.token)
 				.then((res) => res.json())
 				.then(function (data) {
 					data = Object.assign([], data)
