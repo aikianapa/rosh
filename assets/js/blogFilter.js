@@ -38,10 +38,15 @@ var BlogFilter = function () {
 				let list = filter.get('p.' + year)
 				filter.set('m', [])
 				filter.set('filter.month',undefined)
-				year == '*' ? filter.set('filter.year', undefined) : filter.set('filter.year', year)
-				$.each(list, function (m, k) {
-					filter.push('m', { num: m, name: monthes[m * 1] })
-				})
+				if (year == undefined) {
+					filter.set('filter.year', undefined)
+					filter.getAllMonthes()
+				} else {
+					filter.set('filter.year', year)
+					$.each(list, function (m, k) {
+						filter.push('m', { num: m, name: monthes[m * 1] })
+					})
+				}
 				$filter.find('#months').prev('.select__main').text("Месяц")
 				this.update()
 			},
@@ -62,11 +67,28 @@ var BlogFilter = function () {
 					years.reverse()
 					filter.set('p', data)
 					filter.set('y', years)
+					filter.getAllMonthes()
 				})
+		},
+		getAllMonthes() {
+			console.log(123);
+			let mons = []
+			let data = filter.get('p')
+			data.forEach((year, id) => {
+				$.each(year, (month) => {
+					mons.indexOf(month) == -1 ? mons.push(month) : null
+				});
+			})
+			mons.sort()
+			filter.set('m',[])
+			$.each(mons, function (i, m) {
+				filter.push('m', { num: m, name: monthes[m * 1] })
+			})
 		},
 		update() {
 			let fil = {}
 			let map = filter.get('filter')
+			console.log(map);
 			$.each(map, function (k, v) {
 				if (v) fil[k] = v
 			})
