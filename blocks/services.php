@@ -70,7 +70,7 @@
 					<wb-foreach wb="{
                         'table':'services',
                         'size':'100',
-                        'sort': 'header',
+                        'sort': '_sort,header',
                         'more': 'true',
                         'bind': 'site.list.services',
                         'filter':{
