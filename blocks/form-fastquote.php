@@ -71,7 +71,7 @@
 		</template>
 	</div>
 	<script wbapp>
-		var createFastQuote2 = function (client_id, client_comment) {
+		var createFastQuote2 = function (client_id, client_comment, experts) {
 			var quote        = {};
 			quote.group      = 'quotes';
 			quote.status     = 'new';
@@ -83,8 +83,10 @@
 			quote.comment        = '';
 			quote.recommendation = '';
 			quote.description    = '';
-			quote.client_comment = '';
 			quote.price          = 0;
+			if(experts){
+				quote.experts=experts;
+            }
 
 			toast_success('Мы перезвоним Вам в ближайшее время!');
 			quote.event_date       = '';
@@ -96,10 +98,6 @@
 			quote.longterm_title    = '';
 
 			quote.photos = {before: [], after: []};
-
-			quote.comment        = '';
-			quote.recommendation = '';
-			quote.description    = '';
 			quote.client_comment = client_comment;
 			quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 
@@ -133,6 +131,11 @@
 					if ($(form).verify()) {
 
 						var post = $(form).serializeJSON();
+						var expert = $('input.expert');
+					    post.experts = [];
+						if (expert.length){
+							post.experts.push(expert.val());
+                        }
 						if (!post.client) {
 							console.log('try to createProfile: ', post);
 
@@ -159,7 +162,7 @@
 														'data': data
 													});
 												} else {
-													createFastQuote2(data.id, post.client_comment);
+													createFastQuote2(data.id, post.client_comment, post.experts);
 												}
 											});
 									} else {
@@ -168,7 +171,7 @@
 									}
 								});
 						} else {
-							createFastQuote2(post.client, post.client_comment);
+							createFastQuote2(post.client, post.client_comment, post.experts);
 						}
 					}
 

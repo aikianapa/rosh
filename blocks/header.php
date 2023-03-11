@@ -74,6 +74,9 @@
 							</svg>
 							<div class="enter__panel">
 								<a class="enter__btn text-small" href="/cabinet">Мой кабинет</a>
+								<a class="enter__btn text-small" href="#" onclick="window.popupChangePassword();">
+									Изменить пароль
+								</a>
 								<a class="enter__btn text-small signout" href="/signout">Выйти</a>
 							</div>
 						</button>

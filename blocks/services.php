@@ -3,7 +3,7 @@
 	<script wb-app>
 		$(".crumbs").after(`
         <div class="title-flex --flex --jcsb">
-        <button class="btn btn--black --openpopup" data-popup="--fast-make" href="#">Записаться на прием </button>
+        <button class="btn btn--black --openpopup d-none" data-popup="--fast-make" href="#">Записаться на прием </button>
         </div>
         `);
 		$(".crumbs + div.title-flex + h1").prependTo($(".crumbs + div.title-flex"));
@@ -112,9 +112,9 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-4 fastquote-block" wb-off>
+					<div class="col-lg-4 fastquote-block " wb-off>
 						<template id="fastquote-block-services">
-							<form class="all-form">
+							<form class="all-form sticky-block">
 								<div class="all-form__succed d-none">
 									<h3 class="h3">Успешно !</h3>
 									<p class="text-grey">Мы перезвоним Вам в ближайшее время</p>
@@ -156,6 +156,7 @@
 	</div>
 	<script wbapp>
 		$(document).on('wb-ready wb-ajax-done', function() {
+
 			window.fastQuoteServiceCreate = new Ractive({
 				el: '.fastquote-block',
 				template: wbapp.tpl('#fastquote-block-services').html,
@@ -165,9 +166,28 @@
 				on: {
 					complete() {
 						var _self = this;
-						setTimeout(function() {
+						setTimeout(function () {
 							initPlugins($(_self.el));
+							setTimeout(function () {
+								var top = $('.sticky-block').offset().top - 1;
+								console.log('sticky-block:', top);
+								$(window).scroll(function (e) {
+									// Get the position of the vertical scroll.
+									var y = $(this).scrollTop();
+									console.log('sticky-block:', top, y);
+
+									if (y >= top) {
+										$('.sticky-block').addClass('fixed-top');
+										$('footer').css('z-index', '99');
+									} else {
+										$('.sticky-block').removeClass('fixed-top');
+										$('footer').css('z-index', 'auto');
+									}
+								});
+							}, 500);
+
 						}, 500);
+
 					},
 					submit() {
 						var form = this.find('.fastquote-block form');

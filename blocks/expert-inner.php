@@ -58,6 +58,7 @@
                         <p wb-if="'{{education}}'>''">Образование: {{education}}</p>
                         <p wb-if="'{{certificate}}'>''">Сертификат: {{certificate}}</p>
                     </div>
+                    <input type="hidden" class="expert" value="{{_parent.id}}">
                     <button class="btn btn--black --openpopup" data-popup="--fast" href="#">Записаться на прием</button>
                 </div>
             </div>

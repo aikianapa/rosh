@@ -72,6 +72,30 @@ class usersClass extends cmsFormsClass
             exit;
         }
     }
+	function change_password(&$item=null) {
+		$post = $this->app->vars('_post');
+        $user_id = $post['id'] ?? '';
+        $pwd_current = $post['old_password'] ?? '';
+        $pwd_new = $post['new_password'] ?? '';
+        $pwd_check = $post['new_password_repeat'] ?? '';
+		$user = wbItemRead('users',$this->app->vars('_sess.user.id'));
+
+        if (!$pwd_current || !$pwd_current) return;
+        if (wbPasswordCheck($pwd_current, $user['password'])) {
+            if ($pwd_new !== $pwd_check) {
+                header('Content-type: application/json; charset=utf-8');
+                echo '{"error":true,"msg":"Новый пароль и повторный пароль не совпадают!"}';
+                exit;
+            } else {
+                $item['password'] = wbPasswordMake($pwd_new);
+            }
+			$item = wbItemSave('users',$user, true);
+        } else {
+            header('Content-type: application/json; charset=utf-8');
+            echo '{"error":true,"msg":"Неверный текущий пароль!"}';
+            exit;
+        }
+    }
 
     function getClient() {
         if (!wbApiKey()) return;

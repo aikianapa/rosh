@@ -14,16 +14,14 @@ function html_decode(input) {
 }
 
 function setPageScrollPosition(_page_name){
-	sessionStorage["scroll-position--"+_page_name] = $(window).scrollTop();
-	//
-	//window.onbeforeunload = function () {
-	//	sessionStorage["tab--lk-main"] = $('.tab.active').data("tab");
-	//};
-	//var pos               = sessionStorage["sp--lk-main"] || false;
-	//if (pos) {
-	//	$('body').scrollTop(pos);
-	//	sessionStorage.removeItem("sp--lk-main");
-	//}
+	window.onbeforeunload = function () {
+	    sessionStorage["scroll-position--"+_page_name] = $(window).scrollTop();
+	};
+	var pos = sessionStorage["scroll-position--"+_page_name] || false;
+	if (pos) {
+		$('body').scrollTop(pos);
+		sessionStorage.removeItem("sp--lk-main");
+	}
 }
 function getPageScrollPosition(_page_name, _clear){
 	let res = sessionStorage["scroll-position--"+_page_name] || false;
@@ -685,9 +683,9 @@ $(function () {
 			var event_date     = utils.getDate(event.event_date);
 			let curr_timestamp = utils.timestamp(new Date());
 
-			if (!this.isCurrentDayEvent(event)) {
-				return false;
-			}
+			//if (!this.isCurrentDayEvent(event)) {
+			//	return false;
+			//}
 
 			let event_from_timestamp = utils.timestamp(
 				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
@@ -696,9 +694,9 @@ $(function () {
 				event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
 					parseInt(event.event_time_end.split(':')[1])));
 
-			console.log(curr_timestamp, event_from_timestamp, event_to_timestamp);
+			console.log(curr_timestamp, event_from_timestamp, event_from_timestamp < (curr_timestamp + 301));
 
-			return (event_from_timestamp < (curr_timestamp + 301) && event_to_timestamp >= curr_timestamp);
+			return (event_from_timestamp < (curr_timestamp + 301)/* && event_to_timestamp >= curr_timestamp*/);
 		},
 		runOnlineChat(room_name) {
 			/*!! check record  exists & status & pay_status & date !!*/

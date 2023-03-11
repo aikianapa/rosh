@@ -84,7 +84,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			var createFastQuote = function (client_id, client_comment) {
+			var createFastQuote = function (client_id, client_comment, experts) {
 				var quote        = {};
 				quote.group      = 'quotes';
 				quote.status     = 'new';
@@ -96,8 +96,10 @@
 				quote.comment        = '';
 				quote.recommendation = '';
 				quote.description    = '';
-				quote.client_comment = '';
 				quote.price          = 0;
+				if (experts) {
+					quote.experts = experts;
+				}
 
 				toast_success('Мы перезвоним Вам в ближайшее время!');
 				quote.event_date       = '';
@@ -108,13 +110,9 @@
 				quote.longterm_date_end = '';
 				quote.longterm_title    = '';
 
-				quote.photos = {before: [], after: []};
-
-				quote.comment        = '';
-				quote.recommendation = '';
-				quote.description    = '';
+				quote.photos         = {before: [], after: []};
 				quote.client_comment = client_comment;
-				quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+				quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 
 				window.api.post(
 					'/api/v2/create/records/', quote).then(
@@ -123,13 +121,11 @@
 							wbapp.trigger('wb-save-error',
 								{'data': data});
 						} else {
-							$('.popup.--fast .popup__panel:not(.--succed)')
+							$('.popup.fast-form-block').show();
+							$('.popup.fast-form-block .popup__panel:not(.--succed)')
 								.addClass('d-none');
-							$('.popup.--fast .popup__panel.--succed')
+							$('.popup.fast-form-block .popup__panel.--succed')
 								.addClass('d-block');
-							if (typeof window.load == 'function') {
-								window.load();
-							}
 						}
 					});
 			};
@@ -203,7 +199,12 @@
 							//	}
 							//});
 
-							var post = $(form).serializeJSON();
+							var post     = $(form).serializeJSON();
+							var expert   = $('input.expert');
+							post.experts = [];
+							if (expert.length) {
+								post.experts.push(expert.val());
+							}
 							if (!post.client) {
 								console.log('try to createProfile: ', post);
 
@@ -258,7 +259,95 @@
 			});
 		</script>
 	</div>
+	<div class="popup --change-password">
+		<template id="popupChangePassword">
+			<div class="popup__overlay"></div>
+			<div class="popup__wrapper">
+				<div class="popup__panel">
+					<button class="popup__close" on-click="close">
+						<svg class="svgsprite _close">
+							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+						</svg>
+					</button>
+					<div class="popup__name text-bold">Сменить пароль</div>
+					<form class="popup__form" on-submit="submit">
+						{{#user}}
+						<input type="hidden" name="id" value="{{user.id}}">
+						<div class="input">
+							<input class="input__control" type="password" required placeholder="Текущий пароль"
+								name="old_password">
+							<div class="input__placeholder">Текущий пароль</div>
+						</div>
+						<div class="input">
+							<input class="input__control" required type="password" placeholder="Новый пароль"
+								name="new_password">
+							<div class="input__placeholder">Новый пароль</div>
+						</div>
+						<div class="input mb-30">
+							<input class="input__control" type="password" required placeholder="Повторите пароль"
+								name="new_password_repeat" autocomplete="off">
+							<div class="input__placeholder">Повторите пароль</div>
+						</div>
 
+						<button class="btn btn--black form__submit" type="submit">Сохранить</button>
+						{{/user}}
+					</form>
+				</div>
+			</div>
+		</template>
+	</div>
+	<script wbapp>
+		window.popupChangePassword = function () {
+			return new Ractive({
+				el: '.popup.--change-password',
+				template: wbapp.tpl('#popupChangePassword').html,
+				data: {
+					user: wbapp._session.user
+				},
+				on: {
+					complete() {
+						var self = this;
+						initPlugins($(this.el));
+
+						$(this.el).show();
+						//$('body').addClass('noscroll');
+					},
+					submit(ev) {
+						var self  = this;
+						var $form = $(ev.node);
+						if ($form.verify()) {
+							var data = $form.serializeJSON();
+							wbapp.loading();
+
+							$.ajax({
+								url: '/form/users/change_password',
+								method: 'POST',
+								data: {
+									old_password: data.old_password,
+									new_password: data.new_password,
+									new_password_repeat: data.new_password_repeat
+								},
+								complete: function () {
+									wbapp.unloading();
+								},
+								success: function (data) {
+									wbapp.unloading();
+									if (data.error) {
+										toast_error(data.msg);
+									} else {
+										$(self.el).hide();
+										//$('body').removeClass('noscroll');
+										toast('Пароль изменен успешно!');
+									}
+								}
+							});
+						}
+						return false;
+					}
+				}
+			});
+		};
+	</script>
 
 	<div class="popup --form-send">
 		<div class="popup__overlay"></div>

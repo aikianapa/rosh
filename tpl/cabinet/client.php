@@ -762,7 +762,10 @@
 
 <script>
 	$(document).on('cabinet-db-ready', function () {
-		window.page                    = new Ractive({
+		window.changePassword = function () {
+			var editor = window.popupChangePassword();
+		};
+		window.page           = new Ractive({
 			el: 'main.page .page-content',
 			template: wbapp.tpl('#page-content').html,
 			data: {

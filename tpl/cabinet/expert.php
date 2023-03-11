@@ -171,9 +171,10 @@
 							</a>
 							{{/if}}
 						</div>
-						{{#if this.type == 'online'}}
+
 						<div class="account-events__btns mt-10">
 							<div class="account-event-wrap --aicn">
+								{{#if this.type == 'online'}}
 								<div class="account-events__btn">
 									<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
 										Начать консультацию
@@ -182,9 +183,14 @@
 								{{#if this.online_waiting == 'client'}}
 								<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
 								{{/if}}
+								{{/if}}
+								<div class="account-events__btn">
+									<a class="btn btn--black" data-id="{{this.id}}" on-click="['closeEvent',this]">
+										Завершить прием
+									</a>
+								</div>
 							</div>
 						</div>
-						{{/if}}
 					</div>
 				</div>
 			</div>
@@ -327,17 +333,25 @@
 								{{/if}}
 							</div>
 							<div class="history-item accardeon__click"></div>
-
 						</div>
 						<div class="acount__table-list accardeon__list pt-1" style="padding-bottom: 16px;">
 							{{#this.comment_for_expert}}
-							<div class="analysis__description comment_for_expert mr-40">
+							<div class="analysis__description comment_for_expert mr-40" style="width:100%">
 								<div class="account-edit__title">
 									<p>Комментарий администратора</p>
 								</div>
 								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 							</div>
 							{{/this.comment_for_expert}}
+							{{#if this.analyses}}
+                            <div class="account-edit__title">
+								<a class="btn btn--white btn--compact ml-20" 
+                                    href="{{this.analyses}}"
+									target="_blank">
+									Скачать анализы
+								</a>
+							</div>
+							{{/if}}
 							<div class="account-edit__title">
 								<p>Рекомендация врача</p>
 
@@ -348,8 +362,8 @@
 								</a>
 								{{/if}}
 							</div>
-							<form class="active" on-submit="saveRecommendation" data-id="{{this.id}}" style="max-width: 50%">
-								<textarea class="account-edit__textarea" style="border-color:#777"  id="{{this.id}}--recommendation"
+							<form class="active" on-submit="saveRecommendation" data-id="{{this.id}}" style="max-width: 100%">
+								<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
 									name="recommendation">{{this.recommendation}}</textarea>
 
 								<button class="btn btn--white" type="submit">Сохранить</button>
@@ -653,7 +667,7 @@
 
 	<script wb-app>
 		$(document).on('cabinet-db-ready', function () {
-			window.page = new Ractive({
+			window.page         = new Ractive({
 				el: 'main.page .expert-page',
 				template: wbapp.tpl('#expert-page').html,
 				data: {
@@ -670,6 +684,14 @@
 					init() {},
 					runOnlineChat(ev, record) {
 						Cabinet.runOnlineChat(record?.meetroom?.roomName);
+					},
+					closeEvent(ev, record) {
+						utils.api.post('/api/v2/update/records/' + record.id, {'status': 'past'})
+							.then(function (res) {
+								console.log(res);
+								toast('Прием завершен успешно');
+								load_records();
+							});
 					},
 					toggleEdit(ev) {
 						console.log(ev, $(ev.node), this);
@@ -776,37 +798,42 @@
 					}
 				}
 			});
-
-			utils.api.get('/api/v2/list/records?group=events' +
-			              '&experts~=' + wbapp._session.user.id +
-			              '&@sort=event_date:d')
-				.then(function (records) {
-					page.set('catalog', window.catalog);
-
-					if (!records) {
-						return;
-					}
-					let curr_timestamp = parseInt(getdate()[0]);
-					records.forEach(function (rec, idx) {
-						if (rec.status === 'past') {
-							page.push('history', rec);
-							console.log('past:', rec);
+			window.load_records = function () {
+				utils.api.get('/api/v2/list/records?group=events' +
+				              '&experts~=' + wbapp._session.user.id +
+				              '&@sort=event_date:d')
+					.then(function (records) {
+						page.set('catalog', window.catalog);
+						page.set('events.upcoming', []); // use {}
+						page.set('events.current', []);
+						page.set('history', []);
+						if (!records) {
 							return;
-						} else if (rec.status !== 'upcoming') {
-							return;
-						} else if (idx === 0) {
-							page.set('closest_event', rec);
 						}
+						let curr_timestamp = parseInt(getdate()[0]);
+						//!!! set records by id not by index !!!
+						records.forEach(function (rec, idx) {
+							if (rec.status === 'past') {
+								page.push('history', rec);
+								console.log('past:', rec);
+								return;
+							} else if (rec.status !== 'upcoming') {
+								return;
+							} else if (idx === 0) {
+								page.set('closest_event', rec);
+							}
 
-						if (Cabinet.isCurrentEvent(rec)) {
-							page.push('events.current', rec);
-						} else {
-							page.push('events.upcoming', rec);
-						}
+							if (Cabinet.isCurrentEvent(rec)) {
+								page.push('events.current', rec);
+							} else {
+								page.push('events.upcoming', rec);
+							}
+						});
+
+						page.set('ready', true);
 					});
-
-					page.set('ready', true);
-				});
+			};
+			load_records();
 		});
 	</script>
 </div>

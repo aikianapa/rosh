@@ -1745,6 +1745,29 @@ blockquote cite {
     -webkit-transform :none!important;
     transform : none!important;
 }
+.fixed-top {
+  position: fixed;
+  top: 0;
+  max-width: 440px; /* theme specific */
+}/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 @media (max-width : 1130px) {
     .orders-sidebar,
     .basket-sidebar {

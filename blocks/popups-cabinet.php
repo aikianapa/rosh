@@ -320,6 +320,14 @@
 									<input type="hidden" name="spec_service" value="{{record.spec_service}}">
 									<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}"> {{else}}
 									<div class="mb-20 admin-editor__event">
+										<div class="popups__text-chexboxs">
+											{{#each @global.catalog.categories}}
+											<label class="text-radio">
+												<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
+												<span>{{name}}</span>
+											</label>
+											{{/each}}
+										</div>
 										<div class="search__block --flex --aicn">
 											<div class="input">
 												<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
@@ -610,6 +618,14 @@
 							$('body').addClass('noscroll');
 
 							console.log('show');
+						},
+						selectCategory(ev) {
+							var _el = $(ev.node).parents('form').find('.search__input.search-services');
+
+							setTimeout(function () {
+								_el.trigger('focus').trigger('keydown');
+								//_el.find('.search-services').trigger('focus');
+							}, 400);
 						},
 						submit(ev) {
 							console.log('saving...', ev);
@@ -1811,6 +1827,7 @@
 				});
 			};
 		</script>
+
 	</div>
 </view>
 <edit header="Все попапы для ЛК">
