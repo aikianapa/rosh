@@ -66,18 +66,9 @@
 		</div>
 		<div class="all-tabs data-tab-wrapper" data-tabs="services">
 			<div class="all-tab data-tab-item active" data-tab="all">
+				<wb-var srvlist wb-api="/api/v2/list/services?active=on&@sort=_sort,header&@return=id,header,price,category,cover" />
 				<div class="all-services" id="servicesList">
-					<wb-foreach wb="{
-                        'table':'services',
-                        'size':'100',
-                        'sort': '_sort,header',
-                        'more': 'true',
-                        'bind': 'site.list.services',
-                        'filter':{
-                            'id': {'$ne':'lab'},
-                            'active':'on'
-                        }
-                    }">
+					<wb-foreach wb="from=_var.srvlist&tpl=false">
 						<wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
 						<a class="all-services__item" href="{{yongerFurl()}}" data-category="{{category}}">
 							<div class="all-services__pic" style="background-image: url(/thumbc/510x314/src{{_var.image}})"></div>
