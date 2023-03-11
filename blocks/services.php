@@ -87,7 +87,7 @@
 				</div>
 			</div>
 			<div class="all-tab data-tab-item" data-tab="lab" id="priceListLab">
-				<wb-var pricelist wb-api="/api/v2/list/price?active=on&@return=id,header,price,category" />
+				<wb-var pricelist wb-api="/api/v2/list/price?active=on&@return=id,header,price,category,from" />
 				<div class="row">
 					<div class="col-lg-8">
 						<div class="service" wb-tree="dict=shop_category&branch=lab&parent=false">
@@ -98,7 +98,7 @@
 										<div class="service__item">
 											<div class="service__name" wb-if="'{{header}}'>''">{{header}}</div>
 											<label class="service__right">
-												<div class="service__price" wb-if="'{{price}}'>''">{{price}} ₽</div>
+												<div class="service__price" wb-if="'{{price}}'>''"><span wb-if="'{{from}}'=='on'">от </span> {{price}} ₽</div>
 												<div class="service__checkbox">
 													<div class="checkbox">
 														<input type="checkbox" wb-if="'{{price}}'>''" data-id="{{id}}" data-service_price="{{category}}-{{id}}" data-category="{{category}}" data-price="{{price}}" data-name="{{header}}" on-click="cartAdd">

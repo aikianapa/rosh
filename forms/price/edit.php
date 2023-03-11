@@ -59,7 +59,8 @@
 
 
                             <div class="form-group row">
-                                <label class="col-form-label col-sm-4">Цена</label>
+                                <label class="col-form-label col-sm-2">Цена</label>
+                                <div class="col-form-label col-sm-2 d-flex"><span class="pr-2">от</span><input name="from" wb-module="switch"></div>
                                 <div class="col">
                                     <input name="price" type="number" class="form-control" placeholder="Цена" required>
                                 </div>
