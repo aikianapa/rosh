@@ -145,17 +145,19 @@
 				complete(ev) {
 					$('main.page .loading-overlay').remove();
 				},
-				deleteProfile(ev, client, idx){
-					if (confirm("Удалить профиль "+client.fullname+" и все записи пациента?") == true) {
-						window.api.get('/api/v2/list/records?client='+client.id).then(function (recs){
-							if (!!recs){
+				deleteProfile(ev, client, idx) {
+					if (confirm("Удалить профиль " + client.fullname + " и все записи пациента?") == true) {
+						window.api.get('/api/v2/list/records?client=' + client.id + '&@return=id').then(function (recs) {
+							if (!!recs) {
 								recs.forEach(function (rec, i) {
 									setTimeout(function () {
-										window.api.get('/api/v2/delete/record/' + rec.id);
+										window.api.post('/api/v2/delete/record/' + rec.id).then(function (data) {
+											console.log(rec.id, 'Deleted');
+										});
 									});
 								});
 							}
-							window.api.get('/api/v2/delete/users/' + client.id).then(function (){
+							window.api.get('/api/v2/delete/users/' + client.id).then(function () {
 								toast('Профиль удален!');
 
 								setTimeout(function () {
