@@ -235,18 +235,4 @@ class recordsClass extends cmsFormsClass
         }
     }
 
-    function checkPay() {
-        $secret_seed   = $this->app->vars('_sett.secret');       // секретное слово
-        $key       = $_POST['key'];
-        $id       = $_POST['id'];
-        $sum       = $_POST['sum'];     // сумма внесенной предоплаты сделанной клиентом (1\5 от общей суммы за услуги)
-        $clientid   = $_POST['clientid']; // id клиента (таблица /users)
-        $orderid     = $_POST['orderid'];  // id "события" с услугами за которое внесена предоплата (таблица /records)
-
-        if ($key != md5($id . number_format($sum, 2, ".", "") . $clientid . $orderid . $secret_seed)) {
-            echo "Error! Hash mismatch";
-            exit;
-        }
-    }
-
 }
