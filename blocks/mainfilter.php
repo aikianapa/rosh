@@ -344,9 +344,6 @@
 					wbapp.data('choice.symptoms', {});
 					mainFilter.countChoice();
 				},
-				toTop() {
-					document.getElementById(`mainfilterRight`).scrollIntoView();
-				},
 				clearProblems() {
 					$(document).find('.mainfilter__tab[data-tab="services"] input[type="checkbox"]:checked').prop(
 						'checked', false);
@@ -361,6 +358,9 @@
 
 
 					mainFilter.countChoice();
+				},
+				toTop() {
+					document.getElementById(`mainfilterRight`).scrollIntoView();
 				},
 				delete(ev) {
 					did = $(ev.node).data('id');
@@ -693,6 +693,8 @@
 								});
 						} else {
 							createMainfilterQuote(post.client, comment);
+							mainFilter.fire('clearSymptoms')
+							mainFilter.fire('clearProblems')
 						}
 					}
 

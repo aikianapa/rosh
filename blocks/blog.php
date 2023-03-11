@@ -56,8 +56,7 @@
                 <wb-var matrix="{{get_blog_matrix()}}"></wb-var>
 
                 <wb-foreach wb="{
-                    'ajax':'/api/v2/list/blog/',
-                    'sort': 'date:d',
+                    'ajax':'/api/v2/list/blog/?@sort=date:d',
                     'bind': 'site.list.blog',
                     'filter':{
                         'active':'on'

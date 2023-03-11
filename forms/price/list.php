@@ -39,7 +39,13 @@
             <ul class="list-group">
                 {{#each result}}
                     <li class="list-group-item d-flex align-items-center" data-id="{{.id}}">
-                        <div class="wd-80p">{{.header}}<br><small>{{.price}} ₽</small></div>
+                        <div class="wd-70p">{{.header}}</div>
+                        <div class="wd-10p tx-right">
+                            {{#if .from == "on"}}
+                                <span>от </span>
+                            {{/if}}
+                            {{.price}} ₽
+                        </div>
                         <div class="text-right wd-20p">
                             <div class="custom-control custom-switch d-inline">
                                 {{#if .active == "on"}}

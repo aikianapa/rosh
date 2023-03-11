@@ -2,7 +2,7 @@
     var api = "/api/v2"
     var form = "services"
     var size = 50
-    var base = api + `/list/${form}?&@size=${size}&@sort=header`
+    var base = api + `/list/${form}?&@size=${size}&@sort=_sort,header`
     var list = new Ractive({
         el: `#${form}List`,
         template: $(`#${form}List`).html(),
@@ -11,7 +11,8 @@
             result: [],
             pagination: [],
             user: wbapp._session.user,
-            filter: {}
+            filter: {},
+            sort: false
         },
         on: {
             init() {
@@ -25,20 +26,25 @@
                 list.set("pagination", data.pagination);
                 list.set("page", data.page);
                 list.set("pages", data.pages);
-                document.getElementById(`${form}List`).scrollIntoView()
-                if (Object.keys().length == 0) {
+                if (list.get('sort') == true) {
+                    $(`#${form}List .list-group`).sortable("destroy");
+                    list.set("sort", false);
+                }
+                let filter = list.get('filter')
+
+                if (list.get('sort') == false && Object.keys(filter).length == 0) {
+                    list.set("sort", true);
                     $(`#${form}List .list-group`).sortable({
-                        update: function(ev, line) {
+                        update: function (ev, line) {
                             let data = {}
-                            $(ev.target).children().each(function(i, li) {
+                            $(ev.target).children().each(function (i, li) {
                                 data[i] = $(li).data('id')
                             })
                             wbapp.post(`/api/v2/func/${form}/sort`, data)
                         }
                     });
-                } else {
-                    $(`#${form}List .list-group`).sortable("destroy");
                 }
+                document.getElementById(`${form}List`).scrollIntoView()
             },
             setPage(ev) {
                 let page = $(ev.node).attr("data-page");

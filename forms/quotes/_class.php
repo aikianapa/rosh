@@ -10,6 +10,7 @@ class quotesClass extends cmsFormsClass {
 
     function afterItemRead(&$item)
     {
+        if (!$item) return;
         if ($this->app->vars('_route.module') == 'api' && $this->app->vars('_route.mode') == 'list') {
             $this->prepareApiItem($item);
         }
