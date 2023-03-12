@@ -484,9 +484,15 @@ img.preview.cloned{
 	top : 20px;
 }
 .comment_for_expert {
-	max-width : 30%;
+	max-width     : 100%;
+	margin-bottom : 20px;
 }
-.acount__table-main accardeon__main
+.border-top {
+	border-top : 1px solid #DEE2E6 !important;
+}
+.bg-inherit {
+	background : inherit !important;
+}
 .text-justify {
 	text-align : justify;
 }
