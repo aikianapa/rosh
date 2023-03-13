@@ -658,6 +658,7 @@ $(function () {
 						value: title,
 						id: service.category + '-' + service.id,
 						data: {
+							from: service?.from,
 							quote: _quote,
 							service_id: service.category,
 							service_title: _self.priceCategories[service.category].name,
@@ -668,6 +669,7 @@ $(function () {
 					};
 					_self.servicesList.push(_item);
 					_self.servicePrices[_item.id] = {
+						from: service?.from,
 						quote: _quote,
 						id: _item.id,
 						service_id: service.category,
@@ -994,6 +996,7 @@ $(function () {
 						).append(
 							$('<div></div>').addClass('search__drop-right').append(TAGS).append(
 								$('<div></div>').addClass('search__drop-summ').text(
+									(this.data.from == 'on' ? 'от  ' : '') +
 									PRICE + ' ₽')
 							)
 						)
@@ -1073,8 +1076,9 @@ $(function () {
 						).append(TAGS).append(suggestion.value)
 					).append(
 						$('<div></div>').addClass('search__drop-right')
-							.append($('<div></div>').addClass('search__drop-summ').html(PRICE +
-							                                                            ' ₽<sup><b>*</b></sup>'))
+							.append($('<div></div>').addClass('search__drop-summ').html(
+								(suggestion.data.from == 'on' ? 'от ' : '') +
+								PRICE + ' ₽<sup><b>*</b></sup>'))
 					)
 				);
 				updPrice(_parent_form);
