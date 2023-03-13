@@ -94,6 +94,20 @@ $(function () {
 	var months              = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 	window.utils       = {
+		saveScroll(page_name) {
+			var _page_name = page_name || '';
+			window.onbeforeunload = function () {
+				sessionStorage["scroll-position--" + _page_name] = $(window).scrollTop();
+			};
+		},
+		restoreScroll(page_name) {
+			var _page_name = page_name || '';
+			let pos = sessionStorage["scroll-position--" + _page_name] || false;
+			if (!!pos) {
+				$(window).scrollTop(pos);
+				sessionStorage.removeItem("scroll-position--" + _page_name);
+			}
+		},
 		isObjEmpty(obj) {
 			return Object.keys(obj).length === 0;
 		},

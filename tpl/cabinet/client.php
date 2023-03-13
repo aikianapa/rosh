@@ -258,7 +258,6 @@
 						</div>
 					</div>
 				</div>
-				{{elseif this.client_comment}}
 				{{else}}
 				<div class="account-events__item">
 					<div class="account-event-wrap">
@@ -277,12 +276,12 @@
 				</div>{{elseif this.status == 'uncall'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
-						<div class="account-events__name" style="color:#a73">Вам не дозвонились</div>
+						<div class="account-events__name" style="color:#f57c00">Вам не дозвонились</div>
 					</div>
 				</div>{{elseif this.status == 'delay'}}
 				<div class="account-events__item event_date">
 					<div class="account-event-wrap --jcsb">
-						<div class="account-events__name" style="color:#a73">Вы попросили перезвонить</div>
+						<div class="account-events__name" style="color:#f57c00">Вы попросили перезвонить</div>
 					</div>
 				</div>
 				{{elseif this.status == 'upcoming'}}
@@ -400,11 +399,11 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-							<div class="analysis mb-40">
+							<div class="analysis mb-20 pt-20" style="max-width: 100%">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-md-4">
 										{{#if this.analyses}}
-										<div class="analysis__top --aicn --flex mb-20">
+										<div class="analysis__top --aicn --flex mb-40">
 											<div class="analysis__title">Анализы</div>
 											<a class="btn btn--white" href="{{this.analyses}}"
 												target="_blank">
@@ -412,7 +411,6 @@
 											</a>
 										</div>
 										{{/if}}
-
 										<div class="analysis__description">
 											<p class="text-bold mb-20">Выполнялись процедуры</p>
 											<ul class="text-grey">
@@ -422,9 +420,9 @@
 											</ul>
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-8">
 										{{#if this.analyses}}
-										<a class="btn btn--black mb-20 --openpopup"
+										<a class="btn btn--black mb-40 --openpopup"
 											data-popup="--analize-type"
 											onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
 											Получить расшифровку анализов
@@ -448,15 +446,15 @@
 										<a class="expert__worked"
 											target="_blank"
 											title="Открыть страницу о специалисте"
-											data-href="{{global.catalog.expert_users[this].info_uri}}"
-											data-link="{{global.catalog.expert_users[this].info_uri}}">
+											data-href="{{@global.catalog.expert_users[this].info_uri}}"
+											data-link="{{@global.catalog.expert_users[this].info_uri}}">
 											<div class="expert__worked-pic">
 												<img class="lazyload"
-													data-src="{{{global.catalog.expert_users[this].image[0].img}}}"
-													alt="{{@global.catalog.expert_users[this].fullname}}">
+													data-src="{{{@global.catalog.expert_users[this].image[0].img}}}"
+													alt="{{@global.catalog.expert_users[this].name}}">
 											</div>
 											<div class="expert__worked-name">
-												{{@global.catalog.expert_users[this].fullname}}
+												{{@global.catalog.expert_users[this].name}}
 											</div>
 											<div class="expert__worked-work">
 												{{@global.catalog.expert_users[this].spec}}
@@ -789,7 +787,6 @@
 					setTimeout(function () {
 						$(self.el).find("img[data-src]:not([src])").lazyload();
 						self.set('catalog', window.catalog);
-
 						utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
 							.then(function (data) {
 								data.phone = data.phone.includes('+') ? data.phone : '+'+data.phone;
@@ -868,7 +865,6 @@
 					page.set('history.events', []);
 					if (!!records) {
 						records.forEach(function (rec, idx) {
-
 							if (rec.status === 'past') {
 								page.push('history.events', rec);
 								return;
@@ -901,7 +897,7 @@
 						window.sort_events();
 					}
 					page.set('events_ready', true);
-
+					utils.restoreScroll();
 					if (!!window.current_day_events.length) {
 						current_day_events_checker = setInterval(function () {
 							console.log('check!');
@@ -953,8 +949,7 @@
 		//		page.set('orders_ready', true);
 		//	});
 
-		setTimeout(function () {
-		});
+		utils.saveScroll();
 	});
 </script>
 

@@ -217,6 +217,7 @@
 						allText: 'Все'
 					});
 				});
+				utils.restoreScroll();
 			}
 		};
 		var search       = function () {
@@ -275,6 +276,8 @@
 			search();
 			return false;
 		});
+		utils.saveScroll();
+
 	});
 </script>
 

@@ -211,6 +211,7 @@
 				page.set('groups', _images_groups); /* get actually user data */
 				page.set('filters', _filters); /* get actually user data */
 				page.set('content_loaded', true); /* get actually user data */
+				utils.restoreScroll();
 
 				setTimeout(function () {
 					$(page.el).find('a[data-href]').each(function (i) {
@@ -222,11 +223,13 @@
 							_img.attr('href', _img.attr('data-href'));
 						});
 					});
-					$('.admin-photos').html(window.sortElems('a.admin-photo', 'data-timestamp'))
+					$('.admin-photos').html(window.sortElems('a.admin-photo', 'data-timestamp'));
 				}, 200);
 			});
 		};
 		content_load();
+		utils.saveScroll();
+
 	});
 </script>
 <div>

@@ -195,9 +195,11 @@
 					}
 				}
 			});
+			utils.saveScroll();
 
 			utils.api.get('/api/v2/list/record-changes?@sort=_created:d').then(function (data) {
 				page.set('changes', data);
+				utils.restoreScroll();
 			});
 		});
 	</script>

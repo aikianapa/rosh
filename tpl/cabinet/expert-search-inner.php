@@ -116,45 +116,106 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-							<div class="account-events__download" style="align-items: baseline;padding-top: 10px;">
-								<div class="account-edit mr-40" style="max-width: 310px">
-									<div class="account-edit__title">
-										<p>Рекомендация врача</p>
-									</div>
-									<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
-								<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
-									name="recommendation">{{this.recommendation}}</textarea>
-
-										<button class="btn btn--white" type="submit">Сохранить</button>
-									</form>
+							{{#this.comment_for_expert}}
+							<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
+								<div class="account-edit__title">
+									<p>Комментарий администратора</p>
 								</div>
-								{{#this.comment_for_expert}}
-								<div class="analysis__description comment_for_expert mr-40">
-									<div class="account-edit__title">
-										<p>Комментарий администратора</p>
-									</div>
-									<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
-								</div>
-								{{/this.comment_for_expert}}
-								{{#if this.analyses}}
-
-								<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
-									download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+							</div>
+							{{/this.comment_for_expert}}
+							{{#if this.analyses}}
+							<div class="account-edit__title mb-20 pt-20">
+								<a class="btn btn--white btn--compact"
+									href="{{this.analyses}}"
+									target="_blank">
 									Скачать анализы
 								</a>
-								{{/if}}
 							</div>
-							{{#if this.type == 'online'}}
-							<div class="account-events__btns mt-10">
+							{{/if}}
+							<div class="account-edit mb-20 pt-20" style="width: 100%">
+								<div class="account-edit__title">
+									<p>Рекомендация врача</p>
+								</div>
+								<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
+							<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
+								name="recommendation">{{this.recommendation}}</textarea>
+
+									<button class="btn btn--white" type="submit">Сохранить</button>
+								</form>
+							</div>
+							<div class="account-events__btns mb-20 border-top pt-20">
 								<div class="account-event-wrap --aicn">
+									{{#if this.type == 'online'}}
 									<div class="account-events__btn">
 										<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
 											Начать консультацию
 										</a>
 									</div>
-									{{#if this.online_waiting == 'client'}}
 									<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
 									{{/if}}
+									<div class="account-events__btn">
+										<a class="btn btn--black" data-id="{{this.id}}" on-click="['closeEvent',this]">
+											Завершить прием
+										</a>
+									</div>
+								</div>
+							</div>
+							{{#if this.hasPhoto}}
+							<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
+								<div class="row">
+									<div class="col-md-5">
+										<p>Фото до приема</p>
+										{{#each photos.before}}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="acount__photo">
+													<a class="before-healing__item photo"
+														data-fancybox="event-{{event.id}}"
+														data-href="{{.src}}"
+														href="{{.src}}"
+														data-caption="Фото до приема:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">
+															{{ @global.utils.formatDate(.date) }}
+														</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
+										</div>
+										{{else}}
+
+										{{/each}}
+									</div>
+									<div class="col-md-7">
+										<p>Фото после приема</p>
+										{{#each photos.after}}
+										<div class="row">
+											<div class="col-md-6 mt-1">
+												<div class="acount__photo">
+													<a class="after-healing__item photo"
+														data-fancybox="event-{{event.id}}"
+														href="{{.src}}"
+														data-href="{{.src}}"
+														data-caption="Фото после приема:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
+										</div>
+										{{else}}
+
+										{{/each}}
+									</div>
 								</div>
 							</div>
 							{{/if}}
@@ -220,25 +281,37 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-							<div class="account-events__download" style="align-items: baseline;padding-top: 10px;">
-								{{#this.comment_for_expert}}
-								<div class="analysis__description mr-40 comment_for_expert">
-									<div class="account-edit__title">
-										<p>Комментарий администратора</p>
-									</div>
-									<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+							{{#this.comment_for_expert}}
+							<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
+								<div class="account-edit__title">
+									<p>Комментарий администратора</p>
 								</div>
-								{{/this.comment_for_expert}}
-								{{#if this.analyses}}
-
-								<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
-									download="Анализы({{@global.catalog.clients[this.client].fullname}}, {{@global.utils.formatDate(this.event_date)}}).pdf">
+								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+							</div>
+							{{/this.comment_for_expert}}
+							{{#if this.analyses}}
+							<div class="account-edit__title mb-20 pt-20">
+								<a class="btn btn--white btn--compact"
+									href="{{this.analyses}}"
+									target="_blank">
 									Скачать анализы
 								</a>
-								{{/if}}
 							</div>
+							{{/if}}
+							<div class="account-edit mb-20 pt-20" style="width: 100%">
+								<div class="account-edit__title">
+									<p>Рекомендация врача</p>
+								</div>
+								<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
+							<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
+								name="recommendation">{{this.recommendation}}</textarea>
+
+									<button class="btn btn--white" type="submit">Сохранить</button>
+								</form>
+							</div>
+
 							{{#if this.type == 'online'}}
-							<div class="account-events__btns mt-10">
+							<div class="account-events__btns mb-20 pt-20 border-top">
 								<div class="account-event-wrap --aicn">
 									<div class="account-events__btn">
 										<button class="btn btn--white disabled" disabled>
@@ -246,6 +319,64 @@
 										</button>
 									</div>
 									<p>Кнопка станет активной за 5 минут до начала приема</p>
+								</div>
+							</div>
+							{{/if}}
+							{{#if this.hasPhoto}}
+							<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
+								<div class="row">
+									<div class="col-md-5">
+										<p>Фото до приема</p>
+										{{#each photos.before}}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="acount__photo">
+													<a class="before-healing__item photo"
+														data-fancybox="event-{{event.id}}"
+														data-href="{{.src}}"
+														href="{{.src}}"
+														data-caption="Фото до приема:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">
+															{{ @global.utils.formatDate(.date) }}
+														</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
+										</div>
+										{{else}}
+
+										{{/each}}
+									</div>
+									<div class="col-md-7">
+										<p>Фото после приема</p>
+										{{#each photos.after}}
+										<div class="row">
+											<div class="col-md-6 mt-1">
+												<div class="acount__photo">
+													<a class="after-healing__item photo"
+														data-fancybox="event-{{event.id}}"
+														href="{{.src}}"
+														data-href="{{.src}}"
+														data-caption="Фото после приема:
+															{{ @global.utils.formatDate(.date) }}">
+														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
+														<div class="after-healing__photo"
+															style="background-image: url({{.src}})">
+														</div>
+													</a>
+
+												</div>
+											</div>
+										</div>
+										{{else}}
+
+										{{/each}}
+									</div>
 								</div>
 							</div>
 							{{/if}}
@@ -310,31 +441,34 @@
 								</div>
 								<div class="acount__table-list accardeon__list pt-1" style="padding-bottom: 16px;">
 									{{#this.comment_for_expert}}
-									<div class="analysis__description comment_for_expert mr-40">
+									<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
 										<div class="account-edit__title">
 											<p>Комментарий администратора</p>
 										</div>
 										<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 									</div>
 									{{/this.comment_for_expert}}
-									<div class="account-edit__title">
-										<p>Рекомендация врача</p>
-
-										{{#if this.analyses}}
-										<a class="btn btn--white btn--compact ml-20" href="{{this.analyses}}"
+									{{#if this.analyses}}
+									<div class="account-edit__title mb-20 pt-20">
+										<a class="btn btn--white btn--compact"
+											href="{{this.analyses}}"
 											target="_blank">
 											Скачать анализы
 										</a>
-										{{/if}}
 									</div>
-									<form class="active" on-submit="saveRecommendation" data-id="{{this.id}}" style="max-width: 50%">
-								<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
-									name="recommendation">{{this.recommendation}}</textarea>
+									{{/if}}
+									<div class="account-edit mb-20 pt-20" style="width: 100%">
+										<div class="account-edit__title">
+											<p>Рекомендация врача</p>
+										</div>
+										<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
+											<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation" name="recommendation">{{this.recommendation}}</textarea>
 
-										<button class="btn btn--white" type="submit">Сохранить</button>
-									</form>
+											<button class="btn btn--white" type="submit">Сохранить</button>
+										</form>
+									</div>
 									{{#if this.hasPhoto}}
-									<div class="acount__photos">
+									<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
 										<div class="row">
 											<div class="col-md-5">
 												<p>Фото до приема</p>
@@ -401,7 +535,8 @@
 							</div>
 							{{else}}
 							<div class="acount__table-accardeon accardeon">
-								<span>Подождите, идет поиск..</span>
+								<span>Подождите, идет загрузка..</span>
+								{{ready}}
 							</div>
 							{{/each}}
 						</div>
@@ -539,9 +674,9 @@
 			//		}
 			//	}
 			//});
-
+			var page;
 			utils.api.get('/api/v2/read/users/' + client_id).then(function (client) {
-				window.page = new Ractive({
+				page = new Ractive({
 					el: 'main.page .search-result',
 					template: wbapp.tpl('#search-result').html,
 					data: {
@@ -556,7 +691,9 @@
 						history: {
 							'events': [],
 							'longterms': []
-						}
+						},
+						ready: false,
+						longterms_ready: false
 					},
 					on: {
 						init() {
@@ -599,12 +736,18 @@
 						}
 					}
 				});
+				load();
+			});
+			window.load = function () {
 				utils.api.get(
 						'/api/v2/list/records?group=events&status=[upcoming,past]' +
 						'&client=' + client_id +
 						'&experts~=' + wbapp._session.user.id +
 						'&@sort=event_date:d')
 					.then(function (records) {
+						console.log(records);
+						page.set('ready', true);
+
 						if (!records) {
 							return;
 						}
@@ -633,14 +776,18 @@
 								page.push('events.upcoming', rec);
 							}
 						});
+
+						console.log('!!!!');
 					});
 				/*!!! check & sync updates by interval (1-3min) !!!*/
 				utils.api.get("/api/v2/list/records?group=longterms&@sort=_created:d&client=" + client_id)
-					.then(function (data) {
-						page.set('history.longterms', data); /* get actually user next events */
+					.then(function (records) {
+						console.log(records);
+
+						page.set('history.longterms', records);
 						page.set('longterms_ready', true); /* get actually user next events */
 						$("img[data-src]:not([src])").lazyload();
-
+						console.log('!!!');
 						setTimeout(function () {
 							$('a.photo[data-href]').each(function (i) {
 								var _img = $(this);
@@ -649,7 +796,7 @@
 						}, 350);
 
 					});
-			});
+			};
 		});
 	</script>
 </div>

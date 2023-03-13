@@ -143,24 +143,24 @@
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list">
-						{{#if this.analyses}}
-						<div class="account-edit__title">
-							<a class="btn btn--white btn--compact mb-20"
-								href="{{this.analyses}}"
-								target="_blank">
-								Скачать анализы
-							</a>
-						</div>
-						{{/if}}
 						{{#this.comment_for_expert}}
-						<div class="analysis__description comment_for_expert mr-40" style="width:100%">
+						<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
 							<div class="account-edit__title">
 								<p>Комментарий администратора</p>
 							</div>
 							<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 						</div>
 						{{/this.comment_for_expert}}
-						<div class="account-edit mb-20" style="width: 100%">
+						{{#if this.analyses}}
+						<div class="account-edit__title mb-20 pt-20">
+							<a class="btn btn--white btn--compact"
+								href="{{this.analyses}}"
+								target="_blank">
+								Скачать анализы
+							</a>
+						</div>
+						{{/if}}
+						<div class="account-edit mb-20 pt-20" style="width: 100%">
 							<div class="account-edit__title">
 								<p>Рекомендация врача</p>
 							</div>
@@ -171,7 +171,7 @@
 								<button class="btn btn--white" type="submit">Сохранить</button>
 							</form>
 						</div>
-						<div class="account-events__btns mb-20 border-top">
+						<div class="account-events__btns mb-20 border-top pt-20">
 							<div class="account-event-wrap --aicn">
 								{{#if this.type == 'online'}}
 								<div class="account-events__btn">
@@ -189,7 +189,7 @@
 							</div>
 						</div>
 						{{#if this.hasPhoto}}
-						<div class="acount__photos bg-inherit border-top mt-20 p-0" style="margin-left: 0">
+						<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
 							<div class="row">
 								<div class="col-md-5">
 									<p>Фото до приема</p>
@@ -308,8 +308,16 @@
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list">
+						{{#this.comment_for_expert}}
+						<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
+							<div class="account-edit__title">
+								<p>Комментарий администратора</p>
+							</div>
+							<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+						</div>
+						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
-						<div class="account-edit__title mb-20">
+						<div class="account-edit__title mb-20 pt-20">
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
 								target="_blank">
@@ -317,16 +325,7 @@
 							</a>
 						</div>
 						{{/if}}
-
-						{{#this.comment_for_expert}}
-						<div class="analysis__description comment_for_expert mb-20" style="width:100%">
-							<div class="account-edit__title">
-								<p>Комментарий администратора</p>
-							</div>
-							<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
-						</div>
-						{{/this.comment_for_expert}}
-						<div class="account-edit mb-20" style="width: 100%">
+						<div class="account-edit mb-20 pt-20" style="width: 100%">
 							<div class="account-edit__title">
 								<p>Рекомендация врача</p>
 							</div>
@@ -339,7 +338,7 @@
 						</div>
 
 						{{#if this.type == 'online'}}
-						<div class="account-events__btns mb-20 border-top">
+						<div class="account-events__btns mb-20 pt-20 border-top">
 							<div class="account-event-wrap --aicn">
 								<div class="account-events__btn">
 									<button class="btn btn--white disabled" disabled>
@@ -351,7 +350,7 @@
 						</div>
 						{{/if}}
 						{{#if this.hasPhoto}}
-						<div class="acount__photos bg-inherit border-top mt-20 p-0" style="margin-left: 0">
+						<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
 							<div class="row">
 								<div class="col-md-5">
 									<p>Фото до приема</p>
@@ -461,8 +460,16 @@
 							<div class="history-item accardeon__click"></div>
 						</div>
 						<div class="acount__table-list accardeon__list pt-1" style="padding-bottom: 16px;">
+							{{#this.comment_for_expert}}
+							<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
+								<div class="account-edit__title">
+									<p>Комментарий администратора</p>
+								</div>
+								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+							</div>
+							{{/this.comment_for_expert}}
 							{{#if this.analyses}}
-							<div class="account-edit__title mb-20">
+							<div class="account-edit__title mb-20 pt-20">
 								<a class="btn btn--white btn--compact"
 									href="{{this.analyses}}"
 									target="_blank">
@@ -470,17 +477,7 @@
 								</a>
 							</div>
 							{{/if}}
-
-							{{#this.comment_for_expert}}
-							<div class="analysis__description comment_for_expert mb-20" style="width:100%">
-								<div class="account-edit__title">
-									<p>Комментарий администратора</p>
-								</div>
-								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
-							</div>
-							{{/this.comment_for_expert}}
-
-							<div class="account-edit mb-20" style="width: 100%">
+							<div class="account-edit mb-20 pt-20" style="width: 100%">
 								<div class="account-edit__title">
 									<p>Рекомендация врача</p>
 								</div>
@@ -492,7 +489,7 @@
 								</form>
 							</div>
 							{{#if this.hasPhoto}}
-							<div class="acount__photos bg-inherit border-top mt-20 p-0" style="margin-left: 0">
+							<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
 								<div class="row">
 									<div class="col-md-5">
 										<p>Фото до приема</p>
@@ -931,6 +928,9 @@
 						page.set('events.current', []);
 						page.set('history', []);
 						if (!records) {
+							page.set('ready', true);
+
+							utils.restoreScroll();
 							return;
 						}
 						let curr_timestamp = parseInt(getdate()[0]);
@@ -954,9 +954,11 @@
 						});
 
 						page.set('ready', true);
+						utils.restoreScroll();
 					});
 			};
 			load_records();
+			utils.saveScroll();
 		});
 	</script>
 </div>

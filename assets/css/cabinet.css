@@ -56,6 +56,16 @@
 .link-primary:hover, .link-primary:focus {
 	color : #0A58CA;
 }
+.pay-status-free {
+	background    : #0A58CA;
+	padding       : 4px;
+	border-radius : 50%;
+	width         : 8px;
+	height        : 8px;
+	margin-right  : 2px;
+	display       : inline-block;
+
+}
 .link-secondary {
 	color : #6C757D;
 }
@@ -65,6 +75,16 @@
 
 .link-success {
 	color : #198754;
+}
+
+.pay-status-prepay {
+	background    : #198754;
+	padding       : 4px;
+	border-radius : 50%;
+	width         : 8px;
+	height        : 8px;
+	margin-right  : 2px;
+	display       : inline-block;
 }
 .link-success:hover, .link-success:focus {
 	color : #146C43;
@@ -86,6 +106,16 @@
 
 .link-danger {
 	color : #DC3545;
+}
+
+.pay-status-unpay {
+	background    : #DC3545;
+	padding       : 4px;
+	border-radius : 50%;
+	width         : 8px;
+	height        : 8px;
+	display       : inline-block;
+	margin-right  : 2px;
 }
 .link-danger:hover, .link-danger:focus {
 	color : #B02A37;
@@ -217,7 +247,7 @@
 	width: 100%;
 }
 .account-events__item.event_date {
-	width : calc(35% - 120px);
+	width : calc(30% - 120px);
 }
 .account-events__btns .account-events__btn {
 	width : calc(40% - 40px);
@@ -292,7 +322,13 @@ div.accardeon.active > div.accardeon__list {
 	text-decoration : underline;
 }
 .record-edit .account-events__item.wide .account-event-wrap {
-	font-size: 1.3em;
+	font-size : 1.3em;
+}
+.account-events__block .account-events__item {
+	margin-right : 20px;
+}
+.account-events__block .account-events__item:first-child {
+	width : calc(45% - 20px);
 }
 .autocomplete-suggestions .autocomplete-suggestion:hover {
 	background-color : #D0DFF3;
@@ -564,7 +600,7 @@ img.preview.cloned{
 	}
 	.account-events__item.wide {
 		width        : calc(65% - 40px);
-		margin-right : 40px;
+		margin-right : 20px;
 	}
 	.record-edit .account-events__name {
 		font-weight : 600;

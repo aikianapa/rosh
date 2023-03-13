@@ -246,46 +246,48 @@
 		<div class="popup --pay">
 			<template id="popupPay">
 				<div class="popup__overlay"></div>
-				<div class="popup__panel">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Внести предоплату</div>
-					<div class="mb-10 text-grey text-small">Стоимость услуги</div>
-					<div class="mb-20 popup-summ --aifs">
-						<div class="popup-summ__big">{{this.price}} ₽</div>
-						<div class="popup-summ__small">Предоплата - {{this.pay_price}} ₽</div>
-					</div>
-					{{#if this.is_online }}
-					<div class="popup__description text-grey mb-30">
-						Для подтверждения необходимо произвести полную оплату
-					</div>
-					{{else}}
-					<div class="popup__description text-grey mb-30">
-						Для подтверждения необходимо произвести оплату в размере 20% от стоимости
-					</div>
-					{{/if}}
-					<!--!!! change `action` address on PROD. !!!-->
-					<form on-submit="submit" action="https://demo.paykeeper.ru/create/" method="POST" target="_blank">
-						<input type='hidden' name='sum' value='{{this.pay_price}}'/>
-						<input type='hidden' name='orderid' value='{{this.id}}'/>
-						<input type='hidden' name='clientid' value='{{this.client}}'/>
-						<button class="btn btn--black form__submit" type="submit">
-							Внести предоплату
+				<div class="popup__wrapper">
+					<div class="popup__panel">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
 						</button>
-					</form>
-				</div>
-				<div class="popup__panel --succed-pay d-none">
-					<button class="popup__close">
-						<svg class="svgsprite _close">
-							<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-						</svg>
-					</button>
-					<div class="popup__name text-bold">Внести предоплату</div>
-					<h3 class="h3">Успешно!</h3>
-					<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете после подтверждения оплаты</p>
+						<div class="popup__name text-bold">Внести предоплату</div>
+						<div class="mb-10 text-grey text-small">Стоимость услуги</div>
+						<div class="mb-20 popup-summ --aifs">
+							<div class="popup-summ__big">{{this.price}} ₽</div>
+							<div class="popup-summ__small">Предоплата - {{this.pay_price}} ₽</div>
+						</div>
+						{{#if this.is_online }}
+						<div class="popup__description text-grey mb-30">
+							Для подтверждения необходимо произвести полную оплату
+						</div>
+						{{else}}
+						<div class="popup__description text-grey mb-30">
+							Для подтверждения необходимо произвести оплату в размере 20% от стоимости
+						</div>
+						{{/if}}
+						<!--!!! change `action` address on PROD. !!!-->
+						<form on-submit="submit" action="https://demo.paykeeper.ru/create/" method="POST" target="_blank">
+							<input type='hidden' name='sum' value='{{this.pay_price}}'/>
+							<input type='hidden' name='orderid' value='{{this.id}}'/>
+							<input type='hidden' name='clientid' value='{{this.client}}'/>
+							<button class="btn btn--black form__submit" type="submit">
+								Внести предоплату
+							</button>
+						</form>
+					</div>
+					<div class="popup__panel --succed-pay d-none">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Внести предоплату</div>
+						<h3 class="h3">Успешно!</h3>
+						<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете после подтверждения оплаты</p>
+					</div>
 				</div>
 			</template>
 		</div>

@@ -677,10 +677,13 @@
 									<div class="admin-events-item">
 										<p>Оплата</p>
 										{{#each catalog.quotePay as item}}
-											{{#if item.id == pay_status }}
-												<input type="hidden" class="orderby" value="{{item.name}}">
-												<div>{{item.name}}</div>
-											{{/if}}
+										{{#if item.id == pay_status }}
+										<input type="hidden" class="orderby" value="{{item.name}}">
+										<div>
+											<span class="pay-status-{{pay_status}}"></span>
+											{{item.name}}
+										</div>
+										{{/if}}
 										{{/each}}
 									</div>
 									<div class="admin-events-item">
@@ -699,8 +702,8 @@
 											</div>
 										{{else}}
 											<input type="hidden" class="orderby" value="">
-											<p>Дата приёма</p>
-											<span class="link-danger">&nbsp;</span>
+										<p>Дата приёма</p>
+										<span class="link-danger">&nbsp;</span>
 										{{/if}}
 									</div>
 									<div class="admin-events-item comment">
@@ -709,17 +712,17 @@
 									</div>
 								</div>
 								<div class="acount__table-list accardeon__list admin-editor">
-									<div class="admin-editor__top">
+									<div class="admin-editor__top mb-40">
 										<div class="admin-editor__top-info">
-											<div class="row">
+											<div class="row mb-40">
 												<div class="col-md-12">
 													<div class="mb-20 analysis__top --aicn --flex">
 														<div class="analysis__title">Анализы</div>
 
 														{{#if record.analyses}}
-															<a class="mr-20 btn btn--white" href="{{record.analyses}}" target="_blank">
-																Скачать анализы
-															</a>
+														<a class="mr-20 btn btn--white" href="{{record.analyses}}" target="_blank">
+															Скачать анализы
+														</a>
 														{{/if}}
 
 														<form class="analyses">
@@ -730,7 +733,6 @@
 														</form>
 													</div>
 												</div>
-
 											</div>
 
 											<div class="lk-title">Редактировать профиль</div>
@@ -1484,6 +1486,7 @@
 								});
 							}
 							_tab.fire('loaded');
+							utils.restoreScroll();
 							tabs[target_tab] = {
 								ractive: _tab,
 								data: data
@@ -1491,7 +1494,7 @@
 						});
 					/* sort by prior */
 					const _list = $('.account__tab.data-tab-item[data-tab="' + target_tab + '"] .account__table-body');
-					_list.find(".acount__table-accardeon").sort(function(a, b) {
+					_list.find(".acount__table-accardeon").sort(function (a, b) {
 						const _a = parseInt($(a).attr('data-priority'));
 						const _b = parseInt($(b).attr('data-priority'));
 						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
@@ -1594,6 +1597,8 @@
 						//toast('Список обновлен');
 					});
 			});
+			utils.saveScroll();
+
 		});
 	</script>
 
