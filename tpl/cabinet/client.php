@@ -756,7 +756,7 @@
 		</div>
 		{{/with}}
 	</form>
-	<form class="popup__form mt-20" on-submit="changePassword">
+	<form class="popup__form mt-20" on-submit="changePasswordInline">
 		{{#user}}
 		<p class="text-bold mb-30">Смена пароля</p>
 		<input type="hidden" name="id" value="{{user.id}}">
@@ -784,7 +784,7 @@
 
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn--white profile-edit__submit" type="submit">Сохранить</button>
+				<button class="btn btn--white profile-edit__submit">Сохранить</button>
 			</div>
 		</div>
 		{{/user}}
@@ -856,6 +856,38 @@
 								$('.profile-editor-inline').removeClass('d-none');
 								initPlugins($(this.el));
 							},
+							changePasswordInline(ev) {
+								var self  = this;
+								var $form = $(ev.node);
+								if ($form.verify()) {
+									var data = $form.serializeJSON();
+									wbapp.loading();
+
+									$.ajax({
+										url: '/form/users/change_password',
+										method: 'POST',
+										data: {
+											old_password: data.old_password,
+											new_password: data.new_password,
+											new_password_repeat: data.new_password_repeat
+										},
+										complete: function () {
+											wbapp.unloading();
+										},
+										success: function (data) {
+											wbapp.unloading();
+											if (data.error) {
+												toast_error(data.msg);
+											} else {
+												$(self.el).hide();
+												//$('body').removeClass('noscroll');
+												toast_success('Пароль успешно изменен!');
+											}
+										}
+									});
+								}
+								return false;
+							},
 							submit(ev) {
 								let $form = $(ev.node);
 								let uid   = page.get('user.id');
@@ -873,38 +905,7 @@
 						}
 					});
 				},
-				changePassword(ev) {
-					var self  = this;
-					var $form = $(ev.node);
-					if ($form.verify()) {
-						var data = $form.serializeJSON();
-						wbapp.loading();
 
-						$.ajax({
-							url: '/form/users/change_password',
-							method: 'POST',
-							data: {
-								old_password: data.old_password,
-								new_password: data.new_password,
-								new_password_repeat: data.new_password_repeat
-							},
-							complete: function () {
-								wbapp.unloading();
-							},
-							success: function (data) {
-								wbapp.unloading();
-								if (data.error) {
-									toast_error(data.msg);
-								} else {
-									$(self.el).hide();
-									//$('body').removeClass('noscroll');
-									toast_success('Пароль успешно изменен!');
-								}
-							}
-						});
-					}
-					return false;
-				},
 				prepay(ev) {
 					popupPay.showPopup($(ev.node).data('record'));
 				}
