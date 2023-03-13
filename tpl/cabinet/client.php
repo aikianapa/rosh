@@ -756,14 +756,47 @@
 		</div>
 		{{/with}}
 	</form>
+	<form class="popup__form mt-20" on-submit="changePassword">
+		{{#user}}
+		<p class="text-bold mb-30">Смена пароля</p>
+		<input type="hidden" name="id" value="{{user.id}}">
+		<div class="row profile-edit__wrap">
+			<div class="col-md-3">
+				<div class="input">
+					<input class="input__control" type="password" required placeholder="Текущий пароль"
+						name="old_password">
+					<div class="input__placeholder">Текущий пароль</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="input">
+					<input class="input__control" required type="password" placeholder="Новый пароль"
+						name="new_password">
+					<div class="input__placeholder">Новый пароль</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="input mb-30">
+					<input class="input__control" type="password" required placeholder="Повторите пароль"
+						name="new_password_repeat" autocomplete="off">
+					<div class="input__placeholder">Повторите пароль</div>
+				</div>
+
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn--white profile-edit__submit" type="submit">Сохранить</button>
+			</div>
+		</div>
+		{{/user}}
+	</form>
 </template>
 
 <script>
 	$(document).on('cabinet-db-ready', function () {
-		window.changePassword = function () {
+		window.changePassword          = function () {
 			var editor = window.popupChangePassword();
 		};
-		window.page           = new Ractive({
+		window.page                    = new Ractive({
 			el: 'main.page .page-content',
 			template: wbapp.tpl('#page-content').html,
 			data: {
@@ -840,7 +873,38 @@
 						}
 					});
 				},
+				changePassword(ev) {
+					var self  = this;
+					var $form = $(ev.node);
+					if ($form.verify()) {
+						var data = $form.serializeJSON();
+						wbapp.loading();
 
+						$.ajax({
+							url: '/form/users/change_password',
+							method: 'POST',
+							data: {
+								old_password: data.old_password,
+								new_password: data.new_password,
+								new_password_repeat: data.new_password_repeat
+							},
+							complete: function () {
+								wbapp.unloading();
+							},
+							success: function (data) {
+								wbapp.unloading();
+								if (data.error) {
+									toast_error(data.msg);
+								} else {
+									$(self.el).hide();
+									//$('body').removeClass('noscroll');
+									toast_success('Пароль успешно изменен!');
+								}
+							}
+						});
+					}
+					return false;
+				},
 				prepay(ev) {
 					popupPay.showPopup($(ev.node).data('record'));
 				}
