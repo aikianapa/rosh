@@ -249,7 +249,8 @@ $(function() {
             $(this).closest('.accardeon').find('.profile-edit:first').toggleClass('active');
             return false;
         }).on('click', '.popup__overlay', function() {
-            $(this).closest('.popup:not(.strict_close)').hide();
+            //$(this).closest('.popup:not(.strict_close)').hide();
+            $(this).closest('.popup').hide();
             $('body').removeClass('noscroll');
         }).on('click', '.profile-menu', function(e) {
             e.stopPropagation();

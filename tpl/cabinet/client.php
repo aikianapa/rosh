@@ -466,7 +466,7 @@
 							</div>
 
 							{{#if this.hasPhoto}}
-							<div class="acount__photos">
+							<div class="acount__photos bg-inherit">
 								<div class="row">
 									<div class="col-md-5">
 										<p>Фото до приема</p>
