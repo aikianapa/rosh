@@ -4,7 +4,7 @@
 		window.fastquote_top = 0;
 		$(".crumbs").after(`
         <div class="title-flex --flex --jcsb">
-        <button class="btn btn--black --openpopup d-none" data-popup="--fast-make" href="#">Записаться на прием </button>
+        <button class="btn btn--black --openpopup" data-popup="--fast-make" href="#">Записаться на прием </button>
         </div>
         `);
 		$(".crumbs + div.title-flex + h1").prependTo($(".crumbs + div.title-flex"));
@@ -71,7 +71,7 @@
 		</div>
 		<div class="all-tabs data-tab-wrapper" data-tabs="services">
 			<div class="all-tab data-tab-item active" data-tab="all">
-				<wb-var srvlist wb-api="/api/v2/list/services?active=on&@sort=_sort,header&@return=id,header,price,category,cover" />
+				<wb-var srvlist wb-api="/api/v2/list/services?active=on&@sort=_sort,header&@return=id,header,price,category,cover,_form,_id" />
 				<div class="all-services" id="servicesList">
 					<wb-foreach wb="from=_var.srvlist&tpl=false">
 						<wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
