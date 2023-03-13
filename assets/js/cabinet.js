@@ -108,6 +108,7 @@ $(function () {
 				sessionStorage.removeItem("scroll-position--" + _page_name);
 			}
 		},
+
 		isObjEmpty(obj) {
 			return Object.keys(obj).length === 0;
 		},

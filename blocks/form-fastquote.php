@@ -123,17 +123,22 @@
 				user: wbapp._session.user
 			},
 			on: {
-				complete(){
-					initPlugins($(this.el));
+				complete() {
+					var _self = this;
+					setTimeout(function () {
+						initPlugins($(_self.el));
+
+
+					}, 500);
 				},
 				submit() {
 					var form = this.find('.fast-form-block .fast-form');
 					if ($(form).verify()) {
 
-						var post = $(form).serializeJSON();
-						var expert = $('input.expert');
-					    post.experts = [];
-						if (expert.length){
+						var post     = $(form).serializeJSON();
+						var expert   = $('input.expert');
+						post.experts = [];
+						if (expert.length) {
 							post.experts.push(expert.val());
                         }
 						if (!post.client) {

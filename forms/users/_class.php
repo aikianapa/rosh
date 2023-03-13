@@ -87,9 +87,9 @@ class usersClass extends cmsFormsClass
                 echo '{"error":true,"msg":"Новый пароль и повторный пароль не совпадают!"}';
                 exit;
             } else {
-                $item['password'] = wbPasswordMake($pwd_new);
+                $user['password'] = wbPasswordMake($pwd_new);
             }
-			$item = wbItemSave('users',$user, true);
+			$user = wbItemSave('users',$user, true);
         } else {
             header('Content-type: application/json; charset=utf-8');
             echo '{"error":true,"msg":"Неверный текущий пароль!"}';

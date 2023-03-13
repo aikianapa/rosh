@@ -1,6 +1,7 @@
 <view>
 
 	<script wb-app>
+		window.fastquote_top = 0;
 		$(".crumbs").after(`
         <div class="title-flex --flex --jcsb">
         <button class="btn btn--black --openpopup d-none" data-popup="--fast-make" href="#">Записаться на прием </button>
@@ -12,7 +13,6 @@
 			$(".search.search--service .search__input").trigger("keyup");
 			let category = $(this).data('tab');
 			wbapp.storage('services.list.category', category);
-			//console.log(category);
 			if (category == undefined || category == '' || category == 'all') {
 				$(".all-tabs .data-tab-item[data-tab]").removeClass('active');
 				$(".all-tabs .data-tab-item[data-tab=all]").addClass('active');
@@ -22,6 +22,9 @@
 				$(".all-tabs .data-tab-item[data-tab=all]").addClass('active');
 				$(".all-services .all-services__item").hide();
 				$(".all-services .all-services__item[data-category*='" + category + "']").show();
+
+				console.log(window.fastquote_top);
+				window.fastquote_top = $('.all-tabs.data-tab-wrapper').offset().top - 1;
 			}
 		});
 
@@ -41,10 +44,12 @@
 		setTimeout(() => {
 			let category = wbapp.storage('services.list.category');
 			if (category) {
-				$(".all-tabs-item.data-tab-link[data-tab]").removeClass("active");
 				setTimeout(() => {
+					$(".all-tabs-item.data-tab-link[data-tab]").removeClass("active");
 					$(".all-tabs-item.data-tab-link[data-tab=" + category + "]").addClass("active").trigger('click');
 				}, 500);
+			} else {
+				$(".all-tabs-item.data-tab-link[data-tab=all]").addClass("active");
 			}
 		}, 500);
 	</script>
@@ -59,7 +64,7 @@
 			</div>
 		</div>
 		<div class="all-tabs-items">
-			<div class="all-tabs-item data-tab-link active" data-tabs="services" data-tab="all">Все услуги</div>
+			<div class="all-tabs-item data-tab-link" data-tabs="services" data-tab="all">Все услуги</div>
 			<wb-foreach wb="table=catalogs&item=srvcat&from=tree.data&tpl=false">
 				<div class="cursor-pointer all-tabs-item data-tab-link" data-tabs="services" data-tab="{{id}}">{{name}}</div>
 			</wb-foreach>
@@ -160,14 +165,17 @@
 						setTimeout(function () {
 							initPlugins($(_self.el));
 							setTimeout(function () {
-								var top = $('.sticky-block').offset().top - 1;
-								console.log('sticky-block:', top);
+								window.fastquote_top = $('.all-tabs.data-tab-wrapper').offset().top - 1;
+								console.log('sticky-block:', window.fastquote_top );
 								$(window).scroll(function (e) {
+									if (window.fastquote_top < 1){
+										return true;
+									}
 									// Get the position of the vertical scroll.
 									var y = $(this).scrollTop();
-									console.log('sticky-block:', top, y);
+									console.log('sticky-block:', window.fastquote_top , y);
 
-									if (y >= top) {
+									if (y >= window.fastquote_top ) {
 										$('.sticky-block').addClass('fixed-top');
 										$('footer').css('z-index', '99');
 									} else {

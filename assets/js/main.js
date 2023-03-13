@@ -1,6 +1,6 @@
 $(function() {
-    window.toast = function(text, head, icon) {
-        var bgColor = '#616161';
+    window.toast         = function (text, head, icon) {
+        var bgColor   = '#616161';
         var textColor = '#FEFEFE';
         switch (icon) {
             case 'error':
@@ -41,16 +41,17 @@ $(function() {
     window.toast_success = function(text, head) {
         toast(text, head, 'success');
     };
-    window.toast_error = function(text, head) {
+    window.toast_error   = function (text, head) {
         toast(text, head, 'error');
     };
-    window.toast_info = function(text, head) {
+    window.toast_info    = function (text, head) {
         toast(text, head, 'info');
     };
-    window.toast_warning = function(text, head) {
+    window.toast_warning = function (text, head) {
         toast(text, head, 'warning');
     };
-    window.api = {
+
+    window.api           = {
         get(path, data) {
             let _path = path;
             let parts = path.split('?', 2);
@@ -115,6 +116,7 @@ $(function() {
 
     };
     $(document).ready(function() {
+
         $(document).on('click', '.select .select__main', function (e) {
             e.stopPropagation();
             var _parent = $(this).parents('.select');

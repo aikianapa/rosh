@@ -289,20 +289,20 @@
 				after: []
 			};
 
-			quote.comment = '';
+			quote.comment        = '';
 			quote.recommendation = '';
-			quote.description = '';
+			quote.description    = '';
 			quote.client_comment = client_comment;
-			quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+			quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 			window.api.post(
 				'/api/v2/create/records/', quote).then(
-				function(data) {
+				function (data) {
 					if (data.error) {
 						wbapp.trigger('wb-save-error', {
 							'data': data
 						});
 					} else {
-						$('.mainfilter-tag__delete').each(function() {
+						$('.mainfilter-tag__delete').each(function () {
 							$(this).trigger('click');
 						});
 						$('.mainfilter__symptoms-link').trigger('click');
@@ -310,14 +310,76 @@
 
 						popupMessage('Заявка создана!', 'Мы перезвоним Вам в ближайшее время!',
 							'', '',
-							function(d) {});
+							function (d) {});
 						if (typeof window.load == 'function') {
 							window.load();
 						}
 					}
 				});
 		};
-		var mainFilter = new Ractive({
+		window.mainFilterState    = {
+			save() {
+				window.onbeforeunload = function () {
+					sessionStorage["mf-state--active"] = $('#mainfilter').is(':visible');
+					if (!sessionStorage["mf-state--active"]) {
+						sessionStorage.removeItem("mf-state--pos");
+						sessionStorage.removeItem("mf-state--active");
+						sessionStorage.removeItem("mf-state--tab");
+						sessionStorage.removeItem("mf-state--accardeon");
+					} else {
+						sessionStorage["mf-state--pos"] = $(window).scrollTop();
+						sessionStorage['mf-state--tab'] = $('.mainfilter__tab-item.data-tab-link.active')
+							.attr('data-tab');
+						if ($('.mainfilter__tab.data-tab-item.active .accardeon.active .accardeon__main').length) {
+							sessionStorage['mf-state--accardeon'] = $('.mainfilter__tab.data-tab-item.active .accardeon.active .accardeon__main')
+								.attr('data-category');
+						}
+
+					}
+				};
+			},
+			load() {
+				var _is_active = sessionStorage["mf-state--active"];
+				if (!_is_active || _is_active == 'false') {
+					sessionStorage.removeItem("mf-state--pos");
+					sessionStorage.removeItem("mf-state--active");
+					sessionStorage.removeItem("mf-state--tab");
+					sessionStorage.removeItem("mf-state--accardeon");
+					return;
+				}
+				setTimeout(function () {
+					$('.--openfilter')[0].click();
+
+					var _tab = sessionStorage['mf-state--tab'];
+					if (!!_tab && typeof _tab !== 'undefined') {
+						console.log('tab', _tab);
+						setTimeout(function () {
+							$('.mainfilter__tab-item.data-tab-link[data-tab="' + _tab + '"]')[0].click();
+						}, 1500);
+						//sessionStorage.removeItem("mf-state--tab");
+					}
+
+					var _cat = sessionStorage['mf-state--accardeon'];
+					if (!!_cat && typeof _cat !== 'undefined') {
+						console.log('cat', _cat);
+						setTimeout(function () {
+							$('.accardeon__main.accardeon__click[data-category="' + _cat + '"]')[0].click();
+						}, 1500);
+						//sessionStorage.removeItem("mf-state--accardeon");
+					}
+
+					var _pos = sessionStorage["mf-state--pos"];
+					if (_pos) {
+						console.log(_cat);
+						setTimeout(function () {
+							$(window).scrollTop(_pos);
+						}, 350);
+						sessionStorage.removeItem("mf-state--pos");
+					}
+				}, 400);
+			}
+		};
+		var mainFilter            = new Ractive({
 			el: '#mainfilter',
 			template: $('#mainfilter template').html(),
 			data: {
@@ -328,10 +390,16 @@
 			},
 			on: {
 				init() {
-					wbapp.get('/api/v2/func/problems/mainfilter', function(data) {
-						mainFilter.set('filter', data);
-						mainFilter.fire('checkChoose');
+					var self = this;
+					wbapp.get('/api/v2/func/problems/mainfilter', function (data) {
+						self.set('filter', data);
+						self.fire('checkChoose');
 					});
+				},
+				complete() {
+					console.log('filter ready');
+					//mainFilterState.load();
+					//mainFilterState.save();
 				},
 				clearSymptoms() {
 					$(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(
@@ -706,24 +774,25 @@
 				this.set('checked', checked);
 			}
 		});
+		mainFilterState.save();
 	</script>
 	<style>
 		#mainfilterCounter {
-			color: #fff;
-			background: #000;
-			padding: 5px;
-			display: none;
-			position: fixed;
-			bottom: 20px;
-			right: 20px;
-			z-index: 10;
-			border-radius: 7px;
-			cursor: pointer;
+			color         : #fff;
+			background    : #000;
+			padding       : 5px;
+			display       : none;
+			position      : fixed;
+			bottom        : 20px;
+			right         : 20px;
+			z-index       : 10;
+			border-radius : 7px;
+			cursor        : pointer;
 		}
 
 		@media (max-width : 767px) {
 			#mainfilterCounter {
-				display: inline;
+				display : inline;
 			}
 		}
 	</style>
