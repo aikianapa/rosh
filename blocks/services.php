@@ -71,7 +71,7 @@
 		</div>
 		<div class="all-tabs data-tab-wrapper" data-tabs="services">
 			<div class="all-tab data-tab-item active" data-tab="all">
-				<wb-var srvlist wb-api="/api/v2/list/services?active=on&@sort=_sort,header&@return=id,header,price,category,cover,_form,_id" />
+				<wb-var srvlist wb-api="/api/v2/list/services?active=on&@sort=_sort,header" />
 				<div class="all-services" id="servicesList">
 					<wb-foreach wb="from=_var.srvlist&tpl=false">
 						<wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
