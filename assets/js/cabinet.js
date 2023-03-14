@@ -437,7 +437,7 @@ $(function () {
 			_self.rawServices = [];
 			var getters = [];
 			getters.push(
-				utils.api.get(
+				utils.api.get('/api/v2/list/catalogs/?'+
 						'@group=_id&@return=tree,name,id&_id=[quote_type,shop_category,srvcat,quote_status,quote_pay]')
 					.then(function (data) {
 						_self.quotePay                    = data['quote_pay'][0]['tree']['data'];

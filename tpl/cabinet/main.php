@@ -994,26 +994,27 @@
 		{{/if}}
 	</template>
 
-	<wb-module wb="module=yonger&mode=render&view=footer" />
+	<wb-module wb="module=yonger&mode=render&view=footer"/>
 
-	<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');" />
-	<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');" />
+	<wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
+	<wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
 
 
 	<script wb-app remove>
-		var tabs = {};
-		$(document).on('cabinet-db-ready', function() {
-			var getGroupByStatus = function(status) {
+		var tabs          = {};
+		window.can_update = false;
+		$(document).on('cabinet-db-ready', function () {
+			var getGroupByStatus = function (status) {
 				if (['new', 'uncall', 'delay'].includes(status)) {
 					return 'quote';
 				}
 				return 'event';
 			};
-			window.tab_urls = [
+			window.tab_urls      = [
 				'group=longterms',
 				'group=quotes',
 				'group=events&status=upcoming',
-				'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]',
+				'group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]'
 			];
 			let editProfile      = wbapp.tpl('#editProfile').html;
 			let editStatus       = wbapp.tpl('#editStatus').html;
@@ -1064,26 +1065,28 @@
 										complete() {
 											this.find('.loading-overlay').remove();
 											var self = this;
-											setTimeout(function() {
+											setTimeout(function () {
 												$(self.el).find('a.photo[data-href]')
-													.each(function(i) {
+													.each(function (i) {
 														var _img = $(this);
 														_img.attr('href', $(this).data('href'));
 													});
 											}, 150);
 										},
 										editProfile(ev) {
-											var form = $(ev.node).parents('.admin-editor')
+											var form          = $(ev.node).parents('.admin-editor')
 												.find('.admin-editor__edit-profile');
+											window.can_update = false;
+
 											if ($(ev.node).hasClass('open')) {
 												$(ev.node).removeClass('open');
 												$(form).html('');
+												window.can_update = true;
 												return;
 											}
 											$(ev.node).addClass('open');
 											var profile_id = $(ev.node).data('id');
-
-											let editor = new Ractive({
+											let editor     = new Ractive({
 												el: form,
 												template: editProfile,
 												data: {},
@@ -1113,9 +1116,10 @@
 												}
 											});
 											utils.api.get('/api/v2/read/users/' + profile_id).then(
-												function(data) {
+												function (data) {
 													data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
-													data.phone = data.phone.includes('+') ? data.phone : '+' + data.phone;
+													data.phone = data.phone.includes('+') ? data.phone : '+' +
+													                                                     data.phone;
 													editor.set(data);
 
 													console.log(data);
@@ -1123,17 +1127,19 @@
 												});
 										},
 										addPhoto(ev, record) {
-											var self = this;
-											var _row_idx = $(ev.node).parents('.admin-editor__events').data('idx');
+											var self          = this;
+											var _row_idx      = $(ev.node).parents('.admin-editor__events').data('idx');
+											window.can_update = false;
 
 											popupPhoto(catalog.clients[record.client], record,
-												function(rec) {
+												function (rec) {
 													_tab.set('records.' + _row_idx, rec);
 													toast('Фото добавлено!');
 													self.set('record', rec);
-													setTimeout(function() {
+													window.can_update = true;
+													setTimeout(function () {
 														$(self.el).find('a.photo[data-href]')
-															.each(function(i) {
+															.each(function (i) {
 																var _img = $(this);
 																_img.attr('href', $(this).data('href'));
 															});
@@ -1215,11 +1221,14 @@
 											});
 										},
 										editProfile(ev) {
-											var form = $(ev.node).parents('.admin-editor')
+											var form          = $(ev.node).parents('.admin-editor')
 												.find('.admin-editor__edit-profile');
+											window.can_update = false;
+
 											if ($(ev.node).hasClass('open')) {
 												$(ev.node).removeClass('open');
 												$(form).html('');
+												window.can_update = true;
 												return;
 											}
 											$(ev.node).addClass('open');
@@ -1240,13 +1249,14 @@
 															var data = $form.serializeJSON();
 
 															Cabinet.updateProfile(profile_id, data,
-																function(res) {
+																function (res) {
 																	console.log('client saved', res);
-																	data.birthdate_fmt = utils.formatDate(data.birthdate);
-																	data.phone = utils.formatPhone(data.phone);
+																	data.birthdate_fmt = utils.formatDate(
+																		data.birthdate);
+																	data.phone         = utils.formatPhone(data.phone);
 																	_tab.set('catalog.clients.' + profile_id, data);
 																	catalog.clients[profile_id] = data;
-
+																	window.can_update           = true;
 																	$(form).html('');
 																	toast('Профиль успешно обновлён');
 																});
@@ -1257,27 +1267,29 @@
 												}
 											});
 											utils.api.get('/api/v2/read/users/' + profile_id).then(
-												function(data) {
+												function (data) {
 													data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
-													data.phone = data.phone.includes('+') ? data.phone : '+' + data.phone;
+													data.phone = data.phone.includes('+') ? data.phone : '+' +
+													                                                     data.phone;
 													editor.set(data);
-
 													console.log(data);
 													initPlugins(form);
 												});
 										},
 										editRecord(ev) {
-											var target_tab = this;
-											var _row_idx = $(ev.node).data('idx');
+											var target_tab    = this;
+											window.can_update = false;
+
+											var _row_idx  = $(ev.node).data('idx');
 											const _parent = $(ev.node).closest('.accardeon');
-											var _record = this.get('records.' + _row_idx);
+											var _record   = this.get('records.' + _row_idx);
 											console.log('clicked ', _record, target_tab, ev);
 											if (!_record.price) {
 												_record.price = 0;
 											}
 
 											_record.price_text = utils.formatPrice(_record.price);
-											var statusEditor = new Ractive({
+											var statusEditor   = new Ractive({
 												el: _parent.find('.admin-editor__top-select'),
 												template: editStatus,
 												data: {
@@ -1316,16 +1328,17 @@
 													}
 												}
 											});
-											var saveRecord = function(id, idx, data) {
+											var saveRecord     = function (id, idx, data) {
 												utils.api.post('/api/v2/update/records/' + id, data)
-													.then(function(res) {
+													.then(function (res) {
 														console.log('event data:', data);
 														toast('Успешно сохранено');
 														_tab.set('records.' + idx, res);
+														window.can_update = true;
 														window.load();
 													});
-											}
-											let recordEditor = new Ractive({
+											};
+											let recordEditor   = new Ractive({
 												el: _parent.find('.admin-editor__events'),
 												template: wbapp.tpl('#editorRecord').html,
 												data: {
@@ -1487,6 +1500,7 @@
 							}
 							_tab.fire('loaded');
 							utils.restoreScroll();
+
 							tabs[target_tab] = {
 								ractive: _tab,
 								data: data
@@ -1499,15 +1513,15 @@
 						const _b = parseInt($(b).attr('data-priority'));
 						return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 					}).appendTo(_list);
-					setTimeout(function() {
-						$('a.account__table').find('a.client-card[data-href]').each(function(i) {
+					setTimeout(function () {
+						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
 							$(this).attr('href', $(this).data('href'));
 						});
 					}, 550);
 				});
 
-				setTimeout(function() {
-					$('.account__table').find('a.client-card[data-href]').each(function(i) {
+				setTimeout(function () {
+					$('.account__table').find('a.client-card[data-href]').each(function (i) {
 						$(this).attr('href', $(this).data('href'));
 					});
 				}, 750);
@@ -1516,9 +1530,11 @@
 			load();
 
 			setTimeout(function reload() {
-				window.load();
-				setTimeout(reload, 600000);
-			}, 600000);
+				if (window.can_update) {
+					window.load();
+				}
+				setTimeout(reload, 30000);
+			}, 30000);
 
 			function OrderBy(a, b, n) {
 				if (n) return a - b;
@@ -1527,25 +1543,26 @@
 				return 0;
 			}
 
-			$('body').on('click', '.account__tab-items .account__tab-item.data-tab-link', function() {
+			$('body').on('click', '.account__tab-items .account__tab-item.data-tab-link', function () {
 				var _type = $(this).data('type');
 				console.log('open:', _type);
 				sessionStorage.setItem('active-tab--lk-main', _type);
 				window.load(_type);
+				window.can_update = true;
 			});
-			$(document).on('click', '.account__table-head .admin-events-item.orderby', function() {
+			$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
 				var $th = $(this);
 
-				console.log('clicked')
+				console.log('clicked');
 				$th.toggleClass('selected');
 				var isSelected = $th.hasClass('selected');
-				var isInput = true;
-				var column = $th.index();
-				var $table = $th.parents('.account__table');
-				var isNum = false;
-				var rows = $table.find('.account__table-body > .acount__table-accardeon').get();
+				var isInput    = true;
+				var column     = $th.index();
+				var $table     = $th.parents('.account__table');
+				var isNum      = false;
+				var rows       = $table.find('.account__table-body > .acount__table-accardeon').get();
 				//console.log(column, $table, rows);
-				rows.sort(function(rowA, rowB) {
+				rows.sort(function (rowA, rowB) {
 					var keyA, keyB;
 					if (isInput) {
 						keyA = $(rowA).find('.admin-events-item').eq(column).find('input.orderby').val().toUpperCase();
@@ -1598,7 +1615,7 @@
 					});
 			});
 			utils.saveScroll();
-
+			window.can_update = true;
 		});
 	</script>
 
