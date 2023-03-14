@@ -201,12 +201,18 @@ $(function() {
         }).on('click', '#mainmenu', function(e) {
             e.stopPropagation();
         }).on('click', '.accardeon .accardeon__click', function() {
-            if ($(this).closest('.accardeon').hasClass('active')) {
-                $(this).closest('.accardeon').removeClass('active');
+            var _accardeon = $(this).closest('.accardeon');
+            if (_accardeon.hasClass('active')) {
+                _accardeon.removeClass('active');
+                if (_accardeon.attr('data-accardeon')){
+                    sessionStorage.removeItem('state-accardeon');
+                }
             } else {
-                $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
+                _accardeon.addClass('active').siblings('.accardeon').removeClass('active');
+                if (_accardeon.attr('data-accardeon')){
+                    sessionStorage['state-accardeon'] = _accardeon.attr('data-accardeon');
+                }
             }
-
             return false;
         }).on('___click', '.select .select__main', function() { // ###############
             if ($(this).parent().hasClass('active')) {

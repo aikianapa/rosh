@@ -918,7 +918,12 @@
 					}
 				}
 			});
-			window.load_records = function () {
+			var current_day_events_checker = null;
+			window.loadRecords = function () {
+				if (!!current_day_events_checker) {
+					clearTimeout(current_day_events_checker);
+				}
+
 				utils.api.get('/api/v2/list/records?group=events' +
 				              '&experts~=' + wbapp._session.user.id +
 				              '&@sort=event_date:d')
@@ -955,9 +960,21 @@
 
 						page.set('ready', true);
 						utils.restoreScroll();
-					});
+					})
+					.then(function () {
+						utils.restoreScroll();
+						if (sessionStorage['state-accardeon']) {
+							setTimeout(function () {
+								$('.acount__table-accardeon.accardeon[data-accardeon="' +
+								  sessionStorage['state-accardeon'] + '"] .accardeon__click').trigger('click');
+							});
+						}
+						current_day_events_checker = setTimeout(loadRecords, 10000);
+						console.log('Records loaded!');
+					})
 			};
-			load_records();
+
+			loadRecords();
 			utils.saveScroll();
 		});
 	</script>

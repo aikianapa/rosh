@@ -368,6 +368,7 @@
 					<!-- !!! quote history item !!! -->
 					{{#each history.events as event}}
 					<div class="acount__table-accardeon accardeon"
+						data-accardeon="{{event.id}}"
 						data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="history-item">
@@ -912,30 +913,35 @@
 			}
 		});
 		window.current_day_events      = [];
+		window.sort_events             = function () {
+			$(".account-events.upcoming .account-events__block")
+				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
+				.appendTo(".account-events.upcoming");
+		};
 		var current_day_events_checker = null;
-		window.load                    = function () {
+		window.loadRecords             = function () {
 			if (!!current_day_events_checker) {
-				clearInterval(current_day_events_checker);
+				clearTimeout(current_day_events_checker);
 			}
-			utils.api.get('/api/v2/list/records?status=[upcoming,new,past,delay,uncall]&group=[events,quotes]&client=' +
-			              wbapp._session.user.id + '&@sort=_lastdate:d')
-				.then(function (records) {
-					if (!!current_day_events_checker) {
-						clearInterval(current_day_events_checker);
-					}
-					console.log('event:', records);
-					window.current_day_events = [];
-					page.set('events.upcoming', []);
-					page.set('events.current', []);
-					page.set('history.events', []);
-					if (!!records) {
-						records.forEach(function (rec, idx) {
-							if (rec.status === 'past') {
+			Promise.allSettled([
+				utils.api.get('/api/v2/list/records?status=[upcoming,new,past,delay,uncall]&client=' +
+				              wbapp._session.user.id + '&@sort=_lastdate:d')
+					.then(function (records) {
+						if (!!current_day_events_checker) {
+							clearTimeout(current_day_events_checker);
+						}
+						console.log('event:', records);
+
+						window.current_day_events = [];
+						page.set('events.upcoming', []);
+						page.set('events.current', []);
+						page.set('history.events', []);
+						if (!!records) {
+							records.forEach(function (rec, idx) {
+								if (rec.status === 'past') {
 								page.push('history.events', rec);
 								return;
 							}
-
-
 							if (rec.status === 'new' || rec.status === 'uncall'  || rec.status === 'delay' ) {
 								rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
 								page.push('events.upcoming', rec);
@@ -947,64 +953,40 @@
 
 							rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
 
-							if (Cabinet.isCurrentDayEvent(rec)) {
-								window.current_day_events.push(rec);
-							}
-
 							if (Cabinet.isCurrentEvent(rec)) {
 								page.push('events.current', rec);
 								console.log('event:', rec);
 							} else {
 								page.push('events.upcoming', rec);
 							}
-						});
+							});
 
-						window.sort_events();
-					}
-					page.set('events_ready', true);
-					utils.restoreScroll();
-					if (!!window.current_day_events.length) {
-						current_day_events_checker = setInterval(function () {
-							console.log('check!');
-							var _upc = page.get('events.upcoming');
-							var _cur = page.get('events.current');
-							if (!!_cur && _cur.length) {
-								_cur.forEach(function (ev, i) {
-									if (!Cabinet.isCurrentEvent(ev)) {
-										page.splice('events.current', i, 1);
-										page.push('events.upcoming', ev);
-									}
-								});
-							}
-							if (!!_upc && _upc.length) {
-								_upc.forEach(function (ev, i) {
-									if (Cabinet.isCurrentEvent(ev)) {
-										page.splice('events.upcoming', i, 1);
-										page.push('events.current', ev);
-									}
-								});
-							}
 							window.sort_events();
-
-						}, 20000);
-					}
-					$("img[data-src]:not([src])").lazyload();
-				});
-		};
-		window.sort_events             = function () {
-			$(".account-events.upcoming .account-events__block")
-				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
-				.appendTo(".account-events.upcoming");
-		};
-
-		load();
-		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
-			.then(function (records) {
-				if (!!records) {
-					page.set('history.longterms', records);
+						}
+						page.set('events_ready', true);
+						$("img[data-src]:not([src])").lazyload();
+					}),
+				utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+					.then(function (records) {
+						if (!!records) {
+							page.set('history.longterms', records);
+						}
+						page.set('longterms_ready', true);
+					})
+			]).then(function () {
+				utils.restoreScroll();
+				if (sessionStorage['state-accardeon']){
+					setTimeout(function (){
+						$('.acount__table-accardeon.accardeon[data-accardeon="'+sessionStorage['state-accardeon']+'"] .accardeon__click').trigger('click');
+					});
 				}
-				page.set('longterms_ready', true);
-			});
+				current_day_events_checker = setTimeout(loadRecords, 10000);
+				console.log('Records loaded!');
+			})
+		};
+
+		loadRecords();
+
 		//utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
 		//	.then(function (records) {
 		//		if (!!records) {

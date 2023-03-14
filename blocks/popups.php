@@ -1,5 +1,6 @@
 <view>
-	<a class="phone --openpopup" href="javascript:void(0)" data-popup="--fast">
+	<a class="phone --openpopup" href="javascript:void(0)" data-popup="--fast"
+		wb-if="in_array('{{_sess.user.role}}',['','client'])">
 		<svg class="svgsprite _phone">
 			<use xlink:href="/assets/img/sprites/svgsprites.svg?v=2#phone"></use>
 		</svg>

@@ -532,6 +532,9 @@ img.preview.cloned{
 .text-justify {
 	text-align : justify;
 }
+.account-event-wrap .account-events__name{
+	margin-right : 10px;
+}
 @media (max-width : 1280px) {
 	.admin-events-item:nth-child(7) {
 		width          : 7%;
