@@ -395,7 +395,6 @@ $(function () {
 		},
 		categories: {},
 		priceCategories: {},
-
 		experts: {},
 		expert_users: {},
 		clients: {},
@@ -438,70 +437,56 @@ $(function () {
 			_self.rawServices = [];
 			var getters = [];
 			getters.push(
-				utils.api.get('/api/v2/func/catalogs/getQuoteStatus').then(function (data) {
-					_self.quoteStatus                 = utils.arr.indexBy(data);
-					_self.quoteStatus['past']['type'] = 'event';
-				})
-			);
-			getters.push(
-				utils.api.get('/api/v2/func/catalogs/getQuotePay').then(function (data) {
-					_self.quotePay = utils.arr.indexBy(data);
-				})
-			);
-			getters.push(
-				utils.api.get('/api/v2/func/catalogs/getQuoteType').then(function (data) {
-					_self.quoteType = utils.arr.indexBy(data);
-				})
-			);
+				utils.api.get(
+						'@group=_id&@return=tree,name,id&_id=[quote_type,shop_category,srvcat,quote_status,quote_pay]')
+					.then(function (data) {
+						_self.quotePay                    = data['quote_pay'][0]['tree']['data'];
+						_self.quoteType                   = data['quote_type'][0]['tree']['data'];
+						_self.quoteStatus                 = data['quote_status'][0]['tree']['data'];
+						_self.quoteStatus['past']['type'] = 'event';
 
-			getters.push(
-				utils.api.get('/api/v2/list/catalogs/srvcat').then(function (res) {
-					let _serviceCats = {};
-					Object.keys(res.tree.data).forEach(function (_key) {
-						const _cat = res.tree.data[_key];
-						if (_cat.active != 'on') {
-							return;
+						let _serviceCats = {};
+						Object.keys(data['srvcat'][0].tree.data).forEach(function (_key) {
+							const _cat = data['srvcat'][0].tree.data[_key];
+							if (_cat.active != 'on') {
+								return;
+							}
+							_serviceCats[_cat.id] = {
+								'id': _cat.id,
+								'name': _cat.name,
+								'color': _cat.data.color
+							};
+						});
+						_self.categories = _serviceCats;
+
+						var shop_categories = data['shop_category'][0]?.tree?.data;
+						if (!shop_categories) {
+							return false;
 						}
-						_serviceCats[_cat.id] = {
-							'id': _cat.id,
-							'name': _cat.name,
-							'color': _cat.data.color
-						};
-					});
-					_self.categories = _serviceCats;
+						var keys = Object.keys(shop_categories);
+						keys.forEach(function (key) {
+							var cat = shop_categories[key];
+							delete cat.active;
 
-				})
-			);
-			getters.push(
-				utils.api.get('/api/v2/list/catalogs?_id=shop_category').then(function (data) {
-					var all_categories = data[0]?.tree?.data;
-					if (!all_categories){
-						return false;
-					}
-					var keys           = Object.keys(all_categories);
-					keys.forEach(function (key) {
-						var cat = all_categories[key];
-						delete cat.active;
-
-						_self.priceCategories[key] = cat;
-						if (cat.hasOwnProperty('children')) {
-							var _keys = Object.keys(cat.children);
-							_keys.forEach(function (_key) {
-								var obj = cat.children[_key];
-								if (key === 'lab') {
-									obj.isLab                   = ["lab"];
-									obj.type                    = ["lab"];
-									_self.priceCategories[_key] = obj;
-								} else {
-									delete cat.children;
-									_self.priceCategories[_key] = obj;
-								}
-							});
-						} else {
-							delete cat.children;
-						}
-					});
-				})
+							_self.priceCategories[key] = cat;
+							if (cat.hasOwnProperty('children')) {
+								var _keys = Object.keys(cat.children);
+								_keys.forEach(function (_key) {
+									var obj = cat.children[_key];
+									if (key === 'lab') {
+										obj.isLab                   = ["lab"];
+										obj.type                    = ["lab"];
+										_self.priceCategories[_key] = obj;
+									} else {
+										delete cat.children;
+										_self.priceCategories[_key] = obj;
+									}
+								});
+							} else {
+								delete cat.children;
+							}
+						});
+					})
 			);
 			getters.push(
 				utils.api.get('/api/v2/list/price?active=on&@sort=header').then(function (data) {
@@ -510,37 +495,32 @@ $(function () {
 					}
 					console.log('>> >> >>');
 					_self.rawServices = data;
-				}));
-			if (!sessionStorage.getItem('db.expert_users' + _self.cacheKey)) {
-				getters.push(
-					utils.api.get('/api/v2/list/experts?active=on&login~=id&' +
-					              '@return=id,name,image,devision,spec,experience,education,login&' +
-					              '@sort=name:a').then(function (data) {
-						let _expert_users = {};
-						data.forEach(function (expert, i) {
-							if (!!expert.login) {
-								_expert_users[expert.login] = expert;
-								utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
-									.then(function (res) {
-										if (!res || !res[0]) {
-											return;
-										}
-										catalog.expert_users[expert.id].info_uri = res[0]['u'] || '';
-										sessionStorage.setItem('db.expert_users' + _self.cacheKey,
-											JSON.stringify(catalog.expert_users));
-									});
-							}
-						});
-						//_self.experts      = _experts;
-						_self.expert_users = _expert_users;
-						//sessionStorage.setItem('db.expert_list', JSON.stringify(_self.experts));
-						sessionStorage.setItem('db.expert_users' + _self.cacheKey, JSON.stringify(_self.expert_users));
-					})
-				);
-			} else {
-				//_self.experts      = JSON.parse(sessionStorage.getItem('db.expert_list'));
-				_self.expert_users = JSON.parse(sessionStorage.getItem('db.expert_users' + _self.cacheKey));
-			}
+				})
+			);
+			getters.push(
+				utils.api.get('/api/v2/list/experts?active=on&login~=id&' +
+				              '@return=id,name,image,devision,spec,experience,education,login&' +
+				              '@sort=name:a').then(function (data) {
+					let _expert_users = {};
+					data.forEach(function (expert, i) {
+						if (!!expert.login) {
+							_expert_users[expert.login] = expert;
+							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
+								.then(function (res) {
+									if (!res || !res[0]) {
+										return;
+									}
+									catalog.expert_users[expert.id].info_uri = res[0]['u'] || '';
+									sessionStorage.setItem('db.expert_users' + _self.cacheKey,
+										JSON.stringify(catalog.expert_users));
+								});
+						}
+					});
+					//_self.experts      = _experts;
+					_self.expert_users = _expert_users;
+					//sessionStorage.setItem('db.expert_list', JSON.stringify(_self.experts));
+				})
+			);
 			/* for Admins only */
 			utils.api.get('/api/v2/list/users?role=expert&active=on' +
 			              '' +
@@ -588,28 +568,6 @@ $(function () {
 				);
 			}
 
-			getters.push(
-				utils.api.get('/api/v2/list/price?category=konsultacii').then(function (data) {
-					if (data) {
-						data.forEach(function (rec) {
-							if (rec.header.includes('анализов')) {
-								if (rec.header.includes('Онлайн')) {
-									_self.spec_service.analyses_interpretation.online = rec;
-								} else {
-									_self.spec_service.analyses_interpretation.clinic = rec;
-								}
-							} else {
-								if (rec.header.includes('Онлайн')) {
-									//_self.spec_service.consultations.online[rec.id] = rec;
-								} else {
-									//_self.spec_service.consultations.clinic[rec.id] = rec;
-								}
-							}
-						});
-					}
-				})
-			);
-
 			return Promise.allSettled(getters).then((results) => {
 				_self.rawServices.forEach(function (service, i) {
 					if (!service.price || parseInt(service.price) < 1) {
@@ -655,6 +613,13 @@ $(function () {
 						}
 					}
 
+					if (service.header.includes('анализов')) {
+						if (service.header.includes('Онлайн')) {
+							_self.spec_service.analyses_interpretation.online = service;
+						} else {
+							_self.spec_service.analyses_interpretation.clinic = service;
+						}
+					}
 					let _item = {
 						value: title,
 						id: service.category + '-' + service.id,

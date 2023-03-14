@@ -56,7 +56,7 @@
 							</div>
 							<div class="input input--grey">
 							<textarea class="input__control"
-								name="client_comment" placeholder="Причина обращения" required></textarea>
+								name="client_comment" placeholder="Причина обращения" required>{{comment}}</textarea>
 								<div class="input__placeholder">Причина обращения</div>
 							</div>
 							<div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании
@@ -145,6 +145,10 @@
 									self.set('user', wbapp._session.user);
 								}
 							}
+							if ($('[name="quote_page_comment"]').length) {
+								self.set('comment', $('[name="quote_page_comment"]').val().trim());
+							}
+
 							console.log('init tel', $(self.el).find('input.intl-tel'));
 							$(self.el).find('input.intl-tel').each(function () {
 								var self = $(this);
