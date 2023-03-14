@@ -989,7 +989,6 @@
 						}, 20000);
 					}
 					$("img[data-src]:not([src])").lazyload();
-
 				});
 		};
 		window.sort_events             = function () {

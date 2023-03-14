@@ -50,7 +50,9 @@ $(function() {
     window.toast_warning = function (text, head) {
         toast(text, head, 'warning');
     };
-
+    window.str_to_array = function(text){
+        return text.split(',');
+    };
     window.api           = {
         get(path, data) {
             let _path = path;
