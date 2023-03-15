@@ -293,6 +293,9 @@
 div.accardeon.active > div.accardeon__list {
 	border-top : 1px solid #E0E0EA;
 }
+.mainfilter__tabs div.accardeon.active > div.accardeon__list {
+	border-top : none;
+}
 .ui-timepicker-container.ui-timepicker-standard {
 	z-index : 9999 !important;
 }
