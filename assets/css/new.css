@@ -1719,6 +1719,7 @@ blockquote cite {
     align-items     : center;
     justify-content : center;
     border-radius   : 50%;
+    filter          : invert(1);
 }
 .noscroll{
     height        : 100vh;
