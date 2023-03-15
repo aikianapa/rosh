@@ -172,27 +172,9 @@
 								<button class="btn btn--white" type="submit">Сохранить</button>
 							</form>
 						</div>
-						<div class="account-events__btns mb-20 border-top pt-20">
-							<div class="account-event-wrap --aicn">
-								{{#if this.pay_status == 'unpay'}}
-								<p>Ожидается предоплата пациентом</p>
-								{{elseif this.type == 'online'}}
-								<div class="account-events__btn">
-									<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
-										Начать консультацию
-									</a>
-								</div>
-								<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
-								{{/if}}
-								<div class="account-events__btn">
-									<a class="btn btn--black" data-id="{{this.id}}" on-click="['closeEvent',this]">
-										Завершить прием
-									</a>
-								</div>
-							</div>
-						</div>
+
 						{{#if this.hasPhoto}}
-						<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
+						<div class="bg-inherit border-top mt-20 pt-20 mb-20" style="margin-left: 0">
 							<div class="row">
 								<div class="col-md-5">
 									<p>Фото до приема</p>
@@ -249,6 +231,25 @@
 							</div>
 						</div>
 						{{/if}}
+						<div class="account-events__btns mb-20 border-top pt-20">
+							<div class="account-event-wrap --aicn">
+								{{#if this.pay_status == 'unpay'}}
+								<p>Ожидается предоплата пациентом</p>
+								{{elseif this.type == 'online'}}
+								<div class="account-events__btn">
+									<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
+										Начать консультацию
+									</a>
+								</div>
+								<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
+								{{/if}}
+								<div class="account-events__btn">
+									<a class="btn btn--black" data-id="{{this.id}}" on-click="['closeEvent',this]">
+										Завершить прием
+									</a>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

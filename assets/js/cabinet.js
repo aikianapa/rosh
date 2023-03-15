@@ -1647,11 +1647,29 @@ $(function () {
 			});
 		}
 
-		if (new_record_data?.services?.join('') != prev_record_data?.services?.join('')) {
+		if ((new_record_data?.services && prev_record_data?.services)
+		    &&
+		    (new_record_data?.services?.join('') != prev_record_data?.services?.join(''))) {
 			changelog.push({
 				label: 'Услуга',
 				field: 'services',
 				prev_val: prev_record_data.services,
+				new_val: new_record_data.services
+			});
+		}
+		if (!new_record_data?.services && !!prev_record_data.services) {
+			changelog.push({
+				label: 'Услуга',
+				field: 'services',
+				prev_val: prev_record_data.services,
+				new_val: []
+			});
+		}
+		if (!prev_record_data?.services && !!new_record_data.services) {
+			changelog.push({
+				label: 'Услуга',
+				field: 'services',
+				prev_val: [],
 				new_val: new_record_data.services
 			});
 		}
