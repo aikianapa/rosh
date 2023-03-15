@@ -1750,20 +1750,20 @@ blockquote cite {
     top       : 0;
     max-width : 28.2%; /* theme specific */
 }
-@media (min-width : 1800px) {
-
-    .fixed-top {
-        position  : fixed;
-        top       : 0;
-        max-width : 24.8%; /* theme specific */
-    }
-}
 
 @media (min-width : 1400px) {
     .fixed-top {
         position  : fixed;
         top       : 0;
         max-width : 28.3%; /* theme specific */
+    }
+}
+
+@media (min-width : 1800px) {
+    .fixed-top {
+        position  : fixed;
+        top       : 0;
+        max-width : 24.8%; /* theme specific */
     }
 }
 @media (max-width : 1130px) {
