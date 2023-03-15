@@ -123,6 +123,7 @@ var BlogFilter = function () {
 					var _tags = _tags_str.split(',');
 					if (_tags) {
 						_tags.sort();
+						_tag_list.html('');
 						_tags.forEach(function (tag) {
 							$('<div class="blog-panel__tag invert">' + tag + '</div>').appendTo(_tag_list);
 						});
@@ -155,7 +156,7 @@ var BlogFilter = function () {
 			})
 			$('#blogList').html('')
 			wbapp.ajax({ target: "#blogList", filter: 'clear', filter_add: fil},function(){
-				alert(1)
+				console.log('sssQ');
 			})
 		}
 	})
@@ -164,8 +165,27 @@ var BlogFilter = function () {
 $(document).ready(function () {
 	if ($('#blogFilter').length) {
 		BlogFilter();
-		$(document).on('wb-ready wb-ajax-done', function () {
-
+		$(document).on('wb-ajax-done', function () {
+			setTimeout(function () {
+				const _list = $('#blogList .blog-panel');
+				_list.each(function () {
+					var _parent   = $(this);
+					var _tag_list = $(this).find('.tag-list');
+					var _tags_str = _tag_list.data('tags');
+					if (!_tags_str) {
+						return;
+					}
+					var _tags = _tags_str.split(',');
+					if (_tags) {
+						_tags.sort();
+						_tag_list.html('');
+						_tags.forEach(function (tag) {
+							$('<div class="blog-panel__tag invert">' + tag + '</div>').appendTo(_tag_list);
+						});
+						_tag_list.removeClass('d-none');
+					}
+				});
+			});
 		});
 	}
 })
