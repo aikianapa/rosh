@@ -1748,7 +1748,7 @@ blockquote cite {
 .fixed-top {
     position  : fixed;
     top       : 0;
-    max-width : 26.2%; /* theme specific */
+    max-width : 28.2%; /* theme specific */
 }
 @media (min-width : 1800px) {
 
@@ -1767,6 +1767,12 @@ blockquote cite {
     }
 }
 @media (max-width : 1130px) {
+    .fixed-top {
+        position  : fixed;
+        top       : 0;
+        max-width : 26.2%; /* theme specific */
+    }
+
     .orders-sidebar,
     .basket-sidebar {
         min-width : 300px;
