@@ -70,7 +70,7 @@
 			</wb-foreach>
 		</div>
 		<div class="all-tabs data-tab-wrapper" data-tabs="services">
-			<div class="all-tab data-tab-item active" data-tab="all">
+			<div class="all-tab data-tab-item" data-tab="all">
 				<wb-var srvlist wb-api="/api/v2/list/services?active=on&@sort=_sort,header" />
 				<div class="all-services" id="servicesList">
 					<wb-foreach wb="from=_var.srvlist&tpl=false">
