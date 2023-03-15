@@ -1746,25 +1746,24 @@ blockquote cite {
     transform : none!important;
 }
 .fixed-top {
-  position: fixed;
-  top: 0;
-  max-width: 440px; /* theme specific */
+    position  : fixed;
+    top       : 0;
+    max-width : 26.2%; /* theme specific */
 }
 @media (min-width : 1800px) {
 
     .fixed-top {
         position  : fixed;
         top       : 0;
-        max-width : 24.6%; /* theme specific */
+        max-width : 24.8%; /* theme specific */
     }
 }
 
 @media (min-width : 1400px) {
-
     .fixed-top {
         position  : fixed;
         top       : 0;
-        max-width : 28.4%; /* theme specific */
+        max-width : 28.3%; /* theme specific */
     }
 }
 @media (max-width : 1130px) {
