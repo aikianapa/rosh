@@ -640,8 +640,15 @@
 					<div class="text-bold mb-10">Выбраны услуги</div>
 
 					<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-						<div class="search__drop-name pl-0 consultation-header">
+						<div class="search__drop-name consultation-header">
+							<div class="search__drop-delete fake" onclick="unselectConsultation(this);">
+								<svg class="svgsprite _delete">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+								</svg>
+							</div>
+							<span>
 							{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+							</span>
 						</div>
 						<div class="search__drop-right">
 							<div class="search__drop-summ consultation-price">

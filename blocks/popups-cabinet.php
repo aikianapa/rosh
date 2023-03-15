@@ -531,8 +531,6 @@
 													{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
 												</span>
 											</div>
-											<div class="pl-0 search__drop-name consultation-header">
-											</div>
 											<div class="search__drop-right">
 												<div class="search__drop-summ consultation-price">
 													{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
@@ -1605,8 +1603,15 @@
 								<div class="mb-10 text-bold">Выбраны услуги</div>
 
 								<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-									<div class="pl-0 search__drop-name consultation-header">
-										{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+									<div class="search__drop-name consultation-header">
+										<div class="search__drop-delete fake" onclick="unselectConsultation(this);">
+											<svg class="svgsprite _delete">
+												<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+											</svg>
+										</div>
+										<span>
+											{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+										</span>
 									</div>
 									<div class="search__drop-right">
 										<div class="search__drop-summ consultation-price">
