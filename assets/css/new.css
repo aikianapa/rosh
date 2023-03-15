@@ -1751,7 +1751,13 @@ blockquote cite {
     top       : 0;
     max-width : 28.2%; /* theme specific */
 }
+.invert{
+    filter:invert(1);
 
+}
+.tag-list .blog-panel__tag{
+    margin-right: 6px;
+}
 @media (min-width : 1400px) {
     .fixed-top {
         position  : fixed;

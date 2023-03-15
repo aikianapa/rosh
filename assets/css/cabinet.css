@@ -535,6 +535,7 @@ img.preview.cloned{
 .account-event-wrap .account-events__name {
 	margin-right : 10px;
 }
+
 .admin-events-item.comment {
 	overflow           : hidden;
 	text-overflow      : ellipsis;
