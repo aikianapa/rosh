@@ -104,6 +104,14 @@ $(function () {
 			var _page_name = page_name || '';
 			let pos = sessionStorage["scroll-position--" + _page_name] || false;
 			if (!!pos) {
+				if (sessionStorage['active-tab--lk-main']){
+					var _tab = sessionStorage['active-tab--lk-main'];
+					var _tab_el = $('.account__tab-items .account__tab-item.data-tab-link[data-tab='+_tab+']');
+					if (_tab_el.length){
+						_tab_el.trigger('click');
+					}
+					sessionStorage.removeItem('active-tab--lk-main');
+				}
 				$(window).scrollTop(pos);
 				sessionStorage.removeItem("scroll-position--" + _page_name);
 			}

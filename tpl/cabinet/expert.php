@@ -90,7 +90,7 @@
 		<div class="account-events current_event status-past">
 			{{#each events.current}}
 			<div class="account-events__block">
-				<div class="acount__table-accardeon accardeon status-past">
+				<div class="acount__table-accardeon accardeon status-past" data-accardeon="{{this.id}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="accardeon__click"></div>
 						<div class="account-events__block-wrap mb-20">
@@ -153,6 +153,7 @@
 						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
 						<div class="account-edit__title mb-20 pt-20">
+							<div class="lk-title">Анализы</div>
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
 								target="_blank">
@@ -173,7 +174,9 @@
 						</div>
 						<div class="account-events__btns mb-20 border-top pt-20">
 							<div class="account-event-wrap --aicn">
-								{{#if this.type == 'online'}}
+								{{#if this.pay_status == 'unpay'}}
+								<p>Ожидается предоплата пациентом</p>
+								{{elseif this.type == 'online'}}
 								<div class="account-events__btn">
 									<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
 										Начать консультацию
@@ -258,7 +261,7 @@
 		<div class="account-events status-upcoming">
 			{{#each events.upcoming}}
 			<div class="account-events__block">
-				<div class="acount__table-accardeon accardeon status-upcoming">
+				<div class="acount__table-accardeon accardeon status-upcoming" data-accardeon="{{this.id}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="account-events__block-wrap">
 							<div class="accardeon__click"></div>
@@ -428,7 +431,7 @@
 				</div>
 				<div class="account__table-body">
 					{{#each history}}
-					<div class="acount__table-accardeon accardeon status-cancel_noreason" data-record_id="{{this.id}}">
+					<div class="acount__table-accardeon accardeon status-cancel_noreason" data-accardeon="{{this.id}}" data-record_id="{{this.id}}">
 						<div class="acount__table-main accardeon__main">
 							<div class="history-item">
 								<p>Дата</p>

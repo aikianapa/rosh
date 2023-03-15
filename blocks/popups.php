@@ -122,11 +122,8 @@
 							wbapp.trigger('wb-save-error',
 								{'data': data});
 						} else {
-							$('.popup.fast-form-block').show();
-							$('.popup.fast-form-block .popup__panel:not(.--succed)')
-								.addClass('d-none');
-							$('.popup.fast-form-block .popup__panel.--succed')
-								.addClass('d-block');
+							$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
+							$('.popup.--fast .popup__panel.--succed').addClass('d-block');
 						}
 					});
 			};
@@ -240,7 +237,7 @@
 																		'data': data
 																	});
 																} else {
-																	createFastQuote(data.id, post.client_comment);
+																	createFastQuote(data.id, post.client_comment, post.experts);
 																}
 															});
 
@@ -255,7 +252,7 @@
 										}
 									});
 							} else {
-								createFastQuote(post.client, post.client_comment);
+								createFastQuote(post.client, post.client_comment, post.experts);
 							}
 						}
 

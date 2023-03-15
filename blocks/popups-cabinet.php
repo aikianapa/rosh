@@ -269,7 +269,7 @@
 						</div>
 						{{/if}}
 						<!--!!! change `action` address on PROD. !!!-->
-						<form on-submit="submit" action="https://demo.paykeeper.ru/create/" method="POST" target="_blank">
+						<form on-submit="submit" action="https://medcenterrosh.server.paykeeper.ru/create/" method="POST" target="_blank">
 							<input type='hidden' name='sum' value='{{this.pay_price}}'/>
 							<input type='hidden' name='orderid' value='{{this.id}}'/>
 							<input type='hidden' name='clientid' value='{{this.client}}'/>

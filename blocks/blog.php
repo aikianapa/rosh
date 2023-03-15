@@ -10,6 +10,20 @@
             <h1 class="h1">{{_parent.header}}</h1>
             <div class="filter" id="blogFilter">
                 <div class="filter__item">
+                    <div class="filter__name text-bold">Теги </div>
+                    <div class="filter__select">
+                        <div class="filter-select select">
+                            <div class="filter-select__main select__main">Все</div>
+                            <div class="filter-select__list select__list" id="tag">
+                                <div class="filter-select__item select__item filter-tag" data-tag="*" on-click="setTag">Все</div>
+                                {{#each tags}}
+                                    <div class="filter-select__item select__item active blank" data-tag="{{.}}" on-click="setTag">{{.}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter__item">
                     <div class="filter__name text-bold">Разделы </div>
                     <div class="filter__select">
                         <div class="filter-select select">

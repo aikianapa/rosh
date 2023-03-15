@@ -532,8 +532,16 @@ img.preview.cloned{
 .text-justify {
 	text-align : justify;
 }
-.account-event-wrap .account-events__name{
+.account-event-wrap .account-events__name {
 	margin-right : 10px;
+}
+.admin-events-item.comment {
+	overflow           : hidden;
+	text-overflow      : ellipsis;
+	display            : -webkit-box;
+	-webkit-line-clamp : 3; /* number of lines to show */
+	line-clamp         : 3;
+	-webkit-box-orient : vertical;
 }
 @media (max-width : 1280px) {
 	.admin-events-item:nth-child(7) {

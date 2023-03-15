@@ -18,6 +18,21 @@ var BlogFilter = function () {
 			init() {
 				this.getPeriods()
 			},
+			setTag(ev) {
+				$filter.find('#years').prev('.select__main').text("Год")
+				$filter.find('#months').prev('.select__main').text("Месяц")
+				filter.set('filter.month', undefined)
+				filter.set('filter.year', undefined)
+				let tag = $(ev.node).attr('data-tag')
+				if (tag == '*') {
+					this.getPeriods()
+					filter.set('filter.tags', undefined)
+				} else {
+					this.getPeriods(cat)
+					filter.set('filter.tags', {'$like':tag})
+				}
+				this.update()
+			},
 			setCat(ev) {
 				$filter.find('#years').prev('.select__main').text("Год")
 				$filter.find('#months').prev('.select__main').text("Месяц")
@@ -56,10 +71,13 @@ var BlogFilter = function () {
 				this.update()
 			}
 		},
-		getPeriods(cat = null) {
+		getPeriods(cat = null, tag = null) {
 			let years = []
-			cat = cat == null ? '' : '&category='+cat 
-			fetch("/api/v2/list/blog?@sort=year&@group=year,month&@return=year,month,date,category"+cat+'&__token='+wbapp._session.token)
+			cat = cat == null ? '' : '&category='+cat;
+			tag = tag == null ? '' : '&tags~='+tag; 
+			
+			fetch("/api/v2/list/blog?@sort=year&@group=year,month&@return=year,month,date,category"+cat+tag+
+                '&__token='+wbapp._session.token)
 				.then((res) => res.json())
 				.then(function (data) {
 					data = Object.assign([], data)
