@@ -50,7 +50,7 @@
 			<div class="page-content">
 				<div class="container data-tab-wrapper" data-tabs="records">
 					<div class="account__tab-items">
-						<div class="account__tab-item data-tab-link" data-type="group=quotes" data-tab="quotes" data-tabs="records">Заявки
+						<div class="account__tab-item data-tab-link active" data-type="group=quotes" data-tab="quotes" data-tabs="records">Заявки
 						</div>
 						<div class="account__tab-item data-tab-link" data-type="group=events&status=upcoming" data-tab="events" data-tabs="records">События
 						</div>
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item" data-tab="quotes" data-type="group=quotes">
+					<div class="account__tab data-tab-item active" data-tab="quotes" data-type="group=quotes">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>
@@ -81,6 +81,7 @@
 							<div class="loader"></div>
 						</div>
 					</div>
+
 					<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]">
 						<div class="loading-overlay">
 							<div class="loader"></div>
@@ -276,6 +277,7 @@
 					<div class="checbox__name">Я не знаю, кого выбрать (указано в пациентом)</div>
 				</label>
 				{{/if}}
+				<input type="hidden" name="has_meetroom" value="{{this.has_meetroom}}">
 
 				<div class="admin-editor__type-event">
 					<div class="mb-20 consultations">
@@ -534,6 +536,7 @@
 		</div>
 	</form>
 </template>
+
 <template id="listRecords" wb-off>
 	<div class="account-scroll">
 		<div class="account__table" data-records-group="{{group}}">
@@ -653,19 +656,21 @@
 						</div>
 						<div class="admin-events-item col-services flex-column">
 							<p>Услуга</p>
+							{{#if group == 'quotes'}}
+							<div>Заявка из фильтра</div>
+							{{/if}}
+
 							{{#if record.consultation }}
 							<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
 							{{/if}}
 
 							{{#if no_services == '1'}}
 							<div></div>
-							{{elseif record.services}}
+							{{elseif services}}
 							{{#services}}
 							<div>{{catalog.services[this].header}}</div>
 							{{/services}}
-							{{elseif record.client_comment }}
-							<div>Заявка из фильтра</div>
-							{{/if}}
+							{{else}}
 							<div></div>
 							{{/if}}
 
@@ -1023,12 +1028,7 @@
 		};
 		window.afterLoads    = {};
 		window.afterLoad     = null;
-		var current_day_events_checker = null;
 		window.load          = function (only_tab) {
-			var getters = [];
-			if (!!current_day_events_checker) {
-				clearTimeout(current_day_events_checker);
-			}
 			tab_urls.forEach(function (target_tab, i) {
 				if (only_tab && only_tab != target_tab) {
 					return;
@@ -1039,31 +1039,30 @@
 					'event_date:d',
 					'_created:d'
 				];
-				getters.push(
-					utils.api.get('/api/v2/list/records?' + target_tab, {
-						'@sort': _sorts[i]
-					}).then(
-						function (result) {
-							let data = {
-								group: target_tab,
-								records: result,
-								catalog: catalog
-							};
-							var _tab;
-							if (target_tab == 'group=longterms') {
-								_tab = new Ractive({
-									el: '.data-tab-item[data-type="' + target_tab + '"]',
-									template: wbapp.tpl('#listLongterms').html,
-									data: {
-										group: target_tab,
-										records: result,
-										catalog: catalog
+				utils.api.get('/api/v2/list/records?' + target_tab, {
+					'@sort': _sorts[i]
+				}).then(
+					function (result) {
+						let data = {
+							group: target_tab,
+							records: result,
+							catalog: catalog
+						};
+						var _tab;
+						if (target_tab == 'group=longterms') {
+							_tab = new Ractive({
+								el: '.data-tab-item[data-type="' + target_tab + '"]',
+								template: wbapp.tpl('#listLongterms').html,
+								data: {
+									group: target_tab,
+									records: result,
+									catalog: catalog
+								},
+								on: {
+									loaded() {
+										console.log('>>> loaded', target_tab);
+										$(this.el).find('.loading-overlay').remove();
 									},
-									on: {
-										loaded() {
-											console.log('>>> loaded', target_tab);
-											$(this.el).find('.loading-overlay').remove();
-										},
 										complete() {
 											this.find('.loading-overlay').remove();
 											var self = this;
@@ -1425,7 +1424,7 @@
 															post_statuses.group += 's';
 															var new_data = $($(ev.node).parents('form'))
 																.serializeJSON();
-															console.log(post_statuses.group, post_statuses.pay_status);
+															console.log('!!', new_data);
 
 															new_data.price      = parseInt(new_data.price);
 															new_data.status     = post_statuses.status;
@@ -1450,11 +1449,20 @@
 															    !!new_data.experts) {
 																new_data.no_experts = 0;
 															}
+
+															if (!new_data.hasOwnProperty('has_meetroom')) {
+																new_data.has_meetroom = 0;
+															}
+															if (!new_data.hasOwnProperty('services')) {
+																new_data.services       = null;
+																new_data.service_prices = null;
+															} else {
+																new_data.services = utils.arr.unique(new_data.services);
+															}
 															if (new_data.group === 'events' &&
-															    !!new_data.services) {
+															    (!!new_data.services || !!new_data.consultation)) {
 																new_data.no_services = 0;
 															}
-
 															if (new_data.group === 'upcoming' && !new_data.price) {
 																toast_error('Необходимо выбрать услугу');
 																$($(ev.node).parents('form'))
@@ -1463,18 +1471,17 @@
 																return false;
 															}
 															new_data.event_date = utils.dateForce(new_data.event_date);
-															new_data.services   = utils.arr.unique(new_data.services);
 
 															changeLogSave(new_data, _record);
 
 															var is_saved = false;
 															if (new_data.type == 'online') {
 																if (new_data.status == 'upcoming') {
-																	if (!new_data.meetroom ||
-																	    !new_data.meetroom.meetingId) {
+																	if (!!new_data.has_meetroom == 0) {
 																		is_saved = true;
 																		onlineRooms.create(function (meetroom) {
-																			new_data['meetroom'] = meetroom;
+																			new_data['has_meetroom'] = 1;
+																			new_data['meetroom']     = meetroom;
 																			saveRecord(_record.id, _row_idx, new_data);
 																		});
 																	} else {
@@ -1485,10 +1492,11 @@
 															}
 
 															if (!is_saved) {
-																if (!!new_data.meetroom) {
+																if (new_data.has_meetroom == 1) {
 																	onlineRooms.delete(new_data.meetroom.meetingId,
 																		function (meetroom) {});
-																	new_data.meetroom = {};
+																	new_data.meetroom     = {};
+																	new_data.has_meetroom = 0;
 																}
 																saveRecord(_record.id, _row_idx, new_data);
 															}
@@ -1503,41 +1511,29 @@
 
 									}
 								});
-							}
-							_tab.fire('loaded');
+						}
+						_tab.fire('loaded');
+						utils.restoreScroll();
 
-							tabs[target_tab] = {
-								ractive: _tab,
-								data: data
-							};
-
-							/* sort by prior */
-							const _list = $(
-								'.account__tab.data-tab-item[data-tab="' + target_tab + '"] .account__table-body');
-							_list.find(".acount__table-accardeon").sort(function (a, b) {
-								const _a = parseInt($(a).attr('data-priority'));
-								const _b = parseInt($(b).attr('data-priority'));
-								return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-							}).appendTo(_list);
-							setTimeout(function () {
-								$('a.account__table').find('a.client-card[data-href]').each(function (i) {
-									$(this).attr('href', $(this).data('href'));
-								});
-							}, 550);
-						})
-				);
-			});
-			Promise.allSettled(getters).then(function () {
-				utils.restoreScroll();
-				if (sessionStorage['state-accardeon']) {
-					setTimeout(function () {
-						$('.acount__table-accardeon.accardeon[data-accardeon="' +
-						  sessionStorage['state-accardeon'] + '"] .accardeon__click').trigger('click');
+						tabs[target_tab] = {
+							ractive: _tab,
+							data: data
+						};
 					});
-				}
-				current_day_events_checker = setTimeout(load, 20000);
-				console.log('Records loaded!');
+				/* sort by prior */
+				const _list = $('.account__tab.data-tab-item[data-tab="' + target_tab + '"] .account__table-body');
+				_list.find(".acount__table-accardeon").sort(function (a, b) {
+					const _a = parseInt($(a).attr('data-priority'));
+					const _b = parseInt($(b).attr('data-priority'));
+					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+				}).appendTo(_list);
+				setTimeout(function () {
+					$('a.account__table').find('a.client-card[data-href]').each(function (i) {
+						$(this).attr('href', $(this).data('href'));
+					});
+				}, 550);
 			});
+
 			setTimeout(function () {
 				$('.account__table').find('a.client-card[data-href]').each(function (i) {
 					$(this).attr('href', $(this).data('href'));
@@ -1546,6 +1542,13 @@
 		};
 
 		load();
+
+		setTimeout(function reload() {
+			if (window.can_update) {
+				window.load();
+			}
+			setTimeout(reload, 30000);
+		}, 30000);
 
 		function OrderBy(a, b, n) {
 			if (n) return a - b;
@@ -1556,7 +1559,7 @@
 
 		$('body').on('click', '.account__tab-items .account__tab-item.data-tab-link', function () {
 			var _type = $(this).data('type');
-			var _tab = $(this).data('tab');
+			var _tab  = $(this).data('tab');
 			console.log('open:', _type);
 			sessionStorage.setItem('active-tab--lk-main', _tab);
 			window.load(_type);

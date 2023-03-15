@@ -1404,11 +1404,21 @@
 									if (!!new_data.experts) {
 										new_data.no_experts = 0;
 									}
-									if (!!new_data.services) {
+									if (new_data.group === 'events' &&
+									    (!!new_data.services || !!new_data.consultation)) {
 										new_data.no_services = 0;
 									}
+									if (!new_data.hasOwnProperty('has_meetroom')) {
+										new_data.has_meetroom = 0;
+									}
+									if (!new_data.hasOwnProperty('services')) {
+										new_data.services       = [];
+										new_data.service_prices = {};
+									} else {
+										new_data.services = utils.arr.unique(new_data.services);
+									}
 
-									if (!new_data.price) {
+									if (new_data.group === 'upcoming' && !new_data.price) {
 										toast_error('Необходимо выбрать услугу');
 										$($(ev.node).parents('form'))
 											.find('.popup-services-list')
@@ -1417,7 +1427,6 @@
 									}
 
 									new_data.event_date = utils.dateForce(new_data.event_date);
-									new_data.services   = utils.arr.unique(new_data.services);
 
 									changeLogSave(new_data, _record);
 									var is_saved = false;

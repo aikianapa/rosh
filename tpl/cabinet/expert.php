@@ -321,6 +321,7 @@
 						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
 						<div class="account-edit__title mb-20 pt-20">
+							<div class="lk-title">Анализы</div>
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
 								target="_blank">
@@ -473,6 +474,7 @@
 							{{/this.comment_for_expert}}
 							{{#if this.analyses}}
 							<div class="account-edit__title mb-20 pt-20">
+								<div class="lk-title">Анализы</div>
 								<a class="btn btn--white btn--compact"
 									href="{{this.analyses}}"
 									target="_blank">
