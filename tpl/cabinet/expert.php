@@ -153,7 +153,7 @@
 						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
 						<div class="account-edit__title mb-20 pt-20">
-							<div class="lk-title">Анализы</div>
+							<div class="mr-10">Анализы</div>
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
 								target="_blank">
@@ -322,7 +322,7 @@
 						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
 						<div class="account-edit__title mb-20 pt-20">
-							<div class="lk-title">Анализы</div>
+							<div class="mr-10">Анализы</div>
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
 								target="_blank">
@@ -341,19 +341,6 @@
 								<button class="btn btn--white" type="submit">Сохранить</button>
 							</form>
 						</div>
-
-						{{#if this.type == 'online'}}
-						<div class="account-events__btns mb-20 pt-20 border-top">
-							<div class="account-event-wrap --aicn">
-								<div class="account-events__btn">
-									<button class="btn btn--white disabled" disabled>
-										Онлайн консультация
-									</button>
-								</div>
-								<p>Кнопка станет активной за 5 минут до начала приема</p>
-							</div>
-						</div>
-						{{/if}}
 						{{#if this.hasPhoto}}
 						<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
 							<div class="row">
@@ -409,6 +396,18 @@
 
 									{{/each}}
 								</div>
+							</div>
+						</div>
+						{{/if}}
+						{{#if this.type == 'online'}}
+						<div class="account-events__btns mb-20 pt-20 border-top">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<button class="btn btn--white disabled" disabled>
+										Онлайн консультация
+									</button>
+								</div>
+								<p>Кнопка станет активной за 5 минут до начала приема</p>
 							</div>
 						</div>
 						{{/if}}
@@ -475,7 +474,7 @@
 							{{/this.comment_for_expert}}
 							{{#if this.analyses}}
 							<div class="account-edit__title mb-20 pt-20">
-								<div class="lk-title">Анализы</div>
+								<div class="mr-10">Анализы</div>
 								<a class="btn btn--white btn--compact"
 									href="{{this.analyses}}"
 									target="_blank">
@@ -975,7 +974,7 @@
 								  sessionStorage['state-accardeon'] + '"] .accardeon__click').trigger('click');
 							});
 						}
-						current_day_events_checker = setTimeout(loadRecords, 10000);
+						current_day_events_checker = setTimeout(loadRecords, 20000);
 						console.log('Records loaded!');
 					})
 			};
