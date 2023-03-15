@@ -104,15 +104,16 @@ $(function () {
 			var _page_name = page_name || '';
 			let pos = sessionStorage["scroll-position--" + _page_name] || false;
 			if (!!pos) {
+				var _tab_el;
 				if (sessionStorage['active-tab--lk-main']){
 					var _tab = sessionStorage['active-tab--lk-main'];
-					var _tab_el = $('.account__tab-items .account__tab-item.data-tab-link[data-tab='+_tab+']');
+					_tab_el = $('.account__tab-items .account__tab-item.data-tab-link[data-tab="'+_tab+'"]');
 					if (_tab_el.length){
 						_tab_el.trigger('click');
 					}
 					sessionStorage.removeItem('active-tab--lk-main');
 				} else {
-					var _tab_el = $('.account__tab-items .account__tab-item.data-tab-link:first');
+					_tab_el = $('.account__tab-items .account__tab-item.data-tab-link:first');
 					if (_tab_el.length){
 						_tab_el.trigger('click');
 					}

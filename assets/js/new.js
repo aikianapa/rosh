@@ -163,6 +163,7 @@ $(function() {
             $('.header').addClass('header-fix');
             $('#mainfilter').css('display', 'block');
         }
+        $('.btn.btn-link.profile-menu.active').removeClass('active');
     });
     $('.mainfilter .mainfilter__close').on('click', function() {
         $('.header').removeClass('header-fix');
