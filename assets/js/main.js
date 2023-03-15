@@ -577,7 +577,7 @@ $(function() {
                         _parent.find('[name="consultation_price"]').val($(this).data('price'));
                         _consultation.attr('data-price', $(this).data('price'));
 
-                        _parent.parents('form').find('.selected-consultation .consultation-header').text(
+                        _parent.parents('form').find('.selected-consultation .consultation-header span').text(
                             $(this).data('name')
                         );
                         _parent.parents('form').find('.selected-consultation .consultation-price').text(

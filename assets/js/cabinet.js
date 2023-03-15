@@ -49,6 +49,12 @@ function fix_comment(text) {
 	return tmp;
 }
 
+function unselectConsultation(el) {
+	var _parent = $(el).parents('form').find('.consultations .select-form[data-show="consultation-type"]');
+	console.log(el, _parent);
+	_parent.find('label[data-show-input="consultation-online"] input.consultation-type').prop('checked', false);
+    _parent.find('label[data-show-input="consultation-online"]').trigger('click');
+}
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
@@ -920,7 +926,7 @@ $(function () {
 	};
 	window.initServicesSearch = function ($selector, service_list) {
 		var _parent_form = $selector.closest('form');
-		$(document).on('click', '.search__drop-delete', function (e) {
+		$(document).on('click', '.search__drop-delete:not(.fake)', function (e) {
 			e.stopPropagation();
 			var item = $(this).parents('.search__drop-item');
 			if (item.data('quote')) {

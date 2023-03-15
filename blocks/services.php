@@ -3,9 +3,9 @@
 	<script wb-app>
 		window.fastquote_top = 0;
 		$(".crumbs").after(`
-        <div class="title-flex --flex --jcsb">
-        <button class="btn btn--black --openpopup" data-popup="--fast-make" href="#">Записаться на прием </button>
-        </div>
+	        <div class="title-flex --flex --jcsb">
+	        <button class="btn btn--black --openpopup" data-popup="--fast-make" href="#">Записаться на прием </button>
+	        </div>
         `);
 		$(".crumbs + div.title-flex + h1").prependTo($(".crumbs + div.title-flex"));
 
@@ -52,7 +52,7 @@
 				$(".all-tabs-item.data-tab-link[data-tab=all]").addClass("active");
 				$(".all-tabs .data-tab-item[data-tab=all]").addClass("active");
 			}
-		}, 500);
+		}, 400);
 	</script>
 
 	<div class="container">

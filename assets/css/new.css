@@ -1758,6 +1758,9 @@ blockquote cite {
 .tag-list .blog-panel__tag{
     margin-right: 6px;
 }
+sup {
+    top: -0.3em!important;
+}
 @media (min-width : 1400px) {
     .fixed-top {
         position  : fixed;

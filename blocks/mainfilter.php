@@ -623,10 +623,15 @@
 						$.each(mainFilter.get('choice.services'), function(i, item) {
 							$(`[data-tab="services"] label[data-id="${item.id}"] > input`).prop(
 								'checked', true);
+							$(`[data-tab="services"] label[data-id="${item.id}"]`).parents('.accardeon').find('.accardeon__click')
+                                .trigger('click');
 						});
 						$.each(mainFilter.get('choice.problems'), function(i, item) {
 							$(`[data-tab="problems"] label[data-id="${item.id}"] > input`).prop(
 								'checked', true);
+							$(`[data-tab="problems"] label[data-id="${item.id}"]`).parents('.accardeon').find('.accardeon__click')
+                                .trigger('click');
+								
 						});
 						setTimeout(function() {
 							$.each(mainFilter.get('choice.symptoms'), function(i, item) {
