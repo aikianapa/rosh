@@ -50,6 +50,7 @@
 				}, 500);
 			} else {
 				$(".all-tabs-item.data-tab-link[data-tab=all]").addClass("active");
+				$(".all-tabs .data-tab-item[data-tab=all]").addClass("active");
 			}
 		}, 500);
 	</script>
