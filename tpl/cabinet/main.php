@@ -1520,7 +1520,6 @@
 								});
 						}
 						_tab.fire('loaded');
-						utils.restoreScroll();
 
 						tabs[target_tab] = {
 							ractive: _tab,
@@ -1542,6 +1541,7 @@
 			});
 
 			setTimeout(function () {
+				utils.restoreScroll();
 				$('.account__table').find('a.client-card[data-href]').each(function (i) {
 					$(this).attr('href', $(this).data('href'));
 				});
@@ -1568,7 +1568,8 @@
 			var _type = $(this).data('type');
 			var _tab  = $(this).data('tab');
 			console.log('open:', _type);
-			sessionStorage.setItem('active-tab--lk-main', _tab);
+			sessionStorage.setItem('state.tab-cabinet', _tab);
+
 			window.load(_type);
 			window.can_update = true;
 		});
