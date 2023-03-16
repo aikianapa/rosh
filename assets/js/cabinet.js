@@ -142,9 +142,11 @@ $(function () {
 					_el = $('.accardeon__click[data-record="' + _open_editor + '"]');
 					if (_el.length) {
 						console.log('_open_editor', _el);
-						_el[0].click();
+						setTimeout(function () {
+							_el[0].click();
+						}, 500);
 					}
-				}, 800);
+				}, 1300);
 			}
 			sessionStorage.removeItem("state.page");
 			sessionStorage.removeItem('state.tab-cabinet');

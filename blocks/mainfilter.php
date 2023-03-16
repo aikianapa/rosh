@@ -383,6 +383,8 @@
 				}, 400);
 			}
 		};
+		mainFilterState.save();
+
 		var mainFilter            = new Ractive({
 			el: '#mainfilter',
 			template: $('#mainfilter template').html(),
@@ -786,6 +788,9 @@
 				let checked = $(this.el).find('.mainfilter__tabs input:checked').length;
 				this.set('checked', checked);
 			}
+		});
+		$(document).on('click', '.btn.btn--white.--openfilter', function () {
+			mainFilterState.save(true);
 		});
 		$(document).on('click', '.popup.--service-l a.btn.btn--black', function () {
 			mainFilterState.save(true);
