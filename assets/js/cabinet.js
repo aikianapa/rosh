@@ -106,8 +106,11 @@ $(function () {
 				sessionStorage["state.page"]        = _page_name;
 				sessionStorage["state.scroll"]      = $(window).scrollTop();
 				sessionStorage["state.tab-cabinet"] = $('.account__tab.data-tab-item.active').data('tab');
-				sessionStorage["state.open-editor"] = $('.accardeon.acount__table-accardeon--pmin.active')
-					.data('record');
+				var _open                           = $('.account__tab.data-tab-item.active ' +
+				                                        '.accardeon.acount__table-accardeon--pmin.active');
+				if (_open.length) {
+					sessionStorage["state.open-editor"] = _open.data('record');
+				}
 			};
 		},
 		restoreScroll(page_name) {
@@ -144,9 +147,9 @@ $(function () {
 						console.log('_open_editor', _el);
 						setTimeout(function () {
 							_el[0].click();
-						}, 1000);
+						}, 650);
 					}
-				}, 1200);
+				}, 1050);
 			}
 			sessionStorage.removeItem("state.page");
 			sessionStorage.removeItem('state.tab-cabinet');
