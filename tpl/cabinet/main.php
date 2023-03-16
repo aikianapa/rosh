@@ -81,7 +81,6 @@
 							<div class="loader"></div>
 						</div>
 					</div>
-
 					<div class="account__tab data-tab-item" data-tab="past" data-type="group=events&status=[past,cancel_think,cancel_expensive,cancel_noreason,id63ea52b10780]">
 						<div class="loading-overlay">
 							<div class="loader"></div>
@@ -483,7 +482,7 @@
 				</div>
 
 				{{#if record.group == 'events'}}
-				<div class="mb-40 admin-editor__images">
+				<div class="mt-20 mb-40 admin-editor__images">
 					{{#if record.hasPhoto}}
 					<div class="row">
 						<div class="col-md-6">
@@ -1637,6 +1636,11 @@
 					//toast('Список обновлен');
 				});
 		});
+		var active_tab = sessionStorage['state.tab-cabinet'] || 'quotes';
+		if (!!active_tab) {
+			$('.account__tab[data-tab="' + active_tab + '"]').addClass('active');
+			$('.account__tab-item[data-tab="' + active_tab + '"]').addClass('active');
+		}
 		utils.saveScroll();
 		window.can_update = true;
 	});

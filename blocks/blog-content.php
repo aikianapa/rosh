@@ -1,5 +1,5 @@
 <view>
-	<div class="container">
+	<div class="container" style="margin-top: 1em;">
 		<div class="row">
 			<div class="col-md-4">
 				<h5 class="h5 content-title" wb-if="'{{aside}}'>''">{{aside}}</h5>
@@ -8,7 +8,7 @@
 				<div class="content-wrap">
 					<h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
 					<div class="blog-inner__text">
-						<div class="text mb-20" wb-if="'{{text}}'>''">
+						<div class="text mb-0" wb-if="'{{text}}'>''">
 							{{text}}
 						</div>
 						<wb-jq wb="$dom->find('p')->addClass('mb-10');

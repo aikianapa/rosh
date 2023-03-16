@@ -813,9 +813,8 @@
 					closeEvent(ev, record) {
 						utils.api.post('/api/v2/update/records/' + record.id, {'status': 'past'})
 							.then(function (res) {
-								console.log(res);
 								toast('Прием завершен успешно');
-								load_records();
+								loadRecords();
 							});
 					},
 					toggleEdit(ev) {
@@ -934,35 +933,35 @@
 				              '&@sort=event_date:d')
 					.then(function (records) {
 						page.set('catalog', window.catalog);
-						page.set('events.upcoming', []); // use {}
-						page.set('events.current', []);
-						page.set('history', []);
-						if (!records) {
-							page.set('ready', true);
+						let events  = {
+							    'upcoming': [],
+							    'current': []
+						    },
+						    history_events = [];
+						if (!!records) {
+							let curr_timestamp = parseInt(getdate()[0]);
+							//!!! set records by id not by index !!!
+							records.forEach(function (rec, idx) {
+								if (rec.status === 'past') {
+									history_events.push(rec);
+									console.log('past:', rec);
+									return;
+								} else if (rec.status !== 'upcoming') {
+									return;
+								} else if (idx === 0) {
+									page.set('closest_event', rec);
+								}
 
-							utils.restoreScroll();
-							return;
+								if (Cabinet.isCurrentEvent(rec)) {
+									events.current.push(rec);
+								} else {
+									events.upcoming.push(rec);
+								}
+							});
 						}
-						let curr_timestamp = parseInt(getdate()[0]);
-						//!!! set records by id not by index !!!
-						records.forEach(function (rec, idx) {
-							if (rec.status === 'past') {
-								page.push('history', rec);
-								console.log('past:', rec);
-								return;
-							} else if (rec.status !== 'upcoming') {
-								return;
-							} else if (idx === 0) {
-								page.set('closest_event', rec);
-							}
 
-							if (Cabinet.isCurrentEvent(rec)) {
-								page.push('events.current', rec);
-							} else {
-								page.push('events.upcoming', rec);
-							}
-						});
-
+						page.set('events', events);
+						page.set('history', history_events);
 						page.set('ready', true);
 						utils.restoreScroll();
 					})
@@ -971,7 +970,7 @@
 						if (sessionStorage['state-accardeon']) {
 							setTimeout(function () {
 								$('.acount__table-accardeon.accardeon[data-accardeon="' +
-								  sessionStorage['state-accardeon'] + '"] .accardeon__click').trigger('click');
+								  sessionStorage['state-accardeon'] + '"]:not(.active) .accardeon__click').trigger('click');
 							});
 						}
 						current_day_events_checker = setTimeout(loadRecords, 20000);

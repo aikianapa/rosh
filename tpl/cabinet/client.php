@@ -912,7 +912,6 @@
 				}
 			}
 		});
-		window.current_day_events      = [];
 		window.sort_events             = function () {
 			$(".account-events.upcoming .account-events__block")
 				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
@@ -930,39 +929,40 @@
 						if (!!current_day_events_checker) {
 							clearTimeout(current_day_events_checker);
 						}
-						console.log('event:', records);
-
-						window.current_day_events = [];
-						page.set('events.upcoming', []);
-						page.set('events.current', []);
-						page.set('history.events', []);
+						console.log('records:', records);
+						let events  = {
+							    'upcoming': [],
+							    'current': []
+						    },
+						    history_events = [];
 						if (!!records) {
 							records.forEach(function (rec, idx) {
 								if (rec.status === 'past') {
-								page.push('history.events', rec);
-								return;
-							}
-							if (rec.status === 'new' || rec.status === 'uncall'  || rec.status === 'delay' ) {
-								rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
-								page.push('events.upcoming', rec);
-								return;
-							}
-							if (rec.status !== 'upcoming') {
-								return;
-							}
+									history_events.push(rec);
+									return;
+								}
+								if (rec.status === 'new' || rec.status === 'uncall' || rec.status === 'delay') {
+									rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
+									events.upcoming.push(rec);
+									return;
+								}
+								if (rec.status !== 'upcoming') {
+									return;
+								}
 
-							rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
+								rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
 
-							if (Cabinet.isCurrentEvent(rec)) {
-								page.push('events.current', rec);
-								console.log('event:', rec);
-							} else {
-								page.push('events.upcoming', rec);
-							}
+								if (Cabinet.isCurrentEvent(rec)) {
+									events.current.push(rec);
+								} else {
+									events.upcoming.push(rec);
+								}
 							});
 
 							window.sort_events();
 						}
+						page.set('events', events);
+						page.set('history.events', history_events);
 						page.set('events_ready', true);
 						$("img[data-src]:not([src])").lazyload();
 					}),
@@ -970,6 +970,8 @@
 					.then(function (records) {
 						if (!!records) {
 							page.set('history.longterms', records);
+						} else {
+							page.set('history.longterms', []);
 						}
 						page.set('longterms_ready', true);
 					})
@@ -977,7 +979,7 @@
 				utils.restoreScroll();
 				if (sessionStorage['state-accardeon']){
 					setTimeout(function (){
-						$('.acount__table-accardeon.accardeon[data-accardeon="'+sessionStorage['state-accardeon']+'"] .accardeon__click').trigger('click');
+						$('.acount__table-accardeon.accardeon[data-accardeon="'+sessionStorage['state-accardeon']+'"]:not(.active) .accardeon__click').trigger('click');
 					});
 				}
 				current_day_events_checker = setTimeout(loadRecords, 10000);
