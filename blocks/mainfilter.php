@@ -384,10 +384,9 @@
 					}
 					var _pos = sessionStorage["mf-state--pos"];
 					if (_pos) {
-						console.log(_cat);
 						setTimeout(function () {
 							$(window).scrollTop(_pos);
-						}, 350);
+						}, 650);
 						sessionStorage.removeItem("mf-state--pos");
 					}
 				}, 400);
