@@ -320,7 +320,12 @@
 		window.mainFilterState    = {
 			save(force) {
 				if (force) {
-					sessionStorage["mf-state--active"] = $('#mainfilter').is(':visible') ? 1 : 0;
+					var _is_active = $('#mainfilter').is(':visible') ? 1 : 0;
+					var _mf_page   = sessionStorage["mf-state--page"];
+					if (!_is_active && (_mf_page !== location.pathname)) {
+						return;
+					}
+					sessionStorage["mf-state--active"] = _is_active;
 					if (!sessionStorage["mf-state--active"]) {
 						sessionStorage.removeItem("mf-state--active");
 						sessionStorage.removeItem("mf-state--page");
@@ -334,7 +339,12 @@
 					}
 				} else {
 					window.onbeforeunload = function () {
-						sessionStorage["mf-state--active"] = $('#mainfilter').is(':visible') ? 1 : 0;
+						var _is_active = $('#mainfilter').is(':visible') ? 1 : 0;
+						var _mf_page   = sessionStorage["mf-state--page"];
+						if (!_is_active && (_mf_page !== location.pathname)) {
+							return;
+						}
+						sessionStorage["mf-state--active"] = _is_active;
 						if (!sessionStorage["mf-state--active"]) {
 							sessionStorage.removeItem("mf-state--active");
 							sessionStorage.removeItem("mf-state--page");
