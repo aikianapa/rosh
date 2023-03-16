@@ -718,7 +718,7 @@
 					{{/if}}
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
-				<div class="mb-4 text-right" data-hide="service-search">
+				<div class="mb-60 text-right" data-hide="service-search">
 					<b>*</b>&nbsp;<small>Не является публичной офертой. Стоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
 

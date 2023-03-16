@@ -239,12 +239,14 @@
 	height : auto;
 	min-height : 62px;
 }
-.container.expert-page .account-events__block{
-	border-bottom: 2px solid #fefefe;
+.container.expert-page .account-events__block {
+	border-bottom : 2px solid #FEFEFE;
 }
-
-.account-events__block{
-	border-bottom-color: #e2e2e2;
+.admin__editor-textarea {
+	height : 160px;
+}
+.account-events__block {
+	border-bottom-color : #E2E2E2;
 }
 .account-events__block .account-events__block-wrap {
 	max-width : 1200px;

@@ -477,7 +477,7 @@
 					{{/if}}
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
-				<div class="mb-4 text-right" data-hide="service-search">
+				<div class="mb-60 text-right" data-hide="service-search">
 					<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
 
@@ -535,9 +535,10 @@
 					<textarea class="admin__editor-textarea" name="comment_for_expert"
 						placeholder="Комментарий для специалистов">{{record.comment_for_expert}}</textarea>
 				</div>
-
-				<textarea class="admin__editor-textarea mb-2" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
-				<hr style="opacity:.5">
+				<div style="width: 100%; max-width: 305px;">
+					<div class="mb-10 text-bold">Комментарий для администратора</div>
+					<textarea class="admin__editor-textarea mb-2" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+				</div>
 			</div>
 		</div>
 	</form>
@@ -1637,9 +1638,14 @@
 				});
 		});
 		var active_tab = sessionStorage['state.tab-cabinet'] || 'quotes';
+		if (active_tab == 'undefined'){
+			sessionStorage.removeItem('state.tab-cabinet');
+			active_tab = 'quotes';
+		}
+
 		if (!!active_tab) {
-			$('.account__tab[data-tab="' + active_tab + '"]').addClass('active');
 			$('.account__tab-item[data-tab="' + active_tab + '"]').addClass('active');
+			$('.account__tab[data-tab="' + active_tab + '"]').addClass('active');
 		}
 		utils.saveScroll();
 		window.can_update = true;

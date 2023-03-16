@@ -154,7 +154,7 @@ $(function () {
 							_el[0].click();
 						}, 650);
 					}
-				}, 1050);
+				}, 500);
 			}
 			sessionStorage.removeItem("state.page");
 			sessionStorage.removeItem('state.tab-cabinet');
