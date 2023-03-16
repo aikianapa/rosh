@@ -144,9 +144,9 @@ $(function () {
 						console.log('_open_editor', _el);
 						setTimeout(function () {
 							_el[0].click();
-						}, 500);
+						}, 1000);
 					}
-				}, 1300);
+				}, 1200);
 			}
 			sessionStorage.removeItem("state.page");
 			sessionStorage.removeItem('state.tab-cabinet');
