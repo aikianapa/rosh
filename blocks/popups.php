@@ -102,7 +102,7 @@
 					quote.experts = experts;
 				}
 
-				toast_success('Мы перезвоним Вам в ближайшее время!');
+				//toast_success('Мы перезвоним Вам в ближайшее время!');
 				quote.event_date       = '';
 				quote.event_time       = '';
 				quote.event_time_start = '';
