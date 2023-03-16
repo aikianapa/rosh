@@ -412,8 +412,8 @@
 											</a>
 										</div>
 										{{/if}}
-										<div class="analysis__description">
-											<p class="text-bold mb-20">Выполнялись процедуры</p>
+										<div class="analysis__description pt-20">
+											<p class="text-bold mb-30">Выполнялись процедуры</p>
 											<ul class="text-grey">
 												{{#each this.service_prices as service_price: i, path}}
 												<li class="service_price">{{service_price.name}}</li>
@@ -429,7 +429,7 @@
 											Получить расшифровку анализов
 										</a>
 										{{/if}}
-										<div class="analysis__description">
+										<div class="analysis__description pt-20">
 											<p class="text-bold mb-20">Рекомендация врача</p>
 											<div class="text">
 												{{{@global.nl2br(.recommendation)}}}
@@ -439,7 +439,7 @@
 								</div>
 							</div>
 
-							<div class="experts__worked">
+							<div class="experts__worked mt-20">
 								<div class="experts__worked-title">С вами работали</div>
 								<div class="row">
 									{{#each .experts}}
@@ -467,7 +467,7 @@
 							</div>
 
 							{{#if this.hasPhoto}}
-							<div class="acount__photos bg-inherit">
+							<div class="acount__photos bg-inherit mt-20">
 								<div class="row">
 									<div class="col-md-5">
 										<p>Фото до приема</p>

@@ -50,7 +50,7 @@
 			<div class="page-content">
 				<div class="container data-tab-wrapper" data-tabs="records">
 					<div class="account__tab-items">
-						<div class="account__tab-item data-tab-link active" data-type="group=quotes" data-tab="quotes" data-tabs="records">Заявки
+						<div class="account__tab-item data-tab-link" data-type="group=quotes" data-tab="quotes" data-tabs="records">Заявки
 						</div>
 						<div class="account__tab-item data-tab-link" data-type="group=events&status=upcoming" data-tab="events" data-tabs="records">События
 						</div>
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 
-					<div class="account__tab data-tab-item active" data-tab="quotes" data-type="group=quotes">
+					<div class="account__tab data-tab-item" data-tab="quotes" data-type="group=quotes">
 						<div class="loading-overlay">
 							<div class="loader"></div>
 						</div>

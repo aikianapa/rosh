@@ -1,5 +1,5 @@
-window.user_role = wbapp?._session?.user?.role;
-window.client_search  = null;
+window.user_role       = wbapp?._session?.user?.role;
+window.client_search   = null;
 Date.prototype.isValid = function () {
 	// An invalid date object returns NaN for getTime() and NaN is the only
 	// object not strictly equal to itself.
@@ -13,19 +13,20 @@ function html_decode(input) {
 	return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
 }
 
-function setPageScrollPosition(_page_name){
+function setPageScrollPosition(_page_name) {
 	window.onbeforeunload = function () {
-	    sessionStorage["scroll-position--"+_page_name] = $(window).scrollTop();
+		sessionStorage["scroll-position--" + _page_name] = $(window).scrollTop();
 	};
-	var pos = sessionStorage["scroll-position--"+_page_name] || false;
+	var pos               = sessionStorage["scroll-position--" + _page_name] || false;
 	if (pos) {
 		$('body').scrollTop(pos);
 		sessionStorage.removeItem("sp--lk-main");
 	}
 }
-function getPageScrollPosition(_page_name, _clear){
-	let res = sessionStorage["scroll-position--"+_page_name] || false;
-	if (!!_clear){
+
+function getPageScrollPosition(_page_name, _clear) {
+	let res = sessionStorage["scroll-position--" + _page_name] || false;
+	if (!!_clear) {
 		sessionStorage.removeItem("scroll-position--" + _page_name);
 	}
 	return res;
@@ -39,13 +40,16 @@ function getPageScrollPosition(_page_name, _clear){
 	//	sessionStorage.removeItem("sp--lk-main");
 	//}
 }
+
 function fix_comment(text) {
 	var title_problems = 'ВЫБРАННЫЕ УСЛУГИ ИЛИ СУЩЕСТВУЮЩИЕ ПРОБЛЕМЫ';
 	var title_symptoms = 'ВЕРОЯТНАЯ ПРОБЛЕМАТИКА ПО СИМПТОМАМ';
-	var tmp = text.replace(title_problems, title_problems.toLowerCase());
-	tmp = tmp.replace(title_problems.toLowerCase(), '<div class="text-bold" style="color:#123">'+ title_problems.toLowerCase()+'</div>');
-	tmp = tmp.replace(title_symptoms, title_symptoms.toLowerCase());
-	tmp = tmp.replace(title_symptoms.toLowerCase(), '<div class="text-bold" style="color:#123">'+ title_symptoms.toLowerCase()+'</div>');
+	var tmp            = text.replace(title_problems, title_problems.toLowerCase());
+	tmp                = tmp.replace(title_problems.toLowerCase(),
+		'<div class="text-bold" style="color:#123">' + title_problems.toLowerCase() + '</div>');
+	tmp                = tmp.replace(title_symptoms, title_symptoms.toLowerCase());
+	tmp                = tmp.replace(title_symptoms.toLowerCase(),
+		'<div class="text-bold" style="color:#123">' + title_symptoms.toLowerCase() + '</div>');
 	return tmp;
 }
 
@@ -53,8 +57,9 @@ function unselectConsultation(el) {
 	var _parent = $(el).parents('form').find('.consultations .select-form[data-show="consultation-type"]');
 	console.log(el, _parent);
 	_parent.find('label[data-show-input="consultation-online"] input.consultation-type').prop('checked', false);
-    _parent.find('label[data-show-input="consultation-online"]').trigger('click');
+	_parent.find('label[data-show-input="consultation-online"]').trigger('click');
 }
+
 $(function () {
 	console.log('>>> cabinet.js loaded ..');
 
@@ -483,12 +488,12 @@ $(function () {
 		},
 		cacheKey: '-new',
 		init(use_session_cache) {
-			var _self   = this;
+			var _self         = this;
 			_self.rawServices = [];
-			var getters = [];
+			var getters       = [];
 			getters.push(
-				utils.api.get('/api/v2/list/catalogs/?'+
-						'@group=_id&@return=tree,name,id&_id=[quote_type,shop_category,srvcat,quote_status,quote_pay]')
+				utils.api.get('/api/v2/list/catalogs/?' +
+				              '@group=_id&@return=tree,name,id&_id=[quote_type,shop_category,srvcat,quote_status,quote_pay]')
 					.then(function (data) {
 						_self.quotePay                    = data['quote_pay'][0]['tree']['data'];
 						_self.quoteType                   = data['quote_type'][0]['tree']['data'];
@@ -627,8 +632,8 @@ $(function () {
 					if (!_self.priceCategories.hasOwnProperty(service.category)) {
 						_self.priceCategories[service.category] = {
 							'name': service.header,
-							'id' : service.category,
-						}
+							'id': service.category
+						};
 					}
 					var service_parent                      = _self.priceCategories[service.category];
 					_self.services[service.category]        = service_parent;
@@ -1217,7 +1222,7 @@ $(function () {
 		});
 	};
 	window.initClientSearch   = function ($form) {
-		var form = $form || $('.popup .popup__form');
+		var form             = $form || $('.popup .popup__form');
 		window.client_search = form.find('input.client-search').autocomplete({
 			noCache: false,
 			minChars: 0,
