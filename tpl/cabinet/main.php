@@ -657,7 +657,7 @@
 						</div>
 						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
-							{{#if no_experts == '1'}}
+							{{#if no_experts == 'qq1'}}
 							<div></div>
 							{{else}}
 							<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].name}},{{/experts}}">
