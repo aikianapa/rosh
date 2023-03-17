@@ -97,9 +97,11 @@
 			quote.longterm_date_end = '';
 			quote.longterm_title    = '';
 
-			quote.photos = {before: [], after: []};
+			quote.photos         = {before: [], after: []};
 			quote.client_comment = client_comment;
-			quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+			quote.active         = 'on';
+
+			quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 
 			window.api.post(
 				'/api/v2/create/records/', quote).then(

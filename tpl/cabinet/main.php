@@ -241,7 +241,7 @@
 		<div class="row">
 			<div class="col-md-7">
 				{{#if record.client_comment}}
-				<div class="account-events__item wide" style="">
+				<div class="account-events__item wide" style="margin-bottom: 10px">
 					<div class="account-event-wrap">
 						<div class="account-events__name" style="font-size: 20px">Причина обращения:</div>
 						<div class="account-event" style="font-size: 16px">
@@ -250,6 +250,19 @@
 					</div>
 				</div>
 				{{/if}}
+				{{#if record.group == 'quotes'}}
+				{{#record.quote_page_comment}}
+				<div class="account-events__item wide" >
+					<div class="account-event-wrap">
+						<div class="account-event" style="font-size: 16px">
+							Заявка на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b>
+
+						</div>
+					</div>
+				</div>
+				{{/record.quote_page_comment}}
+				{{/if}}
+
 				<div class="lk-title">Редактировать заявку</div>
 				<input type="hidden" value="{{ record.id }}" name="id">
 
@@ -664,16 +677,23 @@
 						<div class="admin-events-item col-services flex-column">
 							<p>Услуга</p>
 							{{#if group == 'quotes'}}
-							<div>Заявка из фильтра</div>
+							<div>
+								{{#record.client_comment}}
+								Заявка
+								{{/record.client_comment}}
+								{{^record.quote_page_comment}}
+								из формы
+								{{/record.quote_page_comment}}
+								{{#record.quote_page_comment}}
+								на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b>
+								{{/record.quote_page_comment}}
+							</div>
 							{{/if}}
-
 							{{#if record.consultation }}
 							<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
 							{{/if}}
 
-							{{#if no_services == '1'}}
-							<div></div>
-							{{elseif services}}
+							{{#if record.services}}
 							{{#services}}
 							<div>{{catalog.services[this].header}}</div>
 							{{/services}}

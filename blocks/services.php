@@ -259,7 +259,7 @@
 				quote.client_comment = '';
 
 				quote.price = data?.price || 0;
-				quote.services = Object.values(data?.services || {});
+				quote.services = unique(Object.values(data?.services || {}));
 				quote.service_prices = data?.service_prices;
 
 				quote.event_date = '';
