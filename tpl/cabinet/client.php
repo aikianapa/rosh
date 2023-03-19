@@ -400,11 +400,11 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-							<div class="analysis mb-20 pt-20" style="max-width: 100%">
+							<div class="analysis mb-40 pt-20" style="max-width: 100%">
 								<div class="row">
 									<div class="col-md-4">
 										{{#if this.analyses}}
-										<div class="analysis__top --aicn --flex mb-40">
+										<div class="analysis__top --aicn --flex mb-50">
 											<div class="analysis__title">Анализы</div>
 											<a class="btn btn--white" href="{{this.analyses}}"
 												target="_blank">
@@ -412,7 +412,7 @@
 											</a>
 										</div>
 										{{/if}}
-										<div class="analysis__description pt-20">
+										<div class="analysis__description pt-30">
 											<p class="text-bold mb-30">Выполнялись процедуры</p>
 											<ul class="text-grey">
 												{{#each this.service_prices as service_price: i, path}}
@@ -423,13 +423,13 @@
 									</div>
 									<div class="col-md-8">
 										{{#if this.analyses}}
-										<a class="btn btn--black mb-40 --openpopup"
+										<a class="btn btn--black mb-50 --openpopup"
 											data-popup="--analize-type"
 											onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
 											Получить расшифровку анализов
 										</a>
 										{{/if}}
-										<div class="analysis__description pt-20">
+										<div class="analysis__description pt-30">
 											<p class="text-bold mb-20">Рекомендация врача</p>
 											<div class="text">
 												{{{@global.nl2br(.recommendation)}}}
@@ -439,7 +439,7 @@
 								</div>
 							</div>
 
-							<div class="experts__worked mt-20">
+							<div class="experts__worked mt-20 pt-20">
 								<div class="experts__worked-title">С вами работали</div>
 								<div class="row">
 									{{#each .experts}}
