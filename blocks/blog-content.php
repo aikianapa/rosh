@@ -1,5 +1,5 @@
 <view>
-	<div class="container" style="margin-top: 1em;">
+	<div class="container" style="margin-top: 1.5em;">
 		<div class="row">
 			<div class="col-md-4">
 				<h5 class="h5 content-title" wb-if="'{{aside}}'>''">{{aside}}</h5>
