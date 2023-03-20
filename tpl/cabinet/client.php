@@ -432,7 +432,9 @@
 										<div class="analysis__description pt-30">
 											<p class="text-bold mb-20">Рекомендация врача</p>
 											<div class="text">
-												{{{@global.nl2br(.recommendation)}}}
+												{{#this.recommendation}}
+												{{{@global.nl2br(this.recommendation)}}}
+												{{/this.recommendation}}
 											</div>
 										</div>
 									</div>
