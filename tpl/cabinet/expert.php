@@ -812,6 +812,7 @@
 					},
 					closeEvent(ev, record) {
 						sessionStorage.removeItem('state-accardeon');
+						$(ev.node).parents('.acount__table-accardeon.accardeon').removeClass('active');
 
 						if (record?.meetroom?.meetingId) {
 							onlineRooms.delete(record.meetroom.meetingId, function (meetroom) {});
