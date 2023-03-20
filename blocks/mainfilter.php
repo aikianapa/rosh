@@ -1,5 +1,5 @@
 <view>
-	<div class="mainfilter" id="mainfilter" wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='client'">
+	<div class="mainfilter" id="mainfilter" wb-if="in_array('{{_sess.user.role}}',['','client','admin'])">
 		<a href="#" class="mainfilter-mob">
 			<span class="hb-ico basket2-ico"></span>
 			<i>0</i>
@@ -293,6 +293,7 @@
 			quote.recommendation = '';
 			quote.description    = '';
 			quote.client_comment = client_comment;
+			quote.is_mainfilter_quote = 1;
 			quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 			window.api.post(
 				'/api/v2/create/records/', quote).then(

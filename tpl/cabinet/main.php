@@ -252,7 +252,7 @@
 				{{/if}}
 				{{#if record.group == 'quotes'}}
 				{{#record.quote_page_comment}}
-				<div class="account-events__item wide" >
+				<div class="account-events__item wide mb-30" >
 					<div class="account-event-wrap">
 						<div class="account-event" style="font-size: 16px">
 							Заявка на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b>
@@ -657,7 +657,7 @@
 						</div>
 						<div class="admin-events-item col-experts flex-column">
 							<p>Специалист</p>
-							{{#if no_experts == 'qq1'}}
+							{{#if no_experts == '1'}}
 							<div></div>
 							{{else}}
 							<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].name}},{{/experts}}">
@@ -676,19 +676,16 @@
 						</div>
 						<div class="admin-events-item col-services flex-column">
 							<p>Услуга</p>
-							{{#if group == 'quotes'}}
-							<div>
-								{{#record.client_comment}}
-								Заявка
-								{{/record.client_comment}}
-								{{^record.quote_page_comment}}
-								из формы
-								{{/record.quote_page_comment}}
-								{{#record.quote_page_comment}}
-								на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b>
-								{{/record.quote_page_comment}}
+							{{#if group == 'events'}}
+							{{elseif record.quote_page_comment}}
+							<div>Заявка на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b></div>
+							{{elseif record.is_mainfilter_quote == '1'}}
+							<div>Заявка из фильтра</div>
+							{{else}}
+							<div>Заявка из формы
 							</div>
 							{{/if}}
+							
 							{{#if record.consultation }}
 							<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
 							{{/if}}
@@ -1658,11 +1655,10 @@
 				});
 		});
 		var active_tab = sessionStorage['state.tab-cabinet'] || 'quotes';
-		if (active_tab == 'undefined'){
+		if (!['quotes', 'events', 'past', 'longterms'].includes(active_tab)){
 			sessionStorage.removeItem('state.tab-cabinet');
 			active_tab = 'quotes';
 		}
-
 		if (!!active_tab) {
 			$('.account__tab-item[data-tab="' + active_tab + '"]').addClass('active');
 			$('.account__tab[data-tab="' + active_tab + '"]').addClass('active');

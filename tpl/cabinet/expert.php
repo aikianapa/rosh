@@ -811,7 +811,15 @@
 						Cabinet.runOnlineChat(record?.meetroom?.roomName);
 					},
 					closeEvent(ev, record) {
-						utils.api.post('/api/v2/update/records/' + record.id, {'status': 'past'})
+						sessionStorage.removeItem('state-accardeon');
+
+						if (record?.meetroom?.meetingId) {
+							onlineRooms.delete(record.meetroom.meetingId, function (meetroom) {});
+						}
+						record.status       = 'past';
+						record.meetroom     = null;
+						record.has_meetroom = 0;
+						utils.api.post('/api/v2/update/records/' + record.id, record)
 							.then(function (res) {
 								toast('Прием завершен успешно');
 								loadRecords();
