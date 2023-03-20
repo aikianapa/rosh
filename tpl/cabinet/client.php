@@ -233,7 +233,7 @@
 				<div class="account-events__item wide">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Причина обращения:</div>
-						<div class="account-event text-justify">
+						<div class="account-event">
 							{{{@global.nl2br(@global.fix_comment(.client_comment))}}}
 						</div>
 					</div>
