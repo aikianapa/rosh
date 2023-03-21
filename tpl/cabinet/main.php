@@ -424,24 +424,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="admin-editor__patient">
-					<div class="mb-20 admin-editor__event">
-						<div class="search__block --flex --aicn">
-							<div class="input">
-								<input class="popup-services-list" type="text" placeholder="Поиск по услугам" autocomplete="off">
-								<div class="search__drop"></div>
-								<button class="search__btn" type="button">
-									<svg class="svgsprite _search">
-										<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-									</svg>
-								</button>
-								<div class="service-search__list" style="position: relative;"></div>
-							</div>
+				<div class="mb-20 admin-editor__event">
+					<div class="search__block --flex --aicn">
+						<div class="input">
+							<input class="popup-services-list" type="text" placeholder="Поиск по услугам" autocomplete="off">
+							<div class="search__drop"></div>
+							<button class="search__btn" type="button">
+								<svg class="svgsprite _search">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+								</svg>
+							</button>
+							<div class="service-search__list" style="position: relative;"></div>
 						</div>
 					</div>
-					<div class="mb-20 admin-editor__event">
-						<!-- services-select.dropdown -->
-					</div>
+				</div>
+				<div class="admin-editor__patient">
 					<div class="mb-10 text-bold">Выбраны услуги</div>
 
 					<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
@@ -501,12 +498,12 @@
 					{{/if}}
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
-				<div class="mb-60 text-right" data-hide="service-search">
+				<div class="mb-80 text-right" data-hide="service-search">
 					<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
 
 				{{#if record.group == 'events'}}
-				<div class="mt-50 mb-40 admin-editor__images">
+				<div class="pt-30 mb-40 admin-editor__images">
 					{{#if record.hasPhoto}}
 					<div class="row">
 						<div class="col-md-6">
@@ -1488,6 +1485,11 @@
 
 														if (!new_data.hasOwnProperty('has_meetroom')) {
 															new_data.has_meetroom = 0;
+														}
+														if (!new_data.hasOwnProperty('consultation')) {
+															new_data.consultation       = null;
+															new_data.for_consultation   = 0;
+															new_data.consultation_price = 0;
 														}
 														if (!new_data.hasOwnProperty('services')) {
 															new_data.services       = null;

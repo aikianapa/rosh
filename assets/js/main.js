@@ -580,8 +580,8 @@ $(function() {
                         _parent.parents('form').find('.selected-consultation .consultation-header span').text(
                             $(this).data('name')
                         );
-                        _parent.parents('form').find('.selected-consultation .consultation-price').text(
-                            utils.formatPrice($(this).data('price')) + ' ₽'
+                        _parent.parents('form').find('.selected-consultation .consultation-price').html(
+                            utils.formatPrice($(this).data('price')) + ' ₽<sup><b>*</b></sup>'
                         );
                         _parent.parents('form').find('.selected-consultation').removeClass('d-none').addClass('d-flex');
                         setTimeout(function () {
@@ -784,10 +784,6 @@ $(function() {
             sessionStorage.removeItem('db.experts_alt');
             sessionStorage.removeItem('db.expert_list');
             sessionStorage.removeItem('db.expert_user_list');
-        }).on('click', '.popups__text-chexboxs .text-radio:has(input[name="service_category"])', function (e){
-            //if ($(this).find('input:checked')) {
-            //    $(this).find('input:checked').prop('checked', false);
-            //}
         });
 
         $(document).on('wb-verify-false', function(e, el, err) {

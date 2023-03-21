@@ -653,7 +653,7 @@
 						</div>
 						<div class="search__drop-right">
 							<div class="search__drop-summ consultation-price">
-								{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+								{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽<sup><b>*</b></sup>
 							</div>
 						</div>
 					</div>
@@ -1418,6 +1418,11 @@
 									}
 									if (!new_data.hasOwnProperty('has_meetroom')) {
 										new_data.has_meetroom = 0;
+									}
+									if (!new_data.hasOwnProperty('consultation')) {
+										new_data.consultation       = null;
+										new_data.for_consultation   = 0;
+										new_data.consultation_price = 0;
 									}
 									if (!new_data.hasOwnProperty('services')) {
 										new_data.services       = [];

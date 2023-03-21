@@ -12,7 +12,7 @@
 						</button>
 						<div class="popup__name text-bold">Запись на прием</div>
 						<div class="mb-10 text-bold">Разделы услуг</div>
-						<div class="popups__text-chexboxs">
+						<div class="popups__text-chexboxs service-categories">
 							<label class="text-radio">
 								<input type="radio" name="service_category" value="{{id}}" checked on-click="selectCategory">
 								<span>Все услуги</span>
@@ -172,7 +172,7 @@
 								</div>
 								<div class="search__drop-right">
 									<div class="search__drop-summ consultation-price">
-										{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+										{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽<sup><b>*</b></sup>
 									</div>
 								</div>
 							</div>
@@ -337,7 +337,7 @@
 									<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}">
                                      {{else}}
 									<div class="mb-20 admin-editor__event">
-										<div class="popups__text-chexboxs">
+										<div class="popups__text-chexboxs service-categories">
 											<label class="text-radio">
 												<input type="radio" name="service_category" value="{{id}}" checked
 													on-click="selectCategory">
@@ -547,7 +547,7 @@
 											</div>
 											<div class="search__drop-right">
 												<div class="search__drop-summ consultation-price">
-													{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+													{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽<sup><b>*</b></sup>
 												</div>
 											</div>
 										</div>
@@ -1757,7 +1757,7 @@
 									</div>
 									<div class='search__drop-right'>
 										<div class='search__drop-summ consultation-price'>
-											{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+											{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽<sup><b>*</b></sup>
 										</div>
 									</div>
 								</div>

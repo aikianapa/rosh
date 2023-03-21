@@ -564,6 +564,9 @@ img.preview.cloned{
 .admin-editor__patient .search__drop-name{
 	line-height: 1.6em;
 }
+.popups__text-chexboxs.service-categories .text-radio span{
+	justify-content: center;
+}
 @media (max-width : 1280px) {
 	.admin-events-item:nth-child(7) {
 		width          : 7%;
