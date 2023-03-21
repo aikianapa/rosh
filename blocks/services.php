@@ -4,7 +4,7 @@
 		window.fastquote_top = 0;
 		$(".crumbs").after(`
 	        <div class="title-flex --flex --jcsb">
-	        <button class="btn btn--black --openpopup" data-popup="--fast-make" href="#">Записаться на прием </button>
+	        <button class="btn btn--black --openpopup" data-popup="--fast" href="#">Записаться на прием </button>
 	        </div>
         `);
 		$(".crumbs + div.title-flex + h1").prependTo($(".crumbs + div.title-flex"));

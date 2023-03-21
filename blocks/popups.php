@@ -104,6 +104,15 @@
 				if (quote_page_comment) {
 					quote.quote_page_comment = quote_page_comment;
 				}
+				quote.quote_from_page = '';
+				var page_crumbs = [];
+				$('.crumbs__link').each(function (i) {
+					if (i === 0) return;
+					page_crumbs.push($(this).text());
+				});
+				if (page_crumbs.length){
+					quote.quote_from_page = page_crumbs.join(' / ');
+				}
 				quote.client_comment = client_comment;
 
 				//toast_success('Мы перезвоним Вам в ближайшее время!');

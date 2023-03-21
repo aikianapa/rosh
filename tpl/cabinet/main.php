@@ -240,6 +240,16 @@
 	<form class="record-edit mt-2">
 		<div class="row">
 			<div class="col-md-7">
+				{{#if record.quote_from_page}}
+				<div class="account-events__item wide mb-20">
+					<div class="account-event-wrap">
+						<div class="account-events__name" style="font-size: 20px">Страница обращения:</div>
+						<div class="account-event" style="font-size: 16px">
+							{{record.quote_from_page}}
+						</div>
+					</div>
+				</div>
+				{{/if}}
 				{{#if record.client_comment}}
 				<div class="account-events__item wide">
 					<div class="account-event-wrap">
@@ -496,11 +506,11 @@
 				</div>
 
 				{{#if record.group == 'events'}}
-				<div class="mt-20 mb-40 admin-editor__images">
+				<div class="mt-50 mb-40 admin-editor__images">
 					{{#if record.hasPhoto}}
 					<div class="row">
 						<div class="col-md-6">
-							<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
+							<div class="mb-30 text-bold text-big">Фото до начала лечения</div>
 							{{#each record.photos.before}} <!--single photo!-->
 							<a class="before-healing photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-href="{{.src}}" data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
 								<div class="healing__date">
@@ -511,7 +521,7 @@
 							{{/each}}
 						</div>
 						<div class="col-md-6">
-							<div class="mb-20 text-bold text-big">
+							<div class="mb-30 text-bold text-big">
 								Фото в процессе лечения
 							</div>
 							<div class="after-healing">

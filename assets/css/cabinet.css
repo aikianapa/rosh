@@ -310,7 +310,7 @@ div.accardeon.active > div.accardeon__list {
 	margin-right : 0;
 }
 .autocomplete-suggestion .search__drop-right .search__drop-summ {
-	min-width: 80px;
+	min-width: 70px;
 	text-align: right;
 }
 .autocomplete-suggestions.search__drop {
@@ -558,8 +558,11 @@ img.preview.cloned{
 	padding-bottom: 16px;
 	padding-top: 16px;
 }
-.search__drop-name.consultation-header > span{
-	margin-top: 2px;
+.search__drop-name{
+	max-width: 420px;
+}
+.admin-editor__patient .search__drop-name{
+	line-height: 1.6em;
 }
 @media (max-width : 1280px) {
 	.admin-events-item:nth-child(7) {

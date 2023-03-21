@@ -54,10 +54,12 @@ function fix_comment(text) {
 }
 
 function unselectConsultation(el) {
-	var _parent = $(el).parents('form').find('.consultations .select-form[data-show="consultation-type"]');
-	console.log(el, _parent);
-	_parent.find('label[data-show-input="consultation-online"] input.consultation-type').prop('checked', false);
-	_parent.find('label[data-show-input="consultation-online"]').trigger('click');
+	var _parent = $(el).parents('form').find('.consultations .select-form[data-show="consultation-type"] .popups__text-chexboxs');
+	//input.consultation-type
+	var _lbl = _parent.find('label:has(input:checked)');
+	var _lbl2 = _parent.find('label:has(input:not(:checked))');
+	_lbl2.trigger('click');
+	_lbl.trigger('click');
 }
 
 $(function () {
@@ -676,13 +678,13 @@ $(function () {
 						}
 					}
 					let _item = {
-						value: title,
+						value: title.trim(),
 						id: service.category + '-' + service.id,
 						data: {
 							from: service?.from,
 							quote: _quote,
 							service_id: service.category,
-							service_title: _self.priceCategories[service.category].name,
+							service_title: _self.priceCategories[service.category].name.trim(),
 							tags: _tags,
 							price: service.price,
 							price_id: service.id
@@ -696,9 +698,18 @@ $(function () {
 						service_id: service.category,
 						service_title: _self.priceCategories[service.category].name,
 						price: service.price,
-						header: service.header,
+						header: service.header.trim(),
 						tags: _tags
 					};
+				});
+				_self.servicesList.sort(function (a, b) {
+					if (a.value < b.value) {
+						return -1;
+					}
+					if (a.value > b.value) {
+						return 1;
+					}
+					return 0;
 				});
 
 				$(document).trigger('cabinet-db-ready');
@@ -1280,6 +1291,12 @@ $(function () {
 					initPlugins($(this.el));
 				},
 				selectCategory(ev) {
+					console.log($(ev.node));
+					if ($(ev.node).is(':checked')){
+						console.log('checked');
+					} else {
+						console.log('unchecked');
+					}
 					var _el = $(ev.node).parents('form').find('.search__input.search-services');
 
 					setTimeout(function () {

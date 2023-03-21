@@ -13,6 +13,10 @@
 						<div class="popup__name text-bold">Запись на прием</div>
 						<div class="mb-10 text-bold">Разделы услуг</div>
 						<div class="popups__text-chexboxs">
+							<label class="text-radio">
+								<input type="radio" name="service_category" value="{{id}}" checked on-click="selectCategory">
+								<span>Все услуги</span>
+							</label>
 							{{#each categories}}
 							<label class="text-radio">
 								<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
@@ -334,6 +338,11 @@
                                      {{else}}
 									<div class="mb-20 admin-editor__event">
 										<div class="popups__text-chexboxs">
+											<label class="text-radio">
+												<input type="radio" name="service_category" value="{{id}}" checked
+													on-click="selectCategory">
+												<span>Все услуги</span>
+											</label>
 											{{#each @global.catalog.categories}}
 											<label class="text-radio">
 												<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
@@ -645,6 +654,13 @@
 							console.log('show');
 						},
 						selectCategory(ev) {
+							console.log($(ev.node));
+							if ($(ev.node).is(':checked')) {
+								console.log('checked');
+							} else {
+								console.log('unchecked');
+							}
+
 							var _el = $(ev.node).parents('form').find('.search__input.search-services');
 
 							setTimeout(function () {
