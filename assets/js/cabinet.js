@@ -981,8 +981,9 @@ $(function () {
 			noCache: false,
 			minChars: 0,
 			lookup: service_list,
+			appendTo: _parent_form.find('.service-search__list'),
 			noSuggestionNotice: '<p>Услуга не найдена..</p>',
-			showNoSuggestionNotice: 1,
+			showNoSuggestionNotice: true,
 			beforeRender: function (container, suggestions) {
 				var CNT = $(container);
 				$(container).addClass('search__drop').html('');

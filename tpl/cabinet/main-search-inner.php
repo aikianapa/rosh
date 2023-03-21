@@ -631,6 +631,7 @@
 										<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
 									</svg>
 								</button>
+								<div class="service-search__list" style="position: relative;"></div>
 							</div>
 						</div>
 					</div>

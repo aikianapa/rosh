@@ -784,6 +784,11 @@ $(function() {
             sessionStorage.removeItem('db.experts_alt');
             sessionStorage.removeItem('db.expert_list');
             sessionStorage.removeItem('db.expert_user_list');
+        }).on('click', '.popups__text-chexboxs .text-radio', function (e){
+            console.log('clicked', $(this), e);
+            //if ($(this).find('input:checked')) {
+            //    $(this).find('input:checked').prop('checked', false);
+            //}
         });
 
         $(document).on('wb-verify-false', function(e, el, err) {
