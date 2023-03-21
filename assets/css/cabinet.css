@@ -352,8 +352,9 @@ div.accardeon.active > div.accardeon__list {
 	line-height   : 1.2;
 }
 .admin-editor__patient .search__drop-item {
-	background : white;
-	padding    : 10px 0 10px 12px;
+	background    : white;
+	padding       : 10px 0 10px 12px;
+	border-radius : 10px;
 }
 .acount__table-accardeon.accardeon {
 	margin-bottom  : 12px;
