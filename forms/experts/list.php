@@ -2,7 +2,7 @@
 <div class="m-3" id="yongerSpace">
     <div id="{{_form}}List">
         <nav class="nav navbar navbar-expand-md col">
-            <h3 class="order-1 tx-bold tx-spacing--2">Услуги</h3>
+            <h3 class="order-1 tx-bold tx-spacing--2">Специалисты</h3>
             <div class="order-2 float-right ml-auto" wb-disallow="content">
                 <a href="#" data-ajax="{'url':'/cms/ajax/form/{{_form}}/edit/_new','html':'modals'}" class="btn btn-primary">
                     <img src="/module/myicons/24/FFFFFF/item-select-plus-add.svg" width="24" height="24" /> Добавить
