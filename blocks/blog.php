@@ -10,6 +10,20 @@
             <h1 class="h1">{{_parent.header}}</h1>
             <div class="filter" id="blogFilter">
                 <div class="filter__item">
+                    <div class="filter__name text-bold">Теги </div>
+                    <div class="filter__select">
+                        <div class="filter-select select">
+                            <div class="filter-select__main select__main">Все</div>
+                            <div class="filter-select__list select__list" id="tag">
+                                <div class="filter-select__item select__item filter-tag" data-tag="*" on-click="setTag">Все</div>
+                                {{#each t}}
+                                    <div class="filter-select__item select__item active blank" data-tag="{{.}}" on-click="setTag">{{.}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter__item">
                     <div class="filter__name text-bold">Разделы </div>
                     <div class="filter__select">
                         <div class="filter-select select">
@@ -71,7 +85,8 @@
                     <wb-var width="33" wb-if="'{{_ndx}}'=='8'" />
                     <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})" data-date="{{date}}">
                         <div class="blog-panel__tags">
-                            <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
+                            <div class="blog-panel__tag mr-20" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
+                            <div class="tag-list d-none" data-tags="{{tags}}"></div>
                             <div wb-if="'{{category}}'=='action'">
                                 <div class="blog-panel__tag" wb-if="'{{done}}'=='on'">Завершенная</div>
                                 <div class="blog-panel__tag" wb-if="'{{done}}'!=='on'">Активная</div>

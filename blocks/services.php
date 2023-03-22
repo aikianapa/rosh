@@ -3,9 +3,9 @@
 	<script wb-app>
 		window.fastquote_top = 0;
 		$(".crumbs").after(`
-        <div class="title-flex --flex --jcsb">
-        <button class="btn btn--black --openpopup" data-popup="--fast-make" href="#">Записаться на прием </button>
-        </div>
+	        <div class="title-flex --flex --jcsb">
+	        <button class="btn btn--black --openpopup" data-popup="--fast" href="#">Записаться на прием </button>
+	        </div>
         `);
 		$(".crumbs + div.title-flex + h1").prependTo($(".crumbs + div.title-flex"));
 
@@ -50,8 +50,9 @@
 				}, 500);
 			} else {
 				$(".all-tabs-item.data-tab-link[data-tab=all]").addClass("active");
+				$(".all-tabs .data-tab-item[data-tab=all]").addClass("active");
 			}
-		}, 500);
+		}, 400);
 	</script>
 
 	<div class="container">
@@ -70,7 +71,7 @@
 			</wb-foreach>
 		</div>
 		<div class="all-tabs data-tab-wrapper" data-tabs="services">
-			<div class="all-tab data-tab-item active" data-tab="all">
+			<div class="all-tab data-tab-item" data-tab="all">
 				<wb-var srvlist wb-api="/api/v2/list/services?active=on&@sort=_sort,header" />
 				<div class="all-services" id="servicesList">
 					<wb-foreach wb="from=_var.srvlist&tpl=false">
@@ -258,7 +259,7 @@
 				quote.client_comment = '';
 
 				quote.price = data?.price || 0;
-				quote.services = Object.values(data?.services || {});
+				quote.services = unique(Object.values(data?.services || {}));
 				quote.service_prices = data?.service_prices;
 
 				quote.event_date = '';

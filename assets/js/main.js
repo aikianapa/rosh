@@ -50,7 +50,9 @@ $(function() {
     window.toast_warning = function (text, head) {
         toast(text, head, 'warning');
     };
-
+    window.str_to_array = function(text){
+        return text.split(',');
+    };
     window.api           = {
         get(path, data) {
             let _path = path;
@@ -199,12 +201,18 @@ $(function() {
         }).on('click', '#mainmenu', function(e) {
             e.stopPropagation();
         }).on('click', '.accardeon .accardeon__click', function() {
-            if ($(this).closest('.accardeon').hasClass('active')) {
-                $(this).closest('.accardeon').removeClass('active');
+            var _accardeon = $(this).closest('.accardeon');
+            if (_accardeon.hasClass('active')) {
+                _accardeon.removeClass('active');
+                if (_accardeon.attr('data-accardeon')){
+                    sessionStorage.removeItem('state-accardeon');
+                }
             } else {
-                $(this).closest('.accardeon').addClass('active').siblings('.accardeon').removeClass('active');
+                _accardeon.addClass('active').siblings('.accardeon').removeClass('active');
+                if (_accardeon.attr('data-accardeon')){
+                    sessionStorage['state-accardeon'] = _accardeon.attr('data-accardeon');
+                }
             }
-
             return false;
         }).on('___click', '.select .select__main', function() { // ###############
             if ($(this).parent().hasClass('active')) {
@@ -569,11 +577,11 @@ $(function() {
                         _parent.find('[name="consultation_price"]').val($(this).data('price'));
                         _consultation.attr('data-price', $(this).data('price'));
 
-                        _parent.parents('form').find('.selected-consultation .consultation-header').text(
+                        _parent.parents('form').find('.selected-consultation .consultation-header span').text(
                             $(this).data('name')
                         );
-                        _parent.parents('form').find('.selected-consultation .consultation-price').text(
-                            utils.formatPrice($(this).data('price')) + ' ₽'
+                        _parent.parents('form').find('.selected-consultation .consultation-price').html(
+                            utils.formatPrice($(this).data('price')) + ' ₽<sup><b>*</b></sup>'
                         );
                         _parent.parents('form').find('.selected-consultation').removeClass('d-none').addClass('d-flex');
                         setTimeout(function () {

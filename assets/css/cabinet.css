@@ -239,8 +239,14 @@
 	height : auto;
 	min-height : 62px;
 }
-.account-events__block{
-	border-bottom-color: #e2e2e2;
+.container.expert-page .account-events__block {
+	border-bottom : 2px solid #FEFEFE;
+}
+.admin__editor-textarea {
+	height : 160px;
+}
+.account-events__block {
+	border-bottom-color : #E2E2E2;
 }
 .account-events__block .account-events__block-wrap {
 	max-width : 1200px;
@@ -293,6 +299,9 @@
 div.accardeon.active > div.accardeon__list {
 	border-top : 1px solid #E0E0EA;
 }
+.mainfilter__tabs div.accardeon.active > div.accardeon__list {
+	border-top : none;
+}
 .ui-timepicker-container.ui-timepicker-standard {
 	z-index : 9999 !important;
 }
@@ -301,7 +310,8 @@ div.accardeon.active > div.accardeon__list {
 	margin-right : 0;
 }
 .autocomplete-suggestion .search__drop-right .search__drop-summ {
-	min-width: 42px;
+	min-width: 70px;
+	text-align: right;
 }
 .autocomplete-suggestions.search__drop {
 	padding          : 12px;
@@ -342,8 +352,9 @@ div.accardeon.active > div.accardeon__list {
 	line-height   : 1.2;
 }
 .admin-editor__patient .search__drop-item {
-	background : white;
-	padding    : 10px 0 10px 12px;
+	background    : white;
+	padding       : 10px 0 10px 12px;
+	border-radius : 10px;
 }
 .acount__table-accardeon.accardeon {
 	margin-bottom  : 12px;
@@ -532,6 +543,31 @@ img.preview.cloned{
 .text-justify {
 	text-align : justify;
 }
+.account-event-wrap .account-events__name {
+	margin-right : 10px;
+}
+
+.admin-events-item.comment {
+	overflow           : hidden;
+	text-overflow      : ellipsis;
+	display            : -webkit-box;
+	-webkit-line-clamp : 3; /* number of lines to show */
+	line-clamp         : 3;
+	-webkit-box-orient : vertical;
+}
+.accardeon__main.acount__table-auto{
+	padding-bottom: 16px;
+	padding-top: 16px;
+}
+.search__drop-name{
+	max-width: 420px;
+}
+.admin-editor__patient .search__drop-name{
+	line-height: 1.6em;
+}
+.popups__text-chexboxs.service-categories .text-radio span{
+	justify-content: center;
+}
 @media (max-width : 1280px) {
 	.admin-events-item:nth-child(7) {
 		width          : 7%;
@@ -612,7 +648,7 @@ img.preview.cloned{
 		width         : auto;
 		margin-right  : 20px;
 		margin-top    : 0;
-		margin-bottom : 20px;
+		margin-bottom : 60px;
 	}
 	.before-healing__photo {
 		height : 171px;

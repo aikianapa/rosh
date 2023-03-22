@@ -631,6 +631,7 @@
 										<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
 									</svg>
 								</button>
+								<div class="service-search__list" style="position: relative;"></div>
 							</div>
 						</div>
 					</div>
@@ -640,12 +641,19 @@
 					<div class="text-bold mb-10">Выбраны услуги</div>
 
 					<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-						<div class="search__drop-name pl-0 consultation-header">
+						<div class="search__drop-name consultation-header">
+							<div class="search__drop-delete fake" onclick="unselectConsultation(this);">
+								<svg class="svgsprite _delete">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+								</svg>
+							</div>
+							<span>
 							{{@global.catalog.spec_service.consultations[record.type][record.consultation].header}}
+							</span>
 						</div>
 						<div class="search__drop-right">
 							<div class="search__drop-summ consultation-price">
-								{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽
+								{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[record.type][record.consultation].price)}} ₽<sup><b>*</b></sup>
 							</div>
 						</div>
 					</div>
@@ -711,7 +719,7 @@
 					{{/if}}
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
-				<div class="mb-4 text-right" data-hide="service-search">
+				<div class="mb-60 text-right" data-hide="service-search">
 					<b>*</b>&nbsp;<small>Не является публичной офертой. Стоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
 
@@ -1404,11 +1412,26 @@
 									if (!!new_data.experts) {
 										new_data.no_experts = 0;
 									}
-									if (!!new_data.services) {
+									if (new_data.group === 'events' &&
+									    (!!new_data.services || !!new_data.consultation)) {
 										new_data.no_services = 0;
 									}
+									if (!new_data.hasOwnProperty('has_meetroom')) {
+										new_data.has_meetroom = 0;
+									}
+									if (!new_data.hasOwnProperty('consultation')) {
+										new_data.consultation       = null;
+										new_data.for_consultation   = 0;
+										new_data.consultation_price = 0;
+									}
+									if (!new_data.hasOwnProperty('services')) {
+										new_data.services       = [];
+										new_data.service_prices = {};
+									} else {
+										new_data.services = utils.arr.unique(new_data.services);
+									}
 
-									if (!new_data.price) {
+									if (new_data.group === 'upcoming' && !new_data.price) {
 										toast_error('Необходимо выбрать услугу');
 										$($(ev.node).parents('form'))
 											.find('.popup-services-list')
@@ -1417,7 +1440,6 @@
 									}
 
 									new_data.event_date = utils.dateForce(new_data.event_date);
-									new_data.services   = utils.arr.unique(new_data.services);
 
 									changeLogSave(new_data, _record);
 									var is_saved = false;

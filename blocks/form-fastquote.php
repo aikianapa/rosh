@@ -2,6 +2,7 @@
 	<div class="fast-form-block">
 		<template>
 			<div class="popup fast-form-block">
+				<div class="popup__overlay"></div>
 				<div class="popup__wrapper">
 					<div class="popup__panel --succed">
 						<button class="popup__close">
@@ -87,8 +88,16 @@
 			if(experts){
 				quote.experts=experts;
             }
-
-			toast_success('Мы перезвоним Вам в ближайшее время!');
+			quote.quote_from_page = '';
+			var page_crumbs       = [];
+			$('.crumbs__link').each(function (i) {
+				if (i === 0) return;
+				page_crumbs.push($(this).text());
+			});
+			if (page_crumbs.length) {
+				quote.quote_from_page = page_crumbs.join(' / ');
+			}
+			quote.client_comment = client_comment;
 			quote.event_date       = '';
 			quote.event_time       = '';
 			quote.event_time_start = '';
@@ -97,9 +106,11 @@
 			quote.longterm_date_end = '';
 			quote.longterm_title    = '';
 
-			quote.photos = {before: [], after: []};
+			quote.photos         = {before: [], after: []};
 			quote.client_comment = client_comment;
-			quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+			quote.active         = 'on';
+
+			quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 
 			window.api.post(
 				'/api/v2/create/records/', quote).then(

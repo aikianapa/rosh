@@ -1,5 +1,6 @@
 <view>
-	<a class="phone --openpopup" href="javascript:void(0)" data-popup="--fast">
+	<a class="phone --openpopup" href="javascript:void(0)" data-popup="--fast"
+		wb-if="in_array('{{_sess.user.role}}',['','client'])">
 		<svg class="svgsprite _phone">
 			<use xlink:href="/assets/img/sprites/svgsprites.svg?v=2#phone"></use>
 		</svg>
@@ -56,7 +57,7 @@
 							</div>
 							<div class="input input--grey">
 							<textarea class="input__control"
-								name="client_comment" placeholder="Причина обращения" required></textarea>
+								name="client_comment" placeholder="Причина обращения" required>{{comment}}</textarea>
 								<div class="input__placeholder">Причина обращения</div>
 							</div>
 							<div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании
@@ -84,7 +85,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			var createFastQuote = function (client_id, client_comment, experts) {
+			var createFastQuote = function (client_id, client_comment, experts, quote_page_comment) {
 				var quote        = {};
 				quote.group      = 'quotes';
 				quote.status     = 'new';
@@ -100,8 +101,21 @@
 				if (experts) {
 					quote.experts = experts;
 				}
+				if (quote_page_comment) {
+					quote.quote_page_comment = quote_page_comment;
+				}
+				quote.quote_from_page = '';
+				var page_crumbs = [];
+				$('.crumbs__link').each(function (i) {
+					if (i === 0) return;
+					page_crumbs.push($(this).text());
+				});
+				if (page_crumbs.length){
+					quote.quote_from_page = page_crumbs.join(' / ');
+				}
+				quote.client_comment = client_comment;
 
-				toast_success('Мы перезвоним Вам в ближайшее время!');
+				//toast_success('Мы перезвоним Вам в ближайшее время!');
 				quote.event_date       = '';
 				quote.event_time       = '';
 				quote.event_time_start = '';
@@ -109,10 +123,10 @@
 
 				quote.longterm_date_end = '';
 				quote.longterm_title    = '';
+				quote.active            = 'on';
 
-				quote.photos         = {before: [], after: []};
-				quote.client_comment = client_comment;
-				quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+				quote.photos  = {before: [], after: []};
+				quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 
 				window.api.post(
 					'/api/v2/create/records/', quote).then(
@@ -121,11 +135,8 @@
 							wbapp.trigger('wb-save-error',
 								{'data': data});
 						} else {
-							$('.popup.fast-form-block').show();
-							$('.popup.fast-form-block .popup__panel:not(.--succed)')
-								.addClass('d-none');
-							$('.popup.fast-form-block .popup__panel.--succed')
-								.addClass('d-block');
+							$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
+							$('.popup.--fast .popup__panel.--succed').addClass('d-block');
 						}
 					});
 			};
@@ -133,7 +144,8 @@
 				el: '.popup.--fast',
 				template: document.querySelector('.popup.--fast > template').innerHTML,
 				data: {
-					user: wbapp._session.user
+					user: wbapp._session.user,
+					quote_page_comment: null
 				},
 				on: {
 					complete() {
@@ -145,6 +157,10 @@
 									self.set('user', wbapp._session.user);
 								}
 							}
+							if ($('[name="quote_page_comment"]').length) {
+								self.set('quote_page_comment', $('[name="quote_page_comment"]').val().trim());
+							}
+
 							console.log('init tel', $(self.el).find('input.intl-tel'));
 							$(self.el).find('input.intl-tel').each(function () {
 								var self = $(this);
@@ -185,6 +201,7 @@
 						}, 2000);
 					},
 					submit() {
+						var self = this;
 						var form = this.find('.popup.--fast .popup__form');
 						if ($(form).verify()) {
 							//wbapp.post('/form/quotes/getQuote', post, function (data) {
@@ -235,7 +252,8 @@
 																		'data': data
 																	});
 																} else {
-																	createFastQuote(data.id, post.client_comment);
+																	createFastQuote(data.id, post.client_comment,
+																		post.experts, self.get('quote_page_comment'));
 																}
 															});
 
@@ -250,7 +268,8 @@
 										}
 									});
 							} else {
-								createFastQuote(post.client, post.client_comment);
+								createFastQuote(post.client, post.client_comment, post.experts,
+									self.get('quote_page_comment'));
 							}
 						}
 

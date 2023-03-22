@@ -1,32 +1,34 @@
 <view>
-    <div class="row container">
-        <div class="col-md-4">
-            <h5 class="h5 content-title" wb-if="'{{aside}}'>''">{{aside}}</h5>
-        </div>
-        <div class="col-md-8">
-            <div class="content-wrap">
-                <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
-                <div class="blog-inner__text">
-                    <div class="text" wb-if="'{{text}}'>''">
-                        {{text}}
-                    </div>
-                    <wb-jq wb="$dom->find('p')->addClass('mb-10');
+	<div class="container" style="margin-top: 2em;">
+		<div class="row">
+			<div class="col-md-4">
+				<h5 class="h5 content-title" wb-if="'{{aside}}'>''">{{aside}}</h5>
+			</div>
+			<div class="col-md-8">
+				<div class="content-wrap">
+					<h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
+					<div class="blog-inner__text">
+						<div class="text mb-0" wb-if="'{{text}}'>''">
+							{{text}}
+						</div>
+						<wb-jq wb="$dom->find('p')->addClass('mb-10');
                 $dom->find('iframe')->attr('width','560');
                 $dom->find('iframe')->attr('height','315');
                 $dom->find('iframe, img')->addClass('mt-80 radius-20');
-                $dom->find('iframe')->parent()->addClass('video mb-40');" />
-                </div>
-            </div>
-        </div>
-    </div>
+                $dom->find('iframe')->parent()->addClass('video mb-40');"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <wb-var similar="{{get_similar_blogs({{_parent.id}}, {{_parent.tags}})}}"></wb-var>
-    <div class="blogs" wb-if="'{{_var.similar}}'!=='0'">
-        <div class="container">
-            <div class="blogs__list" id="blogList">
+	<wb-var similar="{{get_similar_blogs({{_parent.id}}, {{_parent.tags}})}}"></wb-var>
+	<div class="blogs" wb-if="'{{_var.similar}}'!=='0'">
+		<div class="container">
+			<div class="blogs__list" id="blogList">
 
 
-                <wb-foreach wb="{
+				<wb-foreach wb="{
                     'ajax':'/api/v2/list/blog/',
                     'size':'6',
                     'sort': 'date:d',

@@ -32,9 +32,12 @@ class modPaykeeper
 
         $checkClient = $this->app->itemRead('users', $clientid);
         $checkClient = $checkClient ? true : false;
-        $checkOrder = $this->app->itemRead('records', $clientid);
-        $checkOrder = $checkOrder && $checkOrder['pay_status'] == 'prepay' ? true : false;
-
+        $record = $this->app->itemRead('records', $orderid);
+        if ($record) {
+            $record['pay_status'] = 'prepay';
+            $this->app->itemSave('records', $record);
+        }
+      
         $hash = md5($id . number_format($sum, 2, ".", "") . $clientid . $orderid . $secret_seed);
 
         if ($key != $hash) {

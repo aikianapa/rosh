@@ -1,5 +1,5 @@
 <view>
-	<div class="mainfilter" id="mainfilter" wb-if="'{{_sess.user.role}}'=='' OR '{{_sess.user.role}}'=='client'">
+	<div class="mainfilter" id="mainfilter" wb-if="in_array('{{_sess.user.role}}',['','client','admin'])">
 		<a href="#" class="mainfilter-mob">
 			<span class="hb-ico basket2-ico"></span>
 			<i>0</i>
@@ -12,151 +12,151 @@
 			</div>
 			<div class="mainfilter__wrap row">
 				{{#filter}}
-					<div class="col-lg-9 col-md-8">
-						<div class="mainfilter__left">
-							{{#if texts.main.active == 'on'}}
-								<p>
-									{{texts.main.data.text}}
-								</p>
-							{{/if}}
+				<div class="col-lg-9 col-md-8">
+					<div class="mainfilter__left">
+						{{#if texts.main.active == 'on'}}
+						<p>
+							{{texts.main.data.text}}
+						</p>
+						{{/if}}
 
-							<div class="mainfilter__tab-list">
-								<div class="mainfilter__tab-item data-tab-link active" data-tab="services" data-tabs="mainfilter">Услуги
-								</div>
-								<div class="mainfilter__tab-item data-tab-link" data-tab="problems" data-tabs="mainfilter">
-									Проблемы
-								</div>
-								<div class="mainfilter__tab-item data-tab-link" data-tab="sympthoms" data-tabs="mainfilter">
-									Симптомы
-								</div>
+						<div class="mainfilter__tab-list">
+							<div class="mainfilter__tab-item data-tab-link {{#if act_tab=='services'}}active{{/if}}" data-tab="services" data-tabs="mainfilter">Услуги
 							</div>
-							<div class="mainfilter__tabs data-tab-wrapper" data-tabs="mainfilter">
-								<div class="mainfilter__tab data-tab-item active" data-tab="services">
+							<div class="mainfilter__tab-item data-tab-link {{#if act_tab=='problems'}}active{{/if}}" data-tab="problems" data-tabs="mainfilter">
+								Проблемы
+							</div>
+							<div class="mainfilter__tab-item data-tab-link {{#if act_tab=='sympthoms'}}active{{/if}}" data-tab="sympthoms" data-tabs="mainfilter">
+								Симптомы
+							</div>
+						</div>
+						<div class="mainfilter__tabs data-tab-wrapper" data-tabs="mainfilter">
+							<div class="mainfilter__tab data-tab-item {{#if act_tab=='services'}}active{{/if}}" data-tab="services">
 
-									{{#if texts.services.active == 'on'}}
-										<p>
-											{{texts.services.data.text}}
-										</p>
-									{{/if}} {{#each services}}
-										<div class="accardeon" data-category="{{id}}">
-											<div class="accardeon__main accardeon__click" on-click="getServices">
-												<div class="accardeon__name --{{data.color}}">{{name}}</div>
-											</div>
-											<div class="accardeon__list">
-												<div class="row">
-													{{#each items}}
-														<div class="col-lg-4">
-															<label class="checkbox mainfilter__checkbox" data-id="{{../../id}}_{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-service="{{id}}">
-																<input type="checkbox" on-change="toggleService">
-																<span></span>
-																<div class="checbox__name">{{header}}</div>
-																{{#if ../../id != "lab"}}
-																	<a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewService">Подробнее</a>
-																{{/if}}
-															</label>
-														</div>
-													{{/each}}
-												</div>
-											</div>
-										</div>
-									{{/each}}
-								</div>
-								<div class="mainfilter__tab data-tab-item" data-tab="problems">
-
-									{{#if texts.problems.active == 'on'}}
-										<p>
-											{{texts.problems.data.text}}
-										</p>
-									{{/if}} {{#each problems}} {{#if id != "gyn" }} {{#if id != "lab" }}
-												<div class="accardeon-group">
-													<div class="accrdeon__title" data-type="{{id}}">{{name}}</div>
-													{{#each cats}} {{#if id != "gyn" }} {{#if id != "lab" }}
-																<div class="accardeon">
-																	<div class="accardeon__main accardeon__click" data-category="{{id}}" on-click="getProblems">
-																		<div class="accardeon__name --{{data.color}}">{{name}}</div>
-																	</div>
-																	<div class="accardeon__list">
-																		<div class="row">
-																			{{#each items}}
-																				<div class="col-lg-4">
-																					<label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-category="{{category}}" data-problem="{{id}}">
-																						<input type="checkbox" on-change="toggleProblem">
-																						<span></span>
-																						<div class="checbox__name">{{header}}</div>
-																						<a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewProblem">Подробнее</a>
-																					</label>
-																				</div>
-																			{{/each}}
-																		</div>
-																	</div>
-																</div>
-															{{/if}} {{/if}} {{/each}}
-												</div>
-											{{/if}} {{/if}} {{/each}}
-									<div class="accardeon-group no-border">
-
-										<div class="accardeon">
-											<div class="accardeon__main accardeon__click" data-category="{{id}}" on-click="getProblems">
-												<div class="accrdeon__title">Гинекология</div>
-											</div>
-											<div class="accardeon__list">
-												<div class="row">
-													{{#each problems.gyn.cats.gyn.items}}
-														<div class="col-lg-4">
-															<label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-category="{{category}}" data-problem="{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}">
-																<input type="checkbox" on-change="toggleProblem">
-																<span></span>
-																<div class="checbox__name">{{header}}</div>
-																<a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewProblem">Подробнее</a>
-															</label>
-														</div>
-													{{/each}}
-												</div>
-											</div>
-										</div>
+								{{#if texts.services.active == 'on'}}
+								<p>
+									{{texts.services.data.text}}
+								</p>
+								{{/if}} {{#each services}}
+								<div class="accardeon" data-category="{{id}}">
+									<div class="accardeon__main accardeon__click" on-click="getServices">
+										<div class="accardeon__name --{{data.color}}">{{name}}</div>
 									</div>
-								</div>
-								<div class="mainfilter__tab data-tab-item" data-tab="sympthoms">
-									{{#if texts.sympthoms.active == 'on'}}
-										<p>
-											{{texts.sympthoms.data.text}}
-										</p>
-									{{/if}}
-
-									<div class="accrdeon__title">Симптомы</div>
-									<div class="row">
-										{{#each symptoms}}
+									<div class="accardeon__list">
+										<div class="row">
+											{{#each items}}
 											<div class="col-lg-4">
-												<label class="checkbox mainfilter__checkbox" data-id="{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-symptom="{{id}}">
-													<input type="checkbox" on-change="toggleSymptom">
+												<label class="checkbox mainfilter__checkbox" data-id="{{../../id}}_{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-service="{{id}}">
+													<input type="checkbox" on-change="toggleService">
 													<span></span>
 													<div class="checbox__name">{{header}}</div>
-													<a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewSymptom">Подробнее </a>
+													{{#if ../../id != "lab"}}
+													<a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewService">Подробнее</a>
+													{{/if}}
 												</label>
 											</div>
-										{{/each}}
+											{{/each}}
+										</div>
 									</div>
+								</div>
+								{{/each}}
+							</div>
+							<div class="mainfilter__tab data-tab-item {{#if act_tab=='problems'}}active{{/if}}" data-tab="problems">
+
+								{{#if texts.problems.active == 'on'}}
+								<p>
+									{{texts.problems.data.text}}
+								</p>
+								{{/if}} {{#each problems}} {{#if id != "gyn" }} {{#if id != "lab" }}
+								<div class="accardeon-group" data-group-type="{{id}}">
+									<div class="accrdeon__title" data-type="{{id}}">{{name}}</div>
+									{{#each cats}} {{#if id != "gyn" }} {{#if id != "lab" }}
+									<div class="accardeon">
+										<div class="accardeon__main accardeon__click" data-category="{{id}}" on-click="getProblems">
+											<div class="accardeon__name --{{data.color}}">{{name}}</div>
+										</div>
+										<div class="accardeon__list">
+											<div class="row">
+												{{#each items}}
+												<div class="col-lg-4">
+													<label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-category="{{category}}" data-problem="{{id}}">
+														<input type="checkbox" on-change="toggleProblem">
+														<span></span>
+														<div class="checbox__name">{{header}}</div>
+														<a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewProblem">Подробнее</a>
+													</label>
+												</div>
+												{{/each}}
+											</div>
+										</div>
+									</div>
+									{{/if}} {{/if}} {{/each}}
+								</div>
+								{{/if}} {{/if}} {{/each}}
+								<div class="accardeon-group no-border" data-group-type="gyn">
+
+									<div class="accardeon" data-category="{{id}}">
+										<div class="accardeon__main accardeon__click" data-category="{{id}}" on-click="getProblems">
+											<div class="accrdeon__title">Гинекология</div>
+										</div>
+										<div class="accardeon__list">
+											<div class="row">
+												{{#each problems.gyn.cats.gyn.items}}
+												<div class="col-lg-4">
+													<label class="checkbox mainfilter__checkbox" data-id="{{category}}_{{id}}" data-category="{{category}}" data-problem="{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}">
+														<input type="checkbox" on-change="toggleProblem">
+														<span></span>
+														<div class="checbox__name">{{header}}</div>
+														<a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewProblem">Подробнее</a>
+													</label>
+												</div>
+												{{/each}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mainfilter__tab data-tab-item {{#if act_tab=='sympthoms'}}active{{/if}}" data-tab="sympthoms">
+								{{#if texts.sympthoms.active == 'on'}}
+								<p>
+									{{texts.sympthoms.data.text}}
+								</p>
+								{{/if}}
+
+								<div class="accrdeon__title">Симптомы</div>
+								<div class="row">
+									{{#each symptoms}}
+									<div class="col-lg-4">
+										<label class="checkbox mainfilter__checkbox" data-id="{{id}}" data-color="{{../../data.color}}" data-cname="{{../../name}}" data-symptom="{{id}}">
+											<input type="checkbox" on-change="toggleSymptom">
+											<span></span>
+											<div class="checbox__name">{{header}}</div>
+											<a class="checbox__link --openpopup" data-popup="--service-l" href="#" on-click="viewSymptom">Подробнее </a>
+										</label>
+									</div>
+									{{/each}}
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-4 mainfilter__right" id="mainfilterRight">
-						<div class="mainfilter__choice">
-							<div class="mainfilter__choice-main">
-								<h5 class="h5">Выбранные услуги или существующие проблемы</h5>
-								<div class="mainfilter__tags problems">
-									{{#each choice.services}}
-										<div class="mainfilter-tag">
-											<div class="mainfilter-tag__name">
-												<div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
-													<svg class="svgsprite _delete">
-														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
-													</svg>
-												</div>
-												<a class="mainfilter-tag__link" href="#__srv" data-service="{{service}}" data-popup="--service-l" on-click="viewService">{{header}}</a>
-											</div>
-											<div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
+				</div>
+				<div class="col-lg-3 col-md-4 mainfilter__right" id="mainfilterRight">
+					<div class="mainfilter__choice">
+						<div class="mainfilter__choice-main">
+							<h5 class="h5">Выбранные услуги или существующие проблемы</h5>
+							<div class="mainfilter__tags problems">
+								{{#each choice.services}}
+								<div class="mainfilter-tag">
+									<div class="mainfilter-tag__name">
+										<div class="mainfilter-tag__delete" data-id="{{id}}" on-click="delete">
+											<svg class="svgsprite _delete">
+												<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+											</svg>
 										</div>
+										<a class="mainfilter-tag__link" href="#__srv" data-service="{{service}}" data-popup="--service-l" on-click="viewService">{{header}}</a>
+									</div>
+									<div class="mainfilter-tag__group --{{color}}">{{liter}}</div>
+								</div>
 									{{/each}}
 									{{#each choice.problems}}
 										<div class="mainfilter-tag">
@@ -293,6 +293,7 @@
 			quote.recommendation = '';
 			quote.description    = '';
 			quote.client_comment = client_comment;
+			quote.is_mainfilter_quote = 1;
 			quote.__token        = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 			window.api.post(
 				'/api/v2/create/records/', quote).then(
@@ -318,33 +319,57 @@
 				});
 		};
 		window.mainFilterState    = {
-			save() {
-				window.onbeforeunload = function () {
-					sessionStorage["mf-state--active"] = $('#mainfilter').is(':visible');
-					if (!sessionStorage["mf-state--active"]) {
-						sessionStorage.removeItem("mf-state--pos");
-						sessionStorage.removeItem("mf-state--active");
-						sessionStorage.removeItem("mf-state--tab");
-						sessionStorage.removeItem("mf-state--accardeon");
-					} else {
-						sessionStorage["mf-state--pos"] = $(window).scrollTop();
-						sessionStorage['mf-state--tab'] = $('.mainfilter__tab-item.data-tab-link.active')
-							.attr('data-tab');
-						if ($('.mainfilter__tab.data-tab-item.active .accardeon.active .accardeon__main').length) {
-							sessionStorage['mf-state--accardeon'] = $('.mainfilter__tab.data-tab-item.active .accardeon.active .accardeon__main')
-								.attr('data-category');
-						}
-
+			save(force) {
+				if (force) {
+					var _is_active = $('#mainfilter').is(':visible') ? 1 : 0;
+					var _mf_page   = sessionStorage["mf-state--page"];
+					if (!_is_active && (_mf_page !== location.pathname)) {
+						return;
 					}
-				};
+					sessionStorage["mf-state--active"] = _is_active;
+					if (!sessionStorage["mf-state--active"]) {
+						sessionStorage.removeItem("mf-state--active");
+						sessionStorage.removeItem("mf-state--page");
+						sessionStorage.removeItem("mf-state--pos");
+						sessionStorage.removeItem("mf-state--tab");
+					} else {
+						sessionStorage["mf-state--page"] = location.pathname;
+						sessionStorage["mf-state--pos"]  = $(window).scrollTop();
+						sessionStorage['mf-state--tab']  = $('.mainfilter__tab-item.data-tab-link.active')
+							.attr('data-tab');
+					}
+				} else {
+					window.onbeforeunload = function () {
+						var _is_active = $('#mainfilter').is(':visible') ? 1 : 0;
+						var _mf_page   = sessionStorage["mf-state--page"];
+						if (!_is_active && (_mf_page !== location.pathname)) {
+							return;
+						}
+						sessionStorage["mf-state--active"] = _is_active;
+						if (!sessionStorage["mf-state--active"]) {
+							sessionStorage.removeItem("mf-state--active");
+							sessionStorage.removeItem("mf-state--page");
+							sessionStorage.removeItem("mf-state--pos");
+							sessionStorage.removeItem("mf-state--tab");
+						} else {
+							sessionStorage["mf-state--page"] = location.pathname;
+							sessionStorage["mf-state--pos"]  = $(window).scrollTop();
+							sessionStorage['mf-state--tab']  = $('.mainfilter__tab-item.data-tab-link.active')
+								.attr('data-tab');
+						}
+					};
+				}
 			},
 			load() {
 				var _is_active = sessionStorage["mf-state--active"];
-				if (!_is_active || _is_active == 'false') {
-					sessionStorage.removeItem("mf-state--pos");
+				var _mf_page   = sessionStorage["mf-state--page"];
+				if (_is_active != 1) {
 					sessionStorage.removeItem("mf-state--active");
+					sessionStorage.removeItem("mf-state--page");
+					sessionStorage.removeItem("mf-state--pos");
 					sessionStorage.removeItem("mf-state--tab");
-					sessionStorage.removeItem("mf-state--accardeon");
+					return;
+				} else if (_mf_page !== location.pathname) {
 					return;
 				}
 				setTimeout(function () {
@@ -358,27 +383,18 @@
 						}, 1500);
 						//sessionStorage.removeItem("mf-state--tab");
 					}
-
-					var _cat = sessionStorage['mf-state--accardeon'];
-					if (!!_cat && typeof _cat !== 'undefined') {
-						console.log('cat', _cat);
-						setTimeout(function () {
-							$('.accardeon__main.accardeon__click[data-category="' + _cat + '"]')[0].click();
-						}, 1500);
-						//sessionStorage.removeItem("mf-state--accardeon");
-					}
-
 					var _pos = sessionStorage["mf-state--pos"];
 					if (_pos) {
-						console.log(_cat);
 						setTimeout(function () {
 							$(window).scrollTop(_pos);
-						}, 350);
+						}, 650);
 						sessionStorage.removeItem("mf-state--pos");
 					}
 				}, 400);
 			}
 		};
+		mainFilterState.save();
+
 		var mainFilter            = new Ractive({
 			el: '#mainfilter',
 			template: $('#mainfilter template').html(),
@@ -392,14 +408,18 @@
 				init() {
 					var self = this;
 					wbapp.get('/api/v2/func/problems/mainfilter', function (data) {
+						if (sessionStorage['mf-state--tab'] && sessionStorage['mf-state--tab'] !== 'undefined') {
+							data['act_tab'] = sessionStorage['mf-state--tab'];
+						} else {
+							data['act_tab'] = 'services'
+						}
 						self.set('filter', data);
 						self.fire('checkChoose');
+						mainFilterState.load();
 					});
 				},
 				complete() {
 					console.log('filter ready');
-					//mainFilterState.load();
-					//mainFilterState.save();
 				},
 				clearSymptoms() {
 					$(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(
@@ -462,7 +482,7 @@
 					let cid = $(label).parents('[data-category]').data('category');
 					let choice = mainFilter.get('choice.services');
 					if (choice == undefined) choice = {};
-					console.log('1');
+
 					if ($(input).is(':checked')) {
 						let header = $(label).find('.checbox__name').text().trim();
 						let liter = $(label).data('cname').substring(0, 1).toUpperCase();
@@ -615,10 +635,15 @@
 						$.each(mainFilter.get('choice.services'), function(i, item) {
 							$(`[data-tab="services"] label[data-id="${item.id}"] > input`).prop(
 								'checked', true);
+							$(`[data-tab="services"] label[data-id="${item.id}"]`).parents('.accardeon').find('.accardeon__click')
+                                .trigger('click');
 						});
 						$.each(mainFilter.get('choice.problems'), function(i, item) {
 							$(`[data-tab="problems"] label[data-id="${item.id}"] > input`).prop(
 								'checked', true);
+							$(`[data-tab="problems"] label[data-id="${item.id}"]`).parents('.accardeon').find('.accardeon__click')
+                                .trigger('click');
+								
 						});
 						setTimeout(function() {
 							$.each(mainFilter.get('choice.symptoms'), function(i, item) {
@@ -774,7 +799,12 @@
 				this.set('checked', checked);
 			}
 		});
-		mainFilterState.save();
+		$(document).on('click', '.btn.btn--white.--openfilter', function () {
+			mainFilterState.save(true);
+		});
+		$(document).on('click', '.popup.--service-l a.btn.btn--black', function () {
+			mainFilterState.save(true);
+		});
 	</script>
 	<style>
 		#mainfilterCounter {

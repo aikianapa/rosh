@@ -233,7 +233,7 @@
 				<div class="account-events__item wide">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Причина обращения:</div>
-						<div class="account-event text-justify">
+						<div class="account-event">
 							{{{@global.nl2br(@global.fix_comment(.client_comment))}}}
 						</div>
 					</div>
@@ -368,6 +368,7 @@
 					<!-- !!! quote history item !!! -->
 					{{#each history.events as event}}
 					<div class="acount__table-accardeon accardeon"
+						data-accardeon="{{event.id}}"
 						data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="history-item">
@@ -399,11 +400,11 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-							<div class="analysis mb-20 pt-20" style="max-width: 100%">
+							<div class="analysis mb-40 pt-20" style="max-width: 100%">
 								<div class="row">
 									<div class="col-md-4">
 										{{#if this.analyses}}
-										<div class="analysis__top --aicn --flex mb-40">
+										<div class="analysis__top --aicn --flex mb-50">
 											<div class="analysis__title">Анализы</div>
 											<a class="btn btn--white" href="{{this.analyses}}"
 												target="_blank">
@@ -411,8 +412,8 @@
 											</a>
 										</div>
 										{{/if}}
-										<div class="analysis__description">
-											<p class="text-bold mb-20">Выполнялись процедуры</p>
+										<div class="analysis__description pt-30">
+											<p class="text-bold mb-30">Выполнялись процедуры</p>
 											<ul class="text-grey">
 												{{#each this.service_prices as service_price: i, path}}
 												<li class="service_price">{{service_price.name}}</li>
@@ -422,23 +423,25 @@
 									</div>
 									<div class="col-md-8">
 										{{#if this.analyses}}
-										<a class="btn btn--black mb-40 --openpopup"
+										<a class="btn btn--black mb-50 --openpopup"
 											data-popup="--analize-type"
 											onclick="popupAnalizeInterpretation('{{user.id}}', '{{this.id}}', '{{this.analyses}}')">
 											Получить расшифровку анализов
 										</a>
 										{{/if}}
-										<div class="analysis__description">
+										<div class="analysis__description pt-30">
 											<p class="text-bold mb-20">Рекомендация врача</p>
 											<div class="text">
-												{{{@global.nl2br(.recommendation)}}}
+												{{#this.recommendation}}
+												{{{@global.nl2br(this.recommendation)}}}
+												{{/this.recommendation}}
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 
-							<div class="experts__worked">
+							<div class="experts__worked mt-20 pt-20">
 								<div class="experts__worked-title">С вами работали</div>
 								<div class="row">
 									{{#each .experts}}
@@ -466,7 +469,7 @@
 							</div>
 
 							{{#if this.hasPhoto}}
-							<div class="acount__photos bg-inherit">
+							<div class="acount__photos bg-inherit mt-20">
 								<div class="row">
 									<div class="col-md-5">
 										<p>Фото до приема</p>
@@ -911,101 +914,83 @@
 				}
 			}
 		});
-		window.current_day_events      = [];
-		var current_day_events_checker = null;
-		window.load                    = function () {
-			if (!!current_day_events_checker) {
-				clearInterval(current_day_events_checker);
-			}
-			utils.api.get('/api/v2/list/records?status=[upcoming,new,past,delay,uncall]&group=[events,quotes]&client=' +
-			              wbapp._session.user.id + '&@sort=_lastdate:d')
-				.then(function (records) {
-					if (!!current_day_events_checker) {
-						clearInterval(current_day_events_checker);
-					}
-					console.log('event:', records);
-					window.current_day_events = [];
-					page.set('events.upcoming', []);
-					page.set('events.current', []);
-					page.set('history.events', []);
-					if (!!records) {
-						records.forEach(function (rec, idx) {
-							if (rec.status === 'past') {
-								page.push('history.events', rec);
-								return;
-							}
-
-
-							if (rec.status === 'new' || rec.status === 'uncall'  || rec.status === 'delay' ) {
-								rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
-								page.push('events.upcoming', rec);
-								return;
-							}
-							if (rec.status !== 'upcoming') {
-								return;
-							}
-
-							rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
-
-							if (Cabinet.isCurrentDayEvent(rec)) {
-								window.current_day_events.push(rec);
-							}
-
-							if (Cabinet.isCurrentEvent(rec)) {
-								page.push('events.current', rec);
-								console.log('event:', rec);
-							} else {
-								page.push('events.upcoming', rec);
-							}
-						});
-
-						window.sort_events();
-					}
-					page.set('events_ready', true);
-					utils.restoreScroll();
-					if (!!window.current_day_events.length) {
-						current_day_events_checker = setInterval(function () {
-							console.log('check!');
-							var _upc = page.get('events.upcoming');
-							var _cur = page.get('events.current');
-							if (!!_cur && _cur.length) {
-								_cur.forEach(function (ev, i) {
-									if (!Cabinet.isCurrentEvent(ev)) {
-										page.splice('events.current', i, 1);
-										page.push('events.upcoming', ev);
-									}
-								});
-							}
-							if (!!_upc && _upc.length) {
-								_upc.forEach(function (ev, i) {
-									if (Cabinet.isCurrentEvent(ev)) {
-										page.splice('events.upcoming', i, 1);
-										page.push('events.current', ev);
-									}
-								});
-							}
-							window.sort_events();
-
-						}, 20000);
-					}
-					$("img[data-src]:not([src])").lazyload();
-
-				});
-		};
 		window.sort_events             = function () {
 			$(".account-events.upcoming .account-events__block")
 				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
 				.appendTo(".account-events.upcoming");
 		};
+		var current_day_events_checker = null;
+		window.loadRecords             = function () {
+			if (!!current_day_events_checker) {
+				clearTimeout(current_day_events_checker);
+			}
+			Promise.allSettled([
+				utils.api.get('/api/v2/list/records?status=[upcoming,new,past,delay,uncall]&client=' +
+				              wbapp._session.user.id + '&@sort=_lastdate:d')
+					.then(function (records) {
+						if (!!current_day_events_checker) {
+							clearTimeout(current_day_events_checker);
+						}
+						console.log('records:', records);
+						let events  = {
+							    'upcoming': [],
+							    'current': []
+						    },
+						    history_events = [];
+						if (!!records) {
+							records.forEach(function (rec, idx) {
+								if (rec.status === 'past') {
+									history_events.push(rec);
+									return;
+								}
+								if (rec.status === 'new' || rec.status === 'uncall' || rec.status === 'delay') {
+									rec['event_timestamp'] = utils.timestamp(new Date('2029-12-12'));
+									events.upcoming.push(rec);
+									return;
+								}
+								if (rec.status !== 'upcoming') {
+									return;
+								}
 
-		load();
-		utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
-			.then(function (records) {
-				if (!!records) {
-					page.set('history.longterms', records);
+								rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
+
+								if (Cabinet.isCurrentEvent(rec)) {
+									events.current.push(rec);
+								} else {
+									events.upcoming.push(rec);
+								}
+							});
+
+							window.sort_events();
+						}
+						page.set('events', events);
+						page.set('history.events', history_events);
+						page.set('events_ready', true);
+						$("img[data-src]:not([src])").lazyload();
+					}),
+				utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
+					.then(function (records) {
+						if (!!records) {
+							page.set('history.longterms', records);
+						} else {
+							page.set('history.longterms', []);
+						}
+						page.set('longterms_ready', true);
+					})
+			]).then(function () {
+				utils.restoreScroll();
+				if (sessionStorage['state-accardeon']){
+					setTimeout(function (){
+						$('.acount__table-accardeon.accardeon[data-accardeon="'+sessionStorage['state-accardeon']+'"]:not(.active) .accardeon__click').trigger('click');
+					});
 				}
-				page.set('longterms_ready', true);
-			});
+				current_day_events_checker = setTimeout(loadRecords, 10000);
+				console.log('Records loaded!');
+			})
+		};
+
+		loadRecords();
+
 		//utils.api.get('/api/v2/list/records?group=longterms&client=' + wbapp._session.user.id)
 		//	.then(function (records) {
 		//		if (!!records) {

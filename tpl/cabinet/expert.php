@@ -90,7 +90,7 @@
 		<div class="account-events current_event status-past">
 			{{#each events.current}}
 			<div class="account-events__block">
-				<div class="acount__table-accardeon accardeon status-past">
+				<div class="acount__table-accardeon accardeon status-past" data-accardeon="{{this.id}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="accardeon__click"></div>
 						<div class="account-events__block-wrap mb-20">
@@ -153,6 +153,7 @@
 						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
 						<div class="account-edit__title mb-20 pt-20">
+							<div class="mr-10">Анализы</div>
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
 								target="_blank">
@@ -171,25 +172,9 @@
 								<button class="btn btn--white" type="submit">Сохранить</button>
 							</form>
 						</div>
-						<div class="account-events__btns mb-20 border-top pt-20">
-							<div class="account-event-wrap --aicn">
-								{{#if this.type == 'online'}}
-								<div class="account-events__btn">
-									<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
-										Начать консультацию
-									</a>
-								</div>
-								<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
-								{{/if}}
-								<div class="account-events__btn">
-									<a class="btn btn--black" data-id="{{this.id}}" on-click="['closeEvent',this]">
-										Завершить прием
-									</a>
-								</div>
-							</div>
-						</div>
+
 						{{#if this.hasPhoto}}
-						<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
+						<div class="bg-inherit border-top mt-20 pt-20 mb-20" style="margin-left: 0">
 							<div class="row">
 								<div class="col-md-5">
 									<p>Фото до приема</p>
@@ -246,6 +231,25 @@
 							</div>
 						</div>
 						{{/if}}
+						<div class="account-events__btns mb-20 border-top pt-20">
+							<div class="account-event-wrap --aicn">
+								{{#if this.pay_status == 'unpay'}}
+								<p>Ожидается предоплата пациентом</p>
+								{{elseif this.type == 'online'}}
+								<div class="account-events__btn">
+									<a class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
+										Начать консультацию
+									</a>
+								</div>
+								<p>Вас ожидает пациент, можете подключиться прямо сейчас</p>
+								{{/if}}
+								<div class="account-events__btn">
+									<a class="btn btn--black" data-id="{{this.id}}" on-click="['closeEvent',this]">
+										Завершить прием
+									</a>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -258,7 +262,7 @@
 		<div class="account-events status-upcoming">
 			{{#each events.upcoming}}
 			<div class="account-events__block">
-				<div class="acount__table-accardeon accardeon status-upcoming">
+				<div class="acount__table-accardeon accardeon status-upcoming" data-accardeon="{{this.id}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="account-events__block-wrap">
 							<div class="accardeon__click"></div>
@@ -318,6 +322,7 @@
 						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
 						<div class="account-edit__title mb-20 pt-20">
+							<div class="mr-10">Анализы</div>
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
 								target="_blank">
@@ -336,19 +341,6 @@
 								<button class="btn btn--white" type="submit">Сохранить</button>
 							</form>
 						</div>
-
-						{{#if this.type == 'online'}}
-						<div class="account-events__btns mb-20 pt-20 border-top">
-							<div class="account-event-wrap --aicn">
-								<div class="account-events__btn">
-									<button class="btn btn--white disabled" disabled>
-										Онлайн консультация
-									</button>
-								</div>
-								<p>Кнопка станет активной за 5 минут до начала приема</p>
-							</div>
-						</div>
-						{{/if}}
 						{{#if this.hasPhoto}}
 						<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
 							<div class="row">
@@ -407,6 +399,18 @@
 							</div>
 						</div>
 						{{/if}}
+						{{#if this.type == 'online'}}
+						<div class="account-events__btns mb-20 pt-20 border-top">
+							<div class="account-event-wrap --aicn">
+								<div class="account-events__btn">
+									<button class="btn btn--white disabled" disabled>
+										Онлайн консультация
+									</button>
+								</div>
+								<p>Кнопка станет активной за 5 минут до начала приема</p>
+							</div>
+						</div>
+						{{/if}}
 					</div>
 				</div>
 			</div>
@@ -428,7 +432,7 @@
 				</div>
 				<div class="account__table-body">
 					{{#each history}}
-					<div class="acount__table-accardeon accardeon status-cancel_noreason" data-record_id="{{this.id}}">
+					<div class="acount__table-accardeon accardeon status-cancel_noreason" data-accardeon="{{this.id}}" data-record_id="{{this.id}}">
 						<div class="acount__table-main accardeon__main">
 							<div class="history-item">
 								<p>Дата</p>
@@ -470,6 +474,7 @@
 							{{/this.comment_for_expert}}
 							{{#if this.analyses}}
 							<div class="account-edit__title mb-20 pt-20">
+								<div class="mr-10">Анализы</div>
 								<a class="btn btn--white btn--compact"
 									href="{{this.analyses}}"
 									target="_blank">
@@ -806,11 +811,19 @@
 						Cabinet.runOnlineChat(record?.meetroom?.roomName);
 					},
 					closeEvent(ev, record) {
-						utils.api.post('/api/v2/update/records/' + record.id, {'status': 'past'})
+						sessionStorage.removeItem('state-accardeon');
+						$(ev.node).parents('.acount__table-accardeon.accardeon').removeClass('active');
+
+						if (record?.meetroom?.meetingId) {
+							onlineRooms.delete(record.meetroom.meetingId, function (meetroom) {});
+						}
+						record.status       = 'past';
+						record.meetroom     = null;
+						record.has_meetroom = 0;
+						utils.api.post('/api/v2/update/records/' + record.id, record)
 							.then(function (res) {
-								console.log(res);
 								toast('Прием завершен успешно');
-								load_records();
+								loadRecords();
 							});
 					},
 					toggleEdit(ev) {
@@ -918,46 +931,63 @@
 					}
 				}
 			});
-			window.load_records = function () {
+			var current_day_events_checker = null;
+			window.loadRecords = function () {
+				if (!!current_day_events_checker) {
+					clearTimeout(current_day_events_checker);
+				}
+
 				utils.api.get('/api/v2/list/records?group=events' +
 				              '&experts~=' + wbapp._session.user.id +
 				              '&@sort=event_date:d')
 					.then(function (records) {
 						page.set('catalog', window.catalog);
-						page.set('events.upcoming', []); // use {}
-						page.set('events.current', []);
-						page.set('history', []);
-						if (!records) {
-							page.set('ready', true);
+						let events  = {
+							    'upcoming': [],
+							    'current': []
+						    },
+						    history_events = [];
+						if (!!records) {
+							let curr_timestamp = parseInt(getdate()[0]);
+							//!!! set records by id not by index !!!
+							records.forEach(function (rec, idx) {
+								if (rec.status === 'past') {
+									history_events.push(rec);
+									console.log('past:', rec);
+									return;
+								} else if (rec.status !== 'upcoming') {
+									return;
+								} else if (idx === 0) {
+									page.set('closest_event', rec);
+								}
 
-							utils.restoreScroll();
-							return;
+								if (Cabinet.isCurrentEvent(rec)) {
+									events.current.push(rec);
+								} else {
+									events.upcoming.push(rec);
+								}
+							});
 						}
-						let curr_timestamp = parseInt(getdate()[0]);
-						//!!! set records by id not by index !!!
-						records.forEach(function (rec, idx) {
-							if (rec.status === 'past') {
-								page.push('history', rec);
-								console.log('past:', rec);
-								return;
-							} else if (rec.status !== 'upcoming') {
-								return;
-							} else if (idx === 0) {
-								page.set('closest_event', rec);
-							}
 
-							if (Cabinet.isCurrentEvent(rec)) {
-								page.push('events.current', rec);
-							} else {
-								page.push('events.upcoming', rec);
-							}
-						});
-
+						page.set('events', events);
+						page.set('history', history_events);
 						page.set('ready', true);
 						utils.restoreScroll();
-					});
+					})
+					.then(function () {
+						utils.restoreScroll();
+						if (sessionStorage['state-accardeon']) {
+							setTimeout(function () {
+								$('.acount__table-accardeon.accardeon[data-accardeon="' +
+								  sessionStorage['state-accardeon'] + '"]:not(.active) .accardeon__click').trigger('click');
+							});
+						}
+						current_day_events_checker = setTimeout(loadRecords, 20000);
+						console.log('Records loaded!');
+					})
 			};
-			load_records();
+
+			loadRecords();
 			utils.saveScroll();
 		});
 	</script>
