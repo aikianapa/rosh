@@ -71,9 +71,9 @@
                             filter.header = { '$like': val }
                         }
                     }
-                    if ($(this).attr('name') == 'category') {
-                        let category = $(this).val()
-                        category == '*' ? null : filter.category = { '$like': category }
+                    if ($(this).attr('name') == 'division') {
+                        let division = $(this).val()
+                        division == '*' ? null : filter.division = { '$like': division }
                     }
                 })
                 list.set('filter', filter)

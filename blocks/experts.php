@@ -18,22 +18,22 @@
                         <h5 class="h5 expert__category" wb-if="'{{name}}'>''">{{name}}</h5>
                     </div>
                     <div class="col-lg-9">
-                        <wb-foreach wb="table=experts&tpl=false" wb-filter="division={{id}}&active=on">
-                        <a class="expert__info" href="/about/experts/{{wbFurlGenerate({{name}})}}">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="expert__img" wb-if="'{{image.0.img}}'>''">
-                                        <img src="/thumbc/630x350/src{{image.0.img}}" alt="{{fullname}} - {{spec}}">
+                        <wb-foreach wb="table=experts&tpl=false&sort=_sort" wb-filter="division={{id}}&active=on">
+                            <a class="expert__info" href="/about/experts/{{wbFurlGenerate({{name}})}}">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="expert__img" wb-if="'{{image.0.img}}'>''">
+                                            <img src="/thumbc/630x350/src{{image.0.img}}" alt="{{fullname}} - {{spec}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p class="expert__name" wb-if="'{{name}}'>''">{{name}}</p>
+                                        <div class="expert__description" wb-if="'{{spec}}'>''">
+                                            <p>{{spec}}</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-7">
-                                    <p class="expert__name" wb-if="'{{name}}'>''">{{name}}</p>
-                                    <div class="expert__description" wb-if="'{{spec}}'>''">
-                                        <p>{{spec}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                            </a>
                         </wb-foreach>
                     </div>
                 </div>

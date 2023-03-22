@@ -16,12 +16,12 @@
                         <input type="search" class="form-control" name="filter" placeholder="Поиск" on-change="filter">
                     </div>
                     <div class="col-6">
-                        <!--select class="form-control" name="category" wb-select2 placeholder="Категория" on-change="filter">
+                        <select class="form-control" name="division" wb-select2 placeholder="Категория" on-change="filter">
                             <option value="*">Все</option>
-                            <wb-foreach wb="table=catalogs&item=srvcat&from=tree.data" wb-filter="">
+                            <wb-foreach wb="table=catalogs&item=divisions&from=tree.data" wb-filter="">
                                 <option value="{{id}}">{{name}}</option>
                             </wb-foreach>
-                        </select-->
+                        </select>
                     </div>
                 </div>
             </div>
