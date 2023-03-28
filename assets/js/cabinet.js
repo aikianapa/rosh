@@ -690,7 +690,7 @@ $(function () {
 							from: service?.from,
 							quote: _quote,
 							service_id: service.category,
-							service_title: _self.priceCategories[service.category].name.trim(),
+							service_title: _self.priceCategories[service.category].name.trim() || title.trim(),
 							tags: _tags,
 							price: service.price,
 							price_id: service.id
@@ -720,16 +720,16 @@ $(function () {
 						_self.servicesListByCategories[cid] || []);
 				});
 
-				_self.servicesList.sort(function (a, b) {
-					if (a.value < b.value) {
-						return -1;
-					}
-					if (a.value > b.value) {
-						return 1;
-					}
-					return 0;
-				});
-
+				//_self.servicesList.sort(function (a, b) {
+				//	if (a.value < b.value) {
+				//		return -1;
+				//	}
+				//	if (a.value > b.value) {
+				//		return 1;
+				//	}
+				//	return 0;
+				//});
+				_self.servicesList = _self.servicesListOrderByCategories;
 				$(document).trigger('cabinet-db-ready');
 			});
 		}
