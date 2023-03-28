@@ -529,7 +529,7 @@ $(function () {
 							delete cat.active;
 
 							_self.priceCategories[key] = cat;
-							_self.priceCategoriesOrder.push(cat.id);
+							_self.priceCategoriesOrder.push(key);
 
 							if (cat.hasOwnProperty('children')) {
 								var _keys = Object.keys(cat.children);
@@ -543,7 +543,7 @@ $(function () {
 										delete cat.children;
 										_self.priceCategories[_key] = obj;
 									}
-									_self.priceCategoriesOrder.push(obj.id);
+									_self.priceCategoriesOrder.push(_key);
 								});
 							} else {
 								delete cat.children;
