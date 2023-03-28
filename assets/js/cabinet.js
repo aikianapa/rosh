@@ -423,6 +423,8 @@ $(function () {
 		services: {},
 		servicePrices: {},
 		servicesList: [], /* for autocomplete */
+		servicesListByCategories: {}, /* for autocomplete */
+		servicesListOrderByCategories: [], /* for autocomplete */
 		roles: {
 			"main": "Aдминистратор",
 			"expert": "Специалист",
@@ -452,6 +454,7 @@ $(function () {
 		},
 		categories: {},
 		priceCategories: {},
+		priceCategoriesOrder: [],
 		experts: {},
 		expert_users: {},
 		clients: {},
@@ -526,6 +529,8 @@ $(function () {
 							delete cat.active;
 
 							_self.priceCategories[key] = cat;
+							_self.priceCategoriesOrder.push(cat.id);
+
 							if (cat.hasOwnProperty('children')) {
 								var _keys = Object.keys(cat.children);
 								_keys.forEach(function (_key) {
@@ -538,6 +543,7 @@ $(function () {
 										delete cat.children;
 										_self.priceCategories[_key] = obj;
 									}
+									_self.priceCategoriesOrder.push(obj.id);
 								});
 							} else {
 								delete cat.children;
@@ -691,6 +697,12 @@ $(function () {
 						}
 					};
 					_self.servicesList.push(_item);
+
+					if (!_self.servicesListByCategories[service.category]){
+						_self.servicesListByCategories[service.category] = [];
+					}
+					_self.servicesListByCategories[service.category].push(_item);
+
 					_self.servicePrices[_item.id] = {
 						from: service?.from,
 						quote: _quote,
@@ -702,6 +714,12 @@ $(function () {
 						tags: _tags
 					};
 				});
+
+				_self.priceCategoriesOrder.forEach(function(cid){
+					_self.servicesListOrderByCategories = _self.servicesListOrderByCategories.concat(
+						_self.servicesListByCategories[cid] || []);
+				});
+
 				_self.servicesList.sort(function (a, b) {
 					if (a.value < b.value) {
 						return -1;
