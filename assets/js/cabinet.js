@@ -537,7 +537,6 @@ $(function () {
 
 								_keys.forEach(function (_key) {
 									var obj = cat.children[_key];
-									console.log(_key);
 									if (key === 'lab') {
 										obj.isLab                   = ["lab"];
 										obj.type                    = ["lab"];
