@@ -524,6 +524,7 @@ $(function () {
 							return false;
 						}
 						var keys = Object.keys(shop_categories);
+						console.log(keys);
 						keys.forEach(function (key) {
 							var cat = shop_categories[key];
 							delete cat.active;
@@ -533,6 +534,7 @@ $(function () {
 
 							if (cat.hasOwnProperty('children')) {
 								var _keys = Object.keys(cat.children);
+								console.log(_keys);
 								_keys.forEach(function (_key) {
 									var obj = cat.children[_key];
 									if (key === 'lab') {

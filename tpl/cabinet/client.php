@@ -931,7 +931,7 @@
 						if (!!current_day_events_checker) {
 							clearTimeout(current_day_events_checker);
 						}
-						console.log('records:', records);
+						//console.log('records:', records);
 						let events  = {
 							    'upcoming': [],
 							    'current': []
@@ -985,7 +985,7 @@
 					});
 				}
 				current_day_events_checker = setTimeout(loadRecords, 10000);
-				console.log('Records loaded!');
+				//console.log('Records loaded!');
 			})
 		};
 
