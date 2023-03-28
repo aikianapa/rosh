@@ -534,7 +534,7 @@ $(function () {
 
 							if (cat.hasOwnProperty('children')) {
 								var _keys = Object.keys(cat.children);
-								console.log(_keys);
+								_self.priceCategoriesOrder = _self.priceCategoriesOrder.concat(_keys);
 								_keys.forEach(function (_key) {
 									var obj = cat.children[_key];
 									if (key === 'lab') {
@@ -545,10 +545,7 @@ $(function () {
 										delete cat.children;
 										_self.priceCategories[_key] = obj;
 									}
-									_self.priceCategoriesOrder.push(_key);
 								});
-							} else {
-								delete cat.children;
 							}
 						});
 					})
