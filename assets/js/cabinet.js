@@ -524,14 +524,12 @@ $(function () {
 							return false;
 						}
 						var keys = Object.keys(shop_categories);
-						console.log(keys);
 						keys.forEach(function (key) {
 							var cat = shop_categories[key];
 							delete cat.active;
 
 							_self.priceCategories[key] = cat;
 							_self.priceCategoriesOrder.push(key);
-							console.log(key);
 
 							if (cat.hasOwnProperty('children')) {
 								var _keys = Object.keys(cat.children);
@@ -550,6 +548,8 @@ $(function () {
 								});
 							}
 						});
+
+						_self.priceCategoriesOrder.push('');
 					})
 			);
 			getters.push(
