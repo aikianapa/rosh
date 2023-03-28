@@ -531,18 +531,20 @@ $(function () {
 
 							_self.priceCategories[key] = cat;
 							_self.priceCategoriesOrder.push(key);
+							console.log(key);
 
 							if (cat.hasOwnProperty('children')) {
 								var _keys = Object.keys(cat.children);
 								_self.priceCategoriesOrder = _self.priceCategoriesOrder.concat(_keys);
+
 								_keys.forEach(function (_key) {
 									var obj = cat.children[_key];
+									console.log(_key);
 									if (key === 'lab') {
 										obj.isLab                   = ["lab"];
 										obj.type                    = ["lab"];
 										_self.priceCategories[_key] = obj;
 									} else {
-										delete cat.children;
 										_self.priceCategories[_key] = obj;
 									}
 								});
