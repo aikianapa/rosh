@@ -18,7 +18,7 @@
 </edit>
 
 <view>
-    <div class="landing">
+    <div class="landing mt-20">
         <div class="container">
             <div class="row">
                 <div class="offset-lg-4 col-lg-8">

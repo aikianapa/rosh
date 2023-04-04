@@ -33,25 +33,51 @@
 }
 
 div.swiper-horizontal.gallery__slider {
-    overflow: visible;
+    overflow : visible;
 }
 
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transition: all .3s ease;
+    position   : fixed;
+    top        : 0;
+    left       : 0;
+    width      : 100%;
+    transition : all .3s ease;
 }
-
+.header__contact.header__contact--small,
+.header__contact.header__contact--small * {
+    font-weight : normal !important;
+}
+.font-16 {
+    font-size : 16px !important;
+}
+.font-20 {
+    font-size : 20px !important;
+}
+.en-version {
+    border : none;
+}
+.white-bg-title, .problem__name,.blog-panel__title {
+    padding-bottom   : 2px;
+    padding-left     : 16px;
+    padding-right    : 16px;
+    border-radius    : 20px;
+    background-color : #FFFFFFDC;
+    color            : #111;
+}
+.blog-panel:hover .blog-panel__title {
+    background: transparent;
+}
+.blog-panel__title{
+    display:inline-block;
+}
 .header.out {
-    transform: translateY(-140px);
+    transform : translateY(-140px);
 }
 
 a.header__logo.header__logo-red {
-    perspective: 1000px;
-    background: none;
-    overflow: hidden;
+    perspective : 1000px;
+    background  : none;
+    overflow    : hidden;
 }
 
 .header__logo-wrap {

@@ -42,7 +42,9 @@
                                 <div class="content-price__summ">{{fmtPrice(price)}}₽</div>
                             </div>
                             </wb-foreach>
+                            <p style="color:#b5b7b6;font-size: 14px;">Не является публичной офертой. Cтоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</p>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-md-1"></div>

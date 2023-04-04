@@ -57,7 +57,7 @@
                         <div class="/arrow__link">
                             <svg class="svgsprite _arrow-link">
                                 <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
-                            </svg><a href="/about/experts">Еще специалисты</a>
+                            </svg>&nbsp;<a href="/about/experts">Еще специалисты</a>
                         </div>
                     </div>
                 </div>

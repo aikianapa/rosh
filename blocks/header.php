@@ -26,7 +26,7 @@
 					<wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
 					<wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
 					<div class="header__contacts"> <a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
-							{{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
+							{{_var.cityPrefix}} <span>{{_var.cityPhone}}</span></a>
 						<div wb-if="'{{_route.uri}}' !=='/english'" class="header__contact header__contact--small">{{_var.worktime}}</div>
 						<wb-data wb="table=pages&item={{_route.item}}&field=blocks.contacts_english" wb-if="'{{_route.uri}}' =='/english'">
 							<div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>
@@ -55,7 +55,7 @@
 					<wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
 					<wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
 					<div class="header__contacts"><a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
-							{{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
+							{{_var.cityPrefix}} <span>{{_var.cityPhone}}</span></a>
 						<div wb-if="'{{_route.uri}}' !=='/english'" class="header__contact header__contact--small">{{_var.worktime}}</div>
 						<wb-data wb="table=pages&item={{_route.item}}&field=blocks.contacts_english" wb-if="'{{_route.uri}}' =='/english'">
 							<div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>
@@ -200,7 +200,7 @@
 						<wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
 						<wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
 						<div class="header__contacts"><a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
-								{{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
+								{{_var.cityPrefix}} <span>{{_var.cityPhone}}</span></a>
 							<div wb-if="'{{_route.uri}}' !=='/english'" class="header__contact header__contact--small">{{_var.worktime}}</div>
 							<wb-data wb="table=pages&item={{_route.item}}&field=blocks.contacts_english" wb-if="'{{_route.uri}}' =='/english'">
 								<div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>

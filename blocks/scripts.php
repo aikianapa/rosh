@@ -1,4 +1,5 @@
 <view head>
+	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
     <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>-->
 
@@ -53,7 +54,7 @@
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/intlTelInput.min.css?v=1.2" rel="stylesheet">
-	<link href="/assets/css/new.css?v=4EA79D9F68364E4CB8B9F366EDD2FD02" rel="stylesheet">
+	<link href="/assets/css/new.css?v=4FF66D9F68364E4CB8B9F366EDD2FD02" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css?v=A3D0018079B24864814F654D27CA1F95" rel="stylesheet">
 

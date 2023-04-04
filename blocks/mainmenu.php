@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="socials socials-menu">
+        <div class="socials socials-menu" style="display:none">
             <a class="socials__link" href="{{_var.facebook}}" wb-if="'{{_var.facebook}}'>''">
                 <svg class="svgsprite _socials-1">
                     <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-1"></use>

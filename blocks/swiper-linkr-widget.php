@@ -32,7 +32,7 @@
 </edit>
 
 <view>
-    <div class="problems">
+    <div class="problems mb-40">
         <div class="container">
             <div class="problems__slider">
                 <div class="swiper-wrapper">
