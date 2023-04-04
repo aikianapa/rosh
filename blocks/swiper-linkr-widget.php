@@ -7,7 +7,7 @@
             <wb-module wb="module=filepicker&mode=single&width=730&height=570" wb-path="/uploads/landing/images/" name="image">
             </wb-module>
         </div>
-        <div class="col-sm-8 pl-3">
+        <div class="pl-3 col-sm-8">
             <div class="form-group row">
                 <label class="col-form-label col-sm-3">Заголовок</label>
                 <div class="col-sm-9">
@@ -17,7 +17,7 @@
             <div class="form-group row">
                 <label class="col-form-label col-sm-3">Ссылка</label>
                 <div class="col-sm-9">
-                    <input name="href" class="form-control">
+                    <input name="href" class="form-control" wb-module="module=yonger&mode=pageselect">
                 </div>
             </div>
             <div class="form-group row">
