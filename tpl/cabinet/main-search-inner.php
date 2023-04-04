@@ -1432,12 +1432,14 @@
 										new_data.services = utils.arr.unique(new_data.services);
 									}
 
-									if (new_data.group === 'upcoming' && !new_data.price) {
-										toast_error('Необходимо выбрать услугу');
-										$($(ev.node).parents('form'))
-											.find('.popup-services-list')
-											.focus();
-										return false;
+									if (new_data.group === 'upcoming') {
+										if (!new_data.price) {
+											toast_error('Необходимо выбрать услугу');
+											$($(ev.node).parents('form'))
+												.find('.popup-services-list')
+												.focus();
+											return false;
+										}
 									}
 
 									new_data.event_date = utils.dateForce(new_data.event_date);
