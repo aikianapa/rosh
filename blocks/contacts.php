@@ -35,7 +35,7 @@
                         </div>
                         <div class="contacts__phones">
                             <div class="contacts__time text-grey" wb-if="'{{_var.worktime}}'>''">{{_var.worktime}}</div>
-                            <a class="contacts__phone" href="tel:+{{text2tel({{_var.tel}})}}">{{_var.cityPrefix}} <b>{{_var.cityPhone}}</b></a>
+                            <a class="contacts__phone" href="tel:+{{text2tel({{_var.tel}})}}">{{_var.cityPrefix}} <span>{{_var.cityPhone}}</span></a>
                             <div class="contacts__small-phones --flex --jcsb">
                                 <wb-var phlen="{{count(phone)}}" />
                                 <wb-foreach wb="from=phone&tpl=false">
