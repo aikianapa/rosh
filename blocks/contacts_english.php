@@ -4,7 +4,7 @@
             <h1 class="h1" wb-if="'{{_parent.header}}'>''">{{_parent.header}}</h1>
             <div class="row">
                 <div class="col-lg-4 contacts__left">
-                    <div class="contacts__socials">
+                    <div class="contacts__socials" style="display:none">
                         <p class="text-bold text-big">Social media</p>
                         <div class="socials socials-menu">
                             <a class="socials__link" href="{{_var.facebook}}" wb-if="'{{_var.facebook}}'>''">
@@ -28,8 +28,8 @@
                 <div class="col-lg-8">
                     <div class="contacts__info">
                         <div class="contacts__address">
-                            <p class="text-small text-grey" wb-if="'{{city}}'>''">{{city}}</p>
-                            <p class="text-bold" wb-if="'{{address}}'>''">{{address}}
+                            <p class="text-small font-16 text-grey" wb-if="'{{city}}'>''">{{city}}</p>
+                            <p class="text-bold font-20" wb-if="'{{address}}'>''">{{address}}
                             </p>
                             <p class="text-grey" wb-if="'{{addressComment}}'>''">{{addressComment}}</p>
                         </div>
