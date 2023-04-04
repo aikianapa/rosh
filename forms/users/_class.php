@@ -34,21 +34,30 @@ class usersClass extends cmsFormsClass
                 $item['expert'] = array_pop($list['list']);
             }
         }
-
-
         return $item;
     }
 
     public function beforeItemSave(&$item)
     {
+        $data = $this->app->dot($item);
+        if ($data->get('role') == 'expert') {
+            $list = wbItemList('experts', ["filter" => [
+                "active" => "on",
+                "login" => $item['id']
+            ]]);
+            if ($list['count'] > 0) {
+                $item['expert'] = array_pop($list['list']);
+            }
+        }
         isset($item['email']) ? $item['email'] = strtolower($item['email']) : null;
         $item['phone'] = isset($item['phone']) ? wbDigitsOnly($item['phone']) : '';
         if (!isset($item['middle_name'])) $item['middle_name'] = '';
         if (!$this->app->vars('_route._post.fullname') && $this->app->vars('_route._post.first_name') > '' ) {
             $item['fullname'] = trim($item['last_name'].' '.$item['first_name'].' '.$item['middle_name']);
         }
-        if ($item['email'] == '' && $item['phone'] == '') {
-            die;
+
+        if ($item['isgroup'] !== 'on' && $item['email'] == '') {
+            return $item;
         }
         $this->changePassword($item);
         foreach($item as $key => $val) {
