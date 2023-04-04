@@ -337,6 +337,9 @@ div.accardeon.active > div.accardeon__list {
 .account-events__block .account-events__item {
 	margin-right : 20px;
 }
+.account-events__block .account-events__item:nth-child(2) {
+	width : calc(21% - 20px);
+}
 .account-events__block .account-events__item:first-child {
 	width : calc(45% - 20px);
 }
