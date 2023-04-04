@@ -47,6 +47,9 @@ class usersClass extends cmsFormsClass
         if (!$this->app->vars('_route._post.fullname') && $this->app->vars('_route._post.first_name') > '' ) {
             $item['fullname'] = trim($item['last_name'].' '.$item['first_name'].' '.$item['middle_name']);
         }
+        if ($item['email'] == '' && $item['phone'] == '') {
+            die;
+        }
         $this->changePassword($item);
         foreach($item as $key => $val) {
             if (strpos(' '.$key,'date')) $item[$key] = date('Y-m-d H:i:s',strtotime($item[$key]));
