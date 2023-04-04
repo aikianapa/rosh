@@ -423,6 +423,8 @@ $(function () {
 		services: {},
 		servicePrices: {},
 		servicesList: [], /* for autocomplete */
+		servicesListByCategories: {}, /* for autocomplete */
+		servicesListOrderByCategories: [], /* for autocomplete */
 		roles: {
 			"main": "Aдминистратор",
 			"expert": "Специалист",
@@ -452,6 +454,7 @@ $(function () {
 		},
 		categories: {},
 		priceCategories: {},
+		priceCategoriesOrder: [],
 		experts: {},
 		expert_users: {},
 		clients: {},
@@ -526,8 +529,12 @@ $(function () {
 							delete cat.active;
 
 							_self.priceCategories[key] = cat;
+							_self.priceCategoriesOrder.push(key);
+
 							if (cat.hasOwnProperty('children')) {
 								var _keys = Object.keys(cat.children);
+								_self.priceCategoriesOrder = _self.priceCategoriesOrder.concat(_keys);
+
 								_keys.forEach(function (_key) {
 									var obj = cat.children[_key];
 									if (key === 'lab') {
@@ -535,14 +542,13 @@ $(function () {
 										obj.type                    = ["lab"];
 										_self.priceCategories[_key] = obj;
 									} else {
-										delete cat.children;
 										_self.priceCategories[_key] = obj;
 									}
 								});
-							} else {
-								delete cat.children;
 							}
 						});
+
+						_self.priceCategoriesOrder.push('');
 					})
 			);
 			getters.push(
@@ -684,13 +690,19 @@ $(function () {
 							from: service?.from,
 							quote: _quote,
 							service_id: service.category,
-							service_title: _self.priceCategories[service.category].name.trim(),
+							service_title: _self.priceCategories[service.category].name.trim() || title.trim(),
 							tags: _tags,
 							price: service.price,
 							price_id: service.id
 						}
 					};
 					_self.servicesList.push(_item);
+
+					if (!_self.servicesListByCategories[service.category]){
+						_self.servicesListByCategories[service.category] = [];
+					}
+					_self.servicesListByCategories[service.category].push(_item);
+
 					_self.servicePrices[_item.id] = {
 						from: service?.from,
 						quote: _quote,
@@ -702,16 +714,22 @@ $(function () {
 						tags: _tags
 					};
 				});
-				_self.servicesList.sort(function (a, b) {
-					if (a.value < b.value) {
-						return -1;
-					}
-					if (a.value > b.value) {
-						return 1;
-					}
-					return 0;
+
+				_self.priceCategoriesOrder.forEach(function(cid){
+					_self.servicesListOrderByCategories = _self.servicesListOrderByCategories.concat(
+						_self.servicesListByCategories[cid] || []);
 				});
 
+				//_self.servicesList.sort(function (a, b) {
+				//	if (a.value < b.value) {
+				//		return -1;
+				//	}
+				//	if (a.value > b.value) {
+				//		return 1;
+				//	}
+				//	return 0;
+				//});
+				_self.servicesList = _self.servicesListOrderByCategories;
 				$(document).trigger('cabinet-db-ready');
 			});
 		}
