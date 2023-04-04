@@ -1412,9 +1412,10 @@
 									if (!!new_data.experts) {
 										new_data.no_experts = 0;
 									}
-									if (new_data.group === 'events' &&
-									    (!!new_data.services || !!new_data.consultation)) {
-										new_data.no_services = 0;
+									if (new_data.group === 'events') {
+										if (!!new_data.services || !!new_data.consultation) {
+											new_data.no_services = 0;
+										}
 									}
 									if (!new_data.hasOwnProperty('has_meetroom')) {
 										new_data.has_meetroom = 0;
