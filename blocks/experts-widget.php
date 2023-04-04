@@ -7,10 +7,16 @@
         <label class="col-sm-2">Специалисты</label>
         <div class="col-sm-10">
             <div class="form-group row">
-                <div class="col-12 mb-1">
+                <div class="mb-1 col-12">
                     <input class="form-control" name="experts" wb-module="selectexperts" multiple placeholder="Список специалистов">
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-auto">Показывать ссылку на всех специалистов</label>
+        <div class="col">
+            <input name="showlink" wb-module="module=switch" />
         </div>
     </div>
 </edit>
@@ -21,7 +27,7 @@
         <wb-var experts wb-api="/api/v2/list/experts?active=on" />
 
         <div class="container">
-            <h3 class="h3 mb-40">Специалисты</h3>
+            <h3 class="mb-40 h3">Специалисты</h3>
             <div class="inner-experts__list">
                 <wb-foreach wb="from=_var.experts" wb-if="'{{_route.form}}' == 'services' && '{{_route.mode}}' == 'show'">
                     <div class="inner-experts__item" wb-if="in_array('{{id}}',{{_parent.experts}})">
@@ -45,7 +51,7 @@
                         </div>
                     </div>
                 </wb-foreach>
-                <div class="inner-experts__item inner-experts__item-all">
+                <div class="inner-experts__item inner-experts__item-all" wb-if="'{{showlink}}'=='on'">
                     <div class="inner-experts__all">
                         <h2 class="h2">Смотреть остальных специалистов </h2>
                         <div class="/arrow__link">
@@ -64,7 +70,7 @@
 <preview>
     <div class="inner-experts page">
         <div class="container">
-            <h3 class="h3 mb-40">Специалисты</h3>
+            <h3 class="mb-40 h3">Специалисты</h3>
             <div class="inner-experts__list">
                 <div class="inner-experts__item">
                     <div class="inner-experts__pic" style="background-image: url(/assets/img/experts/1.jpg)"></div>
