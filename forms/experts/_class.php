@@ -6,6 +6,7 @@ class expertsClass extends cmsFormsClass
     }
 
     function beforeItemSave(&$item) {
+        if (@$this->app->route->form=='experts') return;
         $url = '/about/experts/'.wbFurlGenerate($item['name']);
         if (!yongerCheckUrl($url,'experts',$item['id'])) {
             header("Content-type:application/json");
