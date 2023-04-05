@@ -5,7 +5,7 @@
                 <div class="container-fluid">
                     <div class="row footer__top">
                         <div class="footer__item col-lg-2">
-                            <div class="socials">
+                            <div class="socials" style="display: none;">
                                 <a class="socials__link" href="{{_var.facebook}}" wb-if="'{{_var.facebook}}'>''">
                                     <svg class="svgsprite _socials-1">
                                         <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-1"></use>

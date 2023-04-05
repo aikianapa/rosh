@@ -53,7 +53,7 @@ div.swiper-horizontal.gallery__slider {
 .font-20 {
     font-size : 20px !important;
 }
-.en-version {
+.en-version, .admin-edit__user-btns {
     border : none;
 }
 .white-bg-title, .problem__name,.blog-panel__title {
