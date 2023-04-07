@@ -15,7 +15,20 @@ class usersClass extends cmsFormsClass
     public function beforeItemShow(&$item)
     {
         $item['phone'] = $this->app->phoneFormat($item['phone']);
-        $item['birthdate'] = date('d.m.Y',strtotime($item['birthdate']));
+        $item['birthdate'] = @date('d.m.Y',strtotime($item['birthdate']));
+        //image,  division, stages, spec, licenses, education,  experience, blocks, srvtype,  _sort
+        @$item['expert'] = [
+            'id' => &$item['id'],
+            'name' => &$item['fullname'],
+            'image' => &$item['image'],
+            'division' => &$item['division'],
+            'stages' => &$item['stages'],
+            'spec' => &$item['spec'],
+            'licenses' => &$item['licenses'],
+            'education' => &$item['education'],
+            'experience' => &$item['experience'],
+            'srvtype' => &$item['srvtype']
+        ];
         return $item;
     }
 
@@ -25,37 +38,24 @@ class usersClass extends cmsFormsClass
         isset($item['phone']) ? null : $item['phone'] = '';
         $item['phone'] = preg_replace('/[^0-9]/', '', $item['phone']);
         $item['fullname'] = trim($data->get('last_name').' '.$data->get('first_name').' '.$data->get('middle_name'));
-        if ($data->get('role') == 'expert') {
-            $list = wbItemList('experts',["filter"=>[
-                "active"=>"on",
-                "login"=>$item['id']
-            ]]);
-            if ($list['count'] > 0) {
-                $item['expert'] = array_pop($list['list']);
-            }
-        }
         return $item;
     }
 
     public function beforeItemSave(&$item)
     {
         $data = $this->app->dot($item);
-        if ($data->get('role') == 'expert') {
-            $list = wbItemList('experts', ["filter" => [
-                "active" => "on",
-                "login" => $item['id']
-            ]]);
-            if ($list['count'] > 0) {
-                $item['expert'] = array_pop($list['list']);
-            }
-        }
         isset($item['email']) ? $item['email'] = strtolower($item['email']) : null;
         $item['phone'] = isset($item['phone']) ? wbDigitsOnly($item['phone']) : '';
         if (!isset($item['middle_name'])) $item['middle_name'] = '';
         if (!$this->app->vars('_route._post.fullname') && $this->app->vars('_route._post.first_name') > '' ) {
             $item['fullname'] = trim($item['last_name'].' '.$item['first_name'].' '.$item['middle_name']);
+        } else if (isset($item['fullname'])) {
+            $fullname = explode(' ',trim($item['fullname']));
+            $item['last_name'] = @$fullname[0];
+            $item['first_name'] = @$fullname[1];
+            $item['middle_name'] = @$fullname[2];
         }
-
+        $item['header'] = $item['fullname'];
         if ($item['isgroup'] !== 'on' && $item['email'] == '') {
             return $item;
         }
@@ -68,6 +68,14 @@ class usersClass extends cmsFormsClass
     }
 
     function changePassword(&$item=null) {
+        if (isset($item['new_password'])) {
+            // при создании нового специалиста
+            $item['password'] = wbPasswordMake($item['new_password']);
+            unset($item['new_password']);
+            return;
+        }
+
+
         if ($item == null OR !isset($item['pwd_current']) OR $item['pwd_current'] == '') return;
         if ($this->app->vars('_sess.user.id') !== $item['id']) return;
         if (wbPasswordCheck($item['pwd_current'], $item['password'])) {
@@ -140,6 +148,25 @@ class usersClass extends cmsFormsClass
         $data['active'] = 'on';
         return wbItemSave('users',$data,true);
     }
+
+    function sort()
+    {
+        // сортировка для экспертов
+        $data = $this->app->vars('_post');
+        $res = ['error' => true];
+        foreach ($data as $sort => $item) {
+            $this->app->itemSave($this->app->route->form, [
+                'id' => $item,
+                '_sort' => wbSortIndex($sort)
+            ], true);
+            $res = ['error' => false];
+        }
+        $this->app->tableFlush($this->app->route->form);
+        header("Content-type:application/json");
+        echo json_encode($res);
+        exit;
+    }
+
 
     function checkClient($phone = null) {
         if ($phone == null) return; // чтобы не вызывалась через api
