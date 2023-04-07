@@ -18,8 +18,8 @@
                         <h5 class="h5 expert__category" wb-if="'{{name}}'>''">{{name}}</h5>
                     </div>
                     <div class="col-lg-9">
-                        <wb-foreach wb="table=experts&tpl=false&sort=_sort" wb-filter="division={{id}}&active=on">
-                            <a class="expert__info" href="/about/experts/{{wbFurlGenerate({{name}})}}">
+                        <wb-foreach wb="table=users&tpl=false&sort=_sort" wb-filter="role=expert&division={{id}}&active=on">
+                            <a class="expert__info" href="/about/experts/{{wbFurlGenerate({{fullname}})}}">
                                 <div class="row">
                                     <div class="col-md-5">
                                         <div class="expert__img" wb-if="'{{image.0.img}}'>''">
@@ -27,7 +27,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-7">
-                                        <p class="expert__name" wb-if="'{{name}}'>''">{{name}}</p>
+                                        <p class="expert__name" wb-if="'{{fullname}}'>''">{{fullname}}</p>
                                         <div class="expert__description" wb-if="'{{spec}}'>''">
                                             <p>{{spec}}</p>
                                         </div>

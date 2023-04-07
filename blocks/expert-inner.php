@@ -42,17 +42,18 @@
             <a class="crumbs__link" href="/">Главная</a>
             <a class="crumbs__link" href="/about">О клинике</a>
             <a class="crumbs__link" href="/about/experts">Специалисты</a>
-            <span class="crumbs__link">{{_parent.name}}</span>
+            <span class="crumbs__link">{{_parent.fullname}}</span>
         </div>
+        
         <div class="expert">
             <div class="expert__top row">
                 <div class="col-md-4">
                     <div class="expert__photo">
-                        <img src="/thumbc/630x350/src{{_parent.image.0.img}}" alt="{{_parent.name}}">
+                        <img src="/thumbc/630x350/src{{_parent.image.0.img}}" alt="{{_parent.fullname}}">
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <h2 class="h2 expert__name">{{_parent.name}}</h2>
+                    <h2 class="h2 expert__name">{{_parent.fullname}}</h2>
                     <div class="expert__work">
                         <p wb-if="'{{_parent.spec}}'>''">{{_parent.spec}}</p>
                         <p wb-if="'{{education}}'>''">Образование: {{education}}</p>
