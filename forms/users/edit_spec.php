@@ -66,6 +66,14 @@
                                 </div>
                             </div>
                             <div>
+
+                                <div class="mb-1 form-group row">
+                                    <label class="col-form-label col-sm-3">Телефон</label>
+                                    <div class="col-sm-9 email">
+                                        <input type="tel" wb-mask="+9 (999) 999-99-99" name="phone" class="form-control" placeholder="Телефон">
+                                    </div>
+                                </div>
+
                                 <div class="mb-1 form-group row">
                                     <label class="col-form-label col-sm-3">Эл.почта</label>
                                     <div class="col-sm-9 email">
