@@ -30,7 +30,8 @@ class recordsClass extends cmsFormsClass
         $types = $this->app->itemRead('catalogs', 'quote_type')['tree']['data'];
         $pays = $this->app->itemRead('catalogs', 'quote_pay')['tree']['data'];
         $status = $this->app->itemRead('catalogs', 'quote_status')['tree']['data'];
-        $specs =  $this->app->itemList('experts')['list'];
+        $specs =  $this->app->itemList('users',['filter'=>['role'=>'expert']])['list'];
+
         $servs =  $this->app->itemList('services')['list'];
         $orders = [];
         $events = [];
@@ -70,7 +71,6 @@ class recordsClass extends cmsFormsClass
                 foreach($item['experts'] as &$expert) {
                     $expert = $specs[$expert]['fullname'];
                 }
-
                 foreach ($item['services'] as &$serv) {
                     $serv = $servs[$serv]['header'];
                 }
@@ -119,6 +119,7 @@ class recordsClass extends cmsFormsClass
     // События
     $spreadsheet = new Spreadsheet();
     $idx = 0;
+    
     foreach($result as $key => $data) {
         if (count($data)) {
             if ($idx > 0) {
