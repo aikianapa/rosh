@@ -57,7 +57,7 @@
                     <div class="expert__work">
                         <p wb-if="'{{_parent.spec}}'>''">{{_parent.spec}}</p>
                         <p wb-if="'{{education}}'>''">Образование: {{education}}</p>
-                        <p wb-if="'{{certificate}}'>''">Сертификат: {{certificate}}</p>
+                        <p wb-if="'{{certificate}}'>''">Лицензия: {{certificate}}</p>
                     </div>
                     <input type="hidden" class="expert" value="{{_parent.login}}">
                     <button class="btn btn--black --openpopup" data-popup="--fast" href="#">Записаться на прием</button>
