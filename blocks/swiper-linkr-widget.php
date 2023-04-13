@@ -2,6 +2,13 @@
     <div>
         <wb-module wb="module=yonger&mode=edit&block=common.inc" />
     </div>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3">Заголовок слайдера</label>
+        <div class="col-sm-9">
+            <input name="block_title" class="form-control tx-bold">
+        </div>
+    </div>
+
     <wb-multiinput name="swiper">
         <div class="col-sm-4">
             <wb-module wb="module=filepicker&mode=single&width=730&height=570" wb-path="/uploads/landing/images/" name="image">
@@ -32,8 +39,10 @@
 </edit>
 
 <view>
-    <div class="problems mb-40">
+    <div class="mb-40 problems">
         <div class="container">
+
+            <h3 class="mb-40 h3" wb-if="'{{block_title}}'>''">{{block_title}}</h3>
             <div class="problems__slider">
                 <div class="swiper-wrapper">
                     <wb-foreach wb="from=swiper">
