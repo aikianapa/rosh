@@ -10,24 +10,34 @@
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-form-label col-sm-3">Тэги</label>
-        <div class="col-sm-9">
-                <input name="tags" class="form-control" wb-module="tagsinput">
+        <div class="col-12">
+            <div class="divider-text">Тэги</div>
         </div>
-    </div>
+            <div class="col-12">
+                <wb-multiinput name="tags">
+                    <div class="col">
+                        <input name="tag" class="form-control" placeholder="Тэг">
+                    </div>
+                    <div class="col">
+                        <input name="link" class="form-control" wb="module=yonger&mode=pageselect" placeholder="Ссылка">
+                    </div>
+                </wb-multiinput>
+
+            </div>
+        </div>
 </edit>
 
 <view>
-    <div class="landing mt-20">
+    <div class="mt-20 landing">
         <div class="container">
             <div class="row">
                 <div class="offset-lg-4 col-lg-8">
                     <div class="symptoms">
-                        <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
+                        <h3 class="mb-40 h3" wb-if="'{{title}}'>''">{{title}}</h3>
                         <div class="tags">
-                        <wb-foreach wb='json={{explode(",",{{tags}})}}&tpl=false'>
-                            <div class="tag" wb-if="'{{_val}}'>''">{{_val}}</div>
-                        </wb-foreach>
+                            <wb-foreach wb='from=tags&tpl=false'>
+                                <a href="{{link}}" class="tag" wb-if="'{{tag}}'>''">{{tag}}</a>
+                            </wb-foreach>
                         </div>
                     </div>
                 </div>
@@ -42,7 +52,7 @@
             <div class="row">
                 <div class="offset-lg-4 col-lg-8">
                     <div class="symptoms">
-                        <h3 class="h3 mb-40">Симптомы:</h3>
+                        <h3 class="mb-40 h3">Симптомы:</h3>
                         <div class="tags">
                             <div class="tag">Воспаленная кожа </div>
                             <div class="tag">Жжение кожи</div>
