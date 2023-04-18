@@ -42,7 +42,7 @@
                             <wb-foreach wb="from=price&tpl=false">
                                 <div class="content-price__item row" wb-if="'{{header}}'>''">
                                     <wb-var cnt='{{_var.cnt + 1}}' />
-                                    <div class="col-12 col-md-2">{{articul}} </div>
+                                    <div class="col-12 col-md-2 content-price__name">{{articul}} </div>
                                     <div class="col-9 col-md-8 content-price__name">{{header}}</div>
                                     <div class="text-right col-3 col-md-2 content-price__summ">{{fmtPrice(price)}}₽</div>
                                 </div>
