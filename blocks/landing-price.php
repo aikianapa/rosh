@@ -4,22 +4,26 @@
     </div>
     <div>
 
-    <wb-multiinput name="price">
-        <div class="col-sm-10">
-            <div class="input-group">
-                <div class="input-group-prepend cursor-pointer" onclick="priceSelector(this)">
-                    <span class="input-group-text">
-                        <img data-src="/module/myicons/interface-essential-138.svg?size=20&amp;stroke=323232" width="20" height="20" src="/module/myicons/interface-essential-138.svg?size=24&amp;stroke=323232">
-                    </span>
+        <wb-multiinput name="price">
+            <div class="col-sm-7">
+                <div class="input-group">
+                    <div class="cursor-pointer input-group-prepend" onclick="priceSelector(this)">
+                        <span class="input-group-text">
+                            <img data-src="/module/myicons/interface-essential-138.svg?size=20&amp;stroke=323232" width="20" height="20" src="/module/myicons/interface-essential-138.svg?size=24&amp;stroke=323232">
+                        </span>
+                    </div>
+                    <input class="form-control" type="text" name="header" placeholder="Наименование">
                 </div>
-                <input class="form-control" type="text" name="header" placeholder="Наименование">
             </div>
-        </div>
-        <div class="col-sm-2">
-            <input class="form-control tx-right" type="text" name="price" placeholder="Цена">
-        </div>
-    </wb-multiinput>
-    <wb-include wb="form=price&mode=selector" />
+            <div class="col-sm-3">
+                <input class="form-control tx-right" type="text" name="articul" placeholder="Артикул">
+                <input class="d-none" type="text" name="price_id" placeholder="ID прайс-листа">
+            </div>
+            <div class="col-sm-2">
+                <input class="form-control tx-right" type="text" name="price" placeholder="Цена">
+            </div>
+        </wb-multiinput>
+        <wb-include wb="form=price&mode=selector" />
     </div>
 </edit>
 
@@ -36,11 +40,11 @@
                         </div>
                         <div class="content-price__body">
                             <wb-foreach wb="from=price&tpl=false">
-                            <div class="content-price__item" wb-if="'{{header}}'>''">
-                                <wb-var cnt='{{_var.cnt + 1}}' />
-                                <div class="content-price__name">{{header}}</div>
-                                <div class="content-price__summ">{{fmtPrice(price)}}₽</div>
-                            </div>
+                                <div class="content-price__item" wb-if="'{{header}}'>''">
+                                    <wb-var cnt='{{_var.cnt + 1}}' />
+                                    <div class="content-price__name"><span wb-if="'{{articul}}'>''">{{articul}} </span>{{header}}</div>
+                                    <div class="content-price__summ">{{fmtPrice(price)}}₽</div>
+                                </div>
                             </wb-foreach>
                             <p style="color:#b5b7b6;font-size: 14px;">Не является публичной офертой. Cтоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</p>
                         </div>
@@ -51,7 +55,7 @@
             </div>
         </div>
     </div>
-    <wb-jq wb="$dom->find('.landing')->remove()" wb-if="'{{_var.cnt}}'=='0'"/>
+    <wb-jq wb="$dom->find('.landing')->remove()" wb-if="'{{_var.cnt}}'=='0'" />
 </view>
 
 <preview>

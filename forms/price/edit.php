@@ -27,6 +27,13 @@
                             </div>
 
                             <div class="form-group row">
+                                <label class="col-form-label col-sm-4">Артикул</label>
+                                <div class="col">
+                                    <input name="articul" type="text" class="form-control" placeholder="Артикул" >
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label class="col-form-label col-sm-4">Разделы</label>
                                 <div class="col">
                                     <select class="form-control" wb-select2 multiple placeholder="" name="type">
