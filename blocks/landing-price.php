@@ -40,10 +40,11 @@
                         </div>
                         <div class="content-price__body">
                             <wb-foreach wb="from=price&tpl=false">
-                                <div class="content-price__item" wb-if="'{{header}}'>''">
+                                <div class="content-price__item row" wb-if="'{{header}}'>''">
                                     <wb-var cnt='{{_var.cnt + 1}}' />
-                                    <div class="content-price__name"><span wb-if="'{{articul}}'>''">{{articul}} </span>{{header}}</div>
-                                    <div class="content-price__summ">{{fmtPrice(price)}}₽</div>
+                                    <div class="col-12 col-md-2">{{articul}} </div>
+                                    <div class="col-9 col-md-8 content-price__name">{{header}}</div>
+                                    <div class="text-right col-3 col-md-2 content-price__summ">{{fmtPrice(price)}}₽</div>
                                 </div>
                             </wb-foreach>
                             <p style="color:#b5b7b6;font-size: 14px;">Не является публичной офертой. Cтоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</p>
