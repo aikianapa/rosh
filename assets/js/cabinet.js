@@ -1035,7 +1035,7 @@ $(function () {
 			onSelect: function (suggestion) {
 				$selector.val('');
 				if (_parent_form.find(
-					'.admin-editor__patient:not(.price-list) [data-id=' + suggestion.id + ']').length) {
+					'.admin-editor__patient:not(.price-list)[data-id="' + suggestion.id + '"]').length) {
 					return;
 				}
 				var PRICE = new Intl.NumberFormat('ru-RU').format(suggestion.data.price);
