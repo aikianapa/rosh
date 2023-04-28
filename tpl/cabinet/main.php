@@ -600,7 +600,7 @@
 				</div>
 				{{#each records as record: idx}}
 				{{#with @global.catalog.users[this.client]}}
-				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{status}}" data-client="{{record.client}}" data-record="{{record.id}}" data-id="{{record.id}}" data-idx="{{idx}}" data-priority="{{record.priority}}" data-group="{{record.group}}">
+				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{status}} {{@global.catalog.quoteStatus[status].data[]}}" data-client="{{record.client}}" data-record="{{record.id}}" data-id="{{record.id}}" data-idx="{{idx}}" data-priority="{{record.priority}}" data-group="{{record.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
 							<div class="accardeon__click" data-record="{{record.id}}" data-idx="{{idx}}"

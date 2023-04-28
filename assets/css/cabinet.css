@@ -478,19 +478,13 @@ ul li.service_price{
 .status-past{
 	background : #E0F5E2;
 }
-.status-upcoming{
+.status-upcoming {
 	background : #FDF2DE;
 }
-.status-cancel_expensive{
-	background: linear-gradient(0deg, rgba(144, 201, 255, .5), rgba(144, 201, 255, .5)), #FBF9F7;
+.status-cancel_expensive, .status-cancel_think, .status-cancel_noreason, .status-id63ea52b10780 {
+	background : linear-gradient(0deg, rgba(144, 201, 255, .5), rgba(144, 201, 255, .5)), #FBF9F7;
 }
-.status-cancel_think{
-	background: #c6f6f8;
-}
-.status-cancel_noreason{
-	background: #bde0fc;
-}
-.admin-events-item.orderby.selected{
+.admin-events-item.orderby.selected {
 	color : #1E60C1;
 }
 .autocomplete-suggestions.search__drop{
