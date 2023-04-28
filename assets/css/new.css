@@ -1537,7 +1537,7 @@ div.swiper-horizontal.post-slider {
 }
 
 h2 {
-    font-size: 36px;
+    font-size: 32px;
     line-height: 120%;
     font-family: "Playfair Display", serif;
     letter-spacing: .04em;
@@ -1790,7 +1790,9 @@ sup {
 .problems-filter__item.active{
     font-weight: 600;
 }
-
+.text li, .text p{
+    color: #070e0d;
+}
 
 
 @media (min-width : 1400px) {
