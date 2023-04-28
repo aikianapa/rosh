@@ -144,9 +144,8 @@ $(function() {
                 value  = [];
                 var list = $(this).closest('.select__list');
                 if (list.hasClass('single')){
-                    $(this).siblings('.select__item input[type="checkbox"]:checked').prop('checked', false);
-                }
-                setTimeout(function (){
+                    //$(this).siblings('.select__item input[type="checkbox"]:checked').prop('checked', false);
+                } else {
                     $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
                         if ($(this).find('input[type=checkbox]:checked, input[type=radio]:checked').length) {
                             value.push($(this).find('.select__name:first').text());
@@ -155,7 +154,7 @@ $(function() {
                     });
                     value = value.join(', ');
                     $(this).closest('.select').toggleClass('has-values', ne).find('.select__values:first').html(value);
-                },100);
+                }
             } else {
                 value = $(this).html();
                 $(this).addClass('active').siblings('.select__item').removeClass('active');
