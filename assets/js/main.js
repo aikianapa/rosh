@@ -142,7 +142,7 @@ $(function() {
                     });
                     value = value.join(', ');
                     $(this).closest('.select').toggleClass('has-values', ne).find('.select__values:first').html(value);
-                });
+                },100);
             } else {
                 value = $(this).html();
                 $(this).addClass('active').siblings('.select__item').removeClass('active');
