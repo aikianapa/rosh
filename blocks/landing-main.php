@@ -6,7 +6,7 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-8">
                     <div class="content-wrap">
-                        <h1 class="h1 text-center">{{_parent.header}}</h1>
+                        <h1 class="h1 landing-title text-center">{{_parent.header}}</h1>
                     </div>
                 </div>
             </div>

@@ -1796,7 +1796,9 @@ sup {
 .profile-menu .enter__panel{
     width : auto;
 }
-
+.landing .landing-small-title, .landing .landing-title{
+    text-transform: initial;
+}
 @media (min-width : 1400px) {
     .fixed-top {
         position  : fixed;
