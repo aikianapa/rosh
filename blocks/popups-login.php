@@ -43,7 +43,7 @@
 							</svg>
 						</button>
 						<div class="popup__name text-bold">Вход</div>
-						<form class="popup__form">
+						<form class="popup__form code_panel" >
 							<h3 class="h3">Введите код</h3>
 							<div class="form-title__description">
 								Мы отправили код подтверждения на номер

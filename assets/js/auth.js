@@ -53,7 +53,7 @@ function Auth()
 
 	this.phone_window_close = function(){
 		this.phone_window_clear_alert();
-		this.phone_value.val('');
+		//this.phone_value.val('');
 		this.phone_window.hide();
 	}
 
@@ -91,6 +91,9 @@ function Auth()
 			if(cur_timelife <= 0){
 				clearInterval(_this.timelife_handler);
 				_this.smscode_window_close();
+				_this.phone_window_submit_btn.css('width', '100%');
+				_this.phone_window_submit_btn.text('Отправить код повторно');
+				_this.phone_window_show();
 			} else {
 				_this.smscode_window_lifetime_count.text(_this.num_word(cur_timelife))
 			}
@@ -289,6 +292,8 @@ $(document).ready(function() {
 	//Дополнительные события для кнопок
 	auth.phone_window_close_btn.on('click', function () {
 		auth.phone_window_close();
+		auth.phone_window_submit_btn.css('width', 'auto');
+		auth.phone_window_submit_btn.text('Получить код');
 	})
 
 	auth.start_button.click(function(){
@@ -299,7 +304,7 @@ $(document).ready(function() {
 	auth.phone_window_submit_btn.on('click', function(e){
 		e.preventDefault();
 		auth.phone_current = auth.phone_value.val();
-
+		window.phone_current = auth.phone_value.val();
 		$.ajax({
 			url: '/form/phoneAuth/get_code',
 			method: 'POST',
@@ -318,7 +323,7 @@ $(document).ready(function() {
 				}
 			}
 		})
-	})
+	});
 
 	auth.smscode_window_digits.mask('9', {placeholder: ''});
 
@@ -376,7 +381,9 @@ $(document).ready(function() {
 
 	auth.smscode_window_close_btn.on('click', function(){
 		auth.smscode_window_close();
-	})
+		auth.phone_window_submit_btn.css('width', 'auto');
+		auth.phone_window_submit_btn.text('Получить код');
+	});
 
 	//Авторизация по email
 
