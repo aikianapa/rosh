@@ -107,6 +107,9 @@ $(function () {
 	var months              = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 	window.utils       = {
+		clrText(str){
+			return str.replaceAll('-undefined','').replace(/^-+|,+$/g, '');
+		},
 		getAll(id_list, val_list, rec_type, rec_text_fld){
 			console.log(id_list, val_list);
 			if (val_list){
@@ -122,7 +125,6 @@ $(function () {
 					_result.push(rec_list[id][rec_text_fld] || '-');
 					console.log(rec_list[id][rec_text_fld]);
 				});
-				console.log(_result);
 				return _result.join('<br>');
 			}
 			return '';
@@ -1699,8 +1701,8 @@ $(function () {
 			changelog.push({
 				label: 'Время приёма',
 				field: 'event_time',
-				prev_val: prev_record_data.event_time_start + '-' + prev_record_data.event_time_end,
-				new_val: new_record_data.event_time_start + '-' + new_record_data.event_time_end
+				prev_val: prev_record_data.event_time_start + ' - ' + prev_record_data.event_time_end,
+				new_val: new_record_data.event_time_start + ' - ' + new_record_data.event_time_end
 			});
 		}
 

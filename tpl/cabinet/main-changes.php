@@ -134,7 +134,7 @@
 												{{elseif this.field == 'event_date'}}
 												{{@global.utils.formatDate(this.prev_val)}}
 												{{else}}
-												{{this.prev_val}}
+												{{@global.utils.clrText(this.prev_val)}}
 												{{/if}}
 											</p>
 										</div>
@@ -149,7 +149,7 @@
 												{{elseif this.field == 'event_date'}}
 												{{@global.utils.formatDate(this.new_val)}}
 												{{else}}
-												{{this.new_val}}
+												{{@global.utils.clrText(this.new_val)}}
 												{{/if}}
 											</p>
 										</div>
