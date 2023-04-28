@@ -1507,7 +1507,7 @@ div.swiper-horizontal.post-slider {
 }
 
 .problems-filter .text-bold.problems-filter__title {
-    display: none;
+    /*display: none;*/
 }
 
 .problems-filter .problems-filter__item {
@@ -1787,6 +1787,12 @@ blockquote cite {
 sup {
     top: -0.3em!important;
 }
+.problems-filter__item.active{
+    font-weight: 600;
+}
+
+
+
 @media (min-width : 1400px) {
     .fixed-top {
         position  : fixed;

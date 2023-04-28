@@ -1,5 +1,9 @@
 <view>
     <script wb-app>
+        console.log('1st!');
+    </script>
+    <script wb-app>
+        console.log('2nd!');
         $(".crumbs").after(`
         <div class="title-flex --flex --jcsb">
         <button class="btn btn--black --openpopup" data-popup="--fast-make" href="#">Записаться на прием </button>
@@ -64,17 +68,17 @@
                 <button class="btn btn--white">Найти</button>
             </div>
         </div>
-        <wb-var active="" />
+        <wb-var active="active" />
         <div class="all-tabs-items" wb-tree="dict=srvtype&children=false">
             <div class="cursor-pointer all-tabs-item data-tab-link {{_var.active}}" data-srvtype="{{id}}" data-tabs="all-problems">{{name}}</div>
             <wb-var active="" />
         </div>
     </div>
     <div class="problems-filter">
-        <div class="container">
+        <div class="container" style="margin-left: 16px;">
             <p class="text-bold problems-filter__title">Фильтр:</p>
             <div class="problems-filter__list">
-                <div class="cursor-pointer problems-filter__item" data-category="">Все проблемы</div>
+                <div class="cursor-pointer problems-filter__item" data-category="">Все</div>
                 <wb-foreach wb="table=catalogs&item=srvcat&from=tree.data">
                     <div class="cursor-pointer problems-filter__item" data-category="{{id}}" wb-if='!in_array({{id}},["gyn","lab"])'>{{name}}</div>
                 </wb-foreach>
