@@ -3,21 +3,21 @@
         <div class="container">
             <div class="row" wb-if="'{{_parent.header}}'>''">
 	            <input type="hidden" name="quote_page_comment" value="{{_parent.header}}">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-8">
                     <div class="content-wrap">
                         <h1 class="h1 landing-title text-center">{{_parent.header}}</h1>
                     </div>
                 </div>
             </div>
             <div class="row" wb-if="'{{subheader}}'>''">
-                <div class="col-md-12">
+                <div class="col-lg-12">
                     <h2 class="h2 landing-small-title mb-40">{{subheader}}</h2>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-8">
                     <div class="callback">
                         <div class="callback__text">Закажите обратный звонок, мы ответим на все ваши вопросы</div>
                         <button class="callback__btn btn btn--black --openpopup" data-popup="--fast">Перезвонить мне</button>
