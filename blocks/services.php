@@ -167,14 +167,14 @@
 							initPlugins($(_self.el));
 							setTimeout(function () {
 								window.fastquote_top = $('.all-tabs.data-tab-wrapper').offset().top - 1;
-								console.log('sticky-block:', window.fastquote_top );
+								//console.log('sticky-block:', window.fastquote_top );
 								$(window).scroll(function (e) {
 									if (window.fastquote_top < 1){
 										return true;
 									}
 									// Get the position of the vertical scroll.
 									var y = $(this).scrollTop();
-									console.log('sticky-block:', window.fastquote_top , y);
+									//console.log('sticky-block:', window.fastquote_top , y);
 
 									if (y >= window.fastquote_top ) {
 										$('.sticky-block').addClass('fixed-top');

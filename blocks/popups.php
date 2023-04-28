@@ -26,6 +26,9 @@
 		</template>
 	</div>
 
+	<div wb-if="in_array('{{_sess.user.role}}',['admin','expert','main','client'])">
+		<wb-module wb="module=yonger&mode=render&view=popups-cabinet"/>
+	</div>
 	<div wb-if="in_array('{{_sess.user.role}}',['admin','','main','client'])">
 		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
 		<div class="popup --fast">
