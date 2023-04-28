@@ -1609,8 +1609,8 @@
 			if (window.can_update) {
 				window.load();
 			}
-			setTimeout(reload, 10000);
-		}, 10000);
+			setTimeout(reload, 12000);
+		}, 12000);
 
 		function OrderBy(a, b, n) {
 			if (n) return a - b;
