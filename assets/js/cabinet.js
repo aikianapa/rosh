@@ -588,18 +588,13 @@ $(function () {
 					              '&@group=role' +
 					              '&@sort=fullname:a')
 						.then(function (data) {
-							console.log(data,
-								utils.arr.indexBy(
-									data['main']
-										.concat(data['expert'])
-										.concat(data['client'])
-								));
-							_self.users  = utils.arr.indexBy(
+							_self.clients = utils.arr.indexBy(data['client']);
+							_self.admins  = utils.arr.indexBy(data['main']);
+							_self.users   = utils.arr.indexBy(
 								data['main']
 									.concat(data['expert'])
 									.concat(data['client'])
 							);
-							_self.admins = utils.arr.indexBy(data['main']);
 						})
 				);
 			}
@@ -705,13 +700,6 @@ $(function () {
 				_self.servicesList = _self.servicesListOrderByCategories;
 
 				if (_self.expert_pages) {
-					_self.expert_pages.forEach(function (record) {
-						if (_self.experts[record.i]) {
-							_self.experts[record.i]['page_uri'] = record['u'];
-						}
-					});
-				}
-				if (_self.clients_has_longterm) {
 					_self.expert_pages.forEach(function (record) {
 						if (_self.experts[record.i]) {
 							_self.experts[record.i]['page_uri'] = record['u'];

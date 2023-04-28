@@ -382,9 +382,9 @@
 										<div class="select__item select__item--checkbox">
 											<label class="checkbox checkbox--record">
 												{{#if @global.utils.arr.search(.id, record.experts)}}
-												<input type="radio" class="checked" name="experts[]" checked value="{{.id}}">
+												<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}">
 												{{else}}
-												<input type="radio" name="experts[]" value="{{.id}}">
+												<input type="checkbox" name="experts[]" value="{{.id}}">
 												{{/if}}
 												<span></span>
 												<div class="checbox__name">
@@ -653,7 +653,7 @@
 							<p>ФИО</p>
 							<div>
 								<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{catalog.clients[record.client].fullname}}</a>
-								{{#if @global.catalog.clients[record.client].has_longterm}}
+								{{#if @global.catalog.clients_has_longterm[record.client]}}
 								<small class="text-danger">продолжительное</small>
 								{{/if}}
 							</div>
@@ -1025,19 +1025,18 @@
 		window.afterLoad     = null;
 		window.load          = function (only_tab) {
 			tab_urls.forEach(function (target_tab, i) {
-				if (only_tab && only_tab != target_tab) {
-					return;
-				}
-				var _sorts = [
-					'_lastdate:d',
-					'event_date:d',
-					'event_date:d',
-					'_created:d'
-				];
-				utils.api.get('/api/v2/list/records?' + target_tab, {
-					'@sort': _sorts[i]
-				}).then(
-					function (result) {
+					if (only_tab && only_tab != target_tab) {
+						return;
+					}
+					var _sorts = [
+						'_lastdate:d',
+						'event_date:d',
+						'event_date:d',
+						'_created:d'
+					];
+					utils.api.get('/api/v2/list/records?' + target_tab, {
+						'@sort': _sorts[i]
+					}).then(function (result) {
 						let data = {
 							group: target_tab,
 							records: result,
@@ -1055,7 +1054,7 @@
 								},
 								on: {
 									loaded() {
-										console.log('>>> loaded', target_tab);
+										//console.log('>>> loaded', target_tab);
 										$(this.el).find('.loading-overlay').remove();
 									},
 									complete() {
@@ -1069,19 +1068,21 @@
 												});
 										}, 150);
 									},
-									toggleAccordeon(ev){
-										var target_tab    = this;
-										const _parent     = $(ev.node).closest('.accardeon');
-										window.can_update = false;
-										var _is_active    = (sessionStorage["state.open-editor"] == _parent.data('record'));
-										if (_is_active) {
-											console.log('close', target_tab, ev);
+									toggleAccordeon(ev) {
+										var target_tab      = this;
+										const _parent       = $(ev.node).closest('.accardeon');
+										window.can_update   = false;
+										var _edit_active = (sessionStorage["state.open-editor"] == _parent.data('record'));
+										if (_edit_active) {
 											//$(ev.node).removeClass('open');
 											_parent.find('.admin-editor__events').html('');
 											_parent.find('.admin-editor__top-select').html('');
 											sessionStorage.removeItem("state.open-editor");
+											console.log('autoupdate activated...');
 											window.can_update = true;
 											return;
+										} else {
+											console.log('autoupdate deactivated...');
 										}
 										sessionStorage["state.open-editor"] = _parent.data('record');
 										console.log('open', target_tab, ev);
@@ -1173,7 +1174,7 @@
 								},
 								on: {
 									loaded() {
-										console.log('>>> loaded', target_tab);
+										//console.log('>>> loaded', target_tab);
 										$(this.el).find('.loading-overlay').remove();
 
 										if (window.afterLoads.hasOwnProperty(target_tab)) {
@@ -1291,24 +1292,25 @@
 											});
 									},
 									toggleAccordeon(ev) {
-										var target_tab    = this;
-										const _parent = $(ev.node).closest('.accardeon');
-										window.can_update = false;
-										var _is_active = (sessionStorage["state.open-editor"] == _parent.data('record'));
-										if (_is_active) {
-											console.log('close', target_tab, ev);
-											//$(ev.node).removeClass('open');
+										var target_tab      = this;
+										const _parent       = $(ev.node).closest('.accardeon');
+										window.can_update   = false;
+										var _is_edit_active = (sessionStorage["state.open-editor"] == _parent.data('record'));
+										if (_is_edit_active) {
 											_parent.find('.admin-editor__events').html('');
 											_parent.find('.admin-editor__top-select').html('');
 											sessionStorage.removeItem("state.open-editor");
 											window.can_update = true;
+											console.log('autoupdate activated...');
 											return;
+										} else {
+											console.log('autoupdate deactivated...');
 										}
 										sessionStorage["state.open-editor"] = _parent.data('record');
 										console.log('open', target_tab, ev);
 
-										var _row_idx  = $(ev.node).data('idx');
-										var _record   = this.get('records.' + _row_idx);
+										var _row_idx = $(ev.node).data('idx');
+										var _record  = this.get('records.' + _row_idx);
 										if (!_record.price) {
 											_record.price = 0;
 										}
@@ -1546,29 +1548,61 @@
 							ractive: _tab,
 							data: data
 						};
+					}).then(function () {
+						var _curr_tab = $('.account__tab.data-tab-item[data-type="' + target_tab + '"]');
+						var _has_sort = sessionStorage.getItem('state.order-by-' + _curr_tab.data('tab'));
+						if (!!_has_sort) {
+							console.log('Need tab?', _curr_tab, target_tab,
+								'.account__tab.data-tab-item[data-type="' + target_tab + '"].active');
+							var order = _has_sort.split(':');
+							var col   = _curr_tab.find('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
+							if (col.length) {
+								if (order[1] === '0') {
+									col.addClass('selected');
+								}
+								col.trigger('click');
+							}
+						} else {
+							const _list = $('.account__tab.data-tab-item[data-type="' + target_tab + '"] .account__table-body');
+							_list.find(".acount__table-accardeon").sort(function (a, b) {
+								const _a = parseInt($(a).attr('data-priority'));
+								const _b = parseInt($(b).attr('data-priority'));
+								return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+							}).appendTo(_list);
+						}
+						console.log(target_tab + ': ready!');
 					});
-				/* sort by prior */
-				const _list = $('.account__tab.data-tab-item[data-tab="' + target_tab + '"] .account__table-body');
-				_list.find(".acount__table-accardeon").sort(function (a, b) {
-					const _a = parseInt($(a).attr('data-priority'));
-					const _b = parseInt($(b).attr('data-priority'));
-					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-				}).appendTo(_list);
-				setTimeout(function () {
-					$('a.account__table').find('a.client-card[data-href]').each(function (i) {
-						$(this).attr('href', $(this).data('href'));
-					});
-				}, 550);
-			});
+					/* sort by prior */
+
+					setTimeout(function () {
+						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
+							$(this).attr('href', $(this).data('href'));
+						});
+					}, 550);
+				}
+			);
 
 			setTimeout(function () {
 				utils.restoreScroll();
 				$('.account__table').find('a.client-card[data-href]').each(function (i) {
 					$(this).attr('href', $(this).data('href'));
 				});
+				//var _curr_tab      = $('.account__tab.data-tab-item.active');
+				//var _curr_tab_item = $('.account__tab-items .account__tab-item.data-tab-link.active');
+				//var _has_sort      = sessionStorage.getItem('state.order-by-' + _curr_tab_item.data('tab'));
+				//if (typeof _has_sort !== 'undefined') {
+				//	var order = _has_sort.split(':');
+				//	console.log('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
+				//	var col = _curr_tab.find('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
+				//	console.log(col);
+				//
+				//	if (order[1] === '0') {
+				//		col.addClass('selected');
+				//	}
+				//	col.trigger('click');
+				//}
 			}, 750);
 		};
-
 		load();
 
 		setTimeout(function reload() {
@@ -1590,22 +1624,23 @@
 			var _tab  = $(this).data('tab');
 			console.log('open:', _type);
 			sessionStorage.setItem('state.tab-cabinet', _tab);
-
 			window.load(_type);
-
 			window.can_update = true;
 		});
-		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
-			var $th = $(this);
 
+		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
+			var $th       = $(this);
+			var _curr_tab = $('.account__tab-items .account__tab-item.data-tab-link.active').data('tab');
 			console.log('clicked');
 			$th.toggleClass('selected');
 			var isSelected = $th.hasClass('selected');
-			var isInput    = true;
-			var column     = $th.index();
-			var $table     = $th.parents('.account__table');
-			var isNum      = false;
-			var rows       = $table.find('.account__table-body > .acount__table-accardeon').get();
+
+			var isInput = true;
+			var column  = $th.index();
+			var $table  = $th.parents('.account__table');
+			var isNum   = false;
+			var rows    = $table.find('.account__table-body > .acount__table-accardeon').get();
+			sessionStorage.setItem('state.order-by-' + _curr_tab, column + ':' + (isSelected ? '1' : '0'));
 			//console.log(column, $table, rows);
 			rows.sort(function (rowA, rowB) {
 				var keyA, keyB;
@@ -1624,8 +1659,7 @@
 				$table.children('.account__table-body').append(row);
 			});
 			return false;
-		});
-		$(document).on('click', 'button.flag-date__ico', function (e) {
+		}).on('click', 'button.flag-date__ico', function (e) {
 				e.stopPropagation();
 				const _parent    = $(this).parents('.acount__table-accardeon');
 				const _id        = _parent.data('id');
@@ -1664,6 +1698,7 @@
 			sessionStorage.removeItem('state.tab-cabinet');
 			active_tab = 'quotes';
 		}
+
 		if (!!active_tab) {
 			$('.account__tab-item[data-tab="' + active_tab + '"]').addClass('active');
 			$('.account__tab[data-tab="' + active_tab + '"]').addClass('active');
