@@ -142,7 +142,7 @@
 									<div class="select__placeholder">Выберите специалиста</div>
 									<div class="select__values"></div>
 								</div>
-								<div class="select__list">
+								<div class="select__list single">
 									{{#each @global.catalog.experts}}
 									<div class="select__item select__item--checkbox">
 										<label class="checkbox checkbox--record">
