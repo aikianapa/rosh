@@ -1793,7 +1793,9 @@ sup {
 .text li, .text p{
     color: #070e0d;
 }
-
+.profile-menu .enter__panel{
+    width : auto;
+}
 
 @media (min-width : 1400px) {
     .fixed-top {
