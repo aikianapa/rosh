@@ -492,7 +492,7 @@
 																data-fancybox="event-{{event.id}}"
 																data-href="{{.src}}"
 																href="{{.src}}"
-																data-caption="Фото до приема:
+																data-caption="Фото до приема,
 															{{ @global.utils.formatDate(.date) }}">
 																<div class="healing__date">
 																	{{ @global.utils.formatDate(.date) }}
@@ -519,7 +519,7 @@
 																data-fancybox="event-{{event.id}}"
 																href="{{.src}}"
 																data-href="{{.src}}"
-																data-caption="Фото после приема:
+																data-caption="Фото после приема,
 															{{ @global.utils.formatDate(.date) }}">
 																<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 																<div class="after-healing__photo"
