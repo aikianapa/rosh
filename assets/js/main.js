@@ -121,6 +121,16 @@ $(function() {
         $(document).on('change', '.select__list.single .select__item input[type=checkbox]', function (e) {
             e.stopPropagation();
             $(this).parents('.select__list').find('input[type="checkbox"]:checked').not($(this)).prop('checked', false);
+            var ne   = false;
+            var value    = [];
+            $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
+                if ($(this).find('input[type=checkbox]:checked, input[type=radio]:checked').length) {
+                    value.push($(this).find('.select__name:first').text());
+                    ne = true;
+                }
+            });
+            value = value.join(', ');
+            $(this).closest('.select').toggleClass('has-values', ne).find('.select__values:first').html(value);
         });
         $(document).on('click', '.select .select__main', function (e) {
             e.stopPropagation();
@@ -133,8 +143,11 @@ $(function() {
                 var ne = false;
                 value  = [];
                 var list = $(this).closest('.select__list');
+                if (list.hasClass('single')){
+                    $(this).siblings('.select__item input[type="checkbox"]:checked').prop('checked', false);
+                }
                 setTimeout(function (){
-                    list.find('.select__item--checkbox').each(function () {
+                    $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
                         if ($(this).find('input[type=checkbox]:checked, input[type=radio]:checked').length) {
                             value.push($(this).find('.select__name:first').text());
                             ne = true;
