@@ -64,7 +64,7 @@
                 <button class="btn btn--white">Найти</button>
             </div>
         </div>
-        <wb-var active="active" />
+        <wb-var active="" />
         <div class="all-tabs-items" wb-tree="dict=srvtype&children=false">
             <div class="cursor-pointer all-tabs-item data-tab-link {{_var.active}}" data-srvtype="{{id}}" data-tabs="all-problems">{{name}}</div>
             <wb-var active="" />
@@ -74,7 +74,7 @@
         <div class="container">
             <p class="text-bold problems-filter__title">Фильтр:</p>
             <div class="problems-filter__list">
-                <div class="cursor-pointer problems-filter__item active" data-category="">Все</div>
+                <div class="cursor-pointer problems-filter__item" data-category="">Все проблемы</div>
                 <wb-foreach wb="table=catalogs&item=srvcat&from=tree.data">
                     <div class="cursor-pointer problems-filter__item" data-category="{{id}}" wb-if='!in_array({{id}},["gyn","lab"])'>{{name}}</div>
                 </wb-foreach>

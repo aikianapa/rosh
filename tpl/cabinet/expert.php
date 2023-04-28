@@ -792,7 +792,19 @@
 
 	<script wb-app>
 		$(document).on('cabinet-db-ready', function () {
-			window.page         = new Ractive({
+			window.can_update = false;
+			$('body').on('focus', 'textarea[name="recommendation"]', function (e) {
+				console.log('update disabled');
+				window.can_update = false;
+			}).on('submit', 'form:has(textarea[name="recommendation"])', function (e) {
+				console.log('update enabled');
+				setTimeout(function () {window.can_update = true;}, 1500);
+			}).on('click', '.acount__table-accardeon.active .accardeon__click', function (e) {
+				console.log('update enabled');
+				setTimeout(function () {window.can_update = true;}, 1500);
+			});
+
+			window.page                    = new Ractive({
 				el: 'main.page .expert-page',
 				template: wbapp.tpl('#expert-page').html,
 				data: {
@@ -830,6 +842,7 @@
 						console.log(ev, $(ev.node), this);
 						if (!!window.profile_inline_editor) {
 							//$('.profile-editor-inline').toggleClass('d-none');
+							window.can_update = true;
 							return;
 						}
 						window.profile_inline_editor = new Ractive({
@@ -909,6 +922,8 @@
 
 							utils.api.post('/api/v2/update/records/' + _id,
 								{'recommendation': _recommendation}).then(function (res) {
+								console.log('update enabled');
+								setTimeout(function () {window.can_update = true;}, 500);
 								if (_recommendation !== prev_recommendation) {
 									utils.api.post('/api/v2/create/record-changes/',
 										{
@@ -932,61 +947,65 @@
 				}
 			});
 			var current_day_events_checker = null;
-			window.loadRecords = function () {
+			window.loadRecords             = function () {
 				if (!!current_day_events_checker) {
 					clearTimeout(current_day_events_checker);
 				}
+				if (window.can_update) {
+					utils.api.get('/api/v2/list/records?group=events' +
+					              '&experts~=' + wbapp._session.user.id +
+					              '&@sort=event_date:d')
+						.then(function (records) {
+							page.set('catalog', window.catalog);
+							let events         = {
+								    'upcoming': [],
+								    'current': []
+							    },
+							    history_events = [];
+							if (!!records) {
+								let curr_timestamp = parseInt(getdate()[0]);
+								//!!! set records by id not by index !!!
+								records.forEach(function (rec, idx) {
+									if (rec.status === 'past') {
+										history_events.push(rec);
+										console.log('past:', rec);
+										return;
+									} else if (rec.status !== 'upcoming') {
+										return;
+									} else if (idx === 0) {
+										page.set('closest_event', rec);
+									}
 
-				utils.api.get('/api/v2/list/records?group=events' +
-				              '&experts~=' + wbapp._session.user.id +
-				              '&@sort=event_date:d')
-					.then(function (records) {
-						page.set('catalog', window.catalog);
-						let events  = {
-							    'upcoming': [],
-							    'current': []
-						    },
-						    history_events = [];
-						if (!!records) {
-							let curr_timestamp = parseInt(getdate()[0]);
-							//!!! set records by id not by index !!!
-							records.forEach(function (rec, idx) {
-								if (rec.status === 'past') {
-									history_events.push(rec);
-									console.log('past:', rec);
-									return;
-								} else if (rec.status !== 'upcoming') {
-									return;
-								} else if (idx === 0) {
-									page.set('closest_event', rec);
-								}
+									if (Cabinet.isCurrentEvent(rec)) {
+										events.current.push(rec);
+									} else {
+										events.upcoming.push(rec);
+									}
+								});
+							}
 
-								if (Cabinet.isCurrentEvent(rec)) {
-									events.current.push(rec);
-								} else {
-									events.upcoming.push(rec);
-								}
-							});
-						}
-
-						page.set('events', events);
-						page.set('history', history_events);
-						page.set('ready', true);
-						utils.restoreScroll();
-					})
-					.then(function () {
-						utils.restoreScroll();
-						if (sessionStorage['state-accardeon']) {
-							setTimeout(function () {
-								$('.acount__table-accardeon.accardeon[data-accardeon="' +
-								  sessionStorage['state-accardeon'] + '"]:not(.active) .accardeon__click').trigger('click');
-							});
-						}
-						current_day_events_checker = setTimeout(loadRecords, 20000);
-						console.log('Records loaded!');
-					})
+							page.set('events', events);
+							page.set('history', history_events);
+							page.set('ready', true);
+							utils.restoreScroll();
+						})
+						.then(function () {
+							utils.restoreScroll();
+							if (sessionStorage['state-accardeon']) {
+								setTimeout(function () {
+									$('.acount__table-accardeon.accardeon[data-accardeon="' +
+									  sessionStorage['state-accardeon'] + '"]:not(.active) .accardeon__click')
+										.trigger('click');
+								});
+							}
+							current_day_events_checker = setTimeout(loadRecords, 10000);
+							console.log('Records loaded!');
+						});
+				} else {
+					current_day_events_checker = setTimeout(loadRecords, 10000);
+				}
 			};
-
+			window.can_update              = true;
 			loadRecords();
 			utils.saveScroll();
 		});

@@ -43,10 +43,24 @@
         <div class="container">
             <h3 class="mb-40 h3" wb-if="'{{block_title}}'>''">{{block_title}}</h3>
             <div class="problems__slider">
+                <div class="gallery__nav">
+                    <div class="container" style="padding:0;">
+                        <div class="prev">
+                            <svg class="svgsprite _prev">
+                                <use xlink:href="/assets/img/sprites/svgsprites.svg#prev"></use>
+                            </svg>
+                        </div>
+                        <div class="next">
+                            <svg class="svgsprite _next">
+                                <use xlink:href="/assets/img/sprites/svgsprites.svg#next"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
                 <div class="swiper-wrapper">
                     <wb-foreach wb="from=swiper">
                         <div class="swiper-slide">
-                            <a class="problem__link" href="#" style="background-image: url(/thumbc/1050x818/src{{image.0.img}})">
+                            <a class="problem__link" href="{{href}}" style="background-image: url(/thumbc/1050x818/src{{image.0.img}})">
                                 <div class="blog-panel__tag" wb-if="'{{tag}}'>''">{{tag}}</div>
                                 <div class="problem__name" wb-if="'{{title}}'>''">{{title}}</div>
                             </a>
@@ -54,20 +68,7 @@
                     </wb-foreach>
                 </div>
             </div>
-            <div class="gallery__nav">
-                <div class="container">
-                    <div class="prev">
-                        <svg class="svgsprite _prev">
-                            <use xlink:href="/assets/img/sprites/svgsprites.svg#prev"></use>
-                        </svg>
-                    </div>
-                    <div class="next">
-                        <svg class="svgsprite _next">
-                            <use xlink:href="/assets/img/sprites/svgsprites.svg#next"></use>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
     <script wb-app>
@@ -95,6 +96,20 @@
     <div class="problems page">
         <div class="container">
             <div class="problems__slider">
+                <div class="gallery__nav">
+                    <div class="container" style="padding:0;">
+                        <div class="prev">
+                            <svg class="svgsprite _prev">
+                                <use xlink:href="/assets/img/sprites/svgsprites.svg#prev"></use>
+                            </svg>
+                        </div>
+                        <div class="next">
+                            <svg class="svgsprite _next">
+                                <use xlink:href="/assets/img/sprites/svgsprites.svg#next"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
                 <div class="swiper-wrapper">
                     <div class="swiper-slide"> <a class="problem__link" href="#" style="background-image: url(/assets/img/landing/1.jpg)">
                             <div class="blog-panel__tag">Проблемы</div>
@@ -112,20 +127,6 @@
                             <div class="blog-panel__tag">Проблемы</div>
                             <div class="problem__name">Акне и постакне</div>
                         </a></div>
-                </div>
-            </div>
-            <div class="gallery__nav">
-                <div class="container">
-                    <div class="prev">
-                        <svg class="svgsprite _prev">
-                            <use xlink:href="/assets/img/sprites/svgsprites.svg#prev"></use>
-                        </svg>
-                    </div>
-                    <div class="next">
-                        <svg class="svgsprite _next">
-                            <use xlink:href="/assets/img/sprites/svgsprites.svg#next"></use>
-                        </svg>
-                    </div>
                 </div>
             </div>
         </div>

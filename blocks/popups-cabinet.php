@@ -306,7 +306,7 @@
 		</div>
 	</div>
 
-	<div wb-if="'{{_sess.user.role}}'=='main'">
+	<div wb-if="in_array('{{_sess.user.role}}',['main','expert'])" >
 		<div class="popup --record-editor">
 			<template id="popupRecordEditor">
 				<div class="popup__overlay"></div>
@@ -326,6 +326,7 @@
 							<div class="search-form input">
 								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
 								<div class="input__placeholder">Выбрать пациента</div>
+								<div class="client-search search-list" style="position: relative;"></div>
 							</div>
 							<input type="hidden" name="client" value="">
 							{{/if}}
@@ -786,6 +787,7 @@
 							<div class="search-form input">
 								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
 								<div class="input__placeholder">Выбрать пациента</div>
+								<div class="client-search search-list" style="position: relative;"></div>
 							</div>
 							<input type="hidden" name="client" value="">
 							<input type="hidden" name="id" value="">
@@ -794,6 +796,7 @@
 								<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
 									autocomplete="off">
 								<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
+								<div class="record-search search-list" style="position: relative;"></div>
 							</div>
 							{{/if}}
 
@@ -805,13 +808,13 @@
 								<label class="text-radio" name="target" value="before" on-click="singlePhoto">
 									<input type="radio" name="target" value="before">
 									<span class="changed_label_before">
-										{{#if record.group == 'longterms'}} До начала лечения {{else}} До приема {{/if}}
+										{{#if record.group == 'longterms'}} До начала лечения {{else}} Фото до приема {{/if}}
 									</span>
 								</label>
 								<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
 									<input type="radio" name="target" value="after">
 									<span class="changed_label_after">
-										{{#if record.group == 'longterms'}} После начала лечения {{else}} После приема {{/if}}
+										{{#if record.group == 'longterms'}} После начала лечения {{else}} Фото после приема {{/if}}
 									</span>
 								</label>
 							</div>

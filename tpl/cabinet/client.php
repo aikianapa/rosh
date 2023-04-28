@@ -449,18 +449,18 @@
 										<a class="expert__worked"
 											target="_blank"
 											title="Открыть страницу о специалисте"
-											data-href="{{@global.catalog.expert_users[this].info_uri}}"
-											data-link="{{@global.catalog.expert_users[this].info_uri}}">
+											data-href="{{@global.catalog.experts[this].page_uri}}"
+											data-link="{{@global.catalog.experts[this].page_uri}}">
 											<div class="expert__worked-pic">
 												<img class="lazyload"
-													data-src="{{{@global.catalog.expert_users[this].image[0].img}}}"
-													alt="{{@global.catalog.expert_users[this].name}}">
+													data-src="{{{@global.catalog.experts[this].image[0].img}}}"
+													alt="{{@global.catalog.experts[this].name}}">
 											</div>
 											<div class="expert__worked-name">
-												{{@global.catalog.expert_users[this].name}}
+												{{@global.catalog.experts[this].name}}
 											</div>
 											<div class="expert__worked-work">
-												{{@global.catalog.expert_users[this].spec}}
+												{{@global.catalog.experts[this].spec}}
 											</div>
 										</a>
 									</div>

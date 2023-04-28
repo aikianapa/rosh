@@ -405,8 +405,9 @@
 						<div class="account__table-head status-cancel_noreason">
 							<div class="history-item">Дата</div>
 							<div class="history-item">Время</div>
-							<div class="history-item">Пациент</div>
+							<div class="history-item w-10">Специалисты</div>
 							<div class="history-item">Услуги</div>
+							<div class="history-item">Пациент</div>
 							<div class="history-item">Анализы</div>
 							<div class="accardeon__click"></div>
 						</div>
@@ -423,9 +424,10 @@
 										{{this.event_time_start}} - {{this.event_time_end}}
 									</div>
 									<div class="history-item">
-										<p>Пациент</p>
-										<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
-											{{ @global.catalog.clients[this.client].fullname }}</a>
+										<p>Специалисты</p>
+										{{#each experts}}
+										{{@global.catalog.experts[this].fullname}}<br>
+										{{/each}}
 									</div>
 									<div class="history-item">
 										<p>Услуги</p>
@@ -433,6 +435,12 @@
 										{{catalog.services[this].header}}<br>
 										{{/services}}
 									</div>
+									<div class="history-item">
+										<p>Пациент</p>
+										<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
+											{{ catalog.users[this.client].fullname }}</a>
+									</div>
+
 									<div class="history-item">
 										<p>Анализы</p>
 										{{#if this.analyses}}
@@ -746,7 +754,6 @@
 				utils.api.get(
 						'/api/v2/list/records?group=events&status=[upcoming,past]' +
 						'&client=' + client_id +
-						'&experts~=' + wbapp._session.user.id +
 						'&@sort=event_date:d')
 					.then(function (records) {
 						console.log(records);
