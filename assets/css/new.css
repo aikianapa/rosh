@@ -1553,12 +1553,18 @@ h3 {
     text-transform : uppercase;
     margin-bottom  : 20px;
 }
-.landing h3 {
+
+.landing h3,
+.landing h4,
+.landing h5 {
     text-transform : lowercase !important;
 }
-.landing h3:first-letter {
-    text-transform : uppercase; /* Make the first letters uppercase      */
+.landing h3:first-letter,
+.landing h4:first-letter,
+.landing h5:first-letter {
+    text-transform : uppercase;
 }
+
 .mainfilter__choice .mainfilter-tag {
     position      : relative;
     padding-right : 74px;
