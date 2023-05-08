@@ -1294,7 +1294,7 @@ div.swiper-horizontal.post-slider {
     line-height: 1.2;
     font-weight: normal;
     letter-spacing: 0.04em;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     color: #080E0D;
     margin: 0 0 20px;
 }
@@ -1546,17 +1546,19 @@ h2 {
 }
 
 h3 {
-    font-size: 26px;
-    line-height: 120%;
-    letter-spacing: .04em;
-    font-family: "Playfair Display", serif;
-    text-transform: uppercase;
-    margin-bottom: 20px;
+    font-size      : 26px;
+    line-height    : 120%;
+    letter-spacing : .04em;
+    font-family    : "Playfair Display", serif;
+    text-transform : uppercase;
+    margin-bottom  : 20px;
 }
-
+.landing h3 {
+    text-transform : initial !important;
+}
 .mainfilter__choice .mainfilter-tag {
-    position: relative;
-    padding-right: 74px;
+    position      : relative;
+    padding-right : 74px;
 }
 
 .mainfilter__choice .mainfilter-tag__group {

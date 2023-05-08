@@ -49,7 +49,7 @@
 								Мы отправили код подтверждения на номер
 								<span class="current_phone"></span>
 								.<br>
-								Время жизни кода 60 секунд.<br>
+								Через 60 секунд можно будет отправить код повторно.<br>
 								Осталось <strong>
 									<span class="sms_code_lifetime"></span>
 								</strong>
