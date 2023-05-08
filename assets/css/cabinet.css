@@ -422,8 +422,9 @@ small {
 	text-align: center;
 }
 .acount__table-main{
-	height : auto!important;
+	height     : auto !important;
 	min-height : 60px;
+	padding    : 4px 0;
 }
 .user__edit.all{
 	white-space    : nowrap;

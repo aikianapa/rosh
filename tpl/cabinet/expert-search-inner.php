@@ -406,7 +406,6 @@
 							<div class="history-item">Дата</div>
 							<div class="history-item">Время</div>
 							<div class="history-item w-10">Специалисты</div>
-							<div class="history-item">Пациент</div>
 							<div class="history-item">Услуги</div>
 							<div class="history-item">Анализы</div>
 							<div class="accardeon__click"></div>
@@ -429,11 +428,7 @@
 										{{@global.catalog.experts[this].fullname}}<br>
 										{{/each}}
 									</div>
-									<div class="history-item">
-										<p>Пациент</p>
-										<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
-											{{ catalog.users[this.client].fullname }}</a>
-									</div>
+
 									<div class="history-item">
 										<p>Услуги</p>
 										{{#services}}
