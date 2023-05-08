@@ -71,7 +71,7 @@
 			</div>
 		</div>
         <div class="all-tabs-items">
-            <div class="all-tabs-item data-tab-link" data-srvtype="all" data-tabs="all-problems">Все услуги</div>
+            <div class="all-tabs-item data-tab-link" data-srvtype="all" data-tabs="all-problems">Все проблемы</div>
             <wb-foreach wb="table=catalogs&item=srvtype&from=tree.data">
                 <div class="cursor-pointer all-tabs-item data-tab-link"
                     data-srvtype="{{id}}" data-tabs="all-problems">{{name}}

@@ -142,7 +142,7 @@ $(function () {
 				}
 			};
 		},
-		restoreScroll(page_name) {
+		restoreScroll(page_name, dont_clear) {
 			var _curr_page_name = page_name || location.pathname;
 
 			let _state_page = sessionStorage["state.page"] || false;
@@ -179,6 +179,9 @@ $(function () {
 						}, 650);
 					}
 				}, 500);
+			}
+			if (dont_clear){
+				return true;
 			}
 			sessionStorage.removeItem("state.page");
 			sessionStorage.removeItem('state.tab-cabinet');

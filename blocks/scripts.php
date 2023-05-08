@@ -40,7 +40,7 @@
         });
 	</script>
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=CAD4A6B3FAD04849B65BE73D54E5F7B5">
+		src="/assets/js/cabinet.js?v=F66BCB24FDDF47FD9197F4D1B76AF7A5">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
@@ -54,12 +54,12 @@
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/intlTelInput.min.css?v=1.21" rel="stylesheet">
-	<link href="/assets/css/new.css?v=06980F7CD56848949D9FDF4F8744D636" rel="stylesheet">
+	<link href="/assets/css/new.css?v=FF4B61B3FD2E446A8A9767AD6B808D3F" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css?v=A3D0018079B24864814F654D27CA1F95" rel="stylesheet">
 
 	<link wb-if="in_array('{{_sess.user.role}}', ['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=367A7084F4A54AF9993648BB16FB80E6" rel="stylesheet">
+		href="/assets/css/cabinet.css?v=22EEA0DEBE49427EAC16C104B0B1010D" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">

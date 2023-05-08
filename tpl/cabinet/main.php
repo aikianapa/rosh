@@ -236,6 +236,7 @@
 
 	<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 </template>
+<!-- !!! editorRecord !!! -->
 <template id="editorRecord" wb-off>
 	<form class="record-edit mt-2">
 		<div class="row">
@@ -688,27 +689,28 @@
 							<p>Услуга</p>
 
 							{{#if group == 'events'}}
+								{{#record.consultation }}
+								<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
+								{{/record.consultation}}
+
+								{{#record.services}}
+								<div>{{catalog.services[this].header}}</div>
+								{{/record.services}}
 							{{elseif group == 'past'}}
+								{{#record.consultation }}
+								<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
+								{{/record.consultation}}
+
+								{{#record.services}}
+								<div>{{catalog.services[this].header}}</div>
+								{{/record.services}}
 							{{elseif record.quote_page_comment}}
-							<div>Заявка на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b></div>
+								<div>Заявка на услугу</div>
 							{{elseif record.is_mainfilter_quote == '1'}}
-							<div>Заявка из фильтра</div>
+								<div>Заявка из фильтра</div>
 							{{else}}
-							<div>Заявка из формы</div>
+								<div>Заявка из формы</div>
 							{{/if}}
-
-							<!--{{#if record.consultation }}-->
-							<!--<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>-->
-							<!--{{/if}}-->
-							<!---->
-							<!--{{#if record.services}}-->
-							<!--{{#services}}-->
-							<!--<div>{{catalog.services[this].header}}</div>-->
-							<!--{{/services}}-->
-							<!--{{else}}-->
-							<!--<div></div>-->
-							<!--{{/if}}-->
-
 						</div>
 						<div class="admin-events-item">
 							<p>Оплата</p>
@@ -1554,15 +1556,16 @@
 						var _curr_tab = $('.account__tab.data-tab-item[data-type="' + target_tab + '"]');
 						var _has_sort = sessionStorage.getItem('state.order-by-' + _curr_tab.data('tab'));
 						if (!!_has_sort) {
-							console.log('Need tab?', _curr_tab, target_tab,
-								'.account__tab.data-tab-item[data-type="' + target_tab + '"].active');
+							//console.log('Need tab?', _curr_tab, target_tab,
+							//	'.account__tab.data-tab-item[data-type="' + target_tab + '"].active');
 							var order = _has_sort.split(':');
 							var col   = _curr_tab.find('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
-							if (col.length) {
+							if (!!col.length) {
 								if (order[1] === '0') {
 									col.addClass('selected');
 								}
 								col.trigger('click');
+								console.log(order[1] === '0', _has_sort, order, col);
 							}
 						} else {
 							const _list = $('.account__tab.data-tab-item[data-type="' + target_tab + '"] .account__table-body');
@@ -1572,7 +1575,6 @@
 								return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 							}).appendTo(_list);
 						}
-						console.log(target_tab + ': ready!');
 					});
 					/* sort by prior */
 
@@ -1585,14 +1587,17 @@
 			);
 
 			setTimeout(function () {
-				utils.restoreScroll();
+				if(only_tab === false){
+					utils.restoreScroll();
+				}
 				$('.account__table').find('a.client-card[data-href]').each(function (i) {
 					$(this).attr('href', $(this).data('href'));
 				});
 				//var _curr_tab      = $('.account__tab.data-tab-item.active');
 				//var _curr_tab_item = $('.account__tab-items .account__tab-item.data-tab-link.active');
 				//var _has_sort      = sessionStorage.getItem('state.order-by-' + _curr_tab_item.data('tab'));
-				//if (typeof _has_sort !== 'undefined') {
+				//console.log(_has_sort);
+				//if (typeof _has_sort !== 'undefined' && !!_has_sort) {
 				//	var order = _has_sort.split(':');
 				//	console.log('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
 				//	var col = _curr_tab.find('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
@@ -1605,7 +1610,7 @@
 				//}
 			}, 750);
 		};
-		load();
+		load(false);
 
 		setTimeout(function reload() {
 			if (window.can_update) {
