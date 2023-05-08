@@ -39,7 +39,7 @@
 </edit>
 
 <view>
-    <div class="mb-60 problems">
+    <div class="mb-80 problems" style="margin-bottom: 100px">
         <div class="container">
             <h3 class="mb-40 h3" wb-if="'{{block_title}}'>''">{{block_title}}</h3>
             <div class="problems__slider">
