@@ -1565,7 +1565,7 @@
 									col.addClass('selected');
 								}
 								col.trigger('click');
-								console.log(order[1] === '0', _has_sort, order, col);
+								//console.log(order[1] === '0', _has_sort, order, col);
 							}
 						} else {
 							const _list = $('.account__tab.data-tab-item[data-type="' + target_tab + '"] .account__table-body');

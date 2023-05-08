@@ -57,9 +57,11 @@ function Auth()
 		this.phone_window.hide();
 	}
 
-	this.phone_window_show = function(){
+	this.phone_window_show = function(enable_submit){
 		this.close_all_windows();
-		this.phone_window_submit_btn.attr('disabled', '');
+		if (!enable_submit){
+			this.phone_window_submit_btn.attr('disabled', '');
+		}
 		this.phone_window.show();
 	}
 
@@ -93,7 +95,7 @@ function Auth()
 				_this.smscode_window_close();
 				_this.phone_window_submit_btn.css('width', '100%');
 				_this.phone_window_submit_btn.text('Отправить код повторно');
-				_this.phone_window_show();
+				_this.phone_window_show(true);
 			} else {
 				_this.smscode_window_lifetime_count.text(_this.num_word(cur_timelife))
 			}
