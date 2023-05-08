@@ -809,7 +809,7 @@ $(function () {
 
 			data.group      = 'quotes';
 			data.status     = 'new';
-			data.pay_status = 'unpay';
+			data.pay_status = record_data.pay_status || 'unpay';
 
 			data.priority = 0;
 			data.marked   = 0;
@@ -1404,7 +1404,6 @@ $(function () {
 					var form = this.find('.popup.--analize-interpretation .popup__form');
 					console.log(form);
 					if ($(form).verify()) {
-
 						var data      = $(form).serializeJSON();
 						data.group    = 'quotes';
 						data.status   = 'new';

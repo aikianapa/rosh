@@ -240,7 +240,6 @@
 								Оставить заявку
 							</button>
 						</form>
-
 					</div>
 					<div class="popup__panel --succed">
 						<button class="popup__close">
