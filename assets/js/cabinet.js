@@ -510,7 +510,6 @@ $(function () {
 				              '&@sort=fullname:a')
 					.then(function (data) {
 						_self.clients = utils.arr.indexBy(data['client']);
-						_self.admins  = utils.arr.indexBy(data['main']);
 						_self.users   = utils.arr.indexBy(
 							data['main']
 								.concat(data['expert'])

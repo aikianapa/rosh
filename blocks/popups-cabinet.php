@@ -1413,7 +1413,7 @@
 										<div class="select__values"></div>
 									</div>
 									<div class="select__list">
-										{{#each @global.catalog.experts}}
+										{{#each catalog.experts}}
 										<div class="select__item select__item--checkbox">
 											<label class="checkbox checkbox--record">
 												<input type="checkbox" name="experts[]" value="{{this.id}}">
@@ -1429,7 +1429,11 @@
 							</div>
 							<div class="select-form">
 								<div class="select">
-									<div class="select__main">Все администраторы</div>
+
+									<div class="select__main">
+										<div class="select__placeholder">Все администраторы</div>
+										<div class="select__values"></div>
+									</div>
 									<div class="select__list">
 										{{#each @global.catalog.admins}}
 										<div class="select__item select__item--checkbox">

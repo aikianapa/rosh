@@ -1566,7 +1566,7 @@
 									col.addClass('selected');
 								}
 								col.trigger('click');
-								console.log(target_tab, _has_sort, col);
+								//console.log(target_tab, _has_sort, col);
 							}
 						} else {
 							const _list = $(
