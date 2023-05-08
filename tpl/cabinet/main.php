@@ -600,7 +600,7 @@
 					<div class="loader"></div>
 				</div>
 				{{#each records as record: idx}}
-				{{#with @global.catalog.users[this.client]}}
+				{{#with catalog.users[this.client]}}
 				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{status}}"
 					data-client="{{record.client}}" data-record="{{record.id}}" data-id="{{record.id}}" data-idx="{{idx}}"
 					data-priority="{{record.priority}}" data-group="{{record.group}}">
@@ -839,7 +839,7 @@
 					<div class="loader"></div>
 				</div>
 				{{#each records as record: idx}}
-				{{#with @global.catalog.clients[this.client]}}
+				{{#with catalog.users[this.client]}}
 				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin" data-client="{{record.client}}" data-record="{{record.id}}" data-id="{{record.id}}" data-idx="{{idx}}" data-priority="{{record.priority}}" data-group="{{record.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
@@ -1559,16 +1559,18 @@
 							//console.log('Need tab?', _curr_tab, target_tab,
 							//	'.account__tab.data-tab-item[data-type="' + target_tab + '"].active');
 							var order = _has_sort.split(':');
-							var col   = _curr_tab.find('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
+							var col   = _curr_tab.find(
+								'.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
 							if (!!col.length) {
 								if (order[1] === '0') {
 									col.addClass('selected');
 								}
 								col.trigger('click');
-								//console.log(order[1] === '0', _has_sort, order, col);
+								console.log(target_tab, _has_sort, col);
 							}
 						} else {
-							const _list = $('.account__tab.data-tab-item[data-type="' + target_tab + '"] .account__table-body');
+							const _list = $(
+								'.account__tab.data-tab-item[data-type="' + target_tab + '"] .account__table-body');
 							_list.find(".acount__table-accardeon").sort(function (a, b) {
 								const _a = parseInt($(a).attr('data-priority'));
 								const _b = parseInt($(b).attr('data-priority'));
@@ -1614,6 +1616,7 @@
 
 		setTimeout(function reload() {
 			if (window.can_update) {
+				catalog.reload_users();
 				window.load();
 			}
 			setTimeout(reload, 12000);
@@ -1637,9 +1640,10 @@
 
 		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
 			var $th       = $(this);
-			var _curr_tab = $('.account__tab-items .account__tab-item.data-tab-link.active').data('tab');
-			console.log('clicked');
+			var _curr_tab = $(this).parents('.account__tab.data-tab-item').data('tab');
+			console.log('ordering tab: ' + _curr_tab);
 			$th.toggleClass('selected');
+			$th.siblings('.selected').removeClass('selected');
 			var isSelected = $th.hasClass('selected');
 
 			var isInput = true;
