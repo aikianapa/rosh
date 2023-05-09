@@ -46,7 +46,7 @@
 				<div class="user --flex">
 					<div class="user__panel" style="width: 60%; margin-right: 10px;">
 						<div class="user__name">
-							{{user.name}}
+							{{user.fullname}}
 							<button class="user__edit all" on-click="toggleEdit">
 								<svg class="svgsprite _edit">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
