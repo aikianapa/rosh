@@ -578,7 +578,7 @@
 					<div class="col-md-9">
 						<div class="input input--grey">
 							<input class="input__control" name="fullname" required
-								value="{{ expert.name }}" type="text" placeholder="ФИО">
+								value="{{ .fullname }}" type="text" placeholder="ФИО">
 							<div class="input__placeholder input__placeholder--dark">ФИО</div>
 						</div>
 					</div>
@@ -611,7 +611,7 @@
 			</div>
 			{{/user}}
 		</form>
-		<form on-submit="submitExpertForm">
+		<form on-submit="submitExpertForm" class="hidden">
 			<div class="profile-edit__block">
 				<div class="lk-title">Лицензия</div>
 				<div class="profile-licenses row">
@@ -663,7 +663,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="profile-edit__block profile-education">
+			<div class="profile-edit__block profile-education hidden">
 				<div class="lk-title">Образование</div>
 				<div class="profile-education__wrap repeater-container" data-repeater="study">
 					{{#each user.adv.stages: idx}}
@@ -809,7 +809,7 @@
 				template: wbapp.tpl('#expert-page').html,
 				data: {
 					user: wbapp._session.user,
-					expert: wbapp._session.user.expert,
+					expert: wbapp._session.user,
 					catalog: catalog,
 					events: {
 						'upcoming': [],

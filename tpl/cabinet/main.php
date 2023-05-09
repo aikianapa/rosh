@@ -1559,14 +1559,12 @@
 							//console.log('Need tab?', _curr_tab, target_tab,
 							//	'.account__tab.data-tab-item[data-type="' + target_tab + '"].active');
 							var order = _has_sort.split(':');
-							var col   = _curr_tab.find(
-								'.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
+							var col   = _curr_tab.find('.account__table-head .admin-events-item:eq(' + order[0] + ')');
 							if (!!col.length) {
 								if (order[1] === '0') {
 									col.addClass('selected');
 								}
 								col.trigger('click');
-								//console.log(target_tab, _has_sort, col);
 							}
 						} else {
 							const _list = $(
@@ -1614,13 +1612,16 @@
 		};
 		load(false);
 
-		setTimeout(function reload() {
-			if (window.can_update) {
-				catalog.reload_users();
-				window.load();
+		var loadTimer = setTimeout(function reload() {
+			try {
+				if (window.can_update) {
+					catalog.reload_users();
+					window.load();
+				}
+			} finally {
+				loadTimer = setTimeout(reload, 10000);
 			}
-			setTimeout(reload, 12000);
-		}, 12000);
+		}, 10000);
 
 		function OrderBy(a, b, n) {
 			if (n) return a - b;
@@ -1634,8 +1635,12 @@
 			var _tab  = $(this).data('tab');
 			console.log('open:', _type);
 			sessionStorage.setItem('state.tab-cabinet', _tab);
-			window.load(_type);
-			window.can_update = true;
+			window.can_update = false;
+			try {
+				window.load(_type);
+			} finally {
+				window.can_update = true;
+			}
 		});
 
 		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
@@ -1652,7 +1657,7 @@
 			var isNum   = false;
 			var rows    = $table.find('.account__table-body > .acount__table-accardeon').get();
 			sessionStorage.setItem('state.order-by-' + _curr_tab, column + ':' + (isSelected ? '1' : '0'));
-			//console.log(column, $table, rows);
+
 			rows.sort(function (rowA, rowB) {
 				var keyA, keyB;
 				if (isInput) {
@@ -1662,20 +1667,23 @@
 					keyA = $(rowA).children('.admin-events-item').eq(column).text().toUpperCase();
 					keyB = $(rowB).children('.admin-events-item').eq(column).text().toUpperCase();
 				}
-				//console.log('keys:', keyA, keyB);
-				if (isSelected) return OrderBy(keyA, keyB, isNum);
+
+				if (isSelected){
+					return OrderBy(keyA, keyB, isNum);
+				}
+
 				return OrderBy(keyB, keyA, isNum);
 			});
 			$.each(rows, function (index, row) {
 				$table.children('.account__table-body').append(row);
 			});
+
 			return false;
 		}).on('click', 'button.flag-date__ico', function (e) {
 				e.stopPropagation();
 				const _parent    = $(this).parents('.acount__table-accardeon');
 				const _id        = _parent.data('id');
 				const _is_marked = $(this).hasClass('checked');
-				console.log('flagged', _id, _is_marked);
 				utils.api.post('/api/v2/update/records/' + _id, {
 					marked: !!_is_marked
 				}).then(function (res) {
