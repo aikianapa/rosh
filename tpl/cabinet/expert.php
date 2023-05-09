@@ -46,7 +46,7 @@
 				<div class="user --flex">
 					<div class="user__panel" style="width: 60%; margin-right: 10px;">
 						<div class="user__name">
-							{{user.fullname}}
+							{{catalog.users[user.id].fullname}}
 							<button class="user__edit all" on-click="toggleEdit">
 								<svg class="svgsprite _edit">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
@@ -297,14 +297,14 @@
 									<div class="account-events__name">Пациент:</div>
 									<div class="account-event">
 										<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
-											{{ @global.catalog.clients[this.client].fullname }}</a>
+											{{ catalog.users[this.client].fullname }}</a>
 									</div>
 								</div>
 								<div class="account-event-wrap">
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{@global.catalog.experts[this].fullname}}</p>
+										<p>{{ catalog.users[this].fullname }}</p>
 										{{/this.experts}}
 									</div>
 								</div>
@@ -578,7 +578,7 @@
 					<div class="col-md-9">
 						<div class="input input--grey">
 							<input class="input__control" name="fullname" required
-								value="{{ .fullname }}" type="text" placeholder="ФИО">
+								value="{{catalog.users[.id].fullname}}" type="text" placeholder="ФИО">
 							<div class="input__placeholder input__placeholder--dark">ФИО</div>
 						</div>
 					</div>
@@ -850,7 +850,8 @@
 							template: wbapp.tpl('#editorProfile').html,
 							data: {
 								user: this.get('user'),
-								expert: this.get('expert')
+								expert: this.get('expert'),
+								catalog: catalog
 							},
 							on: {
 								complete() {
@@ -876,19 +877,12 @@
 											.then(function (res) {
 												console.log(res);
 												page.set('user', res);
+												catalog.reload_users();
+												setTimeout(function () {
+													page.set('catalog', catalog);
+												}, 1000);
+												toast_success('Профиль успешно обновлён!');
 											});
-										utils.api.post('/api/v2/update/experts/' + expert_id, {
-											'name': data.fullname,
-											'fullname': data.fullname,
-											'header': data.fullname,
-											'login': uid
-										}).then(function (res) {
-											console.log('expert', res);
-											page.set('expert', res);
-
-											window.catalog.reload('experts');
-											toast('Профиль успешно обновлён');
-										});
 										$('.user__edit.all').trigger('click');
 									}
 									return false;
@@ -904,6 +898,9 @@
 											function (res) {
 												page.set('user', res);
 												toast('Профиль успешно обновлён');
+												setTimeout(function () {
+													page.set('catalog', catalog);
+												}, 1000);
 												console.log('saved', res);
 											});
 										$('.user__edit.all').trigger('click');
@@ -1005,7 +1002,8 @@
 					current_day_events_checker = setTimeout(loadRecords, 10000);
 				}
 			};
-			window.can_update              = true;
+
+			window.can_update = true;
 			loadRecords();
 			utils.saveScroll();
 		});
