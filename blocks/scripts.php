@@ -40,7 +40,7 @@
         });
 	</script>
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=AC537A78956E421095CCDE924DDA14CF">
+		src="/assets/js/cabinet.js?v=BA4569DBAA60489693D06CDB70A8D7AE">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
@@ -59,7 +59,7 @@
 	<link href="/assets/css/additional/frontend.css?v=A3D0018079B24864814F654D27CA1F95" rel="stylesheet">
 
 	<link wb-if="in_array('{{_sess.user.role}}', ['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=22EEA0DEBE49427EAC16C104B0B1010D" rel="stylesheet">
+		href="/assets/css/cabinet.css?v=EBF6B26B329047BB9E0E9D091812DBF1" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">

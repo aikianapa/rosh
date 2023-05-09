@@ -432,6 +432,7 @@ small {
 }
 .user__panel--border {
 	padding-left: 28px;
+	min-width: 268px;
 }
 .acount__table-list.accardeon__list.admin-editor .admin-editor__edit-profile {
 	margin-bottom: 0;
