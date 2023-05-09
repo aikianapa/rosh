@@ -135,7 +135,7 @@
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{@global.catalog.experts[this].fullname}}</p>
+										<p>{{catalog.users[this].fullname}}</p>
 										{{/this.experts}}
 									</div>
 								</div>
