@@ -147,14 +147,13 @@
 				},
 				deleteProfile(ev, client, idx) {
 					if (confirm("Удалить профиль " + client.fullname + " и все записи пациента?") == true) {
-						window.api.get('/api/v2/list/records?client=' + client.id + '&@return=id').then(function (recs) {
-							if (!!recs) {
-								recs.forEach(function (rec, i) {
-									setTimeout(function () {
-										window.api.post('/api/v2/delete/record/' + rec.id).then(function (data) {
-											console.log(rec.id, 'Deleted');
-										});
+						window.api.get('/api/v2/list/records?client=' + client.id + '&@return=id').then(function (records) {
+							if (!!records) {
+								records.forEach(function (rec) {
+									api.get('/api/v2/delete/records/' + rec.id).then(function (data) {
+										console.log(rec.id, 'Deleted');
 									});
+									setTimeout(function () {}, 600);
 								});
 							}
 							window.api.get('/api/v2/delete/users/' + client.id).then(function () {
