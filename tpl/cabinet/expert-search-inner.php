@@ -467,7 +467,7 @@
 											<p>Рекомендация врача</p>
 										</div>
 										{{#each experts}}
-										{{#if this = user.id}}
+										{{#if this == user.id}}
 										<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
 											<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation" name="recommendation">{{this.recommendation}}</textarea>
 
