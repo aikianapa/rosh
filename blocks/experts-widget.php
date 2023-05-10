@@ -24,7 +24,7 @@
 <view>
     <div class="inner-experts">
         <wb-var count="0" />
-        <wb-var experts wb-api="/api/v2/list/experts?active=on" />
+        <wb-var experts wb-api="/api/v2/list/users?active=on&role=expert" />
 
         <div class="container">
             <h3 class="mb-40 h3">Специалисты</h3>

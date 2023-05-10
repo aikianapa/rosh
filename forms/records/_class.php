@@ -9,7 +9,7 @@ class recordsClass extends cmsFormsClass
     function download() {
         $post = $this->app->vars('_post');
         $filter = [];
-        $period = $post['period'] > '' ? explode(' - ', $post['period']) : (array)$post['period'];
+        $period = $post['period'][0] > '' ? $post['period'] : [];
         if (count($period)) {
             count($period) == 1 ? $period[1] = date('Y-m-d') : null;
             $filter = [
@@ -33,6 +33,7 @@ class recordsClass extends cmsFormsClass
         $specs =  $this->app->itemList('users',['filter'=>['role'=>'expert']])['list'];
 
         $servs =  $this->app->itemList('services')['list'];
+
         $orders = [];
         $events = [];
         foreach($list as $item) {
@@ -71,6 +72,7 @@ class recordsClass extends cmsFormsClass
                 foreach($item['experts'] as &$expert) {
                     $expert = $specs[$expert]['fullname'];
                 }
+
                 foreach ($item['services'] as &$serv) {
                     $serv = $servs[$serv]['header'];
                 }

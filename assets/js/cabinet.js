@@ -610,7 +610,7 @@ $(function () {
 
 					getters.push(
 						utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
-						              '&@return=id,first_name,middle_name,last_name,fullname,role,phone,email,birthdate' +
+						              '&@return=id,first_name,middle_name,last_name,fullname,first_name,last_name,middle_name,role,phone,email,birthdate' +
 						              '&@group=role' +
 						              '&@sort=fullname:a')
 							.then(function (data) {
