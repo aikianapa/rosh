@@ -9,7 +9,7 @@ class recordsClass extends cmsFormsClass
     function download() {
         $post = $this->app->vars('_post');
         $filter = [];
-        $period = $post['period'][0] > '' ? $post['period'] : [];
+        $period = @$post['period'][0] > '' ? $post['period'] : [];
         if (count($period)) {
             count($period) == 1 ? $period[1] = date('Y-m-d') : null;
             $filter = [
@@ -81,11 +81,11 @@ class recordsClass extends cmsFormsClass
                 $res = [
                         'Дата'      => date('d.m.Y H:i', strtotime($item['_created'])),
                         'Приём'     => date('d.m.Y H:i', strtotime(date('Y-m-d',strtotime($item['event_date'])). ' '.$item['event_time_start'])),
-                        'Ф.И.О.'    => $client['fullname'],
-                        'Телефон'   => wbPhoneFormat($clients[$item['client']]['phone']),
+                        'Ф.И.О.'    => @$client['fullname'],
+                        'Телефон'   => wbPhoneFormat(@$clients[$item['client']]['phone']),
                         'Эл.почта'  => $client['email'],
                         'Специалист'=> implode(",\r\n", @(array)$item['experts']),
-                        'Тип'       => $types[$item['type']]['name'],
+                        'Тип'       => @$types[$item['type']]['name'],
                         'Услуги'    => @str_replace(["\r\n\r\n","\n\n"], ["\r\n","\n"],$item['client_comment']."\r\n".implode("\r\n", $servs)),
                         'Оплата'    => $pays[$item['pay_status']]['name'],
                         'Статус'    => $status[$item['status']]['name'],
