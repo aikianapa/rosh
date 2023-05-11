@@ -236,6 +236,7 @@
 
 	<button class="btn btn--white d-none status-save" on-click="save">Сохранить</button>
 </template>
+<!-- !!! editorRecord !!! -->
 <template id="editorRecord" wb-off>
 	<form class="record-edit mt-2">
 		<div class="row">
@@ -382,9 +383,9 @@
 										<div class="select__item select__item--checkbox">
 											<label class="checkbox checkbox--record">
 												{{#if @global.utils.arr.search(.id, record.experts)}}
-												<input type="radio" class="checked" name="experts[]" checked value="{{.id}}">
+												<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}">
 												{{else}}
-												<input type="radio" name="experts[]" value="{{.id}}">
+												<input type="checkbox" name="experts[]" value="{{.id}}">
 												{{/if}}
 												<span></span>
 												<div class="checbox__name">
@@ -507,9 +508,9 @@
 					{{#if record.hasPhoto}}
 					<div class="row">
 						<div class="col-md-6">
-							<div class="mb-30 text-bold text-big">Фото до начала лечения</div>
+							<div class="mb-30 text-bold text-big">Фото до приема</div>
 							{{#each record.photos.before}} <!--single photo!-->
-							<a class="before-healing photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-href="{{.src}}" data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
+							<a class="before-healing photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-href="{{.src}}" data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
 								<div class="healing__date">
 									{{ @global.utils.formatDate(.date) }}
 								</div>
@@ -519,13 +520,13 @@
 						</div>
 						<div class="col-md-6">
 							<div class="mb-30 text-bold text-big">
-								Фото в процессе лечения
+								Фото после приема
 							</div>
 							<div class="after-healing">
 								<div class="row">
 									{{#each record.photos.after}}
 									<div class="col-md-12">
-										<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото Фото в процессе лечения, {{ @global.utils.formatDate(.date) }}">
+										<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
 											<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 											<div class="after-healing__photo" style="background-image: url({{.src}});">
 											</div>
@@ -564,8 +565,7 @@
 		</div>
 	</form>
 </template>
-
-<template id="listRecords" wb-off>
+<template id="listEvents" wb-off>
 	<div class="account-scroll">
 		<div class="account__table" data-records-group="{{group}}">
 			<div class="account__table-head">
@@ -588,11 +588,11 @@
 				<div class="admin-events-item">Услуга</div>
 				<div class="admin-events-item orderby">Оплата</div>
 				<div class="admin-events-item orderby">Статус</div>
-				{{#if group == 'group=quotes'}}
-				<div class="w-8 admin-events-item orderby">Дата приёма</div>
-				{{else}}
-				<div class="w-8 admin-events-item orderby">Дата заявки</div>
-				{{/if}}
+				<!--{{#if group == 'group=quotes'}}-->
+				<!--<div class="w-8 admin-events-item orderby">Дата приёма</div>-->
+				<!--{{else}}-->
+				<!--<div class="w-8 admin-events-item orderby">Дата заявки</div>-->
+				<!--{{/if}}-->
 				<div class="admin-events-item comment">Комментарии</div>
 			</div>
 			<div class="account__table-body">
@@ -600,11 +600,14 @@
 					<div class="loader"></div>
 				</div>
 				{{#each records as record: idx}}
-				{{#with @global.catalog.users[this.client]}}
-				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{status}}" data-client="{{record.client}}" data-record="{{record.id}}" data-id="{{record.id}}" data-idx="{{idx}}" data-priority="{{record.priority}}" data-group="{{record.group}}">
+				{{#with catalog.users[this.client]}}
+				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin status-{{status}}"
+					data-client="{{record.client}}" data-record="{{record.id}}" data-id="{{record.id}}" data-idx="{{idx}}"
+					data-priority="{{record.priority}}" data-group="{{record.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
-							<div class="accardeon__click" data-record="{{record.id}}" data-idx="{{idx}}" on-click="editRecord"></div>
+							<div class="accardeon__click" data-record="{{record.id}}" data-idx="{{idx}}"
+								on-click="toggleAccordeon"></div>
 							<div class="flag-date">
 								{{#if priority * 1}}
 								<label class="checkbox">
@@ -653,7 +656,7 @@
 							<p>ФИО</p>
 							<div>
 								<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{catalog.clients[record.client].fullname}}</a>
-								{{#if @global.catalog.clients[record.client].has_longterm}}
+								{{#if @global.catalog.clients_has_longterm[record.client]}}
 								<small class="text-danger">продолжительное</small>
 								{{/if}}
 							</div>
@@ -686,27 +689,28 @@
 							<p>Услуга</p>
 
 							{{#if group == 'events'}}
+								{{#record.consultation }}
+								<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
+								{{/record.consultation}}
+
+								{{#record.services}}
+								<div>{{catalog.services[this].header}}</div>
+								{{/record.services}}
 							{{elseif group == 'past'}}
+								{{#record.consultation }}
+								<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
+								{{/record.consultation}}
+
+								{{#record.services}}
+								<div>{{catalog.services[this].header}}</div>
+								{{/record.services}}
 							{{elseif record.quote_page_comment}}
-							<div>Заявка на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b></div>
+								<div>Заявка на услугу</div>
 							{{elseif record.is_mainfilter_quote == '1'}}
-							<div>Заявка из фильтра</div>
+								<div>Заявка из фильтра</div>
 							{{else}}
-							<div>Заявка из формы</div>
+								<div>Заявка из формы</div>
 							{{/if}}
-
-							{{#if record.consultation }}
-							<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
-							{{/if}}
-
-							{{#if record.services}}
-							{{#services}}
-							<div>{{catalog.services[this].header}}</div>
-							{{/services}}
-							{{else}}
-							<div></div>
-							{{/if}}
-
 						</div>
 						<div class="admin-events-item">
 							<p>Оплата</p>
@@ -726,20 +730,20 @@
 							<div>{{catalog.quoteStatus[status].name}}</div>
 						</div>
 
-						<div class="w-8 admin-events-item">
-							{{#if group == 'events'}}
-							<input type="hidden" class="orderby" value="{{@global.utils.timestamp(record._created)}}">
-							<p>Дата заявки</p>
-							<div>
-								{{@global.utils.formatDate(record._created)}}<br>
-								{{@global.utils.formatTime(record._created)}}
-							</div>
-							{{else}}
-							<input type="hidden" class="orderby" value="">
-							<p>Дата приёма</p>
-							<span class="link-danger">&nbsp;</span>
-							{{/if}}
-						</div>
+						<!--<div class="w-8 admin-events-item">-->
+						<!--	{{#if group == 'events'}}-->
+						<!--	<input type="hidden" class="orderby" value="{{@global.utils.timestamp(record._created)}}">-->
+						<!--	<p>Дата заявки</p>-->
+						<!--	<div>-->
+						<!--		{{@global.utils.formatDate(record._created)}}<br>-->
+						<!--		{{@global.utils.formatTime(record._created)}}-->
+						<!--	</div>-->
+						<!--	{{else}}-->
+						<!--	<input type="hidden" class="orderby" value="">-->
+						<!--	<p>Дата приёма</p>-->
+						<!--	<span class="link-danger">&nbsp;</span>-->
+						<!--	{{/if}}-->
+						<!--</div>-->
 						<div class="admin-events-item comment">
 							<p>Комментарии</p>
 							<div>{{record.comment}}</div>
@@ -835,11 +839,12 @@
 					<div class="loader"></div>
 				</div>
 				{{#each records as record: idx}}
-				{{#with @global.catalog.clients[this.client]}}
+				{{#with catalog.users[this.client]}}
 				<div class="acount__table-accardeon accardeon acount__table-accardeon--pmin" data-client="{{record.client}}" data-record="{{record.id}}" data-id="{{record.id}}" data-idx="{{idx}}" data-priority="{{record.priority}}" data-group="{{record.group}}">
 					<div class="acount__table-main accardeon__main acount__table-auto">
 						<div class="admin-events-item heap">
-							<div class="accardeon__click" data-record="{{record.id}}" data-idx="{{idx}}"></div>
+							<div class="accardeon__click" data-record="{{record.id}}" data-idx="{{idx}}"
+								on-click="toggleAccordeon"></div>
 							<div class="flag-date">
 								{{#if priority * 1}}
 								<label class="checkbox">
@@ -988,45 +993,6 @@
 		</div>
 	</div>
 </template>
-<template id="longterm-details" wb-off>
-	{{#if photos}}
-	<div class="row">
-		<div class="col-md-4">
-			<div class="mb-20 text-bold text-big">Фото до начала лечения</div>
-			{{#each photos.before}} <!--single photo!-->
-			<a class="after-healing__item" data-fancybox="images" href="{{.src}}"
-				data-caption="Фото до начала лечения, {{.date}}">
-				<h2 class="h2 healing__date-title">{{.date}}</h2>
-				<div class="after-healing__photo" style="background-image: url('{{.src}}')">
-				</div>
-				<div class="healing__description">
-					{{.comment}}
-				</div>
-			</a>
-			{{/each}}
-		</div>
-		<div class="col-md-8">
-			<div class="mb-20 text-bold text-big">
-				Фото после начала лечения
-			</div>
-			<div class="after-healing">
-				<h2 class="h2 healing__date-title d-none month-header"></h2>
-				<div class="row">
-					{{#each this.photos.after}}
-					<div class="col-md-6">
-						<a class="after-healing__item" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото после начала лечения, {{ @global.utils.formatDate(.date) }}">
-							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
-							<div class="after-healing__photo" style="background-image: url({{.src}});">
-							</div>
-						</a>
-					</div>
-					{{/each}}
-				</div>
-			</div>
-		</div>
-	</div>
-	{{/if}}
-</template>
 
 <wb-module wb="module=yonger&mode=render&view=footer"/>
 
@@ -1063,19 +1029,18 @@
 		window.afterLoad     = null;
 		window.load          = function (only_tab) {
 			tab_urls.forEach(function (target_tab, i) {
-				if (only_tab && only_tab != target_tab) {
-					return;
-				}
-				var _sorts = [
-					'_lastdate:d',
-					'event_date:d',
-					'event_date:d',
-					'_created:d'
-				];
-				utils.api.get('/api/v2/list/records?' + target_tab, {
-					'@sort': _sorts[i]
-				}).then(
-					function (result) {
+					if (only_tab && only_tab != target_tab) {
+						return;
+					}
+					var _sorts = [
+						'_lastdate:d',
+						'event_date:d',
+						'event_date:d',
+						'_created:d'
+					];
+					utils.api.get('/api/v2/list/records?' + target_tab, {
+						'@sort': _sorts[i]
+					}).then(function (result) {
 						let data = {
 							group: target_tab,
 							records: result,
@@ -1093,7 +1058,7 @@
 								},
 								on: {
 									loaded() {
-										console.log('>>> loaded', target_tab);
+										//console.log('>>> loaded', target_tab);
 										$(this.el).find('.loading-overlay').remove();
 									},
 									complete() {
@@ -1106,6 +1071,25 @@
 													_img.attr('href', $(this).data('href'));
 												});
 										}, 150);
+									},
+									toggleAccordeon(ev) {
+										var target_tab      = this;
+										const _parent       = $(ev.node).closest('.accardeon');
+										window.can_update   = false;
+										var _edit_active = (sessionStorage["state.open-editor"] == _parent.data('record'));
+										if (_edit_active) {
+											//$(ev.node).removeClass('open');
+											_parent.find('.admin-editor__events').html('');
+											_parent.find('.admin-editor__top-select').html('');
+											sessionStorage.removeItem("state.open-editor");
+											console.log('autoupdate activated...');
+											window.can_update = true;
+											return;
+										} else {
+											console.log('autoupdate deactivated...');
+										}
+										sessionStorage["state.open-editor"] = _parent.data('record');
+										console.log('open', target_tab, ev);
 									},
 									editProfile(ev) {
 										var form          = $(ev.node).parents('.admin-editor')
@@ -1186,7 +1170,7 @@
 						} else {
 							_tab = new Ractive({
 								el: '.data-tab-item[data-type="' + target_tab + '"]',
-								template: wbapp.tpl('#listRecords').html,
+								template: wbapp.tpl('#listEvents').html,
 								data: {
 									group: target_tab,
 									records: result,
@@ -1194,7 +1178,7 @@
 								},
 								on: {
 									loaded() {
-										console.log('>>> loaded', target_tab);
+										//console.log('>>> loaded', target_tab);
 										$(this.el).find('.loading-overlay').remove();
 
 										if (window.afterLoads.hasOwnProperty(target_tab)) {
@@ -1311,14 +1295,26 @@
 												initPlugins(form);
 											});
 									},
-									editRecord(ev) {
-										var target_tab    = this;
-										window.can_update = false;
+									toggleAccordeon(ev) {
+										var target_tab      = this;
+										const _parent       = $(ev.node).closest('.accardeon');
+										window.can_update   = false;
+										var _is_edit_active = (sessionStorage["state.open-editor"] == _parent.data('record'));
+										if (_is_edit_active) {
+											_parent.find('.admin-editor__events').html('');
+											_parent.find('.admin-editor__top-select').html('');
+											sessionStorage.removeItem("state.open-editor");
+											window.can_update = true;
+											console.log('autoupdate activated...');
+											return;
+										} else {
+											console.log('autoupdate deactivated...');
+										}
+										sessionStorage["state.open-editor"] = _parent.data('record');
+										console.log('open', target_tab, ev);
 
-										var _row_idx  = $(ev.node).data('idx');
-										const _parent = $(ev.node).closest('.accardeon');
-										var _record   = this.get('records.' + _row_idx);
-										console.log('clicked ', _record, target_tab, ev);
+										var _row_idx = $(ev.node).data('idx');
+										var _record  = this.get('records.' + _row_idx);
 										if (!_record.price) {
 											_record.price = 0;
 										}
@@ -1556,37 +1552,76 @@
 							ractive: _tab,
 							data: data
 						};
+					}).then(function () {
+						var _curr_tab = $('.account__tab.data-tab-item[data-type="' + target_tab + '"]');
+						var _has_sort = sessionStorage.getItem('state.order-by-' + _curr_tab.data('tab'));
+						if (!!_has_sort) {
+							//console.log('Need tab?', _curr_tab, target_tab,
+							//	'.account__tab.data-tab-item[data-type="' + target_tab + '"].active');
+							var order = _has_sort.split(':');
+							var col   = _curr_tab.find('.account__table-head .admin-events-item:eq(' + order[0] + ')');
+							if (!!col.length) {
+								if (order[1] === '0') {
+									col.addClass('selected');
+								}
+								col.trigger('click');
+							}
+						} else {
+							const _list = $(
+								'.account__tab.data-tab-item[data-type="' + target_tab + '"] .account__table-body');
+							_list.find(".acount__table-accardeon").sort(function (a, b) {
+								const _a = parseInt($(a).attr('data-priority'));
+								const _b = parseInt($(b).attr('data-priority'));
+								return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+							}).appendTo(_list);
+						}
 					});
-				/* sort by prior */
-				const _list = $('.account__tab.data-tab-item[data-tab="' + target_tab + '"] .account__table-body');
-				_list.find(".acount__table-accardeon").sort(function (a, b) {
-					const _a = parseInt($(a).attr('data-priority'));
-					const _b = parseInt($(b).attr('data-priority'));
-					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-				}).appendTo(_list);
-				setTimeout(function () {
-					$('a.account__table').find('a.client-card[data-href]').each(function (i) {
-						$(this).attr('href', $(this).data('href'));
-					});
-				}, 550);
-			});
+					/* sort by prior */
+
+					setTimeout(function () {
+						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
+							$(this).attr('href', $(this).data('href'));
+						});
+					}, 550);
+				}
+			);
 
 			setTimeout(function () {
-				utils.restoreScroll();
+				if(only_tab === false){
+					utils.restoreScroll();
+				}
 				$('.account__table').find('a.client-card[data-href]').each(function (i) {
 					$(this).attr('href', $(this).data('href'));
 				});
+				//var _curr_tab      = $('.account__tab.data-tab-item.active');
+				//var _curr_tab_item = $('.account__tab-items .account__tab-item.data-tab-link.active');
+				//var _has_sort      = sessionStorage.getItem('state.order-by-' + _curr_tab_item.data('tab'));
+				//console.log(_has_sort);
+				//if (typeof _has_sort !== 'undefined' && !!_has_sort) {
+				//	var order = _has_sort.split(':');
+				//	console.log('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
+				//	var col = _curr_tab.find('.account__table-head .admin-events-item.orderby:eq(' + order[0] + ')');
+				//	console.log(col);
+				//
+				//	if (order[1] === '0') {
+				//		col.addClass('selected');
+				//	}
+				//	col.trigger('click');
+				//}
 			}, 750);
 		};
+		load(false);
 
-		load();
-
-		setTimeout(function reload() {
-			if (window.can_update) {
-				window.load();
+		var loadTimer = setTimeout(function reload() {
+			try {
+				if (window.can_update) {
+					catalog.reload_users();
+					window.load();
+				}
+			} finally {
+				loadTimer = setTimeout(reload, 10000);
 			}
-			setTimeout(reload, 30000);
-		}, 30000);
+		}, 10000);
 
 		function OrderBy(a, b, n) {
 			if (n) return a - b;
@@ -1600,22 +1635,29 @@
 			var _tab  = $(this).data('tab');
 			console.log('open:', _type);
 			sessionStorage.setItem('state.tab-cabinet', _tab);
-
-			window.load(_type);
-			window.can_update = true;
+			window.can_update = false;
+			try {
+				window.load(_type);
+			} finally {
+				window.can_update = true;
+			}
 		});
-		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
-			var $th = $(this);
 
-			console.log('clicked');
+		$(document).on('click', '.account__table-head .admin-events-item.orderby', function () {
+			var $th       = $(this);
+			var _curr_tab = $(this).parents('.account__tab.data-tab-item').data('tab');
+			console.log('ordering tab: ' + _curr_tab);
 			$th.toggleClass('selected');
+			$th.siblings('.selected').removeClass('selected');
 			var isSelected = $th.hasClass('selected');
-			var isInput    = true;
-			var column     = $th.index();
-			var $table     = $th.parents('.account__table');
-			var isNum      = false;
-			var rows       = $table.find('.account__table-body > .acount__table-accardeon').get();
-			//console.log(column, $table, rows);
+
+			var isInput = true;
+			var column  = $th.index();
+			var $table  = $th.parents('.account__table');
+			var isNum   = false;
+			var rows    = $table.find('.account__table-body > .acount__table-accardeon').get();
+			sessionStorage.setItem('state.order-by-' + _curr_tab, column + ':' + (isSelected ? '1' : '0'));
+
 			rows.sort(function (rowA, rowB) {
 				var keyA, keyB;
 				if (isInput) {
@@ -1625,54 +1667,57 @@
 					keyA = $(rowA).children('.admin-events-item').eq(column).text().toUpperCase();
 					keyB = $(rowB).children('.admin-events-item').eq(column).text().toUpperCase();
 				}
-				//console.log('keys:', keyA, keyB);
-				if (isSelected) return OrderBy(keyA, keyB, isNum);
+
+				if (isSelected){
+					return OrderBy(keyA, keyB, isNum);
+				}
+
 				return OrderBy(keyB, keyA, isNum);
 			});
 			$.each(rows, function (index, row) {
 				$table.children('.account__table-body').append(row);
 			});
+
 			return false;
-		});
-		$(document)
-			.on('click', 'button.flag-date__ico', function (e) {
+		}).on('click', 'button.flag-date__ico', function (e) {
 				e.stopPropagation();
 				const _parent    = $(this).parents('.acount__table-accardeon');
 				const _id        = _parent.data('id');
 				const _is_marked = $(this).hasClass('checked');
-				console.log('flagged', _id, _is_marked);
 				utils.api.post('/api/v2/update/records/' + _id, {
 					marked: !!_is_marked
 				}).then(function (res) {
 					//toast('Список обновлен');
 				});
-			}).on('change', '.flag-date [type="checkbox"]', function (e) {
-			e.stopPropagation();
-			const _list      = $(this).parents('.account__table-body');
-			const _parent    = $(this).parents('.acount__table-accardeon');
-			const _id        = _parent.data('id');
-			const _is_marked = $(this).is(':checked');
-			const _priority  = _is_marked ? Date.now() : 0;
+			})
+			.on('change', '.flag-date [type="checkbox"]', function (e) {
+				e.stopPropagation();
+				const _list      = $(this).parents('.account__table-body');
+				const _parent    = $(this).parents('.acount__table-accardeon');
+				const _id        = _parent.data('id');
+				const _is_marked = $(this).is(':checked');
+				const _priority  = _is_marked ? Date.now() : 0;
 
-			_parent.attr('data-priority', _priority);
-			_list.find(".acount__table-accardeon").sort(function (a, b) {
-				const _a = parseInt($(a).attr('data-priority'));
-				const _b = parseInt($(b).attr('data-priority'));
-				return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-			}).appendTo(_list);
+				_parent.attr('data-priority', _priority);
+				_list.find(".acount__table-accardeon").sort(function (a, b) {
+					const _a = parseInt($(a).attr('data-priority'));
+					const _b = parseInt($(b).attr('data-priority'));
+					return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+				}).appendTo(_list);
 
-			utils.api.post('/api/v2/update/records/' + _id, {
-					priority: _priority
-				})
-				.then(function (res) {
-					//toast('Список обновлен');
-				});
-		});
+				utils.api.post('/api/v2/update/records/' + _id, {
+						priority: _priority
+					})
+					.then(function (res) {
+						//toast('Список обновлен');
+					});
+			});
 		var active_tab = sessionStorage['state.tab-cabinet'] || 'quotes';
 		if (!['quotes', 'events', 'past', 'longterms'].includes(active_tab)) {
 			sessionStorage.removeItem('state.tab-cabinet');
 			active_tab = 'quotes';
 		}
+
 		if (!!active_tab) {
 			$('.account__tab-item[data-tab="' + active_tab + '"]').addClass('active');
 			$('.account__tab[data-tab="' + active_tab + '"]').addClass('active');

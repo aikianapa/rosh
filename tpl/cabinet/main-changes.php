@@ -84,7 +84,11 @@
 									</div>
 									<div class="changes-item">
 										<p>Пациент</p>
+										{{#if this.client_label}}
+										<span>{{ this.client_label }}</span>
+										{{else}}
 										<span>{{ @global.catalog.users[this.client].fullname }}</span>
+										{{/if}}
 									</div>
 									<div class="changes-item">
 										<p>Изменены поля</p>
@@ -122,40 +126,31 @@
 										<div class="col-lg-4">
 											<p class="">
 												{{#if this.field == 'experts'}}
-												{{#each this.prev_val}}
-												{{catalog.experts[this].fullname}}<br>
-												{{/each}}
+												{{{@global.utils.getAll(this.prev_val, this.prev_labels, 'experts', 'fullname')}}}
 												{{elseif this.field == 'services'}}
-												{{#each this.prev_val}}
-												{{catalog.services[this].header}}<br>
-												{{/each}}
+												{{{@global.utils.getAll(this.prev_val, this.prev_labels, 'services', 'header')}}}
 												{{elseif this.field == 'status'}}
 												{{catalog.quoteStatus[this.prev_val].name}}
 												{{elseif this.field == 'event_date'}}
 												{{@global.utils.formatDate(this.prev_val)}}
 												{{else}}
-												{{this.prev_val}}
+												{{@global.utils.clrText(this.prev_val)}}
 												{{/if}}
 											</p>
 										</div>
 										<div class="col-lg-4">
 											<p class="">
 												{{#if this.field == 'experts'}}
-												{{#each this.new_val}}
-												{{catalog.experts[this].fullname}}
-												{{/each}}
+												{{{@global.utils.getAll(this.new_val, this.new_labels, 'experts', 'fullname')}}}
 												{{elseif this.field == 'services'}}
-												{{#each this.new_val}}
-												{{catalog.services[this].header}}<br>
-												{{/each}}
+												{{{@global.utils.getAll(this.new_val, this.new_labels, 'services', 'header')}}}
 												{{elseif this.field == 'status'}}
 												{{catalog.quoteStatus[this.new_val].name}}
 												{{elseif this.field == 'event_date'}}
 												{{@global.utils.formatDate(this.new_val)}}
 												{{else}}
-												{{this.new_val}}
+												{{@global.utils.clrText(this.new_val)}}
 												{{/if}}
-
 											</p>
 										</div>
 									</div>

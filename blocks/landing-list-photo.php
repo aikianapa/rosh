@@ -4,7 +4,7 @@
             <div class="row --aicn mb-80">
                 <div class="col-md-4">
                     <div class="aside">
-                        <h2 class="h2" wb-if="'{{subheader}}'>''">{{subheader}}</h2>
+                        <h3 class="h2" wb-if="'{{subheader}}'>''">{{subheader}}</h3>
                         <div class="text">
                             <ul>
                                 <wb-foreach wb="from=list&tpl=false">
@@ -54,7 +54,7 @@
             <div class="row --aicn mb-80">
                 <div class="col-md-4">
                     <div class="aside">
-                        <h2 class="h2">Помимо пищевой аллергии распространены:</h2>
+                        <h3 class="h2">Помимо пищевой аллергии распространены:</h3>
                         <div class="text">
                             <ul>
                                 <li>поллиноз (сезонная аллергия на пыльцу растений)</li>

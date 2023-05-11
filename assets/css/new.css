@@ -1294,7 +1294,7 @@ div.swiper-horizontal.post-slider {
     line-height: 1.2;
     font-weight: normal;
     letter-spacing: 0.04em;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     color: #080E0D;
     margin: 0 0 20px;
 }
@@ -1507,7 +1507,7 @@ div.swiper-horizontal.post-slider {
 }
 
 .problems-filter .text-bold.problems-filter__title {
-    display: none;
+    /*display: none;*/
 }
 
 .problems-filter .problems-filter__item {
@@ -1537,7 +1537,7 @@ div.swiper-horizontal.post-slider {
 }
 
 h2 {
-    font-size: 36px;
+    font-size: 32px;
     line-height: 120%;
     font-family: "Playfair Display", serif;
     letter-spacing: .04em;
@@ -1546,17 +1546,34 @@ h2 {
 }
 
 h3 {
-    font-size: 26px;
-    line-height: 120%;
-    letter-spacing: .04em;
-    font-family: "Playfair Display", serif;
-    text-transform: uppercase;
-    margin-bottom: 20px;
+    font-size      : 26px;
+    line-height    : 120%;
+    letter-spacing : .04em;
+    font-family    : "Playfair Display", serif;
+    text-transform : uppercase;
+    margin-bottom  : 20px;
+}
+
+.container h3,
+.container h4,
+.container h5,
+.landing h3,
+.landing h4,
+.landing h5 {
+    text-transform : lowercase !important;
+}
+.container h3:first-letter,
+.container h4:first-letter,
+.container h5:first-letter,
+.landing h3:first-letter,
+.landing h4:first-letter,
+.landing h5:first-letter {
+    text-transform : uppercase;
 }
 
 .mainfilter__choice .mainfilter-tag {
-    position: relative;
-    padding-right: 74px;
+    position      : relative;
+    padding-right : 74px;
 }
 
 .mainfilter__choice .mainfilter-tag__group {
@@ -1786,6 +1803,18 @@ blockquote cite {
 }
 sup {
     top: -0.3em!important;
+}
+.problems-filter__item.active{
+    font-weight: 600;
+}
+.text li, .text p{
+    color: #070e0d;
+}
+.profile-menu .enter__panel{
+    width : auto;
+}
+.landing .landing-small-title, .landing .landing-title{
+    text-transform: initial;
 }
 @media (min-width : 1400px) {
     .fixed-top {

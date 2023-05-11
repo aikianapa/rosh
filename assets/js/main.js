@@ -118,7 +118,20 @@ $(function() {
 
     };
     $(document).ready(function() {
-
+        $(document).on('change', '.select__list.single .select__item input[type=checkbox]', function (e) {
+            e.stopPropagation();
+            $(this).parents('.select__list').find('input[type="checkbox"]:checked').not($(this)).prop('checked', false);
+            var ne   = false;
+            var value    = [];
+            $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
+                if ($(this).find('input[type=checkbox]:checked, input[type=radio]:checked').length) {
+                    value.push($(this).find('.select__name:first').text());
+                    ne = true;
+                }
+            });
+            value = value.join(', ');
+            $(this).closest('.select').toggleClass('has-values', ne).find('.select__values:first').html(value);
+        });
         $(document).on('click', '.select .select__main', function (e) {
             e.stopPropagation();
             var _parent = $(this).parents('.select');
@@ -129,14 +142,19 @@ $(function() {
             if ($(this).hasClass('select__item--checkbox')) {
                 var ne = false;
                 value  = [];
-                $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
-                    if ($(this).find('input[type=checkbox]:checked, input[type=radio]:checked').length) {
-                        value.push($(this).find('.select__name:first').text());
-                        ne = true;
-                    }
-                });
-                value = value.join(', ');
-                $(this).closest('.select').toggleClass('has-values', ne).find('.select__values:first').html(value);
+                var list = $(this).closest('.select__list');
+                if (list.hasClass('single')){
+                    //$(this).siblings('.select__item input[type="checkbox"]:checked').prop('checked', false);
+                } else {
+                    $(this).closest('.select__list').find('.select__item--checkbox').each(function () {
+                        if ($(this).find('input[type=checkbox]:checked, input[type=radio]:checked').length) {
+                            value.push($(this).find('.select__name:first').text());
+                            ne = true;
+                        }
+                    });
+                    value = value.join(', ');
+                    $(this).closest('.select').toggleClass('has-values', ne).find('.select__values:first').html(value);
+                }
             } else {
                 value = $(this).html();
                 $(this).addClass('active').siblings('.select__item').removeClass('active');
@@ -514,10 +532,11 @@ $(function() {
                                    selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
                         },
                         nationalMode: false,
+                        /*
                         onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
                                         "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
                                         "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
-                                        "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
+                                        "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"]*/
                         placeholderNumberType: "FIXED_LINE",
                         preferredCountries: ['ru'],
                         separateDialCode: false,

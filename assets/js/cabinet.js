@@ -107,6 +107,28 @@ $(function () {
 	var months              = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 	window.utils       = {
+		clrText(str){
+			return str.replaceAll('-undefined','').replace(/^-+|,+$/g, '');
+		},
+		getAll(id_list, val_list, rec_type, rec_text_fld){
+			console.log(id_list, val_list);
+			if (val_list){
+				return val_list.join('<br>');
+			} else if (id_list) {
+				var _result = [];
+				var rec_list = catalog.users;
+				if (rec_type === 'services'){
+					rec_list = catalog.services;
+				}
+
+				id_list.forEach(function (id){
+					_result.push(rec_list[id][rec_text_fld] || '-');
+					console.log(rec_list[id][rec_text_fld]);
+				});
+				return _result.join('<br>');
+			}
+			return '';
+		},
 		saveScroll(page_name) {
 			var _page_name        = page_name || location.pathname;
 			window.onbeforeunload = function () {
@@ -120,7 +142,7 @@ $(function () {
 				}
 			};
 		},
-		restoreScroll(page_name) {
+		restoreScroll(page_name, dont_clear) {
 			var _curr_page_name = page_name || location.pathname;
 
 			let _state_page = sessionStorage["state.page"] || false;
@@ -157,6 +179,9 @@ $(function () {
 						}, 650);
 					}
 				}, 500);
+			}
+			if (dont_clear){
+				return true;
 			}
 			sessionStorage.removeItem("state.page");
 			sessionStorage.removeItem('state.tab-cabinet');
@@ -455,283 +480,262 @@ $(function () {
 		categories: {},
 		priceCategories: {},
 		priceCategoriesOrder: [],
+
+		expert_pages: {},
+		users: {},
 		experts: {},
-		expert_users: {},
 		clients: {},
+		clients_has_longterm: {},
 		admins: {},
+
 		consultations: {},
-		reload(only_key) {
-			var _self = this;
-			var _key  = only_key;
-			if (!!_key) {
-				localStorage.removeItem('db.' + _key + _self.cacheKey);
-				sessionStorage.removeItem('db.' + _key + _self.cacheKey);
-			} else {
-				['-dev', '-preprod', _self.cacheKey].forEach(function (ck) {
-					localStorage.removeItem('db.quoteStatuses' + ck);
-					localStorage.removeItem('db.quoteType' + ck);
-					localStorage.removeItem('db.quotePay' + ck);
-					localStorage.removeItem('db.categories' + ck);
-					localStorage.removeItem('db.labCategories' + ck);
-
-					sessionStorage.removeItem('db.services' + ck);
-					sessionStorage.removeItem('db.servicesList' + ck);
-					sessionStorage.removeItem('db.servicePrices' + ck);
-					/* old keys clear */
-					sessionStorage.removeItem('db.experts' + ck);
-					sessionStorage.removeItem('db.expert_users' + ck);
-					sessionStorage.removeItem('db.experts_alt' + ck);
-
-					sessionStorage.removeItem('db.expert_list' + ck);
-					sessionStorage.removeItem('db.expert_user_list' + ck);
-				});
-			}
-			console.log('Cache cleared!');
-			if (_key !== false) {
-				this.init();
-			}
+		reload_users() {
+			this.init(true);
 		},
 		cacheKey: '-new',
-		init(use_session_cache) {
+		init(only_clients) {
 			var _self         = this;
-			_self.rawServices = [];
 			var getters       = [];
-			getters.push(
-				utils.api.get('/api/v2/list/catalogs/?' +
-				              '@group=_id&@return=tree,name,id&_id=[quote_type,shop_category,srvcat,quote_status,quote_pay]')
-					.then(function (data) {
-						_self.quotePay                    = data['quote_pay'][0]['tree']['data'];
-						_self.quoteType                   = data['quote_type'][0]['tree']['data'];
-						_self.quoteStatus                 = data['quote_status'][0]['tree']['data'];
-						_self.quoteStatus['past']['type'] = 'event';
-
-						let _serviceCats = {};
-						Object.keys(data['srvcat'][0].tree.data).forEach(function (_key) {
-							const _cat = data['srvcat'][0].tree.data[_key];
-							if (_cat.active != 'on') {
-								return;
-							}
-							_serviceCats[_cat.id] = {
-								'id': _cat.id,
-								'name': _cat.name,
-								'color': _cat.data.color
-							};
+			if (only_clients) {
+				utils.api.get('/api/v2/list/records?group=longterms&@group=client').then(function (data) {
+					if (data) {
+						Object.keys(data).forEach(function (client) {
+							_self.clients_has_longterm[client] = 1;
 						});
-						_self.categories = _serviceCats;
-
-						var shop_categories = data['shop_category'][0]?.tree?.data;
-						if (!shop_categories) {
-							return false;
-						}
-						var keys = Object.keys(shop_categories);
-						keys.forEach(function (key) {
-							var cat = shop_categories[key];
-							delete cat.active;
-
-							_self.priceCategories[key] = cat;
-							_self.priceCategoriesOrder.push(key);
-
-							if (cat.hasOwnProperty('children')) {
-								var _keys = Object.keys(cat.children);
-								_self.priceCategoriesOrder = _self.priceCategoriesOrder.concat(_keys);
-
-								_keys.forEach(function (_key) {
-									var obj = cat.children[_key];
-									if (key === 'lab') {
-										obj.isLab                   = ["lab"];
-										obj.type                    = ["lab"];
-										_self.priceCategories[_key] = obj;
-									} else {
-										_self.priceCategories[_key] = obj;
-									}
-								});
-							}
-						});
-
-						_self.priceCategoriesOrder.push('');
-					})
-			);
-			getters.push(
-				utils.api.get('/api/v2/list/price?active=on&@sort=header').then(function (data) {
-					if (!data) {
-						return;
 					}
-					console.log('>> >> >>');
-					_self.rawServices = data;
-				})
-			);
-			getters.push(
-				utils.api.get('/api/v2/list/experts?active=on&login~=id&' +
-				              '@return=id,name,image,devision,spec,experience,education,login&' +
-				              '@sort=name:a').then(function (data) {
-					let _expert_users = {};
-					data.forEach(function (expert, i) {
-						if (!!expert.login) {
-							_expert_users[expert.login] = expert;
-							utils.api.get('/api/v2/list/_yonmap', {f: 'experts', i: expert.id})
-								.then(function (res) {
-									if (!res || !res[0]) {
-										return;
-									}
-									catalog.expert_users[expert.id].info_uri = res[0]['u'] || '';
-									sessionStorage.setItem('db.expert_users' + _self.cacheKey,
-										JSON.stringify(catalog.expert_users));
-								});
-						}
-					});
-					//_self.experts      = _experts;
-					_self.expert_users = _expert_users;
-					//sessionStorage.setItem('db.expert_list', JSON.stringify(_self.experts));
-				})
-			);
-			/* for Admins only */
-			utils.api.get('/api/v2/list/users?role=expert&active=on' +
-			              '' +
-			              '&@sort=fullname:a').then(function (data) {
-				_self.experts = utils.arr.indexBy(data);
-			});
-
-			if (!!window.user_role && window.user_role !== 'client') {
+				});
+				utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
+				              '&@return=id,first_name,middle_name,last_name,fullname,role,phone,email,birthdate' +
+				              '&@group=role' +
+				              '&@sort=fullname:a')
+					.then(function (data) {
+						_self.clients = utils.arr.indexBy(data['client']);
+						_self.users   = utils.arr.indexBy(
+							data['main']
+								.concat(data['expert'])
+								.concat(data['client'])
+						);
+					})
+			} else {
+				_self.rawServices = [];
 				getters.push(
-					utils.api.get('/api/v2/list/users?role=client&active=on' +
-					              '' +
-					              '&@sort=fullname:a').then(function (data) {
-						_self.clients = utils.arr.indexBy(data);
-						utils.api.get('/api/v2/list/records?group=longterms' +
-						              '' +
-						              '&@sort=fullname:a').then(function (data) {
-							if (data) {
-								data.forEach(function (rec) {
-									console.log(rec);
-									if (_self.clients[rec.client]) {
-										_self.clients[rec.client]['has_longterm'] = 1;
-									}
-								});
+					utils.api.get('/api/v2/list/catalogs/?' +
+					              '@group=_id&@return=tree,name,id&_id=[quote_type,shop_category,srvcat,quote_status,quote_pay]')
+						.then(function (data) {
+							_self.quotePay                    = data['quote_pay'][0]['tree']['data'];
+							_self.quoteType                   = data['quote_type'][0]['tree']['data'];
+							_self.quoteStatus                 = data['quote_status'][0]['tree']['data'];
+							_self.quoteStatus['past']['type'] = 'event';
+
+							let _serviceCats = {};
+							Object.keys(data['srvcat'][0].tree.data).forEach(function (_key) {
+								const _cat = data['srvcat'][0].tree.data[_key];
+								if (_cat.active != 'on') {
+									return;
+								}
+								_serviceCats[_cat.id] = {
+									'id': _cat.id,
+									'name': _cat.name,
+									'color': _cat.data.color
+								};
+							});
+							_self.categories = _serviceCats;
+
+							var shop_categories = data['shop_category'][0]?.tree?.data;
+							if (!shop_categories) {
+								return false;
 							}
-						});
-						//sessionStorage.setItem('db.clients', JSON.stringify(_self.clients));
+							var keys = Object.keys(shop_categories);
+							keys.forEach(function (key) {
+								var cat = shop_categories[key];
+								delete cat.active;
+
+								_self.priceCategories[key] = cat;
+								_self.priceCategoriesOrder.push(key);
+
+								if (cat.hasOwnProperty('children')) {
+									var _keys                  = Object.keys(cat.children);
+									_self.priceCategoriesOrder = _self.priceCategoriesOrder.concat(_keys);
+
+									_keys.forEach(function (_key) {
+										var obj = cat.children[_key];
+										if (key === 'lab') {
+											obj.isLab                   = ["lab"];
+											obj.type                    = ["lab"];
+											_self.priceCategories[_key] = obj;
+										} else {
+											_self.priceCategories[_key] = obj;
+										}
+									});
+								}
+							});
+
+							_self.priceCategoriesOrder.push('');
+						})
+				);
+				getters.push(
+					utils.api.get('/api/v2/list/price?active=on&@sort=header').then(function (data) {
+						if (!data) {
+							return;
+						}
+						console.log('>> >> >>');
+						_self.rawServices = data;
 					})
 				);
+				/* for Admins only */
+				getters.push(
+					utils.api.get('/api/v2/list/users?role=expert&active=on' +
+					              '' +
+					              '&@sort=fullname:a').then(function (data) {
+						_self.experts = utils.arr.indexBy(data);
+					})
+				);
+				getters.push(
+					utils.api.get('/api/v2/list/_yonmap', {f: 'users', '@return': 'u,i'})
+						.then(function (data) {
+							catalog.expert_pages = data;
+						})
+				);
 
-				if (window.user_role === 'main') {
+				if (!!window.user_role && window.user_role !== 'client') {
 					getters.push(
-						utils.api.get('/api/v2/list/users?role=main&active=on' +
-						              '&@return=id,fullname,first_name,last_name,middle_name&@sort=fullname:a')
+						utils.api.get('/api/v2/list/records?group=longterms&@group=client').then(function (data) {
+							if (data) {
+								Object.keys(data).forEach(function (client) {
+									_self.clients_has_longterm[client] = 1;
+								});
+							}
+						})
+					);
+
+					getters.push(
+						utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
+						              '&@return=id,first_name,middle_name,last_name,fullname,first_name,last_name,middle_name,role,phone,email,birthdate' +
+						              '&@group=role' +
+						              '&@sort=fullname:a')
 							.then(function (data) {
-								_self.admins = utils.arr.indexBy(data);
+								_self.clients = utils.arr.indexBy(data['client']);
+								_self.admins  = utils.arr.indexBy(data['main']);
+								_self.users   = utils.arr.indexBy(
+									data['main']
+										.concat(data['expert'])
+										.concat(data['client'])
+								);
 							})
 					);
 				}
-				getters.push(
-					utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
-					              '&@return=id,fullname,first_name,last_name,middle_name,role,phone,email,birthdate&@sort=fullname:a')
-						.then(function (data) {
-							_self.users = utils.arr.indexBy(data);
-						})
-				);
-			}
 
-			return Promise.allSettled(getters).then((results) => {
-				_self.rawServices.forEach(function (service, i) {
-					if (!service.price || parseInt(service.price) < 1) {
-						return;
-					}
-
-					if (!_self.priceCategories.hasOwnProperty(service.category)) {
-						_self.priceCategories[service.category] = {
-							'name': service.header,
-							'id': service.category
-						};
-					}
-					var service_parent                      = _self.priceCategories[service.category];
-					_self.services[service.category]        = service_parent;
-					_self.services[service.category].header = service_parent.name;
-
-					let _cats;
-					let _tags = [];
-
-					let _quote = '';
-					let title  = '';
-					if (!service.hasOwnProperty('type')) {
-						_cats = ["lab"];
-						title = service_parent.name + ': ' + service.header;
-					} else {
-						title = service.header;
-						_cats = service.type;
-					}
-
-					_cats.forEach(function (cat) {
-						_tags.push({
-							"id": cat,
-							"color": _self.serviceTags[cat].color,
-							"tag": Array.from(_self.serviceTags[cat].name)[0]
-						});
-					});
-					if (service.hasOwnProperty('quote')) {
-						_quote = service.quote;
-						if (service.quote == 'online') {
-							_self.spec_service.consultations.online[service.id] = service;
-						} else if (service.quote == 'clinic') {
-							_self.spec_service.consultations.clinic[service.id] = service;
+				return Promise.allSettled(getters).then((results) => {
+					_self.rawServices.forEach(function (service, i) {
+						if (!service.price || parseInt(service.price) < 1) {
+							return;
 						}
-					}
 
-					if (service.header.includes('анализов')) {
-						if (service.header.includes('Онлайн')) {
-							_self.spec_service.analyses_interpretation.online = service;
+						if (!_self.priceCategories.hasOwnProperty(service.category)) {
+							_self.priceCategories[service.category] = {
+								'name': service.header,
+								'id': service.category
+							};
+						}
+						var service_parent                      = _self.priceCategories[service.category];
+						_self.services[service.category]        = service_parent;
+						_self.services[service.category].header = service_parent.name;
+
+						let _cats;
+						let _tags = [];
+
+						let _quote = '';
+						let title  = '';
+						if (!service.hasOwnProperty('type')) {
+							_cats = ["lab"];
+							title = service_parent.name + ': ' + service.header;
 						} else {
-							_self.spec_service.analyses_interpretation.clinic = service;
+							title = service.header;
+							_cats = service.type;
 						}
-					}
-					let _item = {
-						value: title.trim(),
-						id: service.category + '-' + service.id,
-						data: {
+
+						_cats.forEach(function (cat) {
+							_tags.push({
+								"id": cat,
+								"color": _self.serviceTags[cat].color,
+								"tag": Array.from(_self.serviceTags[cat].name)[0]
+							});
+						});
+						if (service.hasOwnProperty('quote')) {
+							_quote = service.quote;
+							if (service.quote == 'online') {
+								_self.spec_service.consultations.online[service.id] = service;
+							} else if (service.quote == 'clinic') {
+								_self.spec_service.consultations.clinic[service.id] = service;
+							}
+						}
+
+						if (service.header.includes('анализов')) {
+							if (service.header.includes('Онлайн')) {
+								_self.spec_service.analyses_interpretation.online = service;
+							} else {
+								_self.spec_service.analyses_interpretation.clinic = service;
+							}
+						}
+						let _item = {
+							value: title.trim(),
+							id: service.category + '-' + service.id,
+							data: {
+								from: service?.from,
+								quote: _quote,
+								service_id: service.category,
+								service_title: _self.priceCategories[service.category].name.trim() || title.trim(),
+								tags: _tags,
+								price: service.price,
+								price_id: service.id
+							}
+						};
+						_self.servicesList.push(_item);
+
+						if (!_self.servicesListByCategories[service.category]) {
+							_self.servicesListByCategories[service.category] = [];
+						}
+						_self.servicesListByCategories[service.category].push(_item);
+
+						_self.servicePrices[_item.id] = {
 							from: service?.from,
 							quote: _quote,
+							id: _item.id,
 							service_id: service.category,
-							service_title: _self.priceCategories[service.category].name.trim() || title.trim(),
-							tags: _tags,
+							service_title: _self.priceCategories[service.category].name,
 							price: service.price,
-							price_id: service.id
-						}
-					};
-					_self.servicesList.push(_item);
+							header: service.header.trim(),
+							tags: _tags
+						};
+					});
 
-					if (!_self.servicesListByCategories[service.category]){
-						_self.servicesListByCategories[service.category] = [];
+					_self.priceCategoriesOrder.forEach(function (cid) {
+						_self.servicesListOrderByCategories = _self.servicesListOrderByCategories.concat(
+							_self.servicesListByCategories[cid] || []);
+					});
+
+					//_self.servicesList.sort(function (a, b) {
+					//	if (a.value < b.value) {
+					//		return -1;
+					//	}
+					//	if (a.value > b.value) {
+					//		return 1;
+					//	}
+					//	return 0;
+					//});
+					_self.servicesList = _self.servicesListOrderByCategories;
+
+					if (_self.expert_pages) {
+						_self.expert_pages.forEach(function (record) {
+							if (_self.experts[record.i]) {
+								_self.experts[record.i]['page_uri'] = record['u'];
+							}
+						});
 					}
-					_self.servicesListByCategories[service.category].push(_item);
-
-					_self.servicePrices[_item.id] = {
-						from: service?.from,
-						quote: _quote,
-						id: _item.id,
-						service_id: service.category,
-						service_title: _self.priceCategories[service.category].name,
-						price: service.price,
-						header: service.header.trim(),
-						tags: _tags
-					};
+					$(document).trigger('cabinet-db-ready');
 				});
+			}
 
-				_self.priceCategoriesOrder.forEach(function(cid){
-					_self.servicesListOrderByCategories = _self.servicesListOrderByCategories.concat(
-						_self.servicesListByCategories[cid] || []);
-				});
-
-				//_self.servicesList.sort(function (a, b) {
-				//	if (a.value < b.value) {
-				//		return -1;
-				//	}
-				//	if (a.value > b.value) {
-				//		return 1;
-				//	}
-				//	return 0;
-				//});
-				_self.servicesList = _self.servicesListOrderByCategories;
-				$(document).trigger('cabinet-db-ready');
-			});
 		}
 	};
 	window.Cabinet     = {
@@ -828,7 +832,7 @@ $(function () {
 
 			data.group      = 'quotes';
 			data.status     = 'new';
-			data.pay_status = 'unpay';
+			data.pay_status = record_data.pay_status || 'unpay';
 
 			data.priority = 0;
 			data.marked   = 0;
@@ -1057,7 +1061,7 @@ $(function () {
 			onSelect: function (suggestion) {
 				$selector.val('');
 				if (_parent_form.find(
-					'.admin-editor__patient:not(.price-list) [data-id=' + suggestion.id + ']').length) {
+					'.admin-editor__patient:not(.price-list)[data-id="' + suggestion.id + '"]').length) {
 					return;
 				}
 				var PRICE = new Intl.NumberFormat('ru-RU').format(suggestion.data.price);
@@ -1192,6 +1196,7 @@ $(function () {
 			dataType: 'json',
 			type: 'GET',
 			paramName: '',
+			appendTo: form.find('.record-search.search-list'),
 			noSuggestionNotice: '<p>Не найдено событий..</p>',
 			showNoSuggestionNotice: 1,
 			serviceUrl: function () {
@@ -1261,6 +1266,8 @@ $(function () {
 			type: 'GET',
 			paramName: 'fullname~',
 			ignoreSelected: true,
+			appendTo: form.find('.client-search.search-list'),
+
 			serviceUrl: '/api/v2/list/users?role=client&active=on&@sort=fullname&__token=' + wbapp._session.token,
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			showNoSuggestionNotice: 1,
@@ -1420,7 +1427,6 @@ $(function () {
 					var form = this.find('.popup.--analize-interpretation .popup__form');
 					console.log(form);
 					if ($(form).verify()) {
-
 						var data      = $(form).serializeJSON();
 						data.group    = 'quotes';
 						data.status   = 'new';
@@ -1437,8 +1443,8 @@ $(function () {
 							data.price      = parseInt(catalog.spec_service.analyses_interpretation.online.price);
 							data.pay_status = 'unpay';
 						} else {
-							data.price      = parseInt(catalog.spec_service.analyses_interpretation.clinic);
-							data.pay_status = 'unpay';
+							data.price      = 0;
+							data.pay_status = 'free';
 						}
 						data.price          = parseInt(data.price || 0);
 						data.services       = [];
@@ -1720,43 +1726,74 @@ $(function () {
 			changelog.push({
 				label: 'Время приёма',
 				field: 'event_time',
-				prev_val: prev_record_data.event_time_start + '-' + prev_record_data.event_time_end,
-				new_val: new_record_data.event_time_start + '-' + new_record_data.event_time_endevent_
+				prev_val: prev_record_data.event_time_start + ' - ' + prev_record_data.event_time_end,
+				new_val: new_record_data.event_time_start + ' - ' + new_record_data.event_time_end
 			});
 		}
 
 		if ((new_record_data?.services && prev_record_data?.services)
 		    &&
 		    (new_record_data?.services?.join('') != prev_record_data?.services?.join(''))) {
+			let prev_labels = [], new_labels = [];
+			prev_record_data.services.forEach(function (val) {
+				prev_labels.push(catalog.services[val].header);
+			});
+			new_record_data.services.forEach(function (val) {
+				new_labels.push(catalog.services[val].header);
+			});
 			changelog.push({
 				label: 'Услуга',
 				field: 'services',
 				prev_val: prev_record_data.services,
-				new_val: new_record_data.services
+				new_val: new_record_data.services,
+				prev_labels: prev_labels,
+				new_labels: new_labels
 			});
 		}
 		if (!new_record_data?.services && !!prev_record_data.services) {
+			let prev_labels = [], new_labels = [];
+			prev_record_data.services.forEach(function (val) {
+				prev_labels.push(catalog.services[val].header);
+			});
 			changelog.push({
 				label: 'Услуга',
 				field: 'services',
 				prev_val: prev_record_data.services,
-				new_val: []
+				new_val: [],
+				prev_labels: prev_labels,
+				new_labels: new_labels
 			});
 		}
 		if (!prev_record_data?.services && !!new_record_data.services) {
+			let prev_labels = [], new_labels = [];
+			new_record_data.services.forEach(function (val) {
+				new_labels.push(catalog.services[val].header);
+			});
+
 			changelog.push({
 				label: 'Услуга',
 				field: 'services',
 				prev_val: [],
-				new_val: new_record_data.services
+				new_val: new_record_data.services,
+				prev_labels: prev_labels,
+				new_labels: new_labels
 			});
 		}
 		if (new_record_data?.experts?.join('') != prev_record_data?.experts?.join('')) {
+			let prev_labels = [], new_labels = [];
+			prev_record_data.experts.forEach(function (val) {
+				prev_labels.push(catalog.experts[val].fullname);
+			});
+			new_record_data.experts.forEach(function (val) {
+				new_labels.push(catalog.experts[val].fullname);
+			});
 			changelog.push({
 				label: 'Специалисты',
 				field: 'experts',
 				prev_val: prev_record_data.experts,
-				new_val: new_record_data.experts
+				new_val: new_record_data.experts,
+				prev_labels: prev_labels,
+				new_labels: new_labels
 			});
 		}
 		if (changelog.length) {
@@ -1766,6 +1803,7 @@ $(function () {
 					record_group: prev_record_data.group,
 					experts: prev_record_data.experts,
 					client: prev_record_data.client,
+					client_label: catalog.users[prev_record_data.client].fullname,
 					changes: changelog
 				});
 		}

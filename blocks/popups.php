@@ -26,6 +26,9 @@
 		</template>
 	</div>
 
+	<div wb-if="in_array('{{_sess.user.role}}',['admin','expert','main','client'])">
+		<wb-module wb="module=yonger&mode=render&view=popups-cabinet"/>
+	</div>
 	<div wb-if="in_array('{{_sess.user.role}}',['admin','','main','client'])">
 		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
 		<div class="popup --fast">
@@ -188,10 +191,10 @@
 										       selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
 									},
 									nationalMode: false,
-									onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
-									                "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
-									                "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
-									                "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
+									//onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
+									//                "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
+									//                "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
+									//                "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
 									placeholderNumberType: "FIXED_LINE",
 									preferredCountries: ['ru'],
 									separateDialCode: false,

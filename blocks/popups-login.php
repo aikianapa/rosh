@@ -43,13 +43,13 @@
 							</svg>
 						</button>
 						<div class="popup__name text-bold">Вход</div>
-						<form class="popup__form">
+						<form class="popup__form code_panel" >
 							<h3 class="h3">Введите код</h3>
 							<div class="form-title__description">
 								Мы отправили код подтверждения на номер
 								<span class="current_phone"></span>
 								.<br>
-								Время жизни кода 60 секунд.<br>
+								Через 60 секунд можно будет отправить код повторно.<br>
 								Осталось <strong>
 									<span class="sms_code_lifetime"></span>
 								</strong>

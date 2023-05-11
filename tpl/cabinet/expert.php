@@ -46,7 +46,7 @@
 				<div class="user --flex">
 					<div class="user__panel" style="width: 60%; margin-right: 10px;">
 						<div class="user__name">
-							{{expert.name}}
+							{{catalog.users[user.id].fullname}}
 							<button class="user__edit all" on-click="toggleEdit">
 								<svg class="svgsprite _edit">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
@@ -135,7 +135,7 @@
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{@global.catalog.experts[this].fullname}}</p>
+										<p>{{catalog.users[this].fullname}}</p>
 										{{/this.experts}}
 									</div>
 								</div>
@@ -186,7 +186,7 @@
 													data-fancybox="event-{{event.id}}"
 													data-href="{{.src}}"
 													href="{{.src}}"
-													data-caption="Фото до приема:
+													data-caption="Фото до приема,
 															{{ @global.utils.formatDate(.date) }}">
 													<div class="healing__date">
 														{{ @global.utils.formatDate(.date) }}
@@ -213,7 +213,7 @@
 													data-fancybox="event-{{event.id}}"
 													href="{{.src}}"
 													data-href="{{.src}}"
-													data-caption="Фото после приема:
+													data-caption="Фото после приема,
 															{{ @global.utils.formatDate(.date) }}">
 													<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 													<div class="after-healing__photo"
@@ -297,14 +297,14 @@
 									<div class="account-events__name">Пациент:</div>
 									<div class="account-event">
 										<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
-											{{ @global.catalog.clients[this.client].fullname }}</a>
+											{{ catalog.users[this.client].fullname }}</a>
 									</div>
 								</div>
 								<div class="account-event-wrap">
 									<div class="account-events__name">Специалист:</div>
 									<div class="account-event">
 										{{#this.experts}}
-										<p>{{@global.catalog.experts[this].fullname}}</p>
+										<p>{{ catalog.users[this].fullname }}</p>
 										{{/this.experts}}
 									</div>
 								</div>
@@ -354,7 +354,7 @@
 													data-fancybox="event-{{event.id}}"
 													data-href="{{.src}}"
 													href="{{.src}}"
-													data-caption="Фото до приема:
+													data-caption="Фото до приема,
 															{{ @global.utils.formatDate(.date) }}">
 													<div class="healing__date">
 														{{ @global.utils.formatDate(.date) }}
@@ -506,7 +506,7 @@
 														data-fancybox="event-{{event.id}}"
 														data-href="{{.src}}"
 														href="{{.src}}"
-														data-caption="Фото до приема:
+														data-caption="Фото до приема,
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">
 															{{ @global.utils.formatDate(.date) }}
@@ -533,7 +533,7 @@
 														data-fancybox="event-{{event.id}}"
 														href="{{.src}}"
 														data-href="{{.src}}"
-														data-caption="Фото после приема:
+														data-caption="Фото после приема,
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 														<div class="after-healing__photo"
@@ -578,7 +578,7 @@
 					<div class="col-md-9">
 						<div class="input input--grey">
 							<input class="input__control" name="fullname" required
-								value="{{ expert.name }}" type="text" placeholder="ФИО">
+								value="{{catalog.users[.id].fullname}}" type="text" placeholder="ФИО">
 							<div class="input__placeholder input__placeholder--dark">ФИО</div>
 						</div>
 					</div>
@@ -611,7 +611,7 @@
 			</div>
 			{{/user}}
 		</form>
-		<form on-submit="submitExpertForm">
+		<form on-submit="submitExpertForm" class="hidden">
 			<div class="profile-edit__block">
 				<div class="lk-title">Лицензия</div>
 				<div class="profile-licenses row">
@@ -663,7 +663,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="profile-edit__block profile-education">
+			<div class="profile-edit__block profile-education hidden">
 				<div class="lk-title">Образование</div>
 				<div class="profile-education__wrap repeater-container" data-repeater="study">
 					{{#each user.adv.stages: idx}}
@@ -792,12 +792,24 @@
 
 	<script wb-app>
 		$(document).on('cabinet-db-ready', function () {
-			window.page         = new Ractive({
+			window.can_update = false;
+			$('body').on('focus', 'textarea[name="recommendation"]', function (e) {
+				console.log('update disabled');
+				window.can_update = false;
+			}).on('submit', 'form:has(textarea[name="recommendation"])', function (e) {
+				console.log('update enabled');
+				setTimeout(function () {window.can_update = true;}, 1500);
+			}).on('click', '.acount__table-accardeon.active .accardeon__click', function (e) {
+				console.log('update enabled');
+				setTimeout(function () {window.can_update = true;}, 1500);
+			});
+
+			window.page                    = new Ractive({
 				el: 'main.page .expert-page',
 				template: wbapp.tpl('#expert-page').html,
 				data: {
 					user: wbapp._session.user,
-					expert: wbapp._session.user.expert,
+					expert: wbapp._session.user,
 					catalog: catalog,
 					events: {
 						'upcoming': [],
@@ -830,6 +842,7 @@
 						console.log(ev, $(ev.node), this);
 						if (!!window.profile_inline_editor) {
 							//$('.profile-editor-inline').toggleClass('d-none');
+							window.can_update = true;
 							return;
 						}
 						window.profile_inline_editor = new Ractive({
@@ -837,7 +850,8 @@
 							template: wbapp.tpl('#editorProfile').html,
 							data: {
 								user: this.get('user'),
-								expert: this.get('expert')
+								expert: this.get('expert'),
+								catalog: catalog
 							},
 							on: {
 								complete() {
@@ -863,19 +877,12 @@
 											.then(function (res) {
 												console.log(res);
 												page.set('user', res);
+												catalog.reload_users();
+												setTimeout(function () {
+													page.set('catalog', catalog);
+												}, 1000);
+												toast_success('Профиль успешно обновлён!');
 											});
-										utils.api.post('/api/v2/update/experts/' + expert_id, {
-											'name': data.fullname,
-											'fullname': data.fullname,
-											'header': data.fullname,
-											'login': uid
-										}).then(function (res) {
-											console.log('expert', res);
-											page.set('expert', res);
-
-											window.catalog.reload('experts');
-											toast('Профиль успешно обновлён');
-										});
 										$('.user__edit.all').trigger('click');
 									}
 									return false;
@@ -891,6 +898,9 @@
 											function (res) {
 												page.set('user', res);
 												toast('Профиль успешно обновлён');
+												setTimeout(function () {
+													page.set('catalog', catalog);
+												}, 1000);
 												console.log('saved', res);
 											});
 										$('.user__edit.all').trigger('click');
@@ -909,6 +919,8 @@
 
 							utils.api.post('/api/v2/update/records/' + _id,
 								{'recommendation': _recommendation}).then(function (res) {
+								console.log('update enabled');
+								setTimeout(function () {window.can_update = true;}, 500);
 								if (_recommendation !== prev_recommendation) {
 									utils.api.post('/api/v2/create/record-changes/',
 										{
@@ -932,61 +944,66 @@
 				}
 			});
 			var current_day_events_checker = null;
-			window.loadRecords = function () {
+			window.loadRecords             = function () {
 				if (!!current_day_events_checker) {
 					clearTimeout(current_day_events_checker);
 				}
+				if (window.can_update) {
+					utils.api.get('/api/v2/list/records?group=events' +
+					              '&experts~=' + wbapp._session.user.id +
+					              '&@sort=event_date:d')
+						.then(function (records) {
+							page.set('catalog', window.catalog);
+							let events         = {
+								    'upcoming': [],
+								    'current': []
+							    },
+							    history_events = [];
+							if (!!records) {
+								let curr_timestamp = parseInt(getdate()[0]);
+								//!!! set records by id not by index !!!
+								records.forEach(function (rec, idx) {
+									if (rec.status === 'past') {
+										history_events.push(rec);
+										console.log('past:', rec);
+										return;
+									} else if (rec.status !== 'upcoming') {
+										return;
+									} else if (idx === 0) {
+										page.set('closest_event', rec);
+									}
 
-				utils.api.get('/api/v2/list/records?group=events' +
-				              '&experts~=' + wbapp._session.user.id +
-				              '&@sort=event_date:d')
-					.then(function (records) {
-						page.set('catalog', window.catalog);
-						let events  = {
-							    'upcoming': [],
-							    'current': []
-						    },
-						    history_events = [];
-						if (!!records) {
-							let curr_timestamp = parseInt(getdate()[0]);
-							//!!! set records by id not by index !!!
-							records.forEach(function (rec, idx) {
-								if (rec.status === 'past') {
-									history_events.push(rec);
-									console.log('past:', rec);
-									return;
-								} else if (rec.status !== 'upcoming') {
-									return;
-								} else if (idx === 0) {
-									page.set('closest_event', rec);
-								}
+									if (Cabinet.isCurrentEvent(rec)) {
+										events.current.push(rec);
+									} else {
+										events.upcoming.push(rec);
+									}
+								});
+							}
 
-								if (Cabinet.isCurrentEvent(rec)) {
-									events.current.push(rec);
-								} else {
-									events.upcoming.push(rec);
-								}
-							});
-						}
-
-						page.set('events', events);
-						page.set('history', history_events);
-						page.set('ready', true);
-						utils.restoreScroll();
-					})
-					.then(function () {
-						utils.restoreScroll();
-						if (sessionStorage['state-accardeon']) {
-							setTimeout(function () {
-								$('.acount__table-accardeon.accardeon[data-accardeon="' +
-								  sessionStorage['state-accardeon'] + '"]:not(.active) .accardeon__click').trigger('click');
-							});
-						}
-						current_day_events_checker = setTimeout(loadRecords, 20000);
-						console.log('Records loaded!');
-					})
+							page.set('events', events);
+							page.set('history', history_events);
+							page.set('ready', true);
+							utils.restoreScroll();
+						})
+						.then(function () {
+							utils.restoreScroll();
+							if (sessionStorage['state-accardeon']) {
+								setTimeout(function () {
+									$('.acount__table-accardeon.accardeon[data-accardeon="' +
+									  sessionStorage['state-accardeon'] + '"]:not(.active) .accardeon__click')
+										.trigger('click');
+								});
+							}
+							current_day_events_checker = setTimeout(loadRecords, 10000);
+							console.log('Records loaded!');
+						});
+				} else {
+					current_day_events_checker = setTimeout(loadRecords, 10000);
+				}
 			};
 
+			window.can_update = true;
 			loadRecords();
 			utils.saveScroll();
 		});

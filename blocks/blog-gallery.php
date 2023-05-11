@@ -1,6 +1,6 @@
 <view>
     <wb-var cnt='0' />
-    <div class="gallery gallery-blog"  wb-if="'count({{image}})'>'0'">
+    <div class="gallery gallery-blog mt-80 mb-80"  wb-if="'count({{image}})'>'0'">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-2"></div>

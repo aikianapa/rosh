@@ -354,7 +354,7 @@
 									<a class="before-healing photo"
 										data-fancybox="images-{{event.id}}"
 										data-href="{{.src}}"
-										data-caption="Фото до приема: {{ @global.utils.formatDate(.date) }}">
+										data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
 										<h2 class="h2 healing__date-title">
 											{{ @global.utils.formatDateAdv(.date) }}
 										</h2>
@@ -375,7 +375,7 @@
 												<a class="after-healing__item photo"
 													data-fancybox="images-{{event.id}}"
 													data-href="{{.src}}"
-													data-caption="Фото после приема {{ @global.utils.formatDate(.date) }}">
+													data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
 													<h2 class="h2 healing__date-title">
 														{{ @global.utils.formatDateAdv(.date) }}
 													</h2>

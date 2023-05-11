@@ -405,7 +405,7 @@
 						<div class="account__table-head status-cancel_noreason">
 							<div class="history-item">Дата</div>
 							<div class="history-item">Время</div>
-							<div class="history-item">Пациент</div>
+							<div class="history-item w-10">Специалисты</div>
 							<div class="history-item">Услуги</div>
 							<div class="history-item">Анализы</div>
 							<div class="accardeon__click"></div>
@@ -423,9 +423,10 @@
 										{{this.event_time_start}} - {{this.event_time_end}}
 									</div>
 									<div class="history-item">
-										<p>Пациент</p>
-										<a class="client-card link" href="/cabinet/client/{{this.client}}" target="_blank">
-											{{ @global.catalog.clients[this.client].fullname }}</a>
+										<p>Специалисты</p>
+										{{#each experts}}
+										{{@global.catalog.experts[this].fullname}}<br>
+										{{/each}}
 									</div>
 									<div class="history-item">
 										<p>Услуги</p>
@@ -465,11 +466,21 @@
 										<div class="account-edit__title">
 											<p>Рекомендация врача</p>
 										</div>
+										{{#each experts}}
+										{{#if this == user.id}}
 										<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
 											<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation" name="recommendation">{{this.recommendation}}</textarea>
 
 											<button class="btn btn--white" type="submit">Сохранить</button>
 										</form>
+										{{else}}
+										<div class="text">
+											{{#this.recommendation}}
+											{{{@global.nl2br(this.recommendation)}}}
+											{{/this.recommendation}}
+										</div>
+										{{/if}}
+										{{/each}}
 									</div>
 									{{#if this.hasPhoto}}
 									<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
@@ -484,7 +495,7 @@
 																data-fancybox="event-{{event.id}}"
 																data-href="{{.src}}"
 																href="{{.src}}"
-																data-caption="Фото до приема:
+																data-caption="Фото до приема,
 															{{ @global.utils.formatDate(.date) }}">
 																<div class="healing__date">
 																	{{ @global.utils.formatDate(.date) }}
@@ -511,7 +522,7 @@
 																data-fancybox="event-{{event.id}}"
 																href="{{.src}}"
 																data-href="{{.src}}"
-																data-caption="Фото после приема:
+																data-caption="Фото после приема,
 															{{ @global.utils.formatDate(.date) }}">
 																<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 																<div class="after-healing__photo"
@@ -746,7 +757,6 @@
 				utils.api.get(
 						'/api/v2/list/records?group=events&status=[upcoming,past]' +
 						'&client=' + client_id +
-						'&experts~=' + wbapp._session.user.id +
 						'&@sort=event_date:d')
 					.then(function (records) {
 						console.log(records);

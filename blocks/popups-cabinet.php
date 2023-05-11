@@ -142,11 +142,11 @@
 									<div class="select__placeholder">Выберите специалиста</div>
 									<div class="select__values"></div>
 								</div>
-								<div class="select__list">
+								<div class="select__list single">
 									{{#each @global.catalog.experts}}
 									<div class="select__item select__item--checkbox">
 										<label class="checkbox checkbox--record">
-											<input type="radio" name="experts[]" value="{{id}}">
+											<input type="checkbox" name="experts[]" value="{{id}}">
 											<span></span>
 											<div class="checbox__name">
 												<div class="select__name">{{fullname}}</div>
@@ -240,7 +240,6 @@
 								Оставить заявку
 							</button>
 						</form>
-
 					</div>
 					<div class="popup__panel --succed">
 						<button class="popup__close">
@@ -306,7 +305,7 @@
 		</div>
 	</div>
 
-	<div wb-if="'{{_sess.user.role}}'=='main'">
+	<div wb-if="in_array('{{_sess.user.role}}',['main','expert'])" >
 		<div class="popup --record-editor">
 			<template id="popupRecordEditor">
 				<div class="popup__overlay"></div>
@@ -326,6 +325,7 @@
 							<div class="search-form input">
 								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
 								<div class="input__placeholder">Выбрать пациента</div>
+								<div class="client-search search-list" style="position: relative;"></div>
 							</div>
 							<input type="hidden" name="client" value="">
 							{{/if}}
@@ -482,14 +482,14 @@
 															<div class="select__placeholder">Выберите специалиста</div>
 															<div class="select__values"></div>
 														</div>
-														<div class="select__list">
+														<div class="select__list single">
 															{{#each @global.catalog.experts}}
 															<div class="select__item select__item--checkbox">
 																<label class="checkbox checkbox--record">
 																	{{#if @global.utils.arr.search(.id, record.experts)}}
-																	<input type="radio" class="checked" name="experts[]" checked value="{{.id}}" required>
+																	<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
 																	{{else}}
-																	<input type="radio" name="experts[]" value="{{.id}}"> {{/if}}
+																	<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
 																	<span></span>
 																	<div class="checbox__name">
 																		<div class="select__name">{{fullname}}</div>
@@ -786,6 +786,7 @@
 							<div class="search-form input">
 								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
 								<div class="input__placeholder">Выбрать пациента</div>
+								<div class="client-search search-list" style="position: relative;"></div>
 							</div>
 							<input type="hidden" name="client" value="">
 							<input type="hidden" name="id" value="">
@@ -794,6 +795,7 @@
 								<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
 									autocomplete="off">
 								<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
+								<div class="record-search search-list" style="position: relative;"></div>
 							</div>
 							{{/if}}
 
@@ -805,13 +807,13 @@
 								<label class="text-radio" name="target" value="before" on-click="singlePhoto">
 									<input type="radio" name="target" value="before">
 									<span class="changed_label_before">
-										{{#if record.group == 'longterms'}} До начала лечения {{else}} До приема {{/if}}
+										{{#if record.group == 'longterms'}} До начала лечения {{else}} Фото до приема {{/if}}
 									</span>
 								</label>
 								<label class="text-radio switch-blocks" name="target" value="after" on-click="multiplePhoto">
 									<input type="radio" name="target" value="after">
 									<span class="changed_label_after">
-										{{#if record.group == 'longterms'}} После начала лечения {{else}} После приема {{/if}}
+										{{#if record.group == 'longterms'}} После начала лечения {{else}} Фото после приема {{/if}}
 									</span>
 								</label>
 							</div>
@@ -1411,10 +1413,10 @@
 										<div class="select__values"></div>
 									</div>
 									<div class="select__list">
-										{{#each @global.catalog.experts}}
+										{{#each catalog.experts}}
 										<div class="select__item select__item--checkbox">
 											<label class="checkbox checkbox--record">
-												<input type="radio" name="experts[]" value="{{this.id}}">
+												<input type="checkbox" name="experts[]" value="{{this.id}}">
 												<span></span>
 												<div class="checbox__name">
 													<div class="select__name">{{this.fullname}}</div>
@@ -1427,9 +1429,13 @@
 							</div>
 							<div class="select-form">
 								<div class="select">
-									<div class="select__main">Все администраторы</div>
+
+									<div class="select__main">
+										<div class="select__placeholder">Все администраторы</div>
+										<div class="select__values"></div>
+									</div>
 									<div class="select__list">
-										{{#each admins}}
+										{{#each @global.catalog.admins}}
 										<div class="select__item select__item--checkbox">
 											<label class="checkbox checkbox--record">
 												<input type="checkbox" name="admins[]" value="{{this.id}}">
@@ -1693,13 +1699,13 @@
 													<div class='select__placeholder'>Выберите специалиста</div>
 													<div class='select__values'></div>
 												</div>
-												<div class='select__list'>
+												<div class='select__list single'>
 													{{#each @global.catalog.experts}}
 													<div class='select__item select__item--checkbox'>
 														<label class='checkbox checkbox--record'>
 															{{#if @global.utils.arr.search(.id, record.experts)}}
-															<input type='radio' class='checked' name='experts[]' checked value='{{.id}}'> {{else}}
-															<input type='radio' name='experts[]' value='{{.id}}'> {{/if}}
+															<input type='checkbox' class='checked' name='experts[]' checked value='{{.id}}'> {{else}}
+															<input type='checkbox' name='experts[]' value='{{.id}}'> {{/if}}
 															<span></span>
 															<div class='checbox__name'>
 																<div class='select__name'>{{fullname}}</div>
