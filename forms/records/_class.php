@@ -20,9 +20,9 @@ class recordsClass extends cmsFormsClass
             ];
         }
         $list = $this->app->itemList('records', ['filter'=>$filter])['list'];
-        $services = $this->app->vars('_post.services') ?  (array) $this->app->vars('_post.services') : null;
-        $experts = $this->app->vars('_post.experts') ? (array) $this->app->vars('_post.experts') : null;
-        $admins = $this->app->vars('_post.admins') ? (array) $this->app->vars('_post.admins') : null;
+        $services = $this->app->vars('_post.services') ?  (array) $this->app->vars('_post.services') : [];
+        $experts = $this->app->vars('_post.experts') ? (array) $this->app->vars('_post.experts') : [];
+        $admins = $this->app->vars('_post.admins') ? (array) $this->app->vars('_post.admins') : [];
         $phone = $this->app->vars('_post.phone') ? text2tel($this->app->vars('_post.phone')) : null;
         $email = $this->app->vars('_post.email') ? trim($this->app->vars('_post.email')) : null;
 
@@ -32,16 +32,15 @@ class recordsClass extends cmsFormsClass
         $status = $this->app->itemRead('catalogs', 'quote_status')['tree']['data'];
         $specs =  $this->app->itemList('users',['filter'=>['role'=>'expert']])['list'];
 
-        $servs =  $this->app->itemList('services')['list'];
+        //$servs =  $this->app->itemList('services')['list'];
 
         $orders = [];
         $events = [];
+
         foreach($list as $item) {
+            $servs = [];
             $flag = true;
             $client = $clients[$item['client']];
-            $item['experts'] = (array)$item['experts'];
-            $item['services'] = (array)$item['services'];
-            $item['admins'] = (array)$item['admins'];
             if ($services) {
                 foreach($services as $srv) {
                     in_array($srv, (array)$item['services']) ? null : $flag = false;
@@ -69,12 +68,15 @@ class recordsClass extends cmsFormsClass
             }
 
             if ($flag === true) {
-                foreach($item['experts'] as &$expert) {
+                foreach(@(array)$item['experts'] as &$expert) {
                     $expert = $specs[$expert]['fullname'];
                 }
 
-                foreach ($item['services'] as &$serv) {
-                    $serv = $servs[$serv]['header'];
+                foreach (@(array)$item['service_prices'] as $serv) {
+                    $servs[] = $serv['name'];
+                }
+                if (count($servs)) {
+                    array_unshift($servs,"Назначенные услуги:");
                 }
                 $res = [
                         'Дата'      => date('d.m.Y H:i', strtotime($item['_created'])),
@@ -82,13 +84,14 @@ class recordsClass extends cmsFormsClass
                         'Ф.И.О.'    => $client['fullname'],
                         'Телефон'   => wbPhoneFormat($clients[$item['client']]['phone']),
                         'Эл.почта'  => $client['email'],
-                        'Специалист'=> implode(",\r\n", $item['experts']),
+                        'Специалист'=> implode(",\r\n", @(array)$item['experts']),
                         'Тип'       => $types[$item['type']]['name'],
-                        'Услуги'    => implode(",\r\n", $item['services']),
+                        'Услуги'    => @str_replace(["\r\n\r\n","\n\n"], ["\r\n","\n"],$item['client_comment']."\r\n".implode("\r\n", $servs)),
                         'Оплата'    => $pays[$item['pay_status']]['name'],
                         'Статус'    => $status[$item['status']]['name'],
                         'Комментарий' => $item['comment']
                 ];
+
 
                 if (date('Y', strtotime($res['Приём'])) < 2022) {
                     $res['Приём'] = '';
@@ -117,6 +120,7 @@ class recordsClass extends cmsFormsClass
             } 
         }
         $result = ['События'=> $events, 'Заявки'=>$orders];
+    
 
     // События
     $spreadsheet = new Spreadsheet();
@@ -131,14 +135,6 @@ class recordsClass extends cmsFormsClass
                 $sheet = $spreadsheet->getActiveSheet();
             }
             $sheet->setTitle($key);
-
-            $sheet->fromArray(array_keys($data[0]), null, 'A1');
-            $sheet->fromArray($data, null, 'A2');
-
-            $sheet->getStyle('E1:E999')->getAlignment()->setWrapText(true);
-            $sheet->getStyle('G1:G999')->getAlignment()->setWrapText(true);
-            $sheet->getStyle('A1:Z1')->getFont()->setBold(true);
-
             $sheet->getColumnDimension('A')->setWidth('17');
             $sheet->getColumnDimension('B')->setWidth('17');
             $sheet->getColumnDimension('C')->setWidth('30');
@@ -150,6 +146,37 @@ class recordsClass extends cmsFormsClass
             $sheet->getColumnDimension('I')->setWidth('15');
             $sheet->getColumnDimension('J')->setWidth('20');
             $sheet->getColumnDimension('K')->setWidth('30');
+            $sheet->getStyle('E1:E999')->getAlignment()->setWrapText(true);
+            $sheet->getStyle('G1:G999')->getAlignment()->setWrapText(true);
+            $sheet->getStyle('H1:H999')->getAlignment()->setWrapText(true);
+            $sheet->getStyle('A1:Z1')->getFont()->setBold(true);
+
+            $sheet->fromArray(array_keys($data[0]), null, 'A1');
+    //        $sheet->fromArray($data, null, 'A2');
+
+            foreach($data as $row => $item) {
+                $col = 0;
+                foreach($item as $val) {
+                    $sym = chr(65 + $col);
+                    $cell = $sym.($row+2);
+                    if ($sym == 'H') {
+                        $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
+                        $richText->createText($val);
+                        $sheet->getCell($cell)->setValue($val);
+                        $sheet->getStyle($cell)->getAlignment()->setWrapText(true);
+                    } else {
+                        $sheet->getCell($cell)->setValue($val);
+                    }
+                    
+                    $col++;
+                }
+            }
+
+/*
+
+            */
+
+
             $idx++;
         }
     }
