@@ -242,7 +242,7 @@
 		<div class="row">
 			<div class="col-md-7">
 				{{#record.quote_from_page}}
-				{{#unless record.quote_from_page.search(/(проблем|услуг|блог)/i) == -1 }}
+				{{#unless record.quote_from_page.search(/(проблем|услуг|блог|клинике)/i) == -1 }}
 				<div class="account-events__item wide mb-20">
 					<div class="account-event-wrap">
 						<div class="account-events__name" style="font-size: 20px">Страница обращения:</div>
