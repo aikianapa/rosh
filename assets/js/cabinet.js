@@ -375,7 +375,7 @@ $(function () {
 			return new Date(this.getDate(date)).toLocaleString();
 		},
 		formatTime(date) {
-			return new Date(date).toLocaleTimeString();
+			return new Date(this.getDate(date)).toLocaleTimeString();
 		},
 		formatPhone(_phone) {
 			var phone   = str_replace([' ', '-', '(', ')'], '', _phone);
