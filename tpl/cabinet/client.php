@@ -29,7 +29,7 @@
 							<h1 class="h1 mb-10">Личный кабинет</h1>
 						</div>
 						<button class="btn btn--black --openpopup" data-popup="--record"
-							onclick="popupCreateQuote()">
+							onclick="popupCreateClientQuote()">
 							Записаться на прием
 						</button>
 					</div>

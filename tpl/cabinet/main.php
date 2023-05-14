@@ -241,7 +241,8 @@
 	<form class="record-edit mt-2">
 		<div class="row">
 			<div class="col-md-7">
-				{{#if record.quote_from_page}}
+				{{#record.quote_from_page}}
+				{{#unless record.quote_from_page.search(/(проблем|услуг|блог)/i) == -1 }}
 				<div class="account-events__item wide mb-20">
 					<div class="account-event-wrap">
 						<div class="account-events__name" style="font-size: 20px">Страница обращения:</div>
@@ -250,7 +251,9 @@
 						</div>
 					</div>
 				</div>
-				{{/if}}
+				{{/unless}}
+				{{/record.quote_from_page}}
+
 				{{#if record.client_comment}}
 				<div class="account-events__item wide">
 					<div class="account-event-wrap">
@@ -267,7 +270,6 @@
 					<div class="account-event-wrap">
 						<div class="account-event" style="font-size: 16px">
 							Заявка на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b>
-
 						</div>
 					</div>
 				</div>
@@ -639,7 +641,8 @@
 								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(event_date)}}">
 
 								<span class="dt"><strong class="title">Приём: </strong>
-									{{@global.utils.formatDate(record.event_date)}}<br> {{record.event_time_start}}-{{record.event_time_end}}
+									{{@global.utils.formatDate(record.event_date)}}<br>
+									{{record.event_time_start}}-{{record.event_time_end}}
 								</span>
 								{{else}}
 								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(record._created)}}">
@@ -1320,6 +1323,17 @@
 										}
 
 										_record.price_text = utils.formatPrice(_record.price);
+										var saveRecord     = function (id, idx, data) {
+											utils.api.post('/api/v2/update/records/' + id, data)
+												.then(function (res) {
+													console.log('event data:', data);
+													toast('Успешно сохранено');
+													_tab.set('records.' + idx, res);
+													window.can_update = true;
+													window.load();
+												});
+										};
+
 										var statusEditor   = new Ractive({
 											el: _parent.find('.admin-editor__top-select'),
 											template: editStatus,
@@ -1360,17 +1374,7 @@
 												}
 											}
 										});
-										var saveRecord     = function (id, idx, data) {
-											utils.api.post('/api/v2/update/records/' + id, data)
-												.then(function (res) {
-													console.log('event data:', data);
-													toast('Успешно сохранено');
-													_tab.set('records.' + idx, res);
-													window.can_update = true;
-													window.load();
-												});
-										};
-										let recordEditor   = new Ractive({
+										var recordEditor   = new Ractive({
 											el: _parent.find('.admin-editor__events'),
 											template: wbapp.tpl('#editorRecord').html,
 											data: {

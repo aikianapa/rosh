@@ -206,6 +206,92 @@
 				</div>
 			</template>
 		</div>
+		<script wbapp>
+			window.popupCreateClientQuote = function (user_id) {
+				var popup = new Ractive({
+					el: '.popup.--record',
+					template: wbapp.tpl('#popupRecord').html,
+					data: {
+						user: wbapp._session.user,
+						'experts': catalog.experts,
+						'categories': catalog.categories,
+						'services': catalog.services,
+						'selector': null
+					},
+					on: {
+						teardown() {
+							$('.autocomplete-suggestions.search__drop').remove();
+						},
+						complete() {
+							this.set('catalog', catalog);
+							initServicesSearch($('.search-services'), catalog.servicesList);
+							initPlugins($(this.el));
+						},
+						selectCategory(ev) {
+							if ($(ev.node).is(':checked')) {
+								console.log('checked');
+							} else {
+								console.log('unchecked');
+							}
+							var _el = $(ev.node).parents('form').find('.search__input.search-services');
+
+							setTimeout(function () {
+								_el.trigger('focus').trigger('focus');
+								//_el.find('.search-services').trigger('focus');
+							}, 100);
+						},
+						submit(ev) {
+							let $form = $(ev.node);
+							let uid   = popup.get('user.id');
+
+							if ($form.verify() && uid > '') {
+								let form_data        = $form.serializeJSON();
+								let has_consultation = !!parseInt(form_data.for_consultation)
+								                       && (form_data.consultation_price > 0);
+
+								form_data.group  = 'quotes';
+								form_data.status = 'new';
+								if (has_consultation) {
+									form_data.pay_status = 'unpay';
+								} else {
+									form_data.pay_status       = 'free';
+									form_data.for_consultation = 0;
+									delete form_data.consultation;
+								}
+								form_data.client   = uid;
+								form_data.priority = 0;
+								form_data.marked   = false;
+
+								form_data.comment        = '';
+								form_data.recommendation = '';
+								form_data.description    = '';
+								form_data.client_comment = '';
+
+								form_data.price = parseInt(form_data.price || 0);
+
+								if (form_data.no_services == 1) {
+									form_data.services       = [];
+									form_data.service_prices = {};
+								}
+								if (form_data.no_experts == 1) {
+									form_data.experts        = [];
+									form_data.service_prices = {};
+								}
+								Cabinet.createQuote(form_data, function (res) {
+									$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+									$('.popup.--record .popup__panel.--succed').addClass('d-block');
+									if (typeof window.load == 'function') {
+										window.load();
+									}
+								});
+							}
+
+							return false;
+						}
+					}
+				});
+			};
+		</script>
 
 		<div class="popup --analize-interpretation">
 			<template id="popupAnalizeInterpretation">
@@ -254,6 +340,69 @@
 				</div>
 			</template>
 		</div>
+		<script wbapp>
+			window.popupAnalizeInterpretation = function (client_id, record_id, analyses_file_uri, onShow) {
+				let popup = new Ractive({
+					el: '.popup.--analize-interpretation',
+					template: wbapp.tpl('#popupAnalizeInterpretation').html,
+					data: {
+						catalog: catalog,
+						record: {}
+					},
+					on: {
+						init() {
+							/**/
+						},
+						complete() {
+							$(this.el).show();
+
+							if (!!onShow) {
+								onShow(this);
+							}
+						},
+						submit() {
+							var form = this.find('.popup.--analize-interpretation .popup__form');
+							console.log(form);
+							if ($(form).verify()) {
+								var data      = $(form).serializeJSON();
+								data.group    = 'quotes';
+								data.status   = 'new';
+								data.client   = wbapp._session.user.id;
+								data.priority = 0;
+								data.marked   = false;
+
+								data.comment          = '';
+								data.recommendation   = '';
+								data.description      = '';
+								data.client_comment   = 'Расшифровка анализов';
+								data.for_consultation = 1;
+								if (data.type === 'online') {
+									data.price      = parseInt(catalog.spec_service.analyses_interpretation.online.price);
+									data.pay_status = 'unpay';
+								} else {
+									data.price      = 0;
+									data.pay_status = 'free';
+								}
+								data.price          = parseInt(data.price || 0);
+								data.services       = [];
+								data.experts        = [];
+								data.service_prices = {};
+
+								Cabinet.createQuote(data, function (res) {
+									$('.popup.--analize-interpretation .popup__panel:not(.--succed)').addClass('d-none');
+									$('.popup.--analize-interpretation .popup__panel.--succed').addClass('d-block');
+
+									if (typeof window.load == 'function') {
+										window.load();
+									}
+								});
+							}
+							return false;
+						}
+					}
+				});
+			};
+		</script>
 
 		<div class="popup --pay">
 			<template id="popupPay">
@@ -303,9 +452,40 @@
 				</div>
 			</template>
 		</div>
+		<script wbapp>
+			window.popupPay = function (record_id, full_price, user_id, type, consultation_price) {
+				const pay_consultation = parseInt(consultation_price || '0');
+				var price              = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
+				if (pay_consultation) {
+
+				}
+				const pay_price = (type == 'online') ? price : Math.floor(price / 5);
+
+				var popup = new Ractive({
+					el: '.popup.--pay',
+					template: wbapp.tpl('#popupPay').html,
+					data: {
+						pay_price: pay_price,
+						is_online: (type == 'online'),
+						price: price,
+						client: user_id,
+						id: record_id
+					},
+					on: {
+						complete() {
+							$(this.el).show();
+						},
+						submit() {
+							$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+							$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+						}
+					}
+				});
+			};
+		</script>
 	</div>
 
-	<div wb-if="in_array('{{_sess.user.role}}',['main','expert'])" >
+	<div wb-if="in_array('{{_sess.user.role}}',['main','expert'])">
 		<div class="popup --record-editor">
 			<template id="popupRecordEditor">
 				<div class="popup__overlay"></div>
@@ -650,11 +830,8 @@
 							}
 							$(this.el).show();
 							$('body').addClass('noscroll');
-
-							console.log('show');
 						},
 						selectCategory(ev) {
-							console.log($(ev.node));
 							if ($(ev.node).is(':checked')) {
 								console.log('checked');
 							} else {

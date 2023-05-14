@@ -760,11 +760,11 @@ $(function () {
 			let event_from_timestamp = utils.timestamp(
 				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
 					parseInt(event.event_time_start.split(':')[1])));
-			let event_to_timestamp   = utils.timestamp(
-				event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
-					parseInt(event.event_time_end.split(':')[1])));
-
-			console.log(curr_timestamp, event_from_timestamp, event_from_timestamp < (curr_timestamp + 301));
+			//let event_to_timestamp   = utils.timestamp(
+			//	event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
+			//		parseInt(event.event_time_end.split(':')[1])));
+			//
+			//console.log(curr_timestamp, event_from_timestamp, event_from_timestamp < (curr_timestamp + 301));
 
 			return (event_from_timestamp < (curr_timestamp + 301)/* && event_to_timestamp >= curr_timestamp*/);
 		},
@@ -832,7 +832,7 @@ $(function () {
 
 			data.group      = 'quotes';
 			data.status     = 'new';
-			data.pay_status = record_data.pay_status || 'unpay';
+			data.pay_status = record_data.pay_status || 'free';
 
 			data.priority = 0;
 			data.marked   = 0;
@@ -1292,179 +1292,179 @@ $(function () {
 		});
 	};
 
-	window.popupCreateQuote           = function (user_id) {
-		var popup = new Ractive({
-			el: '.popup.--record',
-			template: wbapp.tpl('#popupRecord').html,
-			data: {
-				user: wbapp._session.user,
-				'experts': catalog.experts,
-				'categories': catalog.categories,
-				'services': catalog.services,
-				'selector': null
-			},
-			on: {
-				teardown() {
-					$('.search-services').autocomplete('dispose');
-					$('.autocomplete-suggestions.search__drop').remove();
-				},
-				complete() {
-					this.set('catalog', catalog);
-					$('.search-services').autocomplete('dispose');
-
-					initServicesSearch($('.search-services'), catalog.servicesList);
-					initPlugins($(this.el));
-				},
-				selectCategory(ev) {
-					console.log($(ev.node));
-					if ($(ev.node).is(':checked')){
-						console.log('checked');
-					} else {
-						console.log('unchecked');
-					}
-					var _el = $(ev.node).parents('form').find('.search__input.search-services');
-
-					setTimeout(function () {
-						_el.trigger('focus').trigger('keydown');
-						//_el.find('.search-services').trigger('focus');
-					}, 400);
-				},
-				submit(ev) {
-					let $form = $(ev.node);
-					let uid   = popup.get('user.id');
-
-					if ($form.verify() && uid > '') {
-						let data = $form.serializeJSON();
-
-						data.group      = 'quotes';
-						data.status     = 'new';
-						data.pay_status = 'unpay';
-						data.client     = uid;
-						data.priority   = 0;
-						data.marked     = false;
-
-						data.comment        = '';
-						data.recommendation = '';
-						data.description    = '';
-						data.client_comment = '';
-
-						data.price = parseInt(data.price || 0);
-
-						if (data.no_services == 1) {
-							data.services       = [];
-							data.service_prices = {};
-						}
-						if (data.no_experts == 1) {
-							data.experts        = [];
-							data.service_prices = {};
-						}
-						Cabinet.createQuote(data, function (res) {
-							$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
-							$('.popup.--record .popup__panel.--succed').addClass('d-block');
-							if (typeof window.load == 'function') {
-								window.load();
-							}
-						});
-					}
-
-					return false;
-				}
-			}
-		});
-	};
-	window.popupPay                   = function (record_id, full_price, user_id, type, consultation_price) {
-		const pay_consultation = parseInt(consultation_price || '0');
-		var price              = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
-		if (pay_consultation) {
-
-		}
-		const pay_price = (type == 'online') ? price : Math.floor(price / 5);
-
-		var popup = new Ractive({
-			el: '.popup.--pay',
-			template: wbapp.tpl('#popupPay').html,
-			data: {
-				pay_price: pay_price,
-				is_online: (type == 'online'),
-				price: price,
-				client: user_id,
-				id: record_id
-			},
-			on: {
-				complite() {
-				},
-				submit() {
-					$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
-					$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
-				}
-			}
-		});
-
-		$('.popup.--pay').show();
-	};
-	window.popupAnalizeInterpretation = function (client_id, record_id, analyses_file_uri, onShow) {
-		let popup = new Ractive({
-			el: '.popup.--analize-interpretation',
-			template: wbapp.tpl('#popupAnalizeInterpretation').html,
-			data: {
-				catalog: catalog,
-				record: {}
-			},
-			on: {
-				init() {
-					setTimeout(function () {
-						popup.set('catalog', catalog);
-					});
-				},
-				complete() {
-					$(this.el).show();
-
-					if (!!onShow) {
-						onShow(this);
-					}
-				},
-				submit() {
-					var form = this.find('.popup.--analize-interpretation .popup__form');
-					console.log(form);
-					if ($(form).verify()) {
-						var data      = $(form).serializeJSON();
-						data.group    = 'quotes';
-						data.status   = 'new';
-						data.client   = wbapp._session.user.id;
-						data.priority = 0;
-						data.marked   = false;
-
-						data.comment          = '';
-						data.recommendation   = '';
-						data.description      = '';
-						data.client_comment   = 'Расшифровка анализов';
-						data.for_consultation = 1;
-						if (data.type === 'online') {
-							data.price      = parseInt(catalog.spec_service.analyses_interpretation.online.price);
-							data.pay_status = 'unpay';
-						} else {
-							data.price      = 0;
-							data.pay_status = 'free';
-						}
-						data.price          = parseInt(data.price || 0);
-						data.services       = [];
-						data.experts        = [];
-						data.service_prices = {};
-
-						Cabinet.createQuote(data, function (res) {
-							$('.popup.--analize-interpretation .popup__panel:not(.--succed)').addClass('d-none');
-							$('.popup.--analize-interpretation .popup__panel.--succed').addClass('d-block');
-
-							if (typeof window.load == 'function') {
-								window.load();
-							}
-						});
-					}
-					return false;
-				}
-			}
-		});
-	};
+	//window.popupCreateQuote           = function (user_id) {
+	//	var popup = new Ractive({
+	//		el: '.popup.--record',
+	//		template: wbapp.tpl('#popupRecord').html,
+	//		data: {
+	//			user: wbapp._session.user,
+	//			'experts': catalog.experts,
+	//			'categories': catalog.categories,
+	//			'services': catalog.services,
+	//			'selector': null
+	//		},
+	//		on: {
+	//			teardown() {
+	//				$('.search-services').autocomplete('dispose');
+	//				$('.autocomplete-suggestions.search__drop').remove();
+	//			},
+	//			complete() {
+	//				this.set('catalog', catalog);
+	//				$('.search-services').autocomplete('dispose');
+	//
+	//				initServicesSearch($('.search-services'), catalog.servicesList);
+	//				initPlugins($(this.el));
+	//			},
+	//			selectCategory(ev) {
+	//				console.log($(ev.node));
+	//				if ($(ev.node).is(':checked')){
+	//					console.log('checked');
+	//				} else {
+	//					console.log('unchecked');
+	//				}
+	//				var _el = $(ev.node).parents('form').find('.search__input.search-services');
+	//
+	//				setTimeout(function () {
+	//					_el.trigger('focus').trigger('keydown');
+	//					//_el.find('.search-services').trigger('focus');
+	//				}, 400);
+	//			},
+	//			submit(ev) {
+	//				let $form = $(ev.node);
+	//				let uid   = popup.get('user.id');
+	//
+	//				if ($form.verify() && uid > '') {
+	//					let data = $form.serializeJSON();
+	//
+	//					data.group      = 'quotes';
+	//					data.status     = 'new';
+	//					data.pay_status = 'unpay';
+	//					data.client     = uid;
+	//					data.priority   = 0;
+	//					data.marked     = false;
+	//
+	//					data.comment        = '';
+	//					data.recommendation = '';
+	//					data.description    = '';
+	//					data.client_comment = '';
+	//
+	//					data.price = parseInt(data.price || 0);
+	//
+	//					if (data.no_services == 1) {
+	//						data.services       = [];
+	//						data.service_prices = {};
+	//					}
+	//					if (data.no_experts == 1) {
+	//						data.experts        = [];
+	//						data.service_prices = {};
+	//					}
+	//					Cabinet.createQuote(data, function (res) {
+	//						$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
+	//						$('.popup.--record .popup__panel.--succed').addClass('d-block');
+	//						if (typeof window.load == 'function') {
+	//							window.load();
+	//						}
+	//					});
+	//				}
+	//
+	//				return false;
+	//			}
+	//		}
+	//	});
+	//};
+	//window.popupPay                   = function (record_id, full_price, user_id, type, consultation_price) {
+	//	const pay_consultation = parseInt(consultation_price || '0');
+	//	var price              = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
+	//	if (pay_consultation) {
+	//
+	//	}
+	//	const pay_price = (type == 'online') ? price : Math.floor(price / 5);
+	//
+	//	var popup = new Ractive({
+	//		el: '.popup.--pay',
+	//		template: wbapp.tpl('#popupPay').html,
+	//		data: {
+	//			pay_price: pay_price,
+	//			is_online: (type == 'online'),
+	//			price: price,
+	//			client: user_id,
+	//			id: record_id
+	//		},
+	//		on: {
+	//			complite() {
+	//			},
+	//			submit() {
+	//				$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+	//				$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+	//			}
+	//		}
+	//	});
+	//
+	//	$('.popup.--pay').show();
+	//};
+	//window.popupAnalizeInterpretation = function (client_id, record_id, analyses_file_uri, onShow) {
+	//	let popup = new Ractive({
+	//		el: '.popup.--analize-interpretation',
+	//		template: wbapp.tpl('#popupAnalizeInterpretation').html,
+	//		data: {
+	//			catalog: catalog,
+	//			record: {}
+	//		},
+	//		on: {
+	//			init() {
+	//				setTimeout(function () {
+	//					popup.set('catalog', catalog);
+	//				});
+	//			},
+	//			complete() {
+	//				$(this.el).show();
+	//
+	//				if (!!onShow) {
+	//					onShow(this);
+	//				}
+	//			},
+	//			submit() {
+	//				var form = this.find('.popup.--analize-interpretation .popup__form');
+	//				console.log(form);
+	//				if ($(form).verify()) {
+	//					var data      = $(form).serializeJSON();
+	//					data.group    = 'quotes';
+	//					data.status   = 'new';
+	//					data.client   = wbapp._session.user.id;
+	//					data.priority = 0;
+	//					data.marked   = false;
+	//
+	//					data.comment          = '';
+	//					data.recommendation   = '';
+	//					data.description      = '';
+	//					data.client_comment   = 'Расшифровка анализов';
+	//					data.for_consultation = 1;
+	//					if (data.type === 'online') {
+	//						data.price      = parseInt(catalog.spec_service.analyses_interpretation.online.price);
+	//						data.pay_status = 'unpay';
+	//					} else {
+	//						data.price      = 0;
+	//						data.pay_status = 'free';
+	//					}
+	//					data.price          = parseInt(data.price || 0);
+	//					data.services       = [];
+	//					data.experts        = [];
+	//					data.service_prices = {};
+	//
+	//					Cabinet.createQuote(data, function (res) {
+	//						$('.popup.--analize-interpretation .popup__panel:not(.--succed)').addClass('d-none');
+	//						$('.popup.--analize-interpretation .popup__panel.--succed').addClass('d-block');
+	//
+	//						if (typeof window.load == 'function') {
+	//							window.load();
+	//						}
+	//					});
+	//				}
+	//				return false;
+	//			}
+	//		}
+	//	});
+	//};
 
 	window.popupsConfirmSmsCode = function () {
 		return new Ractive({
