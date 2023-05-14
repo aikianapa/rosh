@@ -1731,14 +1731,12 @@ $(function () {
 			});
 		}
 
-		if ((new_record_data?.services && prev_record_data?.services)
-		    &&
-		    (new_record_data?.services?.join('') != prev_record_data?.services?.join(''))) {
+		if (new_record_data?.services?.join('') != prev_record_data?.services?.join('')) {
 			let prev_labels = [], new_labels = [];
-			prev_record_data.services.forEach(function (val) {
+			prev_record_data?.services && prev_record_data.services.forEach(function (val) {
 				prev_labels.push(catalog.services[val].header);
 			});
-			new_record_data.services.forEach(function (val) {
+			new_record_data?.services && new_record_data.services.forEach(function (val) {
 				new_labels.push(catalog.services[val].header);
 			});
 			changelog.push({
@@ -1781,17 +1779,19 @@ $(function () {
 		}
 		if (new_record_data?.experts?.join('') != prev_record_data?.experts?.join('')) {
 			let prev_labels = [], new_labels = [];
-			prev_record_data.experts.forEach(function (val) {
+
+			prev_record_data?.experts && prev_record_data.experts.forEach(function (val) {
 				prev_labels.push(catalog.experts[val].fullname);
 			});
-			new_record_data.experts.forEach(function (val) {
+			new_record_data?.experts && new_record_data.experts.forEach(function (val) {
 				new_labels.push(catalog.experts[val].fullname);
 			});
+
 			changelog.push({
 				label: 'Специалисты',
 				field: 'experts',
-				prev_val: prev_record_data.experts,
-				new_val: new_record_data.experts,
+				prev_val: prev_record_data?.experts,
+				new_val: new_record_data?.experts,
 				prev_labels: prev_labels,
 				new_labels: new_labels
 			});
@@ -1799,10 +1799,10 @@ $(function () {
 		if (changelog.length) {
 			utils.api.post('/api/v2/create/record-changes/',
 				{
-					record: prev_record_data.id,
-					record_group: prev_record_data.group,
-					experts: prev_record_data.experts,
-					client: prev_record_data.client,
+					record: prev_record_data?.id,
+					record_group: prev_record_data?.group,
+					experts: prev_record_data?.experts,
+					client: prev_record_data?.client,
 					client_label: catalog.users[prev_record_data.client].fullname,
 					changes: changelog
 				});
