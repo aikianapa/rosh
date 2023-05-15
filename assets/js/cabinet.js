@@ -159,7 +159,7 @@ $(function () {
 			if (_tab) {
 				_el = $('.account__tab-items .account__tab-item.data-tab-link[data-tab="' + _tab + '"]');
 				if (_el.length) {
-					_el.trigger('click');
+					_el.trigger('click', true);
 				}
 			} else {
 				if (_el.length) {
