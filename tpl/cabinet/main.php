@@ -1509,25 +1509,27 @@
 															return false;
 														}
 														new_data.event_date = utils.dateForce(new_data.event_date);
-
-														changeLogSave(new_data, _record);
-
-														var is_saved = false;
-														if (new_data.type == 'online') {
-															if (new_data.status == 'upcoming') {
-																if (!!new_data.has_meetroom == 0) {
-																	is_saved = true;
-																	onlineRooms.create(function (meetroom) {
-																		new_data['has_meetroom'] = 1;
-																		new_data['meetroom']     = meetroom;
+														try{
+															changeLogSave(new_data, _record);
+														} finally {
+															var is_saved = false;
+															if (new_data.type == 'online') {
+																if (new_data.status == 'upcoming') {
+																	if (!!new_data.has_meetroom == 0) {
+																		is_saved = true;
+																		onlineRooms.create(function (meetroom) {
+																			new_data['has_meetroom'] = 1;
+																			new_data['meetroom']     = meetroom;
+																			saveRecord(_record.id, _row_idx, new_data);
+																		});
+																	} else {
+																		is_saved = true;
 																		saveRecord(_record.id, _row_idx, new_data);
-																	});
-																} else {
-																	is_saved = true;
-																	saveRecord(_record.id, _row_idx, new_data);
+																	}
 																}
 															}
 														}
+
 
 														if (!is_saved) {
 															if (new_data.has_meetroom == 1) {
