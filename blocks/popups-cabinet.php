@@ -1369,7 +1369,7 @@
 								}
 								post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
 								var _req_phone = str_replace('+', '', post.phone);
-								utils.api.get('/api/v2/list/users/?role=client&phone=' + _req_phone).then(
+								utils.api.get('/api/v2/list/users/?role=client&phone~=' + _req_phone).then(
 									function (data) {
 										if (!data || !data.length) {
 											utils.api.get('/api/v2/list/users/?email=' + post.email).then(

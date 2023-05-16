@@ -749,7 +749,7 @@
 							var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 							post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
 							var _req_phone = str_replace('+', '', post.phone);
-							window.api.get('/api/v2/list/users/?role=client&phone=' + _req_phone +
+							window.api.get('/api/v2/list/users/?role=client&phone~=' + _req_phone +
 								'&__token=' + _token).then(
 								function(data) {
 									if (!data.length) {
