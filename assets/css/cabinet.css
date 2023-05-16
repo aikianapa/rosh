@@ -447,10 +447,10 @@ a.client-card {
 	z-index: 9999;
 }
 ul li.service_price{
-	line-height   : 1.15;
-	margin-bottom : 8px;
-	letter-spacing: -0.2px;
-	text-align    : justify;
+	line-height    : 1.15;
+	margin-bottom  : 8px;
+	letter-spacing : -0.2px;
+	text-align     : left;
 }
 .lk-cabinet .ml-20 {
 	margin-left: 20px;
