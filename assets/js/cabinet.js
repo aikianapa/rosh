@@ -1780,11 +1780,14 @@ $(function () {
 		}
 		/* changes from expert list */
 		if (!!new_record_data?.experts?.length || !!prev_record_data?.experts?.length) {
+			console.log('new:',new_record_data?.experts?.length);
+			console.log('prev',prev_record_data?.experts?.length);
 			prev_labels = [];
 			new_labels  = [];
-			if (!new_record_data?.experts && !!prev_record_data.experts) {
-				prev_record_data.experts.forEach(function (val) {
-					prev_labels.push(catalog.experts[val].fullname);
+			if (!new_record_data?.experts && !!prev_record_data?.experts) {
+				prev_record_data.experts.forEach(function (expert_id) {
+					console.log(catalog.experts[expert_id]);
+					prev_labels.push(catalog.experts[expert_id].fullname);
 				});
 				changelog.push({
 					label: 'Специалисты',
@@ -1794,9 +1797,10 @@ $(function () {
 					prev_labels: prev_labels,
 					new_labels: new_labels
 				});
-			} else if (!prev_record_data?.services && !!new_record_data.services) {
-				new_record_data.services.forEach(function (service_id) {
-					new_labels.push(catalog.services[service_id].header);
+			} else if (!prev_record_data?.experts && !!new_record_data.experts) {
+				new_record_data.experts.forEach(function (expert_id) {
+					console.log(catalog.experts[expert_id]);
+					new_labels.push(catalog.experts[expert_id].fullname);
 				});
 
 				changelog.push({
@@ -1810,9 +1814,11 @@ $(function () {
 			} else if (new_record_data?.experts?.join('') != prev_record_data?.experts?.join('')) {
 
 				!!prev_record_data?.experts?.length && prev_record_data.experts.forEach(function (expert_id) {
+					console.log(catalog.experts[expert_id]);
 					prev_labels.push(catalog.experts[expert_id]?.fullname);
 				});
 				!!new_record_data?.experts?.length && new_record_data.experts.forEach(function (expert_id) {
+					console.log(catalog.experts[expert_id]);
 					new_labels.push(catalog.experts[expert_id]?.fullname);
 				});
 
