@@ -1512,7 +1512,7 @@
 														try{
 															changeLogSave(new_data, _record);
 														} catch (e) {
-															console.err(e);
+															console.error(e);
 														} finally {
 															var is_saved = false;
 															if (new_data.type == 'online') {
