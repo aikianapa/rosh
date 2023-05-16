@@ -1730,6 +1730,21 @@ $(function () {
 				new_val: new_record_data.event_time_start + ' - ' + new_record_data.event_time_end
 			});
 		}
+
+		if (!!new_record_data?.experts?.length) {
+			new_record_data.experts = new_record_data.experts.filter(Boolean);
+		}
+		if (!!new_record_data?.services?.length) {
+			new_record_data.services = new_record_data.services.filter(Boolean);
+		}
+
+		if (!!prev_record_data?.experts?.length) {
+			prev_record_data.experts = prev_record_data.experts.filter(Boolean);
+		}
+		if (!!prev_record_data?.services?.length) {
+			prev_record_data.services = prev_record_data.services.filter(Boolean);
+		}
+
 		var prev_labels = [], new_labels = [];
 		/* changes from services list */
 		/* !!! TODO: USE .SERVICE_PRICES INSTEAD !!! */

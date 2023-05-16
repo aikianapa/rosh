@@ -1471,7 +1471,7 @@
 																.focus();
 															return false;
 														}
-														if (new_data.status === 'upcoming' && !new_data.experts) {
+														if (new_data.status === 'upcoming' && !new_data?.experts) {
 															toast_error('Необходимо выбрать специалиста');
 															$($(ev.node).parents('form'))
 																.find('.select_experts')
