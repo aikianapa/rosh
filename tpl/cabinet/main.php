@@ -674,7 +674,7 @@
 							{{#if no_experts == '1'}}
 							<div></div>
 							{{else}}
-							<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].name}},{{/experts}}">
+							<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].fullname}},{{/experts}}">
 							{{#experts}}
 							<div>{{@global.catalog.experts[this].fullname}}</div>
 							{{/experts}}

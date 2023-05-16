@@ -454,10 +454,10 @@
 											<div class="expert__worked-pic">
 												<img class="lazyload"
 													data-src="{{{@global.catalog.experts[this].image[0].img}}}"
-													alt="{{@global.catalog.experts[this].name}}">
+													alt="{{@global.catalog.experts[this].fullname}}">
 											</div>
 											<div class="expert__worked-name">
-												{{@global.catalog.experts[this].name}}
+												{{@global.catalog.experts[this].fullname}}
 											</div>
 											<div class="expert__worked-work">
 												{{@global.catalog.experts[this].spec}}
