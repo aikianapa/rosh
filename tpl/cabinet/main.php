@@ -1511,6 +1511,8 @@
 														new_data.event_date = utils.dateForce(new_data.event_date);
 														try{
 															changeLogSave(new_data, _record);
+														} catch (e) {
+															console.err(e);
 														} finally {
 															var is_saved = false;
 															if (new_data.type == 'online') {
