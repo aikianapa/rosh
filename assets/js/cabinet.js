@@ -374,7 +374,10 @@ $(function () {
 		formatDateTime(date) {
 			return new Date(this.getDate(date)).toLocaleString();
 		},
-		formatTime(date) {
+		formatTime(date, remove_seconds) {
+			if (!!remove_seconds){
+				return new Date(this.getDate(date)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'});
+			}
 			return new Date(this.getDate(date)).toLocaleTimeString();
 		},
 		formatPhone(_phone) {

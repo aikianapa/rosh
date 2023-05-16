@@ -649,7 +649,7 @@
 
 								<span class="dt"><strong class="title">Заявка: </strong>
 									{{@global.utils.formatDate(record._created)}}<br>
-									{{@global.utils.formatTime(record._created)}}
+									{{@global.utils.formatTime(record._created, 1)}}
 								</span>
 								{{/if}}
 							</div>
