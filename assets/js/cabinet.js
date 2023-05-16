@@ -1780,8 +1780,8 @@ $(function () {
 		}
 		/* changes from expert list */
 		if (!!new_record_data?.experts?.length || !!prev_record_data?.experts?.length) {
-			console.log('new:',new_record_data?.experts?.length);
-			console.log('prev',prev_record_data?.experts?.length);
+			console.log('new:', new_record_data?.experts);
+			console.log('prev', prev_record_data?.experts);
 			prev_labels = [];
 			new_labels  = [];
 			if (!new_record_data?.experts && !!prev_record_data?.experts) {
