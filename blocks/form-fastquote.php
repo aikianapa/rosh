@@ -88,14 +88,23 @@
 			if(experts){
 				quote.experts=experts;
             }
+			/* save "страница обращения" only for
+			* - problems
+			* - services
+			* - blog
+			* ...
+			* */
 			quote.quote_from_page = '';
-			var page_crumbs       = [];
-			$('.crumbs__link').each(function (i) {
-				if (i === 0) return;
-				page_crumbs.push($(this).text());
-			});
-			if (page_crumbs.length) {
-				quote.quote_from_page = page_crumbs.join(' / ');
+			if (window.location.href.search(/(problem|experts|services|blog)/i) >= 0){
+				var page_crumbs = [];
+				$('.crumbs__link').each(function (i) {
+					if (i === 0) return;
+					page_crumbs.push($(this).text().trim());
+				});
+
+				if (page_crumbs.length) {
+					quote.quote_from_page = page_crumbs.join(' / ');
+				}
 			}
 			quote.client_comment = client_comment;
 			quote.event_date       = '';

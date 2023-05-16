@@ -241,7 +241,8 @@
 	<form class="record-edit mt-2">
 		<div class="row">
 			<div class="col-md-7">
-				{{#if record.quote_from_page}}
+				{{#record.quote_from_page}}
+				{{#unless record.quote_from_page.search(/(проблем|услуг|блог|клинике)/i) == -1 }}
 				<div class="account-events__item wide mb-20">
 					<div class="account-event-wrap">
 						<div class="account-events__name" style="font-size: 20px">Страница обращения:</div>
@@ -250,7 +251,9 @@
 						</div>
 					</div>
 				</div>
-				{{/if}}
+				{{/unless}}
+				{{/record.quote_from_page}}
+
 				{{#if record.client_comment}}
 				<div class="account-events__item wide">
 					<div class="account-event-wrap">
@@ -267,7 +270,6 @@
 					<div class="account-event-wrap">
 						<div class="account-event" style="font-size: 16px">
 							Заявка на услугу <b style="font-weight: bolder;">{{record.quote_page_comment}}</b>
-
 						</div>
 					</div>
 				</div>
@@ -639,7 +641,8 @@
 								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(event_date)}}">
 
 								<span class="dt"><strong class="title">Приём: </strong>
-									{{@global.utils.formatDate(record.event_date)}}<br> {{record.event_time_start}}-{{record.event_time_end}}
+									{{@global.utils.formatDate(record.event_date)}}<br>
+									{{record.event_time_start}}-{{record.event_time_end}}
 								</span>
 								{{else}}
 								<input type="hidden" class="orderby" value="{{@global.utils.timestamp(record._created)}}">
@@ -689,27 +692,27 @@
 							<p>Услуга</p>
 
 							{{#if group == 'events'}}
-								{{#record.consultation }}
-								<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
-								{{/record.consultation}}
+							{{#record.consultation }}
+							<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
+							{{/record.consultation}}
 
-								{{#record.services}}
-								<div>{{catalog.services[this].header}}</div>
-								{{/record.services}}
+							{{#record.services}}
+							<div>{{catalog.services[this].header}}</div>
+							{{/record.services}}
 							{{elseif group == 'past'}}
-								{{#record.consultation }}
-								<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
-								{{/record.consultation}}
+							{{#record.consultation }}
+							<div>{{ @global.catalog.spec_service.consultations[type][consultation].header }}</div>
+							{{/record.consultation}}
 
-								{{#record.services}}
-								<div>{{catalog.services[this].header}}</div>
-								{{/record.services}}
+							{{#record.services}}
+							<div>{{catalog.services[this].header}}</div>
+							{{/record.services}}
 							{{elseif record.quote_page_comment}}
-								<div>Заявка на услугу</div>
+							<div>Заявка на услугу</div>
 							{{elseif record.is_mainfilter_quote == '1'}}
-								<div>Заявка из фильтра</div>
+							<div>Заявка из фильтра</div>
 							{{else}}
-								<div>Заявка из формы</div>
+							<div>Заявка из формы</div>
 							{{/if}}
 						</div>
 						<div class="admin-events-item">
@@ -1028,25 +1031,24 @@
 		window.afterLoads    = {};
 		window.afterLoad     = null;
 		window.load          = function (only_tab) {
-			tab_urls.forEach(function (target_tab, i) {
+
+			var _sorts = [
+				'_lastdate:d',
+				'event_date:d',
+				'event_date:d',
+				'_created:d'
+			];
+			var _tab;
+
+			tab_urls.forEach(
+				function (target_tab, i) {
 					if (only_tab && only_tab != target_tab) {
 						return;
 					}
-					var _sorts = [
-						'_lastdate:d',
-						'event_date:d',
-						'event_date:d',
-						'_created:d'
-					];
+
 					utils.api.get('/api/v2/list/records?' + target_tab, {
 						'@sort': _sorts[i]
 					}).then(function (result) {
-						let data = {
-							group: target_tab,
-							records: result,
-							catalog: catalog
-						};
-						var _tab;
 						if (target_tab == 'group=longterms') {
 							_tab = new Ractive({
 								el: '.data-tab-item[data-type="' + target_tab + '"]',
@@ -1073,10 +1075,10 @@
 										}, 150);
 									},
 									toggleAccordeon(ev) {
-										var target_tab      = this;
-										const _parent       = $(ev.node).closest('.accardeon');
-										window.can_update   = false;
-										var _edit_active = (sessionStorage["state.open-editor"] == _parent.data('record'));
+										var target_tab    = this;
+										const _parent     = $(ev.node).closest('.accardeon');
+										window.can_update = false;
+										var _edit_active  = (sessionStorage["state.open-editor"] == _parent.data('record'));
 										if (_edit_active) {
 											//$(ev.node).removeClass('open');
 											_parent.find('.admin-editor__events').html('');
@@ -1180,7 +1182,6 @@
 									loaded() {
 										//console.log('>>> loaded', target_tab);
 										$(this.el).find('.loading-overlay').remove();
-
 										if (window.afterLoads.hasOwnProperty(target_tab)) {
 											setTimeout(function () {
 												var res = window.afterLoads[target_tab]();
@@ -1299,7 +1300,9 @@
 										var target_tab      = this;
 										const _parent       = $(ev.node).closest('.accardeon');
 										window.can_update   = false;
-										var _is_edit_active = (sessionStorage["state.open-editor"] == _parent.data('record'));
+										var _is_edit_active = (sessionStorage["state.open-editor"] ==
+										                       _parent.data('record'));
+										console.log(_parent.data('record'));
 										if (_is_edit_active) {
 											_parent.find('.admin-editor__events').html('');
 											_parent.find('.admin-editor__top-select').html('');
@@ -1320,7 +1323,18 @@
 										}
 
 										_record.price_text = utils.formatPrice(_record.price);
-										var statusEditor   = new Ractive({
+										var saveRecord     = function (id, idx, data) {
+											utils.api.post('/api/v2/update/records/' + id, data)
+												.then(function (res) {
+													console.log('event data:', data);
+													toast('Успешно сохранено');
+													_tab.set('records.' + idx, res);
+													window.can_update = true;
+													window.load();
+												});
+										};
+
+										var statusEditor = new Ractive({
 											el: _parent.find('.admin-editor__top-select'),
 											template: editStatus,
 											data: {
@@ -1360,17 +1374,7 @@
 												}
 											}
 										});
-										var saveRecord     = function (id, idx, data) {
-											utils.api.post('/api/v2/update/records/' + id, data)
-												.then(function (res) {
-													console.log('event data:', data);
-													toast('Успешно сохранено');
-													_tab.set('records.' + idx, res);
-													window.can_update = true;
-													window.load();
-												});
-										};
-										let recordEditor   = new Ractive({
+										var recordEditor = new Ractive({
 											el: _parent.find('.admin-editor__events'),
 											template: wbapp.tpl('#editorRecord').html,
 											data: {
@@ -1542,17 +1546,12 @@
 											}
 										});
 									}
-
 								}
 							});
 						}
+					}).then(function () {
 						_tab.fire('loaded');
 
-						tabs[target_tab] = {
-							ractive: _tab,
-							data: data
-						};
-					}).then(function () {
 						var _curr_tab = $('.account__tab.data-tab-item[data-type="' + target_tab + '"]');
 						var _has_sort = sessionStorage.getItem('state.order-by-' + _curr_tab.data('tab'));
 						if (!!_has_sort) {
@@ -1577,7 +1576,6 @@
 						}
 					});
 					/* sort by prior */
-
 					setTimeout(function () {
 						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
 							$(this).attr('href', $(this).data('href'));
@@ -1587,7 +1585,7 @@
 			);
 
 			setTimeout(function () {
-				if(only_tab === false){
+				if (only_tab === false) {
 					utils.restoreScroll();
 				}
 				$('.account__table').find('a.client-card[data-href]').each(function (i) {
@@ -1630,12 +1628,23 @@
 			return 0;
 		}
 
-		$('body').on('click', '.account__tab-items .account__tab-item.data-tab-link', function () {
-			var _type = $(this).data('type');
-			var _tab  = $(this).data('tab');
+		$('body').on('click', '.account__tab-items .account__tab-item.data-tab-link', function (e, prevent_editor_reset) {
+			var _type        = $(this).data('type');
+			var _tab         = $(this).data('tab');
+			var _curr_editor = sessionStorage["state.open-editor"];
 			console.log('open:', _type);
+
 			sessionStorage.setItem('state.tab-cabinet', _tab);
 			window.can_update = false;
+
+			if (!prevent_editor_reset && !!_curr_editor) {
+				sessionStorage.removeItem("state.open-editor");
+				$('.accardeon[data-record="' + _curr_editor + '"]').removeClass('active');
+				$('.accardeon[data-record="' + _curr_editor + '"] .admin-editor__events').html('');
+				$('.accardeon[data-record="' + _curr_editor + '"] .admin-editor__top-select').html('');
+				console.log('autoupdate activated...');
+			}
+
 			try {
 				window.load(_type);
 			} finally {
@@ -1668,7 +1677,7 @@
 					keyB = $(rowB).children('.admin-events-item').eq(column).text().toUpperCase();
 				}
 
-				if (isSelected){
+				if (isSelected) {
 					return OrderBy(keyA, keyB, isNum);
 				}
 

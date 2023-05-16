@@ -89,13 +89,14 @@
 		</div>
 		<script wbapp>
 			var createFastQuote = function (client_id, client_comment, experts, quote_page_comment) {
-				var quote        = {};
-				quote.group      = 'quotes';
-				quote.status     = 'new';
-				quote.pay_status = 'free';
-				quote.client     = client_id;
-				quote.priority   = 0;
-				quote.marked     = false;
+				var quote                 = {};
+				var curr_page_breadcrumbs = [];
+				quote.group               = 'quotes';
+				quote.status              = 'new';
+				quote.pay_status          = 'free';
+				quote.client              = client_id;
+				quote.priority            = 0;
+				quote.marked              = false;
 
 				quote.comment        = '';
 				quote.recommendation = '';
@@ -107,14 +108,14 @@
 				if (quote_page_comment) {
 					quote.quote_page_comment = quote_page_comment;
 				}
+
 				quote.quote_from_page = '';
-				var page_crumbs = [];
 				$('.crumbs__link').each(function (i) {
 					if (i === 0) return;
-					page_crumbs.push($(this).text());
+					curr_page_breadcrumbs.push($(this).text());
 				});
-				if (page_crumbs.length){
-					quote.quote_from_page = page_crumbs.join(' / ');
+				if (curr_page_breadcrumbs.length) {
+					quote.quote_from_page = curr_page_breadcrumbs.join(' / ');
 				}
 				quote.client_comment = client_comment;
 
@@ -143,7 +144,7 @@
 						}
 					});
 			};
-			var popFast22       = new Ractive({
+			new Ractive({
 				el: '.popup.--fast',
 				template: document.querySelector('.popup.--fast > template').innerHTML,
 				data: {
@@ -219,44 +220,44 @@
 							//	}
 							//});
 
-							var post     = $(form).serializeJSON();
-							var expert   = $('input.expert');
-							post.experts = [];
+							var form_data     = $(form).serializeJSON();
+							var expert        = $('input.expert');
+							form_data.experts = [];
 							if (expert.length) {
-								post.experts.push(expert.val());
+								form_data.experts.push(expert.val());
 							}
-							if (!post.client) {
-								console.log('try to createProfile: ', post);
+							if (!form_data.client) {
+								console.log('try to createProfile: ', form_data);
 
-								let names = post.fullname.split(' ', 3);
+								let names = form_data.fullname.split(' ', 3);
 								let keys  = ['last_name', 'first_name', 'middle_name'];
 								for (var i = 0; i < names.length; i++) {
-									post[keys[i]] = names[i];
+									form_data[keys[i]] = names[i];
 								}
-								var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-								post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
-								window.api.get('/api/v2/list/users/?role=client&phone=' + post.phone +
-								          '&__token=' + _token).then(
+								var _token      = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+								form_data.phone = str_replace([' ', '-', '(', ')'], '', form_data.phone);
+								window.api.get('/api/v2/list/users/?role=client&phone=' + form_data.phone +
+								               '&__token=' + _token).then(
 									function (data) {
 										if (!data.length) {
-											window.api.get('/api/v2/list/users/?email=' + post.email +
-											          '&__token=' + _token).then(
+											window.api.get('/api/v2/list/users/?email=' + form_data.email +
+											               '&__token=' + _token).then(
 												function (data) {
 													if (!data.length) {
-														post.role      = "client";
-														post.role      = "client";
-														post.confirmed = 0;
-														post.active    = "on";
-														post.__token   = _token;
-														window.api.post('/api/v2/create/users/', post).then(
+														form_data.role      = "client";
+														form_data.role      = "client";
+														form_data.confirmed = 0;
+														form_data.active    = "on";
+														form_data.__token   = _token;
+														window.api.post('/api/v2/create/users/', form_data).then(
 															function (data) {
 																if (data.error) {
 																	wbapp.trigger('wb-save-error', {
 																		'data': data
 																	});
 																} else {
-																	createFastQuote(data.id, post.client_comment,
-																		post.experts, self.get('quote_page_comment'));
+																	createFastQuote(data.id, form_data.client_comment,
+																		form_data.experts, self.get('quote_page_comment'));
 																}
 															});
 
@@ -271,7 +272,7 @@
 										}
 									});
 							} else {
-								createFastQuote(post.client, post.client_comment, post.experts,
+								createFastQuote(form_data.client, form_data.client_comment, form_data.experts,
 									self.get('quote_page_comment'));
 							}
 						}

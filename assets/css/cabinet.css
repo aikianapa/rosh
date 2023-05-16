@@ -643,6 +643,9 @@ img.preview.cloned{
 	.acount__table-list {
 		padding-top : 10px;
 	}
+	.acount__table-list.admin-editor {
+		padding-top : 0;
+	}
 	.record-edit .account-events__item.wide {
 		width         : auto;
 		margin-right  : 20px;
