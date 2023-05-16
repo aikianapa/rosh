@@ -83,9 +83,9 @@
                     <wb-var width="100" wb-if="'{{_ndx}}'>'5'" />
                     <wb-var width="66" wb-if="'{{_ndx}}'=='7'" />
                     <wb-var width="33" wb-if="'{{_ndx}}'=='8'" />
-                    <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})" data-date="{{date}}">
+                    <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url('{{cover.0.img}}')" data-date="{{date}}">
                         <div class="blog-panel__tags">
-                            <div class="blog-panel__tag mr-20" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
+                            <div class="mr-20 blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
                             <div class="tag-list d-none" data-tags="{{tags}}"></div>
                             <div wb-if="'{{category}}'=='action'">
                                 <div class="blog-panel__tag" wb-if="'{{done}}'=='on'">Завершенная</div>
