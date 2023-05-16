@@ -86,7 +86,7 @@
 					<wb-foreach wb="table=problems&sort=header&size=999999&tpl=false" wb-filter="active=on">
 						<wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg"/>
 						<a class="all-services__item" href="/{{_table}}/{{wbFurlGenerate({{header}})}}" data-srvtype="{{srvtype}}" data-category='{{implode(" ",category)}}'>
-							<div class="all-services__pic" style="background-image: url('/thumbc/610x314/src{{_var.image}})'"></div>
+							<div class="all-services__pic" style="background-image: url('/thumbc/610x314/src{{_var.image}}')"></div>
 							<div class="all-services__name">{{header}}</div>
 						</a>
 					</wb-foreach>
