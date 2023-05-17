@@ -1281,8 +1281,8 @@
 																data.phone         = utils.formatPhone(data.phone);
 																_tab.set('catalog.clients.' + profile_id, data);
 																catalog.clients[profile_id] = data;
-																window.can_update           = true;
 																$(form).html('');
+
 																toast('Профиль успешно обновлён');
 															});
 													}
@@ -1333,11 +1333,12 @@
 										var saveRecord     = function (id, idx, data) {
 											utils.api.post('/api/v2/update/records/' + id, data)
 												.then(function (res) {
-													console.log('event data:', data);
 													toast('Успешно сохранено');
 													_tab.set('records.' + idx, res);
+													sessionStorage.removeItem("state.open-editor");
 													window.can_update = true;
 													window.load();
+													console.log('autoupdate activated...');
 												});
 										};
 
@@ -1430,9 +1431,6 @@
 														});
 												},
 												setEventTime(ev) {
-													console.log(ev, $(ev.node).hasClass('event-time-start'),
-														$(ev.node).val());
-													console.log(this.get('start_time'));
 													if ($(ev.node).hasClass('event-time-start')) {
 														this.set('start_time', $(ev.node).val());
 													} else {
