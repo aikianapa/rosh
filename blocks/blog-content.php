@@ -6,9 +6,9 @@
 			</div>
 			<div class="col-md-8">
 				<div class="content-wrap">
-					<h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
+					<h3 class="mb-40 h3" wb-if="'{{title}}'>''">{{title}}</h3>
 					<div class="blog-inner__text">
-						<div class="text mb-0" wb-if="'{{text}}'>''">
+						<div class="mb-0 text" wb-if="'{{text}}'>''">
 							{{text}}
 						</div>
 						<wb-jq wb="$dom->find('p')->addClass('mb-10');
@@ -42,7 +42,7 @@
                     }
                 }">
 
-                    <a class="blog-panel blog-panel--33" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})">
+                    <a class="blog-panel blog-panel--33" href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url('{{cover.0.img}}')">
                         <div class="blog-panel__tags" data-cat="{{category}}">
                             <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
                             <div  wb-if="'{{category}}'=='action'">

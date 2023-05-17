@@ -26,7 +26,7 @@
 					</div>
 					<div class="title-flex --flex --jcsb">
 						<div class="title">
-							<h1 class="h1 mb-10">Личный кабинет</h1>
+							<h1 class="mb-10 h1">Личный кабинет</h1>
 						</div>
 						<button class="btn btn--black --openpopup" data-popup="--record"
 							onclick="popupCreateClientQuote()">
@@ -55,7 +55,7 @@
 						<svg class="svgsprite _edit">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 						</svg>
-						<span class="crumbs__link mr-10 font-weight-normal">редактировать профиль</span>
+						<span class="mr-10 crumbs__link font-weight-normal">редактировать профиль</span>
 					</button>
 				</div>
 				<div class="user__group">
@@ -101,7 +101,7 @@
 		<!-- multiple: .account-events__block -->
 		{{#each events.current}}
 		<div class="account-events__block">
-			<div class="account-events__block-wrap mb-20">
+			<div class="mb-20 account-events__block-wrap">
 				<div class="account-events__item">
 					<div class="account-event-wrap">
 						<div class="account-events__name">Услуги:</div>
@@ -136,7 +136,7 @@
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Время приема:</div>
 						<div class="account-event">
-							<div class="account-event text-right">
+							<div class="text-right account-event">
 								<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
 									<small>по московскому времени</small>
 								</p>
@@ -189,7 +189,7 @@
 	<div class="account-events upcoming">
 		{{#each events.upcoming}}
 		<div class="account-events__block" data-sort="{{this.event_timestamp}}">
-			<div class="account-events__block-wrap mb-20">
+			<div class="mb-20 account-events__block-wrap">
 				{{#if this.services}}
 				<div class="account-events__item">
 					<div class="account-event-wrap">
@@ -294,7 +294,7 @@
 					</div>
 					<div class="account-event-wrap --jcsb">
 						<div class="account-events__name">Время приема:</div>
-						<div class="account-event text-right">
+						<div class="text-right account-event">
 							<p>{{this.event_time_start}}-{{this.event_time_end}}<br><small>по московскому времени</small></p>
 						</div>
 					</div>
@@ -400,7 +400,7 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
-							<div class="analysis mb-40 pt-20" style="max-width: 100%">
+							<div class="pt-20 mb-40 analysis" style="max-width: 100%">
 								<div class="row">
 									<div class="col-md-4">
 										{{#if this.analyses}}
@@ -430,7 +430,7 @@
 										</a>
 										{{/if}}
 										<div class="analysis__description pt-30">
-											<p class="text-bold mb-20">Рекомендация врача</p>
+											<p class="mb-20 text-bold">Рекомендация врача</p>
 											<div class="text">
 												{{#this.recommendation}}
 												{{{@global.nl2br(this.recommendation)}}}
@@ -441,7 +441,7 @@
 								</div>
 							</div>
 
-							<div class="experts__worked mt-20 pt-20">
+							<div class="pt-20 mt-20 experts__worked">
 								<div class="experts__worked-title">С вами работали</div>
 								<div class="row">
 									{{#each .experts}}
@@ -469,7 +469,7 @@
 							</div>
 
 							{{#if this.hasPhoto}}
-							<div class="acount__photos bg-inherit mt-20">
+							<div class="mt-20 acount__photos bg-inherit">
 								<div class="row">
 									<div class="col-md-5">
 										<p>Фото до приема</p>
@@ -487,7 +487,7 @@
 															{{ @global.utils.formatDate(.date) }}
 														</div>
 														<div class="after-healing__photo"
-															style="background-image: url({{.src}})">
+															style="background-image: url('{{.src}}')">
 														</div>
 													</a>
 
@@ -502,7 +502,7 @@
 										<p>Фото после приема</p>
 										{{#each photos.after}}
 										<div class="row">
-											<div class="col-md-6 mt-1">
+											<div class="mt-1 col-md-6">
 												<div class="acount__photo">
 													<a class="after-healing__item photo"
 														data-fancybox="event-{{event.id}}"
@@ -512,7 +512,7 @@
 															{{ @global.utils.formatDate(.date) }}">
 														<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 														<div class="after-healing__photo"
-															style="background-image: url({{.src}})">
+															style="background-image: url('{{.src}}')">
 														</div>
 													</a>
 
@@ -566,7 +566,7 @@
 							{{#if this.hasPhoto}}
 							<div class="row">
 								<div class="col-md-5">
-									<div class="text-bold text-big mb-20">
+									<div class="mb-20 text-bold text-big">
 										Фото до начала лечения
 									</div>
 									{{#each this.photos.before}} <!--single photo!-->
@@ -583,11 +583,11 @@
 									{{/each}}
 								</div>
 								<div class="col-md-7">
-									<div class="text-bold text-big mb-20">
+									<div class="mb-20 text-bold text-big">
 										Фото после начала лечения
 									</div>
 									<div class="after-healing">
-										<h2 class="h2 healing__date-title d-none month-header d-none"></h2>
+										<h2 class="h2 healing__date-title d-none month-header"></h2>
 										<div class="row">
 											{{#each this.photos.after}}
 											<div class="col-md-6">
@@ -599,7 +599,7 @@
 														{{ @global.utils.formatDateAdv(.date) }}
 													</h2>
 													<div class="after-healing__photo"
-														style="background-image: url({{.src}});">
+														style="background-image: url('{{.src}}');">
 													</div>
 												</a>
 											</div>
@@ -758,7 +758,7 @@
 		</div>
 		{{/with}}
 	</form>
-	<form class="popup__form mt-20" on-submit="changePasswordInline">
+	<form class="mt-20 popup__form" on-submit="changePasswordInline">
 		{{#user}}
 		<p class="text-bold mb-30">Смена пароля</p>
 		<input type="hidden" name="id" value="{{user.id}}">

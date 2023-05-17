@@ -24,7 +24,7 @@
 
 	                <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}"
 		                data-matrix="blog-panel--{{_var.matrix[{{_idx}}]}}"
-		                href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url({{cover.0.img}})" data-date="{{date}}">
+		                href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url('{{cover.0.img}}')" data-date="{{date}}">
 		                <div class="blog-panel__tags" data-cat="{{category}}">
 			                <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
 		                </div>

@@ -1,12 +1,12 @@
 <view>
     <wb-var sliderid="sl{{wbNewId}}" />
-    <div class="row container">
+    <div class="container row">
         <div class="col-md-4">
             <h5 class="h5 content-title" wb-if="'{{aside}}'>''">{{aside}}</h5>
         </div>
         <div class="col-md-8">
             <div class="content-wrap">
-                <h3 class="h3 mb-40" wb-if="'{{title}}'>''">{{title}}</h3>
+                <h3 class="mb-40 h3" wb-if="'{{title}}'>''">{{title}}</h3>
             </div>
             <wb-var cnt='0' />
             <div class="slider-content" wb-if="'count({{images}})'>'0'">
@@ -14,7 +14,7 @@
                     <div class="slider-content__wrap" id="{{_var.sliderid}}">
                         <div class="swiper-wrapper">
                             <wb-foreach wb="from=images&tpl=false">
-                            <div class="swiper-slide slider-content__slide" style="background-image: url({{img}}); background-size: cover;" wb-if="'{{img}}'>''">
+                            <div class="swiper-slide slider-content__slide" style="background-image: url('{{img}}'); background-size: cover;" wb-if="'{{img}}'>''">
                                 <wb-var cnt='{{_var.cnt + 1}}' />
                             </div>
                             </wb-foreach>
