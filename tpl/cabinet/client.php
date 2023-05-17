@@ -416,7 +416,7 @@
 											<p class="text-bold mb-30">Выполнялись процедуры</p>
 											<ul class="text-grey">
 												{{#each this.service_prices as service_price: i, path}}
-												<li class="service_price">{{service_price.name}}</li>
+												<li class="service_price text-left">{{service_price.name}}</li>
 												{{/each}}
 											</ul>
 										</div>
