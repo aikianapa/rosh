@@ -444,7 +444,7 @@
 				<div class="admin-editor__patient">
 					<div class="mb-10 text-bold">Выбраны услуги</div>
 
-					<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
+					<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation_price }} flex {{else}} none {{/if}};">
 						<div class="search__drop-name consultation-header">
 							<div class="search__drop-delete fake" onclick="unselectConsultation(this);">
 								<svg class="svgsprite _delete">
@@ -1491,7 +1491,8 @@
 														if (!new_data.hasOwnProperty('has_meetroom')) {
 															new_data.has_meetroom = 0;
 														}
-														if (!new_data.hasOwnProperty('consultation')) {
+														if (!new_data.hasOwnProperty('consultation') ||
+														    new_data.consultation_price === 0) {
 															new_data.consultation       = null;
 															new_data.for_consultation   = 0;
 															new_data.consultation_price = 0;
