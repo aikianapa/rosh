@@ -192,8 +192,7 @@
 												}
 											});
 									} else {
-										toast('Этот номер уже используется!', 'Ошибка!', 'error');
-										form.find('[name="phone"]').focus();
+										createFastQuote2(data[0].id, post.client_comment, post.experts);
 									}
 								});
 						} else {
