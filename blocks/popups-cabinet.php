@@ -236,7 +236,7 @@
 							var _el = $(ev.node).parents('form').find('.search__input.search-services');
 
 							setTimeout(function () {
-								_el.trigger('keyup');
+								_el.trigger('focus');
 								//_el.find('.search-services').trigger('focus');
 							}, 200);
 						},
@@ -841,7 +841,7 @@
 							var _el = $(ev.node).parents('form').find('.search__input.search-services');
 
 							setTimeout(function () {
-								_el.trigger('keyup');
+								_el.trigger('focus');
 								//_el.find('.search-services').trigger('focus');
 							}, 200);
 						},
