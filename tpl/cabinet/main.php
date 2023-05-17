@@ -649,7 +649,7 @@
 
 								<span class="dt"><strong class="title">Заявка: </strong>
 									{{@global.utils.formatDate(record._created)}}<br>
-									{{@global.utils.formatTime(record._created)}}
+									{{@global.utils.formatTime(record._created, 1)}}
 								</span>
 								{{/if}}
 							</div>
@@ -674,7 +674,7 @@
 							{{#if no_experts == '1'}}
 							<div></div>
 							{{else}}
-							<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].name}},{{/experts}}">
+							<input type="hidden" class="orderby" value="{{#experts}}{{@global.catalog.experts[this].fullname}},{{/experts}}">
 							{{#experts}}
 							<div>{{@global.catalog.experts[this].fullname}}</div>
 							{{/experts}}
@@ -1471,7 +1471,7 @@
 																.focus();
 															return false;
 														}
-														if (new_data.status === 'upcoming' && !new_data.experts) {
+														if (new_data.status === 'upcoming' && !new_data?.experts) {
 															toast_error('Необходимо выбрать специалиста');
 															$($(ev.node).parents('form'))
 																.find('.select_experts')
@@ -1509,25 +1509,29 @@
 															return false;
 														}
 														new_data.event_date = utils.dateForce(new_data.event_date);
-
-														changeLogSave(new_data, _record);
-
-														var is_saved = false;
-														if (new_data.type == 'online') {
-															if (new_data.status == 'upcoming') {
-																if (!!new_data.has_meetroom == 0) {
-																	is_saved = true;
-																	onlineRooms.create(function (meetroom) {
-																		new_data['has_meetroom'] = 1;
-																		new_data['meetroom']     = meetroom;
+														try{
+															changeLogSave(new_data, _record);
+														} catch (e) {
+															console.error(e);
+														} finally {
+															var is_saved = false;
+															if (new_data.type == 'online') {
+																if (new_data.status == 'upcoming') {
+																	if (!!new_data.has_meetroom == 0) {
+																		is_saved = true;
+																		onlineRooms.create(function (meetroom) {
+																			new_data['has_meetroom'] = 1;
+																			new_data['meetroom']     = meetroom;
+																			saveRecord(_record.id, _row_idx, new_data);
+																		});
+																	} else {
+																		is_saved = true;
 																		saveRecord(_record.id, _row_idx, new_data);
-																	});
-																} else {
-																	is_saved = true;
-																	saveRecord(_record.id, _row_idx, new_data);
+																	}
 																}
 															}
 														}
+
 
 														if (!is_saved) {
 															if (new_data.has_meetroom == 1) {

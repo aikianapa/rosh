@@ -876,8 +876,8 @@
 				<a class="expert__worked"
 					target="_blank"
 					title="Открыть страницу о специалисте"
-					data-href="{{catalog.experts[this].info_uri}}"
-					data-link="{{catalog.experts[this].info_uri}}">
+					data-href="{{catalog.experts[this].page_uri}}"
+					data-link="{{catalog.experts[this].page_uri}}">
 					<div class="expert__worked-pic">
 						<img class="lazyload"
 							data-src="{{{catalog.experts[this].image[0].img}}}"

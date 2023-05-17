@@ -454,10 +454,10 @@
 											<div class="expert__worked-pic">
 												<img class="lazyload"
 													data-src="{{{@global.catalog.experts[this].image[0].img}}}"
-													alt="{{@global.catalog.experts[this].name}}">
+													alt="{{@global.catalog.experts[this].fullname}}">
 											</div>
 											<div class="expert__worked-name">
-												{{@global.catalog.experts[this].name}}
+												{{@global.catalog.experts[this].fullname}}
 											</div>
 											<div class="expert__worked-work">
 												{{@global.catalog.experts[this].spec}}
@@ -579,7 +579,6 @@
 										</h2>
 										<div class="before-healing__photo" style="background-image: url('{{.src}}')">
 										</div>
-										<div class="healing__description">{{.comment}}</div>
 									</a>
 									{{/each}}
 								</div>

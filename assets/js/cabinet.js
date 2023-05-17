@@ -374,7 +374,10 @@ $(function () {
 		formatDateTime(date) {
 			return new Date(this.getDate(date)).toLocaleString();
 		},
-		formatTime(date) {
+		formatTime(date, remove_seconds) {
+			if (!!remove_seconds){
+				return new Date(this.getDate(date)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'});
+			}
 			return new Date(this.getDate(date)).toLocaleTimeString();
 		},
 		formatPhone(_phone) {
@@ -1731,71 +1734,123 @@ $(function () {
 			});
 		}
 
-		if (new_record_data?.services?.join('') != prev_record_data?.services?.join('')) {
-			let prev_labels = [], new_labels = [];
-			prev_record_data?.services && prev_record_data.services.forEach(function (val) {
-				prev_labels.push(catalog.services[val].header);
-			});
-			new_record_data?.services && new_record_data.services.forEach(function (val) {
-				new_labels.push(catalog.services[val].header);
-			});
-			changelog.push({
-				label: 'Услуга',
-				field: 'services',
-				prev_val: prev_record_data.services,
-				new_val: new_record_data.services,
-				prev_labels: prev_labels,
-				new_labels: new_labels
-			});
+		if (!!new_record_data?.experts?.length) {
+			new_record_data.experts = new_record_data.experts.filter(Boolean);
 		}
-		if (!new_record_data?.services && !!prev_record_data.services) {
-			let prev_labels = [], new_labels = [];
-			prev_record_data.services.forEach(function (val) {
-				prev_labels.push(catalog.services[val].header);
-			});
-			changelog.push({
-				label: 'Услуга',
-				field: 'services',
-				prev_val: prev_record_data.services,
-				new_val: [],
-				prev_labels: prev_labels,
-				new_labels: new_labels
-			});
+		if (!!new_record_data?.services?.length) {
+			new_record_data.services = new_record_data.services.filter(Boolean);
 		}
-		if (!prev_record_data?.services && !!new_record_data.services) {
-			let prev_labels = [], new_labels = [];
-			new_record_data.services.forEach(function (val) {
-				new_labels.push(catalog.services[val].header);
-			});
 
-			changelog.push({
-				label: 'Услуга',
-				field: 'services',
-				prev_val: [],
-				new_val: new_record_data.services,
-				prev_labels: prev_labels,
-				new_labels: new_labels
-			});
+		if (!!prev_record_data?.experts?.length) {
+			prev_record_data.experts = prev_record_data.experts.filter(Boolean);
 		}
-		if (new_record_data?.experts?.join('') != prev_record_data?.experts?.join('')) {
-			let prev_labels = [], new_labels = [];
-
-			prev_record_data?.experts && prev_record_data.experts.forEach(function (val) {
-				prev_labels.push(catalog.experts[val].fullname);
-			});
-			new_record_data?.experts && new_record_data.experts.forEach(function (val) {
-				new_labels.push(catalog.experts[val].fullname);
-			});
-
-			changelog.push({
-				label: 'Специалисты',
-				field: 'experts',
-				prev_val: prev_record_data?.experts,
-				new_val: new_record_data?.experts,
-				prev_labels: prev_labels,
-				new_labels: new_labels
-			});
+		if (!!prev_record_data?.services?.length) {
+			prev_record_data.services = prev_record_data.services.filter(Boolean);
 		}
+
+		var prev_labels = [], new_labels = [];
+		/* changes from services list */
+		/* !!! TODO: USE .SERVICE_PRICES INSTEAD !!! */
+		if (!!new_record_data?.services?.length || !!prev_record_data?.services?.length) {
+			prev_labels = [];
+			new_labels = [];
+			if (!new_record_data?.services && !!prev_record_data.services) {
+				prev_record_data.services.forEach(function (val) {
+					prev_labels.push(catalog.services[val].header);
+				});
+				changelog.push({
+					label: 'Услуга',
+					field: 'services',
+					prev_val: prev_record_data.services,
+					new_val: [],
+					prev_labels: prev_labels,
+					new_labels: new_labels
+				});
+			} else if (!prev_record_data?.services && !!new_record_data.services) {
+				new_record_data.service.forEach(function (val) {
+					new_labels.push(catalog.services[val].header);
+				});
+
+				changelog.push({
+					label: 'Услуга',
+					field: 'services',
+					prev_val: [],
+					new_val: new_record_data.services,
+					prev_labels: prev_labels,
+					new_labels: new_labels
+				});
+			} else if (new_record_data?.services?.join('') != prev_record_data?.services?.join('')) {
+				prev_record_data?.services && prev_record_data.services.forEach(function (val) {
+					prev_labels.push(catalog.services[val].header);
+				});
+				new_record_data?.services && new_record_data.services.forEach(function (val) {
+					new_labels.push(catalog.services[val].header);
+				});
+				changelog.push({
+					label: 'Услуга',
+					field: 'services',
+					prev_val: prev_record_data.services,
+					new_val: new_record_data.services,
+					prev_labels: prev_labels,
+					new_labels: new_labels
+				});
+			}
+		}
+		/* changes from expert list */
+		if (!!new_record_data?.experts?.length || !!prev_record_data?.experts?.length) {
+			console.log('new:', new_record_data?.experts);
+			console.log('prev', prev_record_data?.experts);
+			prev_labels = [];
+			new_labels  = [];
+			if (!new_record_data?.experts && !!prev_record_data?.experts) {
+				prev_record_data.experts.forEach(function (expert_id) {
+					console.log(catalog.experts[expert_id], expert_id);
+					prev_labels.push(catalog.experts[expert_id]?.fullname);
+				});
+				changelog.push({
+					label: 'Специалисты',
+					field: 'experts',
+					prev_val: prev_record_data?.experts,
+					new_val: [],
+					prev_labels: prev_labels,
+					new_labels: new_labels
+				});
+			} else if (!prev_record_data?.experts && !!new_record_data.experts) {
+				new_record_data.experts.forEach(function (expert_id) {
+					console.log(catalog.experts[expert_id], expert_id);
+					new_labels.push(catalog.experts[expert_id]?.fullname);
+				});
+
+				changelog.push({
+					label: 'Специалисты',
+					field: 'experts',
+					prev_val: [],
+					new_val: new_record_data?.experts,
+					prev_labels: prev_labels,
+					new_labels: new_labels
+				});
+			} else if (new_record_data?.experts?.join('') != prev_record_data?.experts?.join('')) {
+
+				!!prev_record_data?.experts?.length && prev_record_data.experts.forEach(function (expert_id) {
+					console.log(catalog.experts[expert_id], expert_id);
+					prev_labels.push(catalog.experts[expert_id]?.fullname);
+				});
+				!!new_record_data?.experts?.length && new_record_data.experts.forEach(function (expert_id) {
+					console.log(catalog.experts[expert_id], expert_id);
+					new_labels.push(catalog.experts[expert_id]?.fullname);
+				});
+
+				changelog.push({
+					label: 'Специалисты',
+					field: 'experts',
+					prev_val: prev_record_data?.experts,
+					new_val: new_record_data?.experts,
+					prev_labels: prev_labels,
+					new_labels: new_labels
+				});
+			}
+		}
+
 		if (changelog.length) {
 			utils.api.post('/api/v2/create/record-changes/',
 				{
@@ -1803,7 +1858,7 @@ $(function () {
 					record_group: prev_record_data?.group,
 					experts: prev_record_data?.experts,
 					client: prev_record_data?.client,
-					client_label: catalog.users[prev_record_data.client].fullname,
+					client_label: catalog.users[prev_record_data.client]?.fullname,
 					changes: changelog
 				});
 		}

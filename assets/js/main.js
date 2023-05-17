@@ -24,7 +24,7 @@ $(function() {
             heading: head || '', // Optional heading to be shown on the toast
             showHideTransition: 'slide', // fade, slide or plain
             allowToastClose: true, // Boolean value true or false
-            hideAfter: 4000,
+            hideAfter: 6500,
             stack: 5,
             position: 'top-right',
             bgColor: bgColor, // Background color of the toast
