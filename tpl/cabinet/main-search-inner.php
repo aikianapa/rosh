@@ -855,7 +855,7 @@
 
 				<div class="analysis__description">
 					<p class="text-bold mb-20">Выполнялись процедуры</p>
-					<p class="text-grey">{{.comment}}</p>
+					<p class="text-grey text-left">{{.comment}}</p>
 				</div>
 			</div>
 			<div class="col-md-6">
