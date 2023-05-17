@@ -1491,9 +1491,10 @@
 														if (!new_data.hasOwnProperty('has_meetroom')) {
 															new_data.has_meetroom = 0;
 														}
-														if (!new_data.hasOwnProperty('consultation') ||
-														    new_data.consultation_price === 0) {
+														if (!new_data.hasOwnProperty('consultation')
+														    || new_data.consultation_price === 0) {
 															new_data.consultation       = null;
+															new_data.type               = null;
 															new_data.for_consultation   = 0;
 															new_data.consultation_price = 0;
 														}
