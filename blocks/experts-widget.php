@@ -32,7 +32,7 @@
                 <wb-foreach wb="from=_var.experts" wb-if="'{{_route.form}}' == 'services' && '{{_route.mode}}' == 'show'">
                     <div class="inner-experts__item" wb-if="in_array('{{id}}',{{_parent.experts}})">
                         <wb-var count="{{_var.count*1 + 1}}" />
-                        <div class="inner-experts__pic" style="background-image: url(/thumbc/700x388/src{{image.0.img}})" wb-if="'{{image.0.img}}'>''"></div>
+                        <div class="inner-experts__pic" style="background-image: url('/thumbc/700x388/src{{image.0.img}}')" wb-if="'{{image.0.img}}'>''"></div>
                         <div class="inner-experts__info">
                             <div class="inner-experts__name" wb-if="'{{name}}'>''"><a href="/about/experts/{{wbFurlGenerate({{name}})}}">{{name}}</a></div>
                             <div class="inner-experts__experience" wb-if="'{{experience}}'>''">
@@ -43,7 +43,7 @@
                 <wb-foreach wb="from=_var.experts&limit=5&sort=_sort" wb-if="!('{{_route.form}}' == 'services' && '{{_route.mode}}' == 'show')">
                     <wb-var count="{{_var.count*1 + 1}}" />
                     <div class="inner-experts__item">
-                        <div class="inner-experts__pic" style="background-image: url(/thumbc/700x388/src{{image.0.img}})" wb-if="'{{image.0.img}}'>''"></div>
+                        <div class="inner-experts__pic" style="background-image: url('/thumbc/700x388/src{{image.0.img}}')" wb-if="'{{image.0.img}}'>''"></div>
                         <div class="inner-experts__info">
                             <div class="inner-experts__name" wb-if="'{{name}}'>''"><a href="/about/experts/{{wbFurlGenerate({{name}})}}">{{name}}</a></div>
                             <div class="inner-experts__experience" wb-if="'{{experience}}'>''">

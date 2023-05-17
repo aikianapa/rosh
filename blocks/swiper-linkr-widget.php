@@ -60,7 +60,7 @@
                 <div class="swiper-wrapper">
                     <wb-foreach wb="from=swiper">
                         <div class="swiper-slide">
-                            <a class="problem__link" href="{{href}}" style="background-image: url(/thumbc/1050x818/src{{image.0.img}})">
+                            <a class="problem__link" href="{{href}}" style="background-image: url('/thumbc/1050x818/src{{image.0.img}}')">
                                 <div class="blog-panel__tag" wb-if="'{{tag}}'>''">{{tag}}</div>
                                 <div class="problem__name" wb-if="'{{title}}'>''">{{title}}</div>
                             </a>

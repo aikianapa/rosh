@@ -77,7 +77,7 @@
 					<wb-foreach wb="from=_var.srvlist&tpl=false">
 						<wb-var image="{{cover.0.img}}" wb-if="'{{cover.0.img}}'>''" else="/assets/img/all/1.jpg" />
 						<a class="all-services__item" href="{{yongerFurl()}}" data-category="{{category}}">
-							<div class="all-services__pic" style="background-image: url(/thumbc/510x314/src{{_var.image}})"></div>
+							<div class="all-services__pic" style="background-image: url('/thumbc/510x314/src{{_var.image}})'"></div>
 							<div class="all-services__name" wb-if="'{{header}}'>''">{{header}}</div>
 						</a>
 					</wb-foreach>

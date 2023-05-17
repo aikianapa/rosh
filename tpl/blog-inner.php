@@ -21,7 +21,7 @@
             </div>
             <div class="blog-inner__top">
                 <div class="container">
-                    <div class="blog-panel blog-panel--100" style="background-image: url({{cover.0.img}})">
+                    <div class="blog-panel blog-panel--100" style="background-image: url('{{cover.0.img}}')">
                         <div class="blog-panel__tags">
                             <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
                             <div  wb-if="'{{category}}'=='action'">

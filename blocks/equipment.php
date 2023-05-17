@@ -9,7 +9,7 @@
                             'filter': {'active':'on','_site' : {'$in': [null,'{{_sett.site}}']}}
             }">
             <div class="equipment --openpopup" data-popup="--eq" data-id="{{id}}" wb-if="'{{id}}'>''">
-                <div class="equipment__pic" style="background-image: url({{cover.0.img}})" wb-if="'{{cover.0.img}}'>''"></div>
+                <div class="equipment__pic" style="background-image: url('{{cover.0.img}}')" wb-if="'{{cover.0.img}}'>''"></div>
                 <div class="equipment__name text-bold" wb-if="'{{header}}'>''">{{header}}</div>
             </div>
         </wb-foreach>

@@ -2,7 +2,7 @@
     <div class="main-slider mb-80">
         <div class="swiper-wrapper">
             <wb-foreach wb="from=images&tpl=false">
-                <div class="swiper-slide"  wb-if="'{{img}}'>''" style="background-image: url({{img}})"></div>
+                <div class="swiper-slide"  wb-if="'{{img}}'>''" style="background-image: url('{{img}}')"></div>
             </wb-foreach>
         </div>
         <div class="swiper-pagination"></div>
