@@ -1031,7 +1031,6 @@
 		window.afterLoads    = {};
 		window.afterLoad     = null;
 		window.load          = function (only_tab) {
-
 			var _sorts = [
 				'_lastdate:d',
 				'event_date:d',
@@ -1042,6 +1041,9 @@
 
 			tab_urls.forEach(
 				function (target_tab, i) {
+					if (!window.can_update) {
+						return;
+					}
 					if (only_tab && only_tab != target_tab) {
 						return;
 					}
@@ -1049,6 +1051,9 @@
 					utils.api.get('/api/v2/list/records?' + target_tab, {
 						'@sort': _sorts[i]
 					}).then(function (result) {
+						if (!window.can_update) {
+							return;
+						}
 						if (target_tab == 'group=longterms') {
 							_tab = new Ractive({
 								el: '.data-tab-item[data-type="' + target_tab + '"]',
@@ -1304,13 +1309,15 @@
 										                       _parent.data('record'));
 										console.log(_parent.data('record'));
 										if (_is_edit_active) {
-											_parent.find('.admin-editor__events').html('');
-											_parent.find('.admin-editor__top-select').html('');
+											//_parent.removeClass('active');
+											//_parent.find('.admin-editor__events').html('');
+											//_parent.find('.admin-editor__top-select').html('');
 											sessionStorage.removeItem("state.open-editor");
 											window.can_update = true;
 											console.log('autoupdate activated...');
 											return;
 										} else {
+											//_parent.addClass('active');
 											console.log('autoupdate deactivated...');
 										}
 										sessionStorage["state.open-editor"] = _parent.data('record');
@@ -1554,6 +1561,9 @@
 							});
 						}
 					}).then(function () {
+						if (!window.can_update) {
+							return;
+						}
 						_tab.fire('loaded');
 
 						var _curr_tab = $('.account__tab.data-tab-item[data-type="' + target_tab + '"]');
@@ -1612,18 +1622,6 @@
 				//}
 			}, 750);
 		};
-		load(false);
-
-		var loadTimer = setTimeout(function reload() {
-			try {
-				if (window.can_update) {
-					catalog.reload_users();
-					window.load();
-				}
-			} finally {
-				loadTimer = setTimeout(reload, 10000);
-			}
-		}, 10000);
 
 		function OrderBy(a, b, n) {
 			if (n) return a - b;
@@ -1639,20 +1637,21 @@
 			console.log('open:', _type);
 
 			sessionStorage.setItem('state.tab-cabinet', _tab);
+			autoupdate_stop();
 			window.can_update = false;
 
 			if (!prevent_editor_reset && !!_curr_editor) {
 				sessionStorage.removeItem("state.open-editor");
 				$('.accardeon[data-record="' + _curr_editor + '"]').removeClass('active');
-				$('.accardeon[data-record="' + _curr_editor + '"] .admin-editor__events').html('');
-				$('.accardeon[data-record="' + _curr_editor + '"] .admin-editor__top-select').html('');
+				//$('.accardeon[data-record="' + _curr_editor + '"] .admin-editor__events').html('');
+				//$('.accardeon[data-record="' + _curr_editor + '"] .admin-editor__top-select').html('');
 				console.log('autoupdate activated...');
 			}
-
+			window.can_update = true;
 			try {
 				window.load(_type);
 			} finally {
-				window.can_update = true;
+				autoupdate_start();
 			}
 		});
 
@@ -1735,8 +1734,31 @@
 			$('.account__tab-item[data-tab="' + active_tab + '"]').addClass('active');
 			$('.account__tab[data-tab="' + active_tab + '"]').addClass('active');
 		}
-		utils.saveScroll();
 		window.can_update = true;
+		load(false);
+		utils.saveScroll();
+		var autoupdateTimer = null;
+
+		function autoupdate_stop() {
+			if (autoupdateTimer) {
+				clearTimeout(autoupdateTimer);
+			}
+		}
+
+		function autoupdate_start(exec_immediately) {
+			autoupdateTimer = setTimeout(function reload() {
+				try {
+					if (window.can_update) {
+						catalog.reload_users();
+						window.load();
+					}
+				} finally {
+					autoupdateTimer = setTimeout(reload, 10000);
+				}
+			}, exec_immediately ? 100 : 10000);
+		}
+
+		autoupdate_start();
 	});
 </script>
 
