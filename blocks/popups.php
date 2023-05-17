@@ -261,7 +261,7 @@
 												});
 										} else {
 											var _client_id = data[0].id;
-											toast('Этот номер используется!', _client_id, 'info');
+											//toast('Этот номер используется!', _client_id, 'info');
 
 											createFastQuote(
 												_client_id,
