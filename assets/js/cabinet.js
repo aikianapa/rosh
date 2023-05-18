@@ -1028,9 +1028,8 @@ $(function () {
 				if (_catSelector.length) {
 					_selectedCat = _catSelector.val();
 				}
-				if (!suggestions.length){
-					$(container).append('<p>Не найдено услуг отвечающих введенному запросу..</p>');
-				}
+
+				var count = 0;
 				$(suggestions).each(function (index) {
 					var PRICE = new Intl.NumberFormat('ru-RU').format(this.data.price);
 					var TAGS  = $('<div></div>').addClass('search__drop-tags');
@@ -1044,6 +1043,7 @@ $(function () {
 					if (!!_selectedCat && !_cats.includes(_selectedCat)) {
 						return;
 					}
+					count++;
 					CNT.append(
 						$('<label></label>').addClass(
 							'search__drop-item autocomplete-suggestion').attr({
@@ -1063,6 +1063,9 @@ $(function () {
 						)
 					);
 				});
+				if (!count) {
+					CNT.append('<p>Не найдено услуг отвечающих введенному запросу..</p>');
+				}
 			},
 			onSelect: function (suggestion) {
 				$selector.val('');
