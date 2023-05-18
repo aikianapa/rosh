@@ -1086,8 +1086,8 @@
 										var _edit_active  = (sessionStorage["state.open-editor"] == _parent.data('record'));
 										if (_edit_active) {
 											//$(ev.node).removeClass('open');
-											_parent.find('.admin-editor__events').html('');
-											_parent.find('.admin-editor__top-select').html('');
+											//_parent.find('.admin-editor__events').html('');
+											//_parent.find('.admin-editor__top-select').html('');
 											sessionStorage.removeItem("state.open-editor");
 											console.log('autoupdate activated...');
 											window.can_update = true;
@@ -1095,6 +1095,7 @@
 										} else {
 											console.log('autoupdate deactivated...');
 										}
+										
 										sessionStorage["state.open-editor"] = _parent.data('record');
 										console.log('open', target_tab, ev);
 									},

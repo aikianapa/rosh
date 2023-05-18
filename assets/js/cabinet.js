@@ -1028,6 +1028,9 @@ $(function () {
 				if (_catSelector.length) {
 					_selectedCat = _catSelector.val();
 				}
+				if (!suggestions.length){
+					$(container).append('<p>Не найдено услуг отвечающих введенному запросу..</p>');
+				}
 				$(suggestions).each(function (index) {
 					var PRICE = new Intl.NumberFormat('ru-RU').format(this.data.price);
 					var TAGS  = $('<div></div>').addClass('search__drop-tags');
@@ -1275,10 +1278,10 @@ $(function () {
 			noSuggestionNotice: '<p>Пациентов не найдено..</p>',
 			showNoSuggestionNotice: 1,
 			transformResult: function (response) {
-				console.log(response, response.length);
+				//console.log(response, response.length);
 				if (!!response) {
 					response = response.filter(function (item) {
-						console.log('--', item, item.fullname);
+						//console.log('--', item, item.fullname);
 						return !!item.fullname;
 					});
 				}
