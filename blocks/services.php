@@ -152,8 +152,64 @@
 		</div>
 	</div>
 	<script wbapp>
-		$(document).on('wb-ready wb-ajax-done', function() {
+		$(document).on('wb-ready wb-ajax-done', function () {
 
+			var createFastQuoteServices   = function (client_id, data) {
+				function unique(array) {
+					function onlyUnique(value, index, self) {
+						return self.indexOf(value) === index;
+					}
+
+					return array.filter(onlyUnique);
+				}
+
+				var quote        = {};
+				quote.group      = 'quotes';
+				quote.status     = 'new';
+				quote.pay_status = 'unpay';
+				quote.client     = client_id;
+				quote.priority   = 0;
+				quote.marked     = false;
+
+				quote.comment        = '';
+				quote.recommendation = '';
+				quote.description    = '';
+				quote.client_comment = '';
+
+				quote.price          = data?.price || 0;
+				quote.services       = unique(Object.values(data?.services || {}));
+				quote.service_prices = data?.service_prices;
+
+				quote.event_date       = '';
+				quote.event_time       = '';
+				quote.event_time_start = '';
+				quote.event_time_end   = '';
+
+				quote.for_consultation  = 0;
+				quote.longterm_date_end = '';
+				quote.longterm_title    = '';
+
+				quote.photos  = {
+					before: [],
+					after: []
+				};
+				quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+				console.log('Save new quote record:', quote);
+				window.api.post(
+					'/api/v2/create/records/', quote).then(
+					function (data) {
+						if (data.error) {
+							wbapp.trigger('wb-save-error', {
+								'data': data
+							});
+						} else {
+							popupMessage('Заявка создана!', 'Мы перезвоним Вам в ближайшее время!',
+								'', '',
+								function (d) {});
+							$('.all-form__services svg').trigger('click');
+						}
+					});
+			};
 			window.fastQuoteServiceCreate = new Ractive({
 				el: '.fastquote-block',
 				template: wbapp.tpl('#fastquote-block-services').html,
@@ -225,8 +281,7 @@
 													}
 												});
 										} else {
-											toast('Этот номер уже используется!', 'Ошибка!', 'error');
-											form.find('[name="phone"]').focus();
+											createFastQuoteServices(data[0].id, post);
 										}
 									});
 							} else {
@@ -237,63 +292,6 @@
 					}
 				}
 			});
-			var createFastQuoteServices = function(client_id, data) {
-				function unique(array) {
-					function onlyUnique(value, index, self) {
-						return self.indexOf(value) === index;
-					}
-
-					return array.filter(onlyUnique);
-				}
-
-				var quote = {};
-				quote.group = 'quotes';
-				quote.status = 'new';
-				quote.pay_status = 'unpay';
-				quote.client = client_id;
-				quote.priority = 0;
-				quote.marked = false;
-
-				quote.comment = '';
-				quote.recommendation = '';
-				quote.description = '';
-				quote.client_comment = '';
-
-				quote.price = data?.price || 0;
-				quote.services = unique(Object.values(data?.services || {}));
-				quote.service_prices = data?.service_prices;
-
-				quote.event_date = '';
-				quote.event_time = '';
-				quote.event_time_start = '';
-				quote.event_time_end = '';
-
-				quote.for_consultation = 0;
-				quote.longterm_date_end = '';
-				quote.longterm_title = '';
-
-				quote.photos = {
-					before: [],
-					after: []
-				};
-				quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-				console.log('Save new quote record:', quote);
-				window.api.post(
-					'/api/v2/create/records/', quote).then(
-					function(data) {
-						if (data.error) {
-							wbapp.trigger('wb-save-error', {
-								'data': data
-							});
-						} else {
-							popupMessage('Заявка создана!', 'Мы перезвоним Вам в ближайшее время!',
-								'', '',
-								function(d) {});
-							$('.all-form__services svg').trigger('click');
-						}
-					});
-
-			};
 		});
 	</script>
 </view>

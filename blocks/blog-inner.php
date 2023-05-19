@@ -231,19 +231,6 @@
                             </div>
                         </div>
                         <div class="share">
-                            <div class="socials socials-blog"> <a class="socials__link" href="#">
-                                    <svg class="svgsprite _socials-1">
-                                        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-1"></use>
-                                    </svg></a><a class="socials__link" href="#">
-                                    <svg class="svgsprite _socials-2">
-                                        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-2"></use>
-                                    </svg></a><a class="socials__link" href="#">
-                                    <svg class="svgsprite _socials-4">
-                                        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-4"></use>
-                                    </svg></a><a class="socials__link" href="#">
-                                    <svg class="svgsprite _socials-3">
-                                        <use xlink:href="/assets/img/sprites/svgsprites.svg#socials-3"></use>
-                                    </svg></a></div>
                             <div class="arrow__link" href="#">
                                 <svg class="svgsprite _arrow-link">
                                     <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>

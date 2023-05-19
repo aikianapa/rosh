@@ -171,24 +171,24 @@
 								self.intlTelInput({
 									formatOnDisplay: false,
 									customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
-										//console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
 										selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
-											'+' + selectedCountryData.dialCode, ' ');
-										self.inputmask('+' + selectedCountryData.dialCode.replace('9', '\\9')
-										               + ' ' +
-										               selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
+											'+' + selectedCountryData.dialCode, ' '
+										);
+										self.inputmask(
+											'+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' +
+											selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
 											{
-												placeholder: '+' + selectedCountryData.dialCode.replace('9', '\\9')
-												             + ' ' +
-												             selectedCountryPlaceholder.replaceAll(/[0-9]/g, '_')
-													             .replaceAll(' ', '-'),
-
+												placeholder:
+													'+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' +
+													selectedCountryPlaceholder
+														.replaceAll(/[0-9]/g, '_')
+														.replaceAll(' ', '-'),
 												clearMaskOnLostFocus: true,
 												showMaskOnHover: false,
 												positionCaretOnClick: 'radixFocus'
-											});
-										return '+' + selectedCountryData.dialCode.replace('9', '\\9')
-										       + ' ' +
+											}
+										);
+										return '+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' +
 										       selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
 									},
 									nationalMode: false,
@@ -208,20 +208,9 @@
 						var self = this;
 						var form = this.find('.popup.--fast .popup__form');
 						if ($(form).verify()) {
-							//wbapp.post('/form/quotes/getQuote', post, function (data) {
-							//	if (data.error) {
-							//		wbapp.trigger('wb-save-error', {'data': data});
-							//	} else {
-							//		console.log('resp:', data);
-							//
-							//
-							//		$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
-							//		$('.popup.--fast .popup__panel.--succed').addClass('d-block');
-							//	}
-							//});
+							var form_data = $(form).serializeJSON();
+							var expert    = $('input.expert');
 
-							var form_data     = $(form).serializeJSON();
-							var expert        = $('input.expert');
 							form_data.experts = [];
 							if (expert.length) {
 								form_data.experts.push(expert.val());
@@ -236,10 +225,10 @@
 								}
 								var _token      = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 								form_data.phone = str_replace([' ', '-', '(', ')'], '', form_data.phone);
-								var _req_phone = str_replace('+', '', form_data.phone);
+								var _req_phone  = str_replace('+', '', form_data.phone);
 								window.api.get('/api/v2/list/users/?role=client&phone~=' + _req_phone +
-								               '&__token=' + _token).then(
-									function (data) {
+								               '&__token=' + _token)
+									.then(function (data) {
 										if (!data.length) {
 											window.api.get('/api/v2/list/users/?email=' + form_data.email +
 											               '&__token=' + _token).then(
@@ -257,24 +246,38 @@
 																		'data': data
 																	});
 																} else {
-																	createFastQuote(data.id, form_data.client_comment,
-																		form_data.experts, self.get('quote_page_comment'));
+																	createFastQuote(
+																		data.id,
+																		form_data.client_comment,
+																		form_data.experts,
+																		self.get('quote_page_comment')
+																	);
 																}
 															});
-
 													} else {
 														toast('Этот e-mail уже используется!', 'Ошибка!', 'error');
 														form.find('[name="email"]').focus();
 													}
 												});
 										} else {
-											toast('Этот номер уже используется!', 'Ошибка!', 'error');
-											form.find('[name="phone"]').focus();
+											var _client_id = data[0].id;
+											//toast('Этот номер используется!', _client_id, 'info');
+
+											createFastQuote(
+												_client_id,
+												form_data.client_comment,
+												form_data.experts,
+												self.get('quote_page_comment')
+											);
 										}
 									});
 							} else {
-								createFastQuote(form_data.client, form_data.client_comment, form_data.experts,
-									self.get('quote_page_comment'));
+								createFastQuote(
+									form_data.client,
+									form_data.client_comment,
+									form_data.experts,
+									self.get('quote_page_comment')
+								);
 							}
 						}
 
