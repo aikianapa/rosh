@@ -71,13 +71,15 @@
 					</div>
 					<div class="user__panel user__panel--border" style="margin-right: 10px">
 						{{#if closest_event}}
-						<div class="user__item">{{ @global.catalog.clients[closest_event.client].fullname }}</div>
 						<div class="user__notifcation closest-event">
 							<svg class="svgsprite _notification">
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#notification"></use>
 							</svg>
 							Ближайшая запись: {{ @global.utils.formatDate(closest_event.event_date) }},
 							{{closest_event.event_time_start}} - {{closest_event.event_time_end}}
+						</div>
+						<div class="user__item" style="text-indent: 10mm;">
+							{{ @global.catalog.clients[closest_event.client].fullname }}
 						</div>
 						{{/if}}
 					</div>
