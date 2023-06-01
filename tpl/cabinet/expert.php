@@ -978,7 +978,7 @@
 							    history_events = [];
 							if (!!records) {
 								let curr_timestamp = parseInt(getdate()[0]);
-								var _prev_time = ;
+								var _prev_time = 0;
 								//!!! set records by id not by index !!!
 								records.forEach(function (rec, idx) {
 									if (rec.status === 'past') {
