@@ -172,11 +172,11 @@
 		</template>
 	</div>
 
-	<script wbapp remove>
+	<script wbapp >
 		(function () {
 			new Ractive({
 				el: '#popupsLogin',
-				template: document.querySelector('#popupsLogin > template').innerHTML,
+				template: document.querySelector('#popupsLogin template').innerHTML,
 				data: {},
 			})
 		})()

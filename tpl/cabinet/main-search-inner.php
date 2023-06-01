@@ -1164,6 +1164,7 @@
 					console.log('createLongterm', client);
 					popupLongterm(client, null, function (rec) {
 						toast('Запись успешно создана!');
+						content_load();
 					});
 				},
 				addAnalyses(ev, record, index) {
