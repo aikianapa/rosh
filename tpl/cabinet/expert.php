@@ -76,8 +76,8 @@
 							<svg class="svgsprite _notification">
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#notification"></use>
 							</svg>
-							Ближайшая запись: {{ @global.utils.formatDate(events.upcoming[0].event_date) }},
-							{{events.upcoming[0].event_time_start}} - {{events.upcoming[0].event_time_end}}
+							Ближайшая запись: {{ @global.utils.formatDate(closest_event.event_date) }},
+							{{closest_event.event_time_start}} - {{closest_event.event_time_end}}
 						</div>
 						{{/if}}
 					</div>
