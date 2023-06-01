@@ -255,12 +255,6 @@
 	max-width : 1200px;
 	width: 100%;
 }
-.account-events__item.event_date {
-	width : calc(30% - 120px);
-}
-.account-events__btns .account-events__btn {
-	width : calc(40% - 40px);
-}
 .profile-editor-inline {
 	padding-top : 20px;
 	margin-top  : 20px;
@@ -336,15 +330,6 @@ div.accardeon.active > div.accardeon__list {
 }
 .record-edit .account-events__item.wide .account-event-wrap {
 	font-size : 1.3em;
-}
-.account-events__block .account-events__item {
-	margin-right : 20px;
-}
-.account-events__block .account-events__item:nth-child(2) {
-	width : calc(21% - 20px);
-}
-.account-events__block .account-events__item:first-child {
-	width : calc(45% - 20px);
 }
 .autocomplete-suggestions .autocomplete-suggestion:hover {
 	background-color : #D0DFF3;
@@ -595,7 +580,20 @@ img.preview.cloned{
 }
 
 @media (max-width : 768px) {
+	.container.expert-page .account__table-body .acount__table-accardeon.accardeon {
+		padding : 18px;
+	}
+	.account-events__item.event_date .account-event {
+		text-align : right;
+	}
 
+	.expert-page .acount__table-list.accardeon__list .admin-editor__patient{
+		width : 100% !important;
+	}
+	.expert-page .acount__table-main::after{
+		top:8px;
+		right:0;
+	}
 	.comment_for_expert {
 		max-width     : 100%;
 		margin-bottom : 8px;
@@ -624,6 +622,21 @@ img.preview.cloned{
 	}
 }
 @media (min-width : 768px) {
+	.account-events__item.event_date {
+		width : calc(30% - 120px);
+	}
+	.account-events__btns .account-events__btn {
+		width : calc(40% - 40px);
+	}
+	.account-events__block .account-events__item {
+		margin-right : 20px;
+	}
+	.account-events__block .account-events__item:nth-child(2) {
+		width : calc(21% - 20px);
+	}
+	.account-events__block .account-events__item:first-child {
+		width : calc(45% - 20px);
+	}
 	.after-healing__item.photo .photos,
 	.before-healing__item .after-healing__photo {
 		max-width: 50%;
