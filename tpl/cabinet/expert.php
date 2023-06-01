@@ -55,15 +55,17 @@
 							</button>
 						</div>
 						<div class="user__group --noflex hidden">
-							<div class="user__item">Образование:
-								<span>{{user.expert.education}}</span>
+							<div class="user__item">
+								<!--Образование:-->
+								<!--<span>{{user.expert.education}}</span>-->
 							</div>
-							<div class="user__item">Лицензия:
-								{{#each user.adv.licenses: ixd}}
-								<p>
-									<span>№ {{.}}</span>
-								</p>
-								{{/each}}
+							<div class="user__item">
+								<!--Лицензия:-->
+								<!--{{#each user.adv.licenses: ixd}}-->
+								<!--<p>-->
+								<!--	<span>№ {{.}}</span>-->
+								<!--</p>-->
+								<!--{{/each}}-->
 							</div>
 						</div>
 					</div>
@@ -976,6 +978,7 @@
 							    history_events = [];
 							if (!!records) {
 								let curr_timestamp = parseInt(getdate()[0]);
+								var _prev_time = ;
 								//!!! set records by id not by index !!!
 								records.forEach(function (rec, idx) {
 									if (rec.status === 'past') {
@@ -984,10 +987,14 @@
 										return;
 									} else if (rec.status !== 'upcoming') {
 										return;
-									} else if (idx === 0) {
-										page.set('closest_event', rec);
 									}
 									rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
+
+									if (!_prev_time || (_prev_time > rec['event_timestamp'])){
+										_prev_time = rec['event_timestamp'];
+										page.set('closest_event', rec);
+									}
+
 									if (Cabinet.isCurrentEvent(rec)) {
 										events.current.push(rec);
 									} else {
