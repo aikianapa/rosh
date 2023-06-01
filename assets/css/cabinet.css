@@ -569,8 +569,8 @@ img.preview.cloned{
 
 	}
 	.acount__table-accardeon.accardeon{
-		padding-left: 8px;
-		padding-right: 8px;
+		padding-left  : 8px;
+		padding-right : 8px;
 
 	}
 
@@ -578,21 +578,33 @@ img.preview.cloned{
 		width : 11% !important;
 	}
 }
-
 @media (max-width : 768px) {
+
+	.btn-link.profile-menu.d-mobile {
+		padding : 0 0 0 8px
+	}
+	.btn-link.profile-menu.d-mobile .svgsprite._drop {
+		width          : 8px;
+		height         : 8px;
+		vertical-align : baseline;
+	}
 	.container.expert-page .account__table-body .acount__table-accardeon.accardeon {
 		padding : 18px;
 	}
 	.account-events__item.event_date .account-event {
 		text-align : right;
 	}
+	div.header__admin > a.btn {
+		padding-left : 10px;
+		letter-spacing: -.3px;
+	}
 
-	.expert-page .acount__table-list.accardeon__list .admin-editor__patient{
+	.expert-page .acount__table-list.accardeon__list .admin-editor__patient {
 		width : 100% !important;
 	}
-	.expert-page .acount__table-main::after{
-		top:8px;
-		right:0;
+	.expert-page .acount__table-main::after {
+		top   : 8px;
+		right : 0;
 	}
 	.comment_for_expert {
 		max-width     : 100%;
@@ -613,12 +625,12 @@ img.preview.cloned{
 		margin-right: 10px;
 		letter-spacing: 0;
 	}
-	.lk-main div.header__admin{
-		max-width: 80%;
-		flex-wrap: wrap;
+	.lk-main div.header__admin {
+		max-width : 80%;
+		flex-wrap : wrap;
 	}
-	.lk-main .header--transparent .container{
-		height: auto;
+	.lk-main .header--transparent .container {
+		height : auto;
 	}
 }
 @media (min-width : 768px) {

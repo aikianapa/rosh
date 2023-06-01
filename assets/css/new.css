@@ -1953,8 +1953,28 @@ sup {
         margin-right: 25px;
     }
 }
+.d-mobile {
+    display : none !important;
+}
 
 @media (max-width: 768px) {
+    .popup .popup__wrapper {
+        padding: 0;
+    }
+    #mainmenu{
+        padding-top:160px;
+        z-index: 99;
+    }
+    .fd-mobile-column{
+        flex-direction: column!important;
+        align-items: flex-start;
+    }
+    .d-mobile {
+        display : block !important;
+    }
+    .d-mobile .enter__panel{
+        right: 8px;
+    }
     .mainfilter-mob {
         display: flex;
         flex-flow: row nowrap;
