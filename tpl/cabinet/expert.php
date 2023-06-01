@@ -71,7 +71,7 @@
 					</div>
 					<div class="user__panel user__panel--border" style="margin-right: 10px">
 						{{#if closest_event}}
-						<div class="user__item">{{ catalog.users[this.client].fullname }}</div>
+						<div class="user__item">{{ @global.catalog.clients[closest_event.client].fullname }}</div>
 						<div class="user__notifcation closest-event">
 							<svg class="svgsprite _notification">
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#notification"></use>
