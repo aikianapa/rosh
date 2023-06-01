@@ -567,6 +567,9 @@ img.preview.cloned{
 .admin-editor__patient .search__drop-name{
 	line-height: 1.6em;
 }
+.expert-page .admin-editor__patient .search__drop-name{
+	max-width: initial!important;
+}
 .popups__text-chexboxs.service-categories .text-radio span{
 	justify-content: center;
 }
