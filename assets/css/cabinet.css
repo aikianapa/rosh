@@ -579,10 +579,25 @@ img.preview.cloned{
 	}
 }
 @media (max-width : 768px) {
-
+	.search-result.page-content .analysis__top > .btn {
+		width : 100%;
+	}
+	.search-result.page-content .analysis__top > * {
+		margin : 8px 0;
+	}
+	.admin-edit__upload-btn.btn.btn--white{
+		min-height : 47px;
+	}
+	.search-result.page-content .analysis__top {
+		flex-direction : column;
+	}
+	.search-result.page-content .account-events__block.--flex.--jcsb {
+		flex-direction : column;
+	}
 	.btn-link.profile-menu.d-mobile {
 		padding : 0 0 0 8px
 	}
+
 	.btn-link.profile-menu.d-mobile .svgsprite._drop {
 		width          : 8px;
 		height         : 8px;

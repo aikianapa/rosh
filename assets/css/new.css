@@ -1961,6 +1961,9 @@ sup {
     .popup .popup__wrapper {
         padding: 0;
     }
+    .header.header--transparent .container.--flex.--jcsb.--aicn{
+        align-items: baseline;
+    }
     #mainmenu{
         padding-top:160px;
         z-index: 99;
