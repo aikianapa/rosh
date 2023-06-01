@@ -822,6 +822,7 @@
 					user: wbapp._session.user,
 					expert: wbapp._session.user,
 					catalog: catalog,
+					closest_event: {},
 					events: {
 						'upcoming': [],
 						'current': []
