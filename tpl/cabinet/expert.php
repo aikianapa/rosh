@@ -71,7 +71,7 @@
 					</div>
 					<div class="user__panel user__panel--border" style="margin-right: 10px">
 						<div class="user__item">{{user.expert.spec}}</div>
-						{{#if events.upcoming}}
+						{{#if closest_event}}
 						<div class="user__notifcation closest-event">
 							<svg class="svgsprite _notification">
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#notification"></use>
