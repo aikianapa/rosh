@@ -69,7 +69,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="user__panel user__panel--border" style="margin-right: 10px">
+					<div class="user__panel user__panel--border" style="margin-right: 10px;min-width:320px;">
 						{{#if closest_event}}
 						<div class="user__notifcation closest-event">
 							<svg class="svgsprite _notification">
