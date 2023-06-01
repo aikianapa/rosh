@@ -99,12 +99,13 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
 									<div class="account-event">
-										{{#if consultation}}
-										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
-										{{/if}}
+
 										{{#services}}
 										{{catalog.services[this].header}}<br>
 										{{/services}}
+										{{#if consultation}}
+										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+										{{/if}}
 									</div>
 								</div>
 							</div>

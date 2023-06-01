@@ -246,6 +246,9 @@
 											{{#services}}
 											{{catalog.services[this].header}}<br>
 											{{/services}}
+											{{#if consultation}}
+											{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+											{{/if}}
 										</div>
 									</div>
 								</div>
@@ -441,7 +444,9 @@
 										<p>Услуги</p>
 										{{#services}}
 										{{catalog.services[this].header}}<br>
-										{{/services}}
+										{{/services}}{{#if consultation}}
+										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+										{{/if}}
 									</div>
 									<div class="history-item">
 										<p>Анализы</p>

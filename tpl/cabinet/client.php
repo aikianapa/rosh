@@ -357,7 +357,7 @@
 		</div>
 		<div class="account__tab data-tab-item active" data-tab="visits">
 			<div class="account__table">
-				<div class="account__table-head status-cancel_noreason"">
+				<div class="account__table-head status-cancel_noreason">
 					<div class="history-item">Дата</div>
 					<div class="history-item">Время</div>
 					<div class="history-item">Специалисты</div>
@@ -389,6 +389,9 @@
 								{{#services}}
 								{{catalog.services[this].header}}<br>
 								{{/services}}
+								{{#if consultation}}
+								{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+								{{/if}}
 							</div>
 							<div class="history-item">
 								<p>Анализы</p>
