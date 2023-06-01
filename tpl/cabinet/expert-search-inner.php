@@ -307,12 +307,21 @@
 								<div class="account-edit__title">
 									<p>Рекомендация врача</p>
 								</div>
+								{{#each experts}}
+								{{#if this == user.id}}
 								<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
-							<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
-								name="recommendation">{{this.recommendation}}</textarea>
-
+									<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
+										name="recommendation">{{this.recommendation}}</textarea>
 									<button class="btn btn--white" type="submit">Сохранить</button>
 								</form>
+								{{else}}
+								<div class="text">
+									{{#this.recommendation}}
+									{{{@global.nl2br(this.recommendation)}}}
+									{{/this.recommendation}}
+								</div>
+								{{/if}}
+								{{/each}}
 							</div>
 							{{#if this.hasPhoto}}
 							<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">

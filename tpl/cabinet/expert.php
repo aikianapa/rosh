@@ -54,7 +54,7 @@
 								<span class="crumbs__link mr-10 font-weight-normal">редактировать профиль</span>
 							</button>
 						</div>
-						<div class="user__group --noflex">
+						<div class="user__group --noflex hidden">
 							<div class="user__item">Образование:
 								<span>{{user.expert.education}}</span>
 							</div>
@@ -90,7 +90,8 @@
 		<div class="account-events current_event status-past">
 			{{#each events.current}}
 			<div class="account-events__block">
-				<div class="acount__table-accardeon accardeon status-past" data-accardeon="{{this.id}}">
+				<div class="acount__table-accardeon accardeon status-past"
+					data-accardeon="{{this.id}}" data-sort="{{this.event_timestamp}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="accardeon__click"></div>
 						<div class="account-events__block-wrap mb-20">
@@ -259,10 +260,11 @@
 
 		{{#if events.upcoming}}
 		<div class="lk-title">Предстоящие события</div>
-		<div class="account-events status-upcoming">
+		<div class="account-events upcoming status-upcoming">
 			{{#each events.upcoming}}
 			<div class="account-events__block">
-				<div class="acount__table-accardeon accardeon status-upcoming" data-accardeon="{{this.id}}">
+				<div class="acount__table-accardeon accardeon status-upcoming" data-sort="{{this.event_timestamp}}"
+					data-accardeon="{{this.id}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="account-events__block-wrap">
 							<div class="accardeon__click"></div>
@@ -270,8 +272,11 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
 									<div class="account-event">
+										{{#if consultation}}
+										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+										{{/if}}
 										{{#services}}
-										{{catalog.services[this].header}}<br>
+										{{ catalog.services[this].header }}<br>
 										{{/services}}
 									</div>
 								</div>
@@ -452,6 +457,9 @@
 								{{#services}}
 								{{catalog.services[this].header}}<br>
 								{{/services}}
+								{{#if consultation}}
+								{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+								{{/if}}
 							</div>
 							<div class="history-item">
 								<p>Анализы</p>
@@ -944,6 +952,12 @@
 				}
 			});
 			var current_day_events_checker = null;
+
+			window.sort_events = function () {
+				$(".account-events.upcoming .account-events__block")
+					.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
+					.appendTo(".account-events.upcoming");
+			};
 			window.loadRecords             = function () {
 				if (!!current_day_events_checker) {
 					clearTimeout(current_day_events_checker);
@@ -951,7 +965,7 @@
 				if (window.can_update) {
 					utils.api.get('/api/v2/list/records?group=events' +
 					              '&experts~=' + wbapp._session.user.id +
-					              '&@sort=event_date:d')
+					              '&@sort=event_date:a')
 						.then(function (records) {
 							page.set('catalog', window.catalog);
 							let events         = {
@@ -972,13 +986,14 @@
 									} else if (idx === 0) {
 										page.set('closest_event', rec);
 									}
-
+									rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
 									if (Cabinet.isCurrentEvent(rec)) {
 										events.current.push(rec);
 									} else {
 										events.upcoming.push(rec);
 									}
 								});
+								window.sort_events();
 							}
 
 							page.set('events', events);

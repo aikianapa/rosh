@@ -97,10 +97,10 @@
 
 	{{#if events.current}}
 	<div class="lk-title">Текущее событие</div>
-	<div class="account-events">
+	<div class="account-events status-past">
 		<!-- multiple: .account-events__block -->
 		{{#each events.current}}
-		<div class="account-events__block">
+		<div class="account-events__block status-past">
 			<div class="mb-20 account-events__block-wrap">
 				<div class="account-events__item">
 					<div class="account-event-wrap">
@@ -186,9 +186,9 @@
 
 	{{#if events.upcoming}}
 	<div class="lk-title">Предстоящие события</div>
-	<div class="account-events upcoming">
+	<div class="account-events upcoming status-upcoming">
 		{{#each events.upcoming}}
-		<div class="account-events__block" data-sort="{{this.event_timestamp}}">
+		<div class="account-events__block  status-upcoming" data-sort="{{this.event_timestamp}}">
 			<div class="mb-20 account-events__block-wrap">
 				{{#if this.services}}
 				<div class="account-events__item">
@@ -545,14 +545,14 @@
 		</div>
 		<div class="account__tab data-tab-item" data-tab="longterm">
 			<div class="account__table">
-				<div class="account__table-head">
+				<div class="account__table-head status-cancel_noreason">
 					<div class="healing-item">Дата</div>
 					<div class="healing-item">Услуги</div>
 				</div>
 				<div class="account__table-body">
 					{{#each history.longterms as event}}
 					<!-- !!! longterm item !!! -->
-					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
+					<div class="acount__table-accardeon accardeon status-cancel_noreason" data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="healing-item">
 								<p>Дата</p>
