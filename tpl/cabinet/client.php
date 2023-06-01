@@ -357,7 +357,7 @@
 		</div>
 		<div class="account__tab data-tab-item active" data-tab="visits">
 			<div class="account__table">
-				<div class="account__table-head">
+				<div class="account__table-head status-cancel_noreason"">
 					<div class="history-item">Дата</div>
 					<div class="history-item">Время</div>
 					<div class="history-item">Специалисты</div>
@@ -367,7 +367,7 @@
 				<div class="account__table-body">
 					<!-- !!! quote history item !!! -->
 					{{#each history.events as event}}
-					<div class="acount__table-accardeon accardeon"
+					<div class="acount__table-accardeon accardeon status-cancel_noreason""
 						data-accardeon="{{event.id}}"
 						data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">

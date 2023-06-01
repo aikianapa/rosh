@@ -234,9 +234,12 @@
 .admin-photos .account__panel {
 	width : 100%;
 }
+.account__panel {
+	box-shadow : 0 2px 7px -7px black;
+}
 .file-photo .file-photo__ico {
-	width  : 35%;
-	height : auto;
+	width      : 35%;
+	height     : auto;
 	min-height : 62px;
 }
 .container.expert-page .account-events__block {
