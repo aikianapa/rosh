@@ -1957,25 +1957,18 @@ sup {
     display : none !important;
 }
 
-@media (max-width : 550px){
-    .page[data-barba-namespace=home] {
-        padding-top : 95px!important;
-    }
-    .btn[data-popup="--download-data"] {
-        display : none;
-    }
-}
 @media (max-width: 768px) {
     .popup .popup__wrapper {
         padding: 0;
     }
 
+    .cabinet-expert div.header__admin > a.btn,
     .cabinet-admin div.header__admin > a.btn{
         padding: 0;
-        margin-right: 10px;
+        margin-right: 12px;
     }
     .cabinet-admin div.header__admin{
-        max-width : 80%;
+        max-width : 70%;
         flex-wrap : wrap;
         justify-content:space-between;
     }
@@ -2194,9 +2187,27 @@ sup {
 }
 
 @media (max-width: 550px) {
-    .header--transparent .header__left {
-        padding-left: 60px;
+    .d-sm-none {
+        display : none !important;
     }
+    .page {
+        padding-top : 0;
+    }
+    .page.main {
+        padding-top : 95px !important;
+    }
+    .page.expert {
+        padding-top : 60px !important;
+    }
+    .page.client {
+        padding-top : 70px !important;
+    }
+    .btn[data-popup="--download-data"] {
+        display : none;
+    }
+    /*.header--transparent .header__left {
+        padding-left: 80px;
+    }*/
     .basket-ico {
         margin: 0 0 0 10px;
     }

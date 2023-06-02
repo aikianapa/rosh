@@ -9,7 +9,7 @@
 	<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 </div>
 <div class="scroll-container" data-scroll-container>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off style="padding-top: 40px;">
+	<main class="page {{_session.user.role}}" data-barba="container" data-barba-namespace="lk-cabinet" wb-off style="padding-top: 40px;">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3">&nbsp;</div>

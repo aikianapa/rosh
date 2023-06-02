@@ -11,7 +11,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
+	<main class="page {{_session.user.role}}" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="main-wrapper">
 			<div class="container">
 				<div class="account">
@@ -55,7 +55,7 @@
 						<svg class="svgsprite _edit">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 						</svg>
-						<span class="mr-10 crumbs__link font-weight-normal">редактировать профиль</span>
+						<span class="mr-10 crumbs__link font-weight-normal d-sm-none">редактировать профиль</span>
 					</button>
 				</div>
 				<div class="user__group">

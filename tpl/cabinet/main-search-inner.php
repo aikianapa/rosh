@@ -11,7 +11,7 @@
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
 
-	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
+	<main class="page {{_session.user.role}}" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="account">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
