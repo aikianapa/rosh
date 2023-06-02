@@ -51,7 +51,7 @@
 					</a>
 				</div>
 
-				<div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
+				<div class="header__left --flex --aicn baseline" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
 					<wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
 					<wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
 					<div class="header__contacts"><a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
@@ -112,7 +112,7 @@
 						</div>
 					</a>
 				</div>
-				<div class="container --flex --jcsb --aicn">
+				<div class="container --flex --jcsb --aicn cabinet-expert">
 					<div class="header__admin --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 						<a class="btn btn-link" href="/cabinet">Список событий</a>
 						<a class="btn btn-link" href="/cabinet/search">Пациенты</a>
@@ -171,7 +171,7 @@
 						</div>
 					</a>
 				</div>
-				<div class="container --flex --jcsb --aicn " style="align-items:baseline">
+				<div class="container --flex --jcsb --aicn cabinet-admin">
 					<div class="header__admin --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 						<span class="lower-deck">
 							<button class="btn btn--white loaddata --openpopup d-none d-lg-block" onclick="popupDownloadData();" data-popup="--download-data">
@@ -208,7 +208,7 @@
     margin: 8px;
     padding-left: 14px;
 "></button>
-						<button class="btn btn-link profile-menu d-mobile" style="height: 45px;">
+						<button class="btn btn-link profile-menu d-mobile">
 							Профиль
 							<svg class="svgsprite _drop">
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>

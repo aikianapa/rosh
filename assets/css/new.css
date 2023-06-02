@@ -1957,11 +1957,30 @@ sup {
     display : none !important;
 }
 
+@media (max-width : 550px){
+    .page[data-barba-namespace=home] {
+        padding-top : 95px!important;
+    }
+    .btn[data-popup="--download-data"] {
+        display : none;
+    }
+}
 @media (max-width: 768px) {
     .popup .popup__wrapper {
         padding: 0;
     }
-    .header.header--transparent .container.--flex.--jcsb.--aicn{
+
+    .cabinet-admin div.header__admin > a.btn{
+        padding: 0;
+        margin-right: 10px;
+    }
+    .cabinet-admin div.header__admin{
+        max-width : 80%;
+        flex-wrap : wrap;
+        justify-content:space-between;
+    }
+    .header.header--transparent .container.--flex.--jcsb.--aicn.cabinet-admin,
+    .header.header--transparent .container.--flex.--jcsb.--aicn.cabinet-expert{
         align-items: baseline;
     }
     #mainmenu{

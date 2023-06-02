@@ -636,6 +636,9 @@ img.preview.cloned{
 	.popup__panel.popup__panel-wide {
 		max-width : 95%;
 	}
+	.lk-main .btn[data-popup="--download-data"]{
+		display: block;
+	}
 	.lk-main div.header__admin > a.btn{
 		margin-right: 10px;
 		letter-spacing: 0;

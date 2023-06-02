@@ -29,6 +29,7 @@
             <div class="--flex">
                 <button class="pl-0 btn btn-link --openpopup" data-popup="--fast">Записаться на прием</button>
                 <button class="btn btn-link enter --openpopup" data-popup="--enter-number">Войти</button>
+	            <a class="btn btn-link enter signout" wb-if="in_array('{{_sess.user.role}}',['admin','client','expert','main'])" href="/signout">Выйти</a>
             </div>
         </div>
 
