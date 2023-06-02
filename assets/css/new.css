@@ -1608,7 +1608,7 @@ h3 {
 }
 
 .info ol {
-    list-style-type: auto;
+    list-style-type : decimal;
 }
 
 .info .report {
