@@ -1979,9 +1979,11 @@ sup {
         flex-wrap : wrap;
         justify-content:space-between;
     }
-    .header.header--transparent .container.--flex.--jcsb.--aicn.cabinet-admin,
+    .header.header--transparent .container.--flex.--jcsb.--aicn.cabinet-admin {
+        align-items : baseline;
+    }
     .header.header--transparent .container.--flex.--jcsb.--aicn.cabinet-expert{
-        align-items: baseline;
+        align-items: center;
     }
     #mainmenu{
         padding-top:160px;
