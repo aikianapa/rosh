@@ -25,11 +25,12 @@
     <div class="inner-experts">
         <wb-var count="0" />
         <wb-var experts wb-api="/api/v2/list/users?active=on&role=expert" />
+        <wb-var typelist="1" wb-if="'{{_route.mode}}' == 'show' && ('{{_route.form}}' == 'services' OR '{{_route.form}}' == 'problems')" else="2"/>
 
         <div class="container">
             <h3 class="mb-40 h3">Специалисты</h3>
             <div class="inner-experts__list">
-                <wb-foreach wb="from=_var.experts" wb-if="'{{_route.form}}' == 'services' && '{{_route.mode}}' == 'show'">
+                <wb-foreach wb="from=_var.experts" wb-if="'{{_var.typelist}}' == '1'">
                     <div class="inner-experts__item" wb-if="in_array('{{id}}',{{_parent.experts}})">
                         <wb-var count="{{_var.count*1 + 1}}" />
                         <div class="inner-experts__pic" style="background-image: url('/thumbc/700x388/src{{image.0.img}}')" wb-if="'{{image.0.img}}'>''"></div>
@@ -40,7 +41,7 @@
                         </div>
                     </div>
                 </wb-foreach>
-                <wb-foreach wb="from=_var.experts&limit=5&sort=_sort" wb-if="!('{{_route.form}}' == 'services' && '{{_route.mode}}' == 'show')">
+                <wb-foreach wb="from=_var.experts&limit=5&sort=_sort" wb-if="'{{_var.typelist}}' == '2'">
                     <wb-var count="{{_var.count*1 + 1}}" />
                     <div class="inner-experts__item">
                         <div class="inner-experts__pic" style="background-image: url('/thumbc/700x388/src{{image.0.img}}')" wb-if="'{{image.0.img}}'>''"></div>
