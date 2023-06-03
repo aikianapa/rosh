@@ -146,7 +146,7 @@
 			};
 			new Ractive({
 				el: '.popup.--fast',
-				template: document.querySelector('.popup.--fast > template').innerHTML,
+				template: document.querySelector('.popup.--fast template').innerHTML,
 				data: {
 					user: wbapp._session.user,
 					quote_page_comment: null

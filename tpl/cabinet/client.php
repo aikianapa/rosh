@@ -11,7 +11,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
+	<main class="page {{_session.user.role}}" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="main-wrapper">
 			<div class="container">
 				<div class="account">
@@ -55,7 +55,7 @@
 						<svg class="svgsprite _edit">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 						</svg>
-						<span class="mr-10 crumbs__link font-weight-normal">редактировать профиль</span>
+						<span class="mr-10 crumbs__link font-weight-normal d-sm-none">редактировать профиль</span>
 					</button>
 				</div>
 				<div class="user__group">
@@ -97,10 +97,10 @@
 
 	{{#if events.current}}
 	<div class="lk-title">Текущее событие</div>
-	<div class="account-events">
+	<div class="account-events status-past">
 		<!-- multiple: .account-events__block -->
 		{{#each events.current}}
-		<div class="account-events__block">
+		<div class="account-events__block status-past">
 			<div class="mb-20 account-events__block-wrap">
 				<div class="account-events__item">
 					<div class="account-event-wrap">
@@ -186,9 +186,9 @@
 
 	{{#if events.upcoming}}
 	<div class="lk-title">Предстоящие события</div>
-	<div class="account-events upcoming">
+	<div class="account-events upcoming status-upcoming">
 		{{#each events.upcoming}}
-		<div class="account-events__block" data-sort="{{this.event_timestamp}}">
+		<div class="account-events__block  status-upcoming" data-sort="{{this.event_timestamp}}">
 			<div class="mb-20 account-events__block-wrap">
 				{{#if this.services}}
 				<div class="account-events__item">
@@ -357,7 +357,7 @@
 		</div>
 		<div class="account__tab data-tab-item active" data-tab="visits">
 			<div class="account__table">
-				<div class="account__table-head">
+				<div class="account__table-head status-cancel_noreason">
 					<div class="history-item">Дата</div>
 					<div class="history-item">Время</div>
 					<div class="history-item">Специалисты</div>
@@ -367,7 +367,7 @@
 				<div class="account__table-body">
 					<!-- !!! quote history item !!! -->
 					{{#each history.events as event}}
-					<div class="acount__table-accardeon accardeon"
+					<div class="acount__table-accardeon accardeon status-cancel_noreason""
 						data-accardeon="{{event.id}}"
 						data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
@@ -389,6 +389,9 @@
 								{{#services}}
 								{{catalog.services[this].header}}<br>
 								{{/services}}
+								{{#if consultation}}
+								{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+								{{/if}}
 							</div>
 							<div class="history-item">
 								<p>Анализы</p>
@@ -545,14 +548,14 @@
 		</div>
 		<div class="account__tab data-tab-item" data-tab="longterm">
 			<div class="account__table">
-				<div class="account__table-head">
+				<div class="account__table-head status-cancel_noreason">
 					<div class="healing-item">Дата</div>
 					<div class="healing-item">Услуги</div>
 				</div>
 				<div class="account__table-body">
 					{{#each history.longterms as event}}
 					<!-- !!! longterm item !!! -->
-					<div class="acount__table-accardeon accardeon" data-idx="{{@index}}">
+					<div class="acount__table-accardeon accardeon status-cancel_noreason" data-idx="{{@index}}">
 						<div class="acount__table-main accardeon__main accardeon__click">
 							<div class="healing-item">
 								<p>Дата</p>

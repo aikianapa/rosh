@@ -51,7 +51,7 @@
 					</a>
 				</div>
 
-				<div class="header__left --flex --aicn" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
+				<div class="header__left --flex --aicn baseline" wb-if="in_array('{{_sess.user.role}}',['expert','main'])">
 					<wb-var tel="+7{{_var.cityPrefix}}{{_var.cityPhone}}" />
 					<wb-var tel='{{str_replace("+78","+7",{{_var.tel}})}}' />
 					<div class="header__contacts"><a class="header__contact" href="tel:+{{text2tel({{_var.tel}})}}">
@@ -112,10 +112,20 @@
 						</div>
 					</a>
 				</div>
-				<div class="container --flex --jcsb --aicn">
+				<div class="container --flex --jcsb --aicn cabinet-expert">
 					<div class="header__admin --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 						<a class="btn btn-link" href="/cabinet">Список событий</a>
 						<a class="btn btn-link" href="/cabinet/search">Пациенты</a>
+						<button class="btn btn-link profile-menu d-mobile">
+							Профиль
+							<svg class="svgsprite _drop">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
+							</svg>
+							<div class="enter__panel">
+								<a class="enter__btn text-small" onclick="popupEditProfile();">Редактировать</a>
+								<a class="enter__btn text-small signout" href="/signout">Выйти</a>
+							</div>
+						</button>
 					</div>
 					<div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 						<button class="btn btn-link profile-menu">
@@ -161,7 +171,7 @@
 						</div>
 					</a>
 				</div>
-				<div class="container --flex --jcsb --aicn">
+				<div class="container --flex --jcsb --aicn cabinet-admin">
 					<div class="header__admin --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 						<span class="lower-deck">
 							<button class="btn btn--white loaddata --openpopup d-none d-lg-block" onclick="popupDownloadData();" data-popup="--download-data">
@@ -175,6 +185,7 @@
 						<a class="btn btn-link" href="/cabinet/search">Пациенты</a>
 						<a class="btn btn-link" href="/cabinet/photos">Медиатека</a>
 						<a class="btn btn-link" href="/cabinet/changes">Журнал изменений</a>
+
 						<button class="btn btn--white loaddata --openpopup d-sm-block d-lg-none d-md-none" onclick="popupDownloadData();" data-popup="--download-data">
 							<svg class="svgsprite _xl">
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#xl"></use>
@@ -182,7 +193,7 @@
 							Выгрузить данные
 						</button>
 					</div>
-					<div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
+					<div class="header__right --flex --aicn fd-mobile-column" wb-if="'{{_route.uri}}' !=='/english'">
 						<button class="btn btn-link profile-menu">
 							Профиль
 							<svg class="svgsprite _drop">
@@ -193,7 +204,20 @@
 								<a class="enter__btn text-small signout" href="/signout">Выйти</a>
 							</div>
 						</button>
-						<button class="burger"></button>
+						<button class="burger" style="
+    margin: 8px;
+    padding-left: 14px;
+"></button>
+						<button class="btn btn-link profile-menu d-mobile">
+							Профиль
+							<svg class="svgsprite _drop">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
+							</svg>
+							<div class="enter__panel">
+								<a class="enter__btn text-small" onclick="popupEditProfile();">Редактировать</a>
+								<a class="enter__btn text-small signout" href="/signout">Выйти</a>
+							</div>
+						</button>
 					</div>
 
 					<div class="header__left --flex --aicn" wb-if="'{{_route.uri}}' =='/english'">

@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
+	<main class="page {{_session.user.role}}" data-barba="container" data-barba-namespace="lk-cabinet" wb-off>
 		<div class="account">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -116,6 +116,40 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
+
+							<div class="admin-editor__patient" style="width:62%">
+								<div class="mb-10 text-bold">Выбраны услуги</div>
+								{{#if this.consultation}}
+								<div class="search__drop-item selected-consultation" style="display:flex;">
+									<div class="search__drop-name consultation-header pl-0">
+										<span>
+											{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
+										</span>
+									</div>
+									<div class="search__drop-right">
+										<div class="search__drop-summ consultation-price">
+											{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+										</div>
+									</div>
+								</div>
+								{{/if}}
+
+								{{#each this.service_prices: idx, key}}
+								<div class="search__drop-item services selected">
+									<div class="search__drop-name pl-0">
+										<div class="search__drop-tags">
+											{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
+											<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+											{{/each}}
+										</div>
+										{{name}}
+									</div>
+									<label class="search__drop-right">
+										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+									</label>
+								</div>
+								{{/each}}
+							</div>
 							{{#this.comment_for_expert}}
 							<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
 								<div class="account-edit__title">
@@ -246,6 +280,9 @@
 											{{#services}}
 											{{catalog.services[this].header}}<br>
 											{{/services}}
+											{{#if consultation}}
+											{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+											{{/if}}
 										</div>
 									</div>
 								</div>
@@ -285,6 +322,40 @@
 							</div>
 						</div>
 						<div class="acount__table-list accardeon__list">
+
+							<div class="admin-editor__patient" style="width:62%">
+								<div class="mb-10 text-bold">Выбраны услуги</div>
+								{{#if this.consultation}}
+								<div class="search__drop-item selected-consultation" style="display:flex;">
+									<div class="search__drop-name consultation-header pl-0">
+										<span>
+											{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
+										</span>
+									</div>
+									<div class="search__drop-right">
+										<div class="search__drop-summ consultation-price">
+											{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+										</div>
+									</div>
+								</div>
+								{{/if}}
+
+								{{#each this.service_prices: idx, key}}
+								<div class="search__drop-item services selected">
+									<div class="search__drop-name pl-0">
+										<div class="search__drop-tags">
+											{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
+											<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+											{{/each}}
+										</div>
+										{{name}}
+									</div>
+									<label class="search__drop-right">
+										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+									</label>
+								</div>
+								{{/each}}
+							</div>
 							{{#this.comment_for_expert}}
 							<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
 								<div class="account-edit__title">
@@ -307,12 +378,21 @@
 								<div class="account-edit__title">
 									<p>Рекомендация врача</p>
 								</div>
+								{{#each experts}}
+								{{#if this == user.id}}
 								<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
-							<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
-								name="recommendation">{{this.recommendation}}</textarea>
-
+									<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
+										name="recommendation">{{this.recommendation}}</textarea>
 									<button class="btn btn--white" type="submit">Сохранить</button>
 								</form>
+								{{else}}
+								<div class="text">
+									{{#this.recommendation}}
+									{{{@global.nl2br(this.recommendation)}}}
+									{{/this.recommendation}}
+								</div>
+								{{/if}}
+								{{/each}}
 							</div>
 							{{#if this.hasPhoto}}
 							<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
@@ -432,7 +512,9 @@
 										<p>Услуги</p>
 										{{#services}}
 										{{catalog.services[this].header}}<br>
-										{{/services}}
+										{{/services}}{{#if consultation}}
+										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+										{{/if}}
 									</div>
 									<div class="history-item">
 										<p>Анализы</p>
@@ -445,6 +527,41 @@
 									<div class="accardeon__click"></div>
 								</div>
 								<div class="acount__table-list accardeon__list pt-1" style="padding-bottom: 16px;">
+
+									<div class="admin-editor__patient" style="width:62%">
+										<div class="mb-10 text-bold">Выбраны услуги</div>
+										{{#if this.consultation}}
+										<div class="search__drop-item selected-consultation" style="display:flex;">
+
+											<div class="search__drop-name consultation-header pl-0">
+												<span>
+													{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
+												</span>
+											</div>
+											<div class="search__drop-right">
+												<div class="search__drop-summ consultation-price">
+													{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+												</div>
+											</div>
+										</div>
+										{{/if}}
+
+										{{#each this.service_prices: idx, key}}
+										<div class="search__drop-item services selected">
+											<div class="search__drop-name pl-0">
+												<div class="search__drop-tags">
+													{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
+													<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+													{{/each}}
+												</div>
+												{{name}}
+											</div>
+											<label class="search__drop-right">
+												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+											</label>
+										</div>
+										{{/each}}
+									</div>
 									{{#this.comment_for_expert}}
 									<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
 										<div class="account-edit__title">

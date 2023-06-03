@@ -10,7 +10,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="lk-cabinet" wb-off style="padding-top: 100px">
+	<main class="page {{_session.user.role}}" data-barba="container" data-barba-namespace="lk-cabinet" wb-off style="padding-top: 100px">
 		<div class="account">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -54,28 +54,32 @@
 								<span class="crumbs__link mr-10 font-weight-normal">редактировать профиль</span>
 							</button>
 						</div>
-						<div class="user__group --noflex">
-							<div class="user__item">Образование:
-								<span>{{user.expert.education}}</span>
+						<div class="user__group --noflex hidden">
+							<div class="user__item">
+								<!--Образование:-->
+								<!--<span>{{user.expert.education}}</span>-->
 							</div>
-							<div class="user__item">Лицензия:
-								{{#each user.adv.licenses: ixd}}
-								<p>
-									<span>№ {{.}}</span>
-								</p>
-								{{/each}}
+							<div class="user__item">
+								<!--Лицензия:-->
+								<!--{{#each user.adv.licenses: ixd}}-->
+								<!--<p>-->
+								<!--	<span>№ {{.}}</span>-->
+								<!--</p>-->
+								<!--{{/each}}-->
 							</div>
 						</div>
 					</div>
-					<div class="user__panel user__panel--border" style="margin-right: 10px">
-						<div class="user__item">{{user.expert.spec}}</div>
-						{{#if events.upcoming}}
+					<div class="user__panel user__panel--border" style="margin-right: 10px;min-width:320px;">
+						{{#if closest_event}}
 						<div class="user__notifcation closest-event">
 							<svg class="svgsprite _notification">
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#notification"></use>
 							</svg>
-							Ближайшая запись: {{ @global.utils.formatDate(events.upcoming[0].event_date) }},
-							{{events.upcoming[0].event_time_start}} - {{events.upcoming[0].event_time_end}}
+							Ближайшая запись: {{ @global.utils.formatDate(closest_event.event_date) }},
+							{{closest_event.event_time_start}} - {{closest_event.event_time_end}}
+						</div>
+						<div class="user__item" style="text-indent: 10mm;">
+							{{ @global.catalog.clients[closest_event.client].fullname }}
 						</div>
 						{{/if}}
 					</div>
@@ -90,7 +94,8 @@
 		<div class="account-events current_event status-past">
 			{{#each events.current}}
 			<div class="account-events__block">
-				<div class="acount__table-accardeon accardeon status-past" data-accardeon="{{this.id}}">
+				<div class="acount__table-accardeon accardeon status-past"
+					data-accardeon="{{this.id}}" data-sort="{{this.event_timestamp}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="accardeon__click"></div>
 						<div class="account-events__block-wrap mb-20">
@@ -98,12 +103,13 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
 									<div class="account-event">
-										{{#if consultation}}
-										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
-										{{/if}}
+
 										{{#services}}
 										{{catalog.services[this].header}}<br>
 										{{/services}}
+										{{#if consultation}}
+										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+										{{/if}}
 									</div>
 								</div>
 							</div>
@@ -143,6 +149,41 @@
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list">
+
+						<div class="admin-editor__patient" style="width:62%">
+							<div class="mb-10 text-bold">Выбраны услуги</div>
+							{{#if this.consultation}}
+							<div class="search__drop-item selected-consultation" style="display:flex;">
+								<div class="search__drop-name consultation-header pl-0">
+									<span>
+										{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
+									</span>
+								</div>
+								<div class="search__drop-right">
+									<div class="search__drop-summ consultation-price">
+										{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+									</div>
+								</div>
+							</div>
+							{{/if}}
+
+							{{#each this.service_prices: idx, key}}
+							<div class="search__drop-item services selected">
+								<div class="search__drop-name pl-0">
+									<div class="search__drop-tags">
+										{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
+										<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+										{{/each}}
+									</div>
+									{{name}}
+								</div>
+								<label class="search__drop-right">
+									<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+								</label>
+							</div>
+							{{/each}}
+						</div>
+
 						{{#this.comment_for_expert}}
 						<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
 							<div class="account-edit__title">
@@ -259,10 +300,11 @@
 
 		{{#if events.upcoming}}
 		<div class="lk-title">Предстоящие события</div>
-		<div class="account-events status-upcoming">
+		<div class="account-events upcoming status-upcoming">
 			{{#each events.upcoming}}
 			<div class="account-events__block">
-				<div class="acount__table-accardeon accardeon status-upcoming" data-accardeon="{{this.id}}">
+				<div class="acount__table-accardeon accardeon status-upcoming" data-sort="{{this.event_timestamp}}"
+					data-accardeon="{{this.id}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="account-events__block-wrap">
 							<div class="accardeon__click"></div>
@@ -270,8 +312,11 @@
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
 									<div class="account-event">
+										{{#if consultation}}
+										{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+										{{/if}}
 										{{#services}}
-										{{catalog.services[this].header}}<br>
+										{{ catalog.services[this].header }}<br>
 										{{/services}}
 									</div>
 								</div>
@@ -312,6 +357,39 @@
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list">
+						<div class="admin-editor__patient" style="width:62%">
+							<div class="mb-10 text-bold">Выбраны услуги</div>
+							{{#if this.consultation}}
+							<div class="search__drop-item selected-consultation" style="display:flex;">
+								<div class="search__drop-name consultation-header pl-0">
+									<span>
+										{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
+									</span>
+								</div>
+								<div class="search__drop-right">
+									<div class="search__drop-summ consultation-price">
+										{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+									</div>
+								</div>
+							</div>
+							{{/if}}
+
+							{{#each this.service_prices: idx, key}}
+							<div class="search__drop-item services selected">
+								<div class="search__drop-name pl-0">
+									<div class="search__drop-tags">
+										{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
+										<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+										{{/each}}
+									</div>
+									{{name}}
+								</div>
+								<label class="search__drop-right">
+									<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+								</label>
+							</div>
+							{{/each}}
+						</div>
 						{{#this.comment_for_expert}}
 						<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
 							<div class="account-edit__title">
@@ -452,6 +530,9 @@
 								{{#services}}
 								{{catalog.services[this].header}}<br>
 								{{/services}}
+								{{#if consultation}}
+								{{ @global.catalog.spec_service.consultations[type][consultation].header }}<br>
+								{{/if}}
 							</div>
 							<div class="history-item">
 								<p>Анализы</p>
@@ -464,6 +545,41 @@
 							<div class="history-item accardeon__click"></div>
 						</div>
 						<div class="acount__table-list accardeon__list pt-1" style="padding-bottom: 16px;">
+
+							<div class="admin-editor__patient" style="width:62%">
+								<div class="mb-10 text-bold">Выбраны услуги</div>
+								{{#if this.consultation}}
+								<div class="search__drop-item selected-consultation" style="display:flex;">
+									<div class="search__drop-name consultation-header pl-0">
+										<span>
+											{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
+										</span>
+									</div>
+									<div class="search__drop-right">
+										<div class="search__drop-summ consultation-price">
+											{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+										</div>
+									</div>
+								</div>
+								{{/if}}
+
+								{{#each this.service_prices: idx, key}}
+								<div class="search__drop-item services selected">
+									<div class="search__drop-name pl-0">
+										<div class="search__drop-tags">
+											{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
+											<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+											{{/each}}
+										</div>
+										{{name}}
+									</div>
+									<label class="search__drop-right">
+										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+									</label>
+								</div>
+								{{/each}}
+							</div>
+
 							{{#this.comment_for_expert}}
 							<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
 								<div class="account-edit__title">
@@ -811,6 +927,7 @@
 					user: wbapp._session.user,
 					expert: wbapp._session.user,
 					catalog: catalog,
+					closest_event: {},
 					events: {
 						'upcoming': [],
 						'current': []
@@ -944,6 +1061,12 @@
 				}
 			});
 			var current_day_events_checker = null;
+
+			window.sort_events = function () {
+				$(".account-events.upcoming .account-events__block")
+					.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
+					.appendTo(".account-events.upcoming");
+			};
 			window.loadRecords             = function () {
 				if (!!current_day_events_checker) {
 					clearTimeout(current_day_events_checker);
@@ -951,7 +1074,7 @@
 				if (window.can_update) {
 					utils.api.get('/api/v2/list/records?group=events' +
 					              '&experts~=' + wbapp._session.user.id +
-					              '&@sort=event_date:d')
+					              '&@sort=event_date:a')
 						.then(function (records) {
 							page.set('catalog', window.catalog);
 							let events         = {
@@ -961,6 +1084,7 @@
 							    history_events = [];
 							if (!!records) {
 								let curr_timestamp = parseInt(getdate()[0]);
+								var _prev_time = 0;
 								//!!! set records by id not by index !!!
 								records.forEach(function (rec, idx) {
 									if (rec.status === 'past') {
@@ -969,7 +1093,11 @@
 										return;
 									} else if (rec.status !== 'upcoming') {
 										return;
-									} else if (idx === 0) {
+									}
+									rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
+
+									if (!_prev_time || (_prev_time > rec['event_timestamp'])){
+										_prev_time = rec['event_timestamp'];
 										page.set('closest_event', rec);
 									}
 
@@ -979,6 +1107,7 @@
 										events.upcoming.push(rec);
 									}
 								});
+								window.sort_events();
 							}
 
 							page.set('events', events);

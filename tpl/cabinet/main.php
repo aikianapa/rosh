@@ -11,7 +11,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=header"></wb-module>
 	</div>
-	<main class="page" data-barba="container" data-barba-namespace="cabinet" wb-off>
+	<main class="page {{_session.user.role}}" data-barba="container" data-barba-namespace="cabinet" wb-off>
 		<div class="account admin">
 			<form class="search" action="/cabinet/search">
 				<div class="container">
@@ -1160,10 +1160,13 @@
 
 										popupPhoto(catalog.clients[record.client], record,
 											function (rec) {
-												_tab.set('records.' + _row_idx, rec);
+												self.set('records.' + _row_idx, rec);
 												toast('Фото добавлено!');
-												self.set('record', rec);
-												window.can_update = true;
+												//self.set('record', rec);
+												//window.can_update = true;
+												//sessionStorage.removeItem("state.open-editor");
+												//window.load();
+												console.log('rec:', rec);
 												setTimeout(function () {
 													$(self.el).find('a.photo[data-href]')
 														.each(function (i) {
@@ -1209,6 +1212,7 @@
 										}, 150);
 									},
 									addAnalyses(ev, record, index) {
+										var self = this;
 										var $form = $(ev.node).parents('form');
 										var files = Array.from($form.find('input[name="file"]')[0].files);
 										files.forEach(function (file) {
@@ -1224,23 +1228,23 @@
 														.then(function (record) {
 															toast('Анализы добавлены!');
 															console.log(index);
+															self.set('records.'+index, record);
+															//window.afterLoads[target_tab] = function () {
+															//	var res = $(
+															//		'.accardeon__click[data-record="' + record.id +
+															//		'"]');
+															//	if (res.length) {
+															//		setTimeout(function () {
+															//			$('.accardeon__click[data-record="' +
+															//			  record.id + '"]')[0].scrollIntoView();
+															//			$('.accardeon__click[data-record="' +
+															//			  record.id + '"]')[0].click();
+															//		}, 500);
+															//	}
+															//	return res;
+															//};
 
-															window.afterLoads[target_tab] = function () {
-																var res = $(
-																	'.accardeon__click[data-record="' + record.id +
-																	'"]');
-																if (res.length) {
-																	setTimeout(function () {
-																		$('.accardeon__click[data-record="' +
-																		  record.id + '"]')[0].scrollIntoView();
-																		$('.accardeon__click[data-record="' +
-																		  record.id + '"]')[0].click();
-																	}, 500);
-																}
-																return res;
-															};
-
-															window.load();
+															//window.load();
 														});
 												});
 											return false;

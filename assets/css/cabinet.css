@@ -234,9 +234,12 @@
 .admin-photos .account__panel {
 	width : 100%;
 }
+.account__panel {
+	box-shadow : 0 2px 7px -7px black;
+}
 .file-photo .file-photo__ico {
-	width  : 35%;
-	height : auto;
+	width      : 35%;
+	height     : auto;
 	min-height : 62px;
 }
 .container.expert-page .account-events__block {
@@ -251,12 +254,6 @@
 .account-events__block .account-events__block-wrap {
 	max-width : 1200px;
 	width: 100%;
-}
-.account-events__item.event_date {
-	width : calc(30% - 120px);
-}
-.account-events__btns .account-events__btn {
-	width : calc(40% - 40px);
 }
 .profile-editor-inline {
 	padding-top : 20px;
@@ -333,15 +330,6 @@ div.accardeon.active > div.accardeon__list {
 }
 .record-edit .account-events__item.wide .account-event-wrap {
 	font-size : 1.3em;
-}
-.account-events__block .account-events__item {
-	margin-right : 20px;
-}
-.account-events__block .account-events__item:nth-child(2) {
-	width : calc(21% - 20px);
-}
-.account-events__block .account-events__item:first-child {
-	width : calc(45% - 20px);
 }
 .autocomplete-suggestions .autocomplete-suggestion:hover {
 	background-color : #D0DFF3;
@@ -564,6 +552,9 @@ img.preview.cloned{
 .admin-editor__patient .search__drop-name{
 	line-height: 1.6em;
 }
+.expert-page .admin-editor__patient .search__drop-name{
+	max-width: initial!important;
+}
 .popups__text-chexboxs.service-categories .text-radio span{
 	justify-content: center;
 }
@@ -578,8 +569,8 @@ img.preview.cloned{
 
 	}
 	.acount__table-accardeon.accardeon{
-		padding-left: 8px;
-		padding-right: 8px;
+		padding-left  : 8px;
+		padding-right : 8px;
 
 	}
 
@@ -587,9 +578,49 @@ img.preview.cloned{
 		width : 11% !important;
 	}
 }
-
 @media (max-width : 768px) {
+	.search-result.page-content .analysis__top > .btn {
+		width : 100%;
+	}
+	.search-result.page-content .analysis__top > * {
+		margin : 8px 0;
+	}
+	.admin-edit__upload-btn.btn.btn--white{
+		min-height : 47px;
+	}
+	.search-result.page-content .analysis__top {
+		flex-direction : column;
+	}
+	.search-result.page-content .account-events__block.--flex.--jcsb {
+		flex-direction : column;
+	}
+	.btn-link.profile-menu.d-mobile {
+		padding : 0 0 0 8px
+	}
 
+	.btn-link.profile-menu.d-mobile .svgsprite._drop {
+		width          : 8px;
+		height         : 8px;
+		vertical-align : baseline;
+	}
+	.container.expert-page .account__table-body .acount__table-accardeon.accardeon {
+		padding : 18px;
+	}
+	.account-events__item.event_date .account-event {
+		text-align : right;
+	}
+	div.header__admin > a.btn {
+		padding-left : 10px;
+		letter-spacing: -.3px;
+	}
+
+	.expert-page .acount__table-list.accardeon__list .admin-editor__patient {
+		width : 100% !important;
+	}
+	.expert-page .acount__table-main::after {
+		top   : 8px;
+		right : 0;
+	}
 	.comment_for_expert {
 		max-width     : 100%;
 		margin-bottom : 8px;
@@ -605,19 +636,37 @@ img.preview.cloned{
 	.popup__panel.popup__panel-wide {
 		max-width : 95%;
 	}
+	.lk-main .btn[data-popup="--download-data"]{
+		display: block;
+	}
 	.lk-main div.header__admin > a.btn{
 		margin-right: 10px;
 		letter-spacing: 0;
 	}
-	.lk-main div.header__admin{
-		max-width: 80%;
-		flex-wrap: wrap;
+	.lk-main div.header__admin {
+		max-width : 80%;
+		flex-wrap : wrap;
 	}
-	.lk-main .header--transparent .container{
-		height: auto;
+	.lk-main .header--transparent .container {
+		height : auto;
 	}
 }
 @media (min-width : 768px) {
+	.account-events__item.event_date {
+		width : calc(30% - 120px);
+	}
+	.account-events__btns .account-events__btn {
+		width : calc(40% - 40px);
+	}
+	.account-events__block .account-events__item {
+		margin-right : 20px;
+	}
+	.account-events__block .account-events__item:nth-child(2) {
+		width : calc(21% - 20px);
+	}
+	.account-events__block .account-events__item:first-child {
+		width : calc(45% - 20px);
+	}
 	.after-healing__item.photo .photos,
 	.before-healing__item .after-healing__photo {
 		max-width: 50%;
