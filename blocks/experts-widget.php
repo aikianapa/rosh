@@ -25,7 +25,7 @@
     <div class="inner-experts">
         <wb-var count="0" />
         <wb-var experts wb-api="/api/v2/list/users?active=on&role=expert" />
-        <wb-var typelist="1" wb-if="'{{_route.mode}}' == 'show' && ('{{_route.form}}' == 'services' OR '{{_route.form}}' == 'problems')" else="2"/>
+        <wb-var typelist="1" wb-if="'{{_route.mode}}' == 'show' && ('{{_route.form}}' == 'services' OR '{{_route.form}}' == 'problems')" else="2" />
 
         <div class="container">
             <h3 class="mb-40 h3">Специалисты</h3>
@@ -35,9 +35,9 @@
                         <wb-var count="{{_var.count*1 + 1}}" />
                         <div class="inner-experts__pic" style="background-image: url('/thumbc/700x388/src{{image.0.img}}')" wb-if="'{{image.0.img}}'>''"></div>
                         <div class="inner-experts__info">
-                            <div class="inner-experts__name" wb-if="'{{name}}'>''"><a href="/about/experts/{{wbFurlGenerate({{name}})}}">{{name}}</a></div>
+                            <div class="inner-experts__name" wb-if="'{{fullname}}'>''"><a href="/about/experts/{{wbFurlGenerate({{fullname}})}}">{{fullname}}</a></div>
                             <div class="inner-experts__experience" wb-if="'{{experience}}'>''">
-                                Опыт работы {{experience}}</div><a class="inner-experts__link" href="/about/experts/{{wbFurlGenerate({{name}})}}">Читать подробнее</a>
+                                Опыт работы {{experience}}</div><a class="inner-experts__link" href="/about/experts/{{wbFurlGenerate({{fullname}})}}">Читать подробнее</a>
                         </div>
                     </div>
                 </wb-foreach>
@@ -46,9 +46,9 @@
                     <div class="inner-experts__item">
                         <div class="inner-experts__pic" style="background-image: url('/thumbc/700x388/src{{image.0.img}}')" wb-if="'{{image.0.img}}'>''"></div>
                         <div class="inner-experts__info">
-                            <div class="inner-experts__name" wb-if="'{{name}}'>''"><a href="/about/experts/{{wbFurlGenerate({{name}})}}">{{name}}</a></div>
+                            <div class="inner-experts__name" wb-if="'{{fullname}}'>''"><a href="/about/experts/{{wbFurlGenerate({{fullname}})}}">{{fullname}}</a></div>
                             <div class="inner-experts__experience" wb-if="'{{experience}}'>''">
-                                Опыт работы {{experience}}</div><a class="inner-experts__link" href="/about/experts/{{wbFurlGenerate({{name}})}}">Читать подробнее</a>
+                                Опыт работы {{experience}}</div><a class="inner-experts__link" href="/about/experts/{{wbFurlGenerate({{fullname}})}}">Читать подробнее</a>
                         </div>
                     </div>
                 </wb-foreach>
