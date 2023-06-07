@@ -128,7 +128,7 @@
 									</div>
 									<div class="search__drop-right">
 										<div class="search__drop-summ consultation-price">
-											{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+											 
 										</div>
 									</div>
 								</div>
@@ -145,7 +145,7 @@
 										{{name}}
 									</div>
 									<label class="search__drop-right">
-										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+										<div class="search__drop-summ"></div>
 									</label>
 								</div>
 								{{/each}}
@@ -334,7 +334,7 @@
 									</div>
 									<div class="search__drop-right">
 										<div class="search__drop-summ consultation-price">
-											{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+											
 										</div>
 									</div>
 								</div>
@@ -351,9 +351,9 @@
 										{{name}}
 									</div>
 									<label class="search__drop-right">
-										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+										<div class="search__drop-summ"></div>
 									</label>
-								</div>
+								</div> 
 								{{/each}}
 							</div>
 							{{#this.comment_for_expert}}
@@ -540,7 +540,7 @@
 											</div>
 											<div class="search__drop-right">
 												<div class="search__drop-summ consultation-price">
-													{{@global.utils.formatPrice(@global.catalog.spec_service.consultations[this.type][this.consultation].price)}} ₽
+													
 												</div>
 											</div>
 										</div>
@@ -557,7 +557,7 @@
 												{{name}}
 											</div>
 											<label class="search__drop-right">
-												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+												<div class="search__drop-summ"></div>
 											</label>
 										</div>
 										{{/each}}
