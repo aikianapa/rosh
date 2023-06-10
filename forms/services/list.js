@@ -2,7 +2,7 @@
     var api = "/api/v2"
     var form = "services"
     var size = 50
-    var base = api + `/list/${form}?&@size=${size}&@sort=_sort,header`
+    var base = api + `/list/${form}?&@size=${size}&@sort=_sort,header&@return=id,header,_sort`
     var list = new Ractive({
         el: `#${form}List`,
         template: $(`#${form}List`).html(),
