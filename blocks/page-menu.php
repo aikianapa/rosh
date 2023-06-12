@@ -13,22 +13,26 @@
     <wb-var pagemenu="{{wbNewId()}}" />
     <div id="{{_var.pagemenu}}">
         <wb-multiinput name="pagemenu">
-            <input name="label" placeholder="Метка">
-            <div class="dropdown">
-                <input name="link" placeholder="Ссылка" on-click="dropdown" data-toggle="dropdown" aria-expanded="false">
-                <div class="dropdown-menu" wb-off>
-                    {{#each blocks}}
-                        {{#if active == 'on'}}
-                            {{#if name !== 'page-menu'}}
-                                <div class="dropdown-item" data-id="blk{{id}}" on-click="select">
-                                    <div>{{header}}</div>
-                                    <div class="lh-5 tx-gray tx-normal tx-11">{{name}}</div>
-                                </div>
+            <div class="col-6"><input class="form-control" name="label" placeholder="Метка"></div>
+            <div class="col-6">
+                <div class="dropdown">
+                    <input class="form-control" name="link" placeholder="Ссылка" on-click="dropdown" data-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown-menu" wb-off>
+                        {{#each blocks}}
+                            {{#if active == 'on'}}
+                                {{#if name !== 'page-menu'}}
+                                    <div class="dropdown-item" data-id="blk{{id}}" on-click="select">
+                                        <div>{{header}}</div>
+                                        <div class="lh-5 tx-gray tx-normal tx-11">{{name}}</div>
+                                    </div>
+                                {{/if}}
                             {{/if}}
-                        {{/if}}
-                    {{/each}}
+                        {{/each}}
+                    </div>
                 </div>
+
             </div>
+
         </wb-multiinput>
         <div>
 
