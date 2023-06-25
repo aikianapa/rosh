@@ -97,10 +97,10 @@
 
 	{{#if events.current}}
 	<div class="lk-title">Текущее событие</div>
-	<div class="account-events status-past">
+	<div class="account-events current status-past">
 		<!-- multiple: .account-events__block -->
 		{{#each events.current}}
-		<div class="account-events__block status-past">
+		<div class="account-events__block status-past" data-sort="{{this.event_timestamp}}">
 			<div class="mb-20 account-events__block-wrap">
 				<div class="account-events__item">
 					<div class="account-event-wrap">
@@ -925,6 +925,9 @@
 			$(".account-events.upcoming .account-events__block")
 				.sort((a, b) => $(a).data("sort") - $(b).data("sort"))
 				.appendTo(".account-events.upcoming");
+			$(".account-events.current .account-events__block")
+				.sort((a, b) => $(a).data("sort") - $(b).data("sort"))
+				.appendTo(".account-events.current");
 		};
 		var current_day_events_checker = null;
 		window.loadRecords             = function () {

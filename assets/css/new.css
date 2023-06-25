@@ -73,7 +73,9 @@ div.swiper-horizontal.gallery__slider {
 .header.out {
     transform : translateY(-140px);
 }
-
+.header .cabinet-expert:has(.eng-only){
+    flex-direction: row-reverse;
+}
 a.header__logo.header__logo-red {
     perspective : 1000px;
     background  : none;
