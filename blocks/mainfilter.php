@@ -801,6 +801,7 @@
 		});
 		$(document).on('click', '.btn.btn--white.--openfilter', function () {
 			mainFilterState.save(true);
+			initPlugins();
 		});
 		$(document).on('click', '.popup.--service-l a.btn.btn--black', function () {
 			mainFilterState.save(true);
@@ -808,7 +809,7 @@
 
 		setTimeout(function () {
 			initPlugins($(mainFilter.el));
-		}, 1500);
+		}, 2500);
 	</script>
 	<style>
 		#mainfilterCounter {
