@@ -372,13 +372,13 @@ $(function () {
 			return result;
 		},
 		formatDateTime(date) {
-			return new Date(this.getDate(date)).toLocaleString();
+			return this.getDate(date).toLocaleString();
 		},
 		formatTime(date, remove_seconds) {
 			if (!!remove_seconds){
-				return new Date(this.getDate(date)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'});
+				return this.getDate(date).toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'});
 			}
-			return new Date(this.getDate(date)).toLocaleTimeString();
+			return this.getDate(date).toLocaleTimeString();
 		},
 		formatPhone(_phone) {
 			var phone   = str_replace([' ', '-', '(', ')'], '', _phone);
@@ -1214,7 +1214,7 @@ $(function () {
 					client_qry = '&client=' + form.find('input[name="client"]').val();
 				}
 				return '/api/v2/list/records?__token=' + wbapp._session.token +
-				       '&group=[longterms,events]&status=[upcoming,past,new]' + client_qry + '&@sort=_lastdate:d';
+				       '&group=[longterms,events]&status=[upcoming,past,new,]' + client_qry + '&@sort=_lastdate:d';
 			},
 
 			transformResult: function (response) {

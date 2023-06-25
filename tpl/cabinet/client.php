@@ -70,7 +70,7 @@
 						<span>{{ @global.utils.formatPhone(user.phone) }}</span>
 					</div>
 				</div>
-				{{#if this.confirmed == '0'}}
+				{{#if user.confirmed == '0'}}
 				<div class="user__confirm">
 					<svg class="svgsprite _confirm">
 						<use xlink:href="/assets/img/sprites/svgsprites.svg#alert-grey"></use>
@@ -421,6 +421,9 @@
 												{{#each this.service_prices as service_price: i, path}}
 												<li class="service_price text-left">{{service_price.name}}</li>
 												{{/each}}
+												{{#if consultation}}
+								                <li class="service_price text-left">{{ @global.catalog.spec_service.consultations[this.type][this.consultation].header }}</li>
+								                {{/if}}
 											</ul>
 										</div>
 									</div>
@@ -576,6 +579,7 @@
 									<a class="before-healing photo"
 										data-fancybox="images-{{event.id}}"
 										data-href="{{.src}}"
+										href="{{.src}}"
 										data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
 										<h2 class="h2 healing__date-title">
 											{{ @global.utils.formatDateAdv(.date) }}
@@ -597,6 +601,7 @@
 												<a class="after-healing__item photo"
 													data-fancybox="images-{{event.id}}"
 													data-href="{{.src}}"
+													href="{{.src}}"
 													data-caption="Фото после начала лечения, {{ @global.utils.formatDate(.date) }}">
 													<h2 class="h2 healing__date-title">
 														{{ @global.utils.formatDateAdv(.date) }}
@@ -918,7 +923,7 @@
 		});
 		window.sort_events             = function () {
 			$(".account-events.upcoming .account-events__block")
-				.sort((a, b) => $(b).data("sort") - $(a).data("sort"))
+				.sort((a, b) => $(a).data("sort") - $(b).data("sort"))
 				.appendTo(".account-events.upcoming");
 		};
 		var current_day_events_checker = null;

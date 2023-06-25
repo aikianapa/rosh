@@ -8,7 +8,7 @@
                 <wb-foreach wb="{
                     'ajax':'/api/v2/list/blog/',
                     'size':'6',
-                    'sort': '_lastdate:d',
+                    'sort': 'date:d',
                     'more': 'true',
                     'bind': 'site.list.blog',
                     'filter':{
