@@ -393,7 +393,6 @@
 			}
 		};
 		mainFilterState.save();
-
 		var mainFilter            = new Ractive({
 			el: '#mainfilter',
 			template: $('#mainfilter template').html(),
@@ -419,7 +418,7 @@
 				},
 				complete() {
 					console.log('filter ready');
-					initPlugins($(this.el));
+
 				},
 				clearSymptoms() {
 					$(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(
@@ -806,6 +805,10 @@
 		$(document).on('click', '.popup.--service-l a.btn.btn--black', function () {
 			mainFilterState.save(true);
 		});
+
+		setTimeout(function () {
+			initPlugins($(mainFilter.el));
+		}, 1500);
 	</script>
 	<style>
 		#mainfilterCounter {
