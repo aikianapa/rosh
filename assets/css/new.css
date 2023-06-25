@@ -1560,15 +1560,24 @@ h3 {
 .landing h3,
 .landing h4,
 .landing h5 {
-    text-transform : lowercase !important;
+    text-transform : lowercase;
 }
+
 .container h3:first-letter,
 .container h4:first-letter,
 .container h5:first-letter,
 .landing h3:first-letter,
 .landing h4:first-letter,
 .landing h5:first-letter {
-    text-transform : uppercase;
+    text-transform : uppercase !important;
+}
+
+.text-block__name {
+    max-width : 80vw;
+}
+
+.container h5.h5.text-block__name {
+    text-transform : initial !important;
 }
 
 .mainfilter__choice .mainfilter-tag {
@@ -1577,9 +1586,9 @@ h3 {
 }
 
 .mainfilter__choice .mainfilter-tag__group {
-    position: absolute;
-    top: -1.5px;
-    right: 10px;
+    position : absolute;
+    top      : -1.5px;
+    right    : 10px;
 }
 
 .mainfilter__choice .mainfilter-tag__group:nth-child(3) {

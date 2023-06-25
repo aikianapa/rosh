@@ -54,7 +54,7 @@
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/intlTelInput.min.css?v=1.21" rel="stylesheet">
-	<link href="/assets/css/new.css?v=8497C62B9F424991B8036BF549BDD9B0" rel="stylesheet">
+	<link href="/assets/css/new.css?v=5FD419D9312A40E381B2A3A77CBA3B9A" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css?v=A3D0018079B24864814F654D27CA1F95" rel="stylesheet">
 
