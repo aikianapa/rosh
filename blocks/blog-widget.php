@@ -7,7 +7,7 @@
 
                 <wb-foreach wb="{
                     'ajax': '/api/v2/list/blog/',
-                    'size': '7',
+                    'size': '9',
                     'sort': 'date:d',
                     'more': 'true',
                     'bind': 'site.list.blog',
