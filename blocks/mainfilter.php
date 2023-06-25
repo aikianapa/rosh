@@ -419,6 +419,7 @@
 				},
 				complete() {
 					console.log('filter ready');
+					initPlugins($(this.el));
 				},
 				clearSymptoms() {
 					$(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(
