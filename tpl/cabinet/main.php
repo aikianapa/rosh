@@ -530,7 +530,7 @@
 									<div class="col-md-12">
 										<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
 											<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
-											<div class="after-healing__photo" style="background-image: url({{.src}});">
+											<div class="after-healing__photo" style="background-image: url('{{.src}}');">
 											</div>
 										</a>
 									</div>
