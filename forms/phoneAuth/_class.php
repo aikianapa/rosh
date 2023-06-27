@@ -106,7 +106,8 @@ class phoneAuthClass extends cmsFormsClass
     public function send_password($password)
     {
         if(self::SMS_TRANSFER == true){
-            $ch = curl_init("https://sms.targetsms.ru/sendsms.php?user=ROSH&pwd=smsrosh12&name_delivery=auth&sadr=ROSH&dadr={$this->phone}&text=Ваш смс код: {$password}");
+            $phone = text2tel($this->phone);
+            $ch = curl_init('https://sms.targetsms.ru/sendsms.php?user=ROSH&pwd=smsrosh12&name_delivery=auth&sadr=ROSH&dadr='.$phone.'&text=Ваш%20смс%20код:%20'.$password);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_HEADER, false);
@@ -165,7 +166,7 @@ class phoneAuthClass extends cmsFormsClass
     public function createUser(){
 
         //Нормализуем номер телефона
-        $phone = preg_replace('/\D/', '', $_POST['phone']);
+        $phone = text2tel($_POST['phone']);
         $app = $this->app;
 
         //Смотрим есть ли соответствующий пользователь в БД
