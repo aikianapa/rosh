@@ -380,7 +380,7 @@
 										<div class="select__placeholder">Выберите специалиста</div>
 										<div class="select__values"></div>
 									</div>
-									<div class="select__list">
+									<div class="select__list single">
 										{{#each @global.catalog.experts}}
 										<div class="select__item select__item--checkbox">
 											<label class="checkbox checkbox--record">
@@ -530,7 +530,7 @@
 									<div class="col-md-12">
 										<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
 											<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
-											<div class="after-healing__photo" style="background-image: url({{.src}});">
+											<div class="after-healing__photo" style="background-image: url('{{.src}}');">
 											</div>
 										</a>
 									</div>
@@ -878,7 +878,7 @@
 
 								<span class="dt"><strong class="title">Дата: </strong>
 									{{@global.utils.formatDate(record._created)}}<br>
-									{{@global.utils.formatTime(record._created)}}
+									{{@global.utils.formatTime(record._created, 1)}}
 								</span>
 							</div>
 						</div>
@@ -1032,9 +1032,9 @@
 		window.afterLoad     = null;
 		window.load          = function (only_tab) {
 			var _sorts = [
-				'_lastdate:d',
+				'_created:d',
 				'event_date:d',
-				'event_date:d',
+				'event_date:a',
 				'_created:d'
 			];
 			var _tab;
@@ -1585,16 +1585,20 @@
 								col.trigger('click');
 							}
 						} else {
-							const _list = $(
-								'.account__tab.data-tab-item[data-type="' + target_tab + '"] .account__table-body');
-							_list.find(".acount__table-accardeon").sort(function (a, b) {
-								const _a = parseInt($(a).attr('data-priority'));
-								const _b = parseInt($(b).attr('data-priority'));
-								return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
-							}).appendTo(_list);
+							/* sort by prior */
+
 						}
+						var _list = $(
+							'.account__tab.data-tab-item[data-type="' + target_tab + '"] .account__table-body');
+						//console.log('order by priority', _list);
+						_list.find(".acount__table-accardeon").sort(function (a, b) {
+							const _a = parseInt($(a).attr('data-priority'));
+							const _b = parseInt($(b).attr('data-priority'));
+							//console.log(_a, _b);
+							return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+						}).appendTo(_list);
 					});
-					/* sort by prior */
+					
 					setTimeout(function () {
 						$('a.account__table').find('a.client-card[data-href]').each(function (i) {
 							$(this).attr('href', $(this).data('href'));

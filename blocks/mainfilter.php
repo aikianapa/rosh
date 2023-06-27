@@ -242,9 +242,8 @@
 								</div>
 								{{#if user.id}}
 								{{else}}
-									<div class="mainfilter__form-bottom">После отправки заявки для Вас будет создан Личный
-										кабинет, в который можно попасть через кнопку
-										"Войти" в верхнем меню сайта
+									<div class="mainfilter__form-bottom">
+										Также, после отправки формы ,вам будет автоматически сгенерирован личный кабинет на сайте, доступ к которому вы можете получить в правом верхнем углу по номеру телефона, указанному при заполнении.
 									</div>
 								{{/if}}
 							</form>
@@ -394,7 +393,6 @@
 			}
 		};
 		mainFilterState.save();
-
 		var mainFilter            = new Ractive({
 			el: '#mainfilter',
 			template: $('#mainfilter template').html(),
@@ -420,6 +418,7 @@
 				},
 				complete() {
 					console.log('filter ready');
+
 				},
 				clearSymptoms() {
 					$(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(
@@ -687,37 +686,65 @@
 					});
 				},
 				viewSymptom(ev) {
-					let data = $(ev.node).parent('label').data();
-					let sid = data.symptom;
+					let data  = $(ev.node).parent('label').data();
+					let sid   = data.symptom;
 					let popup = $(ev.node).data('popup');
 					let title = $(ev.node).parents('.accardeon').find('.accardeon__name').text();
-					let form = $('body').find('div.' + popup + ':first');
+					let form  = $('body').find('div.' + popup + ':first');
 					$(form).find('.popup__name').text("");
 					$(form).find('.popup__content').html("");
-					wbapp.get('/symptoms/popup/' + sid, function(res) {
+					wbapp.get('/symptoms/popup/' + sid, function (res) {
 						$(form).find('.popup__content').html(res);
 						$(form).find('.popup__name').text($(form).find(
 							'.popup__content [data-category]').data('category'));
 						$(form).show();
 					});
 				},
-				createQuote: function(ev) {
+				createQuote: function (ev) {
 					console.log('checked', mainFilter.get('choice.services'));
 					var problems = [];
-					$('.mainfilter__choice-main .mainfilter-tag').each(function() {
-						problems.push($(this).find('a.mainfilter-tag__link').text());
+					var services = [];
+					$('.mainfilter__choice-main .mainfilter-tag').each(function () {
+						var el = $(this).find('a.mainfilter-tag__link');
+						if (!!el.data('service')) {
+							services.push(el.text());
+						} else {
+							problems.push(el.text());
+						}
+					});
+					var checked_symptoms = [];
+					$('[data-tab="sympthoms"] .checkbox.mainfilter__checkbox:has(input:checked)').each(function () {
+						checked_symptoms.push($(this).find('.checbox__name').text());
 					});
 					var symptoms = [];
-					$('.mainfilter__symptoms .mainfilter-tag').each(function() {
+					$('.mainfilter__symptoms .mainfilter-tag').each(function () {
 						symptoms.push($(this).find('a.mainfilter-tag__link').text());
 					});
 
-					var title_problems = 'выбранные услуги или существующие проблемы';
-					var title_symptoms = 'вероятная проблематика по симптомам';
-					var comment = '';
+					var title_services         = 'выбранные услуги';
+					var title_problems         = 'выбранные проблемы';
+					var title_checked_symptoms = 'выбранные симптомы';
+					var title_symptoms         = 'вероятная проблематика по симптомам';
+					var comment                = '';
+					if (!!services.length) {
+						comment += title_services + "\n";
+						services.forEach(function (str) {
+							comment += '- ' + str.trim() + ";\n";
+						});
+						comment += "\n";
+					}
+
 					if (!!problems.length) {
 						comment += title_problems + "\n";
-						problems.forEach(function(str) {
+						problems.forEach(function (str) {
+							comment += '- ' + str.trim() + ";\n";
+						});
+						comment += "\n";
+					}
+
+					if (!!checked_symptoms.length) {
+						comment += title_checked_symptoms + "\n";
+						checked_symptoms.forEach(function (str) {
 							comment += '- ' + str.trim() + ";\n";
 						});
 						comment += "\n";
@@ -725,14 +752,12 @@
 
 					if (!!symptoms.length) {
 						comment += title_symptoms + "\n";
-						symptoms.forEach(function(str) {
+						symptoms.forEach(function (str) {
 							comment += '- ' + str.trim() + ";\n";
 						});
 					}
-
-
 					if (!comment.length) {
-						toast('Выберите услугу или укажыте симптомы!');
+						toast('Выберите услугу или укажите симптомы!');
 						return false;
 					}
 					var form = $(ev.node);
@@ -742,16 +767,16 @@
 							console.log('try to createProfile: ', post);
 
 							let names = post.fullname.split(' ', 3);
-							let keys = ['last_name', 'first_name', 'middle_name'];
+							let keys  = ['last_name', 'first_name', 'middle_name'];
 							for (var i = 0; i < names.length; i++) {
 								post[keys[i]] = names[i];
 							}
-							var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
-							post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
+							var _token     = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+							post.phone     = str_replace([' ', '-', '(', ')'], '', post.phone);
 							var _req_phone = str_replace('+', '', post.phone);
 							window.api.get('/api/v2/list/users/?role=client&phone~=' + _req_phone +
-								'&__token=' + _token).then(
-								function(data) {
+							               '&__token=' + _token).then(
+								function (data) {
 									if (!data.length) {
 										window.api.get('/api/v2/list/users/?email=' + post.email +
 											'&__token=' + _token).then(
@@ -802,10 +827,15 @@
 		});
 		$(document).on('click', '.btn.btn--white.--openfilter', function () {
 			mainFilterState.save(true);
+			initPlugins();
 		});
 		$(document).on('click', '.popup.--service-l a.btn.btn--black', function () {
 			mainFilterState.save(true);
 		});
+
+		setTimeout(function () {
+			initPlugins($(mainFilter.el));
+		}, 2500);
 	</script>
 	<style>
 		#mainfilterCounter {

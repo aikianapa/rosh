@@ -142,7 +142,7 @@
 					</div>
 
 
-					<div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' =='/english'">
+					<div class="header__right --flex --aicn eng-only" wb-if="'{{_route.uri}}' =='/english'">
 						<a class="pt-0 en-version" href="/">
 							<svg class="svgsprite _web">
 								<use xlink:href="/assets/img/sprites/svgsprites.svg#web"></use>
