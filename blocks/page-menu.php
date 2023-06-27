@@ -1,8 +1,10 @@
 <view>
-    <div>
-        <wb-foreach wb="from=pagemenu&tpl=false">
-            <div><a href="{{link}}">{{label}}</a></div>
-        </wb-foreach>
+    <div class="container">
+        <div>
+            <wb-foreach wb="from=pagemenu&tpl=false">
+                <a class="mx-2 link" href="{{link}}">{{label}}</a>
+            </wb-foreach>
+        </div>
     </div>
 </view>
 
@@ -39,21 +41,45 @@
         </div>
     </div>
     <script>
-        var pagemenu = new Ractive({
-            el: `#{{_var.pagemenu}}`,
-            template: $(`#{{_var.pagemenu}}`).html(),
-            data: {
-                blocks: []
-            },
-            on: {
-                dropdown() {
-                    this.set('blocks', ypbrBlocks.get('blocks'));
+        var pm_multi = `#{{_var.pagemenu}}`
+        var pm_template = $(`#{{_var.pagemenu}} .dropdown`).html()
+
+        function pm_init(dropdown) {
+            var pagemenu = new Ractive({
+                el: dropdown,
+                template: pm_template,
+                data: {
+                    blocks: []
                 },
-                select(ev) {
-                    $(ev.node).closest('.dropdown').children('input')[0].value = '#' + ev.node.dataset.id
-                    $(ev.node).trigger('change')
+                on: {
+                    dropdown() {
+                        this.set('blocks', ypbrBlocks.get('blocks'));
+                    },
+                    select(ev) {
+                        $(ev.node).closest('.dropdown').children('input')[0].value = '#' + ev.node.dataset.id
+                        $(ev.node).trigger('change')
+                    },
+                    complete(ev) {
+                        let data = JSON.parse($(dropdown).closest('wb-multiinput').children('.wb-multiinput-data').val());
+                        let idx = $(dropdown).closest('.wb-multiinput-row').index()
+                        let inp = $(dropdown).children('input');
+                        inp.val(data[idx].link)
+                    }
                 }
-            }
+            })
+        }
+        setTimeout(() => {
+            $(pm_multi).find('.dropdown').each((i, dropdown) => {
+                pm_init(dropdown)
+            })
+        }, 300)
+        $(pm_multi).on('multiinput_after_add', (ev, el) => {
+            pm_init($(el).find('.dropdown'))
+        })
+        $(pm_multi).on('multiinput_after_remove', (ev, el) => {
+            $(pm_multi).find('.dropdown').each((i, dropdown) => {
+                pm_init(dropdown)
+            })
         })
     </script>
 </edit>
