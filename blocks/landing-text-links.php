@@ -20,7 +20,12 @@
             <input name="title" class="form-control tx-bold">
         </div>
     </div>
-
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3">Спрятать "обратный звонок"</label>
+        <div class="col-sm-9">
+            <wb-switch name="nocall" />
+        </div>
+    </div>
     <div class="form-group row">
         <div class="col-12">
             <label>Текст / ссылка</label>
@@ -62,7 +67,7 @@
                             {{text}}
                         </div>
                         <wb-jq wb="$dom->find('p')->addClass('mb-10');;$dom->find('p:eq(1)')->addClass('pl-65');" />
-                        <div class="callback callback--grey">
+                        <div class="callback callback--grey" wb-if="'{{nocall}}'==''">
                             <div class="callback__text">Закажите обратный звонок, мы ответим на все ваши вопросы</div>
                             <button class="callback__btn btn btn--black --openpopup" data-popup="--fast">Перезвонить мне</button>
                         </div>
