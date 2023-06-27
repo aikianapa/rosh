@@ -36,7 +36,7 @@
                 <div class="container">
                     <div class="render">
                         <wb-module wb="module=yonger&mode=render"></wb-module>
-                        <wb-jq wb-html=".blog-inner-content .render .container:not(.blog-image) .row:eq(0) .col-md-4:eq(0)">
+                        <wb-jq wb-html=".blog-inner-content .render .row:eq(0) .col-md-4:eq(0)">
                             <div class="blog-inner__aside">
                                 <p class="blog-inner__message">Чтобы попасть на процедуру или консультацию к нашим специалистам, позвоните по телефону <a href="tel:{{text2tel({{_var.consultPhone}})}}">{{_var.consultPhone}}</a></p>
                                 <p class="blog-inner__date">{{dateform({{date}})}}</p>
