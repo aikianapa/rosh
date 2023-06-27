@@ -23,7 +23,7 @@
     <div class="form-group row">
         <label class="col-form-label col-sm-3">Спрятать "обратный звонок"</label>
         <div class="col-sm-9">
-            <wb-switch name="nocall" />
+            <input name="nocall" wb-module="module=switch" />
         </div>
     </div>
     <div class="form-group row">
