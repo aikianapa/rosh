@@ -431,8 +431,8 @@
 						<div class="select">
 							<div class="select__main">Укажите специалиста</div>
 							<div class="select__list">
-								<wb-foreach wb="table=experts&limit=5&tpl=false" wb-filter="active=on">
-									<div class="select__item">{{name}}</div>
+								<wb-foreach wb="table=users&tpl=false" wb-filter="role=expert&active=on">
+									<div class="select__item">{{fullname}}</div>
 								</wb-foreach>
 							</div>
 						</div>

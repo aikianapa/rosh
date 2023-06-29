@@ -689,6 +689,10 @@ a.header__logo.header__logo-red {
 }
 
 
+.font-normal {
+    font-weight: 400;
+}
+
 /* basket */
 
 .basket .account__tab-items {
