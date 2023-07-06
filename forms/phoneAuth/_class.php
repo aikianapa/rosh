@@ -170,12 +170,13 @@ class phoneAuthClass extends cmsFormsClass
         $app = $this->app;
 
         //Смотрим есть ли соответствующий пользователь в БД
-        $users = $this->driver->itemList('users', ['filter' => ['phone' => $phone,'role'=>'client']]);
+        $users = $this->driver->itemList('users', ['filter' => ['phone' => $phone]]);
         if($users['count'] == 0){
             //Регистрируем нового пользователя
 
             $user = $this->driver->itemSave('users', [
                 'phone' => $phone,
+                'phonepass' => wbPasswordMake($_POST['password']),
                 'password' => wbPasswordMake($_POST['password']),
                 'role' => 'client',
                 'isgroup' => '',
@@ -193,12 +194,12 @@ class phoneAuthClass extends cmsFormsClass
 
             foreach($users['list'] as $id => $user)
             {
-                $user['password'] = wbPasswordMake($_POST['password']);
+                $user['phonepass'] = wbPasswordMake($_POST['password']);
                 $user = $this->driver->itemSave('users', $user, true);
                 break;
             }
         }
-        $user = $app->checkUser($phone, 'phone', $_POST['password']);
+        $user = $this->checkUser($phone, $_POST['password']);
         if ($user) {
             $app->login($user);
             $res = ['status' => 'ok', 'user' => $user];
@@ -210,6 +211,32 @@ class phoneAuthClass extends cmsFormsClass
         header("Content-type: application/json");
         return (json_encode($res));
 
+    }
+
+
+    function checkUser($login, $pass = false)
+    {
+        if (mb_strlen($login) == 0) {
+            return false;
+        }
+        $users = wbItemList("users", ['filter' => [
+            'phone' => strtolower($login),
+            'isgroup' => ['$ne' => 'on'],
+            'active' => 'on'
+        ]]);
+        if (intval($users['count']) == 0) {
+            return false;
+        }
+        $user = array_shift($users['list']);
+        $user['group'] = wbItemRead("users", $user['role']);
+        $user['group'] ? null : $user['group'] = ['active' => 'on'];
+        $user = wbArrayToObj($user);
+        if ($user->group->active == "on" and $pass === false) {
+            return $user;
+        } else if ($user->group->active == "on" and wbPasswordCheck($pass, $user->phonepass)) {
+            return $user;
+        }
+        return false;
     }
 
 
