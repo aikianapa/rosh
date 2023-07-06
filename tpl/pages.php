@@ -4,6 +4,7 @@
     <title>{{header}}</title>
     <link rel="icon" href="/favicon.svg" type=" image/svg+xml">
     <wb-module wb="module=microcode" />
+    
 </head>
 
 <body class="body" data-barba="wrapper">
