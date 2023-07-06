@@ -37,12 +37,19 @@ class modMicrocode
 
     function common() {
         $tpl = $this->app->fromFile(__DIR__ . '/mc_common.php');
+        $descr = @$this->dom->item['header'];
+        foreach ((array)$this->dom->item['blocks'] as $block) {
+            if (isset($block['text'])) {
+                $descr = wbGetWords(@strip_tags($block['text']), 30);
+                break;
+            }
+        }
         $data = [
             'header' => $this->dom->item['header'],
             'host' => $this->app->vars('_route.host'),
             'url' => $this->app->vars('_route.url'),
             'image' => @$this->dom->item['cover'][0]['img'],
-            'descr' => @$this->dom->item['descr'],
+            'descr' => $descr,
         ];
         $tpl->fetch($data);
         $this->dom->after($tpl);
