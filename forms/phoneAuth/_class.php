@@ -170,7 +170,7 @@ class phoneAuthClass extends cmsFormsClass
         $app = $this->app;
 
         //Смотрим есть ли соответствующий пользователь в БД
-        $users = $this->driver->itemList('users', ['filter' => ['phone' => $phone]]);
+        $users = $this->driver->itemList('users', ['filter' => ['phone' => $phone, 'role'=>'client']]);
         if($users['count'] == 0){
             //Регистрируем нового пользователя
 
