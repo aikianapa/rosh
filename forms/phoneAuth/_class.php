@@ -7,7 +7,7 @@ class phoneAuthClass extends cmsFormsClass
     public $driver;
     public $phone;
     public $ip;
-
+    public $app;
     const FORM_NAME = 'phoneAuth';
     const SMS_PASSWORD_DELAY = 30;
     const SMS_TRANSFER = true;
@@ -15,8 +15,8 @@ class phoneAuthClass extends cmsFormsClass
     public function __construct($app)
     {
         parent::__construct($app);
-        $this->driver = new JsonDrv($this->app);
-
+       // $this->driver = new JsonDrv($this->app);
+        $this->driver = &$app;
         if(!$this->driver->tableExist(self::FORM_NAME)){
             $this->driver->tableCreate(self::FORM_NAME);
         }
@@ -142,7 +142,7 @@ class phoneAuthClass extends cmsFormsClass
         if($list['count'] > 0){
             foreach($list['list'] as $id => $item){
                 if($item['phone'] == $this->phone){
-                    if((password_verify($code, $item['password'])) && (time() <= $item['time_elapsed'])){
+                    if((wbPasswordCheck($code, $item['password'])) && (time() <= $item['time_elapsed'])){
                         header("Content-type: application/json");
                         return (json_encode([
                             'status' => 'ok',
@@ -170,33 +170,42 @@ class phoneAuthClass extends cmsFormsClass
         $app = $this->app;
 
         //Смотрим есть ли соответствующий пользователь в БД
-        $users = $this->driver->itemList('users', ['filter' => ['phone' => $phone]]);
-
+        $users = $this->driver->itemList('users', ['filter' => ['phone' => $phone,'role'=>'client']]);
         if($users['count'] == 0){
             //Регистрируем нового пользователя
 
-            $this->driver->itemSave('users', [
+            $user = $this->driver->itemSave('users', [
                 'phone' => $phone,
-                'password' => md5($_POST['password']),
+                'password' => wbPasswordMake($_POST['password']),
                 'role' => 'client',
+                'isgroup' => '',
+                'fullname' => '',
+                'email' => '',
+                'avatar' => [0 => ['img' => "", 'alt' => 'User', 'title' => '']],
                 'active' => 'on'
-            ]);
-
+            ],true);
             //Авторизуем его
-            //unset($_SESSION['user']);
-            $user = $app->checkUser($phone, 'phone', $_POST['password']);
+            
+            //if ($user) $user = $this->app->itemRead('users',$user['id']);
 
+            unset($_SESSION['user']);
         }else{
 
             foreach($users['list'] as $id => $user)
             {
-                $user = $app->arrayToObj($user);
+                $user['password'] = wbPasswordMake($_POST['password']);
+                $user = $this->driver->itemSave('users', $user, true);
                 break;
             }
         }
+        $user = $app->checkUser($phone, 'phone', $_POST['password']);
+        if ($user) {
+            $app->login($user);
+            $res = ['status' => 'ok', 'user' => $user];
+        } else {
+            $res = ['status' => 'error', 'message' => 'Ошибка'];
+        }
 
-        $app->login($user);
-        $res = ['status' => 'ok', 'user' => $user];
 
         header("Content-type: application/json");
         return (json_encode($res));

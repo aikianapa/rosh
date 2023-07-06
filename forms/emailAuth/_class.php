@@ -5,12 +5,14 @@ use Nahid\JsonQ\Jsonq;
 class emailAuthClass extends cmsFormsClass
 {
     public $driver;
+    public $app;
     const EMAIL = 'mail@idees.ru';
 
     public function __construct($app)
     {
         parent::__construct($app);
-        $this->driver = new JsonDrv($this->app);
+        $this->driver = &$app;
+        //$this->driver = new JsonDrv($this->app);
 
         $app->vars->set("_sess.user", null);
         $app->vars->set("_env.user", null);
