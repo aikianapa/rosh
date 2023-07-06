@@ -16,6 +16,7 @@ class modMicrocode
     function init() {
         if ($this->app->vars('_route.mode') == 'show') {
             $table = $this->app->vars('_route.table');
+            $this->common();
             switch ($table) {
                 case 'users':
                     $this->experts();
@@ -34,6 +35,25 @@ class modMicrocode
         $this->dom->remove();
     }
 
+    function common() {
+        $tpl = $this->app->fromFile(__DIR__ . '/mc_common.php');
+        $data = [
+            'header' => $this->dom->item['header'],
+            'host' => $this->app->vars('_route.host'),
+            'url' => $this->app->vars('_route.url'),
+            'image' => @$this->dom->item['cover'][0]['img'],
+            'descr' => @$this->dom->item['descr'],
+        ];
+        $tpl->fetch($data);
+        $this->dom->after($tpl);
+        /*
+        og:title content="Текущий Title"/>
+og:description" content="Текущий Description"/>
+og:image" content="Ссылка на текущее изображение страницы"/>
+og:type" content="website"/>
+og:url" content= "Текущий URL" />
+*/
+    }
     function experts() {
         $tpl = $this->app->fromFile(__DIR__ .'/mc_experts.php');
         $data = [
