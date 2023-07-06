@@ -50,7 +50,8 @@ MESSAGE;
         $password = $_POST['password'];
         $app = $this->app;
 
-        $user = $app->checkUser($email, 'email', $password);
+        //$user = $app->checkUser($email, 'email', $password);
+        $user = $app->checkUser($email, 'email'); // временно для теста
 
         if($user !== false){
             $app->login($user);
