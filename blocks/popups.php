@@ -184,7 +184,7 @@
 												positionCaretOnClick: 'radixFocus'
 											}
 										);
-										return '+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' +
+										return '+' + selectedCountryData.dialCode.replace('9', '\9') + ' ' +
 										       selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
 									},
 									nationalMode: false,
@@ -192,7 +192,7 @@
 									//                "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
 									//                "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
 									//                "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
-									placeholderNumberType: "FIXED_LINE",
+									placeholderNumberType: "MOBILE",
 									preferredCountries: ['ru'],
 									separateDialCode: false,
 									utilsScript: "/assets/js/intlTelInput-utils.js"
