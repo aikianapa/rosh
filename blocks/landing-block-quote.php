@@ -79,7 +79,13 @@
                                 </div>
                                 <div class="col-sm-6"></div>
                                 <div class="col-sm-6">
-                                    <span class="expert__worked-name">{{fullname}}</span>
+                                    <a class="expert__worked-name"
+                                       target="_blank"
+                                       title="Открыть страницу о специалисте"
+                                       href="/about/experts/{{wbFurlGenerate({{fullname}})}}"
+                                    >
+                                        {{fullname}}
+                                    </a>
                                 </div>
                                 <div class="text-right col-sm-6">
                                     <button class="callback__btn btn btn--black --openpopup" data-popup="--fast-make" onclick="
