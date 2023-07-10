@@ -689,8 +689,7 @@
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control" type="email"
-						name="email" value="{{.email}}" placeholder="E-mail"
-						required>
+						name="email" value="{{.email}}" placeholder="E-mail" required>
 					<div class="input__placeholder input__placeholder--dark">E-mail</div>
 				</div>
 			</div>

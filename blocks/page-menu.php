@@ -1,9 +1,17 @@
 <view>
-    <div class="container">
-        <div>
-            <wb-foreach wb="from=pagemenu&tpl=false">
-                <a class="mx-2 link" href="{{link}}">{{label}}</a>
-            </wb-foreach>
+    <div class="container mb-80">
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-8">
+                <div>
+                    <h3 class="h3 mb-20">Оглавление</h3>
+                    <wb-foreach wb="from=pagemenu&tpl=false">
+                        <div>
+                            <a class="link" href="{{link}}">{{label}}</a>
+                        </div>
+                    </wb-foreach>
+                </div>
+            </div>
         </div>
     </div>
 </view>
