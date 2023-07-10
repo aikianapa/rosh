@@ -214,10 +214,11 @@ label.text-radio > span { text-align: center; }
         border-bottom: 1px solid rgba(0, 0, 0, .2);
     }
 
+    div.admin-events-item.heap { width: 100% !important; }
     div.admin-events-item.heap div.flag-date { display: block; }
     div.admin-events-item.heap div.flag-date > label { top: 2px; display: inline-block; height: 1em; }
     div.admin-events-item.heap div.flag-date > label > span { top: -1px; }
-    div.admin-events-item.heap span.dt { margin-left: 2em; float: right; text-align: right; }
+    div.admin-events-item.heap span.dt { display: block; padding: 0; margin: 15px 0 0; }
     div.admin-events-item.heap span.dt > .title { display: inline-block; }
     div.admin-events-item span.dt > i,
     div.admin-events-item span.dt > br { display: none; }

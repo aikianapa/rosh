@@ -58,17 +58,6 @@
 						</div>
 						<div class="account__tab-item data-tab-link" data-tab="longterms" data-tabs="records">Продолжительное
 						</div>
-						<div class="buttons disabled">
-							<label class="checkbox">
-								<input type="checkbox">
-								<span></span>
-							</label>
-							<button class="flag-date__ico">
-								<svg class="svgsprite _flag">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
-								</svg>
-							</button>
-						</div>
 					</div>
 
 					<div class="account__tab data-tab-item" data-tab="quotes" data-type="group=quotes">
@@ -572,7 +561,7 @@
 		<div class="account__table" data-records-group="{{group}}">
 			<div class="account__table-head">
 				<div class="admin-events-item orderby">
-					<button class="flag-date__ico">
+					<button class="flag-date__ico" style="visibility: hidden">
 						<svg class="svgsprite _flag">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
 						</svg>
@@ -826,7 +815,7 @@
 		<div class="account__table">
 			<div class="account__table-head">
 				<div class="admin-events-item orderby">
-					<button class="flag-date__ico">
+					<button class="flag-date__ico" style="visibility: hidden;">
 						<svg class="svgsprite _flag">
 							<use xlink:href="/assets/img/sprites/svgsprites.svg#flag"></use>
 						</svg>

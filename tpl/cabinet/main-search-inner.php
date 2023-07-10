@@ -71,7 +71,8 @@
 					</button>
 				</div>
 				<div class="user__item">
-					{{#if this.birthdate}}
+                    {{#if this.birthdate === '01.01.1970' }}
+                    {{elseif this.birthdate}}
 					Дата рождения:
 					<span>{{ @global.utils.formatDate(this.birthdate) }}</span>
 					{{else}}
@@ -287,7 +288,9 @@
 										<div class="analysis__description ml-20">
 											<p class="text-bold mb-20">Рекомендация врача</p>
 											<div class="text">
-												{{.recommendation}}
+                                                {{#.recommendation}}
+                                                {{{@global.nl2br(.recommendation)}}}
+                                                {{/.recommendation}}
 											</div>
 										</div>
 									</div>
@@ -565,7 +568,7 @@
 												{{/if}}
 												<span></span>
 												<div class="checbox__name">
-													<div class="select__name">{{name}}</div>
+													<div class="select__name">{{fullname}}</div>
 												</div>
 											</label>
 										</div>
@@ -838,106 +841,6 @@
 		</div>
 	</form>
 </template>
-<template id="event-details" wb-off>
-	{{#event}}
-	<div class="analysis mb-40">
-		<div class="row">
-			<div class="col-md-6">
-				{{#if .analyses}}
-				<div class="account-events__download">
-					<div class="lk-title">Анализы</div>
-					<a class="btn btn--white" href="{{.}}"
-						target="_blank">
-						Скачать анализы
-					</a>
-				</div>
-				{{/if}}
-
-				<div class="analysis__description">
-					<p class="text-bold mb-20">Выполнялись процедуры</p>
-					<p class="text-grey text-left">{{.comment}}</p>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="analysis__description">
-					<p class="text-bold mb-20">Рекомендация врача</p>
-					<div class="text">
-						{{.recommendation}}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="experts__worked">
-		<div class="experts__worked-title">С вами работали</div>
-		<div class="row">
-			{{#each .experts: idx}}
-			<div class="col-md-6">
-				<a class="expert__worked"
-					target="_blank"
-					title="Открыть страницу о специалисте"
-					data-href="{{catalog.experts[this].page_uri}}"
-					data-link="{{catalog.experts[this].page_uri}}">
-					<div class="expert__worked-pic">
-						<img class="lazyload"
-							data-src="{{{catalog.experts[this].image[0].img}}}"
-							alt="{{@global.catalog.experts[this].fullname}}">
-					</div>
-					<div class="expert__worked-name">
-						{{@global.catalog.experts[this].fullname}}
-					</div>
-					<div class="expert__worked-work">
-						{{catalog.experts[this].spec}}
-					</div>
-				</a>
-			</div>
-			{{/each}}
-		</div>
-	</div>
-	{{#if .hasPhoto}}
-	<div class="acount__photos">
-		<div class="row acount__photos-wrap">
-			<div class="col-md-6">
-				<div class="acount__photo">
-					<p>Фото до приема</p>
-					{{#each this.photos.before}}
-					<div class="col-md-6">
-						<a class="after-healing__item"
-							data-fancybox="images-{{this.id}}"
-							href="{{.src}}"
-							data-caption="Фото после приема {{ @global.utils.formatDate(.date) }}">
-							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
-							<div class="after-healing__photo"
-								style="background-image: url({{.src}});">
-							</div>
-						</a>
-					</div>
-					{{/each}}
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="acount__photo">
-					<p>Фото после приема</p>
-					{{#each this.photos.after}}
-					<div class="col-md-6">
-						<a class="after-healing__item"
-							data-fancybox="images-{{this.id}}"
-							href="{{.src}}"
-							data-caption="Фото после приема {{ @global.utils.formatDate(.date) }}">
-							<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
-							<div class="after-healing__photo"
-								style="background-image: url({{.src}});">
-							</div>
-						</a>
-					</div>
-					{{/each}}
-				</div>
-			</div>
-		</div>
-	</div>
-	{{/if}}
-	{{/event}}
-</template>
 <template id="longterm-details" wb-off>
 	{{#if photos}}
 	<div class="row">
@@ -1020,7 +923,7 @@
 			<div class="col-md-3">
 				<div class="input input--grey">
 					<input class="input__control" type="email"
-						name="email" value="{{.email}}" placeholder="E-mail" required>
+						name="email" value="{{.email}}" placeholder="E-mail">
 					<div class="input__placeholder input__placeholder--dark">E-mail</div>
 				</div>
 			</div>

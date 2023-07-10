@@ -71,7 +71,15 @@
                         <figcaption wb-if="'{{quote}}'=='on' && '{{expert}}'>''" class="row">
                             <wb-data wb="table=users&item={{expert}}">
                                 <div class="col-sm-6">
-                                    <span class="font-normal">{{fullname}}</span>
+                                    <div class="expert__worked-pic">
+                                        <img
+                                            src="{{image[0].img}}"
+                                            alt="{{fullname}}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6">
+                                    <span class="expert__worked-name">{{fullname}}</span>
                                 </div>
                                 <div class="text-right col-sm-6">
                                     <button class="callback__btn btn btn--black --openpopup" data-popup="--fast-make" onclick="
@@ -79,6 +87,12 @@
                                     $('.popup.--fast-make .checkbox-hidden-next-form').prop('checked',false)
                                 ">Записаться</button>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="expert__worked-work font-normal">
+                                        {{spec}}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"></div>
                             </wb-data>
                         </figcaption>
 

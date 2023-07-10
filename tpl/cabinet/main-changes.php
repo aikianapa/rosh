@@ -133,6 +133,8 @@
 												{{catalog.quoteStatus[this.prev_val].name}}
 												{{elseif this.field == 'event_date'}}
 												{{@global.utils.formatDate(this.prev_val)}}
+                                                {{elseif this.field == 'recommendation'}}
+                                                {{{@global.nl2br(@global.utils.clrText(this.prev_val))}}}
 												{{else}}
 												{{@global.utils.clrText(this.prev_val)}}
 												{{/if}}
@@ -148,6 +150,8 @@
 												{{catalog.quoteStatus[this.new_val].name}}
 												{{elseif this.field == 'event_date'}}
 												{{@global.utils.formatDate(this.new_val)}}
+                                                {{elseif this.field == 'recommendation'}}
+                                                {{{@global.nl2br(@global.utils.clrText(this.new_val))}}}
 												{{else}}
 												{{@global.utils.clrText(this.new_val)}}
 												{{/if}}
