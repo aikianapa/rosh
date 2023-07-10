@@ -26,10 +26,11 @@
         </nav>
         <div class="mobile-btns" wb-if="'{{_route.uri}}' !=='/english'">
             <!-- button class="mb-10 btn btn--white --openfilter">Подобрать услугу</button -->
-            <div class="--flex">
-                <button class="pl-0 btn btn-link --openpopup" data-popup="--fast">Записаться на прием</button>
+            <div class="--flex --flex-wrap">
+                <button class="pl-0 btn btn-link --openpopup" wb-if="in_array('{{_sess.user.role}}',['client','admin',''])" data-popup="--fast">Записаться на прием</button>
+                <a class="pl-0 btn btn-link" href="/cabinet" wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])">Мой кабинет</a>
                 <button class="btn btn-link enter --openpopup" wb-if="in_array('{{_sess.user.role}}',[''])" data-popup="--enter-number">Войти</button>
-	            <a class="btn btn-link signout" wb-if="in_array('{{_sess.user.role}}',['admin','client','expert','main'])" href="/signout">Выйти</a>
+	            <a class="pl-0 btn btn-link signout" wb-if="in_array('{{_sess.user.role}}',['admin','client','expert','main'])" href="/signout">Выйти</a>
             </div>
         </div>
 

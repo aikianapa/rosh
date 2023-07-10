@@ -116,16 +116,6 @@
 					<div class="header__admin --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 						<a class="btn btn-link" href="/cabinet">Список событий</a>
 						<a class="btn btn-link" href="/cabinet/search">Пациенты</a>
-						<button class="btn btn-link profile-menu d-mobile">
-							Профиль
-							<svg class="svgsprite _drop">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
-							</svg>
-							<div class="enter__panel">
-								<a class="enter__btn text-small" onclick="popupEditProfile();">Редактировать</a>
-								<a class="enter__btn text-small signout" href="/signout">Выйти</a>
-							</div>
-						</button>
 					</div>
 					<div class="header__right --flex --aicn" wb-if="'{{_route.uri}}' !=='/english'">
 						<button class="btn btn-link profile-menu">
@@ -204,20 +194,7 @@
 								<a class="enter__btn text-small signout" href="/signout">Выйти</a>
 							</div>
 						</button>
-						<button class="burger" style="
-    margin: 8px;
-    padding-left: 14px;
-"></button>
-						<button class="btn btn-link profile-menu d-mobile">
-							Профиль
-							<svg class="svgsprite _drop">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#drop"></use>
-							</svg>
-							<div class="enter__panel">
-								<a class="enter__btn text-small" onclick="popupEditProfile();">Редактировать</a>
-								<a class="enter__btn text-small signout" href="/signout">Выйти</a>
-							</div>
-						</button>
+						<button class="burger" style="margin: 8px;padding-left: 14px;"></button>
 					</div>
 
 					<div class="header__left --flex --aicn" wb-if="'{{_route.uri}}' =='/english'">
