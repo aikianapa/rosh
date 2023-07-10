@@ -23,7 +23,7 @@
 						<a class="crumbs__link" href="/">Главная</a>
 						<span class="crumbs__link">Кабинет специалиста</span>
 					</div>
-					<h1 class="h1 mb-40">Кабинет специалиста</h1>
+					<h1 class="mb-40 h1">Кабинет специалиста</h1>
 					<div class="search__block --flex --aicn">
 						<div class="input">
 							<input class="search__input" type="text" name="q" placeholder="Поиск по пациентам">
@@ -51,10 +51,10 @@
 								<svg class="svgsprite _edit">
 									<use xlink:href="/assets/img/sprites/svgsprites.svg#edit"></use>
 								</svg>
-								<span class="crumbs__link mr-10 font-weight-normal">редактировать профиль</span>
+								<span class="mr-10 crumbs__link font-weight-normal">редактировать профиль</span>
 							</button>
 						</div>
-						<div class="user__group --noflex hidden">
+						<div class="hidden user__group --noflex">
 							<div class="user__item">
 								<!--Образование:-->
 								<!--<span>{{user.expert.education}}</span>-->
@@ -98,7 +98,7 @@
 					data-accardeon="{{this.id}}" data-sort="{{this.event_timestamp}}">
 					<div class="acount__table-main accardeon__main">
 						<div class="accardeon__click"></div>
-						<div class="account-events__block-wrap mb-20">
+						<div class="mb-20 account-events__block-wrap">
 							<div class="account-events__item">
 								<div class="account-event-wrap">
 									<div class="account-events__name">Услуги:</div>
@@ -122,7 +122,7 @@
 								</div>
 								<div class="account-event-wrap --jcsb">
 									<div class="account-events__name">Время приема:</div>
-									<div class="account-event text-right">
+									<div class="text-right account-event">
 										<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
 											<small>по московскому времени</small>
 										</p>
@@ -154,7 +154,7 @@
 							<div class="mb-10 text-bold">Выбраны услуги</div>
 							{{#if this.consultation}}
 							<div class="search__drop-item selected-consultation" style="display:flex;">
-								<div class="search__drop-name consultation-header pl-0">
+								<div class="pl-0 search__drop-name consultation-header">
 									<span>
 										{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
 									</span>
@@ -169,7 +169,7 @@
 
 							{{#each this.service_prices: idx, key}}
 							<div class="search__drop-item services selected">
-								<div class="search__drop-name pl-0">
+								<div class="pl-0 search__drop-name">
 									<div class="search__drop-tags">
 										{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
 										<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
@@ -185,15 +185,15 @@
 						</div>
 
 						{{#this.comment_for_expert}}
-						<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
+						<div class="pt-20 mb-20 analysis__description comment_for_expert" style="width:100%">
 							<div class="account-edit__title">
 								<p>Комментарий администратора</p>
 							</div>
-							<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+							<div class="m-0 mt-20 text-justify text"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 						</div>
 						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
-						<div class="account-edit__title mb-20 pt-20">
+						<div class="pt-20 mb-20 account-edit__title">
 							<div class="mr-10">Анализы</div>
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
@@ -202,11 +202,11 @@
 							</a>
 						</div>
 						{{/if}}
-						<div class="account-edit mb-20 pt-20" style="width: 100%">
+						<div class="pt-20 mb-20 account-edit" style="width: 100%">
 							<div class="account-edit__title">
 								<p>Рекомендация врача</p>
 							</div>
-							<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
+							<form class="pt-0 profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
 							<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
 								name="recommendation">{{this.recommendation}}</textarea>
 
@@ -215,7 +215,7 @@
 						</div>
 
 						{{#if this.hasPhoto}}
-						<div class="bg-inherit border-top mt-20 pt-20 mb-20" style="margin-left: 0">
+						<div class="pt-20 mt-20 mb-20 bg-inherit border-top" style="margin-left: 0">
 							<div class="row">
 								<div class="col-md-5">
 									<p>Фото до приема</p>
@@ -248,7 +248,7 @@
 									<p>Фото после приема</p>
 									{{#each photos.after}}
 									<div class="row">
-										<div class="col-md-6 mt-1">
+										<div class="mt-1 col-md-6">
 											<div class="acount__photo">
 												<a class="after-healing__item photo"
 													data-fancybox="event-{{event.id}}"
@@ -272,7 +272,7 @@
 							</div>
 						</div>
 						{{/if}}
-						<div class="account-events__btns mb-20 border-top pt-20">
+						<div class="pt-20 mb-20 account-events__btns border-top">
 							<div class="account-event-wrap --aicn">
 								{{#if this.pay_status == 'unpay'}}
 								<p>Ожидается предоплата пациентом</p>
@@ -330,7 +330,7 @@
 								</div>
 								<div class="account-event-wrap --jcsb">
 									<div class="account-events__name">Время приема:</div>
-									<div class="account-event text-right">
+									<div class="text-right account-event">
 										<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
 											<small>по московскому времени</small>
 										</p>
@@ -361,7 +361,7 @@
 							<div class="mb-10 text-bold">Выбраны услуги</div>
 							{{#if this.consultation}}
 							<div class="search__drop-item selected-consultation" style="display:flex;">
-								<div class="search__drop-name consultation-header pl-0">
+								<div class="pl-0 search__drop-name consultation-header">
 									<span>
 										{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
 									</span>
@@ -376,7 +376,7 @@
 
 							{{#each this.service_prices: idx, key}}
 							<div class="search__drop-item services selected">
-								<div class="search__drop-name pl-0">
+								<div class="pl-0 search__drop-name">
 									<div class="search__drop-tags">
 										{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
 										<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
@@ -391,15 +391,15 @@
 							{{/each}}
 						</div>
 						{{#this.comment_for_expert}}
-						<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
+						<div class="pt-20 mb-20 analysis__description comment_for_expert" style="width:100%">
 							<div class="account-edit__title">
 								<p>Комментарий администратора</p>
 							</div>
-							<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+							<div class="m-0 mt-20 text-justify text"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 						</div>
 						{{/this.comment_for_expert}}
 						{{#if this.analyses}}
-						<div class="account-edit__title mb-20 pt-20">
+						<div class="pt-20 mb-20 account-edit__title">
 							<div class="mr-10">Анализы</div>
 							<a class="btn btn--white btn--compact"
 								href="{{this.analyses}}"
@@ -408,11 +408,11 @@
 							</a>
 						</div>
 						{{/if}}
-						<div class="account-edit mb-20 pt-20" style="width: 100%">
+						<div class="pt-20 mb-20 account-edit" style="width: 100%">
 							<div class="account-edit__title">
 								<p>Рекомендация врача</p>
 							</div>
-							<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
+							<form class="pt-0 profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
 							<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
 								name="recommendation">{{this.recommendation}}</textarea>
 
@@ -420,7 +420,7 @@
 							</form>
 						</div>
 						{{#if this.hasPhoto}}
-						<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
+						<div class="pt-20 mt-20 bg-inherit border-top" style="margin-left: 0">
 							<div class="row">
 								<div class="col-md-5">
 									<p>Фото до приема</p>
@@ -453,7 +453,7 @@
 									<p>Фото после приема</p>
 									{{#each photos.after}}
 									<div class="row">
-										<div class="col-md-6 mt-1">
+										<div class="mt-1 col-md-6">
 											<div class="acount__photo">
 												<a class="after-healing__item photo"
 													data-fancybox="event-{{event.id}}"
@@ -478,7 +478,7 @@
 						</div>
 						{{/if}}
 						{{#if this.type == 'online'}}
-						<div class="account-events__btns mb-20 pt-20 border-top">
+						<div class="pt-20 mb-20 account-events__btns border-top">
 							<div class="account-event-wrap --aicn">
 								<div class="account-events__btn">
 									<button class="btn btn--white disabled" disabled>
@@ -544,13 +544,13 @@
 							</div>
 							<div class="history-item accardeon__click"></div>
 						</div>
-						<div class="acount__table-list accardeon__list pt-1" style="padding-bottom: 16px;">
+						<div class="pt-1 acount__table-list accardeon__list" style="padding-bottom: 16px;">
 
 							<div class="admin-editor__patient" style="width:62%">
 								<div class="mb-10 text-bold">Выбраны услуги</div>
 								{{#if this.consultation}}
 								<div class="search__drop-item selected-consultation" style="display:flex;">
-									<div class="search__drop-name consultation-header pl-0">
+									<div class="pl-0 search__drop-name consultation-header">
 										<span>
 											{{@global.catalog.spec_service.consultations[this.type][this.consultation].header}}
 										</span>
@@ -565,7 +565,7 @@
 
 								{{#each this.service_prices: idx, key}}
 								<div class="search__drop-item services selected">
-									<div class="search__drop-name pl-0">
+									<div class="pl-0 search__drop-name">
 										<div class="search__drop-tags">
 											{{#each catalog.servicePrices[service_id+'-'+this.price_id].tags}}
 											<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
@@ -581,15 +581,15 @@
 							</div>
 
 							{{#this.comment_for_expert}}
-							<div class="analysis__description comment_for_expert mb-20 pt-20" style="width:100%">
+							<div class="pt-20 mb-20 analysis__description comment_for_expert" style="width:100%">
 								<div class="account-edit__title">
 									<p>Комментарий администратора</p>
 								</div>
-								<div class="text m-0 mt-20 text-justify"> {{{@global.nl2br(.comment_for_expert)}}}</div>
+								<div class="m-0 mt-20 text-justify text"> {{{@global.nl2br(.comment_for_expert)}}}</div>
 							</div>
 							{{/this.comment_for_expert}}
 							{{#if this.analyses}}
-							<div class="account-edit__title mb-20 pt-20">
+							<div class="pt-20 mb-20 account-edit__title">
 								<div class="mr-10">Анализы</div>
 								<a class="btn btn--white btn--compact"
 									href="{{this.analyses}}"
@@ -598,11 +598,11 @@
 								</a>
 							</div>
 							{{/if}}
-							<div class="account-edit mb-20 pt-20" style="width: 100%">
+							<div class="pt-20 mb-20 account-edit" style="width: 100%">
 								<div class="account-edit__title">
 									<p>Рекомендация врача</p>
 								</div>
-								<form class="profile-edit active pt-0" on-submit="saveRecommendation" data-id="{{this.id}}">
+								<form class="pt-0 profile-edit active" on-submit="saveRecommendation" data-id="{{this.id}}">
 									<textarea class="account-edit__textarea" style="border-color:#777" id="{{this.id}}--recommendation"
 										name="recommendation">{{this.recommendation}}</textarea>
 
@@ -610,7 +610,7 @@
 								</form>
 							</div>
 							{{#if this.hasPhoto}}
-							<div class="bg-inherit border-top mt-20 pt-20" style="margin-left: 0">
+							<div class="pt-20 mt-20 bg-inherit border-top" style="margin-left: 0">
 								<div class="row">
 									<div class="col-md-5">
 										<p>Фото до приема</p>
@@ -643,7 +643,7 @@
 										<p>Фото после приема</p>
 										{{#each photos.after}}
 										<div class="row">
-											<div class="col-md-6 mt-1">
+											<div class="mt-1 col-md-6">
 												<div class="acount__photo">
 													<a class="after-healing__item photo"
 														data-fancybox="event-{{event.id}}"
@@ -779,7 +779,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="profile-edit__block profile-education hidden">
+			<div class="hidden profile-edit__block profile-education">
 				<div class="lk-title">Образование</div>
 				<div class="profile-education__wrap repeater-container" data-repeater="study">
 					{{#each user.adv.stages: idx}}
