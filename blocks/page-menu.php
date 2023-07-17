@@ -4,7 +4,7 @@
             <div class="col-lg-4"></div>
             <div class="col-lg-8">
                 <div>
-                    <h3 class="h3 mb-20">Оглавление</h3>
+                    <h3 class="mb-20 h3">Оглавление</h3>
                     <wb-foreach wb="from=pagemenu&tpl=false">
                         <div>
                             <a class="link" href="{{link}}">{{label}}</a>
@@ -27,7 +27,7 @@
             <div class="col-6">
                 <div class="dropdown">
                     <input class="form-control" name="link" placeholder="Ссылка" on-click="dropdown" data-toggle="dropdown" aria-expanded="false">
-                    <div class="dropdown-menu" wb-off>
+                    <div class="overflow-y-auto dropdown-menu" wb-off style="height:300px">
                         {{#each blocks}}
                             {{#if active == 'on'}}
                                 {{#if name !== 'page-menu'}}
