@@ -24,7 +24,7 @@
 	</wb-scripts>
 
 	<script defer  src="/assets/js/swiper-bundle.min.js"></script>
-	<script type="wbapp">
+	<script type="text/wbapp">
         $(function () {
             wbapp.init();
             window.user_role = wbapp._session?.user?.role;
