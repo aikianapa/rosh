@@ -372,9 +372,7 @@
 														</form>
 													{{else}}
 														<div class="text">
-															{{#this.recommendation}}
-																{{{@global.nl2br(this.recommendation)}}}
-															{{/this.recommendation}}
+															{{{@global.nl2br(recommendation)}}}
 														</div>
 													{{/if}}
 												{{/each}}
@@ -565,9 +563,7 @@
 															</form>
 														{{else}}
 															<div class="text">
-																{{#this.recommendation}}
-																	{{{@global.nl2br(this.recommendation)}}}
-																{{/this.recommendation}}
+																{{{@global.nl2br(event.recommendation)}}}
 															</div>
 														{{/if}}
 													{{/each}}
