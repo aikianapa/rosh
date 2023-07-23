@@ -43,7 +43,7 @@
             <wb-jq wb="$dom->find('.slider-content')->remove()" wb-if="'{{_var.cnt}}'=='0'"/>
         </div>
     </div>
-    <script type="text/javascript">
+    <script >
     $(function(){
         new Swiper('#{{_var.sliderid}}', {
             loop: true, slidesPerView: 1, speed: 1000, spaceBetween: 30,

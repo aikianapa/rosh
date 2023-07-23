@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <script type="text/javascript">
+    <script >
 		$('.post-list li a').on('click', function() {
 
 			$('.post-list').find('li a').removeClass('active');

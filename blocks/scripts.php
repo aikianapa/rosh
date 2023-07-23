@@ -23,7 +23,7 @@
 		]
 	</wb-scripts>
 
-	<script defer type="text/javascript" src="/assets/js/swiper-bundle.min.js"></script>
+	<script defer  src="/assets/js/swiper-bundle.min.js"></script>
 	<script type="wbapp">
         $(function () {
             wbapp.init();
@@ -44,11 +44,11 @@
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
-		<script type="text/javascript">
+		<script >
 			var __cs = __cs || [];
 			__cs.push(["setCsAccount", "VZFXRLYeQPw2Bg8xzsSHG1XSqdzBz7Ku"]);
 		</script>
-		<script type="text/javascript" async src="https://app.comagic.ru/static/cs.min.js"></script>
+		<script  async src="https://app.comagic.ru/static/cs.min.js"></script>
 	</div>
 
 	<link href="/assets/css/fancybox.css" rel="stylesheet">

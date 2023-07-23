@@ -153,7 +153,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script >
     function add2recommend(id, name){
 		$('input[name=recommend_id]').val(id);
 		$('input[name=recommend_name]').val(name);

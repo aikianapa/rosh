@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
+    <script >
     $(function(){
         new Swiper('#{{_var.sliderid}}', {
             loop: true, slidesPerView: 'auto', speed: 1000, spaceBetween: 30,
