@@ -1,5 +1,4 @@
-<view>
-    <footer>
+<view><footer>
         <div class="footer">
             <div class="container">
                 <div class="container-fluid">
@@ -32,7 +31,7 @@
                             <a class="footer__contact text-small text-grey" href="mailto:{{_var.contactEmail}}">{{_var.contactEmail}}</a>
                         </div>
                         <div class="footer__item col-lg-7">
-                            <a class="footer__contact text-small text-grey" href="[contacts]"> г. Москва, Ростовская набережная д. 5, пом. 9</a>
+                            <a class="footer__contact text-small text-grey" href="[contacts]"> г. Москва, Ростовская набережная д. 5, вход с фасада здания.</a>
                         </div>
                     </div>
                     <div class="row footer__bottom">
@@ -73,20 +72,15 @@
             </div>
         </div>
         <div class="to_top_btn">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="29px" viewBox="0 0 20 29" enable-background="new 0 0 20 29" xml:space="preserve" space="preserve">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="29px" viewbox="0 0 20 29" enable-background="new 0 0 20 29" xml:space="preserve" space="preserve">
                 <path fill="#FFF" d="M11.011,0.4c-0.534-0.533-1.397-0.533-1.929,0L0.4,9.082c-0.533,0.533-0.533,1.396,0,1.929 c0.532,0.533,1.396,0.533,1.929,0l7.717-7.717l7.717,7.717c0.533,0.533,1.397,0.533,1.93,0c0.533-0.532,0.533-1.396,0-1.929 L11.011,0.4z"></path>
                 <rect x="8.682" y="1.364" fill="#FFF" width="2.729" height="27.284"></rect>
             </svg>
         </div>
-    </footer>
-    <wb-module wb="module=yonger&mode=render&view=mainmenu" />
-
-</view>
-<edit header="Подвал сайта">
-    <div>
-        <wb-module wb="module=yonger&mode=edit&block=common.inc" />
+    </footer><wb-module wb="module=yonger&amp;mode=render&amp;view=mainmenu"></wb-module></view><edit header="Подвал сайта"><div>
+        <wb-module wb="module=yonger&amp;mode=edit&amp;block=common.inc"></wb-module>
     </div>
-    <wb-lang>
+<wb-lang>
         [ru]
         header = Подвал сайта name = "Наименование блока"
         active = "Отображать блок"
@@ -95,5 +89,4 @@
         name = "Block name"
         active = "Show block"
         template = Template
-    </wb-lang>
-</edit>
+    </wb-lang></edit>
