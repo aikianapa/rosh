@@ -59,7 +59,7 @@
 									<button class="btn btn--black form__submit mr-20" type="button" on-click="submit">Перезвонить мне</button>
 									<div class="fast-form__description ml-10">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на
 										<a href="">обработку своих персональных данных</a> на основании
-										<a href="policy.html">Политики конфиденциальности</a></div>
+										<a href="/policy/">Политики конфиденциальности</a></div>
 								</div>
 							</div>
 						</div>

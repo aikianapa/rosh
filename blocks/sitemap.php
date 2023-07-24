@@ -79,8 +79,8 @@
                             <li class="site-map__item"> <a class="site-map__link" href="[gallery]">Галерея</a></li>
                             <li class="site-map__item"> <a class="site-map__link" href="[experts]">Специалисты</a>
                                 <ul class="site-map__list">
-                                    <wb-foreach wb="table=experts&tpl=false&sort=header" wb-filter="active=on">
-                                        <li class="site-map__item">
+                                    <wb-foreach wb="table=experts&tpl=false&sort=header">
+                                        <li class="site-map__item" wb-if="'{{active}}'=='on'">
                                             <a class="site-map__link" href="/about{{yongerFurl()}}">{{header}}</a>
                                         </li>
                                     </wb-foreach>
@@ -94,7 +94,7 @@
                 <div class="site-map__column">
                     <div class="site-map__block">
                         <wb-var list wb-api="/api/v2/list/problems" />
-                        <a class="site-map__heading" href="/problems">Проблемы </a>
+                        <a class="site-map__heading" href="/problems/">Проблемы </a>
                         <ul class="site-map__list">
                             <wb-foreach wb="table=catalogs&item=srvtype&from=tree.data&tpl=false">
                                 <li class="site-map__item">
@@ -112,12 +112,13 @@
                     </div>
                 </div>
                 <div class="site-map__column">
-                    <div class="site-map__block"> <a class="site-map__heading" href="/cabinet">Личный кабинет </a></div>
-                    <div class="site-map__block"> <a class="site-map__heading" href="/shop">Магазин</a>
+                    <div class="site-map__block"> <a class="site-map__heading" href="/cabinet/">Личный кабинет </a></div>
+                    <div class="site-map__block"> <a class="site-map__heading" href="/shop/">Магазин</a>
                         <ul class="site-map__list">
                             <wb-foreach wb="table=shop&tpl=false&sort=header" wb-filter="active=on">
                                 <li class="site-map__item">
                                     <a class="site-map__link" href="{{yongerFurl()}}">{{header}}</a>
+                                </li>
                             </wb-foreach>
                         </ul>
                     </div>

@@ -1,6 +1,5 @@
 <view>
-	<a class="phone --openpopup" href="javascript:void(0)" data-popup="--fast"
-		wb-if="in_array('{{_sess.user.role}}',['','client'])">
+	<a class="phone --openpopup" href="javascript:void(0)" data-popup="--fast" wb-if="in_array('{{_sess.user.role}}',['','client'])">
 		<svg class="svgsprite _phone">
 			<use xlink:href="/assets/img/sprites/svgsprites.svg?v=2#phone"></use>
 		</svg>
@@ -27,10 +26,10 @@
 	</div>
 
 	<div wb-if="in_array('{{_sess.user.role}}',['admin','expert','main','client'])">
-		<wb-module wb="module=yonger&mode=render&view=popups-cabinet"/>
+		<wb-module wb="module=yonger&mode=render&view=popups-cabinet" />
 	</div>
 	<div wb-if="in_array('{{_sess.user.role}}',['admin','','main','client'])">
-		<wb-module wb="module=yonger&mode=render&view=popups-login"/>
+		<wb-module wb="module=yonger&mode=render&view=popups-login" />
 		<div class="popup --fast">
 			<template>
 				<div class="popup__overlay"></div>
@@ -46,25 +45,20 @@
 							<input type="hidden" name="client" value="{{user.id}}">
 
 							<div class="input input--grey">
-								<input class="input__control" name="fullname"
-									value="{{user.fullname}}"
-									type="text" placeholder="ФИО"
-									required>
+								<input class="input__control" name="fullname" value="{{user.fullname}}" type="text" placeholder="ФИО" required>
 								<div class="input__placeholder">ФИО</div>
 							</div>
 							<div class="input input--grey">
-								<input class="input__control intl-tel" name="phone"
-									value="{{user.phone}}"
-									type="tel" required>
+								<input class="input__control intl-tel" name="phone" value="{{user.phone}}" type="tel" required>
 								<div class="input__placeholder active">Номер телефона</div>
 							</div>
 							<div class="input input--grey">
-							<textarea class="input__control"
-								name="client_comment" placeholder="Причина обращения" required>{{comment}}</textarea>
+								<textarea class="input__control" name="client_comment" placeholder="Причина обращения" required>{{comment}}</textarea>
 								<div class="input__placeholder">Причина обращения</div>
 							</div>
 							<div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании
-								<a href="/policy">Политики конфиденциальности</a></div>
+								<a href="/policy">Политики конфиденциальности</a>
+							</div>
 							<button class="btn btn--black form__submit" type="button" on-click="submit">Перезвонить мне</button>
 							<div class="form-bottom">Также, после отправки формы, Вам будет автоматически сгенерирован личный кабинет на сайте, доступ к которому вы можете получить в правом верхнем углу по номеру телефона, указанному при заполнении.</div>
 						</form>
@@ -84,20 +78,20 @@
 			</template>
 		</div>
 		<script wbapp>
-			var createFastQuote = function (client_id, client_comment, experts, quote_page_comment) {
-				var quote                 = {};
+			var createFastQuote = function(client_id, client_comment, experts, quote_page_comment) {
+				var quote = {};
 				var curr_page_breadcrumbs = [];
-				quote.group               = 'quotes';
-				quote.status              = 'new';
-				quote.pay_status          = 'free';
-				quote.client              = client_id;
-				quote.priority            = 0;
-				quote.marked              = false;
+				quote.group = 'quotes';
+				quote.status = 'new';
+				quote.pay_status = 'free';
+				quote.client = client_id;
+				quote.priority = 0;
+				quote.marked = false;
 
-				quote.comment        = '';
+				quote.comment = '';
 				quote.recommendation = '';
-				quote.description    = '';
-				quote.price          = 0;
+				quote.description = '';
+				quote.price = 0;
 				if (experts) {
 					quote.experts = experts;
 				}
@@ -106,7 +100,7 @@
 				}
 
 				quote.quote_from_page = '';
-				$('.crumbs__link').each(function (i) {
+				$('.crumbs__link').each(function(i) {
 					if (i === 0) return;
 					curr_page_breadcrumbs.push($(this).text());
 				});
@@ -116,24 +110,28 @@
 				quote.client_comment = client_comment;
 
 				//toast_success('Мы перезвоним Вам в ближайшее время!');
-				quote.event_date       = '';
-				quote.event_time       = '';
+				quote.event_date = '';
+				quote.event_time = '';
 				quote.event_time_start = '';
-				quote.event_time_end   = '';
+				quote.event_time_end = '';
 
 				quote.longterm_date_end = '';
-				quote.longterm_title    = '';
-				quote.active            = 'on';
+				quote.longterm_title = '';
+				quote.active = 'on';
 
-				quote.photos  = {before: [], after: []};
+				quote.photos = {
+					before: [],
+					after: []
+				};
 				quote.__token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 
 				window.api.post(
 					'/api/v2/create/records/', quote).then(
-					function (data) {
+					function(data) {
 						if (data.error) {
-							wbapp.trigger('wb-save-error',
-								{'data': data});
+							wbapp.trigger('wb-save-error', {
+								'data': data
+							});
 						} else {
 							$('.popup.--fast .popup__panel:not(.--succed)').addClass('d-none');
 							$('.popup.--fast .popup__panel.--succed').addClass('d-block');
@@ -150,7 +148,7 @@
 				on: {
 					complete() {
 						var self = this;
-						setTimeout(function () {
+						setTimeout(function() {
 							if (wbapp._session.user) {
 								if (wbapp._session.user.phone[0] === '7') {
 									wbapp._session.user.phone = '+' + wbapp._session.user.phone;
@@ -162,30 +160,28 @@
 							}
 
 							console.log('init tel', $(self.el).find('input.intl-tel'));
-							$(self.el).find('input.intl-tel').each(function () {
+							$(self.el).find('input.intl-tel').each(function() {
 								var self = $(this);
 								self.intlTelInput({
 									formatOnDisplay: false,
-									customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+									customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
 										selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
 											'+' + selectedCountryData.dialCode, ' '
 										);
 										self.inputmask(
 											'+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' +
-											selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
-											{
-												placeholder:
-													'+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' +
+											selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'), {
+												placeholder: '+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' +
 													selectedCountryPlaceholder
-														.replaceAll(/[0-9]/g, '_')
-														.replaceAll(' ', '-'),
+													.replaceAll(/[0-9]/g, '_')
+													.replaceAll(' ', '-'),
 												clearMaskOnLostFocus: true,
 												showMaskOnHover: false,
 												positionCaretOnClick: 'radixFocus'
 											}
 										);
 										return '+' + selectedCountryData.dialCode.replace('9', '\9') + ' ' +
-										       selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
+											selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
 									},
 									nationalMode: false,
 									//onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk",
@@ -205,7 +201,7 @@
 						var form = this.find('.popup.--fast .popup__form');
 						if ($(form).verify()) {
 							var form_data = $(form).serializeJSON();
-							var expert    = $('input.expert');
+							var expert = $('input.expert');
 
 							form_data.experts = [];
 							if (expert.length) {
@@ -215,28 +211,28 @@
 								console.log('try to createProfile: ', form_data);
 
 								let names = form_data.fullname.split(' ', 3);
-								let keys  = ['last_name', 'first_name', 'middle_name'];
+								let keys = ['last_name', 'first_name', 'middle_name'];
 								for (var i = 0; i < names.length; i++) {
 									form_data[keys[i]] = names[i];
 								}
-								var _token      = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
+								var _token = wbapp._settings.devmode === 'on' ? '123' : wbapp._session.token;
 								form_data.phone = str_replace([' ', '-', '(', ')'], '', form_data.phone);
-								var _req_phone  = str_replace('+', '', form_data.phone);
+								var _req_phone = str_replace('+', '', form_data.phone);
 								window.api.get('/api/v2/list/users/?role=client&phone~=' + _req_phone +
-								               '&__token=' + _token)
-									.then(function (data) {
+										'&__token=' + _token)
+									.then(function(data) {
 										if (!data.length) {
 											window.api.get('/api/v2/list/users/?email=' + form_data.email +
-											               '&__token=' + _token).then(
-												function (data) {
+												'&__token=' + _token).then(
+												function(data) {
 													if (!data.length) {
-														form_data.role      = "client";
-														form_data.role      = "client";
+														form_data.role = "client";
+														form_data.role = "client";
 														form_data.confirmed = 0;
-														form_data.active    = "on";
-														form_data.__token   = _token;
+														form_data.active = "on";
+														form_data.__token = _token;
 														window.api.post('/api/v2/create/users/', form_data).then(
-															function (data) {
+															function(data) {
 																if (data.error) {
 																	wbapp.trigger('wb-save-error', {
 																		'data': data
@@ -295,24 +291,21 @@
 					<div class="popup__name text-bold">Сменить пароль</div>
 					<form class="popup__form" on-submit="submit">
 						{{#user}}
-						<input type="hidden" name="id" value="{{user.id}}">
-						<div class="input">
-							<input class="input__control" type="password" required placeholder="Текущий пароль"
-								name="old_password">
-							<div class="input__placeholder">Текущий пароль</div>
-						</div>
-						<div class="input">
-							<input class="input__control" required type="password" placeholder="Новый пароль"
-								name="new_password">
-							<div class="input__placeholder">Новый пароль</div>
-						</div>
-						<div class="input mb-30">
-							<input class="input__control" type="password" required placeholder="Повторите пароль"
-								name="new_password_repeat" autocomplete="off">
-							<div class="input__placeholder">Повторите пароль</div>
-						</div>
+							<input type="hidden" name="id" value="{{user.id}}">
+							<div class="input">
+								<input class="input__control" type="password" required placeholder="Текущий пароль" name="old_password">
+								<div class="input__placeholder">Текущий пароль</div>
+							</div>
+							<div class="input">
+								<input class="input__control" required type="password" placeholder="Новый пароль" name="new_password">
+								<div class="input__placeholder">Новый пароль</div>
+							</div>
+							<div class="input mb-30">
+								<input class="input__control" type="password" required placeholder="Повторите пароль" name="new_password_repeat" autocomplete="off">
+								<div class="input__placeholder">Повторите пароль</div>
+							</div>
 
-						<button class="btn btn--black form__submit" type="submit">Сохранить</button>
+							<button class="btn btn--black form__submit" type="submit">Сохранить</button>
 						{{/user}}
 					</form>
 				</div>
@@ -320,7 +313,7 @@
 		</template>
 	</div>
 	<script wbapp>
-		window.popupChangePassword = function () {
+		window.popupChangePassword = function() {
 			return new Ractive({
 				el: '.popup.--change-password',
 				template: wbapp.tpl('#popupChangePassword').html,
@@ -336,7 +329,7 @@
 						//$('body').addClass('noscroll');
 					},
 					submit(ev) {
-						var self  = this;
+						var self = this;
 						var $form = $(ev.node);
 						if ($form.verify()) {
 							var data = $form.serializeJSON();
@@ -350,10 +343,10 @@
 									new_password: data.new_password,
 									new_password_repeat: data.new_password_repeat
 								},
-								complete: function () {
+								complete: function() {
 									wbapp.unloading();
 								},
-								success: function (data) {
+								success: function(data) {
 									wbapp.unloading();
 									if (data.error) {
 										toast_error(data.msg);
@@ -443,7 +436,8 @@
 						<div class="input__placeholder">Причина обращения</div>
 					</div>
 					<div class="form__description">Нажимая на кнопку "Перезвонить мне", Вы даете согласие на обработку своих персональных данных на основании
-						<a href="/policy">Политики конфиденциальности</a></div>
+						<a href="/policy">Политики конфиденциальности</a>
+					</div>
 					<button class="btn btn--black form__submit">Перезвонить мне</button>
 					<div class="form-bottom">Также, после отправки формы, Вам будет автоматически сгенерирован личный кабинет на сайте, доступ к которому вы можете получить в правом верхнем углу по номеру телефона, указанному при заполнении.</div>
 				</form>
@@ -506,7 +500,7 @@
 						<p class="mb-10">Назначит дополнительное обследование, лечение, а также даст рекомендации по образу жизни.
 						</p>
 					</div>
-					<a class="btn btn--black" href="/landing.html">Читать подробнее</a>
+					<a class="btn btn--black" href="#">Читать подробнее</a>
 				</div>
 			</div>
 		</div>
@@ -765,6 +759,6 @@
 
 <edit header="Все попапы">
 	<div>
-		<wb-module wb="module=yonger&mode=edit&block=common.inc"/>
+		<wb-module wb="module=yonger&mode=edit&block=common.inc" />
 	</div>
 </edit>
