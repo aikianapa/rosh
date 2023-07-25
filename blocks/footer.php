@@ -77,7 +77,7 @@
                 <rect x="8.682" y="1.364" fill="#FFF" width="2.729" height="27.284"></rect>
             </svg>
         </div>
-    </footer><wb-module wb="module=yonger&amp;mode=render&amp;view=mainmenu"></wb-module></view><edit header="Подвал сайта"><div>
+    </footer></view><edit header="Подвал сайта"><div>
         <wb-module wb="module=yonger&amp;mode=edit&amp;block=common.inc"></wb-module>
     </div>
 <wb-lang>

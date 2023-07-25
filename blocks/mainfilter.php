@@ -837,26 +837,6 @@
 			initPlugins($(mainFilter.el));
 		}, 2500);
 	</script>
-	<style>
-		#mainfilterCounter {
-			color         : #fff;
-			background    : #000;
-			padding       : 5px;
-			display       : none;
-			position      : fixed;
-			bottom        : 20px;
-			right         : 20px;
-			z-index       : 10;
-			border-radius : 7px;
-			cursor        : pointer;
-		}
-
-		@media (max-width : 767px) {
-			#mainfilterCounter {
-				display : inline;
-			}
-		}
-	</style>
 </view>
 <edit header="Основной фильтр">
 	<div>
