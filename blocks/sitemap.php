@@ -79,8 +79,8 @@
                             <li class="site-map__item"> <a class="site-map__link" href="[gallery]">Галерея</a></li>
                             <li class="site-map__item"> <a class="site-map__link" href="[experts]">Специалисты</a>
                                 <ul class="site-map__list">
-                                    <wb-foreach wb="table=experts&tpl=false&sort=header">
-                                        <li class="site-map__item" wb-if="'{{active}}'=='on'">
+                                    <wb-foreach wb="table=users&tpl=false&sort=_sort" wb-filter="active=on&role=expert">
+                                        <li class="site-map__item">
                                             <a class="site-map__link" href="/about{{yongerFurl()}}">{{header}}</a>
                                         </li>
                                     </wb-foreach>
