@@ -4,6 +4,7 @@
 <head>
 	<title seo>Кабинет администратора</title>
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+	
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
@@ -227,12 +228,12 @@
 </template>
 <!-- !!! editorRecord !!! -->
 <template id="editorRecord" wb-off>
-	<form class="record-edit mt-2">
+	<form class="mt-2 record-edit">
 		<div class="row">
 			<div class="col-md-7">
 				{{#record.quote_from_page}}
 				{{#unless record.quote_from_page.search(/(проблем|услуг|блог|клинике)/i) == -1 }}
-				<div class="account-events__item wide mb-20">
+				<div class="mb-20 account-events__item wide">
 					<div class="account-event-wrap">
 						<div class="account-events__name" style="font-size: 20px">Страница обращения:</div>
 						<div class="account-event" style="font-size: 16px">
@@ -265,7 +266,7 @@
 				{{/record.quote_page_comment}}
 				{{/if}}
 
-				<div class="lk-title mt-40">Редактировать заявку</div>
+				<div class="mt-40 lk-title">Редактировать заявку</div>
 				<input type="hidden" value="{{ record.id }}" name="id">
 
 				{{#if record.spec_service}}
@@ -490,12 +491,12 @@
 					{{/if}}
 					<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup></p>
 				</div>
-				<div class="mb-80 text-right" data-hide="service-search">
+				<div class="text-right mb-80" data-hide="service-search">
 					<b>*</b>&nbsp;<small>стоимость указана приблизительно, она может быть изменена в зависимости от фактически оказанных услуг</small>
 				</div>
 
 				{{#if record.group == 'events'}}
-				<div class="pt-30 mb-40 admin-editor__images">
+				<div class="mb-40 pt-30 admin-editor__images">
 					{{#if record.hasPhoto}}
 					<div class="row">
 						<div class="col-md-6">
@@ -550,7 +551,7 @@
 				</div>
 				<div style="width: 100%; max-width: 305px;">
 					<div class="mb-10 text-bold">Комментарий для администратора</div>
-					<textarea class="admin__editor-textarea mb-2" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
+					<textarea class="mb-2 admin__editor-textarea" name="comment" placeholder="Добавить комментарий">{{record.comment}}</textarea>
 				</div>
 			</div>
 		</div>
@@ -742,9 +743,9 @@
 						</div>
 					</div>
 					<div class="acount__table-list accardeon__list admin-editor">
-						<div class="admin-editor__top mb-40">
+						<div class="mb-40 admin-editor__top">
 							<div class="admin-editor__top-info">
-								<div class="row mb-40">
+								<div class="mb-40 row">
 									<div class="col-md-12">
 										<div class="mb-20 analysis__top --aicn --flex">
 											<div class="analysis__title">Анализы</div>
