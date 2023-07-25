@@ -4,9 +4,6 @@
 <head>
 	<title seo>Кабинет администратора</title>
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Expires" content="0" />
 </head>
 
 <body class="body lk-cabinet photos" data-barba="wrapper">

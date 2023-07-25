@@ -5,9 +5,6 @@
 	<title seo>Кабинет специалиста</title>
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 	<link rel="stylesheet" href="/assets/css/listnav.css?v=2">
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Expires" content="0" />
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">
