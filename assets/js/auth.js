@@ -407,7 +407,7 @@ $(document).ready(function() {
 			success: function(data){
 				if(data.status === 'ok'){
 					auth.email_enter_window_show_alert(data.message, 'success');
-					location.replace(data.user.group.url_login);
+					setTimeout(() => { location.replace(data.user.group.url_login); },500)
 				}else{
 					auth.email_enter_window_clear_fields();
 					auth.email_enter_window_show_alert(data.message);
