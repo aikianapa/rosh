@@ -1,4 +1,4 @@
-<html>
+<html lang="ru">
 
 <head>
     <meta charset="utf-8">
@@ -20,9 +20,9 @@
                                 <div class="product-slider swiper-container">
                                     <div class="swiper-wrapper">
                                         <wb-foreach wb="from=image&tpl=false">
-                                        <div class="product-slide swiper-slide">
-                                            <img src="/thumb/953x566/src{{img}}" alt="{{alt}}">
-                                        </div>
+                                            <div class="product-slide swiper-slide">
+                                                <img src="/thumb/953x566/src{{img}}" alt="{{alt}}">
+                                            </div>
                                         </wb-foreach>
                                     </div>
                                     <div class="product-arrow swiper-button-next"></div>
@@ -35,7 +35,7 @@
                                 <ul>
                                     <li wb-if="'{{articul}}'>''">Артикул: {{articul}}</li>
                                     <wb-foreach wb="from=prop&tpl=false">
-                                    <li>{{prop_name}} {{prop_value}}</li>
+                                        <li>{{prop_name}} {{prop_value}}</li>
                                     </wb-foreach>
                                 </ul>
                                 <span class="product-price">{{fmtPrice({{price}})}} ₽</span>
@@ -47,9 +47,9 @@
                                         <span class="amount-plus"></span>
                                     </div>
                                     <span class="card-txt" wb-if="'{{office}}'=='on' && '{{delivery}}'=='on'">Доступен к самовывозу и доставке</span>
-                                <span class="card-txt" wb-if="'{{office}}'=='on' && '{{delivery}}'==''">Доступен к самовывозу</span>
-                                <span class="card-txt" wb-if="'{{office}}'=='' && '{{delivery}}'=='on'">Доступен к доставке</span>
-                                <span class="card-txt" wb-if="'{{office}}'=='' && '{{delivery}}'==''">Нет в наличии</span>
+                                    <span class="card-txt" wb-if="'{{office}}'=='on' && '{{delivery}}'==''">Доступен к самовывозу</span>
+                                    <span class="card-txt" wb-if="'{{office}}'=='' && '{{delivery}}'=='on'">Доступен к доставке</span>
+                                    <span class="card-txt" wb-if="'{{office}}'=='' && '{{delivery}}'==''">Нет в наличии</span>
                                 </div>
                             </div>
                         </div>
