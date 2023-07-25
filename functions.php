@@ -210,6 +210,7 @@ function beforeShow(&$out)
     $out = str_replace($fr, $to, $out);
     $out = str_replace(' done=""', ' ', $out);
     $out = str_replace(' type="wbapp"', ' type="text/wbapp"', $out);
+    $out = str_replace('wbapp type="text/wbapp"', 'type="text/wbapp"', $out);
     return $out;
 }
 
