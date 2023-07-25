@@ -3,7 +3,7 @@
 
 <head>
 	<title seo>Кабинет специалиста</title>
-	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 
 <body class="body lk-cabinet" data-barba="wrapper">

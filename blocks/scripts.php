@@ -1,5 +1,5 @@
 <view head>
-	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT3JOvpJuMXozLKY-hPfjCDdEgo78vZok"></script>-->
 

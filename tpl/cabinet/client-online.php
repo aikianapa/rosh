@@ -2,7 +2,7 @@
 <html class="no-js" lang="ru">
 <head>
 	<title seo>Онлайн консультация со специалистом</title>
-	<link rel="icon" href="/favicon.svg" type=" image/svg+xml">
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body class="body lk-cabinet online-consultation" data-barba="wrapper">
 <div>
