@@ -833,9 +833,9 @@
 			mainFilterState.save(true);
 		});
 
-		setTimeout(function () {
+		setTimeout(async () => {
 			initPlugins($(mainFilter.el));
-		}, 2500);
+		}, 500);
 	</script>
 </view>
 <edit header="Основной фильтр">
