@@ -646,13 +646,12 @@
 						});
 						setTimeout(function() {
 							$.each(mainFilter.get('choice.symptoms'), function(i, item) {
-								$(mainFilter.find(
-									`[data-tab=sympthoms] label[data-id=${item.id}] input`
-								)).prop('checked', true);
+								$(`[data-tab="sympthoms"] label[data-id="${item.id}"] > input`).prop(
+                                    'checked', true);
 							});
 							mainFilter.countChoice();
 						}, 300);
-						mainFilter.countChoice();
+						// mainFilter.countChoice();
 					}, 300);
 				},
 				viewService(ev) {

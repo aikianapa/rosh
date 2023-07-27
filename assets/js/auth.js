@@ -247,6 +247,10 @@ $(document).ready(function() {
 		// },
 		customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
 			//console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
+			if(selectedCountryData.iso2==='ru'){
+				selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
+					' 912 ', ' (912) ');
+			}
 			selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
 				'+'+selectedCountryData.dialCode, '');
 			auth.phone_value.inputmask(

@@ -7,7 +7,7 @@
                     <h3 class="mb-20 h3">Оглавление</h3>
                     <wb-foreach wb="from=pagemenu&tpl=false">
                         <div>
-                            <a class="link" href="{{link}}">{{label}}</a>
+                            <a class="link link-black" href="{{link}}">{{label}}</a>
                         </div>
                     </wb-foreach>
                 </div>

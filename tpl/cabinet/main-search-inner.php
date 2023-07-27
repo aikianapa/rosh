@@ -346,7 +346,7 @@
 											<div class="col-md-5">
 												<div class="mb-20 text-bold text-big">Фото до приема</div>
 												{{#each this.photos.before}} <!--single photo!-->
-													<a class="before-healing photo" data-fancybox="images-{{event.id}}" data-href="{{.src}}" data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
+													<a class="before-healing photo" data-fancybox="images-{{event.id}}" href="{{.src}}" data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
 														<h2 class="h2 healing__date-title">
 															{{ @global.utils.formatDateAdv(.date) }}
 														</h2>
@@ -364,7 +364,7 @@
 													<div class="row">
 														{{#each this.photos.after}}
 															<div class="col-md-6">
-																<a class="after-healing__item photo" data-fancybox="images-{{event.id}}" data-href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
+																<a class="after-healing__item photo" data-fancybox="images-{{event.id}}" href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
 																	<h2 class="h2 healing__date-title">
 																		{{ @global.utils.formatDateAdv(.date) }}
 																	</h2>
@@ -665,7 +665,7 @@
 									<div class="col-md-6">
 										<div class="mb-20 text-bold text-big">Фото до приема</div>
 										{{#each record.photos.before}} <!--single photo!-->
-											<a class="before-healing photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-href="{{.src}}" data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
+											<a class="before-healing photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
 												<div class="healing__date">
 													{{ @global.utils.formatDate(.date) }}
 												</div>
@@ -681,7 +681,7 @@
 											<div class="row">
 												{{#each record.photos.after}}
 													<div class="col-md-12">
-														<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
+														<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
 															<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 															<div class="after-healing__photo" style="background-image: url({{.src}});">
 															</div>
@@ -934,12 +934,6 @@
 				},
 				on: {
 					complete() {
-						setTimeout(function() {
-							$('a.photo[data-href]').each(function(i) {
-								var _img = $(this);
-								_img.attr('href', $(this).data('href'));
-							});
-						}, 150);
 					},
 					addEventPhoto(ev, client, record) {
 						console.log('addEventPhoto', client, record);
@@ -1090,13 +1084,6 @@
 							function(rec) {
 								toast('Фото добавлено!');
 								content_load();
-								setTimeout(function() {
-									$(self.el).find('a.photo[data-href]')
-										.each(function(i) {
-											var _img = $(this);
-											_img.attr('href', $(this).data('href'));
-										});
-								}, 150);
 							});
 					},
 					deleteProfile(ev, client, idx) {
@@ -1159,13 +1146,6 @@
 										$(this.el).find('.select.select_experts .select__item')
 											.trigger('click');
 									}
-
-									setTimeout(function() {
-										$('a.photo[data-href]').each(function(i) {
-											var _img = $(this);
-											_img.attr('href', $(this).data('href'));
-										});
-									}, 150);
 								},
 								addPhoto(ev, record) {
 									var self = this;
@@ -1173,13 +1153,6 @@
 										function(rec) {
 											toast('Фото добавлено!');
 											self.set('record', rec);
-											setTimeout(function() {
-												$(self.el).find('a.photo[data-href]')
-													.each(function(i) {
-														var _img = $(this);
-														_img.attr('href', $(this).data('href'));
-													});
-											}, 150);
 											page.set('history.events.' + _row_idx, rec);
 										});
 								},
@@ -1305,12 +1278,6 @@
 					function(data) {
 						page.set('events.upcoming', data); /* get actually user next events */
 						$("img[data-src]:not([src])").lazyload();
-						setTimeout(function() {
-							$('a.photo[data-href]').each(function(i) {
-								var _img = $(this);
-								_img.attr('href', $(this).data('href'));
-							});
-						}, 350);
 					});
 
 				utils.api.get('/api/v2/list/records?status=past&group=events&@sort=event_date:d&client=' + client_id).then(
@@ -1318,13 +1285,6 @@
 						page.set('history.events', data); /* get actually user next events */
 						page.set('events_ready', true); /* get actually user next events */
 						$("img[data-src]:not([src])").lazyload();
-
-						setTimeout(function() {
-							$('a.photo[data-href]').each(function(i) {
-								var _img = $(this);
-								_img.attr('href', $(this).data('href'));
-							});
-						}, 350);
 					});
 
 				utils.api.get("/api/v2/list/records?group=longterms&@sort=_created:d&client=" + client_id)
@@ -1332,13 +1292,6 @@
 						page.set('history.longterms', data); /* get actually user next events */
 						page.set('longterms_ready', true); /* get actually user next events */
 						$("img[data-src]:not([src])").lazyload();
-
-						setTimeout(function() {
-							$('a.photo[data-href]').each(function(i) {
-								var _img = $(this);
-								_img.attr('href', $(this).data('href'));
-							});
-						}, 350);
 
 					});
 			};

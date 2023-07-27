@@ -514,6 +514,10 @@ $(function() {
                         formatOnDisplay: false,
                         customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
                             //console.log(selectedCountryPlaceholder.replaceAll(/[0-9]/g, '0'), selectedCountryData);
+                            if(selectedCountryData.iso2==='ru'){
+                                selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
+                                    ' 912 ', ' (912) ');
+                            }
                             selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
                                 '+' + selectedCountryData.dialCode, ' ');
                             self.inputmask('+' + selectedCountryData.dialCode.replace('9', '\\9')

@@ -501,7 +501,7 @@
 									<div class="col-md-6">
 										<div class="mb-30 text-bold text-big">Фото до приема</div>
 										{{#each record.photos.before}} <!--single photo!-->
-											<a class="before-healing photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-href="{{.src}}" data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
+											<a class="before-healing photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото до приема, {{ @global.utils.formatDate(.date) }}">
 												<div class="healing__date">
 													{{ @global.utils.formatDate(.date) }}
 												</div>
@@ -517,7 +517,7 @@
 											<div class="row">
 												{{#each record.photos.after}}
 													<div class="col-md-12">
-														<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
+														<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото после приема, {{ @global.utils.formatDate(.date) }}">
 															<div class="healing__date">{{ @global.utils.formatDate(.date) }}</div>
 															<div class="after-healing__photo" style="background-image: url('{{.src}}');">
 															</div>
@@ -643,7 +643,7 @@
 										<input type="hidden" class="orderby" value="{{catalog.clients[client].fullname}}">
 										<p>ФИО</p>
 										<div>
-											<a class="client-card link" data-href="/cabinet/client/{{client}}" target="_blank">{{catalog.clients[record.client].fullname}}</a>
+											<a class="client-card link" href="/cabinet/client/{{client}}" target="_blank">{{catalog.clients[record.client].fullname}}</a>
 											{{#if @global.catalog.clients_has_longterm[record.client]}}
 												<small class="text-danger">продолжительное</small>
 											{{/if}}
@@ -933,7 +933,7 @@
 														Фото до начала лечения
 													</div>
 													{{#each record.photos.before}} <!--single photo!-->
-														<a class="before-healing photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
+														<a class="before-healing photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото до начала лечения, {{ @global.utils.formatDate(.date) }}">
 															<h2 class="h2 healing__date-title">
 																{{ @global.utils.formatDateAdv(.date) }}
 															</h2>
@@ -951,7 +951,7 @@
 														<div class="row">
 															{{#each record.photos.after}}
 																<div class="col-md-6">
-																	<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" data-href="{{.src}}" data-caption="Фото после начала лечения, {{ @global.utils.formatDate(.date) }}">
+																	<a class="after-healing__item photo" data-fancybox="images-{{record.id}}" href="{{.src}}" data-caption="Фото после начала лечения, {{ @global.utils.formatDate(.date) }}">
 																		<h2 class="h2 healing__date-title">
 																			{{ @global.utils.formatDateAdv(.date) }}
 																		</h2>
@@ -1054,14 +1054,6 @@
 										},
 										complete() {
 											this.find('.loading-overlay').remove();
-											var self = this;
-											setTimeout(function() {
-												$(self.el).find('a.photo[data-href]')
-													.each(function(i) {
-														var _img = $(this);
-														_img.attr('href', $(this).data('href'));
-													});
-											}, 150);
 										},
 										toggleAccordeon(ev) {
 											var target_tab = this;
@@ -1151,13 +1143,6 @@
 													//sessionStorage.removeItem("state.open-editor");
 													//window.load();
 													console.log('rec:', rec);
-													setTimeout(function() {
-														$(self.el).find('a.photo[data-href]')
-															.each(function(i) {
-																var _img = $(this);
-																_img.attr('href', $(this).data('href'));
-															});
-													}, 150);
 												});
 										}
 									}
@@ -1186,14 +1171,6 @@
 										},
 										complete() {
 											this.find('.loading-overlay').remove();
-											var self = this;
-											setTimeout(function() {
-												$(self.el).find('a.photo[data-href]')
-													.each(function(i) {
-														var _img = $(this);
-														_img.attr('href', $(this).data('href'));
-													});
-											}, 150);
 										},
 										addAnalyses(ev, record, index) {
 											var self = this;
@@ -1396,12 +1373,6 @@
 																.trigger('click');
 														}
 														console.log($('.search__drop-item.services').length);
-														setTimeout(function() {
-															$('a.photo[data-href]').each(function(i) {
-																var _img = $(this);
-																_img.attr('href', $(this).data('href'));
-															});
-														}, 150);
 													},
 													addPhoto(ev, record) {
 														var self = this;
@@ -1410,13 +1381,6 @@
 																_tab.set('records.' + _row_idx, rec);
 																toast('Фото добавлено!');
 																self.set('record', rec);
-																setTimeout(function() {
-																	$(self.el).find('a.photo[data-href]')
-																		.each(function(i) {
-																			var _img = $(this);
-																			_img.attr('href', $(this).data('href'));
-																		});
-																}, 150);
 															});
 													},
 													setEventTime(ev) {
@@ -1582,12 +1546,6 @@
 								return (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
 							}).appendTo(_list);
 						});
-
-						setTimeout(function() {
-							$('a.account__table').find('a.client-card[data-href]').each(function(i) {
-								$(this).attr('href', $(this).data('href'));
-							});
-						}, 550);
 					}
 				);
 
@@ -1595,9 +1553,6 @@
 					if (only_tab === false) {
 						utils.restoreScroll();
 					}
-					$('.account__table').find('a.client-card[data-href]').each(function(i) {
-						$(this).attr('href', $(this).data('href'));
-					});
 					//var _curr_tab      = $('.account__tab.data-tab-item.active');
 					//var _curr_tab_item = $('.account__tab-items .account__tab-item.data-tab-link.active');
 					//var _has_sort      = sessionStorage.getItem('state.order-by-' + _curr_tab_item.data('tab'));

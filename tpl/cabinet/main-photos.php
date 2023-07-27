@@ -75,7 +75,7 @@
 		</div>
 		<div class="admin-photos">
 			{{#each photos: idx}}
-				<a class="admin-photo" data-idx="{{idx}}" data-timestamp="{{this.timestamp}}" data-date_filter="{{this.date_filter}}" data-filter-client="{{this.client}}" data-filter-type="{{this.type}}" data-filter-date="{{this.date}}" data-fancybox="gallery" href="{{.image}}" data-caption="{{@global.catalog.clients[this.client].fullname}}<br>{{ this.date }}, {{ this.title }} {{ this.type_text }}" style="background-image: url('{{.image}}');" data-href="{{this.image}}">
+				<a class="admin-photo" data-idx="{{idx}}" data-timestamp="{{this.timestamp}}" data-date_filter="{{this.date_filter}}" data-filter-client="{{this.client}}" data-filter-type="{{this.type}}" data-filter-date="{{this.date}}" data-fancybox="gallery" data-caption="{{@global.catalog.clients[this.client].fullname}}<br>{{ this.date }}, {{ this.title }} {{ this.type_text }}" style="background-image: url('{{.image}}');" href="{{this.image}}">
 					<div class="admin-photo__date">{{ this.date }}</div>
 					<div class="admin-photo__info">
 						<p class="mb-10 text-bold admin-photo__name">{{ @global.catalog.clients[client].fullname }}</p>
@@ -204,15 +204,6 @@
 					utils.restoreScroll();
 
 					setTimeout(function() {
-						$(page.el).find('a[data-href]').each(function(i) {
-							console.log($(this).data('href'));
-							var _img = $(this);
-							_img.attr('href', ''); // $(this).data('href'));
-
-							setTimeout(function() {
-								_img.attr('href', _img.attr('data-href'));
-							});
-						});
 						$('.admin-photos').html(window.sortElems('a.admin-photo', 'data-timestamp'));
 					}, 200);
 				});

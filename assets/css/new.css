@@ -1333,11 +1333,16 @@ div.swiper-horizontal.post-slider {
 
 .post__block-img {
     width: 62.5%;
+    align-self: baseline;
 }
 
 .post__block-img img {
     display: block;
     border-radius: 20px;
+}
+
+.post__block.left .post__block-img img {
+    margin-left: auto;
 }
 
 .post__block-info {
@@ -1903,9 +1908,9 @@ sup {
 .problems-filter__item.active {
     font-weight: 600;
 }
-
 .text li,
-.text p {
+.text p,
+.link-black {
     color: #070e0d;
 }
 

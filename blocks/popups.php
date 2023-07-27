@@ -165,6 +165,10 @@
 								self.intlTelInput({
 									formatOnDisplay: false,
 									customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+                                        if(selectedCountryData.iso2==='ru'){
+                                            selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
+                                                ' 912 ', ' (912) ');
+                                        }
 										selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
 											'+' + selectedCountryData.dialCode, ' '
 										);
