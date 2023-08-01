@@ -165,10 +165,10 @@
 								self.intlTelInput({
 									formatOnDisplay: false,
 									customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
-                                        if(selectedCountryData.iso2==='ru'){
-                                            selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
-                                                ' 912 ', ' (912) ');
-                                        }
+										if (selectedCountryData.iso2 === 'ru') {
+											selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
+												' 912 ', ' (912) ');
+										}
 										selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
 											'+' + selectedCountryData.dialCode, ' '
 										);
@@ -631,7 +631,7 @@
 		</div>
 	</div>
 
-	<div class="popup --photo-edit">
+	<div class="popup --photo-edit" wb-if="in_array('{{_sess.user.role}}',['admin','expert','main','client'])">
 		<template id="popupPhotoEdit">
 			<div class="popup__overlay"></div>
 			<div class="popup__wrapper">
@@ -722,7 +722,7 @@
 		</template>
 	</div>
 
-	<div class="popup --create-recover">
+	<div class="popup --create-recover" wb-if="in_array('{{_sess.user.role}}',['admin','expert','main','client'])">
 		<div class="popup__overlay"></div>
 		<div class="popup__wrapper">
 

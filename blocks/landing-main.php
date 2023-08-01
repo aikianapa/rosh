@@ -1,18 +1,19 @@
 <view>
-    <div class="landing">
+    <div class="landing" itemscope itemtype="http://schema.org/Service">
+        <meta itemprop="serviceType" content="{{_parent.header}}" />
         <div class="container">
             <div class="row" wb-if="'{{_parent.header}}'>''">
-	            <input type="hidden" name="quote_page_comment" value="{{_parent.header}}">
+                <input type="hidden" name="quote_page_comment" value="{{_parent.header}}">
                 <div class="col-lg-4"></div>
                 <div class="col-lg-8">
                     <div class="content-wrap">
-                        <h1 class="h1 landing-title text-center">{{_parent.header}}</h1>
+                        <h1 class="text-center h1 landing-title">{{_parent.header}}</h1>
                     </div>
                 </div>
             </div>
             <div class="row" wb-if="'{{subheader}}'>''">
                 <div class="col-lg-12">
-                    <h2 class="h2 landing-small-title mb-40">{{subheader}}</h2>
+                    <h2 class="mb-40 h2 landing-small-title">{{subheader}}</h2>
                 </div>
             </div>
             <div class="row">
@@ -23,7 +24,7 @@
                         <button class="callback__btn btn btn--black --openpopup" data-popup="--fast">Перезвонить мне</button>
                     </div>
                     <div class="content-wrap" wb-if="'{{text}}'>''">
-                        <div class="text mb-80">
+                        <div class="text mb-80" itemprop="description">
                             <p class="text-break">{{text}}</p>
                         </div>
                     </div>
@@ -66,13 +67,13 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-8">
                     <div class="content-wrap">
-                        <h1 class="h1 text-center">Аллергия на коже</h1>
+                        <h1 class="text-center h1">Аллергия на коже</h1>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="h2 landing-small-title mb-40">Любая аллергия – это ответ иммунной системы на определенный <span>внешний раздражитель.<span></h2>
+                    <h2 class="mb-40 h2 landing-small-title">Любая аллергия – это ответ иммунной системы на определенный <span>внешний раздражитель.<span></h2>
                 </div>
             </div>
             <div class="row">
@@ -94,11 +95,11 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-8">
                     <div class="content-wrap">
-                        <h3 class="h3 mb-40">Наиболее часто аллергическая реакция вырабатывается на различные продукты.</h3>
+                        <h3 class="mb-40 h3">Наиболее часто аллергическая реакция вырабатывается на различные продукты.</h3>
                     </div>
                 </div>
             </div>
-            <div class="row --aicn mb-40">
+            <div class="mb-40 row --aicn">
                 <div class="col-md-4">
                     <div class="text-right text-bold">Это называется</div>
                 </div>
