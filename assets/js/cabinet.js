@@ -1948,11 +1948,6 @@ $(function () {
 			e.preventDefault();
 			window.location.href = "/cabinet/client/" + $(this).data('client');
 		})
-		.on('click', 'a.btn.btn--black.login', function (e) {
-			e.stopPropagation();
-			console.log('Login clicked..');
-			window.catalog.reload();
-		})
 		.on('wb-ready', function (e) {
 			console.log('Async. JS loaded!');
 			$(document).trigger('plugins-ready');

@@ -70,21 +70,6 @@
 							<span>{{ @global.utils.formatPhone(user.phone) }}</span>
 						</div>
 					</div>
-					{{#if user.confirmed == '0'}}
-						<div class="user__confirm">
-							<svg class="svgsprite _confirm">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#alert-grey"></use>
-							</svg>
-							Неподтвержденный аккаунт
-						</div>
-					{{else}}
-						<div class="user__confirm">
-							<svg class="svgsprite _confirm">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
-							</svg>
-							Подтвержденный аккаунт
-						</div>
-					{{/if}}
 				</div>
 			</div>
 			<a class="account__exit signout" href="/signout">Выйти из аккаунта</a>

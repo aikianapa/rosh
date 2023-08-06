@@ -1818,6 +1818,11 @@ blockquote cite {
     width: 100%;
 }
 
+.iti-mobile .iti--container {
+    width: auto!important;
+    z-index: 3001;
+}
+
 .iti__country-list {
     max-height: 140px;
 }
@@ -1921,6 +1926,11 @@ sup {
 .landing .landing-small-title,
 .landing .landing-title {
     text-transform: initial;
+}
+
+img.socials__link {
+    opacity: 1;
+    height: 15px;
 }
 
 @media (min-width : 1400px) {

@@ -4,6 +4,11 @@
                 <div class="container-fluid">
                     <div class="row footer__top">
                         <div class="footer__item col-lg-2">
+                            <div class="socials">
+                                <img src="/assets/img/visa.svg" class="socials__link">
+                                <img src="/assets/img/mc.svg" class="socials__link">
+                                <img src="/assets/img/mir.svg" class="socials__link">
+                            </div>
                             <div class="socials" style="display: none;">
                                 <a class="socials__link" href="{{_var.facebook}}" wb-if="'{{_var.facebook}}'>''">
                                     <svg class="svgsprite _socials-1">

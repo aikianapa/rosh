@@ -237,7 +237,7 @@ $(document).ready(function() {
 		// allowDropdown: false
 		// autoHideDialCode: true,
 		// dropdownContainer: document.body,
-		// excludeCountries: ["us"],
+		 excludeCountries: ['af', 'al', 'dz', 'as', 'ad', 'ao', 'ai', 'ag', 'aw', 'ac', 'bs', 'bh', 'bd', 'bb', 'bz', 'bj', 'bm', 'bt', 'bo', 'ba', 'bw', 'io', 'vg', 'bn', 'bf', 'bi', 'kh', 'cm', 'cv', 'bq', 'ky', 'cf', 'td', 'cx', 'cc', 'km', 'cd', 'cg', 'ck', 'cr', 'ci', 'cu', 'cw', 'dj', 'dm', 'do', 'ec', 'eg', 'sv', 'gq', 'er', 'ee', 'sz', 'et', 'fk', 'fo', 'fj', 'fi', 'gf', 'pf', 'ga', 'gm', 'gh', 'gi', 'gl', 'gd', 'gp', 'gu', 'gt', 'gg', 'gn', 'gw', 'gy', 'ht', 'hn', 'ir', 'iq', 'im', 'jm', 'je', 'jo', 'ke', 'xk', 'kw', 'kg', 'la', 'lb', 'ls', 'lr', 'ly', 'li', 'mk', 'mg', 'mw', 'my', 'ml', 'mh', 'mq', 'mr', 'mu', 'yt', 'fm', 'md', 'mn', 'ms', 'ma', 'mz', 'mm', 'na', 'nr', 'np', 'nc', 'ni', 'ne', 'ng', 'nu', 'nf', 'kp', 'mp', 'om', 'pk', 'pw', 'ps', 'pa', 'pg', 'py', 'pe', 'ph', 'pr', 're', 'ro', 'rw', 'bl', 'sh', 'kn', 'lc', 'mf', 'pm', 'vc', 'ws', 'sm', 'st', 'sa', 'sn', 'sc', 'sl', 'sx', 'sk', 'sb', 'so', 'za', 'ss', 'lk', 'sd', 'sr', 'sj', 'sy', 'tj', 'tz', 'tl', 'tg', 'tk', 'to', 'tt', 'tn', 'tm', 'tc', 'tv', 'vi', 'ug', 'uy', 'vu', 'va', 've', 'vn', 'wf', 'ye', 'zm', 'zw', 'ax'],
 		 formatOnDisplay: false,
 		// geoIpLookup: function(callback) {
 		//   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {

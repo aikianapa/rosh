@@ -85,19 +85,9 @@
 							<span>{{this.email}}</span>
 						</div>
 
-						{{#if this.confirmed == '0'}}
+						{{#if this.email}}
 							<div class="user__confirm">
-								<svg class="svgsprite _confirm">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#alert-grey"></use>
-								</svg>
-								Неподтвержденный адрес электронной почты <a class="user__notconfirm" onclick="sendRestoreEMail('{{this.email}}');">Отправить код восстановления на почту</a>
-							</div>
-						{{else}}
-							<div class="user__confirm">
-								<svg class="svgsprite _confirm">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#confirm"></use>
-								</svg>
-								Подтвержденный аккаунт <a class="user__notconfirm" onclick="sendRestoreEMail('{{this.email}}');">Отправить код восстановления на почту</a>
+								<a class="user__notconfirm" style="margin-left: 0;" onclick="sendRestoreEMail('{{this.email}}');">Отправить код восстановления на почту</a>
 							</div>
 						{{/if}}
 
