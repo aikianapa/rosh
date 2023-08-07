@@ -32,7 +32,7 @@
 							<div class="header__contact header__contact--small" wb-if="'{{worktime}}'>''">{{worktime}}</div>
 						</wb-data>
 					</div>
-					<a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter" href="#mainfilter">Подобрать услугу</a>
+					<a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter" onclick="window.mainFilter.fire('open')" href="#mainfilter">Подобрать услугу</a>
 				</div>
 
 				<div class="header__right --flex --aicn" wb-if="'{{_sess.user.role}}'==''">
