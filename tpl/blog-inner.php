@@ -5,7 +5,7 @@
         <title>{{header}}</title>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <wb-module wb="module=microcode" />
-
+        <meta name="robots" content="noindex,nofollow" wb-if="'{{_route.hostname}}'=='www.dev.medcenterrosh.ru'">
     </head>
 
     <body class="body" data-barba="wrapper">

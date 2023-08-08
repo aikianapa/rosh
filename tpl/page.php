@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>{{header}}</title>
+	<meta name="robots" content="noindex,nofollow" wb-if="'{{_route.hostname}}'=='www.dev.medcenterrosh.ru'">
 </head>
 
 <body class="body" data-barba="wrapper">

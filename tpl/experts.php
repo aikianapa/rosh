@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>{{header}}</title>
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+	<meta name="robots" content="noindex,nofollow" wb-if="'{{_route.hostname}}'=='www.dev.medcenterrosh.ru'">
 </head>
 
 <body class="body" data-barba="wrapper">
