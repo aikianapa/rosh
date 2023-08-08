@@ -6,7 +6,7 @@
 				<div class="blog-inner__text">
 					<div class="content-wrap">
 						<div class="text">
-							<img class="mb-40 radius-20" src="{{image.0.img}}" alt="">
+							<img class="mb-40 radius-20" src="{{image.0.img}}" alt="{{_parent.header}}">
 						</div>
 					</div>
 				</div>

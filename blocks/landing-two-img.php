@@ -22,27 +22,12 @@
         <div class="container">
             <div class="row mb-80">
                 <div class="col-md-6">
-                    <div class="content-pic" wb-if="'{{left.0.img}}'>''"><img src="/thumbc/1050x818/src{{left.0.img}}" alt=""></div>
+                    <div class="content-pic" wb-if="'{{left.0.img}}'>''"><img src="/thumbc/1050x818/src{{left.0.img}}" alt="{{_parent.header}}"></div>
                 </div>
                 <div class="col-md-6">
-                    <div class="content-pic" wb-if="'{{right.0.img}}'>''"><img src="/thumbc/1050x818/src{{right.0.img}}" alt=""></div>
+                    <div class="content-pic" wb-if="'{{right.0.img}}'>''"><img src="/thumbc/1050x818/src{{right.0.img}}" alt="{{_parent.header}}"></div>
                 </div>
             </div>
         </div>
     </div>
 </view>
-
-<preview>
-    <div class="landing page">
-        <div class="container">
-            <div class="row mb-80">
-                <div class="col-md-6">
-                    <div class="content-pic"><img src="/thumbc/525x409/src/assets/img/landing/1.jpg" alt=""></div>
-                </div>
-                <div class="col-md-6">
-                    <div class="content-pic"><img src="/thumbc/525x409/src/assets/img/landing/2.jpg" alt=""></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</preview>

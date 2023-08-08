@@ -76,16 +76,16 @@
                     <div class="col-md-4"></div>
                     <div class="col-md-8">
                         <div class="content-wrap">
-                            <h3 class="h3 mb-40">Инновационные программы лечения</h3>
+                            <h3 class="mb-40 h3">Инновационные программы лечения</h3>
                             <div class="text">
                                 <p>Сотрудничая с известными медицинскими институтами и центрами, медицинский центр дерматологии в Москве использует новейшие разработки в области дерматологии, трихологии, флебологии, гинекологии, онкологии, микологии, косметологии, воплощая в жизнь девиз — вылечить и не навредить. Эксклюзивные инновационные методы диагностики и лечения запатентованы и уже долгие годы успешно применяются в лечебной практике.</p>
                             </div>
-                            <div class="video mb-40">
+                            <div class="mb-40 video">
                                 <iframe width="560" height="315" src="https://www.youtube.com/embed/IalD-nbVuq8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                         </div>
                     </div>
                 </div>
-                <div class="row mb-40">
+                <div class="mb-40 row">
                     <div class="col-md-4">
                         <h5 class="h5 content-title">Современные научные знания, новые технологии и практический опыт </h5>
                     </div>
@@ -103,7 +103,7 @@
                     <div class="col-md-4"></div>
                     <div class="col-md-8">
                         <div class="content-wrap">
-                            <h3 class="h3 mb-40">Чем выгодно отличается лечение в медицинском центре ROSH? </h3>
+                            <h3 class="mb-40 h3">Чем выгодно отличается лечение в медицинском центре ROSH? </h3>
                             <div class="text">
                                 <ul class="ul-line">
                                     <li>Консультации и помощь высококвалифицированных специалистов в области дерматологии и дермато-косметологии, комплексный подход к лечению заболеваний кожи.</li>
@@ -210,7 +210,7 @@
             </div>
         </div>
         <div class="about__footer">
-            <div class="container"> <img src="./assets/img/about/about-footer.jpg" alt=""></div>
+            <div class="container"> <img src="./assets/img/about/about-footer.jpg" alt="О клинике"></div>
         </div>
 </view>
 
