@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="content-pic" wb-if="'{{image.0.img}}'>''"><img src="/thimbc/807x629/src{{image.0.img}}" alt=""></div>
+                    <div class="content-pic" wb-if="'{{image.0.img}}'>''"><img src="/thimbc/807x629/src{{image.0.img}}" alt="{{_parent.header}}"></div>
                 </div>
             </div>
         </div>
@@ -48,27 +48,3 @@
     </div>
 </edit>
 
-<preview>
-    <div class="landing page">
-        <div class="container">
-            <div class="row --aicn mb-80">
-                <div class="col-md-4">
-                    <div class="aside">
-                        <h3 class="h2">Помимо пищевой аллергии распространены:</h3>
-                        <div class="text">
-                            <ul>
-                                <li>поллиноз (сезонная аллергия на пыльцу растений)</li>
-                                <li>медикаментозная аллергия,</li>
-                                <li>аллергия на укусы насекомых,</li>
-                                <li>бытовую химию и на животных.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="content-pic"><img src="/assets/img/landing/1.jpg" alt=""></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</preview>

@@ -10,11 +10,5 @@
 </edit>
 
 <view>
-    <div class="full-pic" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt="{{alt}}"></div>
+    <div class="full-pic" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt="{{_parent.header}}"></div>
 </view>
-
-<preview>
-    <div class="landing page">
-        <div class="full-pic"> <img src="/assets/img/en/pic.jpg" alt=""></div>
-    </div>
-</preview>

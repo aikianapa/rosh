@@ -10,14 +10,14 @@
 				<wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
 
 				<a wb-if="'{{_var.hover_logo}}' == '0'" class="header__logo" href="/">
-					<img src="/assets/img/logo.svg" alt="">
-					<img src="/assets/img/logo-red.svg" alt="">
+					<img src="/assets/img/logo.svg" alt="{{_sett.header}}">
+					<img src="/assets/img/logo-red.svg" alt="{{_sett.header}}">
 				</a>
 
 				<a wb-if="'{{_var.hover_logo}}' == '1'" class="header__logo header__logo-red" href="/">
 					<div class="header__logo-wrap">
-						<div class="logo"><img src="/assets/img/logo.svg" alt=""></div>
-						<div class="logo-red"><img src="/assets/img/logo-red.svg" alt=""></div>
+						<div class="logo"><img src="/assets/img/logo.svg" alt="{{_sett.header}}"></div>
+						<div class="logo-red"><img src="/assets/img/logo-red.svg" alt="{{_sett.header}}"></div>
 					</div>
 				</a>
 
@@ -101,14 +101,14 @@
 					<wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
 
 					<a wb-if="'{{_var.hover_logo}}' == '0'" class="header__logo" href="/">
-						<img src="/assets/img/logo.svg" alt="">
-						<img src="/assets/img/logo-red.svg" alt="">
+						<img src="/assets/img/logo.svg" alt="{{_sett.header}}">
+						<img src="/assets/img/logo-red.svg" alt="{{_sett.header}}">
 					</a>
 
 					<a wb-if="'{{_var.hover_logo}}' == '1'" class="header__logo header__logo-red" href="/">
 						<div class="header__logo-wrap">
-							<div class="logo"><img src="/assets/img/logo.svg" alt=""></div>
-							<div class="logo-red"><img src="/assets/img/logo-red.svg" alt=""></div>
+							<div class="logo"><img src="/assets/img/logo.svg" alt="{{_sett.header}}"></div>
+							<div class="logo-red"><img src="/assets/img/logo-red.svg" alt="{{_sett.header}}"></div>
 						</div>
 					</a>
 				</div>
@@ -150,14 +150,14 @@
 					<wb-var hover_logo="{{is_hover_logo({{_route.uri}})}}"></wb-var>
 
 					<a wb-if="'{{_var.hover_logo}}' == '0'" class="header__logo" href="/">
-						<img src="/assets/img/logo.svg" alt="">
-						<img src="/assets/img/logo-red.svg" alt="">
+						<img src="/assets/img/logo.svg" alt="{{_sett.header}}">
+						<img src="/assets/img/logo-red.svg" alt="{{_sett.header}}">
 					</a>
 
 					<a wb-if="'{{_var.hover_logo}}' == '1'" class="header__logo header__logo-red" href="/">
 						<div class="header__logo-wrap">
-							<div class="logo"><img src="/assets/img/logo.svg" alt=""></div>
-							<div class="logo-red"><img src="/assets/img/logo-red.svg" alt=""></div>
+							<div class="logo"><img src="/assets/img/logo.svg" alt="{{_sett.header}}"></div>
+							<div class="logo-red"><img src="/assets/img/logo-red.svg" alt="{{_sett.header}}"></div>
 						</div>
 					</a>
 				</div>

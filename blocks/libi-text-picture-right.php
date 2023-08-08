@@ -5,7 +5,7 @@
                 <span class="post__block-title" wb-if="'{{title}}'>''">{{title}}</span>
                 <p wb-if="'{{text}}'>''">{{text}}</p>
             </div>
-            <div class="post__block-img" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt=""></div>
+            <div class="post__block-img" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt="{{_parent.header}}"></div>
         </div>
     </div>
 </view>

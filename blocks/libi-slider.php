@@ -10,7 +10,7 @@
                     <div class="swiper-wrapper">
                         <wb-foreach wb="from=images&tpl=false">
                             <div class="post-slide swiper-slide" wb-if="'{{img}}'>''">
-                                <img src="{{img}}" alt="">
+                                <img src="{{img}}" alt="{{_parent.header}}">
                             </div>
                         </wb-foreach>
                     </div>
