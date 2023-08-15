@@ -566,11 +566,11 @@ img.preview.cloned{
 }
 .service-count {
 	width       : 34px;
-	margin-right : 4px;
+	margin-right : 2px;
 }
 .service-count-label {
 	font-size   : 14px;
-	margin-right : 4px;
+	margin-right : 14px;
 }
 .service-count-block {
 	margin-right : 4px;
@@ -609,9 +609,9 @@ img.preview.cloned{
 	}
 	.service-count {
 		width        : 18px;
-		margin-right : 4px;
+		margin-right : 14px;
 		font-size    : 14px;
-		padding: 1px 2px;
+		padding      : 1px 2px;
 	}
 	.service-count-label {
 		font-size    : 14px;
