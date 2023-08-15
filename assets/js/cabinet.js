@@ -668,7 +668,13 @@ $(function () {
 							_cats = ["lab"];
 							title = service_parent.name + ': ' + service.header;
 						} else {
-							title = service.header;
+							//console.log(
+							//	service.header + ":" + service.header.length,
+							//	service_parent.name + ":" + service_parent.name.length
+							//);
+							title = ((!!service_parent.name /*&& (service.header.trim() != service_parent.name.trim())*/)
+								? service_parent.name + ': '
+								: '') + service.header;
 							_cats = service.type;
 						}
 
