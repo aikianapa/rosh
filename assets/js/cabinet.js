@@ -1161,9 +1161,23 @@ $(function () {
 						).append(TAGS).append(suggestion.value)
 					).append(
 						$('<div></div>').addClass('search__drop-right')
-							.append($('<div></div>').addClass('search__drop-summ').html(
+							.append(
+								$('<input type="number">').attr({
+									"class": 'service-count',
+									"name": 'service_prices[' + suggestion.id + '][count]',
+									"value": 1,
+									"min": 1,
+									"max": 99
+								}).val(1)).append(
+								$('<span/>').attr({
+									"class": 'service-count-label'
+								}).text(' ед. ')
+							)
+							.append(
+								$('<div></div>').addClass('search__drop-summ').html(
 								(suggestion.data.from == 'on' ? 'от ' : '') +
-								PRICE + ' ₽<sup><b>*</b></sup>'))
+								PRICE + ' ₽<sup><b>*</b></sup>')
+							)
 					)
 				);
 				updPrice(_parent_form);
