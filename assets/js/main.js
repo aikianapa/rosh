@@ -364,7 +364,6 @@ $(function() {
         initPlugins = function (parent) {
             if (parent) {
                 parent.find('input.datebirthdaypickr').each(function () {
-                    console.log($(this).val());
                     new AirDatepicker(this, {
                         selectedDates: [$(this).val() || (new Date())],
                         maxDate: (new Date()),
@@ -372,7 +371,14 @@ $(function() {
                         dateFormat: 'dd.MM.yyyy',
                         timepicker: false
                     });
+
+                    $(this).inputmask('99.99.9999', {
+                        clearMaskOnLostFocus: true,
+                        showMaskOnHover: false,
+                        positionCaretOnClick: 'radixFocus'
+                    });
                 });
+
                 parent.find('input.daterangepickr').each(function () {
                     new AirDatepicker(this, {
                         autoClose: true,
@@ -406,7 +412,6 @@ $(function() {
 
                     if ($(this).val() != '') {
                         _config.selectedDates = [$(this).val()],
-
                             _config.minDate = $(this).data('min-date') || '';
                         if ($(this).data('max-date')) {
                             _config.maxDate = $(this).data('max-date');

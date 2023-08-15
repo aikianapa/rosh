@@ -643,7 +643,7 @@ $(function () {
 					);
 				}
 
-				return Promise.allSettled(getters).then((results) => {
+				return Promise.allSettled(getters).then(() => {
 					_self.rawServices.forEach(function (service, i) {
 						if (service.price === '' || parseInt(service.price) < 0) {
 							return;

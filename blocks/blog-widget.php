@@ -49,7 +49,6 @@
 		$(document).on('wb-ready wb-ajax-done', function () {
 			const _list = $('#blogList');
 			_list.find(".blog-panel").sort(function (a, b) {
-				console.log($(a).index());
 				const _c_a = $(a).attr('data-matrix');
 				const _c_b = $(b).attr('data-matrix');
 				var tmp    = '';
@@ -80,10 +79,7 @@
 					_c_b = 'blog-panel--33';
 				}
 				$(this).removeAttr('class').addClass('blog-panel '+_c_b);
-				//console.log(_pos, _idx, $(this));
 			});
-
-			//console.log(' blog items order fixed! ');
 		});
 	</script>
 </view>
