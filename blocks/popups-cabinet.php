@@ -18,10 +18,10 @@
 								<span>Все услуги</span>
 							</label>
 							{{#each categories}}
-							<label class="text-radio">
-								<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
-								<span>{{name}}</span>
-							</label>
+								<label class="text-radio">
+									<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
+									<span>{{name}}</span>
+								</label>
 							{{/each}}
 						</div>
 						<div class="input" data-hide="service-search">
@@ -45,90 +45,64 @@
 								<input type="hidden" name="for_consultation" value="0">
 
 								{{#if record.for_consultation === '1' }}
-								<input class="checkbox-visible-next-form" type="checkbox" checked
-									name="for_consultation" value="1">
+									<input class="checkbox-visible-next-form" type="checkbox" checked name="for_consultation" value="1">
 								{{else}}
-								<input class="checkbox-visible-next-form" type="checkbox"
-									name="for_consultation" value="1">
+									<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1">
 								{{/if}}
 								<span></span>
 								<div class="checbox__name">Консультация врача</div>
 							</label>
-							<div class="select-form" data-show="consultation-type"
-								style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
+							<div class="select-form" data-show="consultation-type" style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
 								<div class="mb-10 text-bold">Тип события</div>
 								<div class="popups__text-chexboxs">
 									{{#each @global.catalog.quoteType as qt}}
-									<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
-										{{#if qt.id === record.type }}
-										<input type="radio" name="type"
-											class="consultation-type {{qt.id}}"
-											value="{{ qt.id }}" checked>
-										{{else}}
-										<input type="radio" name="type" value="{{ qt.id }}"
-											class="consultation-type {{qt.id}}">
-										{{/if}}
-										<span>{{qt.name}}</span>
-									</label>
+										<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
+											{{#if qt.id === record.type }}
+												<input type="radio" name="type" class="consultation-type {{qt.id}}" value="{{ qt.id }}" checked>
+											{{else}}
+												<input type="radio" name="type" value="{{ qt.id }}" class="consultation-type {{qt.id}}">
+											{{/if}}
+											<span>{{qt.name}}</span>
+										</label>
 									{{/each}}
 								</div>
 								<div class="admin-editor__patient price-list">
 									{{#each @global.catalog.spec_service.consultations.online}}
-									<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
-										data-show="consultation-online"
-										data-consultation="{{this.id}}"
-										data-price="{{this.price}}"
-										style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
+										<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}" data-show="consultation-online" data-consultation="{{this.id}}" data-price="{{this.price}}" style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
 
-										<label class="checkbox search__drop-name"
-											data-name="{{this.header}}" data-price="{{this.price}}"
-											data-id="{{this.id}}">
-											{{#if record.consultation == this.id }}
-											<input type="radio" name="consultation" value="{{this.id}}"
-												data-name="{{this.header}}" data-price="{{this.price}}"
-												checked="checked">
-											{{else}}
-											<input type="radio" name="consultation" value="{{this.id}}"
-												data-name="{{this.header}}" data-price="{{this.price}}">
-											{{/if}}
-											<span></span>
-											<div class="checbox__name">{{this.header}}</div>
-										</label>
-										<label class="search__drop-right">
-											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-										</label>
-									</div>
+											<label class="checkbox search__drop-name" data-name="{{this.header}}" data-price="{{this.price}}" data-id="{{this.id}}">
+												{{#if record.consultation == this.id }}
+													<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}" checked="checked">
+												{{else}}
+													<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}">
+												{{/if}}
+												<span></span>
+												<div class="checbox__name">{{this.header}}</div>
+											</label>
+											<label class="search__drop-right">
+												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+											</label>
+										</div>
 									{{/each}}
 									{{#each @global.catalog.spec_service.consultations.clinic}}
-									<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
-										data-show="consultation-clinic"
-										data-consultation="{{this.id}}"
-										data-price="{{this.price}}"
-										style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-										<label class="checkbox search__drop-name"
-											data-name="{{this.header}}" data-price="{{this.price}}"
-											data-id="{{this.id}}">
-											{{#if record.consultation == this.id }}
-											<input type="radio" name="consultation" value="{{this.id}}"
-												data-name="{{this.header}}" data-price="{{this.price}}"
-												checked="checked">
-											{{else}}
-											<input type="radio" name="consultation" value="{{this.id}}"
-												data-name="{{this.header}}" data-price="{{this.price}}">
-											{{/if}}
-											<span></span>
-											<div class="checbox__name">{{this.header}}</div>
-										</label>
-										<label class="search__drop-right">
-											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-										</label>
-									</div>
+										<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}" data-show="consultation-clinic" data-consultation="{{this.id}}" data-price="{{this.price}}" style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
+											<label class="checkbox search__drop-name" data-name="{{this.header}}" data-price="{{this.price}}" data-id="{{this.id}}">
+												{{#if record.consultation == this.id }}
+													<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}" checked="checked">
+												{{else}}
+													<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}">
+												{{/if}}
+												<span></span>
+												<div class="checbox__name">{{this.header}}</div>
+											</label>
+											<label class="search__drop-right">
+												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+											</label>
+										</div>
 									{{/each}}
 								</div>
 							</div>
-							<input type="hidden" class="consultation_price"
-								name="consultation_price"
-								value="{{record.consultation_price}}">
+							<input type="hidden" class="consultation_price" name="consultation_price" value="{{record.consultation_price}}">
 						</div>
 
 						<label class="checkbox checkbox--record hider-checkbox" data-hide-input="expert">
@@ -144,15 +118,15 @@
 								</div>
 								<div class="select__list single">
 									{{#each @global.catalog.experts}}
-									<div class="select__item select__item--checkbox">
-										<label class="checkbox checkbox--record">
-											<input type="checkbox" name="experts[]" value="{{id}}">
-											<span></span>
-											<div class="checbox__name">
-												<div class="select__name">{{fullname}}</div>
-											</div>
-										</label>
-									</div>
+										<div class="select__item select__item--checkbox">
+											<label class="checkbox checkbox--record">
+												<input type="checkbox" name="experts[]" value="{{id}}">
+												<span></span>
+												<div class="checbox__name">
+													<div class="select__name">{{fullname}}</div>
+												</div>
+											</label>
+										</div>
 									{{/each}}
 								</div>
 							</div>
@@ -160,7 +134,7 @@
 						<div class="admin-editor__patient" data-hide="service-search">
 							<div class="mb-10 text-bold">Выбраны услуги</div>
 							<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-								<div class="search__drop-name consultation-header" >
+								<div class="search__drop-name consultation-header">
 									<div class="search__drop-delete fake" onclick="unselectConsultation(this);">
 										<svg class="svgsprite _delete">
 											<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
@@ -207,7 +181,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupCreateClientQuote = function (user_id) {
+			window.popupCreateClientQuote = function(user_id) {
 				var popup = new Ractive({
 					el: '.popup.--record',
 					template: wbapp.tpl('#popupRecord').html,
@@ -235,49 +209,49 @@
 							}
 							var _el = $(ev.node).parents('form').find('.search__input.search-services');
 
-							setTimeout(function () {
+							setTimeout(function() {
 								_el.trigger('focus');
 								//_el.find('.search-services').trigger('focus');
 							}, 200);
 						},
 						submit(ev) {
 							let $form = $(ev.node);
-							let uid   = popup.get('user.id');
+							let uid = popup.get('user.id');
 
 							if ($form.verify() && uid > '') {
-								let form_data        = $form.serializeJSON();
-								let has_consultation = !!parseInt(form_data.for_consultation)
-								                       && (form_data.consultation_price > 0);
+								let form_data = $form.serializeJSON();
+								let has_consultation = !!parseInt(form_data.for_consultation) &&
+									(form_data.consultation_price > 0);
 
-								form_data.group  = 'quotes';
+								form_data.group = 'quotes';
 								form_data.status = 'new';
 								if (has_consultation) {
 									form_data.pay_status = 'unpay';
 								} else {
-									form_data.pay_status       = 'free';
+									form_data.pay_status = 'free';
 									form_data.for_consultation = 0;
 									delete form_data.consultation;
 								}
-								form_data.client   = uid;
+								form_data.client = uid;
 								form_data.priority = 0;
-								form_data.marked   = false;
+								form_data.marked = false;
 
-								form_data.comment        = '';
+								form_data.comment = '';
 								form_data.recommendation = '';
-								form_data.description    = '';
+								form_data.description = '';
 								form_data.client_comment = '';
 
 								form_data.price = parseInt(form_data.price || 0);
 
 								if (form_data.no_services == 1) {
-									form_data.services       = [];
+									form_data.services = [];
 									form_data.service_prices = {};
 								}
 								if (form_data.no_experts == 1) {
-									form_data.experts        = [];
+									form_data.experts = [];
 									form_data.service_prices = {};
 								}
-								Cabinet.createQuote(form_data, function (res) {
+								Cabinet.createQuote(form_data, function(res) {
 									$('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
 									$('.popup.--record .popup__panel.--succed').addClass('d-block');
 									if (typeof window.load == 'function') {
@@ -341,7 +315,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupAnalizeInterpretation = function (client_id, record_id, analyses_file_uri, onShow) {
+			window.popupAnalizeInterpretation = function(client_id, record_id, analyses_file_uri, onShow) {
 				let popup = new Ractive({
 					el: '.popup.--analize-interpretation',
 					template: wbapp.tpl('#popupAnalizeInterpretation').html,
@@ -364,31 +338,31 @@
 							var form = this.find('.popup.--analize-interpretation .popup__form');
 							console.log(form);
 							if ($(form).verify()) {
-								var data      = $(form).serializeJSON();
-								data.group    = 'quotes';
-								data.status   = 'new';
-								data.client   = wbapp._session.user.id;
+								var data = $(form).serializeJSON();
+								data.group = 'quotes';
+								data.status = 'new';
+								data.client = wbapp._session.user.id;
 								data.priority = 0;
-								data.marked   = false;
+								data.marked = false;
 
-								data.comment          = '';
-								data.recommendation   = '';
-								data.description      = '';
-								data.client_comment   = 'Расшифровка анализов';
+								data.comment = '';
+								data.recommendation = '';
+								data.description = '';
+								data.client_comment = 'Расшифровка анализов';
 								data.for_consultation = 1;
 								if (data.type === 'online') {
-									data.price      = parseInt(catalog.spec_service.analyses_interpretation.online.price);
+									data.price = parseInt(catalog.spec_service.analyses_interpretation.online.price);
 									data.pay_status = 'unpay';
 								} else {
-									data.price      = 0;
+									data.price = 0;
 									data.pay_status = 'free';
 								}
-								data.price          = parseInt(data.price || 0);
-								data.services       = [];
-								data.experts        = [];
+								data.price = parseInt(data.price || 0);
+								data.services = [];
+								data.experts = [];
 								data.service_prices = {};
 
-								Cabinet.createQuote(data, function (res) {
+								Cabinet.createQuote(data, function(res) {
 									$('.popup.--analize-interpretation .popup__panel:not(.--succed)').addClass('d-none');
 									$('.popup.--analize-interpretation .popup__panel.--succed').addClass('d-block');
 
@@ -421,41 +395,42 @@
 							<div class="popup-summ__small">Предоплата - {{this.pay_price}} ₽</div>
 						</div>
 						{{#if this.is_online }}
-						<div class="popup__description text-grey mb-30">
-							Для подтверждения необходимо произвести полную оплату
-						</div>
+							<div class="popup__description text-grey mb-30">
+								Для подтверждения необходимо произвести полную оплату
+							</div>
 						{{else}}
-						<div class="popup__description text-grey mb-30">
-							Для подтверждения необходимо произвести оплату в размере 20% от стоимости
-						</div>
+							<div class="popup__description text-grey mb-30">
+								Для подтверждения необходимо произвести оплату в размере 20% от стоимости
+							</div>
 						{{/if}}
 						<!--!!! change `action` address on PROD. !!!-->
 						<form on-submit="submit" action="https://medcenterrosh.server.paykeeper.ru/create/" method="POST" target="_blank">
-							<input type='hidden' name='sum' value='{{this.pay_price}}'/>
-							<input type='hidden' name='orderid' value='{{this.id}}'/>
-							<input type='hidden' name='clientid' value='{{this.client}}'/>
+							<input type='hidden' name='sum' value='{{this.pay_price}}' />
+							<input type='hidden' name='orderid' value='{{this.id}}' />
+							<input type='hidden' name='clientid' value='{{this.client}}' />
 							<button class="btn btn--black form__submit" type="submit">
 								Внести предоплату
 							</button>
 						</form>
+						<div class="mt-20 text-grey">Не является публичной офертой</p>
+						</div>
+						<div class="popup__panel --succed-pay d-none">
+							<button class="popup__close">
+								<svg class="svgsprite _close">
+									<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+								</svg>
+							</button>
+							<div class="popup__name text-bold">Внести предоплату</div>
+							<h3 class="h3">Успешно!</h3>
+							<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете после подтверждения оплаты</p>
+						</div>
 					</div>
-					<div class="popup__panel --succed-pay d-none">
-						<button class="popup__close">
-							<svg class="svgsprite _close">
-								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-							</svg>
-						</button>
-						<div class="popup__name text-bold">Внести предоплату</div>
-						<h3 class="h3">Успешно!</h3>
-						<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете после подтверждения оплаты</p>
-					</div>
-				</div>
 			</template>
 		</div>
 		<script wbapp>
-			window.popupPay = function (record_id, full_price, user_id, type, consultation_price) {
+			window.popupPay = function(record_id, full_price, user_id, type, consultation_price) {
 				const pay_consultation = parseInt(consultation_price || '0');
-				var price              = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
+				var price = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
 				if (pay_consultation) {
 
 				}
@@ -499,53 +474,52 @@
 						<div class="popup__name text-bold">Записать пациента на прием</div>
 						<form class="record-edit popup__form" on-submit="submit" data-record="{{record.id}}">
 							{{#if client}}
-							<input type="hidden" value="{{ client.id }}" name="client">
-							<p class="mb-20 text-bold text-big">{{client.fullname}}</p>
+								<input type="hidden" value="{{ client.id }}" name="client">
+								<p class="mb-20 text-bold text-big">{{client.fullname}}</p>
 							{{else}}
-							<div class="search-form input">
-								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
-								<div class="input__placeholder">Выбрать пациента</div>
-								<div class="client-search search-list" style="position: relative;"></div>
-							</div>
-							<input type="hidden" name="client" value="">
+								<div class="search-form input">
+									<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+									<div class="input__placeholder">Выбрать пациента</div>
+									<div class="client-search search-list" style="position: relative;"></div>
+								</div>
+								<input type="hidden" name="client" value="">
 							{{/if}}
 							<div class="row">
 								<div class="col-md-12">
-									<input type="hidden" value="{{ record.id }}" name="id"> 
-                                    {{#if record.spec_service}}
-									<input type="hidden" name="spec_service" value="{{record.spec_service}}">
-									<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}">
-                                     {{else}}
-									<div class="mb-20 admin-editor__event">
-										<div class="popups__text-chexboxs service-categories">
-											<label class="text-radio">
-												<input type="radio" name="service_category" value="{{id}}" checked
-													on-click="selectCategory">
-												<span>Все услуги</span>
-											</label>
-											{{#each @global.catalog.categories}}
-											<label class="text-radio">
-												<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
-												<span>{{name}}</span>
-											</label>
-											{{/each}}
-										</div>
-										<div class="search__block --flex --aicn">
-											<div class="input">
-												<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
-												<div class="search__drop"></div>
-												<div class="service-search__list" style="position: relative;"></div>
-												<button class="search__btn" type="button">
-													<svg class="svgsprite _search">
-														<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
-													</svg>
-												</button>
+									<input type="hidden" value="{{ record.id }}" name="id">
+									{{#if record.spec_service}}
+										<input type="hidden" name="spec_service" value="{{record.spec_service}}">
+										<input type="hidden" name="title" value="{{@global.catalog.spec_service[record.spec_service].header}}">
+									{{else}}
+										<div class="mb-20 admin-editor__event">
+											<div class="popups__text-chexboxs service-categories">
+												<label class="text-radio">
+													<input type="radio" name="service_category" value="{{id}}" checked on-click="selectCategory">
+													<span>Все услуги</span>
+												</label>
+												{{#each @global.catalog.categories}}
+													<label class="text-radio">
+														<input type="radio" name="service_category" value="{{id}}" on-click="selectCategory">
+														<span>{{name}}</span>
+													</label>
+												{{/each}}
+											</div>
+											<div class="search__block --flex --aicn">
+												<div class="input">
+													<input class="popup-services-list search__input search-services" type="text" placeholder="Поиск по услугам" autocomplete="off">
+													<div class="search__drop"></div>
+													<div class="service-search__list" style="position: relative;"></div>
+													<button class="search__btn" type="button">
+														<svg class="svgsprite _search">
+															<use xlink:href="/assets/img/sprites/svgsprites.svg#search"></use>
+														</svg>
+													</button>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="mb-20 admin-editor__event">
-										<!-- services-select.dropdown -->
-									</div>
+										<div class="mb-20 admin-editor__event">
+											<!-- services-select.dropdown -->
+										</div>
 									{{/if}}
 
 									<div class="admin-editor__type-event">
@@ -555,10 +529,9 @@
 												<div class="select__list">
 													<input type="hidden" class="pay_status" name="pay_status" value="{{ record.pay_status }}">
 													{{#each @global.catalog.quotePay}}
-													<div class="select__item" data-id="{{.id}}"
-														onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values');">
-														{{name}}
-													</div>
+														<div class="select__item" data-id="{{.id}}" onclick="$(this).parents('.select.pay').find('input.pay_status').val($(this).attr('data-id'));$(this).parents('.select.pay').addClass('has-values');">
+															{{name}}
+														</div>
 													{{/each}}
 												</div>
 											</div>
@@ -568,126 +541,99 @@
 												<input type="hidden" name="for_consultation" value="0">
 
 												{{#if record.for_consultation === '1' }}
-												<input class="checkbox-visible-next-form" type="checkbox" checked
-													name="for_consultation" value="1">
+													<input class="checkbox-visible-next-form" type="checkbox" checked name="for_consultation" value="1">
 												{{else}}
-												<input class="checkbox-visible-next-form" type="checkbox"
-													name="for_consultation" value="1">
+													<input class="checkbox-visible-next-form" type="checkbox" name="for_consultation" value="1">
 												{{/if}}
 												<span></span>
 												<div class="checbox__name">Консультация врача</div>
 											</label>
-											<div class="select-form" data-show="consultation-type"
-												style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
+											<div class="select-form" data-show="consultation-type" style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
 												<div class="mb-10 text-bold">Тип события</div>
 												<div class="popups__text-chexboxs">
 													{{#each @global.catalog.quoteType as qt}}
-													<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
-														{{#if qt.id === record.type }}
-														<input type="radio" name="type"
-															class="consultation-type {{qt.id}}"
-															value="{{ qt.id }}" checked>
-														{{else}}
-														<input type="radio" name="type" value="{{ qt.id }}"
-															class="consultation-type {{qt.id}}">
-														{{/if}}
-														<span>{{qt.name}}</span>
-													</label>
+														<label class="text-radio show-checkbox" data-show-input="consultation-{{ qt.id }}">
+															{{#if qt.id === record.type }}
+																<input type="radio" name="type" class="consultation-type {{qt.id}}" value="{{ qt.id }}" checked>
+															{{else}}
+																<input type="radio" name="type" value="{{ qt.id }}" class="consultation-type {{qt.id}}">
+															{{/if}}
+															<span>{{qt.name}}</span>
+														</label>
 													{{/each}}
 												</div>
 												<div class="admin-editor__patient price-list">
 													{{#each @global.catalog.spec_service.consultations.online}}
-													<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}"
-														data-show="consultation-online"
-														data-consultation="{{this.id}}"
-														data-price="{{this.price}}"
-														style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
+														<div class="search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}" data-show="consultation-online" data-consultation="{{this.id}}" data-price="{{this.price}}" style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
 
-														<label class="checkbox search__drop-name"
-															data-name="{{this.header}}" data-price="{{this.price}}"
-															data-id="{{this.id}}">
-															{{#if record.consultation == this.id }}
-															<input type="radio" name="consultation" value="{{this.id}}"
-																data-name="{{this.header}}" data-price="{{this.price}}"
-																checked="checked">
-															{{else}}
-															<input type="radio" name="consultation" value="{{this.id}}"
-																data-name="{{this.header}}" data-price="{{this.price}}">
-															{{/if}}
-															<span></span>
-															<div class="checbox__name">{{this.header}}</div>
-														</label>
-														<label class="search__drop-right">
-															<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-														</label>
-													</div>
+															<label class="checkbox search__drop-name" data-name="{{this.header}}" data-price="{{this.price}}" data-id="{{this.id}}">
+																{{#if record.consultation == this.id }}
+																	<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}" checked="checked">
+																{{else}}
+																	<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}">
+																{{/if}}
+																<span></span>
+																<div class="checbox__name">{{this.header}}</div>
+															</label>
+															<label class="search__drop-right">
+																<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+															</label>
+														</div>
 													{{/each}}
 													{{#each @global.catalog.spec_service.consultations.clinic}}
-													<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}"
-														data-show="consultation-clinic"
-														data-consultation="{{this.id}}"
-														data-price="{{this.price}}"
-														style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-														<label class="checkbox search__drop-name"
-															data-name="{{this.header}}" data-price="{{this.price}}"
-															data-id="{{this.id}}">
-															{{#if record.consultation == this.id }}
-															<input type="radio" name="consultation" value="{{this.id}}"
-																data-name="{{this.header}}" data-price="{{this.price}}"
-																checked="checked">
-															{{else}}
-															<input type="radio" name="consultation" value="{{this.id}}"
-																data-name="{{this.header}}" data-price="{{this.price}}">
-															{{/if}}
-															<span></span>
-															<div class="checbox__name">{{this.header}}</div>
-														</label>
-														<label class="search__drop-right">
-															<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-														</label>
-													</div>
+														<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}" data-show="consultation-clinic" data-consultation="{{this.id}}" data-price="{{this.price}}" style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
+															<label class="checkbox search__drop-name" data-name="{{this.header}}" data-price="{{this.price}}" data-id="{{this.id}}">
+																{{#if record.consultation == this.id }}
+																	<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}" checked="checked">
+																{{else}}
+																	<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}">
+																{{/if}}
+																<span></span>
+																<div class="checbox__name">{{this.header}}</div>
+															</label>
+															<label class="search__drop-right">
+																<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+															</label>
+														</div>
 													{{/each}}
 												</div>
 											</div>
-											<input type="hidden" class="consultation_price"
-												name="consultation_price"
-												value="{{record.consultation_price}}">
+											<input type="hidden" class="consultation_price" name="consultation_price" value="{{record.consultation_price}}">
 										</div>
 										<div class="row">
 											{{#if record.spec_service}} {{else}}
-											<div class="col-md-6">
-												<div class="select-form select-checkboxes">
-													<div class="select select_experts">
-														<div class="select__main">
-															<div class="select__placeholder">Выберите специалиста</div>
-															<div class="select__values"></div>
-														</div>
-														<div class="select__list single">
-															{{#each @global.catalog.experts}}
-															<div class="select__item select__item--checkbox">
-																<label class="checkbox checkbox--record">
-																	{{#if @global.utils.arr.search(.id, record.experts)}}
-																	<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
-																	{{else}}
-																	<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
-																	<span></span>
-																	<div class="checbox__name">
-																		<div class="select__name">{{fullname}}</div>
-																	</div>
-																</label>
+												<div class="col-md-6">
+													<div class="select-form select-checkboxes">
+														<div class="select select_experts">
+															<div class="select__main">
+																<div class="select__placeholder">Выберите специалиста</div>
+																<div class="select__values"></div>
 															</div>
-															{{/each}}
+															<div class="select__list single">
+																{{#each @global.catalog.experts}}
+																	<div class="select__item select__item--checkbox">
+																		<label class="checkbox checkbox--record">
+																			{{#if @global.utils.arr.search(.id, record.experts)}}
+																				<input type="checkbox" class="checked" name="experts[]" checked value="{{.id}}" required>
+																			{{else}}
+																				<input type="checkbox" name="experts[]" value="{{.id}}"> {{/if}}
+																			<span></span>
+																			<div class="checbox__name">
+																				<div class="select__name">{{fullname}}</div>
+																			</div>
+																		</label>
+																	</div>
+																{{/each}}
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
 											{{/if}}
 											<div class="col-md-6">
 												<div class="row">
 													<div class="col-md-12">
 														<div class="input input-lk-calendar input--grey">
-															<input class="input__control datepickr" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" autocomplete="off"
-																type="text" placeholder="Выбрать дату и время">
+															<input class="input__control datepickr" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" autocomplete="off" type="text" placeholder="Выбрать дату и время">
 															<div class="input__placeholder">Выбрать дату</div>
 														</div>
 													</div>
@@ -695,15 +641,13 @@
 												<div class="row event-time">
 													<div class="col-md-6">
 														<div class="calendar input mb-30">
-															<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}"
-																data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
+															<input class="input__control timepickr event-time-start" type="text" name="event_time_start" value="{{record.event_time_start}}" data-min-time="09:00" data-max-time="21:00" autocomplete="off" pattern="[0-9]{2}:[0-9]{2}" required>
 															<div class="input__placeholder">Время (начало)</div>
 														</div>
 													</div>
 													<div class="col-md-6">
 														<div class="calendar input mb-30">
-															<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}"
-																data-min-time="09:00" autocomplete="off" data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
+															<input class="input__control timepickr event-time-end" type="text" name="event_time_end" value="{{record.event_time_end}}" data-min-time="09:00" autocomplete="off" data-max-time="21:00" pattern="[0-9]{2}:[0-9]{2}" required>
 															<div class="input__placeholder">Время (конец)</div>
 														</div>
 													</div>
@@ -715,7 +659,7 @@
 										<div class="mb-10 text-bold">Выбраны услуги</div>
 
 										<div class="search__drop-item selected-consultation" style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
-											<div class="search__drop-name consultation-header" >
+											<div class="search__drop-name consultation-header">
 												<div class="search__drop-delete fake" onclick="unselectConsultation(this);">
 													<svg class="svgsprite _delete">
 														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
@@ -733,62 +677,60 @@
 										</div>
 
 										{{#if record.spec_service}}
-										<div class="search__drop-item">
-											<input type="hidden" name="services[]" value="">
-											<div class="search__drop-name">
-												{{@global.catalog.spec_service[record.spec_service].header}}
+											<div class="search__drop-item">
+												<input type="hidden" name="services[]" value="">
+												<div class="search__drop-name">
+													{{@global.catalog.spec_service[record.spec_service].header}}
+												</div>
+												<div class="search__drop-right">
+													<div class="search__drop-summ">{{@global.catalog.spec_service[this.spec_service].price}} ₽</div>
+												</div>
 											</div>
-											<div class="search__drop-right">
-												<div class="search__drop-summ">{{@global.catalog.spec_service[this.spec_service].price}} ₽</div>
-											</div>
-										</div>
 										{{else}} {{#each record.service_prices: idx, key}}
-										<div class="search__drop-item selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}"
-											data-price="{{price}}">
-											<input type="hidden" name="services[]" value="{{service_id}}">
-											<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
-											<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
-											<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
-											<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
-											<div class="search__drop-name">
-												<div class="search__drop-delete">
-													<svg class="svgsprite _delete">
-														<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
-													</svg>
+												<div class="search__drop-item selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
+													<input type="hidden" name="services[]" value="{{service_id}}">
+													<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
+													<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
+													<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][name]" value="{{name}}">
+													<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price]" value="{{price}}">
+													<div class="search__drop-name">
+														<div class="search__drop-delete">
+															<svg class="svgsprite _delete">
+																<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
+															</svg>
+														</div>
+														<div class="search__drop-tags">
+															{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+																<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
+															{{/each}}
+														</div>
+														{{name}}
+													</div>
+													<label class="search__drop-right">
+														<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
+													</label>
 												</div>
-												<div class="search__drop-tags">
-													{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
-													<div class="search__drop-tag --{{.color}}">{{this.tag}}</div>
-													{{/each}}
-												</div>
-												{{name}}
-											</div>
-											<label class="search__drop-right">
-												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
-											</label>
-										</div>
-										{{/each}} {{/if}}
+											{{/each}}
+										{{/if}}
 									</div>
 									<div class="mb-3 admin-editor__summ">
 										<p>Всего</p>
 										{{#if record.for_consultation == '0'}}
-										<input type="hidden" name="price" value="{{record.price}}">
-										{{elseif record.type == 'online'}}
-										<input type="hidden" name="price" class="consultation" data-type="online"
-											value="{{record.price}}">
-										{{elseif record.type == 'clinic'}}
-										<input type="hidden" name="price" class="consultation" data-type="clinic"
-											value="{{record.price}}">
+											<input type="hidden" name="price" value="{{record.price}}">
+											{{elseif record.type == 'online'}}
+											<input type="hidden" name="price" class="consultation" data-type="online" value="{{record.price}}">
+											{{elseif record.type == 'clinic'}}
+											<input type="hidden" name="price" class="consultation" data-type="clinic" value="{{record.price}}">
 										{{else}}
-										<input type="hidden" name="price" value="{{record.price}}">
+											<input type="hidden" name="price" value="{{record.price}}">
 										{{/if}}
 										<p class="price">{{ @global.utils.formatPrice(record.price) }} ₽<sup><b>*</b></sup>
 										</p>
 									</div>
 									<div class="mb-4 text-right" data-hide="service-search">
-							            <b>*</b>&nbsp;
-							            <small>Не является публичной офертой. Cтоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
-						            </div>
+										<b>*</b>&nbsp;
+										<small>Не является публичной офертой. Cтоимость указана приблизительно и может быть изменена в зависимости от фактически оказанных услуг</small>
+									</div>
 
 									<button class="btn btn--white" type=submit>Сохранить</button>
 								</div>
@@ -799,12 +741,12 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupEvent = function (client, _record, onSaved) {
-				var saveRecord = function (edit_mode, id, data, _onSaved) {
+			window.popupEvent = function(client, _record, onSaved) {
+				var saveRecord = function(edit_mode, id, data, _onSaved) {
 					utils.api.post('/api/v2/' + (edit_mode ? 'update' : 'create') +
-					               '/records/' +
-					               (edit_mode ? id : ''), data)
-						.then(function (res) {
+							'/records/' +
+							(edit_mode ? id : ''), data)
+						.then(function(res) {
 							if (!!_onSaved) {
 								_onSaved(res);
 							}
@@ -840,7 +782,7 @@
 
 							var _el = $(ev.node).parents('form').find('.search__input.search-services');
 
-							setTimeout(function () {
+							setTimeout(function() {
 								_el.trigger('focus');
 								//_el.find('.search-services').trigger('focus');
 							}, 200);
@@ -848,10 +790,10 @@
 						submit(ev) {
 							console.log('saving...', ev);
 							var edit_mode = (!!_record && !!_record.id);
-							let $form     = $(ev.node);
-							let uid       = this.get('client.id');
+							let $form = $(ev.node);
+							let uid = this.get('client.id');
 							if ($form.verify()) {
-								let new_data   = $form.serializeJSON();
+								let new_data = $form.serializeJSON();
 								new_data.group = 'events';
 								new_data.price = parseInt(new_data.price);
 								if (!edit_mode) {
@@ -860,12 +802,12 @@
 									console.log(new_data.pay_status);
 
 									new_data.priority = 0;
-									new_data.marked   = false;
-									new_data.photos   = {
+									new_data.marked = false;
+									new_data.photos = {
 										before: [],
 										after: []
 									};
-									new_data.client   = new_data.client || uid;
+									new_data.client = new_data.client || uid;
 
 									if (new_data.group === 'events' && !new_data.client) {
 										toast_error('Необходимо указать пациента!');
@@ -895,7 +837,7 @@
 									return false;
 								}
 								new_data.event_date = utils.dateForce(new_data.event_date);
-								new_data.price      = parseInt(new_data.price);
+								new_data.price = parseInt(new_data.price);
 
 								console.log('saving...', new_data);
 
@@ -903,9 +845,9 @@
 								if (new_data.type == 'online') {
 									if (new_data.status == 'upcoming') {
 										if (!new_data.meetroom ||
-										    !new_data.meetroom.meetingId) {
+											!new_data.meetroom.meetingId) {
 											is_saved = true;
-											onlineRooms.create(function (meetroom) {
+											onlineRooms.create(function(meetroom) {
 												new_data['meetroom'] = meetroom;
 												saveRecord(edit_mode, edit_mode ? _record?.id : null, new_data,
 													onSaved);
@@ -919,7 +861,7 @@
 
 								if (!is_saved) {
 									if (!!new_data.meetroom) {
-										onlineRooms.delete(new_data.meetroom.meetingId, function (meetroom) {});
+										onlineRooms.delete(new_data.meetroom.meetingId, function(meetroom) {});
 										new_data.meetroom = {};
 									}
 									saveRecord(edit_mode, edit_mode ? _record?.id : null, new_data, onSaved);
@@ -953,27 +895,26 @@
 						</div>
 						<form class="popup__form" on-submit="submit">
 							{{#if record}}
-							<input type="hidden" name="id" value="{{record.id}}">
-							<input type="hidden" name="client" value="{{record.client}}">
+								<input type="hidden" name="id" value="{{record.id}}">
+								<input type="hidden" name="client" value="{{record.client}}">
 
-							<p class="mb-20 text-bold text-big">
-								{{ @global.catalog.clients[record.client].fullname }}
-							</p>
+								<p class="mb-20 text-bold text-big">
+									{{ @global.catalog.clients[record.client].fullname }}
+								</p>
 							{{else}}
-							<div class="search-form input">
-								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
-								<div class="input__placeholder">Выбрать пациента</div>
-								<div class="client-search search-list" style="position: relative;"></div>
-							</div>
-							<input type="hidden" name="client" value="">
-							<input type="hidden" name="id" value="">
+								<div class="search-form input">
+									<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+									<div class="input__placeholder">Выбрать пациента</div>
+									<div class="client-search search-list" style="position: relative;"></div>
+								</div>
+								<input type="hidden" name="client" value="">
+								<input type="hidden" name="id" value="">
 
-							<div class="search-form event disabled input">
-								<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required
-									autocomplete="off">
-								<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
-								<div class="record-search search-list" style="position: relative;"></div>
-							</div>
+								<div class="search-form event disabled input">
+									<input class="input__control autocomplete event-search record-search" type="text" placeholder="Cобытие/продолжительное лечение" required autocomplete="off">
+									<div class="input__placeholder">Выбрать событие/продолжительное лечение</div>
+									<div class="record-search search-list" style="position: relative;"></div>
+								</div>
 							{{/if}}
 
 							<div class="mb-20 input calendar">
@@ -1016,7 +957,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupPhoto = function (client, record, onSaved) {
+			window.popupPhoto = function(client, record, onSaved) {
 				return new Ractive({
 					el: '.popup.--photo',
 					template: wbapp.tpl('#popupPhoto').html,
@@ -1041,7 +982,7 @@
 						submit(ev) {
 							console.log('Submit form...');
 							var _form = $(ev.node);
-							var self  = this;
+							var self = this;
 
 							wbapp.loading();
 							console.log('form data', form_data);
@@ -1063,16 +1004,16 @@
 										.focus();
 									return false;
 								}
-								utils.api.get('/api/v2/read/records/' + form_data.id).then(function (record) {
+								utils.api.get('/api/v2/read/records/' + form_data.id).then(function(record) {
 									var _photo_group = form_data.target || 'before';
 									delete form_data.target;
 									var files = Array.from(_form.find('input[name="file"]')[0].files);
 									wbapp.loading();
-									files.forEach(function (file) {
+									files.forEach(function(file) {
 										uploadFile(file,
 											'record/photos/' + record.id,
 											Date.now() + '_' + utils.getRandomStr(4),
-											function (photo) {
+											function(photo) {
 
 												if (photo.error) {
 													_form.removeClass('disabled');
@@ -1108,7 +1049,7 @@
 												utils.api.post('/api/v2/update/records/' + record.id, {
 													'photos': record.photos,
 													'hasPhoto': 1
-												}).then(function (rec) {
+												}).then(function(rec) {
 													wbapp.unloading();
 													_form.removeClass('disabled');
 													$('body').removeClass('noscroll');
@@ -1147,24 +1088,24 @@
 						<div class="popup__name text-bold">Продолжительное лечение</div>
 						<form class="popup__form" on-submit="longtermSave" autocomplete="off">
 							{{#if record}}
-							<input type="hidden" name="id" value="{{record.id}}"> {{else}}
-							<!-- new record -->
+								<input type="hidden" name="id" value="{{record.id}}">
+							{{else}}
+								<!-- new record -->
 							{{/if}}
 							<input type="hidden" name="group" value="longterms">
 							<input type="hidden" name="client" value="{{client.id}}"> {{#if client}}
-							<p class="mb-20 text-bold text-big">
-								{{ @global.catalog.clients[client.id].fullname }}
-							</p>
+								<p class="mb-20 text-bold text-big">
+									{{ @global.catalog.clients[client.id].fullname }}
+								</p>
 							{{else}}
-							<div class="search-form input">
-								<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
-								<div class="input__placeholder">Выбрать пациента</div>
-							</div>
+								<div class="search-form input">
+									<input class="input__control autocomplete client-search" autocomplete="off" type="text" placeholder="Выбрать пациента" required>
+									<div class="input__placeholder">Выбрать пациента</div>
+								</div>
 							{{/if}}
 
 							<div class="mb-20 input calendar">
-								<input class="input__control datepickr" type="text" required autocomplete="off" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}"
-									placeholder="Выбрать дату посещения">
+								<input class="input__control datepickr" type="text" required autocomplete="off" name="event_date" value="{{ @global.utils.dateForce(record.event_date) }}" placeholder="Выбрать дату посещения">
 								<div class="input__placeholder">Дата посещения</div>
 							</div>
 							<div class="popup-title__checkbox disabled d-none">
@@ -1176,8 +1117,7 @@
 							</div>
 
 							<div class="mb-20 input calendar" data-filter="longterms">
-								<input class="input__control event-search longterm-search" type="text" name="longterm_title" autocomplete="off" placeholder="Название продолжительного лечения"
-									required>
+								<input class="input__control event-search longterm-search" type="text" name="longterm_title" autocomplete="off" placeholder="Название продолжительного лечения" required>
 								<div class="input__placeholder">Название продолжительного лечения</div>
 							</div>
 
@@ -1214,7 +1154,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupLongterm = function (client, record, onSaved) {
+			window.popupLongterm = function(client, record, onSaved) {
 				return new Ractive({
 					el: '.popup.--longterm',
 					template: wbapp.tpl('#popupLongterm').html,
@@ -1230,24 +1170,24 @@
 							$('body').addClass('noscroll');
 						},
 						longtermSave(ev) {
-							var self  = this;
+							var self = this;
 							var $form = $(ev.node);
-							var uid   = this.get('client.id');
+							var uid = this.get('client.id');
 
 							if ($form.verify() && uid > '') {
 								var form_data = $form.serializeJSON();
 
-								form_data.group      = 'longterms';
-								form_data.status     = '';
+								form_data.group = 'longterms';
+								form_data.status = '';
 								form_data.pay_status = 'free';
-								form_data.photos     = {
+								form_data.photos = {
 									before: [],
 									after: []
 								};
 
-								form_data.client   = uid;
+								form_data.client = uid;
 								form_data.priority = 0;
-								form_data.marked   = 0;
+								form_data.marked = 0;
 								if (!form_data.event_date) {
 									toast_error('Выберите дату и время события');
 									$($(ev.node).parents('form'))
@@ -1255,20 +1195,20 @@
 										.focus();
 									return false;
 								}
-								form_data.event_date     = utils.dateForce(form_data.event_date);
+								form_data.event_date = utils.dateForce(form_data.event_date);
 								form_data.recommendation = '';
-								form_data.description    = '';
-								form_data.price          = 0;
-								var _photo_group         = form_data.target || 'before';
+								form_data.description = '';
+								form_data.price = 0;
+								var _photo_group = form_data.target || 'before';
 								delete form_data.photo_group;
 								var files = Array.from($form.find('input[name="file"]')[0].files);
 								console.log(files);
-								files.forEach(function (file) {
+								files.forEach(function(file) {
 									uploadFile(
 										file,
 										'records/photos/longterms',
 										Date.now() + '_' + utils.getRandomStr(4),
-										function (photo) {
+										function(photo) {
 											if (photo.error) {
 												toast_error(photo.error);
 												return false;
@@ -1285,7 +1225,7 @@
 											form_data.hasPhoto = 1;
 											wbapp.loading();
 											utils.api.post('/api/v2/create/records/', form_data).then(
-												function (longterm_record) {
+												function(longterm_record) {
 
 													wbapp.unloading();
 													if (typeof onSaved == 'function') {
@@ -1345,7 +1285,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupsCreateProfile = function () {
+			window.popupsCreateProfile = function() {
 				return new Ractive({
 					el: '.popup.--create-client',
 					template: wbapp.tpl('#popupCreateClient').html,
@@ -1363,24 +1303,24 @@
 								console.log('popupsCreateProfile: ', post);
 
 								let names = post.fullname.split(' ', 3);
-								let keys  = ['last_name', 'first_name', 'middle_name'];
+								let keys = ['last_name', 'first_name', 'middle_name'];
 								for (var i = 0; i < names.length; i++) {
 									post[keys[i]] = names[i];
 								}
 								post.phone = str_replace([' ', '-', '(', ')'], '', post.phone);
 								var _req_phone = str_replace('+', '', post.phone);
 								utils.api.get('/api/v2/list/users/?role=client&phone~=' + _req_phone).then(
-									function (data) {
+									function(data) {
 										if (!data || !data.length) {
 											utils.api.get('/api/v2/list/users/?email=' + post.email).then(
-												function (data) {
+												function(data) {
 													if (!data.length) {
-														post.role      = "client";
-														post.role      = "client";
+														post.role = "client";
+														post.role = "client";
 														post.confirmed = "0";
-														post.active    = "on";
+														post.active = "on";
 														utils.api.post('/api/v2/create/users/', post)
-															.then(function (data) {
+															.then(function(data) {
 																if (data) {
 																	if (!!data.error) {
 																		wbapp.trigger('wb-save-error', {
@@ -1393,7 +1333,7 @@
 																			'Успешно',
 																			'<a href="/cabinet/client/' + data.id +
 																			'"> Перейти на страницу профиля </a>',
-																			function (d) {});
+																			function(d) {});
 																	}
 																} else {
 																	$('.popup.--create-client').fadeOut('fast');
@@ -1402,7 +1342,7 @@
 																		'Успешно',
 																		'<a href="/cabinet/client/' + data.id +
 																		'"> Перейти на страницу профиля </a>',
-																		function (d) {});
+																		function(d) {});
 																}
 															});
 													} else {
@@ -1434,27 +1374,25 @@
 						<div class="popup__name text-bold">Редактировать профиль</div>
 						<form class="popup__form" on-submit="submit">
 							{{#user}}
-							<input type="hidden" name="id" value="{{user.id}}">
-							<div class="input">
-								<input class="input__control" type="text" required value="{{.fullname}}" placeholder="ФИО" name="fullname" minlength="5">
-								<div class="input__placeholder">ФИО</div>
-							</div>
-							<div class="input">
-								<input class="input__control datebirthdaypickr" required value="{{.birthdate}}" type="text" placeholder="Дата рождения" name="birthdate"
-									minlength="5">
-								<div class="input__placeholder">Дата рождения</div>
-							</div>
-							<div class="input mb-30">
-								<input class="input__control intl-tel" type="tel" required value="{{.phone}}"
-									name="phone">
-								<div class="input__placeholder active">Номер телефона</div>
-							</div>
-							<div class="input input--grey">
-								<input class="input__control" type="email" name="email" value="{{.email}}" required placeholder="E-mail">
-								<div class="input__placeholder input__placeholder--dark">E-mail</div>
-							</div>
+								<input type="hidden" name="id" value="{{user.id}}">
+								<div class="input">
+									<input class="input__control" type="text" required value="{{.fullname}}" placeholder="ФИО" name="fullname" minlength="5">
+									<div class="input__placeholder">ФИО</div>
+								</div>
+								<div class="input">
+									<input class="input__control datebirthdaypickr" required value="{{.birthdate}}" type="text" placeholder="Дата рождения" name="birthdate" minlength="5">
+									<div class="input__placeholder">Дата рождения</div>
+								</div>
+								<div class="input mb-30">
+									<input class="input__control intl-tel" type="tel" required value="{{.phone}}" name="phone">
+									<div class="input__placeholder active">Номер телефона</div>
+								</div>
+								<div class="input input--grey">
+									<input class="input__control" type="email" name="email" value="{{.email}}" required placeholder="E-mail">
+									<div class="input__placeholder input__placeholder--dark">E-mail</div>
+								</div>
 
-							<button class="btn btn--black form__submit" type="submit">Сохранить</button>
+								<button class="btn btn--black form__submit" type="submit">Сохранить</button>
 							{{/user}}
 						</form>
 					</div>
@@ -1462,7 +1400,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupEditProfile = function () {
+			window.popupEditProfile = function() {
 				return new Ractive({
 					el: '.popup.--edit-profile',
 					template: wbapp.tpl('#popupEditProfile').html,
@@ -1473,10 +1411,10 @@
 						complete() {
 							var self = this;
 							utils.api.get('/api/v2/read/users/' + wbapp._session.user.id + '?active=on')
-								.then(function (data) {
+								.then(function(data) {
 									data.fullname = data.fullname.replaceAll('  ', ' ');
-									data.phone    = str_replace([' ', '-', '(', ')'], '', data.phone);
-									data.phone    = data.phone.includes('+') ? data.phone : '+' + data.phone;
+									data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
+									data.phone = data.phone.includes('+') ? data.phone : '+' + data.phone;
 
 									self.set('user', data);
 									console.log(data);
@@ -1489,12 +1427,12 @@
 							$('body').addClass('noscroll');
 						},
 						submit(ev) {
-							var self  = this;
+							var self = this;
 							var $form = $(ev.node);
 							if ($form.verify()) {
-								var data   = $form.serializeJSON();
+								var data = $form.serializeJSON();
 								data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
-								Cabinet.updateProfile(wbapp._session.user.id, data, function (data) {
+								Cabinet.updateProfile(wbapp._session.user.id, data, function(data) {
 									data.birthdate_fmt = utils.formatDate(data.birthdate);
 									self.set('user', data); /* get actually user data */
 									toast_success('Профиль обновлён!');
@@ -1571,15 +1509,15 @@
 									</div>
 									<div class="select__list">
 										{{#each catalog.services}}
-										<div class="select__item select__item--checkbox">
-											<label class="checkbox checkbox--record">
-												<input type="checkbox" name="services[]" value="{{this.id}}">
-												<span></span>
-												<div class="checbox__name">
-													<div class="select__name">{{this.header}}</div>
-												</div>
-											</label>
-										</div>
+											<div class="select__item select__item--checkbox">
+												<label class="checkbox checkbox--record">
+													<input type="checkbox" name="services[]" value="{{this.id}}">
+													<span></span>
+													<div class="checbox__name">
+														<div class="select__name">{{this.header}}</div>
+													</div>
+												</label>
+											</div>
 										{{/each}}
 									</div>
 								</div>
@@ -1592,15 +1530,15 @@
 									</div>
 									<div class="select__list">
 										{{#each catalog.experts}}
-										<div class="select__item select__item--checkbox">
-											<label class="checkbox checkbox--record">
-												<input type="checkbox" name="experts[]" value="{{this.id}}">
-												<span></span>
-												<div class="checbox__name">
-													<div class="select__name">{{this.fullname}}</div>
-												</div>
-											</label>
-										</div>
+											<div class="select__item select__item--checkbox">
+												<label class="checkbox checkbox--record">
+													<input type="checkbox" name="experts[]" value="{{this.id}}">
+													<span></span>
+													<div class="checbox__name">
+														<div class="select__name">{{this.fullname}}</div>
+													</div>
+												</label>
+											</div>
 										{{/each}}
 									</div>
 								</div>
@@ -1614,15 +1552,15 @@
 									</div>
 									<div class="select__list">
 										{{#each @global.catalog.admins}}
-										<div class="select__item select__item--checkbox">
-											<label class="checkbox checkbox--record">
-												<input type="checkbox" name="admins[]" value="{{this.id}}">
-												<span></span>
-												<div class="checbox__name">
-													<div class="select__name">{{this.fullname}}</div>
-												</div>
-											</label>
-										</div>
+											<div class="select__item select__item--checkbox">
+												<label class="checkbox checkbox--record">
+													<input type="checkbox" name="admins[]" value="{{this.id}}">
+													<span></span>
+													<div class="checbox__name">
+														<div class="select__name">{{this.fullname}}</div>
+													</div>
+												</label>
+											</div>
 										{{/each}}
 									</div>
 								</div>
@@ -1660,7 +1598,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupDownloadData = function () {
+			window.popupDownloadData = function() {
 				return new Ractive({
 					el: '.popup.--download-data',
 					template: wbapp.tpl('#popupDownloadData').html,
@@ -1675,8 +1613,8 @@
 							$('body').addClass('noscroll');
 						},
 						submit(ev) {
-							let form   = ev.node;
-							let data   = $(form).serializeJSON();
+							let form = ev.node;
+							let data = $(form).serializeJSON();
 							let action = $(form).attr('action');
 
 							/*
@@ -1690,14 +1628,14 @@
 							var xhr = new XMLHttpRequest();
 							xhr.open('POST', action, true);
 							xhr.responseType = 'blob';
-							xhr.onload       = function () {
+							xhr.onload = function() {
 								if (this.status === 200) {
-									var blob        = this.response;
-									var filename    = "";
+									var blob = this.response;
+									var filename = "";
 									var disposition = xhr.getResponseHeader('Content-Disposition');
 									if (disposition && disposition.indexOf('attachment') !== -1) {
 										var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-										var matches       = filenameRegex.exec(disposition);
+										var matches = filenameRegex.exec(disposition);
 										if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
 									}
 
@@ -1705,7 +1643,7 @@
 										// IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
 										window.navigator.msSaveBlob(blob, filename);
 									} else {
-										var URL         = window.URL || window.webkitURL;
+										var URL = window.URL || window.webkitURL;
 										var downloadUrl = URL.createObjectURL(blob);
 
 										if (filename) {
@@ -1715,7 +1653,7 @@
 											if (typeof a.download === 'undefined') {
 												window.location.href = downloadUrl;
 											} else {
-												a.href     = downloadUrl;
+												a.href = downloadUrl;
 												a.download = filename;
 												document.body.appendChild(a);
 												a.click();
@@ -1724,7 +1662,7 @@
 											window.location.href = downloadUrl;
 										}
 
-										setTimeout(function () {
+										setTimeout(function() {
 											URL.revokeObjectURL(downloadUrl);
 										}, 100); // cleanup
 									}
@@ -1757,24 +1695,25 @@
 
 
 							<input type='hidden' value='{{ record.id }}' name='id'> {{#if this.spec_service}}
-							<input type='hidden' name='spec_service' value='{{this.spec_service}}'>
-							<input type='hidden' name='title' value='{{catalog.spec_service[this.spec_service].header}}'> {{else}}
-							<div class='mb-20 admin-editor__event'>
-								<div class='search__block --flex --aicn'>
-									<div class='input'>
-										<input class='popup-services-list search__input search-services' type='text' placeholder='Поиск по услугам' autocomplete='off'>
-										<div class='search__drop'></div>
-										<button class='search__btn' type='button'>
-											<svg class='svgsprite _search'>
-												<use xlink:href='/assets/img/sprites/svgsprites.svg#search'></use>
-											</svg>
-										</button>
+								<input type='hidden' name='spec_service' value='{{this.spec_service}}'>
+								<input type='hidden' name='title' value='{{catalog.spec_service[this.spec_service].header}}'>
+							{{else}}
+								<div class='mb-20 admin-editor__event'>
+									<div class='search__block --flex --aicn'>
+										<div class='input'>
+											<input class='popup-services-list search__input search-services' type='text' placeholder='Поиск по услугам' autocomplete='off'>
+											<div class='search__drop'></div>
+											<button class='search__btn' type='button'>
+												<svg class='svgsprite _search'>
+													<use xlink:href='/assets/img/sprites/svgsprites.svg#search'></use>
+												</svg>
+											</button>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class='mb-20 admin-editor__event'>
-								<!-- services-select.dropdown -->
-							</div>
+								<div class='mb-20 admin-editor__event'>
+									<!-- services-select.dropdown -->
+								</div>
 							{{/if}}
 
 							<div class='admin-editor__type-event'>
@@ -1783,125 +1722,99 @@
 										<input type='hidden' name='for_consultation' value='0'>
 
 										{{#if record.for_consultation === '1' }}
-										<input class='checkbox-visible-next-form' type='checkbox' checked
-											name='for_consultation' value='1'>
+											<input class='checkbox-visible-next-form' type='checkbox' checked name='for_consultation' value='1'>
 										{{else}}
-										<input class='checkbox-visible-next-form' type='checkbox'
-											name='for_consultation' value='1'>
+											<input class='checkbox-visible-next-form' type='checkbox' name='for_consultation' value='1'>
 										{{/if}}
 										<span></span>
 										<div class='checbox__name'>Консультация врача</div>
 									</label>
-									<div class='select-form' data-show='consultation-type'
-										style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
+									<div class='select-form' data-show='consultation-type' style="display: {{#if record.for_consultation === '1' }} block {{else}} none {{/if}};">
 										<div class='mb-10 text-bold'>Тип события</div>
 										<div class='popups__text-chexboxs'>
 											{{#each @global.catalog.quoteType as qt}}
-											<label class='text-radio show-checkbox' data-show-input='consultation-{{ qt.id }}'>
-												{{#if qt.id === record.type }}
-												<input type='radio' name='type'
-													class='consultation-type {{qt.id}}'
-													value='{{ qt.id }}' checked>
-												{{else}}
-												<input type='radio' name='type' value='{{ qt.id }}'
-													class='consultation-type {{qt.id}}'>
-												{{/if}}
-												<span>{{qt.name}}</span>
-											</label>
+												<label class='text-radio show-checkbox' data-show-input='consultation-{{ qt.id }}'>
+													{{#if qt.id === record.type }}
+														<input type='radio' name='type' class='consultation-type {{qt.id}}' value='{{ qt.id }}' checked>
+													{{else}}
+														<input type='radio' name='type' value='{{ qt.id }}' class='consultation-type {{qt.id}}'>
+													{{/if}}
+													<span>{{qt.name}}</span>
+												</label>
 											{{/each}}
 										</div>
 										<div class='admin-editor__patient price-list'>
 											{{#each @global.catalog.spec_service.consultations.online}}
-											<div class='search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}'
-												data-show='consultation-online'
-												data-consultation='{{this.id}}'
-												data-price='{{this.price}}'
-												style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
+												<div class='search__drop-item consultation online {{#if record.consultation == this.id }}selected{{/if}}' data-show='consultation-online' data-consultation='{{this.id}}' data-price='{{this.price}}' style="display: {{#if record.type === 'online' }} flex {{else}} none {{/if}};">
 
-												<label class='checkbox search__drop-name'
-													data-name='{{this.header}}' data-price='{{this.price}}'
-													data-id='{{this.id}}'>
-													{{#if record.consultation == this.id }}
-													<input type='radio' name='consultation' value='{{this.id}}'
-														data-name='{{this.header}}' data-price='{{this.price}}'
-														checked='checked'>
-													{{else}}
-													<input type='radio' name='consultation' value='{{this.id}}'
-														data-name='{{this.header}}' data-price='{{this.price}}'>
-													{{/if}}
-													<span></span>
-													<div class='checbox__name'>{{this.header}}</div>
-												</label>
-												<label class='search__drop-right'>
-													<div class='search__drop-summ'>{{ @global.utils.formatPrice(this.price) }} ₽</div>
-												</label>
-											</div>
+													<label class='checkbox search__drop-name' data-name='{{this.header}}' data-price='{{this.price}}' data-id='{{this.id}}'>
+														{{#if record.consultation == this.id }}
+															<input type='radio' name='consultation' value='{{this.id}}' data-name='{{this.header}}' data-price='{{this.price}}' checked='checked'>
+														{{else}}
+															<input type='radio' name='consultation' value='{{this.id}}' data-name='{{this.header}}' data-price='{{this.price}}'>
+														{{/if}}
+														<span></span>
+														<div class='checbox__name'>{{this.header}}</div>
+													</label>
+													<label class='search__drop-right'>
+														<div class='search__drop-summ'>{{ @global.utils.formatPrice(this.price) }} ₽</div>
+													</label>
+												</div>
 											{{/each}}
 											{{#each @global.catalog.spec_service.consultations.clinic}}
-											<div class='search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}'
-												data-show='consultation-clinic'
-												data-consultation='{{this.id}}'
-												data-price='{{this.price}}'
-												style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
-												<label class='checkbox search__drop-name'
-													data-name='{{this.header}}' data-price='{{this.price}}'
-													data-id='{{this.id}}'>
-													{{#if record.consultation == this.id }}
-													<input type='radio' name='consultation' value='{{this.id}}'
-														data-name='{{this.header}}' data-price='{{this.price}}'
-														checked='checked'>
-													{{else}}
-													<input type='radio' name='consultation' value='{{this.id}}'
-														data-name='{{this.header}}' data-price='{{this.price}}'>
-													{{/if}}
-													<span></span>
-													<div class='checbox__name'>{{this.header}}</div>
-												</label>
-												<label class='search__drop-right'>
-													<div class='search__drop-summ'>{{ @global.utils.formatPrice(this.price) }} ₽</div>
-												</label>
-											</div>
+												<div class='search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}' data-show='consultation-clinic' data-consultation='{{this.id}}' data-price='{{this.price}}' style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
+													<label class='checkbox search__drop-name' data-name='{{this.header}}' data-price='{{this.price}}' data-id='{{this.id}}'>
+														{{#if record.consultation == this.id }}
+															<input type='radio' name='consultation' value='{{this.id}}' data-name='{{this.header}}' data-price='{{this.price}}' checked='checked'>
+														{{else}}
+															<input type='radio' name='consultation' value='{{this.id}}' data-name='{{this.header}}' data-price='{{this.price}}'>
+														{{/if}}
+														<span></span>
+														<div class='checbox__name'>{{this.header}}</div>
+													</label>
+													<label class='search__drop-right'>
+														<div class='search__drop-summ'>{{ @global.utils.formatPrice(this.price) }} ₽</div>
+													</label>
+												</div>
 											{{/each}}
 										</div>
 									</div>
-									<input type='hidden' class='consultation_price'
-										name='consultation_price'
-										value='{{record.consultation_price}}'>
+									<input type='hidden' class='consultation_price' name='consultation_price' value='{{record.consultation_price}}'>
 								</div>
 								<div class='row'>
 									{{#if record.spec_service}} {{else}}
-									<div class='col-md-6'>
-										<div class='select-form select-checkboxes'>
-											<div class='select select_experts'>
-												<div class='select__main'>
-													<div class='select__placeholder'>Выберите специалиста</div>
-													<div class='select__values'></div>
-												</div>
-												<div class='select__list single'>
-													{{#each @global.catalog.experts}}
-													<div class='select__item select__item--checkbox'>
-														<label class='checkbox checkbox--record'>
-															{{#if @global.utils.arr.search(.id, record.experts)}}
-															<input type='checkbox' class='checked' name='experts[]' checked value='{{.id}}'> {{else}}
-															<input type='checkbox' name='experts[]' value='{{.id}}'> {{/if}}
-															<span></span>
-															<div class='checbox__name'>
-																<div class='select__name'>{{fullname}}</div>
-															</div>
-														</label>
+										<div class='col-md-6'>
+											<div class='select-form select-checkboxes'>
+												<div class='select select_experts'>
+													<div class='select__main'>
+														<div class='select__placeholder'>Выберите специалиста</div>
+														<div class='select__values'></div>
 													</div>
-													{{/each}}
+													<div class='select__list single'>
+														{{#each @global.catalog.experts}}
+															<div class='select__item select__item--checkbox'>
+																<label class='checkbox checkbox--record'>
+																	{{#if @global.utils.arr.search(.id, record.experts)}}
+																		<input type='checkbox' class='checked' name='experts[]' checked value='{{.id}}'>
+																	{{else}}
+																		<input type='checkbox' name='experts[]' value='{{.id}}'> {{/if}}
+																	<span></span>
+																	<div class='checbox__name'>
+																		<div class='select__name'>{{fullname}}</div>
+																	</div>
+																</label>
+															</div>
+														{{/each}}
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
 									{{/if}}
 									<div class='col-md-6'>
 										<div class='row'>
 											<div class='col-md-12'>
 												<div class='input input-lk-calendar input--grey'>
-													<input class='input__control datepickr' name='event_date' value='{{ @global.utils.dateForce(record.event_date) }}' type='text'
-														placeholder='Выбрать дату и время'>
+													<input class='input__control datepickr' name='event_date' value='{{ @global.utils.dateForce(record.event_date) }}' type='text' placeholder='Выбрать дату и время'>
 													<div class='input__placeholder'>Выбрать дату</div>
 												</div>
 											</div>
@@ -1909,15 +1822,13 @@
 										<div class='row'>
 											<div class='col-md-6'>
 												<div class='calendar input mb-30'>
-													<input class='input__control timepickr' type='text' name='event_time_start' value='{{record.event_time_start}}' data-min-time='09:00'
-														data-max-time='21:00' pattern='[0-9]{2}:[0-9]{2}' required>
+													<input class='input__control timepickr' type='text' name='event_time_start' value='{{record.event_time_start}}' data-min-time='09:00' data-max-time='21:00' pattern='[0-9]{2}:[0-9]{2}' required>
 													<div class='input__placeholder'>Время (начало)</div>
 												</div>
 											</div>
 											<div class='col-md-6'>
 												<div class='calendar input mb-30'>
-													<input class='input__control timepickr' type='text' name='event_time_end' value='{{record.event_time_end}}' data-min-time='09:00'
-														data-max-time='21:00' pattern='[0-9]{2}:[0-9]{2}' required>
+													<input class='input__control timepickr' type='text' name='event_time_end' value='{{record.event_time_end}}' data-min-time='09:00' data-max-time='21:00' pattern='[0-9]{2}:[0-9]{2}' required>
 													<div class='input__placeholder'>Время (конец)</div>
 												</div>
 											</div>
@@ -1947,30 +1858,29 @@
 								</div>
 
 								{{#each record.service_prices: idx, key}}
-								<div class='search__drop-item selected' data-index='{{idx}}' data-id='{{service_id}}-{{price_id}}' data-service_id='{{service_id}}'
-									data-price='{{price}}'>
-									<input type='hidden' name='services[]' value='{{service_id}}'>
-									<input type='hidden' name='service_prices[{{service_id}}-{{price_id}}][service_id]' value='{{service_id}}'>
-									<input type='hidden' name='service_prices[{{service_id}}-{{price_id}}][price_id]' value='{{price_id}}'>
-									<input type='hidden' name='service_prices[{{service_id}}-{{price_id}}][name]' value='{{name}}'>
-									<input type='hidden' name='service_prices[{{service_id}}-{{price_id}}][price]' value='{{price}}'>
-									<div class='search__drop-name'>
-										<div class='search__drop-delete'>
-											<svg class='svgsprite _delete'>
-												<use xlink:href='/assets/img/sprites/svgsprites.svg#delete'></use>
-											</svg>
+									<div class='search__drop-item selected' data-index='{{idx}}' data-id='{{service_id}}-{{price_id}}' data-service_id='{{service_id}}' data-price='{{price}}'>
+										<input type='hidden' name='services[]' value='{{service_id}}'>
+										<input type='hidden' name='service_prices[{{service_id}}-{{price_id}}][service_id]' value='{{service_id}}'>
+										<input type='hidden' name='service_prices[{{service_id}}-{{price_id}}][price_id]' value='{{price_id}}'>
+										<input type='hidden' name='service_prices[{{service_id}}-{{price_id}}][name]' value='{{name}}'>
+										<input type='hidden' name='service_prices[{{service_id}}-{{price_id}}][price]' value='{{price}}'>
+										<div class='search__drop-name'>
+											<div class='search__drop-delete'>
+												<svg class='svgsprite _delete'>
+													<use xlink:href='/assets/img/sprites/svgsprites.svg#delete'></use>
+												</svg>
+											</div>
+											<div class='search__drop-tags'>
+												{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
+													<div class='search__drop-tag --{{.color}}'>{{this.tag}}</div>
+												{{/each}}
+											</div>
+											{{name}}
 										</div>
-										<div class='search__drop-tags'>
-											{{#each @global.catalog.servicePrices[this.service_id+'-'+this.price_id].tags}}
-											<div class='search__drop-tag --{{.color}}'>{{this.tag}}</div>
-											{{/each}}
-										</div>
-										{{name}}
+										<label class='search__drop-right'>
+											<div class='search__drop-summ'>{{ @global.utils.formatPrice(this.price) }} ₽</div>
+										</label>
 									</div>
-									<label class='search__drop-right'>
-										<div class='search__drop-summ'>{{ @global.utils.formatPrice(this.price) }} ₽</div>
-									</label>
-								</div>
 								{{/each}}
 							</div>
 							<div class='admin-editor__summ'>
@@ -2062,6 +1972,6 @@
 </view>
 <edit header="Все попапы для ЛК">
 	<div>
-		<wb-module wb="module=yonger&mode=edit&block=common.inc"/>
+		<wb-module wb="module=yonger&mode=edit&block=common.inc" />
 	</div>
 </edit>
