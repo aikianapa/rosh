@@ -412,19 +412,19 @@
 								Внести предоплату
 							</button>
 						</form>
-						<div class="mt-20 text-grey">Не является публичной офертой</p>
-						</div>
-						<div class="popup__panel --succed-pay d-none">
-							<button class="popup__close">
-								<svg class="svgsprite _close">
-									<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-								</svg>
-							</button>
-							<div class="popup__name text-bold">Внести предоплату</div>
-							<h3 class="h3">Успешно!</h3>
-							<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете после подтверждения оплаты</p>
-						</div>
+						<div class="mt-20 text-grey"><b>*</b>&nbsp;Не является публичной офертой</div>
 					</div>
+					<div class="popup__panel --succed-pay d-none">
+						<button class="popup__close">
+							<svg class="svgsprite _close">
+								<use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+							</svg>
+						</button>
+						<div class="popup__name text-bold">Внести предоплату</div>
+						<h3 class="h3">Успешно!</h3>
+						<p class="text-grey">Информация о предстоящем приеме будет доступна в Личном кабинете после подтверждения оплаты</p>
+					</div>
+				</div>
 			</template>
 		</div>
 		<script wbapp>
