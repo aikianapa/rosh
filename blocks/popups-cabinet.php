@@ -412,7 +412,7 @@
 								Внести предоплату
 							</button>
 						</form>
-						<div class="mt-20 text-grey"><b>*</b>&nbsp;Нажимая на кнопку "Внести предоплату", Вы даете согласие на обработку своих персональных данных на основании Политики конфиденциальности. Не является публичной офертой.</div>
+						<div class="mt-20 text-grey form__description"><b>*</b>&nbsp;Не является публичной офертой.</div>
 					</div>
 					<div class="popup__panel --succed-pay d-none">
 						<button class="popup__close">
