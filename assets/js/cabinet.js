@@ -413,6 +413,9 @@ $(function () {
 
 			return phone;
 		},
+		ifNull(val, def) {
+			return !!val ? val : def;
+		},
 		formatPrice(val, sufix) {
 			if (!val || isNaN(val)) {
 				return 0;
@@ -1010,7 +1013,11 @@ $(function () {
 		console.log('find price for:', _parent_form);
 		var sum = 0;
 		_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
-			sum += parseInt($(this).data('price'));
+			let _count = parseInt($(this).attr('data-count'));
+			let _sum = parseInt($(this).data('price')) * (!!_count ? _count : 1);
+			console.log($(this).attr('data-count'), parseInt(_sum));
+			sum += _sum;
+			console.log(sum+_sum);
 		});
 		console.log(_parent_form, sum);
 		_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
@@ -1125,7 +1132,8 @@ $(function () {
 						'data-index': index,
 						"data-quote": suggestion.data.quote,
 						"data-service_id": suggestion.data.service_id,
-						"data-price": suggestion.data.price
+						"data-price": suggestion.data.price,
+						"data-count": 1
 					}).append(
 						$('<input type="hidden">').attr({
 							"name": 'services[]',
@@ -1170,6 +1178,7 @@ $(function () {
 									"max": 99
 								}).val(1)).append(
 								$('<span/>').attr({
+									"title": "Количество",
 									"class": 'service-count-label'
 								}).text(' ед. ')
 							)
@@ -1920,6 +1929,13 @@ $(function () {
 		//		end_time.val(start_time_val);
 		//	}
 		//})
+		.on('change', '[type="number"].service-count', function (e) {
+			e.stopPropagation();
+			var _parent = $(this).parents('.search__drop-item');
+			_parent.attr('data-count', $(this).val());
+			updPrice(_parent.closest('form'));
+			console.log($(this).val());
+		})
 		.on('change', '[type="file"].client-photo', function (e) {
 			e.stopPropagation();
 			var _block = $(this).parents('.file-photo');

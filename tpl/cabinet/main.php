@@ -452,7 +452,12 @@
 						</div>
 
 						{{#each record.service_prices: idx, key}}
-							<div class="search__drop-item services selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
+							<div class="search__drop-item services selected"
+								data-index="{{idx}}"
+								data-id="{{service_id}}-{{price_id}}"
+								data-service_id="{{service_id}}"
+								data-price="{{price}}"
+								data-count="{{@global.utils.ifNull(this.count, 1)}}">
 								<input type="hidden" name="services[]" value="{{service_id}}">
 								<input type="hidden" name="service_prices[{{idx}}][service_id]" value="{{service_id}}">
 								<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
@@ -461,7 +466,7 @@
 								<div class="search__drop-name">
 									<div class="search__drop-delete">
 										<svg class="svgsprite _delete">
-											<use xlink:href="assets/img/sprites/svgsprites.svg#delete"></use>
+											<use xlink:href="/assets/img/sprites/svgsprites.svg#delete"></use>
 										</svg>
 									</div>
 									<div class="search__drop-tags">
@@ -472,6 +477,11 @@
 									{{name}}
 								</div>
 								<label class="search__drop-right">
+									<input type="number" class="service-count"
+										title="Количество"
+										name="service_prices[{{service_id}}-{{price_id}}][count]"
+										value="{{@global.utils.ifNull(this.count, 1)}}" min="1" max="99">
+									<span class="service-count-label"> ед.</span>
 									<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 								</label>
 							</div>

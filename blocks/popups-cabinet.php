@@ -104,6 +104,7 @@
 										data-show="consultation-clinic"
 										data-consultation="{{this.id}}"
 										data-price="{{this.price}}"
+										data-count="{{@global.utils.ifNull(this.count, 1)}}"
 										style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
 										<label class="checkbox search__drop-name"
 											data-name="{{this.header}}" data-price="{{this.price}}"
@@ -120,6 +121,11 @@
 											<div class="checbox__name">{{this.header}}</div>
 										</label>
 										<label class="search__drop-right">
+											<input type="number" class="service-count"
+												title="Количество"
+												name="service_prices[{{service_id}}-{{price_id}}][count]"
+												value="{{@global.utils.ifNull(this.count, 1)}}" min="1" max="99">
+											<span class="service-count-label"> ед.</span>
 											<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 										</label>
 									</div>

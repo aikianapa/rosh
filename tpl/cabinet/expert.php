@@ -178,7 +178,11 @@
 									{{name}}
 								</div>
 								<label class="search__drop-right">
+									{{#if @global.utils.ifNull(this.count, 1) == 1}}
 									<div class="search__drop-summ"></div>
+									{{else}}
+									<span class="service-count-label">{{@global.utils.ifNull(this.count, 1)}} ед.</span>
+									{{/if}}
 								</label>
 							</div>
 							{{/each}}
@@ -371,7 +375,11 @@
 									{{name}}
 								</div>
 								<label class="search__drop-right">
+									{{#if @global.utils.ifNull(this.count, 1) == 1}}
 									<div class="search__drop-summ"></div>
+									{{else}}
+									<span class="service-count-label">{{@global.utils.ifNull(this.count, 1)}} ед.</span>
+									{{/if}}
 								</label>
 							</div>
 							{{/each}}
@@ -547,7 +555,11 @@
 										{{name}}
 									</div>
 									<label class="search__drop-right">
+										{{#if @global.utils.ifNull(this.count, 1) == 1}}
 										<div class="search__drop-summ"></div>
+										{{else}}
+										<span class="service-count-label">{{@global.utils.ifNull(this.count, 1)}} ед.</span>
+										{{/if}}
 									</label>
 								</div>
 								{{/each}}

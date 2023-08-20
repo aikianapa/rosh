@@ -549,6 +549,10 @@ img.preview.cloned{
 .search__drop-name{
 	max-width: 420px;
 }
+.search__drop-item .search__drop-summ {
+	min-width  : 54px;
+	text-align : right;
+}
 .admin-editor__patient .search__drop-name{
 	line-height: 1.6em;
 }
@@ -566,7 +570,7 @@ img.preview.cloned{
 }
 .service-count {
 	width       : 34px;
-	margin-right : 2px;
+	margin-right : 6px;
 }
 .service-count-label {
 	font-size   : 14px;
@@ -609,7 +613,7 @@ img.preview.cloned{
 	}
 	.service-count {
 		width        : 18px;
-		margin-right : 14px;
+		margin-right : 8px;
 		font-size    : 14px;
 		padding      : 1px 2px;
 	}
@@ -674,6 +678,10 @@ img.preview.cloned{
 	.comment_for_expert {
 		max-width     : 100%;
 		margin-bottom : 8px;
+	}
+	.search__drop-item.service .search__drop-summ {
+		min-width  : 54px;
+		text-align : right;
 	}
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {
