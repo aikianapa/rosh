@@ -26,7 +26,7 @@
         <wb-var count="0" />
         <wb-var experts wb-api="/api/v2/list/users?active=on&role=expert" />
         <wb-var typelist="1" wb-if="'{{_route.mode}}' == 'show' && ('{{_route.form}}' == 'services' OR '{{_route.form}}' == 'problems')" else="2" />
-
+        <wb-var limit="999" wb-if="'{{_route.name}}'=='about'" else="5" />
         <div class="container">
             <h3 class="mb-40 h3">Специалисты</h3>
             <div class="inner-experts__list">
@@ -41,7 +41,8 @@
                         </div>
                     </div>
                 </wb-foreach>
-                <wb-foreach wb="from=_var.experts&limit=5&sort=_sort" wb-if="'{{_var.typelist}}' == '2'">
+
+                <wb-foreach wb="from=_var.experts&limit={{_var.limit}}&sort=_sort" wb-if="'{{_var.typelist}}' == '2'">
                     <wb-var count="{{_var.count*1 + 1}}" />
                     <div class="inner-experts__item">
                         <div class="inner-experts__pic" style="background-image: url('/thumbc/700x388/src{{image.0.img}}')" wb-if="'{{image.0.img}}'>''"></div>
@@ -68,57 +69,3 @@
     </div>
 </view>
 
-<preview>
-    <div class="inner-experts page">
-        <div class="container">
-            <h3 class="mb-40 h3">Специалисты</h3>
-            <div class="inner-experts__list">
-                <div class="inner-experts__item">
-                    <div class="inner-experts__pic" style="background-image: url(/assets/img/experts/1.jpg)"></div>
-                    <div class="inner-experts__info">
-                        <div class="inner-experts__name"><a href="/expert.html">Хачатурян Любовь Андреева</a></div>
-                        <div class="inner-experts__experience">Опыт работы 25 лет</div><a class="inner-experts__link" href="/expert.html">Читать подробнее</a>
-                    </div>
-                </div>
-                <div class="inner-experts__item">
-                    <div class="inner-experts__pic" style="background-image: url(/assets/img/experts/1.jpg)"></div>
-                    <div class="inner-experts__info">
-                        <div class="inner-experts__name"><a href="/expert.html">Хачатурян Любовь Андреева</a></div>
-                        <div class="inner-experts__experience">Опыт работы 25 лет</div><a class="inner-experts__link" href="/expert.html">Читать подробнее</a>
-                    </div>
-                </div>
-                <div class="inner-experts__item">
-                    <div class="inner-experts__pic" style="background-image: url(/assets/img/experts/1.jpg)"></div>
-                    <div class="inner-experts__info">
-                        <div class="inner-experts__name"><a href="/expert.html">Хачатурян Любовь Андреева</a></div>
-                        <div class="inner-experts__experience">Опыт работы 25 лет</div><a class="inner-experts__link" href="/expert.html">Читать подробнее</a>
-                    </div>
-                </div>
-                <div class="inner-experts__item">
-                    <div class="inner-experts__pic" style="background-image: url(/assets/img/experts/1.jpg)"></div>
-                    <div class="inner-experts__info">
-                        <div class="inner-experts__name"><a href="/expert.html">Хачатурян Любовь Андреева</a></div>
-                        <div class="inner-experts__experience">Опыт работы 25 лет</div><a class="inner-experts__link" href="/expert.html">Читать подробнее</a>
-                    </div>
-                </div>
-                <div class="inner-experts__item">
-                    <div class="inner-experts__pic" style="background-image: url(/assets/img/experts/1.jpg)"></div>
-                    <div class="inner-experts__info">
-                        <div class="inner-experts__name"><a href="/expert.html">Хачатурян Любовь Андреева</a></div>
-                        <div class="inner-experts__experience">Опыт работы 25 лет</div><a class="inner-experts__link" href="/expert.html">Читать подробнее</a>
-                    </div>
-                </div>
-                <div class="inner-experts__item inner-experts__item-all">
-                    <div class="inner-experts__all">
-                        <h2 class="h2">Смотреть остальных специалистов </h2>
-                        <div class="/arrow__link">
-                            <svg class="svgsprite _arrow-link">
-                                <use xlink:href="/assets/img/sprites/svgsprites.svg#arrow-link"></use>
-                            </svg><a href="/experts.html">Все специалисты</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</preview>
