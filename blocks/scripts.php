@@ -16,6 +16,7 @@
 		"/assets/js/air-datepicker.js",
 		"/assets/js/jquery.timepicker.min.js",
 		"/assets/js/jquery.toast.min.js",
+		"/assets/js/jquery-listnav.js",
 		"/assets/js/main.js",
 		"/assets/js/new.js",
 		"/assets/js/blogFilter.js",
