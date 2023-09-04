@@ -187,5 +187,11 @@ $(document).ready(function () {
 				});
 			});
 		});
+		setTimeout(function () {
+			if (!window.isMobileDevice()) {
+				$('nav[data-tpl="#blogList"]').addClass('invisible').insertBefore('#blogList');
+				$('nav[data-tpl="#blogList"]')[0].scrollIntoView();
+			}
+		}, 2000);
 	}
 })

@@ -7,7 +7,7 @@
 
                 <wb-foreach wb="{
                     'ajax': '/api/v2/list/blog/',
-                    'size': '9',
+                    'size': '4',
                     'sort': 'date:d',
                     'more': 'true',
                     'bind': 'site.list.blog',
@@ -81,6 +81,11 @@
 				$(this).removeAttr('class').addClass('blog-panel '+_c_b);
 			});
 		});
+		setTimeout(function () {
+			if (!window.isMobileDevice()) {
+				$('nav[data-tpl="#blogList"]').addClass('invisible').insertBefore('#blogList');
+			}
+		}, 2000);
 	</script>
 </view>
 <edit header="Виджет новостей">

@@ -123,7 +123,7 @@
 									<div class="account-event">
 										<div class="text-right account-event">
 											<p>{{this.event_time_start}}-{{this.event_time_end}}<br>
-												<small>по московскому времени</small>
+												<small><u>по московскому времени</u></small>
 											</p>
 										</div>
 									</div>
@@ -152,7 +152,7 @@
 										</a>
 									</div>
 									<!-- TODO: add record.expert_waiting for detect online expert status -->
-									<p>Вас ожидает специалист, можете подключиться прямо сейчас</p>
+									<p style="color:#333;">Консультация начнётся в {{this.event_time_start}} по <u>московскому времени</u></p>
 								</div>
 							</div>
 						{{/if}}
@@ -279,7 +279,7 @@
 									<div class="account-event-wrap --jcsb">
 										<div class="account-events__name">Время приема:</div>
 										<div class="text-right account-event">
-											<p>{{this.event_time_start}}-{{this.event_time_end}}<br><small>по московскому времени</small></p>
+											<p>{{this.event_time_start}}-{{this.event_time_end}}<br><small><u>по московскому времени</u></small></p>
 										</div>
 									</div>
 								</div>

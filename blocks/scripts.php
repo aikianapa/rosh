@@ -41,7 +41,7 @@
         });
 	</script>
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=C5DFE09C37A04C27AFAD96C3DE03EC54">
+		src="/assets/js/cabinet.js?v=CE2D510133484934B7856EB9418AAA9C">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
@@ -55,7 +55,7 @@
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/intlTelInput.min.css?v=1.21" rel="stylesheet">
-	<link href="/assets/css/new.css?v=3370A9ED9112401B9A6F488E12D6CCAD" rel="stylesheet">
+	<link href="/assets/css/new.css?v=6EA9205C3B1F4D58B1C833016E9FE35C" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css?v=A3D0018079B24864814F654D27CA1F95" rel="stylesheet">
 
