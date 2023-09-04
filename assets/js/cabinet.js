@@ -413,6 +413,9 @@ $(function () {
 
 			return phone;
 		},
+		ifNull(val, def) {
+			return !!val ? val : def;
+		},
 		formatPrice(val, sufix) {
 			if (!val || isNaN(val)) {
 				return 0;
@@ -643,7 +646,7 @@ $(function () {
 					);
 				}
 
-				return Promise.allSettled(getters).then((results) => {
+				return Promise.allSettled(getters).then(() => {
 					_self.rawServices.forEach(function (service, i) {
 						if (service.price === '' || parseInt(service.price) < 0) {
 							return;
@@ -668,7 +671,13 @@ $(function () {
 							_cats = ["lab"];
 							title = service_parent.name + ': ' + service.header;
 						} else {
-							title = service.header;
+							//console.log(
+							//	service.header + ":" + service.header.length,
+							//	service_parent.name + ":" + service_parent.name.length
+							//);
+							title = ((!!service_parent.name /*&& (service.header.trim() != service_parent.name.trim())*/)
+								? service_parent.name + ': '
+								: '') + service.header;
 							_cats = service.type;
 						}
 
@@ -775,9 +784,9 @@ $(function () {
 			//	return false;
 			//}
 
-			let event_from_timestamp = utils.timestamp(
-				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
-					parseInt(event.event_time_start.split(':')[1])));
+			let event_from_timestamp = utils.timestamp(event_date);
+				//event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
+				//	parseInt(event.event_time_start.split(':')[1])));
 			//let event_to_timestamp   = utils.timestamp(
 			//	event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
 			//		parseInt(event.event_time_end.split(':')[1])));
@@ -1004,7 +1013,11 @@ $(function () {
 		console.log('find price for:', _parent_form);
 		var sum = 0;
 		_parent_form.find('.admin-editor__patient .search__drop-item.selected').each(function (e) {
-			sum += parseInt($(this).data('price'));
+			let _count = parseInt($(this).attr('data-count'));
+			let _sum = parseInt($(this).data('price')) * (!!_count ? _count : 1);
+			console.log($(this).attr('data-count'), parseInt(_sum));
+			sum += _sum;
+			console.log(sum+_sum);
 		});
 		console.log(_parent_form, sum);
 		_parent_form.find('.admin-editor__summ .price').html(utils.formatPrice(sum) + ' ₽<sup><b>*</b></sup>');
@@ -1119,7 +1132,8 @@ $(function () {
 						'data-index': index,
 						"data-quote": suggestion.data.quote,
 						"data-service_id": suggestion.data.service_id,
-						"data-price": suggestion.data.price
+						"data-price": suggestion.data.price,
+						"data-count": 1
 					}).append(
 						$('<input type="hidden">').attr({
 							"name": 'services[]',
@@ -1155,9 +1169,24 @@ $(function () {
 						).append(TAGS).append(suggestion.value)
 					).append(
 						$('<div></div>').addClass('search__drop-right')
-							.append($('<div></div>').addClass('search__drop-summ').html(
+							.append(
+								$('<input type="number">').attr({
+									"class": 'service-count',
+									"name": 'service_prices[' + suggestion.id + '][count]',
+									"value": 1,
+									"min": 1,
+									"max": 99
+								}).val(1)).append(
+								$('<span/>').attr({
+									"title": "Количество",
+									"class": 'service-count-label'
+								}).text(' ед. ')
+							)
+							.append(
+								$('<div></div>').addClass('search__drop-summ').html(
 								(suggestion.data.from == 'on' ? 'от ' : '') +
-								PRICE + ' ₽<sup><b>*</b></sup>'))
+								PRICE + ' ₽<sup><b>*</b></sup>')
+							)
 					)
 				);
 				updPrice(_parent_form);
@@ -1900,6 +1929,13 @@ $(function () {
 		//		end_time.val(start_time_val);
 		//	}
 		//})
+		.on('change', '[type="number"].service-count', function (e) {
+			e.stopPropagation();
+			var _parent = $(this).parents('.search__drop-item');
+			_parent.attr('data-count', $(this).val());
+			updPrice(_parent.closest('form'));
+			console.log($(this).val());
+		})
 		.on('change', '[type="file"].client-photo', function (e) {
 			e.stopPropagation();
 			var _block = $(this).parents('.file-photo');

@@ -477,7 +477,9 @@
 										</div>
 									{{/each}}
 									{{#each @global.catalog.spec_service.consultations.clinic}}
-										<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}" data-show="consultation-clinic" data-consultation="{{this.id}}" data-price="{{this.price}}" style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
+										<div class="search__drop-item consultation clinic {{#if record.consultation == this.id }}selected{{/if}}" data-show="consultation-clinic" data-consultation="{{this.id}}"
+											data-count="{{@global.utils.ifNull(this.count, 1)}}"
+											data-price="{{this.price}}" style="display: {{#if record.type === 'clinic' }} flex {{else}} none {{/if}};">
 											<label class="checkbox search__drop-name" data-name="{{this.header}}" data-price="{{this.price}}" data-id="{{this.id}}">
 												{{#if record.consultation == this.id }}
 													<input type="radio" name="consultation" value="{{this.id}}" data-name="{{this.header}}" data-price="{{this.price}}" checked="checked">
@@ -488,6 +490,11 @@
 												<div class="checbox__name">{{this.header}}</div>
 											</label>
 											<label class="search__drop-right">
+												<input type="number" class="service-count"
+													title="Количество"
+													name="service_prices[{{service_id}}-{{price_id}}][count]"
+													value="{{@global.utils.ifNull(this.count, 1)}}" min="1" max="99">
+												<span class="service-count-label"> ед.</span>
 												<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 											</label>
 										</div>
@@ -605,7 +612,9 @@
 							</div>
 						{{else}}
 							{{#each record.service_prices: idx, key}}
-								<div class="search__drop-item services selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}" data-service_id="{{service_id}}" data-price="{{price}}">
+								<div class="search__drop-item services selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}"
+									data-service_id="{{service_id}}" data-price="{{price}}"
+									data-count="{{@global.utils.ifNull(this.count, 1)}}">
 									<input type="hidden" name="services[]" value="{{service_id}}">
 									<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][service_id]" value="{{service_id}}">
 									<input type="hidden" name="service_prices[{{service_id}}-{{price_id}}][price_id]" value="{{price_id}}">
@@ -625,6 +634,11 @@
 										{{name}}
 									</div>
 									<label class="search__drop-right">
+										<input type="number" class="service-count"
+											title="Количество"
+											name="service_prices[{{service_id}}-{{price_id}}][count]"
+											value="{{@global.utils.ifNull(this.count, 1)}}" min="1" max="99">
+										<span class="service-count-label"> ед.</span>
 										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 									</label>
 								</div>

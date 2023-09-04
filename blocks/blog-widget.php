@@ -7,7 +7,7 @@
 
                 <wb-foreach wb="{
                     'ajax': '/api/v2/list/blog/',
-                    'size': '9',
+                    'size': '4',
                     'sort': 'date:d',
                     'more': 'true',
                     'bind': 'site.list.blog',
@@ -49,7 +49,6 @@
 		$(document).on('wb-ready wb-ajax-done', function () {
 			const _list = $('#blogList');
 			_list.find(".blog-panel").sort(function (a, b) {
-				console.log($(a).index());
 				const _c_a = $(a).attr('data-matrix');
 				const _c_b = $(b).attr('data-matrix');
 				var tmp    = '';
@@ -80,11 +79,13 @@
 					_c_b = 'blog-panel--33';
 				}
 				$(this).removeAttr('class').addClass('blog-panel '+_c_b);
-				//console.log(_pos, _idx, $(this));
 			});
-
-			//console.log(' blog items order fixed! ');
 		});
+		setTimeout(function () {
+			if (!window.isMobileDevice()) {
+				$('nav[data-tpl="#blogList"]').addClass('invisible').insertBefore('#blogList');
+			}
+		}, 2000);
 	</script>
 </view>
 <edit header="Виджет новостей">
