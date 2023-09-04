@@ -16,6 +16,7 @@
 		"/assets/js/air-datepicker.js",
 		"/assets/js/jquery.timepicker.min.js",
 		"/assets/js/jquery.toast.min.js",
+		"/assets/js/jquery-listnav.js",
 		"/assets/js/main.js",
 		"/assets/js/new.js",
 		"/assets/js/blogFilter.js",
@@ -40,7 +41,7 @@
         });
 	</script>
 	<script wb-app wb-if="in_array('{{_sess.user.role}}',['main','client','expert'])"
-		src="/assets/js/cabinet.js?v=FB21541122B246829B340C12AD1F292F">
+		src="/assets/js/cabinet.js?v=CE2D510133484934B7856EB9418AAA9C">
 	</script>
 
 	<div wb-if="'{{_sett.devmode}}!='on'">
@@ -54,12 +55,12 @@
 	<link href="/assets/css/fancybox.css" rel="stylesheet">
 	<link href="/assets/css/jquery.toast.min.css" rel="stylesheet">
 	<link href="/assets/css/intlTelInput.min.css?v=1.21" rel="stylesheet">
-	<link href="/assets/css/new.css?v=3370A9ED9112401B9A6F488E12D6CCAD" rel="stylesheet">
+	<link href="/assets/css/new.css?v=6EA9205C3B1F4D58B1C833016E9FE35C" rel="stylesheet">
 	<link href="/assets/css/jquery.timepicker.min.css" rel="stylesheet">
 	<link href="/assets/css/additional/frontend.css?v=A3D0018079B24864814F654D27CA1F95" rel="stylesheet">
 
 	<link wb-if="in_array('{{_sess.user.role}}', ['main','client','expert'])"
-		href="/assets/css/cabinet.css?v=38EA10C81BA644B2BFC618D02CEFCB0D" rel="stylesheet">
+		href="/assets/css/cabinet.css?v=A2A6208A80BA4DF799D37EAB2D36B34C" rel="stylesheet">
 </view>
 
 <edit header="Загрузка скриптов">

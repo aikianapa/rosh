@@ -1933,6 +1933,10 @@ img.socials__link {
     height: 15px;
 }
 
+.invisible {
+    opacity : 0 !important;
+}
+
 @media (min-width : 1400px) {
     .fixed-top {
         position: fixed;

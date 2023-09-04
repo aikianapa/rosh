@@ -112,8 +112,8 @@
 	background    : #DC3545;
 	padding       : 4px;
 	border-radius : 50%;
-	width         : 8px;
-	height        : 8px;
+	width  : 8px !important;
+	height : 8px !important;
 	display       : inline-block;
 	margin-right  : 2px;
 }
@@ -549,6 +549,10 @@ img.preview.cloned{
 .search__drop-name{
 	max-width: 420px;
 }
+.search__drop-item .search__drop-summ {
+	min-width  : 54px;
+	text-align : right;
+}
 .admin-editor__patient .search__drop-name{
 	line-height: 1.6em;
 }
@@ -557,6 +561,28 @@ img.preview.cloned{
 }
 .popups__text-chexboxs.service-categories .text-radio span{
 	justify-content: center;
+}
+.account-events__block .accardeon + * {
+	padding-top             : 16px;
+	border-top              : 2px solid white;
+	border-top-left-radius  : 0;
+	border-top-right-radius : 0;
+}
+.service-count {
+	width       : 34px;
+	margin-right : 6px;
+}
+.service-count-label {
+	font-size   : 14px;
+	margin-right : 14px;
+}
+.service-count-block {
+	margin-right : 4px;
+}
+
+.service-count::-webkit-inner-spin-button,
+.service-count::-webkit-outer-spin-button {
+	-webkit-appearance : auto;
 }
 @media (max-width : 1280px) {
 	.admin-events-item:nth-child(7) {
@@ -579,6 +605,34 @@ img.preview.cloned{
 	}
 }
 @media (max-width : 768px) {
+	.service-count-block{
+		margin-right: 4px;
+	}
+	.service-count:focus {
+		border : 1px solid silver;
+	}
+	.service-count {
+		width        : 18px;
+		margin-right : 8px;
+		font-size    : 14px;
+		padding      : 1px 2px;
+	}
+	.service-count-label {
+		font-size    : 14px;
+		margin-right : 4px;
+	}
+	.analysis__top.--aicn.--flex {
+		flex-wrap : wrap;
+	}
+	.analyses {
+		margin-top : 10px;
+	}
+	.admin-editor__iser-contacts span {
+		display : block;
+	}
+	.admin-editor__iser-contacts {
+		font-size : 16px;
+	}
 	.search-result.page-content .analysis__top > .btn {
 		width : 100%;
 	}
@@ -624,6 +678,10 @@ img.preview.cloned{
 	.comment_for_expert {
 		max-width     : 100%;
 		margin-bottom : 8px;
+	}
+	.search__drop-item.service .search__drop-summ {
+		min-width  : 54px;
+		text-align : right;
 	}
 	.search__drop-item .search__drop-delete {opacity : 1}
 	.search__drop-item .search__drop-name {
