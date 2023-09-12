@@ -73,7 +73,7 @@ class recordsClass extends cmsFormsClass
                 }
 
                 foreach (@(array)$item['service_prices'] as $serv) {
-                    $servs[] = $serv['name'];
+                    isset($serv['name']) ? $servs[] = @$serv['name'] : null;
                 }
                 if (count($servs)) {
                     array_unshift($servs,"Назначенные услуги:");
