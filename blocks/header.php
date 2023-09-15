@@ -11,7 +11,6 @@
 
 				<a wb-if="'{{_var.hover_logo}}' == '0'" class="header__logo" href="/">
 					<img src="/assets/img/logo.svg" alt="{{_sett.header}}">
-					<img src="/assets/img/logo-red.svg" alt="{{_sett.header}}">
 				</a>
 
 				<a wb-if="'{{_var.hover_logo}}' == '1'" class="header__logo header__logo-red" href="/">
