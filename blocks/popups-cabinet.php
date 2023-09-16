@@ -420,6 +420,9 @@
 							<input type='hidden' name='sum' value='{{this.pay_price}}' />
 							<input type='hidden' name='orderid' value='{{this.id}}' />
 							<input type='hidden' name='clientid' value='{{this.client}}' />
+							<input type='hidden' name='service_name' value='{{this.service_name}}' />
+							<input type='hidden' name='client_email' value='{{this.client_email}}' />
+							<input type='hidden' name='client_phone' value='{{this.client_phone}}' />
 							<button class="btn btn--black form__submit" type="submit">
 								Внести предоплату
 							</button>
@@ -440,7 +443,7 @@
 			</template>
 		</div>
 		<script wbapp>
-			window.popupPay = function(record_id, full_price, user_id, type, consultation_price) {
+			window.popupPay = function(record_id, full_price, user_id, type, consultation_price, client_email, client_phone, service_name) {
 				const pay_consultation = parseInt(consultation_price || '0');
 				var price = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
 				if (pay_consultation) {
@@ -456,7 +459,10 @@
 						is_online: (type == 'online'),
 						price: price,
 						client: user_id,
-						id: record_id
+						id: record_id,
+						client_email: client_email,
+						client_phone: client_phone,
+						service_name: service_name,
 					},
 					on: {
 						complete() {
