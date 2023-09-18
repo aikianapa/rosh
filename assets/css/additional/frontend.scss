@@ -137,7 +137,7 @@
 
 			.post__block-info
 			{
-				padding: 0 0 0 67px;
+				padding: 67px 0 0 67px;
 			}
 		}
 
@@ -170,6 +170,10 @@
 			.post__block-info
 			{
 				padding: 0 0 0 0 !important;
+			}
+
+			&-img {
+				display:block;
 			}
 		}
 
