@@ -136,14 +136,14 @@
 							<div class="account-events__btns">
 								<div class="account-event-wrap --aicn">
 									<div class="account-events__btn">
-										<button class="btn btn--black" onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}','{{this.type}}','{{this.consultation_price}}')">
+										<button class="btn btn--black" onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}','{{this.type}}','{{this.consultation_price}}', '{{user.email}}', '{{@global.utils.formatPhone(user.phone)}}', '{{@global.catalog.spec_service.consultations[type][consultation].header}}')">
 											Внести предоплату
 										</button>
 									</div>
 									<p>Услуга требует внесения предоплаты</p>
 								</div>
 							</div>
-							{{elseif this.type == 'online'}}
+							{{elseif this.pay_status == 'prepay'}}
 							<div class="account-events__btns">
 								<div class="account-event-wrap --aicn">
 									<div class="account-events__btn">
@@ -292,7 +292,7 @@
 								<div class="account-events__btns">
 									<div class="account-event-wrap --aicn">
 										<div class="account-events__btn">
-											<button class="btn btn--black" onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}','{{this.type}}','{{this.consultation_price}}')">
+											<button class="btn btn--black" onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}','{{this.type}}','{{this.consultation_price}}','{{user.email}}', '{{@global.utils.formatPhone(user.phone)}}', '{{@global.catalog.spec_service.consultations[type][consultation].header}}')">
 												Внести предоплату
 											</button>
 										</div>

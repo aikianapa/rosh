@@ -179,6 +179,10 @@
 
 .pagination
 {
+	&.custom {
+		justify-content: center;
+	}
+
 	&.wb-wait
 	{
 		width: 64px;
@@ -257,7 +261,7 @@ a.header__logo
 
 			img {
 				&:last-of-type {
-					display: none;
+					display: block;
 				}
 			}
 		}
