@@ -4,7 +4,7 @@
             <div class="post__block-info text">
                 <span class="post__block-title" wb-if="'{{title}}'>''">{{title}}</span>
                 <p wb-if="'{{text}}'>''">
-                    <div class="post__block-img" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt="{{title}}"></div>
+                    <img src="{{image.0.img}}" alt="{{title}}">
                     {{nl2br(text)}}
                 </p>
             </div>
