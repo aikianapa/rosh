@@ -179,6 +179,10 @@
 
 .pagination
 {
+	&.custom {
+		justify-content: center;
+	}
+
 	&.wb-wait
 	{
 		width: 64px;

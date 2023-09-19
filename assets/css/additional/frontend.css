@@ -117,6 +117,9 @@
   }
 }
 
+.pagination.custom {
+  justify-content: center;
+}
 .pagination.wb-wait {
   width: 64px;
   height: 64px;
