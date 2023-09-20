@@ -784,7 +784,10 @@ $(function () {
 			//	return false;
 			//}
 
-			let event_from_timestamp = utils.timestamp(event_date);
+			let event_from_timestamp = utils.timestamp(
+				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
+					parseInt(event.event_time_start.split(':')[1])));
+
 				//event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
 				//	parseInt(event.event_time_start.split(':')[1])));
 			//let event_to_timestamp   = utils.timestamp(
