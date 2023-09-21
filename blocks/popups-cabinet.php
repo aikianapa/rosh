@@ -401,6 +401,12 @@
 							</svg>
 						</button>
 						<div class="popup__name text-bold">Внести предоплату</div>
+                        {{#if !this.client_email }}
+                        <div class="input">
+                            <input class="input__control" type="email" name="email" placeholder="E-mail">
+                            <div class="input__placeholder">E-mail</div>
+                        </div>
+                        {{/if}}
 						<div class="mb-10 text-grey text-small">Стоимость услуги</div>
 						<div class="mb-20 popup-summ --aifs">
 							<div class="popup-summ__big">{{this.price}} ₽</div>
@@ -468,10 +474,37 @@
 						complete() {
 							$(this.el).show();
 						},
-						submit() {
-							$('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
-							$('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
-						}
+                        submit() {
+                            if (!client_email) {
+                                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                                const data = {
+                                    email: $(".popup.--pay input[name='email']").val(),
+                                    phone: str_replace([' ', '-', '(', ')'], '', client_phone),
+                                    fullname: page.get('user.fullname'),
+                                    first_name: page.get('user.first_name'),
+                                    middle_name: page.get('user.first_name'),
+                                    last_name: page.get('user.first_name'),
+                                }
+
+                                console.log(data)
+
+                                if (!emailPattern.test(data.email)) {
+                                    toast("Неверный формат электронной почты", "", "error")
+                                    return false;
+                                }
+
+                                this.viewmodel.value.client_email = data.email;
+                                $('input[name="client_email"').val(data.email)
+
+                                Cabinet.updateProfile(page.get('user.id'), data, function (data) {
+                                    page.set('user', data); /* get actually user data */
+                                    toast('Профиль успешно обновлён');
+                                })
+                            }
+
+                            $('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
+                            $('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+                        }
 					}
 				});
 			};
