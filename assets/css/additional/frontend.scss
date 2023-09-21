@@ -89,6 +89,47 @@
 
 }
 
+.modal__img {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	display:none;
+	justify-content: center;
+	align-items:center;
+
+	background-color: rgba(0, 0, 0, .6);
+
+	top: 0;
+	left: 0;
+
+	z-index: 3333;
+
+	&-close {
+		position: absolute;
+		width: 35px;
+		height: 35px;
+
+		fill: white;
+
+		top: 20px;
+		right: 20px;
+
+		cursor: pointer;
+	}
+
+	&-img {
+		width: 100%;
+		height: auto;
+	}
+
+	&.active {
+		display:flex;
+	}
+}
+
+
+
+
 @keyframes blog_slideUp {
 	0% {
 		height: 0;

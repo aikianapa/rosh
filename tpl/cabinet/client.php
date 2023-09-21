@@ -607,7 +607,54 @@
 				</div>
 			</div>
 		</div>
+
+        <div class="modal__img">
+            <svg class="modal__img-close" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+            <img class="modal__img-img" src="https://lipsum.app/id/1/1600x1200" alt="">
+        </div>
 	</template>
+
+    <script>
+        $(document).ready(() => {
+            if (window.innerWidth <= 600) {
+                const searchInterval = setInterval(function() {
+                    console.log("search")
+
+                    const elementsWithDataFancybox = [...$('[data-fancybox]')];
+                    if (elementsWithDataFancybox.length > 0) {
+                        // Элемент найден, выполните ваш код здесь
+                        clearInterval(searchInterval); // Остановить цикл
+
+                        elementsWithDataFancybox.forEach(item => {
+                            item.addEventListener("click", function (e) {
+                                e.preventDefault();
+
+                                $(".modal__img")[0].classList.add("active");
+                                $(".modal__img-img")[0].src = this.href;
+                            })
+                        })
+                    }
+                }, 100);
+            }
+
+
+            const searchIntervalModal = setInterval(function() {
+                const modal = $('.modal__img');
+                if (modal.length > 0) {
+                    // Элемент найден, выполните ваш код здесь
+                    clearInterval(searchIntervalModal); // Остановить цикл
+
+                    modal.on("click", function (e) {
+                        const target = e.target;
+
+                        if (target.className === "modal__img-img") return;
+
+                        $(this).removeClass("active");
+                    })
+                }
+            }, 100);
+        })
+    </script>
 
 	<template id="profile-editor-inline" wb-off>
 		<form on-submit="submit">
@@ -954,6 +1001,7 @@
 	<div>
 		<wb-module wb="module=yonger&mode=render&view=footer" />
 	</div>
+
 </body>
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');" />
 <wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');" />
