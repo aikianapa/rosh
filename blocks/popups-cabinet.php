@@ -486,8 +486,6 @@
                                     last_name: page.get('user.first_name'),
                                 }
 
-                                console.log(data)
-
                                 if (!emailPattern.test(data.email)) {
                                     toast("Неверный формат электронной почты", "", "error")
                                     return false;
