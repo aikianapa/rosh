@@ -86,6 +86,10 @@
   display: flex;
 }
 
+.account__exit {
+  height: min-content;
+}
+
 @keyframes blog_slideUp {
   0% {
     height: 0;
