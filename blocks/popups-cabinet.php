@@ -402,7 +402,8 @@
 						</button>
 						<div class="popup__name text-bold">Внести предоплату</div>
                         {{#if !this.client_email }}
-                        <div class="input">
+                        <div class="input__title text-bold mb-10" style="color: #dc3545;">Введите адрес электронной почты для отправки электронного чека</div>
+                        <div class="input mb-30">
                             <input class="input__control" type="email" name="email" placeholder="E-mail">
                             <div class="input__placeholder">E-mail</div>
                         </div>
