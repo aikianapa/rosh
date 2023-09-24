@@ -143,7 +143,8 @@
 									<p>Услуга требует внесения предоплаты</p>
 								</div>
 							</div>
-							{{elseif this.pay_status == 'prepay'}}
+						{{elseif this.type == 'online'}}
+						<!--{{elseif this.pay_status == 'prepay'}} only online event has button -->
 							<div class="account-events__btns">
 								<div class="account-event-wrap --aicn">
 									<div class="account-events__btn">
