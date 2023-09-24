@@ -767,6 +767,9 @@ $(function () {
 	};
 	window.Cabinet     = {
 		eventTimestamp(event) {
+			if (!event.event_date) {
+				return false;
+			}
 			var event_date           = utils.getDate(event.event_date);
 			let event_from_timestamp = utils.timestamp(
 				event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
@@ -777,23 +780,28 @@ $(function () {
 			return utils.formatDate(event.event_date) === utils.formatDate(new Date());
 		},
 		isCurrentEvent(event) {
-			var event_date     = utils.getDate(event.event_date);
-			let curr_timestamp = utils.timestamp(new Date());
+			if (!event.event_date) {
+				return false;
+			}
+			try {
+				var event_date     = utils.getDate(event.event_date);
+				let curr_timestamp = utils.timestamp(new Date());
 
-			//if (!this.isCurrentDayEvent(event)) {
-			//	return false;
-			//}
+				//if (!this.isCurrentDayEvent(event)) {
+				//	return false;
+				//}
 
-			let event_from_timestamp = utils.timestamp(event_date);
+				let event_from_timestamp = utils.timestamp(event_date);
 				//event_date.setHours(parseInt(event.event_time_start.split(':')[0]),
 				//	parseInt(event.event_time_start.split(':')[1])));
-			//let event_to_timestamp   = utils.timestamp(
-			//	event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
-			//		parseInt(event.event_time_end.split(':')[1])));
-			//
-			//console.log(curr_timestamp, event_from_timestamp, event_from_timestamp < (curr_timestamp + 301));
+				//let event_to_timestamp   = utils.timestamp(
+				//	event_date.setHours(parseInt(event.event_time_end.split(':')[0]),
+				//		parseInt(event.event_time_end.split(':')[1])));
 
-			return (event_from_timestamp < (curr_timestamp + 301)/* && event_to_timestamp >= curr_timestamp*/);
+				return (event_from_timestamp < (curr_timestamp + 301)/* && event_to_timestamp >= curr_timestamp*/);
+			} catch (e) {
+				return false;
+			}
 		},
 		runOnlineChat(room_name) {
 			/*!! check record  exists & status & pay_status & date !!*/
