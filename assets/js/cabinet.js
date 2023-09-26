@@ -525,18 +525,18 @@ $(function () {
 						});
 					}
 				});
-				utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
-				              '&@return=id,first_name,middle_name,last_name,fullname,role,phone,email,birthdate' +
-				              '&@group=role' +
-				              '&@sort=fullname:a')
-					.then(function (data) {
-						_self.clients = utils.arr.indexBy(data['client']);
-						_self.users   = utils.arr.indexBy(
-							data['main']
-								.concat(data['expert'])
-								.concat(data['client'])
-						);
-					})
+					utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
+								  '&@return=id,first_name,middle_name,last_name,fullname,role,phone,email,birthdate,parent_id' +
+								  '&@group=role' +
+								  '&@sort=fullname:a')
+						.then(function (data) {
+							_self.clients = utils.arr.indexBy(data['client']);
+							_self.users   = utils.arr.indexBy(
+								data['main']
+									.concat(data['expert'])
+									.concat(data['client'])
+							);
+						})
 			} else {
 				_self.rawServices = [];
 				getters.push(
@@ -631,7 +631,7 @@ $(function () {
 
 					getters.push(
 						utils.api.get('/api/v2/list/users?role=[main,expert,client]&active=on' +
-						              '&@return=id,first_name,middle_name,last_name,fullname,first_name,last_name,middle_name,role,phone,email,birthdate' +
+						              '&@return=id,first_name,middle_name,last_name,fullname,first_name,last_name,middle_name,role,phone,email,birthdate,parent_id' +
 						              '&@group=role' +
 						              '&@sort=fullname:a')
 							.then(function (data) {
