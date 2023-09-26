@@ -131,6 +131,22 @@
 	height: min-content;
 }
 
+#select-childrens {
+	.select__main {
+		color: #080e0d;
+
+	}
+
+	&>div {
+		display:flex;
+		align-items:center;
+	}
+
+	.select-form {
+		width: 100%;
+	}
+}
+
 
 
 

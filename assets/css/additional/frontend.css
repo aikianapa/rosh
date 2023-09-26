@@ -90,6 +90,17 @@
   height: min-content;
 }
 
+#select-childrens .select__main {
+  color: #080e0d;
+}
+#select-childrens > div {
+  display: flex;
+  align-items: center;
+}
+#select-childrens .select-form {
+  width: 100%;
+}
+
 @keyframes blog_slideUp {
   0% {
     height: 0;
