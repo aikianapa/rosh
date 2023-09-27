@@ -268,7 +268,7 @@
                     <p>Услуга требует внесения предоплаты</p>
                 </div>
             </div>
-            {{elseif this.pay_status == 'prepay'}}
+            {{elseif this.pay_status != 'unpay'}}
             <div class="account-events__btns">
                 <div class="account-event-wrap --aicn">
                     <div class="account-events__btn">
@@ -429,7 +429,7 @@
                         <p>Услуга требует внесения предоплаты</p>
                     </div>
                 </div>
-                {{elseif this.type == 'online'}}
+                {{elseif this.pay_status != 'unpay'}}
                 <div class="account-events__btns">
                     <div class="account-event-wrap --aicn">
                         <div class="account-events__btn">
@@ -1028,7 +1028,6 @@
                 init() {
                 },
                 complete() {
-                    console.log("!!!!!COMPLETE")
                     var self = this;
                     setTimeout(function () {
                         $(self.el).find("img[data-src]:not([src])").lazyload();
