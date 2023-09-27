@@ -67,6 +67,25 @@ class usersClass extends cmsFormsClass
         return $item;
     }
 
+
+    function toggleCabinet() {
+        header('Content-type: application/json; charset=utf-8');
+        $uid = $this->app->vars('_route.item');
+        if (in_array($uid, (array)$this->app->vars('_sess.user.childrens')) OR $uid == $this->app->vars('_sess.user.parent_id')) {
+            $user = $this->app->login($uid);
+            if ($user) {
+                echo json_encode([
+                    'error'=>false,
+                    'user' => $user,
+                    'msg' => 'Пользователь переключен',
+                    'token' => $this->app->getToken()
+                ],JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+        }
+        echo '{"error":true,"msg":"Неудачное переключение пользователя!"}';
+    }
+
     function changePassword(&$item=null) {
         if (isset($item['new_password'])) {
             // при создании нового специалиста
@@ -74,7 +93,6 @@ class usersClass extends cmsFormsClass
             unset($item['new_password']);
             return;
         }
-
 
         if ($item == null OR !isset($item['pwd_current']) OR $item['pwd_current'] == '') return;
         if ($this->app->vars('_sess.user.id') !== $item['id']) return;
