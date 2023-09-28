@@ -433,7 +433,7 @@
                 <div class="account-events__btns">
                     <div class="account-event-wrap --aicn">
                         <div class="account-events__btn">
-                            <button class="btn btn--white disabled" disabled>
+                            <button class="btn btn--white" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
                                 Онлайн консультация
                             </button>
                         </div>
