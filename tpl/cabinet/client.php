@@ -433,11 +433,13 @@
                 <div class="account-events__btns">
                     <div class="account-event-wrap --aicn">
                         <div class="account-events__btn">
-                            <button class="btn btn--white" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
+                            <button class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
                                 Онлайн консультация
                             </button>
                         </div>
-                        <p>Кнопка станет активной за 5 минут до начала приема</p>
+                        <p style="color:#333;">Консультация начнётся в {{this.event_time_start}} по <u>московскому
+                                времени</u></p>
+                        <!--<p>Кнопка станет активной за 5 минут до начала приема</p>-->
                     </div>
                 </div>
                 {{/if}}

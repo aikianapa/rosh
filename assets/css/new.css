@@ -1367,7 +1367,7 @@ div.swiper-horizontal.post-slider {
 }
 
 .post__block.left p img {
-    width: 60%;
+    width: 50%;
     height: auto;
     float: left;
     margin-right: 40px;
@@ -1377,7 +1377,7 @@ div.swiper-horizontal.post-slider {
 }
 
 .post__block.right p img {
-    width: 60%;
+    width: 50%;
     height: auto;
     float: right;
     margin-left: 40px;
