@@ -135,12 +135,16 @@
 }
 
 .container.post_block .post__block.left {
+  max-width: 1000px;
+  margin: 0 auto;
   flex-direction: row-reverse;
 }
 .container.post_block .post__block.left .post__block-info {
   padding: 0 0 0 67px;
 }
 .container.post_block .post__block.right {
+  max-width: 1000px;
+  margin: 0 auto;
   flex-direction: row;
 }
 .container.post_block .post__block.right .post__block-info {

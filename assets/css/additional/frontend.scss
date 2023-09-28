@@ -194,6 +194,8 @@
 	{
 		&.left
 		{
+			max-width: 1000px;
+			margin: 0 auto;
 			flex-direction: row-reverse;
 
 			.post__block-info
@@ -204,6 +206,8 @@
 
 		&.right
 		{
+			max-width: 1000px;
+			margin: 0 auto;
 			flex-direction: row;
 
 			.post__block-info
