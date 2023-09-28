@@ -194,16 +194,20 @@
 	{
 		&.left
 		{
+			max-width: 1000px;
+			margin: 0 auto;
 			flex-direction: row-reverse;
 
 			.post__block-info
 			{
-				padding: 0 0 0 67px;
+				padding: 67px 0 0 67px;
 			}
 		}
 
 		&.right
 		{
+			max-width: 1000px;
+			margin: 0 auto;
 			flex-direction: row;
 
 			.post__block-info
@@ -231,6 +235,10 @@
 			.post__block-info
 			{
 				padding: 0 0 0 0 !important;
+			}
+
+			&-img {
+				display:block;
 			}
 		}
 
