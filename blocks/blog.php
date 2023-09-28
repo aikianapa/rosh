@@ -107,8 +107,31 @@
                     </a>
                 </wb-foreach>
             </div>
+
+            <div class="pagination custom">
+                <div class="page-more" data-trigger="click" data-page="more">
+                    <a href="#more" class="more btn btn--white" data-page="2">Загрузить ещё</a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        console.log("custom pagination")
+        if (window.innerWidth < 600) {
+            $(document).on("wb-ready wb-ajax-start wb-ajax-done bind", function () {
+                $(document).off('scroll');
+                console.log("close scroll")
+            })
+
+            $(".pagination.custom .page-more").on("click" , function () {
+                $(".page-more[data-trigger='auto'] .page-link.more").click();
+            })
+        } else {
+            console.log(".pagination.custom.remove()")
+            $(".pagination.custom").remove();
+        }
+    </script>
 </view>
 
 <edit header="Блог">

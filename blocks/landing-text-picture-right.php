@@ -3,9 +3,11 @@
         <div class="post__block right">
             <div class="post__block-info text">
                 <span class="post__block-title" wb-if="'{{title}}'>''">{{title}}</span>
-                <p wb-if="'{{text}}'>''">{{nl2br(text)}}</p>
+                <p wb-if="'{{text}}'>''">
+                    {{nl2br(text)}}
+                    <img src="{{image.0.img}}" alt="{{title}}">
+                </p>
             </div>
-            <div class="post__block-img" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt="{{title}}"></div>
         </div>
     </div>
 </view>
