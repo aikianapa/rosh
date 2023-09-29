@@ -85,8 +85,8 @@
                                             });
                                         } else {
                                             page.set("user.childrens", page.get('user.childrens') === undefined
-                                                ? [data.id]
-                                                : [data.id, ...page.get("user.childrens")])
+                                                ? [data]
+                                                : [data, ...page.get("user.childrens")])
 
                                             $(".--children-create .popup__panel-wide").addClass("d-none")
                                             $(".--children-create .popup__panel.--succed").addClass("d-block")
