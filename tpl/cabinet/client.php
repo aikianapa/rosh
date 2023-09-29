@@ -271,7 +271,7 @@
                     <p>Услуга требует внесения предоплаты</p>
                 </div>
             </div>
-            {{elseif this.pay_status != 'unpay'}}
+            {{elseif this.type == 'online'}}
             <div class="account-events__btns">
                 <div class="account-event-wrap --aicn">
                     <div class="account-events__btn">
@@ -432,11 +432,11 @@
                         <p>Услуга требует внесения предоплаты</p>
                     </div>
                 </div>
-                {{elseif this.pay_status != 'unpay'}}
+                {{elseif this.type == 'online'}}
                 <div class="account-events__btns">
                     <div class="account-event-wrap --aicn">
                         <div class="account-events__btn">
-                            <button class="btn btn--black" data-id="{{this.id}}" on-click="['runOnlineChat',this]">
+                            <button class="btn btn--white disabled" data-id="{{this.id}}" on-click="['runOnlineChat',this]" disabled>
                                 Онлайн консультация
                             </button>
                         </div>
@@ -1177,7 +1177,7 @@
                         if (!!current_day_events_checker) {
                             clearTimeout(current_day_events_checker);
                         }
-                        //console.log('records:', records);
+                        console.log('records:', records);
                         let events = {
                                 'upcoming': [],
                                 'current': []
@@ -1201,6 +1201,7 @@
                                 rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
 
                                 if (Cabinet.isCurrentEvent(rec)) {
+                                    rec.type = 'online';
                                     events.current.push(rec);
                                 } else {
                                     events.upcoming.push(rec);
