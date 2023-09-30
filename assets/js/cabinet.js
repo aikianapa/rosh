@@ -918,9 +918,11 @@ $(function () {
       let data = profile_data;
       //console.log(data);
 
-      data.phone = str_replace([" ", "-", "(", ")"], "", data.phone);
-      if (data.phone.length === 10) {
-        data.phone = "+7" + data.phone;
+      if(!!data.phone) {
+        data.phone = str_replace([" ", "-", "(", ")"], "", data.phone);
+        if (data.phone.length === 10) {
+          data.phone = "+7" + data.phone;
+        }
       }
       data.fullname = data.fullname.replaceAll("  ", " ");
       var names = data.fullname.split(" ");

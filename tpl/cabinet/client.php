@@ -43,7 +43,6 @@
                                                      on-click="select">Ваш
                                                 </div>
                                                 {{#each user.childrens as child}}
-
                                                 <div class="select__item" data-child-id="{{child.id}}" on-click="select">
                                                     {{child.fullname}}
                                                 </div>
@@ -1041,7 +1040,6 @@
                                 data.phone = data.phone.includes('+') ? data.phone : '+' + data.phone;
                                 data.fullname = data.fullname.replaceAll('  ', ' ');
                                 page.set('user', data);
-                                console.log(data);
                             });
                     }, 200);
 
@@ -1118,7 +1116,7 @@
                                     let data = $form.serializeJSON();
                                     data.phone = str_replace([' ', '-', '(', ')'], '', data.phone);
 
-                                    if (!!data.email && !!data.phone) {
+                                    if (!!data.email && !!data.phone && !!page.get("user.parent_id")) {
                                         const parent_id = page.get("user.parent_id");
                                         data.parent_id = '';
                                         window.childrensSelect.set('user.warning', false);
@@ -1143,6 +1141,23 @@
                                         data.birthdate_fmt = utils.formatDate(data.birthdate);
 
                                         page.set('user', data); /* get actually user data */
+
+                                        if (!!data.parent_id) {
+                                            utils.api.get("/api/v2/read/users/" + data.parent_id).then((data) => {
+                                                data.childrens = data.childrens.map(function (child) {
+                                                    if(child.id === page.get("user.id")) {
+                                                        console.log(child)
+                                                        child.fullname = page.get("user.fullname");
+                                                        return child;
+                                                    }
+                                                    return child
+                                                });
+
+                                                Cabinet.updateProfile(data.id, data, function (data) {
+                                                    window.childrensSelect.set("user", data);
+                                                })
+                                            })
+                                        }
                                         toast('Профиль успешно обновлён');
                                     });
                                 }
@@ -1177,7 +1192,7 @@
                         if (!!current_day_events_checker) {
                             clearTimeout(current_day_events_checker);
                         }
-                        console.log('records:', records);
+                        // console.log('records:', records);
                         let events = {
                                 'upcoming': [],
                                 'current': []
