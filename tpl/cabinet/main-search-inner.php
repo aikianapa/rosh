@@ -909,6 +909,12 @@
 		</form>
 	</template>
 
+    <div>
+        <wb-module wb="module=yonger&mode=render&view=footer" />
+    </div>
+    <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
+    <wb-jq wb="$dom->find('.content-wrap ul')->addClass('ul-line');"/>
+
 	<script wb-app remove>
 		var client_id = '{{_route.client}}';
 		$(document).on('cabinet-db-ready', function() {
@@ -1284,7 +1290,7 @@
 						$("img[data-src]:not([src])").lazyload();
 					});
 
-				utils.api.get('/api/v2/list/records?status=past&group=events&@sort=event_date:d&client=' + client_id).then(
+				utils.api.get('/api/v2/list/records?status=past&@sort=event_date:d&client=' + client_id).then(
 					function(data) {
 						page.set('history.events', data); /* get actually user next events */
 						page.set('events_ready', true); /* get actually user next events */
@@ -1302,9 +1308,5 @@
 			content_load();
 		});
 	</script>
-
-	<div>
-		<wb-module wb="module=yonger&mode=render&view=footer" />
-	</div>
 </body>
 </html>
