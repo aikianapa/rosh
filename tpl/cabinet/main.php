@@ -1221,17 +1221,18 @@
                         }
 
                         if (target_tab == 'group=longterms') {
-                            const pages = Math.ceil(result.length / 10);
+                            const pages = result.pages;
 
                             _tab = new Ractive({
                                 el: '.data-tab-item[data-type="' + target_tab + '"]',
                                 template: wbapp.tpl('#listLongterms').html,
                                 data: {
                                     group: target_tab,
-                                    records: result,
+                                    records: result.result,
                                     catalog: catalog,
                                     countPages: pages - 1,
-                                    pages: Array.from({length: pages}, (_, i) => i + 1)
+                                    pages: Array.from({length: pages}, (_, i) => i + 1),
+                                    page: sessionStorage.getItem(target_tab + '?page'),
                                 },
                                 on: {
                                     loaded() {
