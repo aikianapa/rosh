@@ -585,6 +585,70 @@ img.preview.cloned{
 .service-count::-webkit-outer-spin-button {
 	-webkit-appearance : auto;
 }
+
+.pagination {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+}
+
+.page-item {
+	width: 30px;
+	height: 30px;
+	display:flex;
+	justify-content: center;
+	align-items:center;
+	margin-right: 10px;
+	cursor: pointer;
+
+	border-radius: 7px;
+	border: 1px solid #080e0d;
+	color : #080e0d;
+
+	transition: color .4s,background-color .4s;
+}
+
+.page-item:last-child {
+	margin-right: 0;
+}
+
+.page-item:hover,
+.page-item.active {
+	color: #fff;
+	background-color: #080e0d;
+}
+
+.page-item.number {
+	display: none;
+}
+
+.page-item.number.visible {
+	display: flex;
+}
+
+.page-item.number.active {
+	display: flex;
+}
+
+.page-item.interim {
+	display: none;
+	width: fit-content;
+	height: fit-content;
+	cursor: auto;
+
+	border: 0;
+}
+
+.page-item.interim:hover {
+	background:none;
+	color: #080e0d;
+}
+
+.page-item.interim.visible {
+	display: flex;
+}
+
 @media (max-width : 1280px) {
 	.admin-events-item:nth-child(7) {
 		width          : 7%;
