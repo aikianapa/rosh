@@ -15,7 +15,9 @@ function dateform($date)
 }
 
 function text2tel($str) {
-    return preg_replace("/\D/", '', $str);
+    $tel = preg_replace("/\D/", '', $str);
+    $tel = str_replace(' ',' ',$tel);
+    return $tel;
 }
 
 function fmtPrice($sum) {
