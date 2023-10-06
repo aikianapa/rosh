@@ -120,7 +120,7 @@ class phoneAuthClass extends cmsFormsClass
 
     public function get_code()
     {
-        $this->phone = $_POST['phone'];
+        $this->phone = text2tel($_POST['phone']);
         $this->ip = $this->get_ip();
 
         //Удаляем записи с просроченными time_elapsed
@@ -137,7 +137,7 @@ class phoneAuthClass extends cmsFormsClass
 
     public function check_code()
     {
-        $this->phone = $_POST['phone'];
+        $this->phone = text2tel($_POST['phone']);
         $code = $_POST['code'];
 
         $list = $this->driver->itemList(self::FORM_NAME, ['filter' => ['phone' => $this->phone]]);
