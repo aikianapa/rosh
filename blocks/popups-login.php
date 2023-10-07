@@ -56,12 +56,12 @@
 							</div>
 
 							<div class="code">
-								<input class="code__input" type="text">
-								<input class="code__input" type="text">
-								<input class="code__input" type="text">
-								<input class="code__input" type="text">
-								<input class="code__input" type="text">
-								<input class="code__input" type="text">
+								<input class="code__input" type="text" inputmode="numeric">
+								<input class="code__input" type="text" inputmode="numeric">
+								<input class="code__input" type="text" inputmode="numeric">
+								<input class="code__input" type="text" inputmode="numeric">
+								<input class="code__input" type="text" inputmode="numeric">
+								<input class="code__input" type="text" inputmode="numeric">
 							</div>
 
 							<div class="mb-2 alert alert-warning"></div>

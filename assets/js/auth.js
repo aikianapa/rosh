@@ -254,17 +254,44 @@ $(document).ready(function() {
 			selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
 				'+'+selectedCountryData.dialCode, '');
 			auth.phone_value.inputmask(
-				'+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' + selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
+				'+' + selectedCountryData.dialCode.replace(/9+/g, function(match) {
+					if (match.length === 1) {
+						return '\\9';
+					} else if (match.length === 2) {
+						return '\\9\\9';
+					} else {
+						// Если больше двух девяток подряд, оставляем как есть
+						return match;
+					}
+				}) + ' ' + selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9'),
 				{
 					placeholder:
-						'+' + selectedCountryData.dialCode.replace('9', '\\9') + ' ' + selectedCountryPlaceholder.replaceAll(/[0-9]/g, '_').replaceAll(' ', '-'),
+						'+' + selectedCountryData.dialCode.replace(/9+/g, function(match) {
+							if (match.length === 1) {
+								return '\\9';
+							} else if (match.length === 2) {
+								return '\\9\\9';
+							} else {
+								// Если больше двух девяток подряд, оставляем как есть
+								return match;
+							}
+						}) + ' ' + selectedCountryPlaceholder.replaceAll(/[0-9]/g, '_').replaceAll(' ', '-'),
 					clearMaskOnLostFocus: true,
 					showMaskOnHover: false,
 					positionCaretOnClick: 'radixFocus'
 				});
-			return '+' + selectedCountryData.dialCode.replace('9', '\9')
-			       + ' ' +
-			       selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
+			return '+' + selectedCountryData.dialCode.replace(/9+/g, function(match) {
+					if (match.length === 1) {
+						return '\9';
+					} else if (match.length === 2) {
+						return '\9\9';
+					} else {
+						// Если больше двух девяток подряд, оставляем как есть
+						return match;
+					}
+				})
+				+ ' ' +
+				selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
 		},
 
 		// hiddenInput: "phones",
