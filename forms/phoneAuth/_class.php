@@ -28,7 +28,7 @@ class phoneAuthClass extends cmsFormsClass
 
     public function save($data)
     {
-        return $this->driver->itemSave(self::FORM_NAME, $data);
+        return $this->driver->itemSave(self::FORM_NAME,$data, true);
     }
 
     private function get_ip()
@@ -85,8 +85,10 @@ class phoneAuthClass extends cmsFormsClass
             $list = $this->driver->itemList(self::FORM_NAME, ['filter' => ['phone' => $this->phone]]);
 
             if($list['count'] > 0){
-                $item = array_shift($list['list']);
-                $this->driver->itemRemove(self::FORM_NAME, $item['id']);
+                foreach($list['list'] as $item) {
+                    $this->driver->itemRemove(self::FORM_NAME, $item['id']);
+                }
+                $this->driver->tableFlush(self::FORM_NAME);
             }
 
             $res = $this->new_entry();
@@ -118,14 +120,14 @@ class phoneAuthClass extends cmsFormsClass
 
     public function get_code()
     {
-        $this->phone = $_POST['phone'];
+        $this->phone = text2tel($_POST['phone']);
         $this->ip = $this->get_ip();
 
         //Удаляем записи с просроченными time_elapsed
         $list = $this->driver->itemList(self::FORM_NAME);
         foreach($list['list'] as $id => $item){
             if(time() > $item['time_elapsed']){
-                $this->driver->itemRemove(self::FORM_NAME, $item['id']);
+                $this->driver->itemRemove(self::FORM_NAME, $item['id'], true);
             }
         }
 
@@ -135,7 +137,7 @@ class phoneAuthClass extends cmsFormsClass
 
     public function check_code()
     {
-        $this->phone = $_POST['phone'];
+        $this->phone = text2tel($_POST['phone']);
         $code = $_POST['code'];
 
         $list = $this->driver->itemList(self::FORM_NAME, ['filter' => ['phone' => $this->phone]]);
