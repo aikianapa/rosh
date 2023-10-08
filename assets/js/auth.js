@@ -253,7 +253,7 @@ $(document).ready(function() {
 			}
 			selectedCountryPlaceholder = selectedCountryPlaceholder.replace(
 				'+'+selectedCountryData.dialCode, '');
-			auth.phone_value.inputmask(
+			/*auth.phone_value.inputmask(
 				'+' + selectedCountryData.dialCode.replace(/9+/g, function(match) {
 					if (match.length === 1) {
 						return '\\9';
@@ -279,17 +279,17 @@ $(document).ready(function() {
 					clearMaskOnLostFocus: true,
 					showMaskOnHover: false,
 					positionCaretOnClick: 'radixFocus'
-				});
-			return '+' + selectedCountryData.dialCode.replace(/9+/g, function(match) {
-					if (match.length === 1) {
-						return '\9';
-					} else if (match.length === 2) {
-						return '\9\9';
-					} else {
-						// Если больше двух девяток подряд, оставляем как есть
-						return match;
-					}
-				})
+				});*/
+
+			$.mask.definitions['9'] = false;
+			$.mask.definitions['#'] = "[0-9]";
+			auth.phone_value.mask(
+				'+' + selectedCountryData.dialCode + ' ' + selectedCountryPlaceholder.replaceAll(/[0-9]/g, '#'), {
+					autoclear: false
+				}
+			)
+
+			return '+' + selectedCountryData.dialCode
 				+ ' ' +
 				selectedCountryPlaceholder.replaceAll(/[0-9]/g, '9');
 		},
@@ -302,7 +302,7 @@ $(document).ready(function() {
 		//                "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
 		//                "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
 		//                "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
-		placeholderNumberType: "MOBILE",
+		// placeholderNumberType: "MOBILE",
 		preferredCountries: ['ru'],
 		separateDialCode: false,
 		utilsScript: "/assets/js/intlTelInput-utils.js"
