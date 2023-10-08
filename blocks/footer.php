@@ -85,7 +85,7 @@
                 <rect x="8.682" y="1.364" fill="#FFF" width="2.729" height="27.284"></rect>
             </svg>
         </div>
-
+<!--
         <div>
             <h3>Пример меню</h3>
             <ul>
@@ -103,7 +103,7 @@
                 </wb-foreach>
             </ul>
         </div>
-
+-->
     </footer>
 </view>
 <edit header="Подвал сайта">
