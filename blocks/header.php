@@ -104,7 +104,9 @@
                                 if (searchValue) {
                                     getRes(tables, searchValue);
 
-                                    resBlock.style.maxHeight = resBlock.scrollHeight + "px";
+                                    setTimeout(() => {
+                                        resBlock.style.maxHeight = resBlock.scrollHeight + "px";
+                                    }, 100)
                                     return;
                                 }
 
