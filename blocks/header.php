@@ -34,6 +34,122 @@
 					<a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter" onclick="window.mainFilter.fire('open')" href="#mainfilter">Подобрать услугу</a>
 				</div>
 
+                <div class="header__search d-flex align-items-center" wb-off>
+                    <template>
+                        <div class="input input--grey mb-0">
+                            <div class="search__wrap">
+                                <input class="input__control" type="text" placeholder="Поиск" name="search" value="{{searchValue}}" on-keyup="search">
+                                <div class="search__results">
+                                    <ul>
+                                        {{#res}}
+                                            <li>
+                                                <a href="{{url}}">
+                                                    <div class="search__results--img" style="background-image: url('{{cover[0].img || image[0].img}}')"></div>
+                                                    <span>{{header}}</span>
+                                                </a>
+                                            </li>
+                                        {{/res}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn--white --openfilter ml-10" on-click="submit">Найти</button>
+                    </template>
+                </div>
+
+                <a class="header__search-btn" href="/search">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="vuesax/linear/search-normal">
+                            <g id="search-normal">
+                                <path id="Vector" d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="#080E0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path id="Vector_2" d="M22 22L20 20" stroke="#080E0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </g>
+                        </g>
+                    </svg>
+                </a>
+
+                <script wbapp>
+                    const tables = ["services", "blog", "experts"];
+
+                    window.headerSearch = new Ractive({
+                        el: ".header__search",
+                        template: document.querySelector(".header__search template").innerHTML,
+                        data: {
+                            searchValue: "",
+                            res: [],
+                        },
+                        on: {
+                            complete() {
+                            },
+                            submit() {
+                                const searchValue = this.get('searchValue').trim();
+                                sessionStorage.setItem("search", searchValue);
+                                console.log(searchValue);
+
+                                if (searchValue) {
+                                    window.location.href = '/search';
+                                }
+                            },
+                            search(event) {
+                                const searchValue = this.get('searchValue').trim();
+                                const resBlock = document.querySelector(".search__results");
+
+                                if (event.original.keyCode === 13 && searchValue) {
+                                    sessionStorage.setItem("search", searchValue);
+
+                                    window.location.href = '/search';
+                                    return;
+                                }
+
+                                if (searchValue) {
+                                    getRes(tables, searchValue);
+
+                                    resBlock.style.maxHeight = resBlock.scrollHeight + "px";
+                                    return;
+                                }
+
+                                resBlock.style.maxHeight = 0;
+                            },
+                        }
+                    })
+
+                    function getRes(tables, searchValue) {
+                        const results = [];
+
+                        tables.forEach(table => {
+                            const result = fetch(`/api/v2/list/${table}?header~=${searchValue}`).then((res) => res.json()).then((data) => {
+                                return data.map(post => {
+                                    post.url = `/${post._table}/${post._id}`;
+
+                                    return post;
+                                })
+                            })
+                            results.push(result)
+                        })
+
+                        Promise.all(results).then(data => {
+                            const res = [].concat(...data).sort((a, b) => {
+                                const headerA = a.header.toLowerCase();
+                                const headerB = b.header.toLowerCase();
+
+                                if (headerA < headerB) {
+                                    return -1;
+                                }
+                                if (headerA > headerB) {
+                                    return 1;
+                                }
+                                return 0;
+                            });
+
+                            res.splice(6);
+
+                            console.log("res:", res)
+
+                            headerSearch.set('res', res);
+                        })
+                    }
+                </script>
+
 				<div class="header__right --flex --aicn" wb-if="'{{_sess.user.role}}'==''">
 					<button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link --openpopup --mobile-fade" data-popup="--fast">Записаться на прием</button>
 					<button wb-if="'{{_route.uri}}' !=='/english'" class="btn btn-link enter --openpopup --mobile-fade" data-popup="--enter-number">Войти</button>
