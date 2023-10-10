@@ -1572,12 +1572,6 @@ div.swiper-horizontal.post-slider {
     position: static;
 }
 
-.text-small-fix {
-    position: absolute;
-    top: 2px;
-    right: 0;
-}
-
 .problems-filter {
     background-color: transparent;
     padding-top: 0;
