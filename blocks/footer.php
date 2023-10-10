@@ -81,12 +81,9 @@
                         <div class="footer__item col-lg-3">
                             <a class="footer__contact text-small text-grey" href="mailto:{{_var.contactEmail}}">{{_var.contactEmail}}</a>
                         </div>
-                        <div class="footer__item col-lg-4">
+                        <div class="footer__item col-lg-7">
                             <a class="footer__contact text-small text-grey" href="[contacts]"> г. Москва, Ростовская
                                 набережная д. 5, вход с фасада здания.</a>
-                        </div>
-                        <div class="footer__item col-lg-3 text-right">
-                            <p class="text-small">Лицензия №ЛО-77-01-002172 от 12.01.2010</p>
                         </div>
                     </div>
                     <div class="row footer__bottom">
@@ -99,6 +96,7 @@
                         </div>
                         <div class="footer__item col-lg-7 --flex --jcsb">
                             <a class="text-small map-site" href="[sitemap]">Карта сайта</a>
+                            <p class="text-small text-small-fix">Лицензия №ЛО-77-01-002172 от 12.01.2010</p>
                             <a class="develop" href="https://idees.ru/">
                                 <svg class="svgsprite _develop">
                                     <use xlink:href="/assets/img/sprites/svgsprites.svg#develop"></use>
