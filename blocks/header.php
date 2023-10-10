@@ -80,6 +80,7 @@
                         },
                         on: {
                             complete() {
+                                console.log("complete")
                             },
                             submit() {
                                 const searchValue = this.get('searchValue').trim();
@@ -104,7 +105,11 @@
                                 if (searchValue) {
                                     getRes(tables, searchValue);
 
-                                    resBlock.style.maxHeight = resBlock.scrollHeight + "px";
+                                    setTimeout(() => {
+                                        console.log(resBlock.innerHTML)
+                                        console.log(resBlock.scrollHeight)
+                                        resBlock.style.maxHeight = resBlock.scrollHeight + "px";
+                                    }, 600)
                                     return;
                                 }
 

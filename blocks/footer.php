@@ -15,6 +15,7 @@
                             <div class="socials mb-40" style="display: block;">
                                 <a class="socials__link" href="{{_var.dzen}}" wb-if="'{{_var.dzen}}'>''">
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+
                                         <g id="&#208;&#161;&#208;&#187;&#208;&#190;&#208;&#185;_1" clip-path="url(#clip0_3119_8927)">
                                             <path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M3.95103 2.0371C5.57833 0.783197 7.60507 0.126719 9.64571 0.019043C9.57103 1.87212 9.59882 3.76166 9.08823 5.55916C8.90163 6.26657 8.56368 6.92503 8.09771 7.48905C7.63174 8.05307 7.04887 8.5092 6.38937 8.82592C4.38173 9.69428 2.14311 9.62828 0 9.71512C0 6.72797 1.56304 3.81029 3.95103 2.0371Z" fill="#080E0D"/>
                                             <path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M10.2539 0C12.0601 0.151094 13.8697 0.625217 15.3842 1.65509C16.7327 2.53309 17.848 3.72517 18.6345 5.12904C19.421 6.53291 19.8551 8.10664 19.8996 9.71518C17.9163 9.64571 15.8757 9.6735 13.9757 9.02049C13.2871 8.78225 12.6603 8.39368 12.1406 7.88301C11.6209 7.37233 11.2214 6.75236 10.9712 6.06808C10.2713 4.13164 10.2886 2.03196 10.2539 0Z" fill="#080E0D"/>
@@ -53,22 +54,24 @@
                                 Заказать звонок
                             </a>
                         </div>
-                        <div class="footer__nav col-2">
-                            <span>Меню</span>
-                            <wb-foreach wb="table=catalogs&item=footer_menu&from=tree.data">
-                                <div wb-if="'{{active}}'=='on'" class="nav__link">
-                                    <a href="{{data.link}}">{{name}}</a>
-                                </div>
-                            </wb-foreach>
-                        </div>
-                        <div class="footer__nav col-7 footer__nav--duo">
-                            <span>Услуги</span>
-                            <wb-foreach wb="table=catalogs&item=footer_services&from=tree.data">
-                                <div wb-if="'{{active}}'=='on'" class="nav__link">
-                                    <a href="{{data.link}}">{{name}}</a>
-                                </div>
-                            </wb-foreach>
-                        </div>
+                        <wb-foreach wb="table=catalogs&item=footer_menu&from=tree.data">
+                            <div class="footer__nav col-2" wb-if="'{{id}}' == 'menu'">
+                                <span>{{name}}</span>
+                                <wb-foreach wb="from=children">
+                                    <div wb-if="'{{active}}'=='on'" class="nav__link">
+                                        <a href="{{data.link}}">{{name}}</a>
+                                    </div>
+                                </wb-foreach>
+                            </div>
+                            <div class="footer__nav col-7 footer__nav--duo" wb-if="'{{id}}' == 'services'">
+                                <span>Услуги</span>
+                                <wb-foreach wb="from=children">
+                                    <div wb-if="'{{active}}'=='on'" class="nav__link">
+                                        <a href="{{data.link}}">{{name}}</a>
+                                    </div>
+                                </wb-foreach>
+                            </div>
+                        </wb-foreach>
                     </div>
                     <div class="row footer__top">
                         <div class="footer__item col-lg-2">
