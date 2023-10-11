@@ -477,24 +477,38 @@ a.header__logo
 
 .header__search {
 	width: 30%;
-	column-gap: 20px;
-	justify-content: center;
 
 	& .input {
 		width: 60%;
 	}
 
-	@media (max-width: 1500px) {
+	@media (max-width: 1400px) {
 		& {
 			display: none!important;
+		}
+	}
+
+	& > div {
+		opacity: 0;
+		column-gap: 20px;
+		justify-content: center;
+
+		transition: all .6s ease;
+
+		&[data-view='true'] {
+			opacity: 1;
 		}
 	}
 }
 
 .header__search-btn {
-	display: none;
+	//display: none;
 
 	color: rgba(0, 0, 0, 0)!important;
+
+	&[data-view="false"] {
+		display:none;
+	}
 
 	@media(max-width: 1500px) {
 		display: block;
@@ -513,6 +527,8 @@ a.header__logo
 	max-height: 0;
 	overflow: hidden;
 
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 	background: rgba(254, 250, 247, 0.7);
 	backdrop-filter: blur(28px) !important;
 
@@ -538,6 +554,7 @@ a.header__logo
 				width: 25px;
 				min-width: 25px;
 
+				border-radius: 3px;
 				background-size: cover;
 				background-position: center;
 				background-repeat: no-repeat;

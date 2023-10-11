@@ -1,6 +1,13 @@
 <view>
     <div class="page__search">
                 <template>
+                    <div class="search__block --flex --aicn">
+                        <div class="input">
+                            <input class="search__input" type="text" name="q" placeholder="Поиск"
+                                   value="{{searchValue}}" on-keyup="search">
+                        </div>
+                        <button class="btn btn--black" on-click="submit">Найти</button>
+                    </div>
                     <div class="search-result" wb-off>
                         <div class="container">
                             <div class="data-tab-item" data-tab="all">
