@@ -150,7 +150,8 @@ class phoneAuthClass extends cmsFormsClass
                         return (json_encode([
                             'status' => 'ok',
                             'message' => 'Пароль принят. Перенаправление в личный кабинет.',
-                            'user' => $user
+                            'user' => $user,
+                            'token' => $this->vars("_sess.token")
                         ]));
                     }
                 }
