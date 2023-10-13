@@ -145,10 +145,12 @@ class phoneAuthClass extends cmsFormsClass
             foreach($list['list'] as $id => $item){
                 if($item['phone'] == $this->phone){
                     if((wbPasswordCheck($code, $item['password'])) && (time() <= $item['time_elapsed'])){
+                        $user = $this->app->login($item);
                         header("Content-type: application/json");
                         return (json_encode([
                             'status' => 'ok',
-                            'message' => 'Пароль принят. Перенаправление в личный кабинет.'
+                            'message' => 'Пароль принят. Перенаправление в личный кабинет.',
+                            'user' => $user
                         ]));
                     }
                 }
