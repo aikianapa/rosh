@@ -151,7 +151,7 @@ class phoneAuthClass extends cmsFormsClass
                             'status' => 'ok',
                             'message' => 'Пароль принят. Перенаправление в личный кабинет.',
                             'user' => $user,
-                            'token' => $this->vars("_sess.token")
+                            'token' => $this->app->vars("_sess.token")
                         ]));
                     }
                 }
