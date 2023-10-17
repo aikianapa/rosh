@@ -36,5 +36,11 @@ class priceClass extends cmsFormsClass
         }
 
     }
+
+    function getPriceList()
+    {
+        $list = wbItemList('price')['list'];
+        return $list;
+    }
 }
 ?>
