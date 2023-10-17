@@ -145,10 +145,13 @@ class phoneAuthClass extends cmsFormsClass
             foreach($list['list'] as $id => $item){
                 if($item['phone'] == $this->phone){
                     if((wbPasswordCheck($code, $item['password'])) && (time() <= $item['time_elapsed'])){
+                        $user = $this->createUser(true);
                         header("Content-type: application/json");
                         return (json_encode([
                             'status' => 'ok',
-                            'message' => 'Пароль принят. Перенаправление в личный кабинет.'
+                            'message' => 'Пароль принят. Перенаправление в личный кабинет.',
+                            'user' => $user,
+                            'token' => $this->app->vars("_sess.token")
                         ]));
                     }
                 }
@@ -165,7 +168,7 @@ class phoneAuthClass extends cmsFormsClass
         return (json_encode($res));
     }
 
-    public function createUser(){
+    public function createUser($ret = false){
 
         //Нормализуем номер телефона
         $phone = text2tel($_POST['phone']);
@@ -204,6 +207,7 @@ class phoneAuthClass extends cmsFormsClass
         $user = $this->checkUser($phone, $_POST['password']);
         if ($user) {
             $app->login($user);
+            if ($ret == true) return $user;
             $res = ['status' => 'ok', 'user' => $user];
         } else {
             $res = ['status' => 'error', 'message' => 'Ошибка'];
