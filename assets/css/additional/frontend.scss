@@ -414,3 +414,179 @@ a.header__logo
 		}
 	}
 }
+
+.footer__nav {
+	display: flex;
+	flex-direction: column;
+	row-gap: 12px;
+
+	& > span {
+		color: var(--rosh, #080E0D);
+
+		font-size: 20px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 140%;
+		letter-spacing: 0.4px;
+	}
+
+	& .nav__link {
+		margin-bottom: 0;
+
+		color: var(--rosh, #838686);
+
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 125%;
+		letter-spacing: 0.32px;
+
+		&:hover {
+			color: var(--rosh, #080E0D);
+		}
+	}
+
+	&--duo {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row;
+		row-gap: 12px;
+		flex-wrap: wrap;
+		height: min-content;
+
+		& > span {
+			display: block;
+			width: 100%;
+		}
+
+		& .nav__link {
+			width: 45%;
+		}
+	}
+
+	&--logo {
+		position: relative;
+		top: -40px;
+	}
+}
+
+.header {
+	background: rgba(254, 250, 247, 0.70);
+	backdrop-filter: blur(28px)!important;
+}
+
+.header__search {
+	width: 30%;
+
+	& .input {
+		width: 60%;
+	}
+
+	@media (max-width: 1400px) {
+		& {
+			display: none!important;
+		}
+	}
+
+	& > div {
+		opacity: 0;
+		column-gap: 20px;
+		justify-content: center;
+
+		transition: all .6s ease;
+
+		&[data-view='true'] {
+			opacity: 1;
+		}
+	}
+}
+
+.header__search-btn {
+	//display: none;
+
+	color: rgba(0, 0, 0, 0)!important;
+
+	&[data-view="false"] {
+		display:none;
+	}
+
+	@media(max-width: 1500px) {
+		display: block;
+	}
+}
+
+
+
+.search__wrap {
+	position: relative;
+}
+
+.search__results {
+	position: absolute;
+	width: 100%;
+	max-height: 0;
+	overflow: hidden;
+
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	background: rgba(254, 250, 247, 0.7);
+	backdrop-filter: blur(28px) !important;
+
+	top: calc(100% + 20px);
+	left: 0;
+
+	transition: all .3s ease;
+
+	& ul {
+		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		row-gap: 10px;
+
+		& li a {
+			width: 100%;
+			display: flex;
+			column-gap: 10px;
+			align-items: center;
+
+			& .search__results--img {
+				height: 25px;
+				width: 25px;
+				min-width: 25px;
+
+				border-radius: 3px;
+				background-size: cover;
+				background-position: center;
+				background-repeat: no-repeat;
+			}
+
+			& span {
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				width: 100%;
+				overflow: hidden;
+			}
+		}
+	}
+}
+
+@media (max-width: 1000px) {
+	.footer__head {
+		display: flex;
+		flex-direction: column;
+		row-gap: 20px;
+	}
+
+	.footer__nav--logo {
+		top: -20px;
+	}
+}
+
+
+@media (max-width: 500px) {
+
+
+	.footer__nav--duo {
+		flex-direction: column;
+	}
+}
