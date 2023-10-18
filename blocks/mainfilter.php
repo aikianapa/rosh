@@ -411,7 +411,7 @@
 					var self = this;
 				},
 				open() {
-					this.loaded == false ? this.fire('mainFilterLoad') : null
+          this.fire('mainFilterLoad')
 				},
 				mainFilterLoad() {
 					var self = this;
