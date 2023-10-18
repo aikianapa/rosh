@@ -399,6 +399,11 @@ a.header__logo:not(.header__logo-red) {
   overflow: hidden;
 }
 
+.footer .socials__link {
+  display: block;
+  width: fit-content;
+}
+
 .footer__logo img {
   background-color: black;
   border-radius: 10px;

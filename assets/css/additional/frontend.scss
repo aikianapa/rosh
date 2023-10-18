@@ -523,6 +523,11 @@ a.header__logo {
   }
 }
 
+.footer .socials__link {
+  display: block;
+  width: fit-content;
+}
+
 .footer__logo img {
   background-color: black;
   border-radius: 10px;
