@@ -9,6 +9,17 @@
           </div>
           <button class="btn btn--black" on-click="submit">Найти</button>
         </div>
+        <div class="all-tabs-items">
+          <div class="all-tabs-item data-tab-link active" data-srvtype="all" data-tabs="all" on-click="switchCategory">
+            Все результаты
+          </div>
+          {{#tabs}}
+          <div class="cursor-pointer all-tabs-item data-tab-link" data-srvtype="{{key}}" data-tabs="{{key}}"
+               on-click="switchCategory">
+            {{name}}
+          </div>
+          {{/tabs}}
+        </div>
       </div>
       <div class="search-result" wb-off>
         <div class="container">
@@ -29,7 +40,20 @@
   </div>
   <script wbapp>
     window.search = () => {
-      const tables = ["services", "blog", "experts"];
+      const tables = [
+        {
+          key: "services",
+          name: "Услуги"
+        },
+        {
+          key: "blog",
+          name: "Блоги"
+        },
+        {
+          key: "experts",
+          name: "Специалисты"
+        }
+      ];
 
       window.contentSearch = new Ractive({
         el: ".page__search",
@@ -37,6 +61,8 @@
         data: {
           searchValue: sessionStorage.getItem("search"),
           res: [],
+          allRes: [],
+          activeTab: "all"
         },
         on: {
           complete() {
@@ -63,6 +89,13 @@
               getRes(tables, searchValue)
             }
           },
+          switchCategory() {
+            setTimeout(() => {
+              const activeTab = document.querySelector(".data-tab-link.active").dataset.tabs;
+
+              this.set("res", this.get("allRes").filter(el => el._table === activeTab || activeTab === "all"));
+            }, 300)
+          }
         }
       })
     }
@@ -70,9 +103,10 @@
 
     function getRes(tables, searchValue) {
       const results = [];
+      const tabs = new Set();
 
       tables.forEach(table => {
-        const result = fetch(`/api/v2/list/${table}?header~=${searchValue}&__token=${wbapp._session.token}`).then((res) => res.json()).then((data) => {
+        const result = fetch(`/api/v2/list/${table.key}?header~=${searchValue}&__token=${wbapp._session.token}`).then((res) => res.json()).then((data) => {
           return data.map(post => {
             post.url = `/${post._table}/${post._id}`;
 
@@ -80,6 +114,7 @@
           })
         })
         results.push(result)
+        tabs.add(result[0]._table)
       })
 
       Promise.all(results).then(data => {
@@ -97,8 +132,13 @@
         });
 
         console.log("res:", res)
+        console.log("tabs:", tabs)
 
+        contentSearch.set('tabs', tables.map(table => {
+          if (tabs.has(table.key)) return table
+        }))
         contentSearch.set('res', res);
+        contentSearch.set('allRes', res);
       })
     }
   </script>
