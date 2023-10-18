@@ -398,7 +398,7 @@
 		mainFilterState.save();
 		window.mainFilter = new Ractive({
 			el: '#mainfilter',
-			template: $('#mainfilter template').html(),
+			template: document.querySelector("#mainfilter template").innerHTML,
 			data: {
 				choice: wbapp.data('choice'),
 				filter: {},
@@ -430,7 +430,6 @@
 				},
 				complete() {
 					console.log('filter ready');
-
 				},
 				clearSymptoms() {
 					$(document).find('.mainfilter__tab[data-tab="sympthoms"] input[type="checkbox"]:checked').prop(
