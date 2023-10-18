@@ -207,7 +207,6 @@
                                 <a class="enter__btn text-small signout" href="/signout">Выйти</a>
                             </div>
                         </button>
-
                         <div class="header__search-btn__wrap">
                             <template>
                                 <button class="header__search-btn" data-view="{{view}}" on-click="click">
