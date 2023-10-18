@@ -109,12 +109,12 @@
         const result = fetch(`/api/v2/list/${table.key}?header~=${searchValue}&__token=${wbapp._session.token}`).then((res) => res.json()).then((data) => {
           return data.map(post => {
             post.url = `/${post._table}/${post._id}`;
+            tabs.add(post._table)
 
             return post;
           })
         })
         results.push(result)
-        tabs.add(result[0]._table)
       })
 
       Promise.all(results).then(data => {
