@@ -404,6 +404,10 @@ a.header__logo:not(.header__logo-red) {
   .footer__nav--logo {
     top: -20px;
   }
+
+  .header__search-btn {
+    margin-left: 15px;
+  }
 }
 @media (max-width: 500px) {
   .footer__nav--duo {

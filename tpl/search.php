@@ -103,8 +103,9 @@
     function getRes(tables, searchValue) {
         const results = [];
 
+        console.log(searchValue)
         tables.forEach(table => {
-            const result = fetch(`/api/v2/list/${table}?header~=${searchValue}$__token${wbapp._session.token}`).then((res) => res.json()).then((data) => {
+            const result = fetch(`/api/v2/list/${table}?header~=${searchValue}&__token=${wbapp._session.token}`).then((res) => res.json()).then((data) => {
                 return data.map(post => {
                     post.url = `/${post._table}/${post._id}`;
 
