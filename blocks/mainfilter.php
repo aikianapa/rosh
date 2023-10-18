@@ -411,23 +411,22 @@
 					var self = this;
 				},
 				open() {
-          this.fire('mainFilterLoad')
+					this.loaded === false ? this.fire('mainFilterLoad') : null
 				},
 				mainFilterLoad() {
 					var self = this;
-					wbapp.get('/api/v2/func/problems/mainfilter', (data) => {
-						if (sessionStorage['mf-state--tab'] && sessionStorage['mf-state--tab'] !==
-							'undefined') {
-							data['act_tab'] = sessionStorage['mf-state--tab'];
-						} else {
-							data['act_tab'] = 'services'
-						}
-						self.set('filter', data);
-						self.fire('checkChoose');
-						mainFilterState.load();
-						self.loaded = true
-
-					});
+					utils.api.get('/api/v2/func/problems/mainfilter').then((data) => {
+            if (sessionStorage['mf-state--tab'] && sessionStorage['mf-state--tab'] !==
+              'undefined') {
+              data['act_tab'] = sessionStorage['mf-state--tab'];
+            } else {
+              data['act_tab'] = 'services'
+            }
+            self.set('filter', data);
+            self.fire('checkChoose');
+            mainFilterState.load();
+            // self.loaded = true
+          })
 				},
 				complete() {
 					console.log('filter ready');
