@@ -35,9 +35,15 @@
               </div>
             </wb-data>
           </div>
-          <a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter"
-             onclick="window.mainFilter.fire('open')" href="#mainfilter">Подобрать услугу</a>
+          <a wb-if="'{{_route.uri}}' !=='/english'" class="btn btn--white --openfilter header__btn--openfilter"
+             href="#mainfilter">Подобрать услугу</a>
         </div>
+
+        <script>
+          document.querySelector(".header__btn--openfilter").addEventListener("click", () => {
+            window.mainFilter.fire('open')
+          })
+        </script>
 
         <div class="header__search" wb-off>
           <template>
