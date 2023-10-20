@@ -415,7 +415,7 @@
 				},
 				mainFilterLoad() {
 					var self = this;
-					utils.api.get('/api/v2/func/problems/mainfilter').then((data) => {
+					/*utils.api.get('/api/v2/func/problems/mainfilter').then((data) => {
             if (sessionStorage['mf-state--tab'] && sessionStorage['mf-state--tab'] !==
               'undefined') {
               data['act_tab'] = sessionStorage['mf-state--tab'];
@@ -426,7 +426,28 @@
             self.fire('checkChoose');
             mainFilterState.load();
             // self.loaded = true
-          })
+          })*/
+          fetch('/api/v2/func/problems/mainfilter')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Сетевая ошибка');
+              }
+              return response.json(); // Предполагается, что сервер возвращает JSON
+            })
+            .then(data => {
+              if (sessionStorage['mf-state--tab'] && sessionStorage['mf-state--tab'] !==
+                'undefined') {
+                data['act_tab'] = sessionStorage['mf-state--tab'];
+              } else {
+                data['act_tab'] = 'services'
+              }
+              self.set('filter', data);
+              self.fire('checkChoose');
+              mainFilterState.load();
+            })
+            .catch(error => {
+              console.error('Произошла ошибка:', error);
+            });
 				},
 				complete() {
 					console.log('filter ready');
