@@ -41,7 +41,7 @@
 
         <script>
           document.querySelector(".header__btn--openfilter").addEventListener("click", () => {
-            window.mainFilter.fire('open')
+            setTimeout(() => window.mainFilter.fire('open'), 1000)
           })
         </script>
 
