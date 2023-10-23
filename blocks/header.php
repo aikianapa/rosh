@@ -67,7 +67,7 @@
                   </div>
                 </div>
               </div>
-              <button class="btn btn--white --openfilter ml-10" on-click="submit">Найти</button>
+              <button class="btn btn--white ml-10" on-click="submit">Найти</button>
             </div>
           </template>
         </div>
