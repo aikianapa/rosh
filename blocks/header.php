@@ -41,7 +41,27 @@
 
         <script>
           document.querySelector(".header__btn--openfilter").addEventListener("click", () => {
-            setTimeout(() => window.mainFilter.fire('open'), 1000)
+            fetch('/api/v2/func/problems/mainfilter')
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Сетевая ошибка');
+                }
+                return response.json(); // Предполагается, что сервер возвращает JSON
+              })
+              .then(data => {
+                if (sessionStorage['mf-state--tab'] && sessionStorage['mf-state--tab'] !==
+                  'undefined') {
+                  data['act_tab'] = sessionStorage['mf-state--tab'];
+                } else {
+                  data['act_tab'] = 'services'
+                }
+                mainFilter.set('filter', data);
+                mainFilter.fire('checkChoose');
+                mainFilterState.load();
+              })
+              .catch(error => {
+                console.error('Произошла ошибка:', error);
+              });
           })
         </script>
 
