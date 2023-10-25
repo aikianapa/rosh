@@ -394,6 +394,10 @@
                                     form_data.experts = [];
                                     form_data.service_prices = {};
                                 }
+                                console.log("form_data", form_data)
+                              console.log("catalog.categories", catalog.categories)
+                                console.log("catalog.services", catalog.services);
+
                                 Cabinet.createQuote(form_data, function (res) {
                                     $('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
                                     $('.popup.--record .popup__panel.--succed').addClass('d-block');
@@ -904,6 +908,7 @@
 
                                         <div class="search__drop-item selected-consultation"
                                              style="display: {{#if record.consultation }} flex {{else}} none {{/if}};">
+
                                             <div class="search__drop-name consultation-header">
                                                 <div class="search__drop-delete fake"
                                                      onclick="unselectConsultation(this);">
@@ -1030,6 +1035,7 @@
                     },
                     on: {
                         complete() {
+                          console.log("_record", _record);
                             initServicesSearch($('.search-services'), catalog.servicesList);
                             initClientSearch();
                             initPlugins($(this.el));
@@ -2169,6 +2175,7 @@
 
                                 <div class='search__drop-item selected-consultation'
                                      style='display: {{#if record.consultation }} flex {{else}} none {{/if}};'>
+
                                     <div class='search__drop-name consultation-header'>
                                         <div class='search__drop-delete fake' onclick='unselectConsultation(this);'>
                                             <svg class='svgsprite _delete'>
