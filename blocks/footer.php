@@ -5,7 +5,7 @@
         <div class="container-fluid">
           <div class="row footer__head mb-80">
             <div class="col-3 footer__nav--logo">
-              <a wb-if="'{{_var.hover_logo}}' == '0'" class="footer__logo mb-40 d-block" href="/">
+              <a  class="footer__logo mb-40 d-block" href="/">
                 <img src="/assets/img/logo.svg" alt="{{_sett.header}}">
               </a>
               <div class="row mb-10">
