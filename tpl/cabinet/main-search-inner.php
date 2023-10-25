@@ -612,6 +612,7 @@
 							</div>
 						{{else}}
 							{{#each record.service_prices: idx, key}}
+                {{#if service_id}}
 								<div class="search__drop-item services selected" data-index="{{idx}}" data-id="{{service_id}}-{{price_id}}"
 									data-service_id="{{service_id}}" data-price="{{price}}"
 									data-count="{{@global.utils.ifNull(this.count, 1)}}">
@@ -642,6 +643,7 @@
 										<div class="search__drop-summ">{{ @global.utils.formatPrice(this.price) }} ₽</div>
 									</label>
 								</div>
+                {{/if}}
 							{{/each}}
 						{{/if}}
 					</div>
@@ -1127,6 +1129,8 @@
 							_record.price = 0;
 						}
 
+            console.log("_record", _record)
+
 						_record.price_text = utils.formatPrice(_record.price);
 						var recordEditor = new Ractive({
 							el: _parent.find('.admin-editor__events'),
@@ -1139,6 +1143,8 @@
 							},
 							on: {
 								complete() {
+                  console.log("_record", _record)
+                  console.log("catalog", catalog)
 									$(this.find(`.select.status [data-id="${_record.status}"]`))
 										.trigger('click');
 									$(this.find(`.select.pay [data-id="${_record.pay_status}"]`))
