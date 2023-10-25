@@ -227,9 +227,11 @@
 									</div>
 									<div class="history-item">
 										<p>Услуги</p>
-										{{#services}}
+                    {{#services}}
 											{{catalog.services[this].header}}<br>
-										{{/services}}
+                    {{/services}}
+                      {{catalog.spec_service.consultations.clinic[consultation].header}}<br>
+                      {{catalog.spec_service.consultations.online[consultation].header}}
 									</div>
 									<div class="history-item">
 										<p>Анализы</p>
@@ -1301,6 +1303,7 @@
 						page.set('history.events', data); /* get actually user next events */
 						page.set('events_ready', true); /* get actually user next events */
 						$("img[data-src]:not([src])").lazyload();
+            console.log("history.events", data);
 					});
 
 				utils.api.get("/api/v2/list/records?group=longterms&@sort=_created:d&client=" + client_id)
