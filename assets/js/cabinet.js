@@ -899,12 +899,6 @@ $(function () {
           )
       );
 
-      console.log("data start", new Date(event_date.getFullYear(), event_date.getMonth(), event_date.getDate(),
-        parseInt(event.event_time_start.split(":")[0]),
-        parseInt(event.event_time_start.split(":")[1])
-      ))
-      console.log("moscow date", moscowDate);
-
       return event_from_timestamp < curr_timestamp + 301;
     },
     runOnlineChat(room_name) {
