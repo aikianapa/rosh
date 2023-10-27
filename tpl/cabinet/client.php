@@ -1216,7 +1216,6 @@
                                 rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
 
                                 if (Cabinet.isCurrentEvent(rec)) {
-                                    rec.type = 'online';
                                     events.current.push(rec);
                                 } else {
                                     events.upcoming.push(rec);
