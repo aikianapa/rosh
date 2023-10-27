@@ -188,9 +188,18 @@
       max-width: 1000px;
       margin: 0 auto;
       flex-direction: row;
+      padding: 0!important;
+
+      .post__block-title {
+        width: 100%;
+      }
 
       .post__block-info {
-        padding: 0 67px 0 0;
+        padding: 0;
+
+        & p {
+          display:flex;
+        }
       }
     }
 
