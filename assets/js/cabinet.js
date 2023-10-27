@@ -881,9 +881,13 @@ $(function () {
     isCurrentEvent(event) {
       const moscowTimezoneOffset = 3 * 360;
 
+      const [datePart, _] = event.event_date.split(" ");
+      const timeStr = event.event_time_start + ":00"
+      const dateTimeStr = datePart + " " + timeStr;
+
       const userDate = new Date();
 
-      const moscowDate = new Date(userDate.getTime() + moscowTimezoneOffset * 60 * 1000);
+      const moscowDate = new Date(userDate.getTime() + moscowTimezoneOffset * 60);
 
       const curr_timestamp = utils.timestamp(moscowDate);
 
@@ -894,6 +898,12 @@ $(function () {
               parseInt(event.event_time_start.split(":")[1])
           )
       );
+
+      console.log("data start", new Date(event_date.getFullYear(), event_date.getMonth(), event_date.getDate(),
+        parseInt(event.event_time_start.split(":")[0]),
+        parseInt(event.event_time_start.split(":")[1])
+      ))
+      console.log("moscow date", moscowDate);
 
       return event_from_timestamp < curr_timestamp + 301;
     },
