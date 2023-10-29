@@ -33,7 +33,7 @@
             </div>
             <div id="select-childrens" class="col-md-3">
               <template>
-                {{#if user.childrens}}
+                {{#if childrens.length}}
                 <div>
                   <div class="select-form mb-0 w-100" data-hide="expert">
                     <div class="select">
@@ -41,10 +41,7 @@
                         кабинет
                       </div>
                       <div class="select__list">
-                        <div class="select__item active" data-child-id="{{user.id}}"
-                             on-click="select">Ваш
-                        </div>
-                        {{#each user.childrens as child}}
+                        {{#each childrens as child}}
                         <div class="select__item" data-child-id="{{child.id}}" on-click="select">
                           {{child.fullname}}
                         </div>
@@ -92,17 +89,17 @@
       </div>
     </div>
 
-      <div class="popup --pay-succed strict_close" style="justify-content: center;align-items: center;">
-        <div class="popup__panel --succed" style="display: block;">
-          <button class="popup__close">
-            <svg class="svgsprite _close">
-              <use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
-            </svg>
-          </button>
-          <div class="popup__name text-bold">Оплата</div>
-          <h3 class="h3">Успешно!</h3>
-        </div>
+    <div class="popup --pay-succed strict_close" style="justify-content: center;align-items: center;">
+      <div class="popup__panel --succed" style="display: block;">
+        <button class="popup__close">
+          <svg class="svgsprite _close">
+            <use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+          </svg>
+        </button>
+        <div class="popup__name text-bold">Оплата</div>
+        <h3 class="h3">Успешно!</h3>
       </div>
+    </div>
   </main>
 </div>
 <!--<script wbapp>
@@ -148,20 +145,68 @@
   }
 
   (function () {
+    const setChild = (childId, exceptionId = "") => {
+      fetch("/api/v2/read/users/" + childId + "?active=on").then(function (res) {
+        if (!res.ok) {
+          throw new Error('Ошибка HTTP: ' + res.status);
+        }
+
+        return res.json();
+      }).then(function (data) {
+          if (data.id === exceptionId) return;
+
+          childrensSelect.set("childrens", [data, ...childrensSelect.get("childrens")])
+        }
+      )
+    }
+
     window.childrensSelect = new Ractive({
       el: '#select-childrens',
       template: document.querySelector('#select-childrens template').innerHTML,
       data: {
         user: wbapp.postSync("/ajax/getsess/").user,
+        childrens: [],
       },
       on: {
         complete() {
+          const arrChildrens = this.get("user.childrens");
+          const parentId = this.get("user.parent_id");
+
+          arrChildrens && arrChildrens.forEach(childId => {
+            if (typeof childId !== "string"
+            ) {
+              return;
+            }
+
+            setChild(childId);
+          })
+          parentId && fetch("/api/v2/read/users/" + parentId + "?active=on").then(function (res) {
+            if (!res.ok) {
+              throw new Error('Ошибка HTTP: ' + res.status);
+            }
+
+            return res.json();
+          }).then(function(data) {
+            data.childrens.forEach(childId => {
+              if (typeof childId !== "string"
+              ) {
+                return;
+              }
+
+              setChild(childId, childrensSelect.get("user.id"));
+            })
+            childrensSelect.set("childrens", [data, ...childrensSelect.get("childrens")]);
+          })
         },
         select(ev) {
           const userId = ev.node.dataset.childId;
 
-
-          utils.api.get('/api/v2/read/users/' + userId + '?active=on').then(function (data) {
+          if (page.get("user.parent_id")) {
+            utils.api.get('/form/users/toggleCabinet/' + page.get("user.parent_id"));
+          }
+          utils.api.get('/form/users/toggleCabinet/' + userId);
+          location.reload();
+          /*utils.api.get('/api/v2/read/users/' + userId + '?active=on').then(function (data) {
             Cabinet.updateProfile(userId, data, function (data) {
               if (!!data.parent_id) {
                 const age = calculateAge(data.birthdate);
@@ -183,7 +228,7 @@
                 window.profile_inline_editor.set('user', data);
               }
             });
-          });
+          });*/
         }
       }
     });
@@ -1078,9 +1123,21 @@
               });
           }, 200);
 
+          setTimeout(function () {
+            if (page.get("user.parent_id")) {
+              const age = calculateAge(page.get("user.birthdate"));
+
+              if (age >= 18) {
+                page.set("user.adult", true)
+
+                toast("Пожалуйста обновите данные, для создания личного кабинета", "Важно", "error");
+              }
+            }
+          }, 1000)
+
           const childrensId = wbapp._session.user.childrens;
 
-          if (childrensId.length <= 0) return;
+          if (!childrensId || childrensId.length === 0) return;
 
           childrensId.forEach((id) => utils.api.get(`/api/v2/read/users/${id}`).then((data) => {
             const age = calculateAge(data.birthdate)

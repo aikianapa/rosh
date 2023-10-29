@@ -1,5 +1,6 @@
 <view>
     <div wb-if="'{{_sess.user.role}}'=='client'">
+
         <div class="popup --children-create strict_close">
             <template id="popupChildrenCreate">
                 <div class="popup__overlay"></div>
@@ -84,9 +85,10 @@
                                                 'data': data
                                             });
                                         } else {
+                                            console.log("data", data);
                                             page.set("user.childrens", page.get('user.childrens') === undefined
-                                                ? [data]
-                                                : [data, ...page.get("user.childrens")])
+                                                ? [data.id]
+                                                : [data.id, ...page.get("user.childrens")])
 
                                             $(".--children-create .popup__panel-wide").addClass("d-none")
                                             $(".--children-create .popup__panel.--succed").addClass("d-block")
@@ -401,6 +403,9 @@
                                 Cabinet.createQuote(form_data, function (res) {
                                     $('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
                                     $('.popup.--record .popup__panel.--succed').addClass('d-block');
+
+                                    console.log("res", res);
+
                                     if (typeof window.load == 'function') {
                                         window.load();
                                     }
