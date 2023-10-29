@@ -879,6 +879,8 @@ $(function () {
       );
     },
     isCurrentEvent(event) {
+      if (!event.event_date) return false;
+
       const moscowTimezoneOffset = 3 * 360;
 
       const [datePart, _] = event.event_date.split(" ");
