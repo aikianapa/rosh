@@ -146,9 +146,16 @@
   max-width: 1000px;
   margin: 0 auto;
   flex-direction: row;
+  padding: 0 !important;
+}
+.container.post_block .post__block.right .post__block-title {
+  width: 100%;
 }
 .container.post_block .post__block.right .post__block-info {
-  padding: 0 67px 0 0;
+  padding: 0;
+}
+.container.post_block .post__block.right .post__block-info p {
+  display: flex;
 }
 @media (max-width: 700px) {
   .container.post_block .post__block .post__block-info {

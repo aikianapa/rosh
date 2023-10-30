@@ -879,11 +879,17 @@ $(function () {
       );
     },
     isCurrentEvent(event) {
+      if (!event.event_date) return false;
+
       const moscowTimezoneOffset = 3 * 360;
+
+      const [datePart, _] = event.event_date.split(" ");
+      const timeStr = event.event_time_start + ":00"
+      const dateTimeStr = datePart + " " + timeStr;
 
       const userDate = new Date();
 
-      const moscowDate = new Date(userDate.getTime() + moscowTimezoneOffset * 60 * 1000);
+      const moscowDate = new Date(userDate.getTime() + moscowTimezoneOffset * 60);
 
       const curr_timestamp = utils.timestamp(moscowDate);
 

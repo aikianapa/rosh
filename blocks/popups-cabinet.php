@@ -1,5 +1,6 @@
 <view>
     <div wb-if="'{{_sess.user.role}}'=='client'">
+
         <div class="popup --children-create strict_close">
             <template id="popupChildrenCreate">
                 <div class="popup__overlay"></div>
@@ -84,9 +85,10 @@
                                                 'data': data
                                             });
                                         } else {
+                                            console.log("data", data);
                                             page.set("user.childrens", page.get('user.childrens') === undefined
-                                                ? [data]
-                                                : [data, ...page.get("user.childrens")])
+                                                ? [data.id]
+                                                : [data.id, ...page.get("user.childrens")])
 
                                             $(".--children-create .popup__panel-wide").addClass("d-none")
                                             $(".--children-create .popup__panel.--succed").addClass("d-block")
@@ -401,6 +403,9 @@
                                 Cabinet.createQuote(form_data, function (res) {
                                     $('.popup.--record .popup__panel:not(.--succed)').addClass('d-none');
                                     $('.popup.--record .popup__panel.--succed').addClass('d-block');
+
+                                    console.log("res", res);
+
                                     if (typeof window.load == 'function') {
                                         window.load();
                                     }
@@ -568,6 +573,11 @@
                             <input type='hidden' name='service_name' value='{{this.service_name}}'/>
                             <input type='hidden' name='client_email' value='{{this.client_email}}'/>
                             <input type='hidden' name='client_phone' value='{{this.client_phone}}'/>
+                            {{#if this.is_online }}
+                              <input type='hidden' name='cart' value='[{"name":"{{this.service_name}}"}]'/>
+                            {{else}}
+                              <input type='hidden' name='cart' value='[{"name":"{{this.service_name},"payment_type":"part_prepay"}"}]'/>
+                            {{/if}}
                             <button class="btn btn--black form__submit" type="submit">
                                 Внести предоплату
                             </button>
