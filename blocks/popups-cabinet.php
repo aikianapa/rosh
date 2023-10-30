@@ -573,6 +573,11 @@
                             <input type='hidden' name='service_name' value='{{this.service_name}}'/>
                             <input type='hidden' name='client_email' value='{{this.client_email}}'/>
                             <input type='hidden' name='client_phone' value='{{this.client_phone}}'/>
+                            {{#if this.is_online }}
+                              <input type='hidden' name='cart' value='[{"name":"{{this.service_name}}"}]'/>
+                            {{else}}
+                              <input type='hidden' name='cart' value='[{"name":"{{this.service_name},"payment_type":"part_prepay"}"}]'/>
+                            {{/if}}
                             <button class="btn btn--black form__submit" type="submit">
                                 Внести предоплату
                             </button>
