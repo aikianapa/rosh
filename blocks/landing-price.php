@@ -41,7 +41,7 @@
                         <wb-var pricelist wb-api="/api/v2/func/price/getPriceList" />
                         <div class="content-price__body">
                             <wb-foreach wb="from=price&tpl=false">
-                                <div class="content-price__item row" wb-if="'{{header}}'>''">
+                                <div class="content-price__item row" wb-if="'{{_var.pricelist.{{price_id}}.header}}'>''">
                                     <wb-var cnt='{{_var.cnt + 1}}' />
                                     <div class="col-12 col-md-2 content-price__name">{{_var.pricelist.{{price_id}}.articul}}</div>
                                     <div class="col-9 col-md-8 content-price__name">{{_var.pricelist.{{price_id}}.header}}</div>
