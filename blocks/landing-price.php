@@ -5,7 +5,7 @@
     <div>
 
         <wb-multiinput name="price">
-            <div class="col-sm-7">
+            <div class="col-sm-9">
                 <div class="input-group">
                     <div class="cursor-pointer input-group-prepend" onclick="priceSelector(this)">
                         <span class="input-group-text">
@@ -19,9 +19,9 @@
                 <input class="form-control tx-right" type="text" name="articul" placeholder="Артикул">
                 <input class="d-none" type="text" name="price_id" placeholder="ID прайс-листа">
             </div>
-            <div class="col-sm-2">
+            <!--div class="col-sm-2">
                 <input class="form-control tx-right" type="text" name="price" placeholder="Цена">
-            </div>
+            </div-->
         </wb-multiinput>
         <wb-include wb="form=price&mode=selector" />
     </div>
@@ -41,7 +41,7 @@
                         <wb-var pricelist wb-api="/api/v2/func/price/getPriceList" />
                         <div class="content-price__body">
                             <wb-foreach wb="from=price&tpl=false">
-                                <div class="content-price__item row" wb-if="'{{_var.pricelist.{{price_id}}.header}}'>''">
+                                <div class="content-price__item row" wb-if="'{{_var.pricelist.{{price_id}}.active}}' == 'on' && '{{_var.pricelist.{{price_id}}.header}}'>''">
                                     <wb-var cnt='{{_var.cnt + 1}}' />
                                     <div class="col-12 col-md-2 content-price__name">{{_var.pricelist.{{price_id}}.articul}}</div>
                                     <div class="col-9 col-md-8 content-price__name">{{_var.pricelist.{{price_id}}.header}}</div>
