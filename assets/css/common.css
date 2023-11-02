@@ -371,3 +371,7 @@ label.text-radio > span { text-align: center; }
  .fancybox-container *{
     position: static;
  }
+
+ .content-wrap h3 {
+     text-transform: none!important;
+ }
