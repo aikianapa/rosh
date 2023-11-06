@@ -131,6 +131,41 @@
             console.log(".pagination.custom.remove()")
             $(".pagination.custom").remove();
         }
+        $(document).on('wb-ready wb-ajax-done', function () {
+          const _list = $('#blogList');
+          _list.find(".blog-panel").sort(function (a, b) {
+            const _c_a = $(a).attr('data-matrix');
+            const _c_b = $(b).attr('data-matrix');
+            var tmp    = '';
+            const _da  = $(a).attr('data-date').split(' ')[0].split('.').reverse().join('');
+            const _db  = $(b).attr('data-date').split(' ')[0].split('.').reverse().join('');
+
+            const _a = parseInt(_da);
+            const _b = parseInt(_db);
+            var res  = (_a > _b) ? -1 : (_a < _b) ? 1 : 0;
+            if (res !== 0) {
+              $(a).attr('data-matrix', _c_b);
+              $(b).attr('data-matrix', _c_a);
+              $(a).removeClass(_c_a).addClass(_c_b);
+              $(b).removeClass(_c_b).addClass(_c_a);
+            }
+            return res;
+          }).appendTo(_list);
+          _list.find(".blog-panel").each(function () {
+            var _idx   = $(this).index();
+            const _c_a = $(this).attr('data-matrix');
+            var _c_b   = '';
+            var _pos   = _idx % 6;
+            if (_pos === 0) {
+              _c_b = 'blog-panel--100';
+            } else if (_pos < 3) {
+              _c_b = 'blog-panel--50';
+            } else {
+              _c_b = 'blog-panel--33';
+            }
+            $(this).removeAttr('class').addClass('blog-panel '+_c_b);
+          });
+        });
     </script>
 </view>
 

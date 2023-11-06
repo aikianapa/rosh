@@ -106,7 +106,10 @@
 
 </script>-->
 
+
+
 <script wbapp>
+
   (function () {
     window.btnCreateChildren = new Ractive({
       el: "#client-btns",
@@ -131,6 +134,8 @@
   })();
 
   function calculateAge(birthdate) {
+    if (birthdate === undefined) return;
+
     const parts = birthdate.split('.');
     const day = parseInt(parts[0]);
     const month = parseInt(parts[1]) - 1;
@@ -1284,7 +1289,7 @@
             if (!!current_day_events_checker) {
               clearTimeout(current_day_events_checker);
             }
-            // console.log('records:', records);
+            console.log('records:', records);
             let events = {
                 'upcoming': [],
                 'current': []
@@ -1304,7 +1309,6 @@
                 if (rec.status !== 'upcoming') {
                   return;
                 }
-
                 rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
 
                 if (Cabinet.isCurrentEvent(rec)) {
@@ -1313,7 +1317,6 @@
                   events.upcoming.push(rec);
                 }
               });
-
               window.sort_events();
             }
             page.set('events', events);
