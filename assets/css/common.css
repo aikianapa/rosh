@@ -399,7 +399,40 @@ label.text-radio > span { text-align: center; }
     padding-top: 180px;
 }
 
+.landing.two-img .content-pic {
+    padding-top: 0!important;
+}
+
+.landing.two-img .mb-80 {
+    margin-bottom: 80px!important;
+}
+
+.landing .container {
+    max-width: 1480px!important;
+}
+
 .landing .aside .h2 {
-    min-width: 50%!important;
+    min-width: 60%!important;
     max-width: fit-content;
+}
+
+.landing .h3 {
+    width: 60%;
+}
+
+.landing {
+    margin-bottom: 80px;
+}
+
+.post__block-info.text {
+    padding-top: 0!important;
+}
+
+@media (max-width: 600px) {
+    .text > img {
+        margin-left: 0;
+        float: none;
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }

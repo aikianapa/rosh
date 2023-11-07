@@ -278,6 +278,11 @@ a.header__logo:not(.header__logo-red) {
   flex-direction: column;
   row-gap: 12px;
 }
+@media (max-width: 600px) {
+  .footer__nav {
+    width: 100% !important;
+  }
+}
 .footer__nav .footer__nav--list {
   display: flex;
   flex-direction: column;
@@ -317,6 +322,11 @@ a.header__logo:not(.header__logo-red) {
 }
 .footer__nav--duo .footer__nav--list .nav__link {
   width: 45%;
+}
+@media (max-width: 600px) {
+  .footer__nav--duo .footer__nav--list .nav__link {
+    width: 100%;
+  }
 }
 .footer__nav--logo {
   position: relative;
