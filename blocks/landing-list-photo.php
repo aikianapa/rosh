@@ -1,8 +1,8 @@
 <view>
-    <div class="landing">
+    <div class="landing" data-large-container="{{_parent.largeContainer}}">
         <div class="container">
             <div class="row --aicn mb-80">
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <div class="aside">
                         <h3 class="h2" wb-if="'{{subheader}}'>''">{{subheader}}</h3>
                         <div class="text">
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div class="content-pic" wb-if="'{{image.0.img}}'>''"><img src="/thimbc/807x629/src{{image.0.img}}" alt="{{_parent.header}}"></div>
                 </div>
             </div>

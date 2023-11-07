@@ -44,12 +44,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-10">
+                                    <div class="col-9">
                                         <select name="category" class="form-control" required wb-tree="dict=blog">
                                             <option value="{{id}}">{{name}}</option>
                                         </select>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <label class="form-control-label" for="{{_form}}SwitchItemDone">Завершено</label>
                                         <div class="custom-control custom-switch d-inline">
                                             <input type="checkbox" class="custom-control-input" name="done" id="{{_form}}SwitchItemDone">
@@ -57,6 +57,15 @@
                                         </div>
                                     </div>
                                 </div>
+                              <div class="form-group row">
+                                <div class="col-9">
+                                  <label class="form-control-label" for="{{_form}}largeContainer">Увеличение ширины контейнеров блока</label>
+                                  <div class="custom-control custom-switch d-inline">
+                                    <input type="checkbox" class="custom-control-input" name="largeContainer" id="{{_form}}largeContainer">
+                                    <label class="custom-control-label" for="{{_form}}largeContainer">&nbsp;</label>
+                                  </div>
+                                </div>
+                              </div>
 
                                 <div class="form-group row">
                                     <div class="col-8">

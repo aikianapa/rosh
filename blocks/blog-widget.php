@@ -20,7 +20,6 @@
 	                <wb-var width="100" wb-if="'{{_ndx}}'>'5'"/>
 	                <wb-var width="50" wb-if="'{{_ndx}}'=='7'"/>
 	                <wb-var width="33" data-test="1" wb-if="'{{_ndx}}'=='8'"/>
-
 	                <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}"
 		                data-matrix="blog-panel--{{_var.matrix[{{_idx}}]}}"
 		                href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url('{{cover.0.img}}')" data-date="{{date}}">

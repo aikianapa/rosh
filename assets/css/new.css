@@ -1269,7 +1269,7 @@ div.swiper-horizontal.post-slider {
 .post__block-title {
     display: block;
     min-width: 180px;
-    width: 180px;
+    max-width: 50%;
     padding-right: 10px;
 }
 
