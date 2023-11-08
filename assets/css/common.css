@@ -421,11 +421,45 @@ label.text-radio > span { text-align: center; }
 }
 
 .landing {
-    margin-bottom: 80px;
+    margin-bottom: 120px;
 }
 
 .post__block-info.text {
     padding-top: 0!important;
+    margin-bottom: 0!important;
+}
+
+.post_block--right {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.post_block--right .post_block--info {
+    padding-left: 67px;
+}
+
+.content-wrap .text {
+    margin-bottom: 0!important;
+}
+
+.reports {
+    border: 0!important;
+    margin-bottom: 160px;
+}
+
+@media (max-width: 920px) {
+
+    .post_block--right .post_block--info {
+        padding-left: 0;
+    }
+
+    .landing {
+        margin-bottom: 80px;
+    }
+
+    .reports {
+        margin-bottom: 60px;
+    }
 }
 
 @media (max-width: 600px) {

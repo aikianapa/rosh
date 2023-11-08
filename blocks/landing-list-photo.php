@@ -1,7 +1,7 @@
 <view>
-  <div class="landing" data-large-container="{{_parent.largeContainer}}">
-    <div class="container">
-      <div class="row --aicn mb-80">
+  <div class="landing container" data-large-container="{{_parent.largeContainer}}">
+    <div class="post_block--right">
+      <div class="row --aicn mb-80 post_block--info">
         <div class="col-md-12">
           <div class="aside">
             <h3 class="h2" wb-if="'{{subheader}}'>''">{{subheader}}</h3>
