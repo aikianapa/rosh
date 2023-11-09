@@ -18,7 +18,7 @@
 </edit>
 
 <view>
-    <div class="landing">
+    <div class="landing two-img">
         <div class="container">
             <div class="row mb-80">
                 <div class="col-md-6">

@@ -1,5 +1,5 @@
 <view>
-    <div class="container post_block">
+    <div class="container post_block landing">
         <div class="post__block left">
             <div class="post__block-info text">
                 <span class="post__block-title" wb-if="'{{title}}'>''">{{title}}</span>

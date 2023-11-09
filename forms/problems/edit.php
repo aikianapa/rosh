@@ -83,6 +83,16 @@
                                 </div>
                             </div>
 
+                          <div class="form-group row">
+                            <div class="col-9">
+                              <label class="form-control-label" for="{{_form}}largeContainer">Увеличение ширины контейнеров блока</label>
+                              <div class="custom-control custom-switch d-inline">
+                                <input type="checkbox" class="custom-control-input" name="largeContainer" id="{{_form}}largeContainer">
+                                <label class="custom-control-label" for="{{_form}}largeContainer">&nbsp;</label>
+                              </div>
+                            </div>
+                          </div>
+
                             <input type="hidden" name="services" value="">
 
                             <wb-module wb="module=yonger&mode=structure&preset=landing" />

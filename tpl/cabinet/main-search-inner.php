@@ -1138,13 +1138,18 @@
                             'data': data
                           });
                         } else {
-                          console.log("data", data);
                           page.set("user.childrens", page.get('user.childrens') === undefined
                             ? [data.id]
                             : [data.id, ...page.get("user.childrens")])
 
                           $(".--children-create .popup__panel-wide").addClass("d-none")
                           $(".--children-create .popup__panel.--succed").addClass("d-block")
+
+                          Cabinet.updateProfile(page.get('user.id'), page.get('user'), function (data) {
+                            page.set("user", data);
+                            toast("Ребёнок успешно добавлен");
+                            location.reload();
+                          })
                         }
                       });
                   }

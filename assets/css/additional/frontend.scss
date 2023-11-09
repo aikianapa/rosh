@@ -375,6 +375,10 @@ a.header__logo {
   flex-direction: column;
   row-gap: 12px;
 
+  @media (max-width: 600px) {
+    width: 100% !important;
+  }
+
   .footer__nav--list {
     display: flex;
     flex-direction: column;
@@ -423,6 +427,10 @@ a.header__logo {
 
       & .nav__link {
         width: 45%;
+
+        @media (max-width: 600px) {
+          width: 100%;
+        }
       }
     }
   }
