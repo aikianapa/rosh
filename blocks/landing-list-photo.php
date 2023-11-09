@@ -7,7 +7,8 @@
             <h3 class="h2" wb-if="'{{subheader}}'>''">{{subheader}}</h3>
             <p class="text">
               <img src="/thimbc/807x629/src{{image.0.img}}"
-                   alt="{{_parent.header}}" style="float:right; width: 50%;border-radius: 20px;margin-left:40px;"/>
+                   alt="{{_parent.header}}" style="float:right; width: 50%;border-radius: 20px;margin-left:20px;
+    margin-bottom: 20px;"/>
               <wb-foreach wb="from=list&tpl=false">
                 <span style="display:block;">
                 {{_val}}
