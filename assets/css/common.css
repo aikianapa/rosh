@@ -421,7 +421,7 @@ label.text-radio > span { text-align: center; }
 }
 
 .landing {
-    margin-bottom: 120px;
+    margin-bottom: 80px;
     padding: 0;
 }
 
@@ -483,7 +483,7 @@ label.text-radio > span { text-align: center; }
     }
 
     .landing {
-        margin-bottom: 80px;
+        margin-bottom: 50px;
     }
 
     .reports {
@@ -506,5 +506,9 @@ label.text-radio > span { text-align: center; }
 
     .footer__nav--logo {
         width: 100% !important;
+    }
+
+    .landing.two-img .row .col-md-6:first-child {
+        margin-bottom: 20px;
     }
 }
