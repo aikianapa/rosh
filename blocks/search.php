@@ -89,12 +89,10 @@
               getRes(tables, searchValue)
             }
           },
-          switchCategory() {
-            setTimeout(() => {
-              const activeTab = document.querySelector(".data-tab-link.active").dataset.tabs;
+          switchCategory(e) {
+            const activeTab = e.node.dataset.tabs;
 
-              this.set("res", this.get("allRes").filter(el => el._table === activeTab || activeTab === "all"));
-            }, 300)
+            this.set("res", this.get("allRes").filter(el => el._table === activeTab || activeTab === "all"));
           }
         }
       })
