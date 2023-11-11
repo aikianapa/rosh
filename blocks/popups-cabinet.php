@@ -94,7 +94,6 @@
 
                                             Cabinet.updateProfile(page.get('user.id'), page.get('user'), function (data) {
                                                 page.set("user", data);
-                                                toast("Ребёнок успешно добавлен");
                                                 location.reload();
                                             })
                                         }
