@@ -1057,7 +1057,7 @@
   })
 
   const setChild = (childId, exceptionId = "") => {
-    fetch("/api/v2/read/users/" + childId + "?active=on").then(function (res) {
+    fetch("/api/v2/read/users/" + childId + "?active=on" + "&__token=" + wbapp._session.token).then(function (res) {
       if (!res.ok) {
         throw new Error('Ошибка HTTP: ' + res.status);
       }
@@ -1078,7 +1078,6 @@
         '/api/v2/update/records/' + id, data)
         .then(function (res) {
           console.log('event data:', data);
-          toast('Успешно сохранено');
           window.content_load();
         });
     };

@@ -85,7 +85,6 @@
                                                 'data': data
                                             });
                                         } else {
-                                            console.log("data", data);
                                             page.set("user.childrens", page.get('user.childrens') === undefined
                                                 ? [data.id]
                                                 : [data.id, ...page.get("user.childrens")])
