@@ -187,7 +187,7 @@
             <template>
               <button class="header__search-btn" data-view="{{view}}" on-click="click">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                     xmlns="http://www.w3.org/2000/svg" style="fill: none!important;">
                   <g id="vuesax/linear/search-normal">
                     <g id="search-normal">
                       <path id="Vector"
@@ -257,7 +257,8 @@
               <template>
                 <button class="header__search-btn" data-view="{{view}}" on-click="click">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                       xmlns="http://www.w3.org/2000/svg">
+                       xmlns="http://www.w3.org/2000/svg"
+                       style="fill: none!important;">
                     <g id="vuesax/linear/search-normal">
                       <g id="search-normal">
                         <path id="Vector"

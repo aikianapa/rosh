@@ -480,6 +480,10 @@ label.text-radio > span { text-align: center; }
     margin: 0 auto;
 }
 
+.landing .content-title {
+    text-transform: none!important;
+}
+
 @media (max-width: 1250px) {
     .blog-inner__aside {
         display: block;
