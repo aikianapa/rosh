@@ -469,6 +469,27 @@ label.text-radio > span { text-align: center; }
     padding: 0;
 }
 
+.blog-inner__aside {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+}
+
+.render .landing .row .col-md-8 {
+    margin: 0 auto;
+}
+
+@media (max-width: 1250px) {
+    .blog-inner__aside {
+        display: block;
+        position: static;
+        margin: 0 auto;
+
+        border: none;
+    }
+}
+
 @media (max-width: 800px) {
     .landing .container {
         padding-left: 20px!important;

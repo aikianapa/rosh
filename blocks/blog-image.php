@@ -1,9 +1,9 @@
 <view>
 	<div class="container blog-image" wb-if="'{{image.0.img}}'>''">
 		<div class="row">
-			<div class="col-md-4"></div>
-			<div class="col-md-8">
-				<div class="blog-inner__text">
+<!--			<div class="col-md-4"></div>-->
+			<div class="col-md-12">
+				<div class="blog-inner__text" style="margin: 0 auto;">
 					<div class="content-wrap">
 						<div class="text">
 							<img class="mb-40 radius-20" src="{{image.0.img}}" alt="{{_parent.header}}">
