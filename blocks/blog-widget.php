@@ -1,8 +1,7 @@
 <view>
-    <div class="blogs">
+    <div class="blogs" data-blog-id="">
         <div class="container">
             <div class="blogs__list" id="blogList">
-
                 <wb-var matrix="{{get_blog_matrix()}}"></wb-var>
 
                 <wb-foreach wb="{
@@ -22,7 +21,7 @@
 	                <wb-var width="33" data-test="1" wb-if="'{{_ndx}}'=='8'"/>
 	                <a class="blog-panel blog-panel--{{_var.matrix[{{_idx}}]}}"
 		                data-matrix="blog-panel--{{_var.matrix[{{_idx}}]}}"
-		                href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url('{{cover.0.img}}')" data-date="{{date}}">
+		                href="/blog/{{wbFurlGenerate({{header}})}}" style="background-image: url('{{cover.0.img}}')" data-date="{{date}}" wb-if="'{{_route.item}}'!=='{{id}}'">
 		                <div class="blog-panel__tags" data-cat="{{category}}">
 			                <div class="blog-panel__tag" wb-tree="dict=blog&branch={{category}}">{{name}}</div>
 		                </div>
