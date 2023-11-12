@@ -1157,8 +1157,7 @@
               }
             });
           };
-
-          setInterval(() => {
+          setTimeout(() => {
             const arrChildren = this.get("user.childrens");
             console.log("arrChildren", arrChildren)
 
