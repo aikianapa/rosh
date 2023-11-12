@@ -417,11 +417,12 @@ label.text-radio > span { text-align: center; }
 }
 
 .landing .h3 {
-    width: 60%;
+    width: 100%;
 }
 
 .landing {
-    margin-bottom: 120px;
+    margin-bottom: 80px;
+    padding: 0;
 }
 
 .post__block-info.text {
@@ -449,6 +450,57 @@ label.text-radio > span { text-align: center; }
     margin-top: 120px;
 }
 
+.landing:not(.two-img) .container {
+    max-width: 800px!important;
+    padding: 0;
+}
+
+.landing:not(.two-img) .container .content,
+.landing:not(.two-img) .container .text{
+    padding: 0!important;
+    width: 100%;
+}
+
+.landing .container .row {
+    width: 100%;
+}
+
+.landing .container .content .col-md-12 {
+    padding: 0;
+}
+
+.blog-inner__aside {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+}
+
+.render .landing .row .col-md-8 {
+    margin: 0 auto;
+}
+
+.landing .content-title {
+    text-transform: none!important;
+}
+
+@media (max-width: 1250px) {
+    .blog-inner__aside {
+        display: block;
+        position: static;
+        margin: 0 auto;
+
+        border: none;
+    }
+}
+
+@media (max-width: 800px) {
+    .landing .container {
+        padding-left: 20px!important;
+        padding-right: 20px!important;
+    }
+}
+
 @media (max-width: 920px) {
 
     .post_block--right .post_block--info {
@@ -456,7 +508,7 @@ label.text-radio > span { text-align: center; }
     }
 
     .landing {
-        margin-bottom: 80px;
+        margin-bottom: 50px;
     }
 
     .reports {
@@ -464,15 +516,24 @@ label.text-radio > span { text-align: center; }
     }
 }
 
-@media (max-width: 600px) {
-    .text > img {
-        margin-left: 0;
-        float: none;
+@media (max-width: 700px) {
+    .fast-form__info {
         width: 100%;
-        margin-bottom: 20px;
+        max-width: 100%;
+    }
+
+    .text > img {
+        margin-left: 0!important;
+        float: none!important;
+        width: 100% !important;
+        margin-bottom: 20px!important;
     }
 
     .footer__nav--logo {
         width: 100% !important;
+    }
+
+    .landing.two-img .row .col-md-6:first-child {
+        margin-bottom: 20px;
     }
 }

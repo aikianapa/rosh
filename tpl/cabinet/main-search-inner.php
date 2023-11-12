@@ -1057,7 +1057,7 @@
   })
 
   const setChild = (childId, exceptionId = "") => {
-    fetch("/api/v2/read/users/" + childId + "?active=on").then(function (res) {
+    fetch("/api/v2/read/users/" + childId + "?active=on" + "&__token=" + wbapp._session.token).then(function (res) {
       if (!res.ok) {
         throw new Error('Ошибка HTTP: ' + res.status);
       }
@@ -1078,7 +1078,6 @@
         '/api/v2/update/records/' + id, data)
         .then(function (res) {
           console.log('event data:', data);
-          toast('Успешно сохранено');
           window.content_load();
         });
     };
@@ -1147,7 +1146,6 @@
 
                           Cabinet.updateProfile(page.get('user.id'), page.get('user'), function (data) {
                             page.set("user", data);
-                            toast("Ребёнок успешно добавлен");
                             location.reload();
                           })
                         }
@@ -1159,8 +1157,7 @@
               }
             });
           };
-
-          setInterval(() => {
+          setTimeout(() => {
             const arrChildren = this.get("user.childrens");
             console.log("arrChildren", arrChildren)
 

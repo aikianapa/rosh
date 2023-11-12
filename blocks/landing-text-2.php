@@ -1,11 +1,8 @@
 <view>
     <div class="landing" data-large-container="{{_parent.largeContainer}}">
         <div class="container">
-        <div class="row">
-                <div class="col-lg-4">
-                    <h5 class="h5 content-title" wb-if="'{{title}}'>''">{{title}}</h5>
-                </div>
-                <div class="col-lg-8">
+        <div class="">
+                <div class="content">
                     <div class="content-wrap">
                         <h3 class="h3 mb-40" wb-if="'{{subtitle}}'>''">{{subtitle}}</h3>
                         <div class="text mb-80" wb-if="'{{text}}'>''">
