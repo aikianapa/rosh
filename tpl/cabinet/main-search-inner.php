@@ -1171,7 +1171,7 @@
 
               setChild(childId);
             })
-          }, 5000)
+          }, 1000)
         },
         addEventPhoto(ev, client, record) {
           console.log('addEventPhoto', client, record);
