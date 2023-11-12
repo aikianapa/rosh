@@ -484,6 +484,22 @@ label.text-radio > span { text-align: center; }
     text-transform: none!important;
 }
 
+.row.container > .col-md-4 {
+    display: none;
+}
+
+.row.container > .col-md-8 {
+    margin: 0 auto;
+}
+
+.row.container > .col-md-8 .blog-inner__text {
+    margin: 0 auto;
+}
+
+.landing .container .content .content-wrap {
+    margin: 0 auto;
+}
+
 @media (max-width: 1250px) {
     .blog-inner__aside {
         display: block;
