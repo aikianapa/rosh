@@ -43,7 +43,25 @@
                       <div class="select__list">
                         {{#each childrens as child}}
                         <div class="select__item" data-child-id="{{child.id}}" on-click="select">
+                          <span>
+                          {{#if child.parent_id}}
                           {{child.fullname}}
+                          {{else}}
+                          {{child.fullname}} (Родитель)
+                          {{/if}}
+                          </span>
+                          {{#if child.warning}}
+                          <svg class="ml-10" xmlns="http://www.w3.org/2000/svg" height="1em"
+                               viewBox="0 0 512 512">
+                            <style>
+                                svg {
+                                    fill: #BB9107
+                                }
+                            </style>
+                            <path
+                              d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/>
+                          </svg>
+                          {{/if}}
                         </div>
                         {{/each}}
                       </div>
@@ -54,7 +72,7 @@
                        viewBox="0 0 512 512">
                     <style>
                         svg {
-                            fill: #fb0909
+                            fill: #BB9107
                         }
                     </style>
                     <path
@@ -105,7 +123,6 @@
 <!--<script wbapp>
 
 </script>-->
-
 
 
 <script wbapp>
@@ -160,6 +177,15 @@
       }).then(function (data) {
           if (data.id === exceptionId) return;
 
+          const age = calculateAge(data.birthdate)
+
+          if (age > 18) {
+            toast("Пожалуйста обновите данные " + data.fullname + ", для создания личного кабинета", "Важно", "warning");
+
+            data.warning = true;
+            window.childrensSelect.set('user.warning', true)
+          }
+
           childrensSelect.set("childrens", [data, ...childrensSelect.get("childrens")])
         }
       )
@@ -185,13 +211,13 @@
 
             setChild(childId);
           })
-          parentId && fetch("/api/v2/read/users/" + parentId + "?active=on").then(function (res) {
+          parentId && fetch("/api/v2/read/users/" + parentId + "?active=on" + "&__token=" + wbapp._session.token).then(function (res) {
             if (!res.ok) {
               throw new Error('Ошибка HTTP: ' + res.status);
             }
 
             return res.json();
-          }).then(function(data) {
+          }).then(function (data) {
             data.childrens.forEach(childId => {
               if (typeof childId !== "string"
               ) {
@@ -200,7 +226,7 @@
 
               setChild(childId, childrensSelect.get("user.id"));
             })
-            childrensSelect.set("childrens", [data, ...childrensSelect.get("childrens")]);
+            childrensSelect.set("childrens", [data, ...childrensSelect.get("childrens")].reverse());
           })
         },
         select(ev) {
@@ -257,7 +283,7 @@
           <svg class="ml-10" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
             <style>
                 svg {
-                    fill: #fb0909
+                    fill: #BB9107
                 }
             </style>
             <path
@@ -1135,24 +1161,10 @@
               if (age >= 18) {
                 page.set("user.adult", true)
 
-                toast("Пожалуйста обновите данные, для создания личного кабинета", "Важно", "error");
+                toast("Пожалуйста обновите данные, для создания личного кабинета", "Важно", "warning");
               }
             }
           }, 1000)
-
-          const childrensId = wbapp._session.user.childrens;
-
-          if (!childrensId || childrensId.length === 0) return;
-
-          childrensId.forEach((id) => utils.api.get(`/api/v2/read/users/${id}`).then((data) => {
-            const age = calculateAge(data.birthdate)
-
-            if (age < 18) return;
-
-            toast("Пожалуйста обновите данные " + data.fullname + ", для создания личного кабинета", "Важно", "error");
-
-            window.childrensSelect.set('user.warning', true)
-          }))
         },
         runOnlineChat(ev, record) {
           console.log("!!!runOnlineChat")

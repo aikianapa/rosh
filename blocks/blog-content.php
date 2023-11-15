@@ -1,7 +1,7 @@
 <view>
 	<div class="container" style="margin-top: 2em;">
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<h5 class="h5 content-title" wb-if="'{{aside}}'>''">{{aside}}</h5>
 			</div>
 			<div class="col-md-8">

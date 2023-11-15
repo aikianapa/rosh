@@ -1,5 +1,5 @@
 <view>
-    <div class="container post_block landing">
+    <div class="container post_block landing" data-large-container="{{_parent.largeContainer}}">
         <div class="post__block left container">
             <div class="post__block-info text">
                 <span class="post__block-title" wb-if="'{{title}}'>''">{{title}}</span>

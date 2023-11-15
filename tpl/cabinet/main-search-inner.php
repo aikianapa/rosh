@@ -483,9 +483,7 @@
           </div>
           {{elseif events_ready}}
           <div class="acount__table-accardeon accardeon">
-            <div class="acount__table-main accardeon__main">
-              Нет записей о детях
-            </div>
+            <span>Нет записей о детях</span>
           </div>
           {{else}}
           <div class="acount__table-accardeon accardeon">
@@ -1159,7 +1157,7 @@
           };
           setTimeout(() => {
             const arrChildren = this.get("user.childrens");
-            console.log("arrChildren", arrChildren)
+            // console.log("arrChildren", arrChildren)
 
             this.set("children", [])
 

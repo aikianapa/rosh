@@ -1,5 +1,5 @@
 <view>
-    <div class="landing" data-large-container="{{_parent.largeContainer}}">
+    <div class="landing" data-large-container="{{_parent.largeContainer}}" data-large-container="{{_parent.largeContainer}}">
         <div class="container">
         <div class="">
                 <div class="content">

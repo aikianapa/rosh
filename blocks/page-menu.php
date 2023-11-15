@@ -1,8 +1,8 @@
 <view>
     <div class="container mb-80">
         <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-8">
+            <div class="col-lg-5"></div>
+            <div class="col-lg-6">
                 <div>
                     <h3 class="mb-20 h3">Оглавление</h3>
                     <wb-foreach wb="from=pagemenu&tpl=false">

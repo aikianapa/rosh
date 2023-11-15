@@ -52,7 +52,7 @@
 </edit>
 
 <view>
-    <div class="landing">
+    <div class="landing" data-large-container="{{_parent.largeContainer}}">
         <div class="container">
             <div class="row" wb-if="'{{title}}'>''">
                 <div class="col-md-4"></div>
