@@ -1005,6 +1005,17 @@ label.text-radio > span {
     margin-bottom: 40px;
 }
 
+.questions-main .dropdown[data-level="main"] > .dropdown-head svg {
+    width: 25px;
+    height:auto;
+}
+
+.questions-main .dropdown[data-level="sub"] > .dropdown-head svg {
+    width: 25px;
+    height:auto;
+    margin-right: 2px;
+}
+
 .questions-main .dropdown[data-level="sub"] {
     display: flex;
     flex-direction: column;
