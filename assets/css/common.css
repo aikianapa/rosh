@@ -762,76 +762,93 @@ label.text-radio > span {
     }
 }
 
-[data-large-container="on"] .content-wrap {
+[data-large-container="problems"] .content-wrap,
+[data-large-container="services"] .content-wrap{
     max-width: 100%;
 }
 
-[data-large-container="on"] .col-lg-4 {
+[data-large-container="problems"] .col-lg-4,
+[data-large-container="services"] .col-lg-4{
     width: 16.66666667% !important;
 }
 
-[data-large-container="on"] .row.--aicn {
+[data-large-container="problems"] .row.--aicn,
+[data-large-container="services"] .row.--aicn{
     justify-content: space-between;
 }
 
-[data-large-container="on"] .aside ul {
+[data-large-container="problems"] .aside ul,
+[data-large-container="services"] .aside ul{
     max-width: 100% !important;
 }
 
-[data-large-container="on"] .content-pic img {
+[data-large-container="problems"] .content-pic img,
+[data-large-container="services"] .content-pic img{
 }
 
-[data-large-container="on"] .landing .content-pic {
+[data-large-container="problems"] .landing .content-pic,
+[data-large-container="services"] .landing .content-pic{
     padding-top: 180px;
 }
 
-[data-large-container="on"] .landing.two-img .content-pic {
+[data-large-container="problems"] .landing.two-img .content-pic,
+[data-large-container="services"] .landing.two-img .content-pic{
     padding-top: 0 !important;
 }
 
-[data-large-container="on"] .landing.two-img .mb-80 {
+[data-large-container="problems"] .landing.two-img .mb-80,
+[data-large-container="services"] .landing.two-img .mb-80{
     margin-bottom: 80px !important;
 }
 
-[data-large-container="on"] .landing .container {
+[data-large-container="problems"] .landing .container,
+[data-large-container="services"] .landing .container{
     max-width: 1480px !important;
 }
 
-[data-large-container="on"] .landing .aside .h2 {
+[data-large-container="problems"] .landing .aside .h2,
+[data-large-container="services"] .landing .aside .h2{
     min-width: 60% !important;
     max-width: fit-content;
 }
 
-[data-large-container="on"] .landing .h3 {
+[data-large-container="problems"] .landing .h3,
+[data-large-container="services"] .landing .h3{
     width: 100%;
 }
 
-[data-large-container="on"] .post__block-info.text {
+[data-large-container="problems"] .post__block-info.text,
+[data-large-container="services"] .post__block-info.text{
     padding-top: 0 !important;
     margin-bottom: 0 !important;
 }
 
-[data-large-container="on"] .post_block--right {
+[data-large-container="problems"] .post_block--right,
+[data-large-container="services"] .post_block--right{
     max-width: 1000px;
     margin: 0 auto;
 }
 
-[data-large-container="on"] .post_block--right .post_block--info {
+[data-large-container="problems"] .post_block--right .post_block--info,
+[data-large-container="services"] .post_block--right .post_block--info{
     padding-left: 67px;
 }
 
-[data-large-container="on"] .content-wrap .text {
+[data-large-container="problems"] .content-wrap .text,
+[data-large-container="services"] .content-wrap .text{
     margin-bottom: 0 !important;
 }
 
-[data-large-container="on"] .reports {
+[data-large-container="problems"] .reports,
+[data-large-container="services"] .reports{
     border: 0 !important;
     margin-bottom: 0;
     padding-bottom: 0;
     margin-top: 120px;
 }
 
-[data-large-container="on"].landing:not(.two-img) .container {
+[data-large-container="problems"] .landing:not(.two-img) .container,
+[data-large-container="services"] .landing:not(.two-img) .container {
     max-width: 800px !important;
     padding: 0;
 }
@@ -842,23 +859,39 @@ label.text-radio > span {
 }
 
 .container.post_block .post__block.left .post__block-info,
-[data-large-container="on"] .post_block--right .post_block--info {
+[data-large-container="problems"] .post_block--right .post_block--info,
+[data-large-container="services"] .post_block--right .post_block--info{
     padding: 0 !important;
 }
 
 
-[data-large-container="on"] .landing:not(.two-img) .container .content,
-[data-large-container="on"] .landing:not(.two-img) .container .text {
+[data-large-container="problems"] .landing:not(.two-img) .container .content,
+[data-large-container="services"] .landing:not(.two-img) .container .text {
     padding: 0 !important;
     width: 100%;
 }
 
-[data-large-container="on"] .landing .container .row {
+[data-large-container="problems"] .landing .container .row,
+[data-large-container="services"] .landing .container .row {
     width: 100%;
 }
 
-[data-large-container="on"] .landing .container .content .col-md-12 {
+[data-large-container="problems"] .landing .container .content .col-md-12,
+[data-large-container="services"] .landing .container .content .col-md-12{
     padding: 0;
+}
+
+[data-large-container="problems"] .container.post_block .post__block.right,
+[data-large-container="services"].container.post_block .post__block.right {
+    max-width: 800px!important;
+}
+
+.landing .content-wrap2 {
+    max-width: 100% !important;
+}
+
+.landing .info.container .row > .col-lg-8 {
+    width: max-content;
 }
 
 .aside .h2 {

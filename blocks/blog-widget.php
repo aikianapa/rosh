@@ -1,6 +1,6 @@
 <view>
     <div class="blogs" data-blog-id="">
-        <div class="container">
+        <div class="container" style="padding:0!important;">
             <div class="blogs__list" id="blogList">
                 <wb-var matrix="{{get_blog_matrix()}}"></wb-var>
 

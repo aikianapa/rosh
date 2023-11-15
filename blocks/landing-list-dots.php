@@ -2,9 +2,9 @@
     <div class="landing" data-large-container="{{_parent.largeContainer}}">
         <div class="info container">
             <div class="row --aicn mb-80">
-                <div class="col-lg-4">
+                <div class="col-lg-4" wb-if="'{{subheader}}'>''">
                     <div class="aside">
-                        <h3 class="h3 mb-40" wb-if="'{{subheader}}'>''">{{subheader}}</h3>
+                        <h3 class="h3 mb-40">{{subheader}}</h3>
                     </div>
                 </div>
                 <div class="col-lg-8">

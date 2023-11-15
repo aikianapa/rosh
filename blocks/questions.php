@@ -73,9 +73,21 @@
       console.log(dropdownHeads)
       const dropdowns = document.querySelectorAll('.dropdown');
 
+      (() => {
+        const dropdownMain = document.querySelectorAll(".dropdown[data-level='main']")[0];
+        const bodyMain = dropdownMain.querySelector(".dropdown-body")
+        const dropdownSub = document.querySelectorAll(".dropdown[data-level='sub']")[0];
+        const bodySub = dropdownSub.querySelector(".dropdown-body")
+
+        dropdownSub.classList.add("active");
+        bodySub.style.maxHeight = bodySub.scrollHeight + "px";
+
+        dropdownMain.classList.add("active");
+        bodyMain.style.maxHeight = bodyMain.scrollHeight + bodySub.scrollHeight + "px";
+      })();
+
       dropdownHeads.forEach(function (head) {
         head.addEventListener("click", function () {
-          console.log("head", this)
           const dropdown = this.closest(".dropdown");
           const body = dropdown.querySelector(".dropdown-body");
 
@@ -87,8 +99,7 @@
             if (dropdown.dataset.level === "sub") {
               const parent = dropdown.closest(".dropdown[data-level='main']")
               const parentBody = parent.querySelector(".dropdown-body");
-              console.log("parent", parent)
-              console.log(parentBody.offsetHeight + body.scrollHeight + "px");
+
               parentBody.style.maxHeight = parentBody.offsetHeight + body.scrollHeight + "px";
             }
 

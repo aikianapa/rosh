@@ -31,7 +31,7 @@
     <div class="mt-40 mb-40 landing" data-large-container="{{_parent.largeContainer}}">
         <div class="container">
             <div class="row">
-                <div class="offset-lg-4 col-lg-8">
+                <div class="col-lg-12">
                     <div class="symptoms">
                         <h3 class="mb-40 h3" wb-if="'{{title}}'>''">{{title}}</h3>
                         <div class="tags">
