@@ -86,7 +86,6 @@ div.select.active > div.select__list {
 }
 
 .select-form .select__list {
-    max-height: 160px;
     overflow: auto;
 }
 
@@ -1055,4 +1054,11 @@ label.text-radio > span {
 
 .questions-main .dropdown[data-level="sub"] .dropdown-body img {
     height: auto!important;
+}
+
+.select__item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
