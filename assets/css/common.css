@@ -1106,3 +1106,6 @@ label.text-radio > span {
     justify-content: space-between;
     align-items: center;
 }
+.blog-inner-content .blogs .container {
+    padding: 0!important;
+}
