@@ -10,5 +10,5 @@
 </edit>
 
 <view>
-    <div class="full-pic" wb-if="'{{image.0.img}}'>''"><img src="{{image.0.img}}" alt="{{_parent.header}}"></div>
+    <div class="full-pic" wb-if="'{{image.0.img}}'>''" data-large-container="{{_parent.largeContainer}}"><img src="{{image.0.img}}" alt="{{_parent.header}}"></div>
 </view>

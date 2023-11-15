@@ -1159,7 +1159,7 @@
           };
           setTimeout(() => {
             const arrChildren = this.get("user.childrens");
-            console.log("arrChildren", arrChildren)
+            // console.log("arrChildren", arrChildren)
 
             this.set("children", [])
 

@@ -114,3 +114,4 @@
 <wb-jq wb="$dom->find('script:not([src]):not([type])')->attr('type','wbapp');"/>
 
 </html>
+

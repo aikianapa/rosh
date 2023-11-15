@@ -1,5 +1,5 @@
 <view>
-  <div class="landing" data-large-container="{{_parent.largeContainer}}">
+  <div class="landing" data-large-container="{{_parent.largeContainer}}" data-large-container="{{_parent.largeContainer}}">
     <div class="post_block--right container">
       <div class=" --aicn mb-80 post_block--info content">
         <div class="col-md-12">

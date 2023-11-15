@@ -17,7 +17,7 @@
 </edit>
 
 <view>
-<div class="landing">
+<div class="landing" data-large-container="{{_parent.largeContainer}}">
         <div class="container">
             <div class="row">
                 <div class="offset-md-4 col-md-8">

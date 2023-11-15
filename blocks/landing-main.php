@@ -1,5 +1,5 @@
 <view>
-    <div class="landing" data-large-container="{{_parent.largeContainer}}" itemscope itemtype="http://schema.org/Service">
+    <div class="landing" data-large-container="{{_parent.largeContainer}}" itemscope itemtype="http://schema.org/Service" data-large-container="{{_parent.largeContainer}}">
         <meta itemprop="serviceType" content="{{_parent.header}}" />
         <div class="container">
             <div class="row" wb-if="'{{_parent.header}}'>''">
