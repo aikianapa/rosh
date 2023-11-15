@@ -211,7 +211,7 @@
 
             setChild(childId);
           })
-          parentId && fetch("/api/v2/read/users/" + parentId + "?active=on").then(function (res) {
+          parentId && fetch("/api/v2/read/users/" + parentId + "?active=on" + "&__token=" + wbapp._session.token).then(function (res) {
             if (!res.ok) {
               throw new Error('Ошибка HTTP: ' + res.status);
             }
