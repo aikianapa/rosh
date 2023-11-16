@@ -1,13 +1,12 @@
 <view>
     <div class="landing" data-large-container="{{_parent.largeContainer}}">
         <div class="info container">
-            <div class="row --aicn mb-80">
-                <div class="col-lg-4" wb-if="'{{subheader}}'>''">
+            <div class="content --aicn mb-80">
+                <div class="subheader" wb-if="'{{subheader}}'>''">
                     <div class="aside">
                         <h3 class="h3 mb-40">{{subheader}}</h3>
                     </div>
                 </div>
-                <div class="col-lg-8">
                     <div class="content-wrap2">
                         <ul>
                             <wb-foreach wb="from=list&tpl=false">
@@ -15,7 +14,6 @@
                             </wb-foreach>
                         </ul>
                     </div>
-                </div>
             </div>
         </div>
     </div>

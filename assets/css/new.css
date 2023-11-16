@@ -1378,8 +1378,8 @@ div.swiper-horizontal.post-slider {
     width: 50%;
     height: auto;
     float: right;
-    margin-right: 40px;
-    margin-bottom: 40px;
+    margin-left: 20px;
+    margin-bottom: 20px;
 
     border-radius: 20px;
 }

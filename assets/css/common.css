@@ -742,7 +742,7 @@ label.text-radio > span {
     padding: 0;
 }
 
-.landing .container .row > .col-md-8 {
+.landing .container .row:not(.content-price__item) > .col-md-8 {
     width: 100% !important;
 }
 
@@ -1108,4 +1108,54 @@ label.text-radio > span {
 }
 .blog-inner-content .blogs .container {
     padding: 0!important;
+}
+
+.h5.content-title {
+    text-transform: unset;
+}
+
+.landing .container,
+.landing .content {
+    position: unset!important;
+}
+
+.landing .subheader {
+    position: absolute;
+    width: 16%;
+
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: .04em;
+    font-family: "Playfair Display",serif;
+
+    left: 85px;
+    top: 0;
+}
+
+
+.landing .subheader .h3 {
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: .04em;
+    font-family: "Playfair Display",serif;
+}
+
+.landing-text-picture-right {
+    margin-bottom: 80px;
+}
+
+@media (max-width: 1500px) {
+    .landing .subheader {
+        position: unset;
+        width: 100%;
+    }
+
+    .landing .subheader .h3,
+    .landing .subheader .h5{
+        font-size: 26px;
+        line-height: 120%;
+        letter-spacing: .04em;
+        font-family: "Playfair Display", serif;
+        text-transform: unset;
+    }
 }
