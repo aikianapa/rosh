@@ -108,7 +108,7 @@
           </div>
           <div class="row footer__bottom">
             <div class="footer__item col-lg-2">
-              <a class="text-small" href="/"> © ROSH, 2021</a>
+              <a class="text-small" href="/"> © ROSH, 2004 - <span id="currentYear"></span></a></a>
             </div>
             <div class="footer__item col-lg-3">
               <a class="text-small policy" href="[policy]"> Политика конфиденциальности
@@ -152,7 +152,10 @@
         <rect x="8.682" y="1.364" fill="#FFF" width="2.729" height="27.284"></rect>
             </svg>
     </div>
-
+    <script>
+      const currentYearElement = document.getElementById("currentYear");
+      currentYearElement.innerText = new Date().getFullYear();
+    </script>
   </footer>
 </view>
 <edit header="Подвал сайта">

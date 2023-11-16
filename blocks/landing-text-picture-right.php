@@ -1,5 +1,5 @@
 <view>
-    <div class="container post_block" data-large-container="{{_parent.largeContainer}}">
+    <div class="container post_block landing-text-picture-right" data-large-container="{{_parent.largeContainer}}">
         <div class="post__block right">
             <div class="post__block-info text">
                 <span class="post__block-title" wb-if="'{{title}}'>''">{{title}}</span>
