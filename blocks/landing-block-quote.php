@@ -55,7 +55,7 @@
     <div class="landing" data-large-container="{{_parent.largeContainer}}">
         <div class="container info">
             <div class="row --aicn mb-80">
-                <div class="col-lg-4">
+                <div class="col-lg-4" wb-if="'{{subheader}}'>'' && 'quote'==''">
                     <div class="aside">
                         <h3 class="mb-40 h3" wb-if="'{{subheader}}'>'' && 'quote'==''">{{subheader}}</h3>
                         <h3 class="mb-40 h3" wb-if="'{{quote}}'=='on'">Комментарий специалиста</h3>
