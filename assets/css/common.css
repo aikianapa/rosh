@@ -882,7 +882,12 @@ label.text-radio > span {
 }
 
 [data-large-container="problems"] .container.post_block .post__block.right,
-[data-large-container="services"].container.post_block .post__block.right {
+[data-large-container="services"] .container.post_block .post__block.right {
+    max-width: 800px!important;
+}
+
+[data-large-container="problems"] .container.post_block .post__block.right,
+[data-large-container="services"] .container.post_block .post__block.right {
     max-width: 800px!important;
 }
 
@@ -891,7 +896,7 @@ label.text-radio > span {
 }
 
 .landing .info.container .row > .col-lg-8 {
-    width: max-content;
+    width: 100%;
 }
 
 .aside .h2 {
@@ -1158,4 +1163,8 @@ label.text-radio > span {
         font-family: "Playfair Display", serif;
         text-transform: unset;
     }
+}
+
+.aside .h3 {
+    text-transform: unset;
 }
