@@ -19,7 +19,7 @@
 			<form class="fast-form no-validation">
 				<div class="container">
 					<div class="container-fluid">
-						<div class="row">
+						<div class="row" style="justify-content:center;">
 							<div class="col-lg-4">
 								<div class="fast-form__info">
 									<h2 class="h2 fast-form__title">Быстрая запись на прием</h2>
