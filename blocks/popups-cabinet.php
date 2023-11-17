@@ -612,6 +612,7 @@
 
         }
         const pay_price = (type == 'online') ? price : Math.floor(price / 5);
+        const orderId = String(record_id) + String(Math.floor(Math.random() * 100000001));
 
         var popup = new Ractive({
           el: '.popup.--pay',
@@ -621,7 +622,7 @@
             is_online: (type == 'online'),
             price: price,
             client: user_id,
-            id: String(record_id) + String(Math.floor(Math.random() * 100000001)),
+            id: orderId,
             client_email: client_email,
             client_phone: client_phone,
             service_name: service_name,
@@ -662,7 +663,7 @@
                 return  'Просьба не закрывать страницу, пока не завершите оплату. Нажмите на "отмена", чтобы оплата прошла без ошибок';
               };
               const payIntervalCheckId = setInterval(async () => {
-                const result = await utils.getInfoTransaction(record_id);
+                const result = await utils.getInfoTransaction(orderId);
 
                 if (result.success) {
                   console.log("Транзакция успешна:", result.data);
