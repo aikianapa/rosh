@@ -564,7 +564,7 @@
               Для подтверждения необходимо произвести оплату в размере 20% от стоимости
             </div>
             <div class="popup__description text-grey text-bold mb-30">
-              Просьба не закрывать страницу, пока не завершите оплату, чтобы сформировать чек.
+              Просьба не закрывать страницу, пока не завершите оплату, чтобы сформировать чек
             </div>
             {{/if}}
             <!--!!! change `action` address on PROD. !!!-->
@@ -621,7 +621,7 @@
             is_online: (type == 'online'),
             price: price,
             client: user_id,
-            id: record_id,
+            id: String(record_id) + String(Math.floor(Math.random() * 100000001)),
             client_email: client_email,
             client_phone: client_phone,
             service_name: service_name,
@@ -675,7 +675,7 @@
 
                     console.log("создание чека")
                     await utils.saveReceipts({
-                      receiptNumber: `${user_id}${record_id}`,
+                      receiptNumber: `${user_id}${record_id}${Math.floor(Math.random() * 100000001)}`,
                       client: {
                         email: client_email,
                         phone: client_phone
@@ -700,17 +700,18 @@
                     localStorage.removeItem("payRecord")
                     window.removeEventListener("beforeunload", confirmedMessageCloseApp);
                     clearInterval(payIntervalCheckId);
+                    document.querySelector(".--pay-succed").style.display = "flex"
                   }
 
                 } else {
                   console.log("Ошибка при запросе транзакции", result.data);
+                  document.querySelector(".--pay-error").style.display = "flex"
                   clearInterval(payIntervalCheckId);
                   window.onbeforeunload = null;
                 }
               }, 1000);
 
-              $('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
-              $('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');
+              document.querySelector(".--pay").style.display = "none"
             }
           }
         });
