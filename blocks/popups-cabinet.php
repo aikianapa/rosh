@@ -613,6 +613,7 @@
         }
         const pay_price = (type == 'online') ? price : Math.floor(price / 5);
         const orderId = String(record_id) + String(Math.floor(Math.random() * 100000001));
+        const receiptId = `${user_id}${record_id}${Math.floor(Math.random() * 100000001)}`;
 
         var popup = new Ractive({
           el: '.popup.--pay',
@@ -669,14 +670,14 @@
                   console.log("Транзакция успешна:", result.data);
 
                   if (result.data.transaction.status.value === "SUCCESS") {
-                    localStorage.setItem("payRecord", record_id);
+                    localStorage.setItem("payRecord", orderId);
 
                     console.log("оплачен")
                     await utils.api.post(`/api/v2/save/records/${record_id}/pay_status`, "prepay");
 
                     console.log("создание чека")
                     await utils.saveReceipts({
-                      receiptNumber: `${user_id}${record_id}${Math.floor(Math.random() * 100000001)}`,
+                      receiptNumber: receiptId,
                       client: {
                         email: client_email,
                         phone: client_phone
