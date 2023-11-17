@@ -560,24 +560,21 @@
               Для подтверждения необходимо произвести полную оплату
             </div>
             {{else}}
-            <div class="popup__description text-grey mb-30">
+            <div class="popup__description text-grey mb-10">
               Для подтверждения необходимо произвести оплату в размере 20% от стоимости
+            </div>
+            <div class="popup__description text-grey text-bold mb-30">
+              Просьба не закрывать страницу, пока не завершите оплату, чтобы сформировать чек.
             </div>
             {{/if}}
             <!--!!! change `action` address on PROD. !!!-->
-            <form on-submit="submit" action="https://medcenterrosh.server.paykeeper.ru/create/"
-                  method="POST" target="_blank">
-              <input type='hidden' name='sum' value='{{this.pay_price}}'/>
-              <input type='hidden' name='orderid' value='{{this.id}}'/>
-              <input type='hidden' name='clientid' value='{{this.client}}'/>
-              <input type='hidden' name='service_name' value='{{this.service_name}}'/>
-              <input type='hidden' name='client_email' value='{{this.client_email}}'/>
-              <input type='hidden' name='client_phone' value='{{this.client_phone}}'/>
-              <!--{{#if this.is_online }}
-              <input type='hidden' name='cart' value='[{"name":"{{this.service_name}}"}]'/>
-              {{else}}
-              <input type='hidden' name='cart' value='[{"name":"{{this.service_name}}","payment_type":"part_prepay"}]'/>
-              {{/if}}-->
+            <form on-submit="submit" action="https://pay.raif.ru/pay"
+                  method="GET" target="_blank">
+              <input type="hidden" name="publicId" value="000001793739001-93739001"/>
+              <input type='hidden' name='amount' value='{{this.pay_price}}'/>
+              <input type='hidden' name='orderId' value='{{id}}'/>
+              <input type='hidden' name='successUrl' value='{{currentPage}}?pay=success'/>
+              <input type='hidden' name='failUrl' value='{{currentPage}}?pay=error'/>
               <button class="btn btn--black form__submit" type="submit">
                 Внести предоплату
               </button>
@@ -603,7 +600,12 @@
       </template>
     </div>
     <script wbapp>
-      window.popupPay = function (record_id, full_price, user_id, type, consultation_price, client_email, client_phone, service_name) {
+      function confirmedMessageCloseApp(e) {
+        e.preventDefault();
+        return  'Просьба не закрывать страницу, пока не завершите оплату. Нажмите на "отмена", чтобы оплата прошла без ошибок';
+      }
+
+      window.popupPay = function (record_id, full_price, user_id, type, consultation_price, client_email, client_phone, service_name, service_name2) {
         const pay_consultation = parseInt(consultation_price || '0');
         var price = (pay_consultation > 0) ? pay_consultation : parseInt(full_price);
         if (pay_consultation) {
@@ -623,6 +625,7 @@
             client_email: client_email,
             client_phone: client_phone,
             service_name: service_name,
+            currentPage: window.location.href
           },
           on: {
             complete() {
@@ -653,6 +656,58 @@
                   toast('Профиль успешно обновлён');
                 })
               }
+
+              window.onbeforeunload = (e) => {
+                e.preventDefault();
+                return  'Просьба не закрывать страницу, пока не завершите оплату. Нажмите на "отмена", чтобы оплата прошла без ошибок';
+              };
+              const payIntervalCheckId = setInterval(async () => {
+                const result = await utils.getInfoTransaction(record_id);
+
+                if (result.success) {
+                  console.log("Транзакция успешна:", result.data);
+
+                  if (result.data.transaction.status.value === "SUCCESS") {
+                    localStorage.setItem("payRecord", record_id);
+
+                    console.log("оплачен")
+                    await utils.api.post(`/api/v2/save/records/${record_id}/pay_status`, "prepay");
+
+                    console.log("создание чека")
+                    await utils.saveReceipts({
+                      receiptNumber: `${user_id}${record_id}`,
+                      client: {
+                        email: client_email,
+                        phone: client_phone
+                      },
+                      items: [{
+                        name: service_name,
+                        price: pay_price,
+                        quantity: 1,
+                        amount: pay_price,
+                        vatType: "NONE",
+                        paymentObject: "PAYMENT",
+                        paymentMode: "PREPAYMENT"
+                      }],
+                      total: pay_price
+                    }).then(async (data) => {
+                      if (data !== false) {
+                        console.log("регистрация чека")
+                       await utils.regReceipts(data.receiptNumber)
+                      }
+                    })
+
+                    localStorage.removeItem("payRecord")
+                    window.removeEventListener("beforeunload", confirmedMessageCloseApp);
+                    clearInterval(payIntervalCheckId);
+                  }
+
+                } else {
+                  console.log("Ошибка при запросе транзакции", result.data);
+                  clearInterval(payIntervalCheckId);
+                  window.onbeforeunload = null;
+                }
+              }, 1000);
 
               $('.popup.--pay .popup__panel:not(.--succed-pay)').addClass('d-none');
               $('.popup.--pay .popup__panel.--succed-pay').addClass('d-block');

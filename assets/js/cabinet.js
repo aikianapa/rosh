@@ -159,6 +159,132 @@ $(function () {
   ];
 
   window.utils = {
+    paySecretKey:
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMDAwMDE3OTM3MzkwMDEtOTM3MzkwMDEiLCJqdGkiOiI2M2VlM2NjNC1iZGE3LTQ0YjctODE0ZS04NjA1Mjc2ODBkYjEifQ.3BigG0_elEYaTXlvJBWxbx7NnZv98bQPhe-Cs1qoeRg",
+    payPublicKey: "000001793739001-93739001",
+    async getInfoTransaction(orderId) {
+      const url = `https://pay.raif.ru/api/payments/v1/orders/${orderId}/transaction`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.paySecretKey}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        return { success: false };
+      }
+
+      const data = await response.json();
+
+      if (data.code === "SUCCESS") {
+        return { success: true, data };
+      }
+
+      return { success: false };
+    },
+    async getInfoReceipts(orderId) {
+      const url = `https://pay.raif.ru/api/fiscal/v1/orders/${orderId}/receipts`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.paySecretKey}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.status === "DONE") {
+        return { success: true, data };
+      }
+
+      return { success: false, data };
+    },
+    async saveReceipts(data) {
+      const url = `https://e-commerce.raiffeisen.ru/api/fiscal/v1/receipts/sell`;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${this.paySecretKey}`,
+          },
+          body: JSON.stringify(data),
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          console.error(`Чек не прошел валидацию. Причина: ${responseData.message}`);
+          return false;
+        }
+
+        return responseData;
+
+      } catch (error) {
+        console.error("Ошибка при выполнении запроса:", error);
+        return false;
+      }
+    },
+    async regReceipts(receiptNumber) {
+      const url = `https://e-commerce.raiffeisen.ru/api/fiscal/v1/receipts/sell/${receiptNumber}`;
+
+      try {
+        const response = await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${this.paySecretKey}`,
+          },
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          console.error(`Чек не прошел регистрацию. Причина: ${responseData.message}`);
+          return false;
+        }
+
+        return responseData;
+
+      } catch (error) {
+        console.error("Ошибка при выполнении запроса:", error);
+        return false;
+      }
+    },
+    async getInfoOneReceipt(receiptNumber) {
+      const url = `https://e-commerce.raiffeisen.ru/api/fiscal/v1/receipts/sell/${receiptNumber}`;
+
+      try {
+        const response = await fetch(url, {
+          method: "Get",
+          headers: {
+            Authorization: `Bearer ${this.paySecretKey}`,
+          },
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          console.error(`Ошибка получения статуса чека. Причина: ${responseData.message}`);
+          return false;
+        }
+
+        return responseData;
+
+      } catch (error) {
+        console.error("Ошибка при выполнении запроса:", error);
+        return false;
+      }
+    },
     clrText(str) {
       return str.replaceAll("-undefined", "").replace(/^-+|,+$/g, "");
     },
@@ -884,21 +1010,26 @@ $(function () {
       const moscowTimezoneOffset = 3 * 360;
 
       const [datePart, _] = event.event_date.split(" ");
-      const timeStr = event.event_time_start + ":00"
+      const timeStr = event.event_time_start + ":00";
       const dateTimeStr = datePart + " " + timeStr;
 
       const userDate = new Date();
 
-      const moscowDate = new Date(userDate.getTime() + moscowTimezoneOffset * 60);
+      const moscowDate = new Date(
+        userDate.getTime() + moscowTimezoneOffset * 60,
+      );
 
       const curr_timestamp = utils.timestamp(moscowDate);
 
       const event_date = utils.getDate(event.event_date);
       const event_from_timestamp = utils.timestamp(
-          new Date(event_date.getFullYear(), event_date.getMonth(), event_date.getDate(),
-              parseInt(event.event_time_start.split(":")[0]),
-              parseInt(event.event_time_start.split(":")[1])
-          )
+        new Date(
+          event_date.getFullYear(),
+          event_date.getMonth(),
+          event_date.getDate(),
+          parseInt(event.event_time_start.split(":")[0]),
+          parseInt(event.event_time_start.split(":")[1]),
+        ),
       );
 
       return event_from_timestamp < curr_timestamp + 301;
@@ -924,7 +1055,7 @@ $(function () {
       let data = profile_data;
       //console.log(data);
 
-      if(!!data.phone) {
+      if (!!data.phone) {
         data.phone = str_replace([" ", "-", "(", ")"], "", data.phone);
         if (data.phone.length === 10) {
           data.phone = "+7" + data.phone;

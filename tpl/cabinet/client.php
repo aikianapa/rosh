@@ -118,6 +118,18 @@
         <h3 class="h3">Успешно!</h3>
       </div>
     </div>
+
+    <div class="popup --pay-error strict_close" style="justify-content: center;align-items: center;">
+      <div class="popup__panel --error" style="display: block;">
+        <button class="popup__close">
+          <svg class="svgsprite _close">
+            <use xlink:href="/assets/img/sprites/svgsprites.svg#close"></use>
+          </svg>
+        </button>
+        <div class="popup__name text-bold">Оплата</div>
+        <h3 class="h3">Что-то пошло не так!</h3>
+      </div>
+    </div>
   </main>
 </div>
 <!--<script wbapp>
@@ -142,11 +154,10 @@
     const urlParams = new URLSearchParams(window.location.search);
     const payParam = urlParams.get('pay');
 
-    console.log("urlParams", urlParams);
-    console.log("payParam", payParam)
-
     if (payParam === 'success') {
       document.querySelector(".--pay-succed").style.display = "flex"
+    } else if (payParam === "error") {
+      document.querySelector(".--pay-error").style.display = "flex"
     }
   })();
 
@@ -531,7 +542,7 @@
           <div class="account-event-wrap --aicn">
             <div class="account-events__btn">
               <button class="btn btn--black"
-                      onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}','{{this.type}}','{{this.consultation_price}}','{{user.email}}', '{{@global.utils.formatPhone(user.phone)}}', '{{@global.catalog.spec_service.consultations[type][consultation].header}}')">
+                      onclick="popupPay('{{this.id}}','{{this.price}}','{{this.client}}','{{this.type}}','{{this.consultation_price}}','{{user.email}}', '{{@global.utils.formatPhone(user.phone)}}', '{{this.service_name}}')">
                 Внести предоплату
               </button>
             </div>
@@ -1301,7 +1312,6 @@
             if (!!current_day_events_checker) {
               clearTimeout(current_day_events_checker);
             }
-            console.log('records:', records);
             let events = {
                 'upcoming': [],
                 'current': []
@@ -1322,6 +1332,14 @@
                   return;
                 }
                 rec['event_timestamp'] = Cabinet.eventTimestamp(rec);
+
+                for (const key in rec.service_prices) {
+                  if (rec.service_prices.hasOwnProperty(key) && typeof rec.service_prices[key] === 'object') {
+                    if (rec.service_prices[key].name && rec.service_prices[key].name.trim() !== '') {
+                      rec.service_name =  rec.service_prices[key].name.trim();
+                    }
+                  }
+                }
 
                 if (Cabinet.isCurrentEvent(rec)) {
                   events.current.push(rec);
