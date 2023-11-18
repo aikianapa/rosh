@@ -672,34 +672,35 @@
                   if (result.data.transaction.status.value === "SUCCESS") {
                     localStorage.setItem("payRecord", orderId);
 
-                    console.log("оплачен")
+                    // console.log("оплачен")
                     await utils.api.post(`/api/v2/save/records/${record_id}/pay_status`, "prepay");
 
-                    console.log("создание чека")
-                    await utils.saveReceipts({
-                      receiptNumber: receiptId,
-                      client: {
-                        email: client_email,
-                        phone: client_phone
-                      },
-                      items: [{
-                        name: service_name,
-                        price: pay_price,
-                        quantity: 1,
-                        amount: pay_price,
-                        vatType: "NONE",
-                        paymentObject: "PAYMENT",
-                        paymentMode: "PREPAYMENT"
-                      }],
-                      total: pay_price
-                    }).then(async (data) => {
-                      if (data !== false) {
-                        console.log("регистрация чека")
-                       await utils.regReceipts(data.receiptNumber)
-                      }
-                    })
+                    if (localStorage.getItem("payRecord")) {
+                      // console.log("создание чека")
+                      await utils.saveReceipts({
+                        receiptNumber: receiptId,
+                        client: {
+                          email: client_email,
+                          phone: client_phone
+                        },
+                        items: [{
+                          name: service_name,
+                          price: pay_price,
+                          quantity: 1,
+                          amount: pay_price,
+                          vatType: "NONE",
+                          paymentObject: "PAYMENT",
+                          paymentMode: "PREPAYMENT"
+                        }],
+                        total: pay_price
+                      }).then(async (data) => {
+                        if (data !== false) {
+                          localStorage.removeItem("payRecord")
+                          await utils.regReceipts(data.receiptNumber)
+                        }
+                      })
+                    }
 
-                    localStorage.removeItem("payRecord")
                     window.removeEventListener("beforeunload", confirmedMessageCloseApp);
                     clearInterval(payIntervalCheckId);
                     document.querySelector(".--pay-succed").style.display = "flex"
