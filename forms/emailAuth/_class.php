@@ -108,7 +108,7 @@ MESSAGE;
     {
         $email = $_POST['email'];
         $app = $this->app;
-
+        $res = ['status' => 'error', 'message' => 'Указан некорректный email'];
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $users = $this->driver->itemList('users', ['filter' => ['email' => $email]]);
 
@@ -122,14 +122,11 @@ MESSAGE;
                 $this->driver->itemSave('users', $user);
 
                 //Отправляем пароль
-                wbMail(self::EMAIL, $email, 'Ваш пароль от аккаунта', $this->get_recover_message($password));
-                $res = ['status' => 'ok', 'message' => 'Новый пароль отправлен на ваш email'];
+                if (wbMail(self::EMAIL, $email, 'Ваш пароль от аккаунта', $this->get_recover_message($password))) {
+                    $res = ['status' => 'ok', 'message' => 'Новый пароль отправлен на ваш email'];
+                }
             }
-
-        }else{
-            $res = ['status' => 'error', 'message' => 'Указан некорректный email'];
         }
-
         header("Content-type: application/json");
         return (json_encode($res));
     }
