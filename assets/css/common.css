@@ -1188,6 +1188,10 @@ label.text-radio > span {
 }
 
 @media(max-width: 700px) {
+    .fast-form .col-lg-4 {
+        width: 100% !important;
+    }
+
     .crumbs {
         flex-direction: column;
         align-items: flex-start;
@@ -1195,5 +1199,17 @@ label.text-radio > span {
 
     .crumbs > p {
         margin-top: 20px;
+    }
+
+    .text table {
+        width: 100% !important;
+    }
+
+    .blogs__list {
+        padding-bottom: 0;
+    }
+
+    .pagination.mb-40 {
+        margin-bottom: 0;
     }
 }
