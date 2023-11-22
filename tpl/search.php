@@ -81,7 +81,11 @@
       {
         key: "experts",
         name: "Специалисты"
-      }
+      },
+      {
+        key: "problems",
+        name: "Проблемы"
+      },
     ];
 
     window.contentSearch = new Ractive({

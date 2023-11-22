@@ -93,7 +93,7 @@
         </div>
 
         <script wbapp>
-          const tables = ["services", "blog", "experts"];
+          const tables = ["services", "blog", "experts", "problems"];
 
           window.headerSearch = new Ractive({
             el: ".header__search",
