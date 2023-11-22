@@ -34,7 +34,7 @@
             Дата публикации / дата обновления: {{dateform(_parent.date)}}
           </p>
           <p wb-if="'{{_parent.date}}'==''">
-            Дата публикации / дата обновления: {{dateform(_parent._created)}}
+            Дата публикации / последнего обновления: {{dateform(_parent._created)}}
           </p>
         </div>
     </div>

@@ -26,7 +26,7 @@
           <span class="crumbs__link">{{header}}</span>
         </div>
         <p>
-          Дата публикации / дата обновления: {{dateform(date)}}
+          Дата публикации / последнего обновления: {{dateform(date)}}
         </p>
       </div>
     </div>
