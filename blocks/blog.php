@@ -131,6 +131,22 @@
             console.log(".pagination.custom.remove()")
             $(".pagination.custom").remove();
         }
+        setInterval(() => {
+          const pagination = document.querySelector(".nav-pagination .pagination");
+          const customPagination = document.querySelector(".pagination.custom")
+
+          if (pagination) {
+            const paginationBtns = [...pagination.querySelectorAll("li")]
+
+            console.log("paginationBtns", paginationBtns)
+            if (paginationBtns.length === 0) {
+              console.log("customPagination", customPagination)
+              customPagination.style.display = "none";
+            } else {
+              customPagination.style.display = "flex";
+            }
+          }
+        }, 1500)
         $(document).on('wb-ready wb-ajax-done', function () {
           const _list = $('#blogList');
           _list.find(".blog-panel").sort(function (a, b) {

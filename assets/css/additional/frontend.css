@@ -440,7 +440,7 @@ a.header__logo:not(.header__logo-red) {
     margin-left: 15px;
   }
 }
-@media (max-width: 500px) {
+@media (max-width: 800px) {
   .footer__nav--list {
     width: 100%;
   }
