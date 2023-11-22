@@ -19,7 +19,7 @@
                 <meta itemprop="position" content="2" />
             </span>
             <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                <span class="crumbs__link last" itemprop="name">{{_parent.header}}</span>
+                <span class="crumbs__link last" itemprop="name">{{_parent.header}}ok</span>
                 <meta itemprop="position" content="3" />
             </span>
         </div>

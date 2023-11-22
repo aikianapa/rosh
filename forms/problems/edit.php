@@ -15,6 +15,19 @@
                 <div class="row">
                     <div class="col-5 scroll-y modal-h">
                         <form id="{{_form}}EditForm">
+                          <div class="form-group row align-items-center">
+                            <div class="col-8">
+                              <label class="form-control-label">Дата</label>
+                              <input type="datepicker" name="date" class="form-control" wb="module=datetimepicker" required>
+                            </div>
+                            <div class="col-4 text-center">
+                              <label class="form-control-label" for="{{_form}}SwitchItemActive">Отображать</label>
+                              <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" name="active" id="{{_form}}SwitchItemActive">
+                                <label class="custom-control-label" for="{{_form}}SwitchItemActive">&nbsp;</label>
+                              </div>
+                            </div>
+                          </div>
                             <meta name="id" value="{{id}}">
                             <div class="form-group">
                                 <wb-module wb="module=filepicker&mode=single&width=800&&height=300" wb-path="/uploads/problems/" name="cover">

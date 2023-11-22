@@ -16,12 +16,18 @@
   </div>
   <main class="page {{_session.user.role}}" data-barba="container" data-barba-namespace="{{_route.name}}">
     <div class="container blog-head">
-      <div class="crumbs"><a class="crumbs__arrow" href="javascript:window.history.back();">
-          <svg class="svgsprite _crumbs-back">
-            <use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
-          </svg>
-        </a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="/blog">Блог</a>
-        <span class="crumbs__link">{{header}}</span>
+      <div class="crumbs post">
+        <div>
+          <a class="crumbs__arrow" href="javascript:window.history.back();">
+            <svg class="svgsprite _crumbs-back">
+              <use xlink:href="/assets/img/sprites/svgsprites.svg#crumbs-back"></use>
+            </svg>
+          </a><a class="crumbs__link" href="/">Главная</a><a class="crumbs__link" href="/blog">Блог</a>
+          <span class="crumbs__link">{{header}}</span>
+        </div>
+        <p>
+          Дата публикации / дата обновления: {{dateform(date)}}
+        </p>
       </div>
     </div>
     <div class="blog-inner__top">

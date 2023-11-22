@@ -1168,3 +1168,32 @@ label.text-radio > span {
 .aside .h3 {
     text-transform: unset;
 }
+
+.crumbs.post {
+    width: calc(100% - 30px);
+    display: flex;
+    justify-content: space-between;
+}
+
+.crumbs > p {
+    display: none;
+    font-size: 14px!important;
+    color: #b5b7b6;
+}
+
+.blog-head .crumbs > p,
+[data-large-container="services"] .crumbs > p,
+[data-large-container="problems"] .crumbs > p{
+    display: block;
+}
+
+@media(max-width: 700px) {
+    .crumbs {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .crumbs > p {
+        margin-top: 20px;
+    }
+}
