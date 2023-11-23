@@ -667,16 +667,12 @@
                 const result = await utils.getInfoTransaction(orderId);
 
                 if (result.success) {
-                  console.log("Транзакция успешна:", result.data);
-
                   if (result.data.transaction.status.value === "SUCCESS") {
                     localStorage.setItem("payRecord", orderId);
 
-                    // console.log("оплачен")
                     await utils.api.post(`/api/v2/save/records/${record_id}/pay_status`, "prepay");
 
                     if (localStorage.getItem("payRecord")) {
-                      // console.log("создание чека")
                       await utils.saveReceipts({
                         receiptNumber: receiptId,
                         client: {
@@ -707,7 +703,6 @@
                   }
 
                 } else {
-                  console.log("Ошибка при запросе транзакции", result.data);
                   document.querySelector(".--pay-error").style.display = "flex"
                   clearInterval(payIntervalCheckId);
                   window.onbeforeunload = null;
